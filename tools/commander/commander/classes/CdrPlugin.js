@@ -30,7 +30,52 @@ class CdrPlugin extends Emitter {
         this.webRoot = config.webRoot;
         this.namespace = config.namespace;
         this.name = config.name;
-
+        this.commands = {};
+        this.telemetry = {};
+        var self = this;
+        
+        this.namespace.onCommandDefRequest(function(cmdReq, cb) {
+            if(self.commands.hasOwnProperty(cmdReq.opsPath)) {
+                var response = {opsPath: cmdReq.opsPath, Def: self.commands[cmdReq.opsPath].def};
+                self.logDebug( 'CmdDefReq: \'' + JSON.stringify( cmdReq, null, '\t' ) + '\'  Def: \'' + JSON.stringify( self.commands[cmdReq.opsPath].def, null, '\t' ) + '\'' );
+                cb(self.commands[cmdReq.opsPath].def);
+            }
+        });
+        
+        this.namespace.onCommand(function(cmd) {
+            if(self.commands.hasOwnProperty(cmd.ops_path)) {
+                self.logDebug('Received command \'' + cmd.ops_path + '\'', cmd);
+                self.commands[cmd.ops_path].cb(cmd);
+            }
+        });
+        
+        this.namespace.onTelemetryDefRequest(function(tlmReq, cb) {
+            for(var msgOpsPath in self.telemetry) {
+                for(var paramName in self.telemetry[msgOpsPath].content) {
+                    if(tlmReq.name == msgOpsPath + '/' + paramName) {
+                        var output = {opsPath: tlmReq.name};
+                        
+                        switch(typeof self.telemetry[msgOpsPath].content[paramName]) {
+                            case 'number':
+                                output.dataType = 'uint32';
+                                break;
+                                
+                            case 'string':
+                                output.dataType = 'char';
+                                output.arrayLength = 100;
+                                break;
+                                
+                            default:
+                                self.logError('Unsupported internal telemetry type of \'' + typeof self.telemetry[msgOpsPath].content[paramName] + '\'');
+                                break;
+                        }
+                        
+                        cb(output);
+                    }
+                }
+            }
+        });
+        
         this.logDebug('Created.');
     }
   
@@ -49,7 +94,34 @@ class CdrPlugin extends Emitter {
             this.logError('Content is undefined');
         }
     }
+    
+    
+    addCommands(newCommands, cb) {
+        for(var i in newCommands) {
+            this.commands[newCommands[i].opsPath] = {};
+            this.commands[newCommands[i].opsPath].def = newCommands[i];
+            this.commands[newCommands[i].opsPath].cb = cb;
+        }
+    }
 
+    
+    sendTelemetry(tlmObj) {
+        this.namespace.sendTelemetry(tlmObj);
+    }
+
+    
+    addTelemetry(newTelemetry) {
+        var self = this;
+        
+        for(var i in newTelemetry) {
+            this.telemetry[newTelemetry[i].opsPath] = newTelemetry[i];
+        
+            setInterval(function() {
+                self.telemetry[newTelemetry[i].opsPath].msgTime = new Date();
+                self.namespace.sendTelemetry(self.telemetry[newTelemetry[i].opsPath]);
+            }, 1000);
+        }
+    }
 
     /**
      * This is called by the underlying framework to initialize the plugin.
@@ -240,6 +312,7 @@ class CdrPlugin extends Emitter {
             this.namespace.logError(this.name, message);
         }
     }
+    
 }
 
 

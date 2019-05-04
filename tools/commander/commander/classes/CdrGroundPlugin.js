@@ -21,7 +21,7 @@ class CdrGroundPlugin extends CdrPlugin {
     
     addContent(content) {
         var newContent = {
-            flight: {
+            ground: {
                 shortDescription: 'Ground',
                 longDescription: 'Ground Systems.',
                 nodes: content

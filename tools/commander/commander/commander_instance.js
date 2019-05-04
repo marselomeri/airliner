@@ -50,6 +50,8 @@ module.exports = class CommanderInstance extends EventEmitter {
         this.apps = {};
         this.emitter = new EventEmitter();
         var self = this;
+        
+        this.emitter.setMaxListeners(100);
     }
 
     
@@ -90,16 +92,8 @@ module.exports = class CommanderInstance extends EventEmitter {
                 name: name,
                 appObj: newAppObj
         };
-
-        newAppObj.setInstanceEmitter( this.emitter );
     }
     
-    
-    getInstanceEmitter() {
-        return this.emitter;
-    }
-    
-
 
     /**
      * Emit data
@@ -109,5 +103,26 @@ module.exports = class CommanderInstance extends EventEmitter {
      */
     emit( streamID, obj, callback ) {
         this.emitter.emit( streamID, obj, callback );
+    }
+    
+    
+    onCommandDefRequest(cmd, callback) {
+        this.emitter.on( 'cmd-def-request', cmd, callback );
+    }
+    
+    
+    onCommand(callback) {
+        this.emitter.on( 'cmd-send', callback);
+    }
+
+    
+    
+    onTelemetryDefRequest(cmd, callback) {
+        this.emitter.on( 'tlm-def-request', cmd, callback );
+    }
+    
+    
+    sendTelemetry(tlmObj) {
+        this.emitter.emit( 'json-tlm-stream', tlmObj );
     }
 }

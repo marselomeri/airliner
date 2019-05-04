@@ -46,427 +46,342 @@ var config = require( './config.js' );
 const Sparkles = require( 'sparkles' );
 var path = require( 'path' );
 var dot = require( 'dot-object' );
+var path = require( 'path' );
+const CdrGroundPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrGroundPlugin')).CdrGroundPlugin;
 
 /**
  * Event id's
  * @type {Object}
  */
 var EventEnum = Object.freeze( {
-  'INITIALIZED': 1,
-  'CMD_MSG_NOT_FOUND': 2,
-  'UNHANDLED_EXCEPTION': 3
+    'INITIALIZED': 1,
+    'CMD_MSG_NOT_FOUND': 2,
+    'UNHANDLED_EXCEPTION': 3
 } );
 
 var emit = Emitter.prototype.emit;
 
-exports = module.exports = ProtobufDecoder;
 
 exports.events = [
-  'connect',
-  'close',
-  'error'
-];
+    'connect',
+    'close',
+    'error'
+    ];
 
 /**
  * Count listeners
  * @type {Function}
  */
 var listenerCount = Emitter.listenerCount ||
-  function( emitter, type ) {
+function( emitter, type ) {
     return emitter.listeners( type ).length
-  }
+}
 
 
-/**
- * Constructor for protobuf decoder
- * @param       {String} workspace  path to workspace
- * @param       {String} configFile path to protobuf-decoder-config.json
- * @constructor
- */
-function ProtobufDecoder( workspace, configFile ) {
-  this.parsers = {};
-  this.workspace = workspace;
-  this.instanceEmitter;
-  this.defs = {};
+class ProtobufDecoder extends CdrGroundPlugin {
+    /**
+     * Constructor for protobuf decoder
+     * @param       {String} workspace  path to workspace
+     * @param       {String} configFile path to protobuf-decoder-config.json
+     * @constructor
+     */
+    constructor(configObj) {
+        super(configObj);
 
-  /* Load environment dependent configuration */
-  config.loadFile( configFile );
+        this.parsers = {};
+        this.workspace = configObj.workspace;
+        this.defs = {};
+        var self = this;
 
-  /* Perform validation */
-  config.validate( {
-    allowed: 'strict'
-  } );
+        /* Load environment dependent configuration */
+        config.loadFile( configObj.configFile );
 
-  this.ccsdsPriHdr = new Parser()
-    .endianess( 'big' )
-    .bit3( 'version' )
-    .bit1( 'pktType' )
-    .bit1( 'secHdr' )
-    .bit11( 'apid' )
-    .bit2( 'segment' )
-    .bit14( 'sequence' )
-    .uint16( 'length' );
-
-  this.ccsdsCmdSecHdr = new Parser()
-    .endianess( 'big' )
-    .uint8( 'checksum' )
-    .bit1( 'reserved' )
-    .bit7( 'code' );
-
-  switch ( config.get( 'CFE_SB_PACKET_TIME_FORMAT' ) ) {
-    case 'CFE_SB_TIME_32_16_SUBS':
-      this.ccsdsTlmSecHdr = new Parser()
-        .endianess( 'little' )
-        .uint32( 'seconds' )
-        .uint16( 'subseconds' );
-      this.tlmHeaderLength = 96;
-      break;
-
-    case 'CFE_SB_TIME_32_32_SUBS':
-      this.ccsdsTlmSecHdr = new Parser()
-        .endianess( 'little' )
-        .uint32( 'seconds' )
-        .uint32( 'subseconds' );
-      this.tlmHeaderLength = 98;
-      break;
-
-    case 'CFE_SB_TIME_32_32_M_20':
-      this.ccsdsTlmSecHdr = new Parser()
-        .endianess( 'little' )
-        .uint32( 'seconds' )
-        .uint32( 'subseconds' );
-      this.tlmHeaderLength = 98;
-      break;
-
-    default:
-      break;
-  }
-
-  this.ccsds = new Parser()
-    .endianess( 'little' )
-    .nest( 'PriHdr', {
-      type: this.ccsdsPriHdr
-    } )
-    .choice( 'SecHdr', {
-      tag: 'PriHdr.pktType',
-      choices: {
-        0: this.ccsdsTlmSecHdr,
-        1: this.ccsdsCmdSecHdr
-      }
-    } )
-    .buffer( 'payload', {
-      readUntil: 'eof'
-    } );
-
-  if ( typeof process.env.AIRLINER_PROTO_PATH === 'undefined' ) {
-    var fullPath = path.join( this.workspace, config.get( 'protobufDirectory' ) );
-  } else {
-    var fullPath = process.env.AIRLINER_PROTO_PATH;
-  }
-
-  var protoFiles = this.recFindByExt( fullPath, 'proto' );
-  for ( var i = 0; i < protoFiles.length; i++ ) {
-    this.parseProtoFile( protoFiles[ i ] );
-  }
-
-};
-
-
-/**
- * Configure and set instance emitter
- * @param  {Object} newInstanceEmitter instance of instance emitter
- */
-ProtobufDecoder.prototype.setInstanceEmitter = function( newInstanceEmitter ) {
-  var self = this;
-  this.instanceEmitter = newInstanceEmitter;
-
-  this.instanceEmitter.on( config.get( 'binaryInputStreamID' ), function( buffer ) {
-    var message = self.ccsds.parse( buffer );
-    var msgID = buffer.readUInt16BE( 0 );
-    if ( self.isCommandMsg( msgID ) ) {
-      var cmdCode = message.SecHdr.code;
-
-      self.requestCmdDefinition( msgID, cmdCode, function( cmdDef ) {
-        if ( cmdDef.operation.airliner_msg === '' ) {
-          /* This command has no arguments.  No payload to parse.  Just send the command ops path. */
-          var args = [];
-          self.sendCmd( cmdDef.ops_path, args );
-        } else {
-          /* This command does have arguments.  Parse the protobuf payload. */
-          var msgDef = self.getCmdByName( cmdDef.operation.airliner_msg );
-
-          if ( typeof msgDef !== 'undefined' ) {
-            var tlmJson = {};
-
-            var pbMsgDef = msgDef.proto.lookupType( msgDef.name + '_pb' );
-
-            var pbMsg = pbMsgDef.create( tlmJson );
-
-            var msg = pbMsgDef.decode( message.payload );
-
-            var obj = pbMsgDef.toObject( msg, {
-              long: String,
-              enums: String,
-              bytes: String
-            } );
-
-            var args = dot.dot( obj );
-            self.sendCmd( cmdDef.ops_path, args );
-          } else {
-            self.logErrorEvent( EventEnum.CMD_MSG_NOT_FOUND, 'Command message \'' + cmdDef.operation.airliner_msg + '\' not found.' );
-          }
-        }
-      } )
-    } else {
-      var msgLength = message.PriHdr.length;
-      if ( msgLength > 1 ) {
-        self.requestTlmDefinition( msgID, function( tlmDef ) {
-
-          if ( typeof tlmDef !== 'undefined' ) {
-            var msgDef = self.getMsgDefBySymbolName( tlmDef.symbol );
-            var tlmJson = {};
-            var pbMsgDef = msgDef.proto.lookupType( tlmDef.symbol + '_pb' );
-            var pbMsg = pbMsgDef.create( tlmJson );
-            var obj = pbMsgDef.decode( message.payload );
-            self.instanceEmit( config.get( 'jsonTlmOutputStreamID' ), obj );;
-          }
+        /* Perform validation */
+        config.validate( {
+            allowed: 'strict'
         } );
-      }
-    }
-  } );
 
-  this.logInfoEvent( EventEnum.INITIALIZED, 'Initialized' );
-}
+        this.ccsdsPriHdr = new Parser()
+        .endianess( 'big' )
+        .bit3( 'version' )
+        .bit1( 'pktType' )
+        .bit1( 'secHdr' )
+        .bit11( 'apid' )
+        .bit2( 'segment' )
+        .bit14( 'sequence' )
+        .uint16( 'length' );
 
-/**
- * Generates an array of paths of files that are located in the
- * base directory which matches the extention passed into parameters.
- * @param  {String} base   base directory path
- * @param  {String} ext    file extention
- * @param  {Object} files  file read object or undefined
- * @param  {Object} result empty array or undefined
- * @return {Object}        array of matching paths
- */
-ProtobufDecoder.prototype.recFindByExt = function( base, ext, files, result ) {
-  var self = this
+        this.ccsdsCmdSecHdr = new Parser()
+        .endianess( 'big' )
+        .uint8( 'checksum' )
+        .bit1( 'reserved' )
+        .bit7( 'code' );
 
-  result = result || []
-  try {
-    files = files || fs.readdirSync( base )
-    files.forEach(
-      function( file ) {
-        var newbase = path.join( base, file )
-        if ( fs.statSync( newbase ).isDirectory() ) {
-          result = self.recFindByExt( newbase, ext, fs.readdirSync( newbase ), result )
-        } else {
-          if ( file.substr( -1 * ( ext.length + 1 ) ) == '.' + ext ) {
-            result.push( newbase )
-          }
+        switch ( config.get( 'CFE_SB_PACKET_TIME_FORMAT' ) ) {
+        case 'CFE_SB_TIME_32_16_SUBS':
+            this.ccsdsTlmSecHdr = new Parser()
+            .endianess( 'little' )
+            .uint32( 'seconds' )
+            .uint16( 'subseconds' );
+            this.tlmHeaderLength = 96;
+            break;
+
+        case 'CFE_SB_TIME_32_32_SUBS':
+            this.ccsdsTlmSecHdr = new Parser()
+            .endianess( 'little' )
+            .uint32( 'seconds' )
+            .uint32( 'subseconds' );
+            this.tlmHeaderLength = 98;
+            break;
+
+        case 'CFE_SB_TIME_32_32_M_20':
+            this.ccsdsTlmSecHdr = new Parser()
+            .endianess( 'little' )
+            .uint32( 'seconds' )
+            .uint32( 'subseconds' );
+            this.tlmHeaderLength = 98;
+            break;
+
+        default:
+            break;
         }
-      }
-    )
-  } catch ( e ) {
-    self.logErrorEvent( EventEnum.UNHANDLED_EXCEPTION, 'recFindByExt | unknown error  \'' + e.message + '\'' );
-  }
-  return result
-}
 
-/**
- * protobuf decoder sends command
- * @param  {Object} cmdName  command name
- * @param  {Object} args command arguments
- */
-ProtobufDecoder.prototype.sendCmd = function( cmdName, args ) {
-  this.instanceEmit( config.get( 'jsonCmdOutputStreamID' ), {
-    ops_path: cmdName,
-    args: args
-  } );
-}
+        this.ccsds = new Parser()
+        .endianess( 'little' )
+        .nest( 'PriHdr', {
+            type: this.ccsdsPriHdr
+        } )
+        .choice( 'SecHdr', {
+            tag: 'PriHdr.pktType',
+            choices: {
+                0: this.ccsdsTlmSecHdr,
+                1: this.ccsdsCmdSecHdr
+            }
+        } )
+        .buffer( 'payload', {
+            readUntil: 'eof'
+        } );
 
+        if ( typeof process.env.AIRLINER_PROTO_PATH === 'undefined' ) {
+            var fullPath = path.join( this.workspace, config.get( 'protobufDirectory' ) );
+        } else {
+            var fullPath = process.env.AIRLINER_PROTO_PATH;
+        }
 
-/**
- * Emit data
- * @param  {String}   streamID stream id
- * @param  {String}   msg      emit message
- */
-ProtobufDecoder.prototype.instanceEmit = function( streamID, msg ) {
-  if ( typeof this.instanceEmitter === 'object' ) {
-    this.instanceEmitter.emit( streamID, msg );
-  }
-}
+        var protoFiles = this.recFindByExt( fullPath, 'proto' );
+        for ( var i = 0; i < protoFiles.length; i++ ) {
+            this.parseProtoFile( protoFiles[ i ] );
+        }
+        
+        this.namespace.emitter.on( config.get( 'binaryInputStreamID' ), function( buffer ) {
+            var message = self.ccsds.parse( buffer );
+            var msgID = buffer.readUInt16BE( 0 );
+            if ( self.isCommandMsg( msgID ) ) {
+                var cmdCode = message.SecHdr.code;
 
+                self.requestCmdDefinition( msgID, cmdCode, function( cmdDef ) {
+                    if ( cmdDef.operation.airliner_msg === '' ) {
+                        /* This command has no arguments.  No payload to parse.  Just send the command ops path. */
+                        var args = [];
+                        self.sendCmd( cmdDef.ops_path, args );
+                    } else {
+                        /* This command does have arguments.  Parse the protobuf payload. */
+                        var msgDef = self.getCmdByName( cmdDef.operation.airliner_msg );
 
-/**
- * Requests command defintion and applies callback on result
- * @param  {Number}   msgID   message id
- * @param  {String}   cmdCode command code
- * @param  {Function} cb      callback
- */
-ProtobufDecoder.prototype.requestCmdDefinition = function( msgID, cmdCode, cb ) {
-  if ( typeof this.instanceEmitter === 'object' ) {
-    this.instanceEmitter.emit( config.get( 'cmdDefReqStreamID' ), {
-      msgID: msgID,
-      cmdCode: cmdCode
-    }, function( resp ) {
-      cb( resp );
-    } );
-  };
-}
+                        if ( typeof msgDef !== 'undefined' ) {
+                            var tlmJson = {};
 
+                            var pbMsgDef = msgDef.proto.lookupType( msgDef.name + '_pb' );
 
-/**
- * Requests telemetry definition and applies callback on result
- * @param  {Number}   msgID message id
- * @param  {Function} cb    callback
- */
-ProtobufDecoder.prototype.requestTlmDefinition = function( msgID, cb ) {
-  if ( typeof this.instanceEmitter === 'object' ) {
-    this.instanceEmitter.emit( config.get( 'tlmDefReqStreamID' ), {
-      msgID: msgID
-    }, function( resp ) {
-      cb( resp );
-    } );
-  };
-}
+                            var pbMsg = pbMsgDef.create( tlmJson );
 
+                            var msg = pbMsgDef.decode( message.payload );
 
+                            var obj = pbMsgDef.toObject( msg, {
+                                long: String,
+                                enums: String,
+                                bytes: String
+                            } );
 
-/**
- * Inherits from EventEmitter.
- * @type {Object}
- */
-ProtobufDecoder.prototype.__proto__ = Emitter.prototype;
+                            var args = dot.dot( obj );
+                            self.sendCmd( cmdDef.ops_path, args );
+                        } else {
+                            self.logErrorEvent( EventEnum.CMD_MSG_NOT_FOUND, 'Command message \'' + cmdDef.operation.airliner_msg + '\' not found.' );
+                        }
+                    }
+                } )
+            } else {
+                var msgLength = message.PriHdr.length;
+                if ( msgLength > 1 ) {
+                    self.requestTlmDefinition( msgID, function( tlmDef ) {
 
-/**
- * Gets definitions by symbol name
- * @param  {String} name symbol name
- * @return {Object}      message definition
- */
-ProtobufDecoder.prototype.getMsgDefBySymbolName = function( name ) {
-  return this.defs[ name ];
-};
+                        if ( typeof tlmDef !== 'undefined' ) {
+                            var msgDef = self.getMsgDefBySymbolName( tlmDef.symbol );
+                            var tlmJson = {};
+                            var pbMsgDef = msgDef.proto.lookupType( tlmDef.symbol + '_pb' );
+                            var pbMsg = pbMsgDef.create( tlmJson );
+                            var obj = pbMsgDef.decode( message.payload );
+                            this.namespace.emit( config.get( 'jsonTlmOutputStreamID' ), obj );;
+                        }
+                    } );
+                }
+            }
+        } );
 
+        this.logInfo( 'Initialized' );
+    };
+    
 
-/**
- * Gets command definiton by name
- * @param  {String} name command name
- * @return {Object}      command object
- */
-ProtobufDecoder.prototype.getCmdByName = function( name ) {
-  for ( var item in this.defs ) {
-    var cmd = this.defs[ item ];
-    if ( cmd.name == name ) {
-      return cmd;
+    /**
+     * Generates an array of paths of files that are located in the
+     * base directory which matches the extention passed into parameters.
+     * @param  {String} base   base directory path
+     * @param  {String} ext    file extention
+     * @param  {Object} files  file read object or undefined
+     * @param  {Object} result empty array or undefined
+     * @return {Object}        array of matching paths
+     */
+    recFindByExt( base, ext, files, result ) {
+        var self = this
+
+        result = result || []
+        try {
+            files = files || fs.readdirSync( base )
+            files.forEach(
+                    function( file ) {
+                        var newbase = path.join( base, file )
+                        if ( fs.statSync( newbase ).isDirectory() ) {
+                            result = self.recFindByExt( newbase, ext, fs.readdirSync( newbase ), result )
+                        } else {
+                            if ( file.substr( -1 * ( ext.length + 1 ) ) == '.' + ext ) {
+                                result.push( newbase )
+                            }
+                        }
+                    }
+            )
+        } catch ( e ) {
+            self.logErrorEvent( EventEnum.UNHANDLED_EXCEPTION, 'recFindByExt | unknown error  \'' + e.message + '\'' );
+        }
+        return result
     }
-  }
-}
 
-/**
- * Parses protobuf file and stores schema specific protobuf object
- * in corresponding defs dictionary
- * @param  {String} filePath protobuf file path
- */
-ProtobufDecoder.prototype.parseProtoFile = function( filePath ) {
-  var self = this;
-  try {
-    var fileName = filePath.replace( /^.*[\\\/]/, '' );
-    var structureName = fileName.replace( /\.[^/.]+$/, '' );
+    /**
+     * protobuf decoder sends command
+     * @param  {Object} cmdName  command name
+     * @param  {Object} args command arguments
+     */
+    sendCmd( cmdName, args ) {
+        this.namespace.emit( config.get( 'jsonCmdOutputStreamID' ), {
+            ops_path: cmdName,
+            args: args
+        } );
+    }
 
-    self.defs[ structureName ] = {
-      name: structureName,
-      proto: new protobuf.Root()
+
+    /**
+     * Requests command defintion and applies callback on result
+     * @param  {Number}   msgID   message id
+     * @param  {String}   cmdCode command code
+     * @param  {Function} cb      callback
+     */
+    requestCmdDefinition( msgID, cmdCode, cb ) {
+        this.namespace.emit( config.get( 'cmdDefReqStreamID' ), {
+            msgID: msgID,
+            cmdCode: cmdCode
+        }, function( resp ) {
+            cb( resp );
+        } );
+    }
+
+
+    /**
+     * Requests telemetry definition and applies callback on result
+     * @param  {Number}   msgID message id
+     * @param  {Function} cb    callback
+     */
+    requestTlmDefinition( msgID, cb ) {
+        this.instanceEmitter.emit( config.get( 'tlmDefReqStreamID' ), {
+            msgID: msgID
+        }, function( resp ) {
+            cb( resp );
+        } );
+    }
+
+    /**
+     * Gets definitions by symbol name
+     * @param  {String} name symbol name
+     * @return {Object}      message definition
+     */
+    getMsgDefBySymbolName( name ) {
+        return this.defs[ name ];
     };
 
-    protobuf.loadSync( filePath, self.defs[ structureName ].proto );
-  } catch ( e ) {
-    this.logErrorEvent( EventEnum.UNHANDLED_EXCEPTION, 'parseProtoFile parse error \'' + e.message + '\'' );
-  }
-}
+
+    /**
+     * Gets command definiton by name
+     * @param  {String} name command name
+     * @return {Object}      command object
+     */
+    getCmdByName( name ) {
+        for ( var item in this.defs ) {
+            var cmd = this.defs[ item ];
+            if ( cmd.name == name ) {
+                return cmd;
+            }
+        }
+    }
+
+    /**
+     * Parses protobuf file and stores schema specific protobuf object
+     * in corresponding defs dictionary
+     * @param  {String} filePath protobuf file path
+     */
+    parseProtoFile( filePath ) {
+        var self = this;
+        try {
+            var fileName = filePath.replace( /^.*[\\\/]/, '' );
+            var structureName = fileName.replace( /\.[^/.]+$/, '' );
+
+            self.defs[ structureName ] = {
+                    name: structureName,
+                    proto: new protobuf.Root()
+            };
+
+            protobuf.loadSync( filePath, self.defs[ structureName ].proto );
+        } catch ( e ) {
+            this.logErrorEvent( EventEnum.UNHANDLED_EXCEPTION, 'parseProtoFile parse error \'' + e.message + '\'' );
+        }
+    }
 
 
-/**
- * Checks if given message id belongs to a commad message
- * @param  {Number} msgID message id
- * @return {Boolean}      true if the message id belongs to commad message otherwise false
- */
-ProtobufDecoder.prototype.isCommandMsg = function( msgID ) {
-  if ( ( msgID & 0x1000 ) == 0x1000 ) {
-    return true;
-  } else {
-    return false;
-  }
-}
+    /**
+     * Checks if given message id belongs to a commad message
+     * @param  {Number} msgID message id
+     * @return {Boolean}      true if the message id belongs to commad message otherwise false
+     */
+    isCommandMsg( msgID ) {
+        if ( ( msgID & 0x1000 ) == 0x1000 ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
-/**
- * Checks if given message id belongs to a telemetry message
- * @param  {Number} msgID message id
- * @return {Boolean}      true if the message id belongs to telemetry message otherwise false
- */
-ProtobufDecoder.prototype.isTelemetryMsg = function( msgID ) {
-  if ( ( msgID & 0x1000 ) == 0x1000 ) {
-    return false;
-  } else {
-    return true;
-  }
-}
+    /**
+     * Checks if given message id belongs to a telemetry message
+     * @param  {Number} msgID message id
+     * @return {Boolean}      true if the message id belongs to telemetry message otherwise false
+     */
+    isTelemetryMsg( msgID ) {
+        if ( ( msgID & 0x1000 ) == 0x1000 ) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+};
 
 
-/**
- * Log debug events
- * @param  {number} eventID event id
- * @param  {String} text    text
- */
-ProtobufDecoder.prototype.logDebugEvent = function( eventID, text ) {
-  this.instanceEmit( 'events-debug', {
-    sender: this,
-    component: 'ProtobufDecoder',
-    eventID: eventID,
-    text: text
-  } );
-}
-
-
-/**
- * Log info events
- * @param  {number} eventID event id
- * @param  {String} text    text
- */
-ProtobufDecoder.prototype.logInfoEvent = function( eventID, text ) {
-  this.instanceEmit( 'events-info', {
-    sender: this,
-    component: 'ProtobufDecoder',
-    eventID: eventID,
-    text: text
-  } );
-}
-
-
-/**
- * Log error events
- * @param  {number} eventID event id
- * @param  {String} text    text
- */
-ProtobufDecoder.prototype.logErrorEvent = function( eventID, text ) {
-  this.instanceEmit( 'events-error', {
-    sender: this,
-    component: 'ProtobufDecoder',
-    eventID: eventID,
-    text: text
-  } );
-}
-
-
-/**
- * Log critical events
- * @param  {number} eventID event id
- * @param  {String} text    text
- */
-ProtobufDecoder.prototype.logCriticalEvent = function( eventID, text ) {
-  this.instanceEmit( 'events-critical', {
-    sender: this,
-    component: 'ProtobufDecoder',
-    eventID: eventID,
-    text: text
-  } );
-}
+exports = module.exports = ProtobufDecoder;

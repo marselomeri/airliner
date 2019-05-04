@@ -173,56 +173,69 @@ class BinaryEncoder extends CdrPlugin {
             if ( typeof cmdReqs.length === 'number' ) {
                 /* This must be an array. */
                 var outCmdDefs = [];
+                var found = false;
+
                 for ( var i = 0; i < cmdReqs.length; ++i ) {
                     if ( cmdReqs[ i ].hasOwnProperty( 'opsPath' ) ) {
                         var cmdDef = self.getCmdDefByName( cmdReqs[ i ].opsPath );
                         if ( typeof cmdDef !== 'undefined' ) {
                             outCmdDefs.push( cmdDef );
+                            found = true;
                         } else {
-                            self.logError( 'CmdDefReq: Command not found.  \'' + cmdReqs[ i ].opsPath + '\'' );
+                            self.logDebug( 'CmdDefReq: Command not found.  \'' + cmdReqs[ i ].opsPath + '\'' );
                         }
                     } else if ( cmdReqs[ i ].hasOwnProperty( 'msgID' ) && cmdReqs[ i ].hasOwnProperty( 'cmdCode' ) ) {
                         var cmdDef = self.getCmdDefByMsgIDandCC( cmdReqs[ i ].msgID, cmdReqs[ i ].cmdCode );
                         if ( typeof cmdDef !== 'undefined' ) {
                             outCmdDefs.push( cmdDef );
+                            found = true;
                         } else {
-                            self.logError( 'CmdDefReq: Command not found.  \'' + cmdReqs[ i ].opsPath + '\'' );
+                            self.logDebug( 'CmdDefReq: Command not found.  \'' + cmdReqs[ i ].opsPath + '\'' );
                         }
                     } else {
                         self.logError( 'CmdDefReq: Invalid request.  \'' + JSON.stringify( cmdReqs[ i ], null, '\t' ) + '\'' );
                     }
                 }
 
-                self.logDebug('CmdDefReqs: \'' + JSON.stringify( cmdReqs, null, '\t' ) + '\'  Defs: \'' + JSON.stringify( outCmdDefs, null, '\t' ) + '\'' );
-                cb( outCmdDefs );
+                if(found == true) {
+                    self.logDebug('CmdDefReqs: \'' + JSON.stringify( cmdReqs, null, '\t' ) + '\'  Defs: \'' + JSON.stringify( outCmdDefs, null, '\t' ) + '\'' );
+                    cb( outCmdDefs );
+                }
             } else {
                 /* This is a single request. */
                 var cmdReq = cmdReqs;
                 var outCmdDef = {};
+                var found = false;
 
                 if ( cmdReq.hasOwnProperty( 'opsPath' ) ) {
                     var outCmdDef = self.getCmdDefByName( cmdReq.opsPath );
                     if ( typeof outCmdDef === 'undefined' ) {
-                        self.logError( 'CmdDefReq: Command not found.  \'' + cmdReq.opsPath + '\'' );
+                        self.logDebug( 'CmdDefReq: Command not found.  \'' + cmdReq.opsPath + '\'' );
+                    } else {
+                        found = true;
                     }
                 } else if ( cmdReq.hasOwnProperty( 'msgID' ) && cmdReq.hasOwnProperty( 'cmdCode' ) ) {
                     outCmdDef = self.getCmdDefByMsgIDandCC( cmdReq.msgID, cmdReq.cmdCode );
                     if ( typeof outCmdDef === 'undefined' ) {
-                        self.logError( 'CmdDefReq: Command not found.  \'' + cmdReq.opsPath + '\'' );
+                        self.logDebug( 'CmdDefReq: Command not found.  \'' + cmdReq.opsPath + '\'' );
+                    } else {
+                        found = true;
                     }
                 } else {
                     self.logError( 'CmdDefReq: Invalid request.  \'' + JSON.stringify( cmdReq, null, '\t' ) + '\'' );
                 }
 
-                self.logDebug( 'CmdDefReq: \'' + JSON.stringify( cmdReq, null, '\t' ) + '\'  Def: \'' + JSON.stringify( outCmdDef, null, '\t' ) + '\'' );
-                cb( outCmdDef );
+                if(found == true) {
+                    self.logDebug( 'CmdDefReq: \'' + JSON.stringify( cmdReq, null, '\t' ) + '\'  Def: \'' + JSON.stringify( outCmdDef, null, '\t' ) + '\'' );
+                    cb( outCmdDef );
+                }
             }
         } );
 
         this.namespace.emitter.on( config.get( 'cmdSendStreamID' ), function( req ) {
             var cmdDef = self.getCmdDefByName( req.ops_path );
             if ( typeof cmdDef === 'undefined' ) {
-                self.logError( 'CmdSend: Ops path not found.  \'' + req + '\'' );
+                self.logDebug( 'CmdSend: Ops path not found.  \'' + req + '\'' );
             } else {
                 self.sendCommand( cmdDef, req.args );
             }

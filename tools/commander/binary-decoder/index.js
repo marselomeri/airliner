@@ -188,6 +188,8 @@ class BinaryDecoder extends CdrPlugin {
 
 
         this.namespace.emitter.on( config.get( 'tlmDefReqStreamID' ), function( tlmReqs, cb ) {
+            var found = false;
+            
             if ( typeof tlmReqs.length === 'number' ) {
                 /* This must be an array. */
                 var outTlmDefs = [];
@@ -196,20 +198,28 @@ class BinaryDecoder extends CdrPlugin {
                     if ( typeof tlmDef !== 'undefined' ) {
                         tlmDef.opsPath = tlmReqs[ i ].name;
                         outTlmDefs.push( tlmDef );
+                        found = true;
                     } else {
-                        self.logError( 'TlmDefReq: Telemetry not found.  \'' + tlmReqs[ i ].name + '\'' );
+                        self.logDebug( 'TlmDefReq: Telemetry not found.  \'' + tlmReqs[ i ].name + '\'' );
                     }
                 }
-                cb( outTlmDefs );
+                
+                if(found == true) {
+                    cb( outTlmDefs );
+                }
             } else {
                 /* This is a single request. */
                 var tlmDef = self.getTlmDefByName( self.stripArrayIdentifiers( tlmReqs.name ) );
                 if ( typeof tlmDef === 'undefined' ) {
-                    self.logError('TlmDefReq: Telemetry not found.  \'' + tlmReqs.name + '\'' );
+                    self.logDebug('TlmDefReq: Telemetry not found.  \'' + tlmReqs.name + '\'' );
                 } else {
                     tlmDef.opsPath = tlmReqs.name;
+                    found = true;
                 }
-                cb( tlmDef );
+                
+                if(found == true) {
+                    cb( tlmDef );
+                }
             }
         } );
         
@@ -335,13 +345,13 @@ class BinaryDecoder extends CdrPlugin {
         var appName = self.getAppNameFromPath( path );
         var operationName = self.getOperationFromPath( path );
         if ( typeof operationName === 'undefined' ) {
-            this.logError( 'getTlmDefByPath: Ops path not found. \'' + path + '\'' );
+            this.logDebug( 'getTlmDefByPath: Ops path not found. \'' + path + '\'' );
             return undefined;
         } else {
             var appDefinition = this.getAppDefinition( appName );
 
             if ( typeof appDefinition === 'undefined' ) {
-                this.logError( 'getTlmDefByPath: App not found. \'' + appName + '\'' );
+                this.logDebug( 'getTlmDefByPath: App not found. \'' + appName + '\'' );
                 return undefined;
             } else {
                 var operation = appDefinition.operations[ operationName ];
@@ -579,14 +589,16 @@ class BinaryDecoder extends CdrPlugin {
 
                         var pbMsg = def.msgDef.proto_msg;
                         var symbolName = pbMsg.substring( 0, pbMsg.length - 3 );
-
-                        this.namespace.emit( config.get( 'jsonOutputStreamID' ), {
-                            content: tlmObj,
-                            opsPath: def.opsPath,
-                            symbol: symbolName,
-                            msgID: msgID,
-                            msgTime: msgTime
-                        } );
+                        
+                        var output = {
+                                content: tlmObj,
+                                opsPath: def.opsPath,
+                                symbol: symbolName,
+                                msgID: msgID,
+                                msgTime: msgTime
+                            };
+                        
+                        this.namespace.emit( config.get( 'jsonOutputStreamID' ), output );
                     }
                 }
             }

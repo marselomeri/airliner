@@ -1,65 +1,42 @@
-.row.os-theme-dark
-  article.col-xs-12.col-sm-12
-    header
-      span.widget-icon
-        i.fa.fa-table
-      h2 BAT - Housekeeping
-    div.widget-body.table-responsive
-      table.table.table-condensed
-        tbody
-          tr
-            th Cmd Count
-            td
-              div(data-cdr={tlm:[{name:'/BAT/BAT_HkTlm_t/usCmdCnt'}],indicator:'text'}) ---
-          tr
-            th Error Count
-            td
-              div(data-cdr={tlm:[{name:'/BAT/BAT_HkTlm_t/usCmdErrCnt'}],indicator:'text'}) ---
-          tr
-            th Timestamp
-            td
-              span(data-cdr={tlm: [{name:'/BAT/BAT_HkTlm_t/Timestamp'}], indicator:'text'}) ---
-          tr
-            th Voltage
-            td
-              span(data-cdr={tlm: [{name:'/BAT/BAT_HkTlm_t/Voltage'}], indicator:'text'}) ---
-          tr
-            th Voltage Filtered
-            td
-              span(data-cdr={tlm: [{name:'/BAT/BAT_HkTlm_t/VoltageFiltered'}], indicator:'text'}) ---
-          tr
-            th Current
-            td
-              span(data-cdr={tlm: [{name:'/BAT/BAT_HkTlm_t/Current'}], indicator:'text'}) ---
-          tr
-            th Current Filtered
-            td
-              span(data-cdr={tlm: [{name:'/BAT/BAT_HkTlm_t/CurrentFiltered'}], indicator:'text'}) ---
-          tr
-            th Discharged
-            td
-              span(data-cdr={tlm: [{name:'/BAT/BAT_HkTlm_t/Discharged'}], indicator:'text'}) ---
-          tr
-            th Remaining
-            td
-              span(data-cdr={tlm: [{name:'/BAT/BAT_HkTlm_t/Remaining'}], indicator:'text'}) ---
-          tr
-            th Scale
-            td
-              span(data-cdr={tlm: [{name:'/BAT/BAT_HkTlm_t/Scale'}], indicator:'text'}) ---
-          tr
-            th Cell Count
-            td
-              span(data-cdr={tlm: [{name:'/BAT/BAT_HkTlm_t/CellCount'}], indicator:'text'}) ---
-          tr
-            th Connected
-            td
-              span(data-cdr={tlm: [{name:'/BAT/BAT_HkTlm_t/Connected'}], indicator:'text'}) ---
-          tr
-            th Warning
-            td
-              span(data-cdr={tlm: [{name:'/BAT/BAT_HkTlm_t/Warning'}], indicator:'text'}) ---
+table.table.table-condensed
+  tbody
+    tr
+      th Commands Accepted
+      td
+        div(data-cdr={tlm:[{name:'/fsw-connector/hk/cmdAcceptCount'}]}) ---
+    tr
+      th Commands Rejected
+      td
+        div(data-cdr={tlm:[{name:'/fsw-connector/hk/cmdRejectCount'}]}) ---
+    tr
+      th Input Port
+      td
+        div(data-cdr={tlm:[{name:'/fsw-connector/hk/inPort'}]}) ---
+    tr
+      th Output Port
+      td
+        div(data-cdr={tlm:[{name:'/fsw-connector/hk/outPort'}]}) ---
+    tr
+      th Output Address
+      td
+        div(data-cdr={tlm:[{name:'/fsw-connector/hk/outAddress'}]}) ---
+    tr
+      th Messages Sent
+      td
+        div(data-cdr={tlm:[{name:'/fsw-connector/hk/msgSentCount'}]}) ---
+    tr
+      th Messages Received
+      td
+        div(data-cdr={tlm:[{name:'/fsw-connector/hk/msgRecvCount'}]}) ---
+    tr
+      th Input Stream
+      td
+        div(data-cdr={tlm:[{name:'/fsw-connector/hk/inputStreamID'}]}) ---
+    tr
+      th Output Stream
+      td
+        div(data-cdr={tlm:[{name:'/fsw-connector/hk/outputStreamID'}]}) ---
               
-    footer.btn-group(role="group")      
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/BAT/Noop'},indicator:'cmd'}) No-Op    
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/BAT/Reset'},indicator:'cmd'}) Reset
+footer.btn-group(role="group")        
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/fsw-connector/setInput'},indicator:'cmd'}) Set Input
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/fsw-connector/setOutput'},indicator:'cmd'}) Set Output
