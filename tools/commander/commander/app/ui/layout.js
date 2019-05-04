@@ -136,7 +136,8 @@ function UpdateLayoutNode( node, display ) {
         path: node.path + '/' + entryID,
         urlPath: node.path + '/' + entryID,
         selectable: true,
-        checkable: false
+        checkable: false,
+        handlebarsContext: dirEntry.handlebarsContext
       };
       if ( dirEntry.hasOwnProperty( 'nodes' ) ) {
         layoutEntry.lazyLoad = true;
@@ -181,7 +182,8 @@ function UpdatePanelNode( node, display ) {
         path: node.path + '/' + entryID,
         urlPath: node.path + '/' + entryID,
         selectable: true,
-        checkable: false
+        checkable: false,
+        handlebarsContext: dirEntry.handlebarsContext
       };
       if ( dirEntry.hasOwnProperty( 'nodes' ) ) {
         panelEntry.lazyLoad = true;
@@ -225,7 +227,8 @@ function UpdateWidgetNode( node, display ) {
         path: node.path + '/' + entryID,
         urlPath: node.path + '/' + entryID,
         selectable: false,
-        checkable: false
+        checkable: false,
+        handlebarsContext: dirEntry.handlebarsContext
       };
       if ( dirEntry.hasOwnProperty( 'nodes' ) ) {
         panelEntry.lazyLoad = true;

@@ -1,42 +1,43 @@
+- var pluginName = query.pluginName;
 table.table.table-condensed
   tbody
     tr
-      th Commands Accepted
+      th Commands Accepted 
       td
-        div(data-cdr={tlm:[{name:'/fsw-connector/hk/cmdAcceptCount'}]}) ---
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/cmdAcceptCount'}]}) ---
     tr
       th Commands Rejected
       td
-        div(data-cdr={tlm:[{name:'/fsw-connector/hk/cmdRejectCount'}]}) ---
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/cmdRejectCount'}]}) ---
     tr
       th Input Port
       td
-        div(data-cdr={tlm:[{name:'/fsw-connector/hk/inPort'}]}) ---
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/inPort'}]}) ---
     tr
       th Output Port
       td
-        div(data-cdr={tlm:[{name:'/fsw-connector/hk/outPort'}]}) ---
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/outPort'}]}) ---
     tr
       th Output Address
       td
-        div(data-cdr={tlm:[{name:'/fsw-connector/hk/outAddress'}]}) ---
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/outAddress'}]}) ---
     tr
       th Messages Sent
       td
-        div(data-cdr={tlm:[{name:'/fsw-connector/hk/msgSentCount'}]}) ---
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/msgSentCount'}]}) ---
     tr
       th Messages Received
       td
-        div(data-cdr={tlm:[{name:'/fsw-connector/hk/msgRecvCount'}]}) ---
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/msgRecvCount'}]}) ---
     tr
       th Input Stream
       td
-        div(data-cdr={tlm:[{name:'/fsw-connector/hk/inputStreamID'}]}) ---
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/inputStreamID'}]}) ---
     tr
       th Output Stream
       td
-        div(data-cdr={tlm:[{name:'/fsw-connector/hk/outputStreamID'}]}) ---
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/outputStreamID'}]}) ---
               
 footer.btn-group(role="group")        
-  button.btn.cdr-primary(data-cdr={cmd:{name:'/fsw-connector/setInput'},indicator:'cmd'}) Set Input
-  button.btn.cdr-primary(data-cdr={cmd:{name:'/fsw-connector/setOutput'},indicator:'cmd'}) Set Output
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/' + pluginName + '/setInput'}}) Set Input
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/' + pluginName + '/setOutput'}}) Set Output

@@ -22,8 +22,8 @@ function InitSidebar() {
       $( "#cdr-panel-layout-switch" ).css( "display", "none" );
     } else {
       $( "#cdr-app-menu" ).css( "transform", "translateX(0%)" )
-      $( "#cdr-layout-container" ).css( "margin-left", "250px" )
-      $( "#cdr-layout-container" ).css( "width", "calc(100% - 250px)" )
+      $( "#cdr-layout-container" ).css( "margin-left", "350px" )
+      $( "#cdr-layout-container" ).css( "width", "calc(100% - 350px)" )
       $( "#cdr-panel-layout-switch" ).css( "display", "flex" );
       myLayout.updateSize();
       isSidebarOpen = true;

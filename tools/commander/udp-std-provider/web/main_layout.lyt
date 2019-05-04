@@ -62,7 +62,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/ground/fsw-connector/hk"
+          "link": "/ground/fsw-connector/hk?pluginName={{pluginName}}"
          },
          "isClosable": true,
          "reorderEnabled": true

@@ -79,7 +79,7 @@ function NodeSelected( e, node ) {
         text: 'text',
         link: node.urlPath
       }
-    };
+    }; 
     /* a colum or stack has to be seleted before selecting the node.
      * check if a selection is done.*/
     if ( myLayout.selectedItem === null ) {
@@ -93,7 +93,14 @@ function NodeSelected( e, node ) {
     /* if node to be rendered is a layout file, a .lyt file */
     /* read the file into json object */
     $.get( node.urlPath, ( response ) => {
+      if(typeof node.handlebarsContext !== 'undefined') {
+          //console.log(response);
+          var templateScript = Handlebars.compile(response);
+          var context = node.handlebarsContext;
+          response = templateScript(context);
+      }
       var jsonObj = JSON.parse( response );
+      
       if ( response !== null ) {
         /* destrory previous layout, make new layout with the configuration
          * .lyt file and emit layout loaded event for dependencies to react */

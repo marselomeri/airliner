@@ -127,7 +127,8 @@ $( () => {
               lazyLoad: true,
               ext: entryID,
               selectable: false,
-              checkable: false
+              checkable: false,
+              handlebarsContext: dirEntries[ entryID ].handlebarsContext
             };
             panelEntries.push( entry );
           }
@@ -161,7 +162,8 @@ $( () => {
               lazyLoad: true,
               ext: entryID,
               selectable: false,
-              checkable: false
+              checkable: false,
+              handlebarsContext: dirEntries[ entryID ].handlebarsContext
             };
             entries.push( entry );
           }
@@ -195,7 +197,8 @@ $( () => {
               lazyLoad: true,
               ext: entryID,
               selectable: false,
-              checkable: false
+              checkable: false,
+              handlebarsContext: dirEntries[ entryID ].handlebarsContext
             };
             entries.push( entry );
           }

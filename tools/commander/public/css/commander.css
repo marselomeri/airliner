@@ -167,7 +167,7 @@ h2 {
 #cdr-app-menu {
   background-color: var(--app-menu-bg);
   position: absolute;
-  width: 250px;
+  width: 350px;
   height: calc(100% - 5px);
   z-index: 1029;
   transform: translateX(-100%);
@@ -275,7 +275,7 @@ h2 {
 .cdr-menu-container {
   background: var(--app-menu-container-bg);
   border: unset !important;
-  width: 250px;
+  width: 550px;
   display: none;
   margin: .6rem 0 0;
 }

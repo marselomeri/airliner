@@ -153,17 +153,22 @@ class UdpStdProvider extends CdrGroundPlugin {
                     type: CdrGroundPlugin.ContentType.LAYOUT,
                     shortDescription: 'Main',
                     longDescription: 'Main BAT.',
-                    filePath: '/main_layout.lyt'
+                    filePath: '/main_layout.lyt',
+                    handlebarsContext: {
+                        pluginName: configObj.name
+                    }
                 },
                 hk: {
                     type: CdrGroundPlugin.ContentType.PANEL,
                     shortDescription: 'Housekeeping',
                     longDescription: 'Housekeeping',
-                    filePath: '/hk.pug'
+                    filePath: '/hk.pug',
+                    handlebarsContext: {
+                        pluginName: configObj.name
+                    }
                 }
             }
         }
-
         this.addContent(content);
         
         var cmdSetInput = [
