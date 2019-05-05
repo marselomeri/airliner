@@ -15,10 +15,10 @@ module.exports = class CfeCdrFlightAppsPlugin extends CdrFlightAppsPlugin {
                 shortDescription: 'AK8963',
                 longDescription: 'AK8963 Driver.',
                 nodes: {
-		    main: {
-		        type: CdrFlightAppsPlugin.ContentType.LAYOUT,
-	  	        shortDescription: 'Main',
-	                longDescription: 'AK8963 Main.',
+		            main: {
+		                type: CdrFlightAppsPlugin.ContentType.LAYOUT,
+	  	                shortDescription: 'Main',
+	                    longDescription: 'AK8963 Main.',
                         filePath: 'main.lyt'
                     },
                     hk: {

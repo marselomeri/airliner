@@ -32,73 +32,60 @@
  *****************************************************************************/
 
 'use strict';
-const Emitter = require( 'events' );
+const emitter = require( 'events' );
 const util = require( 'util' );
-var convict = require( 'convict' );
-var jp = require( 'jsonpath' );
-var config = require( './config.js' );
+const convict = require( 'convict' );
+const jp = require( 'jsonpath' );
+const config = require( './config.js' );
 const Sparkles = require( 'sparkles' );
 const uuidV1 = require( 'uuid/v1' );
-var path = require( 'path' );
-const CdrPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrPlugin')).CdrPlugin;
-
-/**
- * Event id's
- * @type {Object}
- */
-var EventEnum = Object.freeze( {
-    'INITIALIZED': 1
-}, {
-    'INVALID_SUBSCRIPTION_REQUEST': 2
-}, {
-    'CONFIG_ERROR': 3
-}, {
-    'UNHANDLED_ERROR': 4
-}, {
-    'INVALID_UNSUBSCRIBE_REQUEST': 5
-}, {
-    'INVALID_REQUEST': 6
-} );
-
-var emit = Emitter.prototype.emit;
+const path = require( 'path' );
+const CdrGroundPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrGroundPlugin')).CdrGroundPlugin;
 
 
-exports.events = [];
-
-/**
- * Count listeners
- * @type {Function}
- */
-var listenerCount = Emitter.listenerCount ||
-function( emitter, type ) {
-    return emitter.listeners( type ).length
-}
-
-
-
-class VariableServer extends CdrPlugin {
+class VariableServer extends CdrGroundPlugin {
     /**
      * Constructor for variable server
-     * @param       {String} configFile path to variable-server-config.json file
+	 * @param {Object}
+	 *                configObj configuration object containing mandatory and
+	 *                optional parameters.  
+	 *                {
+	 *                    namespace: 'airliner', 
+	 *                    name:      'fsw-connector', 
+	 *                    workspace:  global.CDR_WORKSPACE, 
+	 *                    configFile: `${global.CDR_WORKSPACE}/etc/udpstdprovider-config.json`}
+	 *                }
+	 *                
      * @constructor
      */
     constructor(configObj) {
+        configObj.webRoot = path.join( __dirname, 'web');  
         super(configObj); 
         
-        var self = this;
+    	var self = this;
+
+        /* Initialize the configuration. */
+        this.initConfig(configObj.name, configObj.configFile);
+        
+        /* Initialize server side housekeeping telemetry that we'll publish 
+         * later. */
+        this.initTelemetry();
+
+        /* Initialize client side interface. */
+        this.initClientInterface();
+
+        /* Initialize server side commands. */
+        this.initCommands();
+        
         this.vars = {};
         this.subscribers = {};
 
-        /* Load environment dependent configuration */
-        config.loadFile( configObj.configFile );
 
-        /* Perform validation */
-        config.validate( {
-            allowed: 'strict'
-        } );
         
         this.namespace.emitter.on( config.get( 'jsonInputStreamID' ), function( message ) {
             var vars = self.getVariablesFromMsgOpsName( message.opsPath );
+            
+            self.hk.content.msgRecvCount++;
             
             if ( self.isEmpty( vars ) == false ) {
                 /* We have variables either persisted or subscribed to in this message.  Iterate through
@@ -117,9 +104,10 @@ class VariableServer extends CdrPlugin {
                     if ( self.isEmpty( valueObj ) == true ) {
                         self.logError('OpName ' + itemID + ' not found.' );
                     } else {
-
                         var value = valueObj[ 0 ];
 
+                        self.hk.content.paramsUpdated++;
+                        
                         /* Update the current value. */
                         if ( variable.hasOwnProperty( 'sample' ) == false ) {
                             variable.sample = [];
@@ -212,7 +200,9 @@ class VariableServer extends CdrPlugin {
                 var id = uuidV1();
                 self.subscribers[ id ] = req.cb;
                 cb( id );
+                self.hk.content.subscribers++;
             } else if ( req.cmd === 'removeSubscriber' ) {
+                self.hk.content.subscribers--;
                 delete self.subscribers[ req.subscriberID ];
             } else {
                 self.logError( 'Request invalid. \'' + req + '\'' );
@@ -230,6 +220,21 @@ class VariableServer extends CdrPlugin {
 
         this.logInfo( 'Initialized' );
     };
+    
+    
+    initConfig(name, configFile) {
+    	/* Load environment dependent configuration */
+        config.loadFile( configFile );
+
+        /* Perform validation */
+        config.validate( {
+            allowed: 'strict'
+        } );
+        
+        config.name = name;
+    }
+    	
+    	
 
     /**
      * Checks if a object is empty
@@ -420,6 +425,7 @@ class VariableServer extends CdrPlugin {
         }
 
         variable.subscribers.push( subscriberID );
+        this.hk.content.subscriptions++;
     }
 
 
@@ -522,7 +528,7 @@ class VariableServer extends CdrPlugin {
 
 
     /**
-     * Remove subsciber for variable (opsPath) for associated callback
+     * Remove subscriber for variable (opsPath) for associated callback
      * @param  {string}   opsPath operation path
      * @param  {Function} cb      callback function
      */
@@ -546,6 +552,113 @@ class VariableServer extends CdrPlugin {
      */
     instanceEmit( streamID, msg, cb ) {
         this.namespace.emit( streamID, msg, cb );
+    }
+    
+    
+    initTelemetry() {
+        this.hk = {
+            opsPath: '/' + config.name + '/hk',
+            content: {
+                cmdAcceptCount: 0,
+                cmdRejectCount: 0,
+                msgRecvCount: 0,
+                paramsUpdated: 0,
+                subscribers: 0,
+                subscriptions: 0,
+                inputStreamID: config.get( 'jsonInputStreamID' ),
+                outputEventsStreamID: config.get( 'outputEventsStreamID' ),
+                varDefReqStreamID: config.get( 'varDefReqStreamID' ),
+                tlmDefReqStreamID: config.get( 'tlmDefReqStreamID' ),
+                reqSubscribeStreamID: config.get( 'reqSubscribeStreamID' )
+            }
+        };
+        this.addTelemetry(this.hk, 1000);
+    }
+    
+    
+    
+    initClientInterface() {
+        var content = {};
+        
+        content[config.name] = {
+            shortDescription: 'Variable Server (' + config.name + ')',
+            longDescription: 'Variable Server (' + config.name + ')',
+            nodes: {
+                main: {
+                    type: CdrGroundPlugin.ContentType.LAYOUT,
+                    shortDescription: 'Main',
+                    longDescription: 'Main BAT.',
+                    filePath: '/main_layout.lyt',
+                    handlebarsContext: {
+                        pluginName: config.name
+                    }
+                },
+                hk: {
+                    type: CdrGroundPlugin.ContentType.PANEL,
+                    shortDescription: 'Housekeeping',
+                    longDescription: 'Housekeeping',
+                    filePath: '/hk.pug',
+                    handlebarsContext: {
+                        pluginName: config.name
+                    }
+                }
+            }
+        }
+        
+        this.addContent(content);
+    }
+    
+    
+    initCommands() {
+    	var self = this;
+    	
+        var cmdReset = {
+            opsPath: '/' + config.name + '/reset',
+            args: []
+        }
+        this.addCommand(cmdReset, function(cmd) {
+        	self.hk.content.cmdAcceptCount = 0;
+        	self.hk.content.cmdRejectCount = 0;
+        	self.hk.content.msgRecvCount = 0;
+        	self.hk.content.paramsUpdated = 0;
+        });
+        
+        var cmdSetInput = {
+            opsPath: '/' + config.name + '/setInput',
+            args: [
+                {
+                    name:    'Port',
+                    type:    'uint16',
+                    bitSize: 16
+                }
+            ]
+        }
+        this.addCommand(cmdSetInput, this.setInput);
+
+        var cmdSetOutput = {
+            opsPath: '/' + config.name + '/setOutput',
+            args: [
+                {
+                    name:    'Port',
+                    type:    'uint16',
+                    bitSize: 16
+                },{
+                    name:    'Address',
+                    type:    'char',
+                    bitSize: 1024
+                }
+            ]
+        };
+        this.addCommand(cmdSetOutput, this.setOutput);
+    }
+    
+    
+    setInput(cmd) {
+
+    };
+    
+    
+    setOutput(cmd) {
     }
 };
 

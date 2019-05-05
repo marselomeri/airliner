@@ -33,67 +33,58 @@
 
 'use strict';
 
-var Parser = require( 'binary-parser' ).Parser;
+const Parser = require( 'binary-parser' ).Parser;
 const net = require( 'net' );
 const Emitter = require( 'events' );
-var fs = require( 'fs' );
+const fs = require( 'fs' );
 const util = require( 'util' );
-var Promise = require( 'promise' );
-var mergeJSON = require( 'merge-json' );
-var convict = require( 'convict' );
-var config = require( './config.js' );
-var Int64LE = require( 'int64-buffer' ).Int64LE;
-var Int64BE = require( 'int64-buffer' ).Int64BE;
-var Uint64LE = require( 'int64-buffer' ).Uint64LE;
-var Uint64BE = require( 'int64-buffer' ).Uint64BE;
-var path = require( 'path' );
-var Long = require( 'long' );
-const CdrPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrPlugin')).CdrPlugin;
+const Promise = require( 'promise' );
+const mergeJSON = require( 'merge-json' );
+const convict = require( 'convict' );
+const config = require( './config.js' );
+const Int64LE = require( 'int64-buffer' ).Int64LE;
+const Int64BE = require( 'int64-buffer' ).Int64BE;
+const Uint64LE = require( 'int64-buffer' ).Uint64LE;
+const Uint64BE = require( 'int64-buffer' ).Uint64BE;
+const path = require( 'path' );
+const Long = require( 'long' );
+const CdrGroundPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrGroundPlugin')).CdrGroundPlugin;
 
-//var emit = Emitter.prototype.emit;
 
-exports.events = [
-    'connect',
-    'close',
-    'error'
-    ];
 
-/**
- * Count listeners
- * @type {Function}
- */
-var listenerCount = Emitter.listenerCount ||
-function( emitter, type ) {
-    return emitter.listeners( type ).length
-}
-
-/**
- * Constructor for binary decoder
- * @param       {String} workspace  path to commander workspace
- * @param       {String} configFile path to binary-decoder-config.json
- * @constructor
- */
-class BinaryDecoder extends CdrPlugin {
+class BinaryDecoder extends CdrGroundPlugin {
+	/**
+	 * Constructor for binary decoder
+	 * @param       {String} workspace  path to commander workspace
+	 * @param       {String} configFile path to binary-decoder-config.json
+	 * @constructor
+	 */
     constructor(configObj) {
-        super(configObj);
+        configObj.webRoot = path.join( __dirname, 'web');  
+        super(configObj); 
         
+    	var self = this;
         this.defs;
         this.workspace = configObj.workspace;
         this.cmdHeaderLength = 64;
         this.sequence = 0;
         this.cdd = {};
-        var self = this;
         this.endian;
         this.namespace = configObj.namespace;
         this.name = configObj.name;
 
-        /* Load environment dependent configuration */
-        config.loadFile( configObj.configFile );
+        /* Initialize the configuration. */
+        this.initConfig(configObj.name, configObj.configFile);
+        
+        /* Initialize server side housekeeping telemetry that we'll publish 
+         * later. */
+        this.initTelemetry();
 
-        /* Perform validation */
-        config.validate( {
-            allowed: 'strict'
-        } );
+        /* Initialize client side interface. */
+        this.initClientInterface();
+
+        /* Initialize server side commands. */
+        this.initCommands();
 
         var inMsgDefs = config.get( 'msgDefs' )
 
@@ -183,6 +174,8 @@ class BinaryDecoder extends CdrPlugin {
                 } );
         
         this.namespace.emitter.on( config.get( 'binaryInputStreamID' ), function( buffer ) {
+        	self.hk.content.msgRecvCount++;
+        	
             self.processBinaryMessage( buffer );
         } );
 
@@ -582,6 +575,8 @@ class BinaryDecoder extends CdrPlugin {
                             var field = fields[ fieldName ];
                             try {
                                 tlmObj[ fieldName ] = this.getFieldValue( buffer, field, field.bit_offset, def.msgDef );
+                                
+                                self.hk.content.paramsParsed++;
                             } catch ( e ) {
                                 /* TODO: Do nothing for now. */
                             }
@@ -1260,6 +1255,86 @@ class BinaryDecoder extends CdrPlugin {
         jsDateTime.setMilliseconds( jsDateTime.getMilliseconds() + ( microseconds / 1000 ) );
 
         return jsDateTime;
+    }
+    
+    
+    initConfig(name, configFile) {
+    	/* Load environment dependent configuration */
+        config.loadFile( configFile );
+
+        /* Perform validation */
+        config.validate( {
+            allowed: 'strict'
+        } );
+        
+        config.name = name;
+    }
+    
+    
+    
+    initTelemetry() {
+        this.hk = {
+            opsPath: '/' + config.name + '/hk',
+            content: {
+                cmdAcceptCount: 0,
+                cmdRejectCount: 0,
+                msgRecvCount: 0,
+                paramsParsed: 0,
+                binaryInputStreamID: config.get( 'binaryInputStreamID' ),
+                jsonOutputStreamID: config.get( 'jsonOutputStreamID' ),
+                tlmDefReqStreamID: config.get( 'tlmDefReqStreamID' )
+            }
+        };
+        this.addTelemetry(this.hk, 1000);
+    }
+    
+    
+    
+    initClientInterface() {
+        var content = {};
+        
+        content[config.name] = {
+            shortDescription: 'Binary Decoder (' + config.name + ')',
+            longDescription: 'Binary Decoder (' + config.name + ')',
+            nodes: {
+                main: {
+                    type: CdrGroundPlugin.ContentType.LAYOUT,
+                    shortDescription: 'Main',
+                    longDescription: 'Main.',
+                    filePath: '/main_layout.lyt',
+                    handlebarsContext: {
+                        pluginName: config.name
+                    }
+                },
+                hk: {
+                    type: CdrGroundPlugin.ContentType.PANEL,
+                    shortDescription: 'Housekeeping',
+                    longDescription: 'Housekeeping',
+                    filePath: '/hk.pug',
+                    handlebarsContext: {
+                        pluginName: config.name
+                    }
+                }
+            }
+        }
+        
+        this.addContent(content);
+    }
+    
+    
+    initCommands() {
+    	var self = this;
+    	
+        var cmdReset = {
+            opsPath: '/' + config.name + '/reset',
+            args: []
+        }
+        this.addCommand(cmdReset, function(cmd) {
+        	self.hk.content.cmdAcceptCount = 0;
+        	self.hk.content.cmdRejectCount = 0;
+        	self.hk.content.msgRecvCount = 0;
+        	self.hk.content.paramsParsed = 0;
+        });
     }
 }
 

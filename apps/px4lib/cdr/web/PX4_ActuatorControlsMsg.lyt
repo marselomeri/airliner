@@ -55,7 +55,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/px4/Dataplot",
+        "link": "/flight/apps/px4lib/Dataplot",
         "PlotDef": {
          "data": [
           {
@@ -110,7 +110,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/px4/PX4_ActuatorControlsMsg"
+        "link": "/flight/apps/px4lib/PX4_ActuatorControlsMsg"
        },
        "isClosable": true,
        "reorderEnabled": true

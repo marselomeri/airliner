@@ -76,7 +76,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/px4/PX4_PositionSetpointTripletPreviousMsg"
+        "link": "/flight/apps/px4lib/PX4_PositionSetpointTripletPreviousMsg"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -98,7 +98,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/px4/PX4_PositionSetpointTripletCurrentMsg"
+        "link": "/flight/apps/px4lib/PX4_PositionSetpointTripletCurrentMsg"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -120,7 +120,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/px4/PX4_PositionSetpointTripletNextMsg"
+        "link": "/flight/apps/px4lib/PX4_PositionSetpointTripletNextMsg"
        },
        "isClosable": true,
        "reorderEnabled": true

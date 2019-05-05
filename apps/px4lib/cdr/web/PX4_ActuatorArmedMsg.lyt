@@ -54,7 +54,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/px4/PX4_ActuatorArmedMsg"
+        "link": "/flight/apps/px4lib/PX4_ActuatorArmedMsg"
        },
        "isClosable": true,
        "reorderEnabled": true

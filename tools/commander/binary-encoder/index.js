@@ -33,54 +33,53 @@
 
 'use strict';
 
-var Parser = require( "binary-parser" ).Parser;
+const Parser = require( "binary-parser" ).Parser;
 const net = require( 'net' );
 const Emitter = require( 'events' );
-var fs = require( 'fs' );
+const fs = require( 'fs' );
 const util = require( 'util' );
-var mergeJSON = require( 'merge-json' );
-var convict = require( 'convict' );
-var path = require( 'path' );
-var config = require( './config.js' );
-const CdrPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrPlugin')).CdrPlugin;
-
-var emit = Emitter.prototype.emit;
+const mergeJSON = require( 'merge-json' );
+const convict = require( 'convict' );
+const path = require( 'path' );
+const config = require( './config.js' );
+const CdrGroundPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrGroundPlugin')).CdrGroundPlugin;
 
 
-/**
- * Count listeners
- * @type {Function}
- */
-var listenerCount = Emitter.listenerCount ||
-function( emitter, type ) {
-    return emitter.listeners( type ).length
-}
 
-/**
- * Constructor for binary encoder
- * @param       {String} workspace  path to commander workspace
- * @param       {String} configFile path to binary-encoder-config.json
- * @constructor
- */
-class BinaryEncoder extends CdrPlugin {
+class BinaryEncoder extends CdrGroundPlugin {
+	/**
+	 * Constructor for binary encoder
+	 * @param       {String} workspace  path to commander workspace
+	 * @param       {String} configFile path to binary-encoder-config.json
+	 * @constructor
+	 */
     constructor(configObj) {
-        super(configObj);
+        configObj.webRoot = path.join( __dirname, 'web');  
+        super(configObj); 
+        
+    	var self = this;
         
         this.defs;
         this.workspace = configObj.workspace;
         this.cmdHeaderLength = 64;
         this.sequence = 0;
         this.cdd = {};
-        var self = this;
         this.endian;
+        this.namespace = configObj.namespace;
+        this.name = configObj.name;
 
-        /* Load environment dependent configuration */
-        config.loadFile( configObj.configFile );
+        /* Initialize the configuration. */
+        this.initConfig(configObj.name, configObj.configFile);
+        
+        /* Initialize server side housekeeping telemetry that we'll publish 
+         * later. */
+        this.initTelemetry();
 
-        /* Perform validation */
-        config.validate( {
-            allowed: 'strict'
-        } );
+        /* Initialize client side interface. */
+        this.initClientInterface();
+
+        /* Initialize server side commands. */
+        this.initCommands();
 
         var inMsgDefs = config.get( 'msgDefs' );
 
@@ -180,6 +179,7 @@ class BinaryEncoder extends CdrPlugin {
                         var cmdDef = self.getCmdDefByName( cmdReqs[ i ].opsPath );
                         if ( typeof cmdDef !== 'undefined' ) {
                             outCmdDefs.push( cmdDef );
+                            self.hk.content.cmdDefReqCount++;
                             found = true;
                         } else {
                             self.logDebug( 'CmdDefReq: Command not found.  \'' + cmdReqs[ i ].opsPath + '\'' );
@@ -188,6 +188,7 @@ class BinaryEncoder extends CdrPlugin {
                         var cmdDef = self.getCmdDefByMsgIDandCC( cmdReqs[ i ].msgID, cmdReqs[ i ].cmdCode );
                         if ( typeof cmdDef !== 'undefined' ) {
                             outCmdDefs.push( cmdDef );
+                        	self.hk.content.cmdDefReqCount++;
                             found = true;
                         } else {
                             self.logDebug( 'CmdDefReq: Command not found.  \'' + cmdReqs[ i ].opsPath + '\'' );
@@ -228,6 +229,7 @@ class BinaryEncoder extends CdrPlugin {
                 if(found == true) {
                     self.logDebug( 'CmdDefReq: \'' + JSON.stringify( cmdReq, null, '\t' ) + '\'  Def: \'' + JSON.stringify( outCmdDef, null, '\t' ) + '\'' );
                     cb( outCmdDef );
+                	self.hk.content.cmdDefReqCount++;
                 }
             }
         } );
@@ -239,10 +241,6 @@ class BinaryEncoder extends CdrPlugin {
             } else {
                 self.sendCommand( cmdDef, req.args );
             }
-        } );
-
-        this.namespace.emitter.on( config.get( 'tlmSendStreamID' ), function( tlmObj ) {
-            this.logError( 'TlmSend: Function not yet implemented.' );
         } );
 
         this.logInfo('Initialized');
@@ -733,12 +731,14 @@ class BinaryEncoder extends CdrPlugin {
                                 if ( args.hasOwnProperty( opNameID ) ) {
                                     var fieldDef = this.getFieldFromOperationalName( msgDef, msgDef.operational_names[ opNameID ].field_path, 0 );
                                     this.setField( buffer, fieldDef.fieldDef, fieldDef.bitOffset, args[ opNameID ] );
+                                    this.hk.content.argsEncoded++;
                                 }
                             }
                         }
                     }
                 }
                 this.namespace.emit( config.get( 'binaryOutputStreamID' ), buffer );
+                this.hk.content.msgSentCount++;
             }
         }
     }
@@ -877,6 +877,89 @@ class BinaryEncoder extends CdrPlugin {
         } else {
             return true;
         }
+    }
+    
+    
+    initConfig(name, configFile) {
+    	/* Load environment dependent configuration */
+        config.loadFile( configFile );
+
+        /* Perform validation */
+        config.validate( {
+            allowed: 'strict'
+        } );
+        
+        config.name = name;
+    }
+    
+    
+    
+    initTelemetry() {
+        this.hk = {
+            opsPath: '/' + config.name + '/hk',
+            content: {
+                cmdAcceptCount: 0,
+                cmdRejectCount: 0,
+                msgSentCount: 0,
+                argsEncoded: 0,
+                cmdDefReqCount: 0,
+                binaryOutputStreamID: config.get( 'binaryOutputStreamID' ),
+                cmdDefReqStreamID: config.get( 'cmdDefReqStreamID' ),
+                cmdSendStreamID: config.get( 'cmdSendStreamID' )
+            }
+        };
+        this.addTelemetry(this.hk, 1000);
+    }
+    
+    
+    
+    initClientInterface() {
+        var content = {};
+        
+        content[config.name] = {
+            shortDescription: 'Binary Encoder (' + config.name + ')',
+            longDescription: 'Binary Encoder (' + config.name + ')',
+            nodes: {
+                main: {
+                    type: CdrGroundPlugin.ContentType.LAYOUT,
+                    shortDescription: 'Main',
+                    longDescription: 'Main.',
+                    filePath: '/main_layout.lyt',
+                    handlebarsContext: {
+                        pluginName: config.name
+                    }
+                },
+                hk: {
+                    type: CdrGroundPlugin.ContentType.PANEL,
+                    shortDescription: 'Housekeeping',
+                    longDescription: 'Housekeeping',
+                    filePath: '/hk.pug',
+                    handlebarsContext: {
+                        pluginName: config.name
+                    }
+                }
+            }
+        }
+        
+        this.addContent(content);
+    }
+    
+    
+    initCommands() {
+    	var self = this;
+    	
+        var cmdReset = {
+            opsPath: '/' + config.name + '/reset',
+            args: []
+        }
+        this.addCommand(cmdReset, function(cmd) {
+        	self.hk.content.cmdAcceptCount = 0;
+        	self.hk.content.cmdRejectCount = 0;
+        	self.hk.content.msgSentCount = 0;
+        	self.hk.content.argsEncoded = 0;
+        	self.hk.content.cmdDefReqCount = 0;
+        	self.hk.content.cmdSendReqCount = 0;
+        });
     }
 };
 

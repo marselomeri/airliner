@@ -62,7 +62,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/px4/Dataplot",
+          "link": "/flight/apps/px4lib/Dataplot",
           "PlotDef": {
            "data": [
             {
@@ -110,7 +110,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/px4/Dataplot",
+          "link": "/flight/apps/px4lib/Dataplot",
           "PlotDef": {
            "data": [
             {
@@ -154,7 +154,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/px4/PX4_SensorCombinedMsg"
+          "link": "/flight/apps/px4lib/PX4_SensorCombinedMsg"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -176,7 +176,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/px4/Dataplot",
+          "link": "/flight/apps/px4lib/Dataplot",
           "PlotDef": {
            "data": [
             {
@@ -256,7 +256,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/px4/Dataplot",
+          "link": "/flight/apps/px4lib/Dataplot",
           "PlotDef": {
            "data": [
             {

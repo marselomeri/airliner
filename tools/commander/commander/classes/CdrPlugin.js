@@ -96,12 +96,10 @@ class CdrPlugin extends Emitter {
     }
     
     
-    addCommands(newCommands, cb) {
-        for(var i in newCommands) {
-            this.commands[newCommands[i].opsPath] = {};
-            this.commands[newCommands[i].opsPath].def = newCommands[i];
-            this.commands[newCommands[i].opsPath].cb = cb;
-        }
+    addCommand(newCommand, cb) {
+        this.commands[newCommand.opsPath] = {};
+        this.commands[newCommand.opsPath].def = newCommand;
+        this.commands[newCommand.opsPath].cb = cb;
     }
 
     
@@ -110,19 +108,18 @@ class CdrPlugin extends Emitter {
     }
 
     
-    addTelemetry(newTelemetry) {
+    addTelemetry(newTelemetry, delay) {
         var self = this;
         
-        for(var i in newTelemetry) {
-            this.telemetry[newTelemetry[i].opsPath] = newTelemetry[i];
+        this.telemetry[newTelemetry.opsPath] = newTelemetry;
         
-            setInterval(function() {
-                self.telemetry[newTelemetry[i].opsPath].msgTime = new Date();
-                self.namespace.sendTelemetry(self.telemetry[newTelemetry[i].opsPath]);
-            }, 1000);
-        }
+        setInterval(function() {
+            self.telemetry[newTelemetry.opsPath].msgTime = new Date();
+            self.namespace.sendTelemetry(self.telemetry[newTelemetry.opsPath]);
+        }, delay);
     }
 
+    
     /**
      * This is called by the underlying framework to initialize the plugin.
      */

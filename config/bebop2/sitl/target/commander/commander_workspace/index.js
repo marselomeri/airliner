@@ -15,8 +15,8 @@ var commander = new Commander(global.CDR_WORKSPACE, `${global.CDR_WORKSPACE}/etc
 global.COMMANDER = commander;
 
 var airliner = commander.addInstance('airliner', function(namespace) {
-    var binaryEncoder = new BinaryEncoder({namespace: namespace, name: 'binary_encoder', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/binary-encoder-config.json`});
-    var binaryDecoder = new BinaryDecoder({namespace: namespace, name: 'binary_decoder', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/binary-decoder-config.json`});
+    var binaryEncoder = new BinaryEncoder({namespace: namespace, name: 'binary-encoder', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/binary-encoder-config.json`});
+    var binaryDecoder = new BinaryDecoder({namespace: namespace, name: 'binary-decoder', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/binary-decoder-config.json`});
     var variableServer = new VariableServer({namespace: namespace, name: 'variable-server', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/variable-server-config.json`});
     var fswConnector = new UdpStdProvider({namespace: namespace, name: 'fsw-connector', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/udpstdprovider-config.json`});
     var pylinerConnector = new UdpStdProvider({namespace: namespace, name: 'pyliner-connector', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/pyliner-connector-config.json`});
