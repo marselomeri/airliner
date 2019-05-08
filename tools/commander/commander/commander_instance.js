@@ -50,6 +50,7 @@ module.exports = class CommanderInstance extends EventEmitter {
         this.apps = {};
         this.emitter = new EventEmitter();
         var self = this;
+        this.streams = {};
         
         this.emitter.setMaxListeners(100);
     }
@@ -103,6 +104,26 @@ module.exports = class CommanderInstance extends EventEmitter {
      */
     emit( streamID, obj, callback ) {
         this.emitter.emit( streamID, obj, callback );
+    }
+
+    
+    send( streamID, obj, callback ) {
+    	if(this.streams.hasOwnProperty(streamID) == false) {
+    		/* This stream has not been created.  Create an entry for the callbacks. */
+    		var this.streams[streamID] = {};
+    	}
+    	
+    	for(var callbackID in this.streams[streamID]) {
+    		this.streams[streamID](obj);
+    	}
+    }
+
+    
+    recv( streamID, callback ) {
+    	if(this.streams.hasOwnProperty(streamID) == false) {
+    		/* This stream has not been created.  Create an entry for the callbacks. */
+    		var this.streams[streamID] = {};
+    	}
     }
     
     
