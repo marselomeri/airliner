@@ -12,36 +12,57 @@ table.table.table-condensed
         div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/cmdRejectCount'}]}) ---
       td
     tr
-      th Input Port
+      th Card 1 Device Path
       td
-        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/inPort'}]}) ---
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/card1DevicePath'}]}) ---
       td
-        button.btn.cdr-primary(data-cdr={cmd:{name:'/' + pluginName + '/setInput'}}) Set
+        button.btn.cdr-primary(data-cdr={cmd:{name:'/' + pluginName + '/setCardDevicePath'}}) Set
     tr
-      th Output Address:Port
-      td 
-        span.span-inline-block(data-cdr={tlm:[{name:'/' + pluginName + '/hk/outAddress'}]}) ---
-        span.span-inline-block :
-        span.span-inline-block(data-cdr={tlm:[{name:'/' + pluginName + '/hk/outPort'}]}) ---
+      th Card 2 Device Path
       td
-        button.btn.cdr-primary(data-cdr={cmd:{name:'/' + pluginName + '/setOutput'}}) Set
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/card2DevicePath'}]}) ---
+      td
+        button.btn.cdr-primary(data-cdr={cmd:{name:'/' + pluginName + '/setCardDevicePath'}}) Set
     tr
-      th Messages Sent
+      th Card 3 Device Path
       td
-        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/msgSentCount'}]}) ---
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/card3DevicePath'}]}) ---
       td
+        button.btn.cdr-primary(data-cdr={cmd:{name:'/' + pluginName + '/setCardDevicePath'}}) Set
     tr
-      th Messages Received
+      th Card 1 Messages Received
       td
-        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/msgRecvCount'}]}) ---
-      td
-    tr
-      th Input Stream
-      td
-        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/inputStreamID'}]}) ---
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/card1MsgRecvCount'}]}) ---
       td
     tr
-      th Output Stream
+      th Card 2 Messages Received
       td
-        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/outputStreamID'}]}) ---
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/card2MsgRecvCount'}]}) ---
       td
+    tr
+      th Card 2 Messages Received
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/card3MsgRecvCount'}]}) ---
+      td
+    tr
+      th Card 1 Messages Sent
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/card1MsgSentCount'}]}) ---
+      td
+    tr
+      th Card 2 Messages Sent
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/card2MsgSentCount'}]}) ---
+      td
+    tr
+      th Card 2 Messages Sent
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/card3MsgSentCount'}]}) ---
+      td
+      
+              
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/' + pluginName + '/Reset'}}) Reset
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/' + pluginName + '/ReadSwitch'}}) Read Switch 
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/' + pluginName + '/SetLED'}}) Set LED 
+  

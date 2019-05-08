@@ -47,25 +47,56 @@
      "width": 100,
      "content": [
       {
-       "type": "stack",
-       "header": {},
+       "type": "row",
        "isClosable": true,
        "reorderEnabled": true,
        "title": "",
-       "activeItemIndex": 0,
-       "width": 25,
        "height": 100,
        "content": [
         {
-         "title": "Housekeeping",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "/ground/fsw-connector/hk?pluginName={{pluginName}}"
-         },
+         "type": "stack",
+         "header": {},
          "isClosable": true,
-         "reorderEnabled": true
+         "reorderEnabled": true,
+         "title": "",
+         "activeItemIndex": 0,
+         "width": 50,
+         "height": 100,
+         "content": [
+          {
+           "title": "F1 Panel",
+           "type": "component",
+           "componentName": "Blank",
+           "componentState": {
+            "text": "text",
+            "link": "/ground/panel-display/f1?pluginName={{pluginName}}"
+           },
+           "isClosable": true,
+           "reorderEnabled": true
+          }
+         ]
+        },
+        {
+         "type": "stack",
+         "header": {},
+         "isClosable": true,
+         "reorderEnabled": true,
+         "title": "",
+         "activeItemIndex": 0,
+         "width": 50,
+         "content": [
+          {
+           "title": "HK",
+           "type": "component",
+           "componentName": "Blank",
+           "componentState": {
+            "text": "text",
+            "link": "/ground/panel-display/hk?pluginName={{pluginName}}"
+           },
+           "isClosable": true,
+           "reorderEnabled": true
+          }
+         ]
         }
        ]
       }

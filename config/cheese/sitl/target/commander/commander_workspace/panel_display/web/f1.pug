@@ -1,6 +1,275 @@
 - var pluginName = query.pluginName;
 
+script(type="text/javascript" src="panels/panel_display.js")
+
 div#f1_panel
 
 script.
-  var draw = SVG('f1_panel').viewbox(0, 0, 800, 550);
+  var ledCoolantLoop1PumpAOn   = {};
+  var swCoolantLoop1PumpA      = {};
+  var ledCoolantLoop1PumpBOn   = {};
+  var ledCoolantLoop1PumpBTrip = {};
+  var swCoolantLoop1PumpB      = {};
+  var swCoolantLoop1NH3Sys2    = {};
+  
+  var ledCoolantLoop2PumpAOn   = {};
+  var swCoolantLoop2PumpA      = {};
+  var ledCoolantLoop2PumpBOn   = {};
+  var ledCoolantLoop2PumpBTrip = {};
+  var swCoolantLoop2PumpB      = {};
+  var swCoolantLoop2NH3Sys2    = {};
+  
+  var ledScrubberArsFan1On     = {};
+  var ledScrubberArsFan1Trip   = {};
+  var swScrubberArsFan1Pwr     = {};
+  var swScrubberArsFan1Mode    = {};
+  var ledLCGPumpOn             = {};
+  var ledLCGPumpTrip           = {};
+  var swLCGPump                = {};
+  
+  var ledScrubberArsFan2On     = {};
+  var ledScrubberArsFan2Trip   = {};
+  var swScrubberArsFan2Pwr     = {};
+  var swScrubberArsFan2Mode    = {};
+  var swDockingSep             = {};
+  
+  
+  var draw = SVG('f1_panel').viewbox(0, 170, 800, 550);
+  
+  loadSVG('panels/panel_F1.svg');
+
+  
+  function loadSVG(SVGFile)
+  {
+      var loadXML = new XMLHttpRequest;
+      loadXML.onload = callback;
+      loadXML.open("GET", SVGFile, true);
+      loadXML.send();
+      function callback()
+      {
+          //---responseText---
+          var svgFileString=loadXML.responseText;
+          draw.svg(svgFileString);
+          
+          ledCoolantLoop1PumpAOn   = new LED('OFF', '#00ff00',  151, 43);
+          ledCoolantLoop1PumpBOn   = new LED('OFF', '#00ff00',  306, 43);
+          ledCoolantLoop1PumpBTrip = new LED('OFF', '#f4d742',  368, 43);
+          
+          swCoolantLoop1PumpA   = new Switch('DOWN',      89, 110, onCoolantLoop1PumpAChange);
+          swCoolantLoop1PumpB   = new Switch('DOWN', 245, 110, onCoolantLoop1PumpBChange);
+          swCoolantLoop1NH3Sys2 = new Switch('DOWN',   449, 110);
+          
+          ledCoolantLoop2PumpAOn   = new LED('OFF', '#00ff00',  151, 235);
+          ledCoolantLoop2PumpBOn   = new LED('OFF', '#00ff00',  306, 235);
+          ledCoolantLoop2PumpBTrip = new LED('OFF', '#f4d742',  368, 235);
+          
+          swCoolantLoop2PumpA   = new Switch('DOWN',  89, 302, onCoolantLoop2PumpAChange);
+          swCoolantLoop2PumpB   = new Switch('DOWN', 245, 302, onCoolantLoop2PumpBChange);
+          swCoolantLoop2NH3Sys2 = new Switch('DOWN', 449, 302);
+  
+          ledScrubberArsFan1On   = new LED('OFF', '#00ff00',  123,   438);
+          ledScrubberArsFan1Trip = new LED('OFF', '#f4d742',  184.5, 438);
+          ledLCGPumpOn           = new LED('OFF', '#00ff00',  450,   438);
+          ledLCGPumpTrip         = new LED('OFF', '#f4d742',  513,   438);
+          
+          swScrubberArsFan1Pwr  = new Switch('DOWN',  89, 505, onScrubberArsFan1PwrChange);
+          swScrubberArsFan1Mode = new Switch('DOWN', 245, 505);
+          swLCGPump             = new Switch('DOWN', 449, 505, onLCGPumpChange);
+  
+          ledScrubberArsFan2On   = new LED('OFF', '#00ff00',  123,   630);
+          ledScrubberArsFan2Trip = new LED('OFF', '#f4d742',  184.5, 630);
+  
+          swScrubberArsFan2Pwr  = new Switch('DOWN',  89, 697, onScrubberArsFan2PwrChange);
+          swScrubberArsFan2Mode = new Switch('DOWN', 245, 697);
+          swDockingSep          = new Switch('DOWN', 449, 697);
+          
+          /* Synchronize the LEDs with the switches */
+          onCoolantLoop1PumpAChange();
+          onCoolantLoop1PumpBChange();
+          onCoolantLoop2PumpAChange();
+          onCoolantLoop2PumpBChange();
+          onScrubberArsFan1PwrChange();
+          onScrubberArsFan2PwrChange();
+          onLCGPumpChange();
+          
+          session.subscribe([{name:'/panel-display/swStatus/digital'}], function (data) {   
+              console.log('Hello world');
+              var channelData = data[0].sample[0].value;
+                         
+              for(var entryIndex in SwitchMap) {
+                  var entry = SwitchMap[entryIndex];
+
+                  if(typeof entry.switch === 'function') {
+                      var pass = true;
+                      
+                      for(var logicCheckIndex in entry.logic) {
+                          var logicCheck = entry.logic[logicCheckIndex];
+                          
+                          if(channelData[logicCheck.channel] != logicCheck.state) {
+                              pass = false;
+                          }
+                      }
+                      
+                      if(pass == true) {
+                          //console.log('SWITCH ' + entryIndex);
+                          entry.switch();
+                      }
+                  }
+              }
+          });
+      }
+  }
+  
+  
+  function onCoolantLoop1PumpAChange() {
+      switch(swCoolantLoop1PumpA.getState()) {
+          case 'UP':
+          case 'MIDDLE':
+          /* Fallthru */
+              ledCoolantLoop1PumpAOn.on();
+              break;
+              
+          case 'DOWN':
+              ledCoolantLoop1PumpAOn.off();
+              break;
+       }    
+  };
+  
+  
+  function onCoolantLoop1PumpBChange() {
+      switch(swCoolantLoop1PumpB.getState()) {
+          case 'UP':
+          case 'MIDDLE':
+          /* Fallthru */
+              ledCoolantLoop1PumpBOn.on();
+              break;
+              
+          case 'DOWN':
+              ledCoolantLoop1PumpBOn.off();
+              break;
+       }    
+  };
+  
+  
+  function onCoolantLoop2PumpAChange() {
+      switch(swCoolantLoop2PumpA.getState()) {
+          case 'UP':
+          case 'MIDDLE':
+          /* Fallthru */
+              ledCoolantLoop2PumpAOn.on();
+              break;
+              
+          case 'DOWN':
+              ledCoolantLoop2PumpAOn.off();
+              break;
+       }    
+  };
+  
+  
+  function onCoolantLoop2PumpBChange() {
+      switch(swCoolantLoop2PumpB.getState()) {
+          case 'UP':
+          case 'MIDDLE':
+          /* Fallthru */
+              ledCoolantLoop2PumpBOn.on();
+              break;
+              
+          case 'DOWN':
+              ledCoolantLoop2PumpBOn.off();
+              break;
+       }    
+  };
+  
+  
+  function onScrubberArsFan1PwrChange() {
+      switch(swScrubberArsFan1Pwr.getState()) {
+          case 'UP':
+          case 'MIDDLE':
+          /* Fallthru */
+              ledScrubberArsFan1On.on();
+              break;
+              
+          case 'DOWN':
+              ledScrubberArsFan1On.off();
+              break;
+       }    
+  };
+  
+  
+  function onScrubberArsFan2PwrChange() {
+      switch(swScrubberArsFan2Pwr.getState()) {
+          case 'UP':
+          case 'MIDDLE':
+          /* Fallthru */
+              ledScrubberArsFan2On.on();
+              break;
+              
+          case 'DOWN':
+              ledScrubberArsFan2On.off();
+              break;
+       }    
+  };
+  
+  
+  function onLCGPumpChange() {
+      switch(swLCGPump.getState()) {
+          case 'UP':
+          case 'MIDDLE':
+          /* Fallthru */
+              ledLCGPumpOn.on();
+              break;
+              
+          case 'DOWN':
+              ledLCGPumpOn.off();
+              break;
+       }    
+  };
+  
+  var SwitchMap = [
+      { logic: [{channel: 23, state: 0}, {channel: 24, state: 0}], switch: function(){swCoolantLoop1PumpA.up();} },
+      { logic: [{channel: 23, state: 0}, {channel: 24, state: 1}], switch: function(){swCoolantLoop1PumpA.middle();} },
+      { logic: [{channel: 23, state: 1}, {channel: 24, state: 1}], switch: function(){swCoolantLoop1PumpA.down();} },
+      
+      { logic: [{channel: 22, state: 0}, {channel: 25, state: 0}], switch: function(){swCoolantLoop1PumpB.up();} },
+      { logic: [{channel: 22, state: 0}, {channel: 25, state: 1}], switch: function(){swCoolantLoop1PumpB.middle();} },
+      { logic: [{channel: 22, state: 1}, {channel: 25, state: 1}], switch: function(){swCoolantLoop1PumpB.down();} },
+      
+      { logic: [{channel: 21, state: 0}, {channel: 26, state: 0}], switch: function(){swCoolantLoop1NH3Sys2.up();} },
+      { logic: [{channel: 21, state: 0}, {channel: 26, state: 1}], switch: function(){swCoolantLoop1NH3Sys2.middle();} },
+      { logic: [{channel: 21, state: 1}, {channel: 26, state: 1}], switch: function(){swCoolantLoop1NH3Sys2.down();} },
+      
+      { logic: [{channel: 20, state: 0}, {channel: 27, state: 0}], switch: function(){swCoolantLoop2PumpA.up();} },
+      { logic: [{channel: 20, state: 0}, {channel: 27, state: 1}], switch: function(){swCoolantLoop2PumpA.middle();} },
+      { logic: [{channel: 20, state: 1}, {channel: 27, state: 1}], switch: function(){swCoolantLoop2PumpA.down();} },
+      
+      { logic: [{channel: 19, state: 0}, {channel: 28, state: 0}], switch: function(){swCoolantLoop2PumpB.up();} },
+      { logic: [{channel: 19, state: 0}, {channel: 28, state: 1}], switch: function(){swCoolantLoop2PumpB.middle();} },
+      { logic: [{channel: 19, state: 1}, {channel: 28, state: 1}], switch: function(){swCoolantLoop2PumpB.down();} },
+      
+      { logic: [{channel: 18, state: 0}, {channel: 29, state: 0}], switch: function(){swCoolantLoop2NH3Sys2.up();} },
+      { logic: [{channel: 18, state: 0}, {channel: 29, state: 1}], switch: function(){swCoolantLoop2NH3Sys2.middle();} },
+      { logic: [{channel: 18, state: 1}, {channel: 29, state: 1}], switch: function(){swCoolantLoop2NH3Sys2.down();} },
+      
+      { logic: [{channel: 17, state: 0}, {channel: 30, state: 0}], switch: function(){swScrubberArsFan1Pwr.up();} },
+      { logic: [{channel: 17, state: 0}, {channel: 30, state: 1}], switch: function(){swScrubberArsFan1Pwr.middle();} },
+      { logic: [{channel: 17, state: 1}, {channel: 30, state: 1}], switch: function(){swScrubberArsFan1Pwr.down();} },
+      
+      { logic: [{channel: 16, state: 0}, {channel: 31, state: 0}], switch: function(){swScrubberArsFan1Mode.up();} },
+      { logic: [{channel: 16, state: 0}, {channel: 31, state: 1}], switch: function(){swScrubberArsFan1Mode.middle();} },
+      { logic: [{channel: 16, state: 1}, {channel: 31, state: 1}], switch: function(){swScrubberArsFan1Mode.down();} },
+      
+      { logic: [{channel: 47, state: 0}, {channel: 32, state: 0}], switch: function(){swLCGPump.up();} },
+      { logic: [{channel: 47, state: 0}, {channel: 32, state: 1}], switch: function(){swLCGPump.middle();} },
+      { logic: [{channel: 47, state: 1}, {channel: 32, state: 1}], switch: function(){swLCGPump.down();} },
+      
+      { logic: [{channel: 46, state: 0}, {channel: 33, state: 0}], switch: function(){swScrubberArsFan2Pwr.up();} },
+      { logic: [{channel: 46, state: 0}, {channel: 33, state: 1}], switch: function(){swScrubberArsFan2Pwr.middle();} },
+      { logic: [{channel: 46, state: 1}, {channel: 33, state: 1}], switch: function(){swScrubberArsFan2Pwr.down();} },
+      
+      { logic: [{channel: 45, state: 0}, {channel: 34, state: 0}], switch: function(){swScrubberArsFan2Mode.up();} },
+      { logic: [{channel: 45, state: 0}, {channel: 34, state: 1}], switch: function(){swScrubberArsFan2Mode.middle();} },
+      { logic: [{channel: 45, state: 1}, {channel: 34, state: 1}], switch: function(){swScrubberArsFan2Mode.down();}},
+      
+      { logic: [{channel: 35, state: 0}], switch: function(){swDockingSep.up();}},
+      { logic: [{channel: 44, state: 0}], switch: function(){swDockingSep.down();}}
+  ];
