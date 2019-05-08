@@ -1,87 +1,86 @@
 - var pluginName = query.pluginName;
 
-script(type="text/javascript" src="panels/panel_display.js")
-
 div#f1_panel
 
 script.
-  var ledCoolantLoop1PumpAOn   = {};
-  var swCoolantLoop1PumpA      = {};
-  var ledCoolantLoop1PumpBOn   = {};
-  var ledCoolantLoop1PumpBTrip = {};
-  var swCoolantLoop1PumpB      = {};
-  var swCoolantLoop1NH3Sys2    = {};
+
   
-  var ledCoolantLoop2PumpAOn   = {};
-  var swCoolantLoop2PumpA      = {};
-  var ledCoolantLoop2PumpBOn   = {};
-  var ledCoolantLoop2PumpBTrip = {};
-  var swCoolantLoop2PumpB      = {};
-  var swCoolantLoop2NH3Sys2    = {};
-  
-  var ledScrubberArsFan1On     = {};
-  var ledScrubberArsFan1Trip   = {};
-  var swScrubberArsFan1Pwr     = {};
-  var swScrubberArsFan1Mode    = {};
-  var ledLCGPumpOn             = {};
-  var ledLCGPumpTrip           = {};
-  var swLCGPump                = {};
-  
-  var ledScrubberArsFan2On     = {};
-  var ledScrubberArsFan2Trip   = {};
-  var swScrubberArsFan2Pwr     = {};
-  var swScrubberArsFan2Mode    = {};
-  var swDockingSep             = {};
-  
-  
-  var draw = SVG('f1_panel').viewbox(0, 170, 800, 550);
-  
+    
   loadSVG('panels/panel_F1.svg');
 
   
   function loadSVG(SVGFile)
   {
+      var ledCoolantLoop1PumpAOn   = {};
+      var swCoolantLoop1PumpA      = {};
+      var ledCoolantLoop1PumpBOn   = {};
+      var ledCoolantLoop1PumpBTrip = {};
+      var swCoolantLoop1PumpB      = {};
+      var swCoolantLoop1NH3Sys2    = {};
+  
+      var ledCoolantLoop2PumpAOn   = {};
+      var swCoolantLoop2PumpA      = {};
+      var ledCoolantLoop2PumpBOn   = {};
+      var ledCoolantLoop2PumpBTrip = {};
+      var swCoolantLoop2PumpB      = {};
+      var swCoolantLoop2NH3Sys2    = {};
+  
+      var ledScrubberArsFan1On     = {};
+      var ledScrubberArsFan1Trip   = {};
+      var swScrubberArsFan1Pwr     = {};
+      var swScrubberArsFan1Mode    = {};
+      var ledLCGPumpOn             = {};
+      var ledLCGPumpTrip           = {};
+      var swLCGPump                = {};
+  
+      var ledScrubberArsFan2On     = {};
+      var ledScrubberArsFan2Trip   = {};
+      var swScrubberArsFan2Pwr     = {};
+      var swScrubberArsFan2Mode    = {};
+      var swDockingSep             = {};
+  
       var loadXML = new XMLHttpRequest;
       loadXML.onload = callback;
       loadXML.open("GET", SVGFile, true);
       loadXML.send();
+      var draw = SVG('f1_panel').viewbox(0, 170, 800, 550);
       function callback()
       {
           //---responseText---
           var svgFileString=loadXML.responseText;
           draw.svg(svgFileString);
           
-          ledCoolantLoop1PumpAOn   = new LED('OFF', '#00ff00',  151, 43);
-          ledCoolantLoop1PumpBOn   = new LED('OFF', '#00ff00',  306, 43);
-          ledCoolantLoop1PumpBTrip = new LED('OFF', '#f4d742',  368, 43);
+          ledCoolantLoop1PumpAOn   = new LED(draw, 'OFF', '#00ff00',  151, 43);
+          ledCoolantLoop1PumpBOn   = new LED(draw, 'OFF', '#00ff00',  306, 43);
+          ledCoolantLoop1PumpBTrip = new LED(draw, 'OFF', '#f4d742',  368, 43);
           
-          swCoolantLoop1PumpA   = new Switch('DOWN',      89, 110, onCoolantLoop1PumpAChange);
-          swCoolantLoop1PumpB   = new Switch('DOWN', 245, 110, onCoolantLoop1PumpBChange);
-          swCoolantLoop1NH3Sys2 = new Switch('DOWN',   449, 110);
+          swCoolantLoop1PumpA   = new Switch(draw, 'DOWN',      89, 110, onCoolantLoop1PumpAChange);
+          swCoolantLoop1PumpB   = new Switch(draw, 'DOWN', 245, 110, onCoolantLoop1PumpBChange);
+          swCoolantLoop1NH3Sys2 = new Switch(draw, 'DOWN',   449, 110);
           
-          ledCoolantLoop2PumpAOn   = new LED('OFF', '#00ff00',  151, 235);
-          ledCoolantLoop2PumpBOn   = new LED('OFF', '#00ff00',  306, 235);
-          ledCoolantLoop2PumpBTrip = new LED('OFF', '#f4d742',  368, 235);
+          ledCoolantLoop2PumpAOn   = new LED(draw, 'OFF', '#00ff00',  151, 235);
+          ledCoolantLoop2PumpBOn   = new LED(draw, 'OFF', '#00ff00',  306, 235);
+          ledCoolantLoop2PumpBTrip = new LED(draw, 'OFF', '#f4d742',  368, 235);
           
-          swCoolantLoop2PumpA   = new Switch('DOWN',  89, 302, onCoolantLoop2PumpAChange);
-          swCoolantLoop2PumpB   = new Switch('DOWN', 245, 302, onCoolantLoop2PumpBChange);
-          swCoolantLoop2NH3Sys2 = new Switch('DOWN', 449, 302);
+          swCoolantLoop2PumpA   = new Switch(draw, 'DOWN',  89, 302, onCoolantLoop2PumpAChange);
+          swCoolantLoop2PumpB   = new Switch(draw, 'DOWN', 245, 302, onCoolantLoop2PumpBChange);
+          swCoolantLoop2NH3Sys2 = new Switch(draw, 'DOWN', 449, 302);
   
-          ledScrubberArsFan1On   = new LED('OFF', '#00ff00',  123,   438);
-          ledScrubberArsFan1Trip = new LED('OFF', '#f4d742',  184.5, 438);
-          ledLCGPumpOn           = new LED('OFF', '#00ff00',  450,   438);
-          ledLCGPumpTrip         = new LED('OFF', '#f4d742',  513,   438);
+          ledScrubberArsFan1On   = new LED(draw, 'OFF', '#00ff00',  123,   438);
+          ledScrubberArsFan1Trip = new LED(draw, 'OFF', '#f4d742',  184.5, 438);
+          ledLCGPumpOn           = new LED(draw, 'OFF', '#00ff00',  450,   438);
+          ledLCGPumpTrip         = new LED(draw, 'OFF', '#f4d742',  513,   438);
           
-          swScrubberArsFan1Pwr  = new Switch('DOWN',  89, 505, onScrubberArsFan1PwrChange);
-          swScrubberArsFan1Mode = new Switch('DOWN', 245, 505);
-          swLCGPump             = new Switch('DOWN', 449, 505, onLCGPumpChange);
+          swScrubberArsFan1Pwr  = new Switch(draw, 'DOWN',  89, 505, onScrubberArsFan1PwrChange);
+          swScrubberArsFan1Mode = new Switch(draw, 'DOWN', 245, 505);
+          swLCGPump             = new Switch(draw, 'DOWN', 449, 505, onLCGPumpChange);
   
-          ledScrubberArsFan2On   = new LED('OFF', '#00ff00',  123,   630);
-          ledScrubberArsFan2Trip = new LED('OFF', '#f4d742',  184.5, 630);
+          ledScrubberArsFan2On   = new LED(draw, 'OFF', '#00ff00',  123,   630);
+          ledScrubberArsFan2Trip = new LED(draw, 'OFF', '#f4d742',  184.5, 630);
   
-          swScrubberArsFan2Pwr  = new Switch('DOWN',  89, 697, onScrubberArsFan2PwrChange);
-          swScrubberArsFan2Mode = new Switch('DOWN', 245, 697);
-          swDockingSep          = new Switch('DOWN', 449, 697);
+          swScrubberArsFan2Pwr  = new Switch(draw, 'DOWN',  89, 697, onScrubberArsFan2PwrChange);
+          swScrubberArsFan2Mode = new Switch(draw, 'DOWN', 245, 697);
+          swDockingSep          = new Switch(draw, 'DOWN', 449, 697);
           
           /* Synchronize the LEDs with the switches */
           onCoolantLoop1PumpAChange();
@@ -92,8 +91,7 @@ script.
           onScrubberArsFan2PwrChange();
           onLCGPumpChange();
           
-          session.subscribe([{name:'/panel-display/swStatus/digital'}], function (data) {   
-              console.log('Hello world');
+          session.subscribe([{name:'/panel-display/swStatus/digital'}], function (data) { 
               var channelData = data[0].sample[0].value;
                          
               for(var entryIndex in SwitchMap) {
@@ -111,14 +109,14 @@ script.
                       }
                       
                       if(pass == true) {
-                          //console.log('SWITCH ' + entryIndex);
                           entry.switch();
                       }
                   }
               }
           });
       }
-  }
+      
+      
   
   
   function onCoolantLoop1PumpAChange() {
@@ -273,3 +271,4 @@ script.
       { logic: [{channel: 35, state: 0}], switch: function(){swDockingSep.up();}},
       { logic: [{channel: 44, state: 0}], switch: function(){swDockingSep.down();}}
   ];
+  }

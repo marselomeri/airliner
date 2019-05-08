@@ -1,8 +1,85 @@
 - var pluginName = query.pluginName;
-table.table.table-condensed
-  tbody
-    tr
-      th Commands Accepted 
-      td
-        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/cmdAcceptCount'}]}) ---
-      td
+
+div#f3_panel
+
+script.
+
+  
+    
+  loadSVG('panels/panel_F3.svg');
+
+  
+  function loadSVG(SVGFile)
+  {      
+      var swDAPInertial    = {};
+      var swDAPFree        = {};
+      var swCWAck          = {};
+      var ledCaution       = {};
+      var ledWarning       = {};
+      var swRCSYaw         = {};
+      var swRCSTranslate   = {};
+      var ledRCSRCSCntlEna = {};
+      var swRCSPitch       = {};
+      var swRCSCntl        = {};
+      var swRCSRoll        = {};
+      var ledMasterOn      = {};
+      var ledMasterTrip    = {};
+      var swMasterCntl     = {};
+  
+      var loadXML = new XMLHttpRequest;
+      loadXML.onload = callback;
+      loadXML.open("GET", SVGFile, true);
+      loadXML.send();
+      var draw = SVG('f3_panel').viewbox(0, 0, 340, 1650);
+      function callback()
+      {
+          //---responseText---
+          var svgFileString=loadXML.responseText;
+          draw.svg(svgFileString);         
+          
+          ledDAPInertial   = new LED(draw, 'OFF', '#00ff00',  122, 480);
+          ledDAPFree       = new LED(draw, 'OFF', '#00ff00',  260, 480);
+          swDAPInertial    = new PushButton(draw, 'OUT', 70, 525);
+          swDAPFree        = new PushButton(draw, 'OUT', 215, 525);
+          swCWAck          = new PushButton(draw, 'OUT', 143, 780);
+          ledCaution       = new TextIndicator(draw, 'CAUTION', 'OFF', '#ff0000',  130, 719);
+          ledWarning       = new TextIndicator(draw, 'WARNING', 'OFF', '#f4d742',  128, 874);
+          swRCSYaw         = new SwitchHorizontal(draw, 'MIDDLE',  77, 1096);
+          swRCSTranslate   = new Switch(draw, 'DOWN',  234, 1096);
+          ledRCSRCSCntlEna = new LED(draw, 'OFF', '#00ff00',  288, 1211);
+          swRCSPitch       = new Switch(draw, 'DOWN',  77, 1290);
+          swRCSCntl        = new Switch(draw, 'DOWN', 234, 1290);
+          swRCSRoll        = new SwitchHorizontal(draw, 'MIDDLE',  77, 1480);
+          ledMasterOn      = new LED(draw, 'OFF', '#00ff00',  235, 1413);
+          ledMasterTrip    = new LED(draw, 'OFF', '#f4d742',  287, 1413);
+          swMasterCntl     = new Switch(draw, 'DOWN', 234, 1480);
+          
+          session.subscribe([{name:'/panel-display/swStatus/digital'}], function (data) { 
+              var channelData = data[0].sample[0].value;
+                         
+              for(var entryIndex in SwitchMap) {
+                  var entry = SwitchMap[entryIndex];
+
+                  if(typeof entry.switch === 'function') {
+                      var pass = true;
+                      
+                      for(var logicCheckIndex in entry.logic) {
+                          var logicCheck = entry.logic[logicCheckIndex];
+                          
+                          if(channelData[logicCheck.channel] != logicCheck.state) {
+                              pass = false;
+                          }
+                      }
+                      
+                      if(pass == true) {
+                          entry.switch();
+                      }
+                  }
+              }
+          });
+      }
+      
+  
+  var SwitchMap = [
+  ];
+  }

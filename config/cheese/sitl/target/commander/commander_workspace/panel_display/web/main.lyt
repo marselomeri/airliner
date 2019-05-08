@@ -44,13 +44,14 @@
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "width": 100,
+     "width": 50,
      "content": [
       {
-       "type": "row",
+       "type": "column",
        "isClosable": true,
        "reorderEnabled": true,
        "title": "",
+       "width": 100,
        "height": 100,
        "content": [
         {
@@ -60,8 +61,8 @@
          "reorderEnabled": true,
          "title": "",
          "activeItemIndex": 0,
-         "width": 50,
-         "height": 100,
+         "width": 31.979368149580917,
+         "height": 76.77564825253664,
          "content": [
           {
            "title": "F1 Panel",
@@ -69,7 +70,7 @@
            "componentName": "Blank",
            "componentState": {
             "text": "text",
-            "link": "/ground/panel-display/f1?pluginName={{pluginName}}"
+            "link": "/ground/panel-display/f1?pluginName=panel-display"
            },
            "isClosable": true,
            "reorderEnabled": true
@@ -83,20 +84,74 @@
          "reorderEnabled": true,
          "title": "",
          "activeItemIndex": 0,
-         "width": 50,
+         "height": 23.224351747463356,
          "content": [
           {
-           "title": "HK",
+           "title": "F2 Panel",
            "type": "component",
            "componentName": "Blank",
            "componentState": {
             "text": "text",
-            "link": "/ground/panel-display/hk?pluginName={{pluginName}}"
+            "link": "/ground/panel-display/f2"
            },
            "isClosable": true,
            "reorderEnabled": true
           }
          ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "column",
+     "isClosable": true,
+     "reorderEnabled": true,
+     "title": "",
+     "width": 50,
+     "content": [
+      {
+       "type": "stack",
+       "header": {},
+       "isClosable": true,
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "width": 50,
+       "height": 50,
+       "content": [
+        {
+         "title": "F3 Panel",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/ground/panel-display/f3"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
+      },
+      {
+       "type": "stack",
+       "header": {},
+       "isClosable": true,
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "height": 50,
+       "content": [
+        {
+         "title": "F4 Panel",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/ground/panel-display/f4"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
         }
        ]
       }

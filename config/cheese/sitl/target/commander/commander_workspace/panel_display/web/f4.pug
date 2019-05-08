@@ -1,8 +1,69 @@
 - var pluginName = query.pluginName;
-table.table.table-condensed
-  tbody
-    tr
-      th Commands Accepted 
-      td
-        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/cmdAcceptCount'}]}) ---
-      td
+
+div#f4_panel
+
+script.
+
+  
+    
+  loadSVG('panels/panel_F4.svg');
+
+  
+  function loadSVG(SVGFile)
+  {      
+      var ledPyroMasterArm        = {};
+      var swPyroMasterArm         = {};
+      var swCMPropAct             = {};
+      var swCMSPSep               = {};
+      var swDrogueDeploy          = {};
+      var swMainDeploy            = {};
+      var swRiserCutUprightDeploy = {};
+  
+      var loadXML = new XMLHttpRequest;
+      loadXML.onload = callback;
+      loadXML.open("GET", SVGFile, true);
+      loadXML.send();
+      var draw = SVG('f4_panel').viewbox(0, 0, 1030, 260);
+      function callback()
+      {
+          //---responseText---
+          var svgFileString=loadXML.responseText;
+          draw.svg(svgFileString);
+          
+          ledPyroMasterArm        = new LED(draw, 'ON', '#00ff00',  175, 40);
+          swPyroMasterArm         = new Switch(draw, 'DOWN',  103, 116);
+          swCMPropAct             = new Switch(draw, 'DOWN',  254, 116);
+          swCMSPSep               = new Switch(draw, 'DOWN',  404, 116);
+          swDrogueDeploy          = new Switch(draw, 'DOWN',  555, 116);
+          swMainDeploy            = new Switch(draw, 'DOWN',  706, 116);
+          swRiserCutUprightDeploy = new Switch(draw, 'DOWN',  857, 116);
+          
+          session.subscribe([{name:'/panel-display/swStatus/digital'}], function (data) { 
+              var channelData = data[0].sample[0].value;
+                         
+              for(var entryIndex in SwitchMap) {
+                  var entry = SwitchMap[entryIndex];
+
+                  if(typeof entry.switch === 'function') {
+                      var pass = true;
+                      
+                      for(var logicCheckIndex in entry.logic) {
+                          var logicCheck = entry.logic[logicCheckIndex];
+                          
+                          if(channelData[logicCheck.channel] != logicCheck.state) {
+                              pass = false;
+                          }
+                      }
+                      
+                      if(pass == true) {
+                          entry.switch();
+                      }
+                  }
+              }
+          });
+      }
+      
+  
+  var SwitchMap = [
+  ];
+  }

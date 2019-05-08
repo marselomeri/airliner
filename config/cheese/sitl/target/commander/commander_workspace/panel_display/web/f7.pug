@@ -1,8 +1,59 @@
 - var pluginName = query.pluginName;
-table.table.table-condensed
-  tbody
-    tr
-      th Commands Accepted 
-      td
-        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/cmdAcceptCount'}]}) ---
-      td
+
+div#f7_panel
+
+script.
+
+  
+    
+  loadSVG('panels/panel_F7.svg');
+
+  
+  function loadSVG(SVGFile)
+  {      
+      var swFCM1      = {};
+      var swFCM2      = {};
+      var swFCM3      = {};
+      var swFCM4      = {};
+      var swVPU1BFS   = {};
+  
+      var loadXML = new XMLHttpRequest;
+      loadXML.onload = callback;
+      loadXML.open("GET", SVGFile, true);
+      loadXML.send();
+      var draw = SVG('f7_panel').viewbox(0, 0, 590, 835);
+      function callback()
+      {
+          //---responseText---
+          var svgFileString=loadXML.responseText;
+          draw.svg(svgFileString);
+          
+          session.subscribe([{name:'/panel-display/swStatus/digital'}], function (data) { 
+              var channelData = data[0].sample[0].value;
+                         
+              for(var entryIndex in SwitchMap) {
+                  var entry = SwitchMap[entryIndex];
+
+                  if(typeof entry.switch === 'function') {
+                      var pass = true;
+                      
+                      for(var logicCheckIndex in entry.logic) {
+                          var logicCheck = entry.logic[logicCheckIndex];
+                          
+                          if(channelData[logicCheck.channel] != logicCheck.state) {
+                              pass = false;
+                          }
+                      }
+                      
+                      if(pass == true) {
+                          entry.switch();
+                      }
+                  }
+              }
+          });
+      }
+      
+  
+  var SwitchMap = [
+  ];
+  }
