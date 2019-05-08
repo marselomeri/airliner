@@ -33,6 +33,12 @@ module.exports = class CfeCdrFlightAppsPlugin extends CdrFlightAppsPlugin {
 					    longDescription: 'Attitude Estimator Vehicle Attitude',
 					    filePath: 'va.pug'
 				    },
+				    va_plot: {
+					    type: CdrFlightAppsPlugin.ContentType.PANEL,
+					    shortDescription: 'Vehicle Attitude (plot)',
+					    longDescription: 'Attitude Estimator Vehicle Attitude data plot',
+					    filePath: 'va_plot.pug'
+				    },
 				    cs: {
 					    type: CdrFlightAppsPlugin.ContentType.PANEL,
 					    shortDescription: 'Control State',

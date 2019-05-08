@@ -44,6 +44,8 @@ var indexRouter = require( './routes/index' );
 
 const util = require( 'util' );
 
+process.setMaxListeners(0);
+
 global.CDR_WORKSPACE = process.env.CDR_WORKSPACE || path.join( __dirname, '/workspace' );
 global.CDR_INSTALL_DIR = __dirname;
 

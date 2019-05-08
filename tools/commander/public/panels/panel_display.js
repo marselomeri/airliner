@@ -5,6 +5,9 @@ class Switch
     constructor(state, x, y, cb) {
         var self = this;
         
+        this.x = x;
+        this.y = y;
+        
         this.width = 50;
         this.thickness = 15;
         this.length = 50;
@@ -101,24 +104,33 @@ class Switch
     }
       
     up() {
-        this.state = 'UP';
-        this.upSwitchGroup.show();
-        this.middleSwitchGroup.hide();
-        this.downSwitchGroup.hide();
+    	if(this.state != 'UP') {
+            this.state = 'UP';
+    		console.log('' + this.x + ', ' + this.y + '   ' + this.state);
+            this.upSwitchGroup.show();
+            this.middleSwitchGroup.hide();
+            this.downSwitchGroup.hide();
+    	}
     }
       
     middle() {
-        this.state = 'MIDDLE';
-        this.upSwitchGroup.hide();
-        this.middleSwitchGroup.show();
-        this.downSwitchGroup.hide();
+    	if(this.state != 'MIDDLE') {
+            this.state = 'MIDDLE';
+    		console.log('' + this.x + ', ' + this.y + '   ' + this.state);
+            this.upSwitchGroup.hide();
+            this.middleSwitchGroup.show();
+            this.downSwitchGroup.hide();
+    	}
     }
       
     down() {
-        this.state = 'DOWN';
-        this.upSwitchGroup.hide();
-        this.middleSwitchGroup.hide();
-        this.downSwitchGroup.show();
+    	if(this.state != 'DOWN') {
+            this.state = 'DOWN';
+    		console.log('' + this.x + ', ' + this.y + '   ' + this.state);
+            this.upSwitchGroup.hide();
+            this.middleSwitchGroup.hide();
+            this.downSwitchGroup.show();
+        }
     }
 }
 
