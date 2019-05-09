@@ -38,20 +38,21 @@ const SerialPort = require( global.CDR_INSTALL_DIR + '/node_modules/serialport')
 var Enum = require( global.CDR_INSTALL_DIR + '/node_modules/enum');
 
 var ParserState = new Enum({
-	'WAITING_FOR_HEADER':        1, 
-	'WAITING_FOR_RESPONSE_TYPE': 2, 
-	'WAITING_FOR_ID1':           3, 
-	'WAITING_FOR_ID2':           4, 
-	'WAITING_FOR_STATE1':        5, 
-	'WAITING_FOR_STATE2':        6, 
-	'WAITING_FOR_STATE3':        7, 
-	'WAITING_FOR_STATE4':        8, 
-	'WAITING_FOR_CHECKSUM1':     9, 
-	'WAITING_FOR_CHECKSUM2':    10, 
-	'WAITING_FOR_CHECKSUM3':    11, 
-	'WAITING_FOR_CHECKSUM4':    12, 
-	'WAITING_FOR_FOOTER':       13, 
-	'WAITING_FOR_FINAL_FOOTER': 14
+        'RESYNCING_TO_HEADER':       1, 
+	'WAITING_FOR_HEADER':        2, 
+	'WAITING_FOR_RESPONSE_TYPE': 3, 
+	'WAITING_FOR_ID1':           4, 
+	'WAITING_FOR_ID2':           5, 
+	'WAITING_FOR_STATE1':        6, 
+	'WAITING_FOR_STATE2':        7, 
+	'WAITING_FOR_STATE3':        8, 
+	'WAITING_FOR_STATE4':        9, 
+	'WAITING_FOR_CHECKSUM1':    10, 
+	'WAITING_FOR_CHECKSUM2':    11, 
+	'WAITING_FOR_CHECKSUM3':    12, 
+	'WAITING_FOR_CHECKSUM4':    13, 
+	'WAITING_FOR_FOOTER':       14, 
+	'WAITING_FOR_FINAL_FOOTER': 15
 });
 
 
@@ -78,29 +79,41 @@ class PanelDisplay extends CdrGroundPlugin {
         /* Initialize server side commands. */
         this.initCommands();
         
-        /* Open serial port */
-        this.serialPort = new SerialPort('/dev/ttyACM0', {
+        /* Open serial ports */
+        this.serial1Port = new SerialPort('/dev/ttyACM0', {
+            baudRate: 115200
+        });
+        this.serial2Port = new SerialPort('/dev/ttyACM1', {
+            baudRate: 115200
+        });
+        this.serial3Port = new SerialPort('/dev/ttyACM2', {
             baudRate: 115200
         });
         
-        this.currentParserState = ParserState.WAITING_FOR_HEADER.value;
+        this.currentParserState = [];
+        
+        this.currentParserState[0] = ParserState.WAITING_FOR_HEADER.value;
+        this.currentParserState[1] = ParserState.WAITING_FOR_HEADER.value;
         
         var group = 0;
+        
+        this.responseType = [];
+        this.id = [];
+        this.state = [];
+        this.checksum = [];
         
         setInterval(function() {
             var commandCode = 1;
             var checksum = commandCode + group;
-            var command = '<' + commandCode;
+            var command = '<' + commandCode + '0';
             if(group < 10) {
-                command += '000' + group;
+                command += '00' + group;
             } else if(group < 100) {
-            	command += '00' + group;
-            } else if(group < 1000) {
             	command += '0' + group;
-            } else {
-            	command += group;
-            }
-                	
+            };
+            
+            command += '0000';
+            
             if(checksum < 10) {
             	command += '000' + checksum;
             } else if(checksum < 100){
@@ -113,8 +126,11 @@ class PanelDisplay extends CdrGroundPlugin {
                 	
             command += '>';
                 	
-            self.serialPort.write(command);
+            self.serial1Port.write(command);
             self.hk.content.card1MsgSentCount++;
+            
+            self.serial2Port.write(command);
+            self.hk.content.card2MsgSentCount++;
             
             group++;
             
@@ -122,267 +138,25 @@ class PanelDisplay extends CdrGroundPlugin {
             	group = 0;
             }
         }, 25);
+        
 
-        this.serialPort.on('data', function (data) {
-        	var id = 0;
-        	var responseType = 0;
-        	var state = 0;
-        	var checksum = 0;
-            
-        	for(var i = 0; i < data.length; ++i) {
-        		var byteRead = data[i];
-        		var charRead = String.fromCharCode(byteRead);
-        		
-                switch(self.currentParserState)
-                {
-                    case ParserState.WAITING_FOR_HEADER.value: {
-                        if(charRead == '<') {
-                            self.currentParserState = ParserState.WAITING_FOR_RESPONSE_TYPE.value;
-                        }
-                        break;
-        	        }
+        this.tmpString = [];
+        this.tmpString.push('');
+        this.tmpString.push('');
 
-                    case ParserState.WAITING_FOR_RESPONSE_TYPE.value:
-                    {
-                        if(charRead == '0' || charRead == '1' || charRead == '2' )
-                        {
-                        	self.currentParserState = ParserState.WAITING_FOR_ID1.value;
-                            responseType = byteRead - 48;
-                        }
-                        else
-                        {
-                        	self.logError('Unknown response type.');
-                        	self.currentParserState = ParserState.WAITING_FOR_HEADER.value;
-                        }
-                        break;
-                    }
+        this.serial1Port.on('data', function (data) {
+            self.processSerialPortData(0, data);
+        });    
 
-                    case ParserState.WAITING_FOR_ID1.value:
-                    {
-                        if(charRead == '0' || charRead == '1' || charRead == '2'
-                          || charRead == '3' || charRead == '4' || charRead == '5'
-                          || charRead == '6' || charRead == '7' || charRead == '8'
-                          || charRead == '9')
-                        {
-                        	self.currentParserState = ParserState.WAITING_FOR_ID2.value;
-                            id = (byteRead - 48) * 10;
-                        }
-                        else
-                        {
-                        	self.logError('Unknown ID1.');
-                        	self.currentParserState = ParserState.WAITING_FOR_HEADER.value;
-                        }
-                        break;
-                    }
-
-                    case ParserState.WAITING_FOR_ID2.value:
-                    {
-                        if(charRead == '0' || charRead == '1' || charRead == '2'
-                          || charRead == '3' || charRead == '4' || charRead == '5'
-                          || charRead == '6' || charRead == '7' || charRead == '8'
-                          || charRead == '9')
-                        {
-                        	self.currentParserState = ParserState.WAITING_FOR_STATE1.value;
-                            id += (byteRead - 48);
-                        }
-                        else
-                        {
-                        	self.logError('Unknown ID2.');
-                        	self.currentParserState = ParserState.WAITING_FOR_HEADER.value;
-                        }
-                        break;
-                    }
-
-                    case ParserState.WAITING_FOR_STATE1.value:
-                    {
-                        if(charRead == '0' || charRead == '1' || charRead == '2'
-                          || charRead == '3' || charRead == '4' || charRead == '5'
-                          || charRead == '6' || charRead == '7' || charRead == '8'
-                          || charRead == '9')
-                        {
-                        	self.currentParserState = ParserState.WAITING_FOR_STATE2.value;
-                            state = (byteRead - 48) * 1000;
-                        }
-                        else
-                        {
-                        	self.logError('Unknown STATE1.');
-                        	self.currentParserState = ParserState.WAITING_FOR_HEADER.value;
-                        }
-                        break;
-                    }
-
-                    case ParserState.WAITING_FOR_STATE2.value:
-                    {
-                        if(charRead == '0' || charRead == '1' || charRead == '2'
-                          || charRead == '3' || charRead == '4' || charRead == '5'
-                          || charRead == '6' || charRead == '7' || charRead == '8'
-                          || charRead == '9')
-                        {
-                        	self.currentParserState = ParserState.WAITING_FOR_STATE3.value;
-                            state += (byteRead - 48) * 100;
-                        }
-                        else
-                        {
-                        	self.logError('Unknown STATE2.');
-                        	self.currentParserState = ParserState.WAITING_FOR_HEADER.value;
-                        }
-                        break;
-                    }
-
-                    case ParserState.WAITING_FOR_STATE3.value:
-                    {
-                        if(charRead == '0' || charRead == '1' || charRead == '2'
-                          || charRead == '3' || charRead == '4' || charRead == '5'
-                          || charRead == '6' || byteRead == '7' || charRead == '8'
-                          || charRead == '9')
-                        {
-                        	self.currentParserState = ParserState.WAITING_FOR_STATE4.value;
-                            state += (byteRead - 48) * 10;
-                        }
-                        else
-                        {
-                        	self.logError('Unknown STATE3.');
-                        	self.currentParserState = ParserState.WAITING_FOR_HEADER.value;
-                        }
-                        break;
-                    }
-
-                    case ParserState.WAITING_FOR_STATE4.value:
-                    {
-                        if(charRead == '0' || charRead == '1' || charRead == '2'
-                          || charRead == '3' || charRead == '4' || charRead == '5'
-                          || charRead == '6' || charRead == '7' || charRead == '8'
-                          || charRead == '9')
-                        {
-                        	self.currentParserState = ParserState.WAITING_FOR_CHECKSUM1.value;
-                            state += (byteRead - 48);
-                        }
-                        else
-                        {
-                        	self.logError('Unknown STATE4.');
-                        	self.currentParserState = ParserState.WAITING_FOR_HEADER.value;
-                        }
-                        break;
-                    }
-
-
-                    case ParserState.WAITING_FOR_CHECKSUM1.value:
-                    {
-                        if(charRead == '0' || charRead == '1' || charRead == '2'
-                          || charRead == '3' || charRead == '4' || charRead == '5'
-                          || charRead == '6' || charRead == '7' || charRead == '8'
-                          || charRead == '9')
-                        {
-                        	self.currentParserState = ParserState.WAITING_FOR_CHECKSUM2.value;
-                            checksum = 1000 * (byteRead - 48); 
-                        }
-                        else
-                        {
-                        	self.logError('Unknown CHECKSUM1.');
-                        	self.currentParserState = ParserState.WAITING_FOR_HEADER.value;
-                        }
-                        break;
-                    }
-                    
-                    case ParserState.WAITING_FOR_CHECKSUM2.value:
-                    {
-                        if(charRead == '0' || charRead == '1' || charRead == '2'
-                          || charRead == '3' || charRead == '4' || charRead == '5'
-                          || charRead == '6' || charRead == '7' || charRead == '8'
-                          || charRead == '9')
-                        {
-                        	self.currentParserState = ParserState.WAITING_FOR_CHECKSUM3.value;
-                            checksum += (100 * (byteRead - 48)); 
-                        }
-                        else
-                        {
-                        	self.logError('Unknown CHECKSUM2.');
-                        	self.currentParserState = ParserState.WAITING_FOR_HEADER.value;
-                        }
-                        break;
-                    }
-
-                    case ParserState.WAITING_FOR_CHECKSUM3.value:
-                    {
-                        if(charRead == '0' || charRead == '1' || charRead == '2'
-                          || charRead == '3' || charRead == '4' || charRead == '5'
-                          || charRead == '6' || charRead == '7' || charRead == '8'
-                          || charRead == '9')
-                        {
-                        	self.currentParserState = ParserState.WAITING_FOR_CHECKSUM4.value;
-                            checksum += (10 * (byteRead - 48)); 
-                        }
-                        else
-                        {
-                        	self.logError('Unknown CHECKSUM3.');
-                            currentParserState = ParserState.WAITING_FOR_HEADER.value;
-                        }
-                        break;
-                    }
-                
-                    case ParserState.WAITING_FOR_CHECKSUM4.value:
-                    {
-                        if(charRead == '0' || charRead == '1' || charRead == '2'
-                          || charRead == '3' || charRead == '4' || charRead == '5'
-                          || charRead == '6' || charRead == '7' || charRead == '8'
-                          || charRead == '9')
-                        {
-                        	self.currentParserState = ParserState.WAITING_FOR_FOOTER.value;
-                            checksum += (byteRead - 48); 
-                        }
-                        else
-                        {
-                            self.logError('Unknown CHECKSUM4.');
-                            self.currentParserState = ParserState.WAITING_FOR_HEADER.value;
-                        }
-                        break;
-                    }
-
-                    case ParserState.WAITING_FOR_FOOTER.value:
-                    {
-                        if(charRead == '>')
-                        { 
-                            var calculatedChecksum = responseType + id + state;
-                            if(calculatedChecksum == checksum) {
-                                //std::cout << "SwitchType: " << responseType << "   ID: " << id << "   State: " << state << std::endl;
-                                //self.logError('Received message');
-                            	if(responseType == 2) {
-                                	self.hk.content.card1MsgRecvCount++;
-                            	} else {
-                            		if(responseType == 0) {
-                            			self.swStatus.content.digital[id] = state;
-                            		} else if(responseType == 1 ) {
-                            			self.swStatus.content.analog[id] = state;
-                            		};
-                            	}
-                            }
-                            else
-                            {
-                                self.logError('Invalid checksum.  ResponseType: ' + responseType + '  ID: ' + id + '  State: ' + state + '  Expected Checksum: ' + checksum + '  Calculated Checksum: ' + calculatedChecksum);
-                            }
-                        }
-                        else
-                        {
-                            self.logError('Unknown footer');
-                        }
-                        self.currentParserState = ParserState.WAITING_FOR_HEADER.value;
-                        break;
-                    }
-
-                    default:
-                    {
-                        self.logError('Parser in unknown state. ' + self.currentParserState);
-                        self.currentParserState = ParserState.WAITING_FOR_HEADER.value;
-                        break;
-                    }                    
-                }
-        	}
-        });
+        this.serial2Port.on('data', function (data) {            
+            self.processSerialPortData(1, data);
+        });    
+        
         
         /* Start listening for data to send out the socket. */
         this.namespace.emitter.on( this.config.get( 'inputStreamID' ), function( buffer ) {
-            self.hk.content.msgSentCount++;
-            self.sender.send( buffer, 0, buffer.length, self.hk.content.outPort, self.hk.content.outAddress);
+            //self.hk.content.msgSentCount++;
+            //self.sender.send( buffer, 0, buffer.length, self.hk.content.outPort, self.hk.content.outAddress);
         } );
 
         this.logInfo( 'Initialized' );
@@ -454,15 +228,296 @@ class PanelDisplay extends CdrGroundPlugin {
     }
     
     
+    processSerialPortData (cardID, data) {    
+        
+        for(var i = 0; i < data.length; ++i) {
+            var byteRead = data[i];
+            var charRead = String.fromCharCode(byteRead);
+            this.tmpString[cardID] += charRead;
+                    
+            switch(this.currentParserState[cardID])
+            {
+                case ParserState.RESYNCING_TO_HEADER.value: {
+                    if(charRead == '<') {
+                        this.logError('Received "' + this.tmpString[cardID] + '" while resyncing.');
+                        this.tmpString[cardID] = charRead;
+                        this.currentParserState[cardID] = ParserState.WAITING_FOR_RESPONSE_TYPE.value;
+                    } 
+                    break;
+                }
+                
+                case ParserState.WAITING_FOR_HEADER.value: {
+                    if(charRead == '<') {
+                        this.currentParserState[cardID] = ParserState.WAITING_FOR_RESPONSE_TYPE.value;
+                        this.tmpString[cardID] = charRead;
+                    }
+                    break;
+                }
+
+                case ParserState.WAITING_FOR_RESPONSE_TYPE.value:
+                {
+                    if(charRead == '0' || charRead == '1' || charRead == '2' || charRead == '4')
+                    {
+                        this.currentParserState[cardID] = ParserState.WAITING_FOR_ID1.value;
+                        this.responseType[cardID] = byteRead - 48;
+                    }
+                    else
+                    {
+                        this.logError('Unknown response type.');
+                        this.currentParserState[cardID] = ParserState.RESYNCING_TO_HEADER.value;
+                    }
+                    break;
+                }
+
+                case ParserState.WAITING_FOR_ID1.value:
+                {
+                    if(charRead == '0' || charRead == '1' || charRead == '2'
+                      || charRead == '3' || charRead == '4' || charRead == '5'
+                      || charRead == '6' || charRead == '7' || charRead == '8'
+                      || charRead == '9')
+                    {
+                        this.currentParserState[cardID] = ParserState.WAITING_FOR_ID2.value;
+                        this.id[cardID] = (byteRead - 48) * 10;
+                    }
+                    else
+                    {
+                        this.logError('Unknown ID1.');
+                        this.currentParserState[cardID] = ParserState.RESYNCING_TO_HEADER.value;
+                    }
+                    break;
+                }
+
+                case ParserState.WAITING_FOR_ID2.value:
+                {
+                    if(charRead == '0' || charRead == '1' || charRead == '2'
+                      || charRead == '3' || charRead == '4' || charRead == '5'
+                      || charRead == '6' || charRead == '7' || charRead == '8'
+                      || charRead == '9')
+                    {
+                        this.currentParserState[cardID] = ParserState.WAITING_FOR_STATE1.value;
+                        this.id[cardID] += (byteRead - 48);
+                    }
+                    else
+                    {
+                        this.logError('Unknown ID2.');
+                        this.currentParserState[cardID] = ParserState.RESYNCING_TO_HEADER.value;
+                    }
+                    break;
+                }
+
+                case ParserState.WAITING_FOR_STATE1.value:
+                {
+                    if(charRead == '0' || charRead == '1' || charRead == '2'
+                      || charRead == '3' || charRead == '4' || charRead == '5'
+                      || charRead == '6' || charRead == '7' || charRead == '8'
+                      || charRead == '9')
+                    {
+                        this.currentParserState[cardID] = ParserState.WAITING_FOR_STATE2.value;
+                        this.state[cardID] = (byteRead - 48) * 1000;
+                    }
+                    else
+                    {
+                        this.logError('Unknown STATE1.');
+                        this.currentParserState[cardID] = ParserState.RESYNCING_TO_HEADER.value;
+                    }
+                    break;
+                }
+
+                case ParserState.WAITING_FOR_STATE2.value:
+                {
+                    if(charRead == '0' || charRead == '1' || charRead == '2'
+                      || charRead == '3' || charRead == '4' || charRead == '5'
+                      || charRead == '6' || charRead == '7' || charRead == '8'
+                      || charRead == '9')
+                    {
+                        this.currentParserState[cardID] = ParserState.WAITING_FOR_STATE3.value;
+                        this.state[cardID] += (byteRead - 48) * 100;
+                    }
+                    else
+                    {
+                        this.logError('Unknown STATE2.');
+                        this.currentParserState[cardID] = ParserState.RESYNCING_TO_HEADER.value;
+                    }
+                    break;
+                }
+
+                case ParserState.WAITING_FOR_STATE3.value:
+                {
+                    if(charRead == '0' || charRead == '1' || charRead == '2'
+                      || charRead == '3' || charRead == '4' || charRead == '5'
+                      || charRead == '6' || charRead == '7' || charRead == '8'
+                      || charRead == '9')
+                    {
+                        this.currentParserState[cardID] = ParserState.WAITING_FOR_STATE4.value;
+                        this.state[cardID] += (byteRead - 48) * 10;
+                    }
+                    else
+                    {
+                        this.logError('Unknown STATE3.');
+                        this.currentParserState[cardID] = ParserState.RESYNCING_TO_HEADER.value;
+                    }
+                    break;
+                }
+
+                case ParserState.WAITING_FOR_STATE4.value:
+                {
+                    if(charRead == '0' || charRead == '1' || charRead == '2'
+                      || charRead == '3' || charRead == '4' || charRead == '5'
+                      || charRead == '6' || charRead == '7' || charRead == '8'
+                      || charRead == '9')
+                    {
+                        this.currentParserState[cardID] = ParserState.WAITING_FOR_CHECKSUM1.value;
+                        this.state[cardID] += (byteRead - 48);
+                    }
+                    else
+                    {
+                        this.logError('Unknown STATE4.');
+                        this.currentParserState[cardID] = ParserState.RESYNCING_TO_HEADER.value;
+                    }
+                    break;
+                }
+
+                case ParserState.WAITING_FOR_CHECKSUM1.value:
+                {
+                    if(charRead == '0' || charRead == '1' || charRead == '2'
+                      || charRead == '3' || charRead == '4' || charRead == '5'
+                      || charRead == '6' || charRead == '7' || charRead == '8'
+                      || charRead == '9')
+                    {
+                        this.currentParserState[cardID] = ParserState.WAITING_FOR_CHECKSUM2.value;
+                        this.checksum[cardID] = 1000 * (byteRead - 48); 
+                    }
+                    else
+                    {
+                        this.logError('Unknown CHECKSUM1.');
+                        this.currentParserState[cardID] = ParserState.RESYNCING_TO_HEADER.value;
+                    }
+                    break;
+                }
+                
+                case ParserState.WAITING_FOR_CHECKSUM2.value:
+                {
+                    if(charRead == '0' || charRead == '1' || charRead == '2'
+                      || charRead == '3' || charRead == '4' || charRead == '5'
+                      || charRead == '6' || charRead == '7' || charRead == '8'
+                      || charRead == '9')
+                    {
+                        this.currentParserState[cardID] = ParserState.WAITING_FOR_CHECKSUM3.value;
+                        this.checksum[cardID] += (100 * (byteRead - 48)); 
+                    }
+                    else
+                    {
+                        this.logError('Unknown CHECKSUM2.');
+                        this.currentParserState[cardID] = ParserState.RESYNCING_TO_HEADER.value;
+                    }
+                    break;
+                }
+
+                case ParserState.WAITING_FOR_CHECKSUM3.value:
+                {
+                    if(charRead == '0' || charRead == '1' || charRead == '2'
+                      || charRead == '3' || charRead == '4' || charRead == '5'
+                      || charRead == '6' || charRead == '7' || charRead == '8'
+                      || charRead == '9')
+                    {
+                        this.currentParserState[cardID] = ParserState.WAITING_FOR_CHECKSUM4.value;
+                        this.checksum[cardID] += (10 * (byteRead - 48)); 
+                    }
+                    else
+                    {
+                        this.logError('Unknown CHECKSUM3.');
+                        this.currentParserState[cardID] = ParserState.RESYNCING_TO_HEADER.value;
+                    }
+                    break;
+                }
+            
+                case ParserState.WAITING_FOR_CHECKSUM4.value:
+                {
+                    if(charRead == '0' || charRead == '1' || charRead == '2'
+                      || charRead == '3' || charRead == '4' || charRead == '5'
+                      || charRead == '6' || charRead == '7' || charRead == '8'
+                      || charRead == '9')
+                    {
+                        this.currentParserState[cardID] = ParserState.WAITING_FOR_FOOTER.value;
+                        this.checksum[cardID] += (byteRead - 48); 
+                    }
+                    else
+                    {
+                        this.logError('Unknown CHECKSUM4.');
+                        this.currentParserState[cardID] = ParserState.RESYNCING_TO_HEADER.value;
+                    }
+                    break;
+                }
+
+                case ParserState.WAITING_FOR_FOOTER.value:
+                {
+                    if(charRead == '>')
+                    { 
+                        var calculatedChecksum = this.responseType[cardID] + this.id[cardID] + this.state[cardID];
+                        if(calculatedChecksum == this.checksum[cardID]) {
+                            switch(cardID) {
+                                case 0:
+                                    if(this.responseType[cardID] == 4) {
+                                        this.hk.content.card1MsgRecvCount++;
+                                    } else {
+                                        if(this.responseType[cardID] == 0) {
+                                            this.sw1Status.content.digital[this.id[cardID]] = this.state[cardID];
+                                        } else if(this.responseType[cardID] == 1 ) {
+                                            this.sw1Status.content.analog[this.id[cardID]] = this.state[cardID];
+                                        }
+                                    };
+                                    break;
+                                
+                                case 1:
+                                    if(this.responseType[cardID] == 4) {
+                                        this.hk.content.card2MsgRecvCount++;
+                                    } else {
+                                        if(this.responseType[cardID] == 0) {
+                                            this.sw2Status.content.digital[this.id[cardID]] = this.state[cardID];
+                                        } else if(this.responseType[cardID] == 1 ) {
+                                            this.sw2Status.content.analog[this.id[cardID]] = this.state[cardID];
+                                        }
+                                    };
+                                    break;
+                                    
+                                default:
+                                    this.logError('Invalid card ID of ', cardID);
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            this.logError('Invalid checksum.  ResponseType: ' + this.responseType[cardID] + '  ID: ' + this.id[cardID] + '  State: ' + this.state[cardID] + '  Expected Checksum: ' + this.checksum[cardID] + '  Calculated Checksum: ' + calculatedChecksum);
+                        }
+                    }
+                    else
+                    {
+                        this.logError('Unknown footer');
+                    }
+                    this.currentParserState[cardID] = ParserState.WAITING_FOR_HEADER.value;
+                    break;
+                }
+
+                default:
+                {
+                    this.logError('Parser in unknown state. ' + this.currentParserState[cardID]);
+                    this.currentParserState[cardID] = ParserState.WAITING_FOR_HEADER.value;
+                    break;
+                }                    
+            }
+        }
+    };
+    
+    
     initTelemetry() {
         this.hk = {
             opsPath: '/' + this.config.name + '/hk',
             content: {
-                cmdAcceptCount: 0,
-                cmdRejectCount: 0,
-                card1DevicePath: '',
-                card2DevicePath: '',
-                card3DevicePath: '',
+                cmdAcceptCount:    0,
+                cmdRejectCount:    0,
+                card1DevicePath:  '',
+                card2DevicePath:  '',
+                card3DevicePath:  '',
                 card1MsgRecvCount: 0,
                 card2MsgRecvCount: 0,
                 card3MsgSentCount: 0,
@@ -473,8 +528,8 @@ class PanelDisplay extends CdrGroundPlugin {
         };
         this.addTelemetry(this.hk, 1000);
 
-        this.swStatus = {
-            opsPath: '/' + this.config.name + '/swStatus',
+        this.sw1Status = {
+            opsPath: '/' + this.config.name + '/sw1Status',
             content: {
                 digital: [
                 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -485,7 +540,21 @@ class PanelDisplay extends CdrGroundPlugin {
                 analog: [0, 0, 0, 0, 0, 0, 0]
             }
         };
-        this.addTelemetry(this.swStatus, 10);
+        this.addTelemetry(this.sw1Status, 10);
+
+        this.sw2Status = {
+            opsPath: '/' + this.config.name + '/sw2Status',
+            content: {
+                digital: [
+                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                ],
+                analog: [0, 0, 0, 0, 0, 0, 0]
+            }
+        };
+        this.addTelemetry(this.sw2Status, 10);
     }
     
     
@@ -602,6 +671,65 @@ class PanelDisplay extends CdrGroundPlugin {
         	self.hk.content.card2MsgSentCount = 0,
         	self.hk.content.card3MsgSentCount = 0
         });
+        
+        var cmdSetLED = {
+            opsPath: '/' + this.config.name + '/SetLED',
+            args: [
+                {
+                    name:    'Board',
+                    type:    'uint8',
+                    bitSize: 8
+                },{
+                    name:    'Lamp',
+                    type:    'uint32',
+                    bitSize: 32
+                },{
+                    name:    'Intensity',
+                    type:    'uint32',
+                    bitSize: 32
+                }
+            ]
+        }
+        this.addCommand(cmdSetLED, function (cmd) {
+            var checksum = 2 + cmd.args.Board + cmd.args.Lamp + cmd.args.Intensity;
+            
+            /* board = arg1, lamp = arg2, intensity = arg3 */
+            var command = '<2' + cmd.args.Board;
+
+            if(cmd.args.Lamp < 10) {
+                command += '00' + cmd.args.Lamp;
+            } else if(cmd.args.Lamp < 100) {
+                command += '0' + cmd.args.Lamp;
+            } else {
+                command += cmd.args.Lamp;
+            }
+            
+            if(cmd.args.Intensity < 10) {
+                command += '000' + cmd.args.Intensity;
+            } else if(cmd.args.Intensity < 100) {
+                command += '00' + cmd.args.Intensity;
+            } else if(cmd.args.Intensity < 1000) {
+                command += '0' + cmd.args.Intensity;
+            } else {
+                command += cmd.args.Intensity;
+            }
+            
+            if(checksum < 10) {
+                command += '000' + checksum;
+            } else if(checksum < 100) {
+                command += '00' + checksum;
+            } else if(checksum < 1000) {
+                command += '0' + checksum;
+            } else {
+                command += checksum;
+            }
+            
+            command += '>';
+            
+            console.log(command);
+
+            self.serial3Port.write(command);
+        });
 
         var cmdReadSwitch = {
             opsPath: '/' + this.config.name + '/ReadSwitch',
@@ -678,30 +806,6 @@ class PanelDisplay extends CdrGroundPlugin {
                 }
         	}
         });
-
-        var cmdSetLED = {
-            opsPath: '/' + this.config.name + '/SetLED',
-            args: [
-                {
-                    name:    'MajorCard',
-                    type:    'uint8',
-                    bitSize: 8
-                },{
-                    name:    'MinorCard',
-                    type:    'uint8',
-                    bitSize: 8
-                },{
-                    name:    'Pin',
-                    type:    'uint8',
-                    bitSize: 8
-                },{
-                    name:    'State',
-                    type:    'uint8',
-                    bitSize: 8
-                }
-            ]
-        };
-        this.addCommand(cmdSetLED, this.setLED);
     }
     
     
@@ -723,6 +827,58 @@ class PanelDisplay extends CdrGroundPlugin {
                 this.hk.content.cmdAcceptCount++;
             }
     	}
+    }
+    
+    
+    setLED(board, lamp, intensity) {
+        var checksum = 2 + board + lamp + intensity;
+        
+        /* board = arg1, lamp = arg2, intensity = arg3 */
+        var command = '<2' + board;
+
+        if(lamp < 10) {
+            command += '00' + lamp;
+        } else if(lamp < 100) {
+            command += '0' + lamp;
+        } else {
+            command += lamp;
+        }
+        
+        if(intensity < 10) {
+            command += '000' + intensity;
+        } else if(intensity < 100) {
+            command += '00' + intensity;
+        } else if(intensity < 1000) {
+            command += '0' + intensity;
+        } else {
+            command += intensity;
+        }
+        
+        if(checksum < 10) {
+            command += '000' + checksum;
+        } else if(checksum < 100) {
+            command += '00' + checksum;
+        } else if(checksum < 1000) {
+            command += '0' + checksum;
+        } else {
+            command += checksum;
+        }
+        
+        command += '>';
+        
+        console.log(command);
+
+        this.serial3Port.write(command);
+    }
+    
+    cmdAllLEDs(intensity) {
+        var board = 3;
+        var lamp = 2;
+        //for(var board = 0; board < 4; board++) {
+        //    for(var lamp = 0; lamp < 8; lamp++) {
+                this.setLED(board, lamp, intensity);
+        //    }
+        //}
     }
 }
 

@@ -8,15 +8,31 @@ script.
     
   loadSVG('panels/panel_F5.svg');
 
-  
+  var swPDUPwrC1A             = {};
+  var swPDUPwrC2A             = {};
+  var swPDUPwrC1B             = {};
+  var swPDUPwrC2B             = {};
+  var swSMPwrPDCU1A           = {};
+  var swSMPwrPDCU2A           = {};
+  var swSMPwrPDCU1B           = {};
+  var swSMPwrPDCU2B           = {};
+  var ledBatteryToAuxC1AOn    = {};
+  var ledBatteryToAuxC1ATrip  = {};
+  var swBatteryToAuxC1A       = {};
+  var ledBatteryToAuxC2AOn    = {};
+  var ledBatteryToAuxC2ATrip  = {};
+  var swBatteryToAuxC2A       = {};
+  var ledBatteryToAuxC1BOn    = {};
+  var ledBatteryToAuxC1BATrip = {};
+  var swBatteryToAuxC1B       = {};
+  var ledBatteryToAuxC2BOn    = {};
+  var ledBatteryToAuxC2BTrip  = {};
+  var swBatteryToAuxC2B       = {};
+  var ledSegmentIndicator     = {};
+  var selSourceSelect         = {};
+      
   function loadSVG(SVGFile)
   {      
-      var swFCM1      = {};
-      var swFCM2      = {};
-      var swFCM3      = {};
-      var swFCM4      = {};
-      var swVPU1BFS   = {};
-  
       var loadXML = new XMLHttpRequest;
       loadXML.onload = callback;
       loadXML.open("GET", SVGFile, true);
@@ -28,7 +44,39 @@ script.
           var svgFileString=loadXML.responseText;
           draw.svg(svgFileString);
           
-          session.subscribe([{name:'/panel-display/swStatus/digital'}], function (data) { 
+          swPDUPwrC1A             = new Switch(draw, 'DOWN',          77,  130);
+          swPDUPwrC2A             = new Switch(draw, 'DOWN',         233,  130);
+          swPDUPwrC1B             = new Switch(draw, 'DOWN',          77,  320);
+          swPDUPwrC2B             = new Switch(draw, 'DOWN',         233,  320);
+          swSMPwrPDCU1A           = new Switch(draw, 'DOWN',          77,  520);
+          swSMPwrPDCU2A           = new Switch(draw, 'DOWN',         233,  520);
+          swSMPwrPDCU1B           = new Switch(draw, 'DOWN',          77,  712);
+          swSMPwrPDCU2B           = new Switch(draw, 'DOWN',         233,  712);
+          ledBatteryToAuxC1AOn    = new LED(draw, 'OFF', '#00ff00',    77,  857, 0, 4);
+          ledBatteryToAuxC1ATrip  = new LED(draw, 'OFF', '#ff0000',   130,  857, 0, 5);
+          swBatteryToAuxC1A       = new Switch(draw, 'DOWN',          77,  925);
+          ledBatteryToAuxC2AOn    = new LED(draw, 'OFF', '#00ff00',   235,  857, 0, 11);
+          ledBatteryToAuxC2ATrip  = new LED(draw, 'OFF', '#ff0000',   288,  857, 0, 10);
+          swBatteryToAuxC2A       = new Switch(draw, 'DOWN',         233,  925);
+          ledBatteryToAuxC1BOn    = new LED(draw, 'OFF', '#00ff00',    77, 1050, 0, 6);
+          ledBatteryToAuxC1BTrip  = new LED(draw, 'OFF', '#ff0000',   130, 1050, 0, 7);
+          swBatteryToAuxC1B       = new Switch(draw, 'DOWN',          77, 1116);
+          ledBatteryToAuxC2BOn    = new LED(draw, 'OFF', '#00ff00',   235, 1050, 0, 9);
+          ledBatteryToAuxC2BTrip  = new LED(draw, 'OFF', '#ff0000',   288, 1050, 0, 8);
+          swBatteryToAuxC2B       = new Switch(draw, 'DOWN',         233, 1116);
+          ledSegmentIndicator     = new SegmentIndicator(draw, 4, 0.0, 119, 1270);
+          selSourceSelect         = new RotaryKnob(draw, 'ALT', {
+              ALT:  255,
+              C1B:  285,
+              C1A:  315,
+              AUX1: 345,
+              AUX2:  15,
+              C2A:   45,
+              C2B:   75,
+              OFF:  105},
+              180, 1443);
+          
+          session.subscribe([{name:'/panel-display/sw2Status/digital'}], function (data) { 
               var channelData = data[0].sample[0].value;
                          
               for(var entryIndex in SwitchMap) {
@@ -55,5 +103,41 @@ script.
       
   
   var SwitchMap = [
+      { logic: [{channel: 24, state: 0}, {channel: 23, state: 1}], switch: function(){swPDUPwrC1A.up();} },
+      { logic: [{channel: 24, state: 1}, {channel: 23, state: 0}], switch: function(){swPDUPwrC1A.down();} },
+      { logic: [{channel: 25, state: 0}, {channel: 22, state: 1}], switch: function(){swPDUPwrC2A.up();} },
+      { logic: [{channel: 25, state: 1}, {channel: 22, state: 0}], switch: function(){swPDUPwrC2A.down();} },
+      { logic: [{channel: 26, state: 0}, {channel: 21, state: 1}], switch: function(){swPDUPwrC1B.up();} },
+      { logic: [{channel: 26, state: 1}, {channel: 21, state: 0}], switch: function(){swPDUPwrC1B.down();} },
+      { logic: [{channel: 27, state: 0}, {channel: 20, state: 1}], switch: function(){swPDUPwrC2B.up();} },
+      { logic: [{channel: 27, state: 1}, {channel: 20, state: 0}], switch: function(){swPDUPwrC2B.down();} },
+      { logic: [{channel: 28, state: 0}, {channel: 19, state: 1}], switch: function(){swSMPwrPDCU1A.up();} },
+      { logic: [{channel: 28, state: 1}, {channel: 19, state: 0}], switch: function(){swSMPwrPDCU1A.down();} },
+      { logic: [{channel: 29, state: 0}, {channel: 18, state: 1}], switch: function(){swSMPwrPDCU2A.up();} },
+      { logic: [{channel: 29, state: 1}, {channel: 18, state: 0}], switch: function(){swSMPwrPDCU2A.down();} },
+      { logic: [{channel: 30, state: 0}, {channel: 17, state: 1}], switch: function(){swSMPwrPDCU1B.up();} },
+      { logic: [{channel: 30, state: 1}, {channel: 17, state: 0}], switch: function(){swSMPwrPDCU1B.down();} },
+      { logic: [{channel: 31, state: 0}, {channel: 16, state: 1}], switch: function(){swSMPwrPDCU2B.up();} },
+      { logic: [{channel: 31, state: 1}, {channel: 16, state: 0}], switch: function(){swSMPwrPDCU2B.down();} },
+      { logic: [{channel: 32, state: 0}, {channel: 47, state: 1}], switch: function(){swBatteryToAuxC1A.up();} },
+      { logic: [{channel: 32, state: 1}, {channel: 47, state: 1}], switch: function(){swBatteryToAuxC1A.middle();} },
+      { logic: [{channel: 32, state: 1}, {channel: 47, state: 0}], switch: function(){swBatteryToAuxC1A.down();} },
+      { logic: [{channel: 33, state: 0}, {channel: 46, state: 1}], switch: function(){swBatteryToAuxC2A.up();} },
+      { logic: [{channel: 33, state: 1}, {channel: 46, state: 1}], switch: function(){swBatteryToAuxC2A.middle();} },
+      { logic: [{channel: 33, state: 1}, {channel: 46, state: 0}], switch: function(){swBatteryToAuxC2A.down();} },
+      { logic: [{channel: 34, state: 0}, {channel: 45, state: 1}], switch: function(){swBatteryToAuxC1B.up();} },
+      { logic: [{channel: 34, state: 1}, {channel: 45, state: 1}], switch: function(){swBatteryToAuxC1B.middle();} },
+      { logic: [{channel: 34, state: 1}, {channel: 45, state: 0}], switch: function(){swBatteryToAuxC1B.down();} },
+      { logic: [{channel: 35, state: 0}, {channel: 44, state: 1}], switch: function(){swBatteryToAuxC2B.up();} },
+      { logic: [{channel: 35, state: 1}, {channel: 44, state: 1}], switch: function(){swBatteryToAuxC2B.middle();} },
+      { logic: [{channel: 35, state: 1}, {channel: 44, state: 0}], switch: function(){swBatteryToAuxC2B.down();} },
+      { logic: [{channel: 39, state: 1}, {channel: 40, state: 0}], switch: function(){selSourceSelect.setState('ALT')} },
+      { logic: [{channel: 39, state: 0}, {channel: 41, state: 1}], switch: function(){selSourceSelect.setState('C1B')} },
+      { logic: [{channel: 39, state: 1}, {channel: 41, state: 0}], switch: function(){selSourceSelect.setState('C1A')} },
+      { logic: [{channel: 38, state: 0}, {channel: 41, state: 1}], switch: function(){selSourceSelect.setState('AUX1')} },
+      { logic: [{channel: 38, state: 1}, {channel: 42, state: 0}], switch: function(){selSourceSelect.setState('AUX2')} },
+      { logic: [{channel: 37, state: 0}, {channel: 42, state: 1}], switch: function(){selSourceSelect.setState('C2A')} },
+      { logic: [{channel: 37, state: 1}, {channel: 43, state: 0}], switch: function(){selSourceSelect.setState('C2B')} },
+      { logic: [{channel: 36, state: 0}, {channel: 43, state: 1}], switch: function(){selSourceSelect.setState('OFF')} }
   ];
   }

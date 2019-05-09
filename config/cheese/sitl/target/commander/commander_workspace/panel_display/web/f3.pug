@@ -18,7 +18,7 @@ script.
       var ledWarning       = {};
       var swRCSYaw         = {};
       var swRCSTranslate   = {};
-      var ledRCSRCSCntlEna = {};
+      var ledRCSCntlEna    = {};
       var swRCSPitch       = {};
       var swRCSCntl        = {};
       var swRCSRoll        = {};
@@ -37,25 +37,34 @@ script.
           var svgFileString=loadXML.responseText;
           draw.svg(svgFileString);         
           
-          ledDAPInertial   = new LED(draw, 'OFF', '#00ff00',  122, 480);
+          ledDAPInertial   = new LED(draw, 'OFF', '#00ff00',  122, 480, 3, 1);
           ledDAPFree       = new LED(draw, 'OFF', '#00ff00',  260, 480);
           swDAPInertial    = new PushButton(draw, 'OUT', 70, 525);
           swDAPFree        = new PushButton(draw, 'OUT', 215, 525);
           swCWAck          = new PushButton(draw, 'OUT', 143, 780);
-          ledCaution       = new TextIndicator(draw, 'CAUTION', 'OFF', '#ff0000',  130, 719);
-          ledWarning       = new TextIndicator(draw, 'WARNING', 'OFF', '#f4d742',  128, 874);
+          ledWarning       = new TextIndicator(draw, 'WARNING', 'OFF', '#ff0000',  130, 719, [3,3], [0,15]);
+          ledCaution       = new TextIndicator(draw, 'CAUTION', 'OFF', '#f4d742',  128, 874, [0,0], [0,15]);
           swRCSYaw         = new SwitchHorizontal(draw, 'MIDDLE',  77, 1096);
           swRCSTranslate   = new Switch(draw, 'DOWN',  234, 1096);
-          ledRCSRCSCntlEna = new LED(draw, 'OFF', '#00ff00',  288, 1211);
+          ledRCSCntlEna    = new LED(draw, 'OFF', '#00ff00',  288, 1211, 0, 1);
           swRCSPitch       = new Switch(draw, 'DOWN',  77, 1290);
           swRCSCntl        = new Switch(draw, 'DOWN', 234, 1290);
           swRCSRoll        = new SwitchHorizontal(draw, 'MIDDLE',  77, 1480);
-          ledMasterOn      = new LED(draw, 'OFF', '#00ff00',  235, 1413);
-          ledMasterTrip    = new LED(draw, 'OFF', '#f4d742',  287, 1413);
+          ledMasterOn      = new LED(draw, 'OFF', '#00ff00',  235, 1413, 0, 2);
+          ledMasterTrip    = new LED(draw, 'OFF', '#f4d742',  287, 1413, 0, 14);
           swMasterCntl     = new Switch(draw, 'DOWN', 234, 1480);
           
-          session.subscribe([{name:'/panel-display/swStatus/digital'}], function (data) { 
+          var cachedData = [];
+          
+          session.subscribe([{name:'/panel-display/sw1Status/digital'}], function (data) { 
               var channelData = data[0].sample[0].value;
+              
+              for(var i = 0; i < 64; ++i) {
+                  if(cachedData[i] != channelData[i]) {
+                      console.log('Channel ' + i + ' is ' + channelData[i]);
+                      cachedData[i] = channelData[i];
+                  }
+              }
                          
               for(var entryIndex in SwitchMap) {
                   var entry = SwitchMap[entryIndex];
@@ -81,5 +90,27 @@ script.
       
   
   var SwitchMap = [
+      { logic: [{channel: 49, state: 0}], switch: function(){swDAPInertial.in();} },
+      { logic: [{channel: 49, state: 1}], switch: function(){swDAPInertial.out();} },
+      { logic: [{channel: 62, state: 0}], switch: function(){swDAPFree.in();} },
+      { logic: [{channel: 62, state: 1}], switch: function(){swDAPFree.out();} },
+      { logic: [{channel: 50, state: 0}], switch: function(){swCWAck.in();} },
+      { logic: [{channel: 50, state: 1}], switch: function(){swCWAck.out();} },
+      { logic: [{channel: 61, state: 0}], switch: function(){swRCSYaw.left();} },
+      { logic: [{channel: 61, state: 1}, {channel: 51, state: 1}], switch: function(){swRCSYaw.middle();} },
+      { logic: [{channel: 51, state: 0}], switch: function(){swRCSYaw.right();} },
+      { logic: [{channel: 52, state: 0}, {channel: 60, state: 1}], switch: function(){swRCSTranslate.middle();} },
+      { logic: [{channel: 52, state: 1}, {channel: 60, state: 0}], switch: function(){swRCSTranslate.down();} },
+      { logic: [{channel: 53, state: 1}, {channel: 59, state: 0}], switch: function(){swRCSPitch.up();} },
+      { logic: [{channel: 53, state: 1}, {channel: 59, state: 1}], switch: function(){swRCSPitch.middle();} },
+      { logic: [{channel: 53, state: 0}, {channel: 59, state: 1}], switch: function(){swRCSPitch.down();} },
+      { logic: [{channel: 54, state: 1}, {channel: 58, state: 0}], switch: function(){swRCSCntl.up();} },
+      { logic: [{channel: 54, state: 0}, {channel: 58, state: 1}], switch: function(){swRCSCntl.down();} },
+      { logic: [{channel: 57, state: 0}, {channel: 55, state: 1}], switch: function(){swRCSRoll.left();} },
+      { logic: [{channel: 57, state: 1}, {channel: 55, state: 1}], switch: function(){swRCSRoll.middle();} },
+      { logic: [{channel: 57, state: 1}, {channel: 55, state: 0}], switch: function(){swRCSRoll.right();} },
+      
+      { logic: [{channel: 8, state: 1}, {channel: 56, state: 0}], switch: function(){swMasterCntl.up();} },
+      { logic: [{channel: 8, state: 0}, {channel: 56, state: 1}], switch: function(){swMasterCntl.down();} },
   ];
   }

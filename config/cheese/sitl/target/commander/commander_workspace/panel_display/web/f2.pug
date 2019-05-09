@@ -34,7 +34,7 @@ script.
           swFCM4    = new Switch(draw, 'DOWN', 555, 116);
           swVPU1BFS = new Switch(draw, 'DOWN', 706, 116);
           
-          session.subscribe([{name:'/panel-display/swStatus/digital'}], function (data) { 
+          session.subscribe([{name:'/panel-display/sw1Status/digital'}], function (data) { 
               var channelData = data[0].sample[0].value;
                          
               for(var entryIndex in SwitchMap) {
@@ -60,6 +60,22 @@ script.
       }
       
   
+  
   var SwitchMap = [
+      { logic: [{channel: 43, state: 0}, {channel: 36, state: 0}], switch: function(){swFCM1.up();} },
+      { logic: [{channel: 43, state: 0}, {channel: 36, state: 1}], switch: function(){swFCM1.middle();} },
+      { logic: [{channel: 43, state: 1}, {channel: 36, state: 1}], switch: function(){swFCM1.down();} },
+      
+      { logic: [{channel: 42, state: 0}, {channel: 37, state: 0}], switch: function(){swFCM2.up();} },
+      { logic: [{channel: 42, state: 0}, {channel: 37, state: 1}], switch: function(){swFCM2.middle();} },
+      { logic: [{channel: 42, state: 1}, {channel: 37, state: 1}], switch: function(){swFCM2.down();} },
+      
+      { logic: [{channel: 41, state: 0}, {channel: 38, state: 0}], switch: function(){swFCM3.up();} },
+      { logic: [{channel: 41, state: 0}, {channel: 38, state: 1}], switch: function(){swFCM3.middle();} },
+      { logic: [{channel: 41, state: 1}, {channel: 38, state: 1}], switch: function(){swFCM3.down();} },
+      
+      { logic: [{channel: 40, state: 0}, {channel: 39, state: 0}], switch: function(){swFCM4.up();} },
+      { logic: [{channel: 40, state: 0}, {channel: 39, state: 1}], switch: function(){swFCM4.middle();} },
+      { logic: [{channel: 40, state: 1}, {channel: 39, state: 1}], switch: function(){swFCM4.down();} },
   ];
   }

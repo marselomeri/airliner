@@ -372,7 +372,7 @@ CommanderClient.prototype.getTlmDefs = function( tlmObj, cb ) {
 CommanderClient.prototype.updateTelemetry = function( items ) {
   var self = this;
   var subscribersToUpdate = {};
-
+  
   /* We want to make sure that the subscribers get all the variables they
    * subscribed to in a single callback.  So if a subscriber subscribed
    * to an array of multiple items, we want to collect all those items in
@@ -382,7 +382,7 @@ CommanderClient.prototype.updateTelemetry = function( items ) {
    * first we loop through the items to find their subscribers.
    */
   for ( var opsPath in items ) {
-	if(self.subscriptions.hasOwnProperty(opsPath)) {
+    if(self.subscriptions.hasOwnProperty(opsPath)) {
       var subscription = self.subscriptions[ opsPath ];
     
       /* Loop through all the subscriber callbacks
@@ -414,9 +414,9 @@ CommanderClient.prototype.updateTelemetry = function( items ) {
         };
         subscriptionUpdate.items.push( param );
       }
-	} else {
-	  console.log('Received unexpected telemetry update for ' + opsPath);
-	}
+    } else {
+      console.log('Received unexpected telemetry update for ' + opsPath);
+    }
   }
 
   /* Now that we've built up a list of subscriptions to update.  Loop through
@@ -478,12 +478,12 @@ CommanderClient.prototype.subscribe = function( tlmObj, cb ) {
          */
         this.subscriptions[ opsPath ] = {
           pendingAction: 'subscribe',
-          cb: {}
+          cb: []
         };
       } 
 
       /* Add the callback to the subscription. */
-      this.subscriptions[ opsPath ].cb[cb.name] = cb;
+      this.subscriptions[ opsPath ].cb.push(cb);
     }
   };
 };

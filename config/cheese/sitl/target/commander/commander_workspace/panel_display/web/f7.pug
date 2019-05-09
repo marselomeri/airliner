@@ -8,14 +8,47 @@ script.
     
   loadSVG('panels/panel_F7.svg');
 
+  var ledAux1CntlOn          = {};
+  var ledAux1CntlInh         = {};
+  var ledAux2CntlOn          = {};
+  var ledAux2CntlInh         = {};
   
+  var swAux1Cntl             = {};
+  var swBkltConvToAux        = {};
+  var swAux2Cntl             = {};
+  
+  var ledAux1C3AOn           = {};
+  var ledAux1C3ATrip         = {};
+  var ledAux1C3ATrip         = {};
+  
+  var ledAuxBusTieOn         = {};
+  var ledAuxBusTieTrip       = {};
+  
+  var ledAux2C4AOn           = {};
+  var ledAux2C4ATrip         = {};
+  var ledAux2C4BOn           = {};
+  var ledAux2C4BTrip         = {};
+  
+  var swAux1C3               = {};
+  var swAuxBusTie            = {};
+  var swAux2C4               = {};
+  
+  var ledEmergencyCommOn     = {};
+  var ledEmergencyCommTrip   = {};
+  
+  //var swAux2C4               = {};
+  
+  var ledEmergencyCommUplinkLock = {};
+  var ledEmergencyCommTransmit   = {};
+  
+  var swEmergencyCommTxRx    = {};
+  
+  var swAntennaSelect       = {};
+  var swIcom                 = {};
+  
+    
   function loadSVG(SVGFile)
   {      
-      var swFCM1      = {};
-      var swFCM2      = {};
-      var swFCM3      = {};
-      var swFCM4      = {};
-      var swVPU1BFS   = {};
   
       var loadXML = new XMLHttpRequest;
       loadXML.onload = callback;
@@ -28,8 +61,46 @@ script.
           var svgFileString=loadXML.responseText;
           draw.svg(svgFileString);
           
-          session.subscribe([{name:'/panel-display/swStatus/digital'}], function (data) { 
+          ledAux1CntlOn              = new LED(draw, 'OFF', '#00ff00',     87,   44, 1, 5);
+          ledAux1CntlInh             = new LED(draw, 'OFF', '#f4d742',    165,   44, 1, 11);
+          ledAux2CntlOn              = new LED(draw, 'OFF', '#00ff00',    435,   44, 1, 9);
+          ledAux2CntlInh             = new LED(draw, 'OFF', '#f4d742',    514,   44, 1, 6);
+          ledAux1C3AOn               = new LED(draw, 'OFF', '#00ff00',    116,  221, 1, 7);
+          ledAux1C3ATrip             = new LED(draw, 'OFF', '#ff0000',    188,  221, 2, 10);
+          ledAux1C3BOn               = new LED(draw, 'OFF', '#00ff00',    116,  242, 1, 8);
+          ledAux1C3BTrip             = new LED(draw, 'OFF', '#ff0000',    188,  242, 2, 5);
+          ledAuxBusTieOn             = new LED(draw, 'OFF', '#00ff00',    265,  242, 2, 8);
+          ledAuxBusTieTrip           = new LED(draw, 'OFF', '#ff0000',    330,  242, 2, 7);
+          ledAux2C4AOn               = new LED(draw, 'OFF', '#00ff00',    475,  221, 2, 9);
+          ledAux2C4ATrip             = new LED(draw, 'OFF', '#ff0000',    548,  221, 2, 11);
+          ledAux2C4BOn               = new LED(draw, 'OFF', '#00ff00',    475,  242, 2, 6);
+          ledAux2C4BTrip             = new LED(draw, 'OFF', '#00ff00',    548,  242, 2, 4);
+          ledEmergencyCommOn         = new LED(draw, 'OFF', '#00ff00',     55,  440, 2, 12);
+          ledEmergencyCommTrip       = new LED(draw, 'OFF', '#ff0000',    200,  440, 2, 2);
+          ledEmergencyCommUplinkLock = new LED(draw, 'OFF', '#00ff00',    328,  494, 2, 3);
+          ledEmergencyCommTransmit   = new LED(draw, 'OFF', '#00ff00',    328,  524, 2, 13);
+          
+          swAux1Cntl                 = new Switch(draw, 'DOWN',           89,  110);
+          swBkltConvToAux            = new Switch(draw, 'DOWN',          269,  110);
+          swAux2Cntl                 = new Switch(draw, 'DOWN',          449,  110);
+          swAux1C3                   = new Switch(draw, 'DOWN',           89,  302);
+          swAuxBusTie                = new Switch(draw, 'DOWN',          269,  302);
+          swAux2C4                   = new Switch(draw, 'DOWN',          449,  302);
+          swEmergencyCommTxRx        = new Switch(draw, 'DOWN',          449,  505);
+          swAntennaSelect            = new SwitchHorizontal(draw, 'DOWN', 93,  697);
+          swIcom                     = new Switch(draw, 'DOWN',          269,  697);
+          
+          var cachedData = [];
+          
+          session.subscribe([{name:'/panel-display/sw2Status/digital'}], function (data) { 
               var channelData = data[0].sample[0].value;
+              
+              for(var i = 0; i < 64; ++i) {
+                  if(cachedData[i] != channelData[i]) {
+                      console.log('Channel ' + i + ' is ' + channelData[i]);
+                      cachedData[i] = channelData[i];
+                  }
+              }
                          
               for(var entryIndex in SwitchMap) {
                   var entry = SwitchMap[entryIndex];
@@ -55,5 +126,31 @@ script.
       
   
   var SwitchMap = [
+      { logic: [{channel: 54, state: 0}, {channel: 57, state: 0}], switch: function(){swAux1Cntl.up();} },
+      { logic: [{channel: 54, state: 1}, {channel: 57, state: 0}], switch: function(){swAux1Cntl.middle();} },
+      { logic: [{channel: 54, state: 1}, {channel: 57, state: 1}], switch: function(){swAux1Cntl.down();} },
+      { logic: [{channel: 55, state: 0}, {channel: 56, state: 0}], switch: function(){swBkltConvToAux.up();} },
+      { logic: [{channel: 55, state: 1}, {channel: 56, state: 0}], switch: function(){swBkltConvToAux.middle();} },
+      { logic: [{channel: 55, state: 1}, {channel: 56, state: 1}], switch: function(){swBkltConvToAux.down();} },
+      { logic: [{channel:  7, state: 0}, {channel:  8, state: 0}], switch: function(){swAux2Cntl.up();} },
+      { logic: [{channel:  7, state: 0}, {channel:  8, state: 1}], switch: function(){swAux2Cntl.middle();} },
+      { logic: [{channel:  7, state: 1}, {channel:  8, state: 1}], switch: function(){swAux2Cntl.down();} },
+      { logic: [{channel:  6, state: 0}, {channel:  9, state: 0}], switch: function(){swAux1C3.up();} },
+      { logic: [{channel:  6, state: 0}, {channel:  9, state: 1}], switch: function(){swAux1C3.middle();} },
+      { logic: [{channel:  6, state: 1}, {channel:  9, state: 1}], switch: function(){swAux1C3.down();} },
+      { logic: [{channel:  5, state: 1}, {channel: 10, state: 0}], switch: function(){swAuxBusTie.up();} },
+      { logic: [{channel:  5, state: 0}, {channel: 10, state: 1}], switch: function(){swAuxBusTie.down();} },
+      { logic: [{channel:  4, state: 0}, {channel: 11, state: 0}], switch: function(){swAux2C4.up();} },
+      { logic: [{channel:  4, state: 0}, {channel: 11, state: 1}], switch: function(){swAux2C4.middle();} },
+      { logic: [{channel:  4, state: 1}, {channel: 11, state: 1}], switch: function(){swAux2C4.down();} },
+      { logic: [{channel:  3, state: 1}, {channel: 12, state: 0}], switch: function(){swEmergencyCommTxRx.up();} },
+      { logic: [{channel:  3, state: 0}, {channel: 12, state: 1}], switch: function(){swEmergencyCommTxRx.down();} },
+      
+      { logic: [{channel:  2, state: 0}, {channel: 13, state: 0}], switch: function(){swAntennaSelect.left();} },
+      { logic: [{channel:  2, state: 0}, {channel: 13, state: 1}], switch: function(){swAntennaSelect.middle();} },
+      { logic: [{channel:  2, state: 1}, {channel: 13, state: 1}], switch: function(){swAntennaSelect.right();} },
+      
+      { logic: [{channel:  1, state: 1}, {channel: 14, state: 0}], switch: function(){swIcom.up();} },
+      { logic: [{channel:  1, state: 0}, {channel: 14, state: 1}], switch: function(){swIcom.down();} },
   ];
   }

@@ -11,11 +11,21 @@ script.
   
   function loadSVG(SVGFile)
   {      
-      var swFCM1      = {};
-      var swFCM2      = {};
-      var swFCM3      = {};
-      var swFCM4      = {};
-      var swVPU1BFS   = {};
+      var ledSnorkelFanPwrOn      = {};
+      var ledSnorkelFanPwrTrip    = {};
+      var ledSnorkelFanEna        = {};
+      var ledSnorkelFanOnTiltOvrd = {};
+      var ledSARBeaconTx          = {};
+      var ledStrobe1On            = {};
+      var ledStrobe1Trip          = {};
+      var ledStrobe2On            = {};
+      var ledStrobe2Trip          = {};
+      var swSnorkelFanPwrOn       = {};
+      var swSnorkelFanEn          = {};
+      var swSnorkelFanOnTiltOvrd  = {};
+      var swSARBeaconTx           = {};
+      var swStrobe1               = {};
+      var swStrobe2               = {};
   
       var loadXML = new XMLHttpRequest;
       loadXML.onload = callback;
@@ -28,7 +38,23 @@ script.
           var svgFileString=loadXML.responseText;
           draw.svg(svgFileString);
           
-          session.subscribe([{name:'/panel-display/swStatus/digital'}], function (data) { 
+          ledSnorkelFanPwrOn      = new LED(draw, 'OFF', '#00ff00',    102,  45, 1, 0);
+          ledSnorkelFanPwrTrip    = new LED(draw, 'OFF', '#ff0000',    165,  45);
+          ledSnorkelFanEna        = new LED(draw, 'OFF', '#00ff00',    310,  45);
+          ledSnorkelFanOnTiltOvrd = new LED(draw, 'OFF', '#ff0000',    480,  45, 1, 1);
+          ledSARBeaconTx          = new LED(draw, 'OFF', '#00ff00',    532,  45, 1, 15);
+          ledStrobe1On            = new LED(draw, 'OFF', '#00ff00',    732,  45, 1, 2);
+          ledStrobe1Trip          = new LED(draw, 'OFF', '#ff0000',    798,  45, 1, 4);
+          ledStrobe2On            = new LED(draw, 'OFF', '#00ff00',    866,  45, 1, 12);
+          ledStrobe2Trip          = new LED(draw, 'OFF', '#ff0000',    931,  45, 1, 13);
+          swSnorkelFanPwrOn       = new Switch(draw, 'DOWN',           104,  116);
+          swSnorkelFanEn          = new Switch(draw, 'DOWN',           255,  116, 1, 14);
+          swSnorkelFanOnTiltOvrd  = new Switch(draw, 'DOWN',           404,  116);
+          swSARBeaconTx           = new Switch(draw, 'DOWN',           575,  116);
+          swStrobe1               = new Switch(draw, 'DOWN',           736,  116);
+          swStrobe2               = new Switch(draw, 'DOWN',           869,  116);
+          
+          session.subscribe([{name:'/panel-display/sw2Status/digital'}], function (data) { 
               var channelData = data[0].sample[0].value;
                          
               for(var entryIndex in SwitchMap) {
@@ -55,5 +81,19 @@ script.
       
   
   var SwitchMap = [
+      { logic: [{channel: 58, state: 0}, {channel: 53, state: 1}], switch: function(){swSnorkelFanPwrOn.up();} },
+      { logic: [{channel: 58, state: 1}, {channel: 53, state: 0}], switch: function(){swSnorkelFanPwrOn.down();} },
+      { logic: [{channel: 59, state: 0}, {channel: 52, state: 1}], switch: function(){swSnorkelFanEn.up();} },
+      { logic: [{channel: 59, state: 1}, {channel: 52, state: 0}], switch: function(){swSnorkelFanEn.down();} },
+      { logic: [{channel: 60, state: 0}, {channel: 51, state: 0}], switch: function(){swSnorkelFanOnTiltOvrd.up();} },
+      { logic: [{channel: 60, state: 1}, {channel: 51, state: 0}], switch: function(){swSnorkelFanOnTiltOvrd.middle();} },
+      { logic: [{channel: 60, state: 1}, {channel: 51, state: 1}], switch: function(){swSnorkelFanOnTiltOvrd.down();} },
+      { logic: [{channel: 61, state: 0}, {channel: 50, state: 0}], switch: function(){swSARBeaconTx.up();} },
+      { logic: [{channel: 61, state: 1}, {channel: 50, state: 0}], switch: function(){swSARBeaconTx.middle();} },
+      { logic: [{channel: 61, state: 1}, {channel: 50, state: 1}], switch: function(){swSARBeaconTx.down();} },
+      { logic: [{channel: 49, state: 1}], switch: function(){swStrobe1.up();} },
+      { logic: [{channel: 49, state: 0}], switch: function(){swStrobe1.down();} },
+      { logic: [{channel: 63, state: 0}, {channel: 48, state: 1}], switch: function(){swStrobe2.up();} },
+      { logic: [{channel: 63, state: 1}, {channel: 48, state: 0}], switch: function(){swStrobe2.down();} }
   ];
   }

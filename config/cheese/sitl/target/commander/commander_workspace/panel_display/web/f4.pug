@@ -30,7 +30,7 @@ script.
           var svgFileString=loadXML.responseText;
           draw.svg(svgFileString);
           
-          ledPyroMasterArm        = new LED(draw, 'ON', '#00ff00',  175, 40);
+          ledPyroMasterArm        = new LED(draw, 'OFF', '#00ff00',  175, 40, 0, 3);
           swPyroMasterArm         = new Switch(draw, 'DOWN',  103, 116);
           swCMPropAct             = new Switch(draw, 'DOWN',  254, 116);
           swCMSPSep               = new Switch(draw, 'DOWN',  404, 116);
@@ -38,7 +38,7 @@ script.
           swMainDeploy            = new Switch(draw, 'DOWN',  706, 116);
           swRiserCutUprightDeploy = new Switch(draw, 'DOWN',  857, 116);
           
-          session.subscribe([{name:'/panel-display/swStatus/digital'}], function (data) { 
+          session.subscribe([{name:'/panel-display/sw1Status/digital'}], function (data) { 
               var channelData = data[0].sample[0].value;
                          
               for(var entryIndex in SwitchMap) {
@@ -65,5 +65,17 @@ script.
       
   
   var SwitchMap = [
+      { logic: [{channel:  6, state: 1},{channel:  9, state: 0}], switch: function(){swPyroMasterArm.up();} },
+      { logic: [{channel:  6, state: 0},{channel:  9, state: 1}], switch: function(){swPyroMasterArm.down();} },
+      { logic: [{channel: 10, state: 0},{channel:  5, state: 1}], switch: function(){swCMPropAct.up();} },
+      { logic: [{channel: 10, state: 1},{channel:  5, state: 0}], switch: function(){swCMPropAct.down();} },
+      { logic: [{channel: 11, state: 0},{channel:  4, state: 1}], switch: function(){swCMSPSep.up();} },
+      { logic: [{channel: 11, state: 1},{channel:  4, state: 0}], switch: function(){swCMSPSep.down();} },
+      { logic: [{channel: 12, state: 0},{channel:  3, state: 1}], switch: function(){swDrogueDeploy.up();} },
+      { logic: [{channel: 12, state: 1},{channel:  3, state: 0}], switch: function(){swDrogueDeploy.down();} },
+      { logic: [{channel: 13, state: 0},{channel:  2, state: 1}], switch: function(){swMainDeploy.up();} },
+      { logic: [{channel: 13, state: 1},{channel:  2, state: 0}], switch: function(){swMainDeploy.down();} },
+      { logic: [{channel: 14, state: 0},{channel:  1, state: 1}], switch: function(){swRiserCutUprightDeploy.up();} },
+      { logic: [{channel: 14, state: 1},{channel:  1, state: 0}], switch: function(){swRiserCutUprightDeploy.down();} },
   ];
   }
