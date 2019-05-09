@@ -791,3 +791,21 @@ function setLED(board, lamp, state) {
         }
     }
 }
+
+
+
+function set7Seg(value) {
+    /* We only have 4 digits, so reject anything that cannot be depicted in
+     * just 4 digits.
+     */
+    if(typeof value !== 'number') {
+        console.log('Invalid argument. Value must be a number');
+    } else {
+        if((value > 9999) || (value < 0.0001) && (value != 0)) {
+            console.log('Invalid argument. Value must be between 0.0001 and 9999');
+        } else {                
+            /* Send the command to the server. */
+            session.sendCommand({ops_path: '/panel-display/Set7Seg', args:{'Value': value}});
+        }
+    }
+}

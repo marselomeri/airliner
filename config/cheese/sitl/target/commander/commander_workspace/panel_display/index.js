@@ -672,6 +672,103 @@ class PanelDisplay extends CdrGroundPlugin {
         	self.hk.content.card3MsgSentCount = 0
         });
         
+        var cmdSet7Seg = {
+            opsPath: '/' + this.config.name + '/Set7Seg',
+            args: [
+                {
+                    name:    'Value',
+                    type:    'float',
+                    bitSize: 32
+                }
+            ]
+        }
+        this.addCommand(cmdSet7Seg, function (cmd) {
+            /* We only have 4 digits, so reject anything that cannot be depicted in
+             * just 4 digits.
+             */
+            if(typeof cmd.args.Value !== 'number') {
+                self.logError('Invalid value for Set7Seg command.  Value must be a number.');
+            } else {
+                if(((cmd.args.Value > 9999) || (cmd.args.Value < 0.0001)) && (cmd.args.Value != 0)) {
+                    self.logError('Invalid value for Set7Seg command. Value must be between 9999 and 0.0001.');
+                } else {            
+                    /* Convert the number to text. */
+                    var strValue = '' + cmd.args.Value;
+                    var newStrValue = '';
+                    var nonZeroFound = false;
+                    var dpPosition = 0;
+                    
+                    /* Remove the decimal point from the string, but remember where it
+                     * was in the string and ignore leading zeros. */
+                    for(var i = 0; i < strValue.length; i++) {
+                        if(strValue[i] == '.') {
+                            dpPosition = 4 - newStrValue.length; 
+                        } else {
+                            if(strValue[i] == '0') {
+                                if(nonZeroFound == true) {
+                                    newStrValue += strValue[i];
+                                }
+                            } else {
+                                nonZeroFound = true;
+                                newStrValue += strValue[i];
+                            }
+                        }
+                    }
+                    
+                    /* If no non-leading zeros were found, it must just be zero. */
+                    if(nonZeroFound == false) {
+                        newStrValue = '0';
+                    }
+                    
+                    /* Take only the first 4 digits. */
+                    newStrValue = newStrValue.substring(0, 4);
+                    
+                    /* Convert the string back to a number to calculate the checksum. */
+                    var newValue = parseInt(newStrValue);
+                    
+                    /* Set brightness. */
+                    var brightness = 50;
+                    
+                    /* Build and send the command. */
+                    var checksum = 3 + dpPosition + brightness + newValue;
+                    
+                    var command = '<3' + dpPosition;
+
+                    if(brightness < 10) {
+                        command += '0' + brightness;
+                    } else {
+                        command += brightness;
+                    }
+                    
+                    if(newValue < 10) {
+                        command += '000' + newValue;
+                    } else if(newValue < 100) {
+                        command += '00' + newValue;
+                    } else if(newValue < 1000) {
+                        command += '0' + newValue;
+                    } else {
+                        command += newValue;
+                    }
+                    
+                    if(checksum < 10) {
+                        command += '000' + checksum;
+                    } else if(checksum < 100) {
+                        command += '00' + checksum;
+                    } else if(checksum < 1000) {
+                        command += '0' + checksum;
+                    } else {
+                        command += checksum;
+                    }
+                    
+                    command += '>';
+                    
+                    console.log(command);
+
+                    self.serial3Port.write(command);
+                }
+            }
+        });
+        
         var cmdSetLED = {
             opsPath: '/' + this.config.name + '/SetLED',
             args: [
@@ -747,7 +844,7 @@ class PanelDisplay extends CdrGroundPlugin {
         };
         this.addCommand(cmdReadSwitch, function(cmd) {
         	if(cmd.hasOwnProperty('args') == false) {
-                self.logError('Invalid arguments.  MinorCard, MajorCard, and Pin required.');
+                    self.logError('Invalid arguments.  MinorCard, MajorCard, and Pin required.');
         	} else {
                 var card = parseInt(cmd.args.Card);
                 var group = parseInt(cmd.args.Group);
