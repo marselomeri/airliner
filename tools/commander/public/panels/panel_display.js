@@ -73,6 +73,8 @@ class Switch
         this.width = 50;
         this.thickness = 15;
         this.length = 50;
+        
+        this.cb = cb;
           
         this.switchGroup = draw.group();
         this.upSwitchGroup = this.switchGroup.group();
@@ -118,10 +120,6 @@ class Switch
         
         this.upClickGroup.click(function() {
             self.setState('UP');
-
-            if(typeof cb === 'function') {
-                cb(self);
-            };
         })
             
         this.middleClickGroup.click(function () {
@@ -171,6 +169,10 @@ class Switch
             this.upSwitchGroup.show();
             this.middleSwitchGroup.hide();
             this.downSwitchGroup.hide();
+            
+            if(typeof this.cb === 'function') {
+            	this.cb(self);
+            };
     	}
     }
       
@@ -180,6 +182,10 @@ class Switch
             this.upSwitchGroup.hide();
             this.middleSwitchGroup.show();
             this.downSwitchGroup.hide();
+            
+            if(typeof this.cb === 'function') {
+            	this.cb(self);
+            };
     	}
     }
       
@@ -189,6 +195,10 @@ class Switch
             this.upSwitchGroup.hide();
             this.middleSwitchGroup.hide();
             this.downSwitchGroup.show();
+            
+            if(typeof this.cb === 'function') {
+            	this.cb(self);
+            };
         }
     }
 }
@@ -229,6 +239,10 @@ class SwitchHorizontal extends Switch {
             this.upSwitchGroup.show();
             this.middleSwitchGroup.hide();
             this.downSwitchGroup.hide();
+            
+            if(typeof this.cb === 'function') {
+            	this.cb(self);
+            };
         }
     }
       
@@ -239,6 +253,10 @@ class SwitchHorizontal extends Switch {
             this.upSwitchGroup.hide();
             this.middleSwitchGroup.show();
             this.downSwitchGroup.hide();
+            
+            if(typeof this.cb === 'function') {
+            	this.cb(self);
+            };
         }
     }
       
@@ -248,6 +266,10 @@ class SwitchHorizontal extends Switch {
             this.upSwitchGroup.hide();
             this.middleSwitchGroup.hide();
             this.downSwitchGroup.show();
+            
+            if(typeof this.cb === 'function') {
+            	this.cb(self);
+            };
         }
     }
 }
@@ -288,20 +310,6 @@ class LED
             } else {
                 self.setState('ON')
             }
-            
-            if(self.state == 'ON') {
-                intensity = 4095;
-            } else {
-                intensity = 0;
-            }
-           
-            if((typeof self.board === 'number') || (typeof self.lamp === 'number')) {
-                session.sendCommand({ops_path: '/panel-display/SetLED', args:{'Board': self.board, 'Lamp': self.lamp, 'Intensity': intensity}});
-            } else {
-                for(var i in self.board) {
-                    session.sendCommand({ops_path: '/panel-display/SetLED', args:{'Board': self.board[i], 'Lamp': self.lamp[i], 'Intensity': intensity}});
-                }
-            }
         })
     }
       
@@ -326,13 +334,33 @@ class LED
     }
     
     on() {
-        this.state = 'ON';
-        this.led.fill(this.color);
+    	if(this.state != 'ON') {
+	        this.state = 'ON';
+	        this.led.fill(this.color);
+	        
+	        if((typeof this.board === 'number') || (typeof this.lamp === 'number')) {
+	            session.sendCommand({ops_path: '/panel-display/SetLED', args:{'Board': this.board, 'Lamp': this.lamp, 'Intensity': 4095}});
+	        } else {
+	            for(var i in self.board) {
+	                session.sendCommand({ops_path: '/panel-display/SetLED', args:{'Board': this.board[i], 'Lamp': this.lamp[i], 'Intensity': 4095}});
+	            }
+	        }
+    	}
     }
     
     off() {
-        this.state = 'OFF';
-        this.led.fill('#000000');
+        if(this.state != 'OFF') {
+        	this.state = 'OFF';
+            this.led.fill('#000000');
+	        
+	        if((typeof this.board === 'number') || (typeof this.lamp === 'number')) {
+	            session.sendCommand({ops_path: '/panel-display/SetLED', args:{'Board': this.board, 'Lamp': this.lamp, 'Intensity': 0}});
+	        } else {
+	            for(var i in self.board) {
+	                session.sendCommand({ops_path: '/panel-display/SetLED', args:{'Board': this.board[i], 'Lamp': this.lamp[i], 'Intensity': 0}});
+	            }
+	        }
+        }
     }
 }
 
@@ -357,6 +385,8 @@ class RotaryKnob
         this.knobGroup.line(x, y-15, x, y - (this.width/2)).stroke({ width: 5}).fill('#000000');
         
         this.knobGroup.attr({cx: x, cy: y});
+        
+        this.cb = cb;
         
         this.setState(state);
         
@@ -388,9 +418,15 @@ class RotaryKnob
       
     setState(state) {   
         if(this.detents.hasOwnProperty(state)) {
-            this.knobGroup.rotate(this.detents[state]);
+        	if(this.state != state) {
+                this.knobGroup.rotate(this.detents[state]);
             
-            this.state = state;
+                this.state = state;
+            
+                if(typeof this.cb === 'function') {
+            	    this.cb(this);
+                }
+            }
         }
     }
 }
@@ -799,7 +835,7 @@ function set7Seg(value) {
      * just 4 digits.
      */
     if(typeof value !== 'number') {
-        console.log('Invalid argument. Value must be a number');
+        console.log('Invalid argument. Value must be a number, not ' + typeof value);
     } else {
         if((value > 9999) || (value < 0.0001) && (value != 0)) {
             console.log('Invalid argument. Value must be between 0.0001 and 9999');
