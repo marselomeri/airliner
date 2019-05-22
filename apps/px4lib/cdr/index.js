@@ -704,8 +704,8 @@ module.exports = class CfeCdrFlightAppsPlugin extends CdrFlightAppsPlugin {
         	        	}
         	        },
         	        PX4_SensorBaro: {
-        	        	shortDescription: 'Sensor Gyro',
-        	        	longDescription: 'Sensor Gyro',
+        	        	shortDescription: 'Sensor Baro',
+        	        	longDescription: 'Sensor Baro',
         	        	nodes: {
                 	        PX4_SensorBaroMsgLyt: {
                 	            type: CdrFlightAppsPlugin.ContentType.LAYOUT,
@@ -721,19 +721,19 @@ module.exports = class CfeCdrFlightAppsPlugin extends CdrFlightAppsPlugin {
                 	        },
                 	        PX4_SensorBaroMsg_Altitude: {
                 	            type: CdrFlightAppsPlugin.ContentType.PANEL,
-                	            shortDescription: 'Sensor Baro Altitude',
+                	            shortDescription: 'Altitude',
                 	            longDescription: 'Sensor Baro Altitude',
                 	            filePath: '/PX4_SensorBaroMsg_Altitude.pug'
                 	        },
                 	        PX4_SensorBaroMsg_Pressure: {
                 	            type: CdrFlightAppsPlugin.ContentType.PANEL,
-                	            shortDescription: 'Sensor Baro Pressure',
+                	            shortDescription: 'Pressure',
                 	            longDescription: 'Sensor Baro Pressure',
                 	            filePath: '/PX4_SensorBaroMsg_Pressure.pug'
                 	        },
                 	        PX4_SensorBaroMsg_Temperature: {
                 	            type: CdrFlightAppsPlugin.ContentType.PANEL,
-                	            shortDescription: 'Sensor Baro Temperature',
+                	            shortDescription: 'Temperature',
                 	            longDescription: 'Sensor Baro Temperature',
                 	            filePath: '/PX4_SensorBaroMsg_Temperature.pug'
                 	        }
