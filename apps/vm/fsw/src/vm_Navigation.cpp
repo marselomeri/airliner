@@ -1,6 +1,7 @@
 #include "vm_Navigation.h"
 #include "vm_events.h"
 #include "vm_app.h"
+#include "px4lib_msgids.h"
 
 typedef enum {
     VM_NAVSM_MANUAL_STATE=0,

@@ -46,6 +46,7 @@
 #include "mpu9250_version.h"
 #include "math/Vector3F.hpp"
 #include "px4lib.h"
+#include "px4lib_msgids.h"
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

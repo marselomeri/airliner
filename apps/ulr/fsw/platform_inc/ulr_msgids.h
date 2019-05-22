@@ -5,10 +5,12 @@
 extern "C" {
 #endif
 
-#define ULR_HK_TLM_MID    0x0000
-#define ULR_SEND_HK_MID   0x0000
-#define ULR_MEASURE_MID       0x0000
-#define ULR_CMD_MID       0x0000
+#define ULR_CMD_MID                                 0x1c47
+#define ULR_SEND_HK_MID                             0x1c48
+#define ULR_MEASURE_MID                             0x1c49
+
+#define ULR_OUT_DATA_MID                            0x0c4a
+#define ULR_HK_TLM_MID                              0x0c4b
 
 #ifdef __cplusplus
 }

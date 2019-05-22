@@ -20,7 +20,7 @@
   "borderGrabWidth": 15,
   "minItemHeight": 10,
   "minItemWidth": 10,
-  "headerHeight": 20,
+  "headerHeight": 25,
   "dragProxyWidth": 300,
   "dragProxyHeight": 200
  },
@@ -62,7 +62,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "cfe/es/cdh"
+          "link": "flight/core/es/cdh"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -84,7 +84,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "cfe/es/reset"
+          "link": "flight/core/es/reset"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -106,7 +106,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "cfe/es/appctrl"
+          "link": "flight/core/es/appctrl"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -117,7 +117,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "cfe/es/console"
+          "link": "flight/core/es/console"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -139,7 +139,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "cfe/es/version"
+          "link": "flight/core/es/version"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -171,7 +171,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "cfe/es/logging"
+          "link": "flight/core/es/logging"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -215,7 +215,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "cfe/es/memory"
+          "link": "flight/core/es/memory"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -239,7 +239,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/cfe/evs/efltr?appName=CFE_ES"
+        "link": "flight/core/evs/efltr?appName=CFE_ES"
        },
        "isClosable": true,
        "reorderEnabled": true

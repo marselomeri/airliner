@@ -1,4 +1,4 @@
-{
+﻿{
  "settings": {
   "hasHeaders": true,
   "constrainDragToContainer": false,
@@ -38,6 +38,7 @@
    "isClosable": true,
    "reorderEnabled": true,
    "title": "",
+   "height": 100,
    "content": [
     {
      "type": "stack",
@@ -46,16 +47,16 @@
      "reorderEnabled": true,
      "title": "",
      "activeItemIndex": 0,
-     "width": 42.88440651449667,
-     "height": 100,
+     "height": 62.5,
+     "width": 27.659574468085108,
      "content": [
       {
-       "title": "Dataplot",
+       "title": "Message",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/px4/Dataplot"
+        "link": "/flight/apps/px4lib/PX4_EstimatorStatus/PX4_EstimatorStatusMsg"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -69,38 +70,27 @@
      "reorderEnabled": true,
      "title": "",
      "activeItemIndex": 0,
-     "width": 27.091282302359087,
+     "width": 72.34042553191489,
+     "height": 100,
      "content": [
       {
-       "title": "Estimator Status",
+       "title": "States",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/px4/PX4_EstimatorStatusMsg"
+        "link": "/flight/apps/px4lib/PX4_EstimatorStatus/PX4_EstimatorStatusMsg_States"
        },
        "isClosable": true,
        "reorderEnabled": true
-      }
-     ]
-    },
-    {
-     "type": "stack",
-     "header": {},
-     "isClosable": true,
-     "reorderEnabled": true,
-     "title": "",
-     "activeItemIndex": 0,
-     "height": 100,
-     "width": 30.024311183144246,
-     "content": [
+      },
       {
-       "title": "Telemetry Control",
+       "title": "Covariances",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/to/tlm_app?appName=PX4"
+        "link": "/flight/apps/px4lib/PX4_EstimatorStatus/PX4_EstimatorStatusMsg_Covariances"
        },
        "isClosable": true,
        "reorderEnabled": true

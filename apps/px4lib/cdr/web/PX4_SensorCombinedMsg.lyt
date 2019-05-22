@@ -44,7 +44,7 @@
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "width": 33.04812969934092,
+     "width": 50,
      "content": [
       {
        "type": "stack",
@@ -53,42 +53,27 @@
        "reorderEnabled": true,
        "title": "",
        "activeItemIndex": 0,
-       "width": 42.88440651449667,
        "height": 50,
+       "width": 50,
        "content": [
         {
-         "title": "Dataplot",
+         "title": "Message",
          "type": "component",
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/px4/Dataplot",
-          "PlotDef": {
-           "data": [
-            {
-             "tlm": {
-              "name": "/PX4/PX4_SensorCombinedMsg_t/Acc[0]"
-             },
-             "color": "#F10B0B",
-             "label": "/PX4/PX4_SensorCombinedMsg_t/Acc[0]"
-            },
-            {
-             "tlm": {
-              "name": "/PX4/PX4_SensorCombinedMsg_t/Acc[1]"
-             },
-             "color": "#711313",
-             "label": "/PX4/PX4_SensorCombinedMsg_t/Acc[1]"
-            },
-            {
-             "tlm": {
-              "name": "/PX4/PX4_SensorCombinedMsg_t/Acc[2]"
-             },
-             "color": "#2D0C0C",
-             "label": "/PX4/PX4_SensorCombinedMsg_t/Acc[2]"
-            }
-           ],
-           "options": {}
-          }
+          "link": "/flight/apps/px4lib/PX4_SensorCombined/PX4_SensorCombinedMsg"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        },
+        {
+         "title": "Rel Time Invalid",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/apps/px4lib/PX4_SensorCombined/PX4_SensorCombinedMsg_RelTimeInvalid"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -105,24 +90,23 @@
        "height": 50,
        "content": [
         {
-         "title": "Dataplot",
+         "title": "Baro Alt",
          "type": "component",
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/px4/Dataplot",
-          "PlotDef": {
-           "data": [
-            {
-             "tlm": {
-              "name": "/PX4/PX4_SensorCombinedMsg_t/BaroAlt"
-             },
-             "color": "#28C2FF",
-             "label": "/PX4/PX4_SensorCombinedMsg_t/BaroAlt"
-            }
-           ],
-           "options": {}
-          }
+          "link": "/flight/apps/px4lib/PX4_SensorCombined/PX4_SensorCombinedMsg_BaroAlt"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        },
+        {
+         "title": "Baro Temp",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/apps/px4lib/PX4_SensorCombined/PX4_SensorCombinedMsg_BaroTemp"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -136,7 +120,7 @@
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "width": 33.11140591094301,
+     "width": 50,
      "content": [
       {
        "type": "stack",
@@ -145,16 +129,16 @@
        "reorderEnabled": true,
        "title": "",
        "activeItemIndex": 0,
-       "width": 27.091282302359087,
-       "height": 50,
+       "width": 50,
+       "height": 32.669058977906595,
        "content": [
         {
-         "title": "Sensor Combined",
+         "title": "Accelerometer",
          "type": "component",
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/px4/PX4_SensorCombinedMsg"
+          "link": "/flight/apps/px4lib/PX4_SensorCombined/PX4_SensorCombinedMsg_Acc"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -168,73 +152,15 @@
        "reorderEnabled": true,
        "title": "",
        "activeItemIndex": 0,
-       "height": 50,
+       "height": 35.46926403315574,
        "content": [
         {
-         "title": "Dataplot",
+         "title": "Gyro",
          "type": "component",
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/px4/Dataplot",
-          "PlotDef": {
-           "data": [
-            {
-             "tlm": {
-              "name": "/PX4/PX4_SensorCombinedMsg_t/GyroRad[0]"
-             },
-             "color": "#0061FF",
-             "label": "/PX4/PX4_SensorCombinedMsg_t/GyroRad[0]"
-            },
-            {
-             "tlm": {
-              "name": "/PX4/PX4_SensorCombinedMsg_t/GyroRad[1]"
-             },
-             "color": "#0687B0",
-             "label": "/PX4/PX4_SensorCombinedMsg_t/GyroRad[1]"
-            },
-            {
-             "tlm": {
-              "name": "/PX4/PX4_SensorCombinedMsg_t/GyroRad[2]"
-             },
-             "color": "#06B057",
-             "label": "/PX4/PX4_SensorCombinedMsg_t/GyroRad[2]"
-            }
-           ],
-           "options": {}
-          }
-         },
-         "isClosable": true,
-         "reorderEnabled": true
-        }
-       ]
-      }
-     ]
-    },
-    {
-     "type": "column",
-     "isClosable": true,
-     "reorderEnabled": true,
-     "title": "",
-     "width": 33.84046438971606,
-     "content": [
-      {
-       "type": "stack",
-       "header": {},
-       "isClosable": true,
-       "reorderEnabled": true,
-       "title": "",
-       "activeItemIndex": 0,
-       "height": 50,
-       "width": 33.84046438971606,
-       "content": [
-        {
-         "title": "Telemetry Control",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "/to/tlm_app?appName=PX4"
+          "link": "/flight/apps/px4lib/PX4_SensorCombined/PX4_SensorCombinedMsg_GyroRad"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -248,41 +174,15 @@
        "reorderEnabled": true,
        "title": "",
        "activeItemIndex": 0,
-       "height": 50,
+       "height": 31.861676988937678,
        "content": [
         {
-         "title": "Dataplot",
+         "title": "Mag",
          "type": "component",
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/px4/Dataplot",
-          "PlotDef": {
-           "data": [
-            {
-             "tlm": {
-              "name": "/PX4/PX4_SensorCombinedMsg_t/Mag[0]"
-             },
-             "color": "#CCE109",
-             "label": "/PX4/PX4_SensorCombinedMsg_t/Mag[0]"
-            },
-            {
-             "tlm": {
-              "name": "/PX4/PX4_SensorCombinedMsg_t/Mag[1]"
-             },
-             "color": "#E19909",
-             "label": "/PX4/PX4_SensorCombinedMsg_t/Mag[1]"
-            },
-            {
-             "tlm": {
-              "name": "/PX4/PX4_SensorCombinedMsg_t/Mag[2]"
-             },
-             "color": "#E12809",
-             "label": "/PX4/PX4_SensorCombinedMsg_t/Mag[2]"
-            }
-           ],
-           "options": {}
-          }
+          "link": "/flight/apps/px4lib/PX4_SensorCombined/PX4_SensorCombinedMsg_Mag"
          },
          "isClosable": true,
          "reorderEnabled": true

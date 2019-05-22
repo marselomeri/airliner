@@ -64,7 +64,7 @@ CommanderApp.prototype.__proto__ = Emitter.prototype;
  * @param  {String} text        event message text
  */
 CommanderApp.prototype.logEvent = function( component, eventID, criticality, text ) {
-  this.instance.logEvent( this.name, component, eventID, criticality, text );
+  //this.instance.logEvent( this.name, component, '', criticality, text );
 }
 
 

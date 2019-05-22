@@ -55,7 +55,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/sch/hk"
+        "link": "flight/apps/sch/hk"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -78,7 +78,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/sch/diag"
+        "link": "flight/apps/sch/diag"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -89,7 +89,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/cfe/evs/efltr?appName=SCH"
+        "link": "flight/core/evs/efltr?appName=SCH"
        },
        "isClosable": true,
        "reorderEnabled": true

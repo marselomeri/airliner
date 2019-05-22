@@ -34,7 +34,7 @@
  },
  "content": [
   {
-   "type": "row",
+   "type": "column",
    "isClosable": true,
    "reorderEnabled": true,
    "title": "",
@@ -46,49 +46,15 @@
      "reorderEnabled": true,
      "title": "",
      "activeItemIndex": 0,
-     "width": 42.88440651449667,
-     "height": 100,
+     "height": 20.762052877138412,
      "content": [
       {
-       "title": "Dataplot",
+       "title": "Message",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/px4/Dataplot",
-        "PlotDef": {
-         "data": [
-          {
-           "tlm": {
-            "name": "/PX4/PX4_VehicleRatesSetpointMsg_t/Pitch"
-           },
-           "color": "#F11313",
-           "label": "/PX4/PX4_VehicleRatesSetpointMsg_t/Pitch"
-          },
-          {
-           "tlm": {
-            "name": "/PX4/PX4_VehicleRatesSetpointMsg_t/Roll"
-           },
-           "color": "#5213F1",
-           "label": "/PX4/PX4_VehicleRatesSetpointMsg_t/Roll"
-          },
-          {
-           "tlm": {
-            "name": "/PX4/PX4_VehicleRatesSetpointMsg_t/Thrust"
-           },
-           "color": "#28F113",
-           "label": "/PX4/PX4_VehicleRatesSetpointMsg_t/Thrust"
-          },
-          {
-           "tlm": {
-            "name": "/PX4/PX4_VehicleRatesSetpointMsg_t/Yaw"
-           },
-           "color": "#F1B113",
-           "label": "/PX4/PX4_VehicleRatesSetpointMsg_t/Yaw"
-          }
-         ],
-         "options": {}
-        }
+        "link": "/flight/apps/px4lib/PX4_VehicleRatesSetpoint/PX4_VehicleRatesSetpointMsg"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -102,15 +68,15 @@
      "reorderEnabled": true,
      "title": "",
      "activeItemIndex": 0,
-     "width": 27.091282302359087,
+     "height": 38.97713451993486,
      "content": [
       {
-       "title": "Vehicle Rates Setpoint",
+       "title": "Attitude",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/px4/PX4_VehicleRatesSetpointMsg"
+        "link": "/flight/apps/px4lib/PX4_VehicleRatesSetpoint/PX4_VehicleRatesSetpointMsg_Attitude"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -124,16 +90,15 @@
      "reorderEnabled": true,
      "title": "",
      "activeItemIndex": 0,
-     "height": 100,
-     "width": 30.024311183144246,
+     "height": 40.26081260292672,
      "content": [
       {
-       "title": "Telemetry Control",
+       "title": "Thrust",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/to/tlm_app?appName=PX4"
+        "link": "/flight/apps/px4lib/PX4_VehicleRatesSetpoint/PX4_VehicleRatesSetpointMsg_Thrust"
        },
        "isClosable": true,
        "reorderEnabled": true

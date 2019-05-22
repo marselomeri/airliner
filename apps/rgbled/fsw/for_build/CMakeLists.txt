@@ -52,6 +52,10 @@ add_airliner_app_def(rgbled
 
     COMMANDER_PLUGIN
         ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr
+    
+    REFERENCE_CONFIG
+        ${PROJECT_SOURCE_DIR}/apps/rgbled/fsw/mission_inc
+        ${PROJECT_SOURCE_DIR}/apps/rgbled/fsw/platform_inc
 )
 
 add_airliner_app_unit_test(rgbled-ut

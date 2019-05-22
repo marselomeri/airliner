@@ -1,26 +1,19 @@
-.row.os-theme-dark
-  article.col-xs-12.col-sm-12
-    header
-      span.widget-icon
-        i.fa.fa-table
-      h2 RTS Status (1 - 32)
-    div.widget-body.table-responsive
-      table.table.table-condensed
-        tbody
-          - for(var id = 1; id < 33; id ++){
-            - var idx = id - 1 ;
-            tr
-              th #{id}
-              td
-                div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/RtsExecutingStatus['+ idx +']'}],indicator:'text'}) ---
-              td
-                button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/SC/StartAts', argument:[{name:'RtsId', value:id}]},indicator:'cmd'}) Start   
-              td
-                button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/SC/StopAts', argument:[{name:'RtsId', value:id}]},indicator:'cmd'}) Stop    
-              td
-                div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/RtsDisabledStatus['+ idx +']'}],indicator:'text'}) ---
-              td
-                button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/SC/EnableRts', argument:[{name:'RtsId', value:id}]},indicator:'cmd'}) Enable   
-              td
-                button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/SC/DisableRts', argument:[{name:'RtsId', value:id}]},indicator:'cmd'}) Disable    
-          -}
+table.table.table-condensed
+  tbody
+    - for(var id = 1; id < 33; id++){
+      - var idx = id - 1 ;
+      tr
+        th #{id}
+        td
+          div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/RtsExecutingStatus['+ idx +']'}]}) ---
+        td
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/SC/StartAts', argument:[{name:'RtsId', value:id}]}}) Start   
+        td
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/SC/StopAts', argument:[{name:'RtsId', value:id}]}}) Stop    
+        td
+          div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/RtsDisabledStatus['+ idx +']'}]}) ---
+        td
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/SC/EnableRts', argument:[{name:'RtsId', value:id}]}}) Enable   
+        td
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/SC/DisableRts', argument:[{name:'RtsId', value:id}]}}) Disable    
+    -}

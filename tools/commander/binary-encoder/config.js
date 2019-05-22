@@ -87,11 +87,6 @@ var config = convict( {
       default: ''
     }
   } ],
-  jsonInputStreamID: {
-    doc: 'Input JSON stream from a command source to the encoder.',
-    format: String,
-    default: ''
-  },
   binaryOutputStreamID: {
     doc: 'Output binary stream from encoder to binary data provider.',
     format: String,

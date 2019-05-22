@@ -62,6 +62,10 @@ add_airliner_app_def(md
 
     COMMANDER_PLUGIN
         ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr
+    
+    REFERENCE_CONFIG
+        ${PROJECT_SOURCE_DIR}/apps/md/fsw/mission_inc
+        ${PROJECT_SOURCE_DIR}/apps/md/fsw/platform_inc
 )
 
 

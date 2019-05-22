@@ -10,11 +10,11 @@
               tr
                 th Cmd Count
                 td
-                  div(data-cdr={tlm:[{name:'/VM/VM_HkTlm_t/usCmdCnt'}],indicator:'text'}) ---
+                  div(data-cdr={tlm:[{name:'/VM/VM_HkTlm_t/usCmdCnt'}]}) ---
               tr
                 th Error Count
                 td
-                  div(data-cdr={tlm:[{name:'/VM/VM_HkTlm_t/usCmdErrCnt'}],indicator:'text'}) ---
+                  div(data-cdr={tlm:[{name:'/VM/VM_HkTlm_t/usCmdErrCnt'}]}) ---
     footer.btn-group(role="group")      
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/VM/Noop'},indicator:'cmd'}) No-Op    
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/VM/Reset'},indicator:'cmd'}) Reset
+      button.btn.cdr-primary(data-cdr={cmd:{name:'/VM/Noop'}}) No-Op    
+      button.btn.cdr-primary(data-cdr={cmd:{name:'/VM/Reset'}}) Reset

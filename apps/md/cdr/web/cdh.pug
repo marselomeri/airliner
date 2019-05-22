@@ -1,28 +1,22 @@
-.row.os-theme-dark
-  article.col-xs-12.col-sm-12
-    header
-      span.widget-icon
-        i.fa.fa-table
-      h2 MD - Command and Data Handling
-    div.widget-body.table-responsive
-      table.table.table-condensed
-        tbody
-          tr
-            th Cmd Count
-            td
-              div(data-cdr={tlm:[{name:'/MD/MD_HkTlm_t/ValidCmdCntr'}],indicator:'text'}) ---
-          tr
-            th Error Count
-            td
-              div(data-cdr={tlm:[{name:'/MD/MD_HkTlm_t/InvalidCmdCntr'}],indicator:'text'}) ---
-          tr
-            th State
-            td
-              div(data-cdr={tlm:[{name:'/MD/MD_HkTlm_t/DwellEnabledMask'}],indicator:'text'}) ---
-    footer.btn-group(role="group")      
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/MD/Noop'},indicator:'cmd'}) No-Op    
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/MD/Reset'},indicator:'cmd'}) Reset
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/MD/Start'},indicator:'cmd'}) Start
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/MD/Stop'},indicator:'cmd'}) Stop
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/MD/Jam'},indicator:'cmd'}) Jam   
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/MD/SetSignature'},indicator:'cmd'}) Set Signature
+table.table.table-condensed
+  tbody
+    tr
+      th Cmd Count
+      td
+        div(data-cdr={tlm:[{name:'/MD/MD_HkTlm_t/ValidCmdCntr'}]}) ---
+    tr
+      th Error Count
+      td
+        div(data-cdr={tlm:[{name:'/MD/MD_HkTlm_t/InvalidCmdCntr'}]}) ---
+    tr
+      th State
+      td
+        div(data-cdr={tlm:[{name:'/MD/MD_HkTlm_t/DwellEnabledMask'}]}) ---
+
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MD/Noop'}}) No-Op    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MD/Reset'}}) Reset
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MD/Start'}}) Start
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MD/Stop'}}) Stop
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MD/Jam'}}) Jam   
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MD/SetSignature'}}) Set Signature

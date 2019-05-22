@@ -11,6 +11,7 @@
 #include "flow_msg.h"
 #include "flow_verify.h"
 #include "flow_version.h"
+#include "px4lib_msgids.h"
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

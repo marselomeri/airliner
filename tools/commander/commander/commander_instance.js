@@ -31,183 +31,119 @@
  *
  *****************************************************************************/
 
-var Emitter = require( 'events' );
+var EventEmitter = require( 'events' );
 
 
-/**
- * Constructor for commander instance
- * @param       {String} name   instance name
- * @param       {Object} server server object
- * @constructor
- */
-function CommanderInstance( name, server ) {
-  this.name = name;
-  this.server = server;
-  this.apps = {};
-  this.emitter = new Emitter();
-  var self = this;
+module.exports = class CommanderInstance extends EventEmitter {
 
-  /* TODO:  Add event filtering. */
-
-  this.emitter.on( 'events-debug', function( eventObj ) {
-    //		var component = '---';
-    //		var eventID = '---';
-    //		var text = '---';
-    //		var pluginName = '---';
-    //
-    //		for(var appID in self.apps) {
-    //			if(eventObj.sender == self.apps[appID].appObj) {
-    //				pluginName = self.apps[appID].name;
-    //			}
-    //		}
-    //
-    //		if(eventObj.hasOwnProperty('component')) {
-    //			component = eventObj.component;
-    //		}
-    //
-    //		if(eventObj.hasOwnProperty('eventID')) {
-    //			eventID = eventObj.eventID;
-    //		}
-    //
-    //		if(eventObj.hasOwnProperty('text')) {
-    //			text = eventObj.text;
-    //		}
-    //
-    //		self.logEvent(component, pluginName, eventID, 'DEBUG', text);
-  } );
-
-  this.emitter.on( 'events-info', function( eventObj ) {
-    var component = '---';
-    var eventID = '---';
-    var text = '---';
-    var pluginName = '---';
-
-    for ( var appID in self.apps ) {
-      if ( eventObj.sender == self.apps[ appID ].appObj ) {
-        pluginName = self.apps[ appID ].name;
-      }
+    /**
+     * Constructor for commander instance
+     * @param       {String} name   instance name
+     * @param       {Object} server server object
+     * @constructor
+     */
+    constructor(name, server) {
+        super();
+        
+        this.name = name;
+        this.server = server;
+        this.apps = {};
+        this.emitter = new EventEmitter();
+        var self = this;
+        this.streams = {};
+        
+        this.emitter.setMaxListeners(100);
     }
 
-    if ( eventObj.hasOwnProperty( 'component' ) ) {
-      component = eventObj.component;
+    
+    logError(plugin, message, data) {
+        this.server.logError(this.name, plugin, message, data);
     }
 
-    if ( eventObj.hasOwnProperty( 'eventID' ) ) {
-      eventID = eventObj.eventID;
+    
+    logWarn(plugin, message, data) {
+        this.server.logWarn(this.name, plugin, message, data);
     }
 
-    if ( eventObj.hasOwnProperty( 'text' ) ) {
-      text = eventObj.text;
+    
+    logInfo(plugin, message, data) {
+        this.server.logInfo(this.name, plugin, message, data);
     }
 
-    self.logEvent( component, pluginName, eventID, 'INFO', text );
-  } );
-
-  this.emitter.on( 'events-error', function( eventObj ) {
-    var component = '---';
-    var eventID = '---';
-    var text = '---';
-    var pluginName = '---';
-
-    for ( var appID in self.apps ) {
-      if ( eventObj.sender == self.apps[ appID ].appObj ) {
-        pluginName = self.apps[ appID ].name;
-      }
+    
+    logVerbose(plugin, message, data) {
+        this.server.logVerbose(this.name, plugin, message, data);
     }
 
-    if ( eventObj.hasOwnProperty( 'component' ) ) {
-      component = eventObj.component;
+    
+    logDebug(plugin, message, data) {
+        this.server.logDebug(this.name, plugin, message, data);
     }
 
-    if ( eventObj.hasOwnProperty( 'eventID' ) ) {
-      eventID = eventObj.eventID;
+
+
+    /**
+     * Adds an application
+     * @param  {String} name      application name
+     * @param  {Object} newAppObj application object
+     */
+    addApp( name, newAppObj ) {
+        var self = this;
+        this.apps[ name ] = {
+                name: name,
+                appObj: newAppObj
+        };
+    }
+    
+
+    /**
+     * Emit data
+     * @param  {String}   streamID stream id
+     * @param  {String}   msg      emit message
+     * @param	 {Function} callback callback
+     */
+    emit( streamID, obj, callback ) {
+        this.emitter.emit( streamID, obj, callback );
     }
 
-    if ( eventObj.hasOwnProperty( 'text' ) ) {
-      text = eventObj.text;
+    
+    send( streamID, obj, callback ) {
+    	//if(this.streams.hasOwnProperty(streamID) == false) {
+    	//	/* This stream has not been created.  Create an entry for the callbacks. */
+    	//	var this.streams[streamID] = {};
+    	//}
+    	//
+    	//for(var callbackID in this.streams[streamID]) {
+    	//	this.streams[streamID](obj);
+    	//}
     }
 
-    self.logEvent( component, pluginName, eventID, 'ERROR', text );
-  } );
-
-  this.emitter.on( 'events-critical', function( eventObj ) {
-    var component = '---';
-    var eventID = '---';
-    var text = '---';
-    var pluginName = '---';
-
-    for ( var appID in self.apps ) {
-      if ( eventObj.sender == self.apps[ appID ].appObj ) {
-        pluginName = self.apps[ appID ].name;
-      }
+    
+    recv( streamID, callback ) {
+    	//if(this.streams.hasOwnProperty(streamID) == false) {
+    	//	/* This stream has not been created.  Create an entry for the callbacks. */
+    	//	var this.streams[streamID] = {};
+    	//}
+    }
+    
+    
+    onCommandDefRequest(cmd, callback) {
+        this.emitter.on( 'cmd-def-request', cmd, callback );
+    }
+    
+    
+    onCommand(callback) {
+        this.emitter.on( 'cmd-send', callback);
     }
 
-    if ( eventObj.hasOwnProperty( 'component' ) ) {
-      component = eventObj.component;
+    
+    
+    onTelemetryDefRequest(cmd, callback) {
+        this.emitter.on( 'tlm-def-request', cmd, callback );
     }
-
-    if ( eventObj.hasOwnProperty( 'eventID' ) ) {
-      eventID = eventObj.eventID;
+    
+    
+    sendTelemetry(tlmObj) {
+        this.emitter.emit( 'json-tlm-stream', tlmObj );
     }
-
-    if ( eventObj.hasOwnProperty( 'text' ) ) {
-      text = eventObj.text;
-    }
-
-    self.logEvent( component, pluginName, eventID, 'CRIT', text );
-  } );
-
-  return this;
 }
-
-
-
-/**
- * Inherits from EventEmitter.
- * @type {Object}
- */
-CommanderInstance.prototype.__proto__ = Emitter.prototype;
-
-
-/**
- * Logs events
- * @param  {String} plugin      plugin name
- * @param  {String} component   component name
- * @param  {Number} eventID     event id
- * @param  {String} criticality level of criticality
- * @param  {String} text        event message text
- */
-CommanderInstance.prototype.logEvent = function( plugin, component, eventID, criticality, text ) {
-  this.server.logEvent( this.name, plugin, component, eventID, criticality, text );
-}
-
-
-/**
- * Adds an application
- * @param  {String} name      application name
- * @param  {Object} newAppObj application object
- */
-CommanderInstance.prototype.addApp = function( name, newAppObj ) {
-  var self = this;
-  this.apps[ name ] = {
-    name: name,
-    appObj: newAppObj
-  };
-
-  newAppObj.setInstanceEmitter( this.emitter );
-}
-
-
-/**
- * Emit data
- * @param  {String}   streamID stream id
- * @param  {String}   msg      emit message
- * @param	 {Function} callback callback
- */
-CommanderInstance.prototype.emit = function( streamID, obj, callback ) {
-  this.emitter.emit( streamID, obj, callback );
-}
-
-
-
-exports = module.exports = CommanderInstance;

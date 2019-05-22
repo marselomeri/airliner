@@ -2,43 +2,41 @@
 
 var path = require('path');
 
-const CdrPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrPlugin')).CdrPlugin;
+const CdrFlightAppsPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrFlightAppsPlugin')).CdrFlightAppsPlugin;
 
-module.exports = class CfeCdrPlugin extends CdrPlugin {
-  constructor(urlBase) {
-    super('amc', path.join(__dirname, 'web', urlBase));
-  }
-
-  getContent() {
-    var result = {
-      shortDescription: 'Actuator and Motor Control',
-      longDescription: 'Actuator and Motor Control.',
-      nodes: {
-				main: {
-					type: CdrPlugin.ContentType.LAYOUT,
-					shortDescription: 'Main',
-					longDescription: 'Main AMC.',
-					filePath: '/main_layout.lyt'
-				},
-				cdh: {
-					type: CdrPlugin.ContentType.PANEL,
-					shortDescription: 'Command and Data Handling',
-					longDescription: 'Command counters.',
-					filePath: '/cdh.pug'
-				},
-                ao: {
-                    type: CdrPlugin.ContentType.PANEL,
-                    shortDescription: 'Actuator Outputs',
-                    longDescription: 'Actuator Outputs',
-                    filePath: '/ao.pug'
+module.exports = class AmcCdrFlightAppsPlugin extends CdrFlightAppsPlugin {
+    constructor(config) {
+        config.name = 'amc';
+        config.webRoot = path.join( __dirname, 'web');  
+        super(config);
+    	
+        var content = {
+            amc: {
+                shortDescription: 'Actuator and Motor Control',
+                longDescription: 'Actuator and Motor Control.',
+                nodes: {
+        	        main: {
+        	            type: CdrFlightAppsPlugin.ContentType.LAYOUT,
+        		        shortDescription: 'Main',
+                        longDescription: 'Main AMC.',
+                        filePath: 'main_layout.lyt'
+        	        },
+        		    cdh: {
+        		        type: CdrFlightAppsPlugin.ContentType.PANEL,
+        		        shortDescription: 'Command and Data Handling',
+        		        longDescription: 'Command counters.',
+        	            filePath: 'cdh.pug'
+        	        },
+                    ao: {
+                        type: CdrFlightAppsPlugin.ContentType.PANEL,
+                        shortDescription: 'Actuator Outputs',
+                        longDescription: 'Actuator Outputs',
+                        filePath: 'ao.pug'
+                    }
                 }
-      }
-    };
-
-    return result;
-  }
+            }
+        };
+    	
+    	this.addContent(content);
+    }
 };
-
-//var plugin = new CfeCdrPlugin();
-
-//let CfeCdrPlugin = new class extends CdrPlugin {

@@ -63,7 +63,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/vm/vs"
+          "link": "flight/apps/vm/vs"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -86,7 +86,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/vm/cdh"
+          "link": "flight/apps/vm/cdh"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -119,7 +119,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/sch/app_sch?appName=VM"
+          "link": "flight/apps/sch/app_sch?appName=VM"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -130,7 +130,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/to/tlm_app?appName=VM"
+          "link": "flight/apps/to/tlm_app?appName=VM"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -152,7 +152,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/cfe/evs/efltr?appName=VM"
+          "link": "flight/core/evs/efltr?appName=VM"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -163,7 +163,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/cfe/tbl/tc?appName=VM"
+          "link": "flight/core/tbl/tc?appName=VM"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -174,7 +174,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/cfe/es/appctrl?appName=VM"
+          "link": "flight/core/es/appctrl?appName=VM"
          },
          "isClosable": true,
          "reorderEnabled": true

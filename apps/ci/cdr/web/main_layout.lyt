@@ -54,7 +54,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/ci/hk"
+        "link": "flight/apps/ci/hk"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -65,7 +65,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/ci/cdh"
+        "link": "flight/apps/ci/cdh"
        },
        "isClosable": true,
        "reorderEnabled": true

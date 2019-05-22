@@ -1,60 +1,54 @@
-.row.os-theme-dark
-  article.col-xs-12.col-sm-12
-    header
-      span.widget-icon
-        i.fa.fa-table
-      h2 SC - ATS General
-    div.widget-body.table-responsive
-      table.table.table-condensed
-        tbody
-          tr
-            th ATS Number
-            td
-              div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/AtsNumber'}],indicator:'text'}) ---
-          tr
-            th ATS State
-            td
-              div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/AtpState'}],indicator:'text'}) ---
-          tr
-            th ATS On Failure
-            td
-              div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/ContinueAtsOnFailureFlag'}],indicator:'text'}) ---
-          tr
-            th ATS Cmd Counter
-            td
-              div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/AtsCmdCtr'}],indicator:'text'}) ---
-          tr
-            th ATS Cmd Err Counter
-            td
-              div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/AtsCmdErrCtr'}],indicator:'text'}) ---
-          tr
-            th Last ATS Err Seq
-            td
-              div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/LastAtsErrSeq'}],indicator:'text'}) ---
-          tr
-            th Last ATS Err Cmd
-            td
-              div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/LastAtsErrCmd'}],indicator:'text'}) ---
-          tr
-            th Next ATS Time
-            td
-              div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/NextAtsTime'}],indicator:'text'}) ---
-    footer.btn-group(role="group")      
-      .btn-group.dropright
-        button.btn.cdr-primary.dropdown-toggle(type='button', data-toggle='dropdown')
-          | ATS Commands
-          span.caret
-        ul.dropdown-menu(role='menu')
-          li.cdr-dropdown-list-item
-            a(data-cdr={cmd:{name:'/SC/StartAts'}, indicator:'cmd'}, href='javascript:void(0);') Start ATS
-          li.cdr-dropdown-list-item
-            a(data-cdr={cmd:{name:'/SC/StopAts'}, indicator:'cmd'}, href='javascript:void(0);') Stop ATS
-          li.cdr-dropdown-list-item
-            a(data-cdr={cmd:{name:'/SC/SwitchAts'}, indicator:'cmd'}, href='javascript:void(0);') Switch ATS
-          li.cdr-dropdown-list-item
-            a(data-cdr={cmd:{name:'/SC/JumpAts'}, indicator:'cmd'}, href='javascript:void(0);') Jump ATS
-          li.cdr-dropdown-list-item
-            a(data-cdr={cmd:{name:'/SC/ContinueAtsOnFailure'}, indicator:'cmd'}, href='javascript:void(0);') Continue ATS On Failure
-          li.cdr-dropdown-list-item
-            a(data-cdr={cmd:{name:'/SC/AppendAts'}, indicator:'cmd'}, href='javascript:void(0);') Append ATS
+table.table.table-condensed
+  tbody
+    tr
+      th ATS Number
+      td
+        div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/AtsNumber'}]}) ---
+    tr
+      th ATS State
+      td
+        div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/AtpState'}]}) ---
+    tr
+      th ATS On Failure
+      td
+        div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/ContinueAtsOnFailureFlag'}]}) ---
+    tr
+      th ATS Cmd Counter
+      td
+        div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/AtsCmdCtr'}]}) ---
+    tr
+      th ATS Cmd Err Counter
+      td
+        div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/AtsCmdErrCtr'}]}) ---
+    tr
+      th Last ATS Err Seq
+      td
+        div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/LastAtsErrSeq'}]}) ---
+    tr
+      th Last ATS Err Cmd
+      td
+        div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/LastAtsErrCmd'}]}) ---
+    tr
+      th Next ATS Time
+      td
+        div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/NextAtsTime'}]}) ---
+
+footer.btn-group(role="group")      
+  .btn-group.dropright
+    button.btn.cdr-primary.dropdown-toggle(type='button', data-toggle='dropdown')
+      | ATS Commands
+      span.caret
+    ul.dropdown-menu(role='menu')
+      li.cdr-dropdown-list-item
+        a(data-cdr={cmd:{name:'/SC/StartAts'}, indicator:'cmd'}, href='javascript:void(0);') Start ATS
+      li.cdr-dropdown-list-item
+        a(data-cdr={cmd:{name:'/SC/StopAts'}, indicator:'cmd'}, href='javascript:void(0);') Stop ATS
+      li.cdr-dropdown-list-item
+        a(data-cdr={cmd:{name:'/SC/SwitchAts'}, indicator:'cmd'}, href='javascript:void(0);') Switch ATS
+      li.cdr-dropdown-list-item
+        a(data-cdr={cmd:{name:'/SC/JumpAts'}, indicator:'cmd'}, href='javascript:void(0);') Jump ATS
+      li.cdr-dropdown-list-item
+        a(data-cdr={cmd:{name:'/SC/ContinueAtsOnFailure'}, indicator:'cmd'}, href='javascript:void(0);') Continue ATS On Failure
+      li.cdr-dropdown-list-item
+        a(data-cdr={cmd:{name:'/SC/AppendAts'}, indicator:'cmd'}, href='javascript:void(0);') Append ATS
           

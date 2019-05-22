@@ -2,49 +2,47 @@
 
 var path = require('path');
 
-const CdrPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrPlugin')).CdrPlugin;
+const CdrFlightAppsPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrFlightAppsPlugin')).CdrFlightAppsPlugin;
 
-module.exports = class CfeCdrPlugin extends CdrPlugin {
-  constructor(urlBase) {
-    super('qae', path.join(__dirname, 'web', urlBase));
-  }
+module.exports = class CfeCdrFlightAppsPlugin extends CdrFlightAppsPlugin {
+    constructor(config) {
+        config.name = 'qae';
+        config.webRoot = path.join( __dirname, 'web');  
+        super(config);
 
-  getContent() {
-    var result = {
-      shortDescription: 'Attitude Estimator',
-      longDescription: 'Attitude Estimator',
-      nodes: {
-				main: {
-					type: CdrPlugin.ContentType.LAYOUT,
-					shortDescription: 'Main',
-					longDescription: 'Main AMC.',
-					filePath: '/main_layout.lyt'
-				},
-				hk: {
-					type: CdrPlugin.ContentType.PANEL,
-					shortDescription: 'AE HK',
-					longDescription: 'Attitude Estimator Housekeeping',
-					filePath: '/hk.pug'
-				},
-				va: {
-					type: CdrPlugin.ContentType.PANEL,
-					shortDescription: 'Vehicle Attitude',
-					longDescription: 'Attitude Estimator Vehicle Attitude',
-					filePath: '/va.pug'
-				},
-				cs: {
-					type: CdrPlugin.ContentType.PANEL,
-					shortDescription: 'Control State',
-					longDescription: 'Attitude Estimator Control State',
-					filePath: '/cs.pug'
-				}
-      }
+        var content = {
+            qae: {    		
+                shortDescription: 'Attitude Estimator',
+                longDescription: 'Attitude Estimator',
+                nodes: {
+				    main: {
+					    type: CdrFlightAppsPlugin.ContentType.LAYOUT,
+					    shortDescription: 'Main',
+					    longDescription: 'Main AMC.',
+					    filePath: 'main_layout.lyt'
+				    },
+				    hk: {
+					    type: CdrFlightAppsPlugin.ContentType.PANEL,
+					    shortDescription: 'AE HK',
+					    longDescription: 'Attitude Estimator Housekeeping',
+					    filePath: 'hk.pug'
+				    },
+				    va: {
+					    type: CdrFlightAppsPlugin.ContentType.PANEL,
+					    shortDescription: 'Vehicle Attitude',
+					    longDescription: 'Attitude Estimator Vehicle Attitude',
+					    filePath: 'va.pug'
+				    },
+				    cs: {
+					    type: CdrFlightAppsPlugin.ContentType.PANEL,
+					    shortDescription: 'Control State',
+					    longDescription: 'Attitude Estimator Control State',
+					    filePath: 'cs.pug'
+				    }
+                }
+            }
+        };
+        
+      	this.addContent(content);
     };
-
-    return result;
-  }
 };
-
-//var plugin = new CfeCdrPlugin();
-
-//let CfeCdrPlugin = new class extends CdrPlugin {

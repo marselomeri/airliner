@@ -15,6 +15,15 @@ add_airliner_app_def(flow
 
     USER_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/user_doxy.in
     DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in
+    
+    REFERENCE_CONFIG
+        ${PROJECT_SOURCE_DIR}/apps/flow/fsw/mission_inc
+        ${PROJECT_SOURCE_DIR}/apps/flow/fsw/platform_inc
+         
+    MSG_OVERRIDES   ${CMAKE_CURRENT_SOURCE_DIR}/flow_msg_overrides.json
+
+    COMMANDER_PLUGIN
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr
 )
 
 

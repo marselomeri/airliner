@@ -53,7 +53,7 @@ global.NODE_APP = express();
 global.NODE_APP.set( 'views', [ path.join( __dirname, 'workspace' ), path.join( __dirname, 'views' ) ] );
 global.NODE_APP.set( 'view engine', 'pug' );
 
-global.NODE_APP.use( logger( 'dev' ) );
+//global.NODE_APP.use( logger( 'dev' ) );
 global.NODE_APP.use( express.json() );
 global.NODE_APP.use( express.urlencoded( {
   extended: false

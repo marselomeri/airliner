@@ -46,6 +46,7 @@
 #include "rcin_version.h"
 #include <unistd.h>
 #include "px4lib.h"
+#include "px4lib_msgids.h"
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */

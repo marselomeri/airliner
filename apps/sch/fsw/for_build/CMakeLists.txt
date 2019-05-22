@@ -60,6 +60,10 @@ add_airliner_app_def(sch
 
     COMMANDER_PLUGIN
         ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr
+    
+    REFERENCE_CONFIG
+        ${PROJECT_SOURCE_DIR}/apps/sch/fsw/mission_inc
+        ${PROJECT_SOURCE_DIR}/apps/sch/fsw/platform_inc
 )
 
 add_airliner_app_unit_test(sch-ut

@@ -57,7 +57,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/rcin/cdh"
+        "link": "flight/apps/rcin/cdh"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -88,7 +88,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/sch/app_sch?appName=RCIN"
+          "link": "flight/apps/sch/app_sch?appName=RCIN"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -99,7 +99,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/to/tlm_app?appName=RCIN"
+          "link": "flight/apps/to/tlm_app?appName=RCIN"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -121,7 +121,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/cfe/evs/efltr?appName=RCIN"
+          "link": "flight/core/evs/efltr?appName=RCIN"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -132,7 +132,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/cfe/tbl/tc?appName=RCIN"
+          "link": "flight/core/tbl/tc?appName=RCIN"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -143,7 +143,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/cfe/es/appctrl?appName=RCIN"
+          "link": "flight/core/es/appctrl?appName=RCIN"
          },
          "isClosable": true,
          "reorderEnabled": true

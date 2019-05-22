@@ -1,11 +1,6 @@
-.row.row-fluid
-  article.col-xs-12.col-sm-12
-    header
-      span.widget-icon
-        i.fa.fa-table
-      h2 Time Diag
-    div.widget-body
-      table.table.table-condensed
+button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SendDiag'}, indicator:'cmd'}) Telemeter Diag
+
+table.table.table-condensed
         tbody
           tr
             th At Tone MET
@@ -51,7 +46,7 @@
                   {value:-1, name:'INVALID'},
                   {value:0, name:'VALID'},
                   {value:1, name:'FLYWHEEL'}
-                ]}}],indicator:'text'}) ---
+                ]}}]}) ---
           tr
             th Time Since Tone
             td 
@@ -85,7 +80,4 @@
             td 
               span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.CurrentTAI.Subseconds'}], indicator:'text'}) ---
 
-              
-    footer
-      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SendDiag'}, indicator:'cmd'}) Telemeter Diag
                       

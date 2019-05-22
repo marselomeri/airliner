@@ -8,6 +8,7 @@
 #include "pe_app.h"
 #include "pe_msg.h"
 #include "pe_version.h"
+#include "px4lib_msgids.h"
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */

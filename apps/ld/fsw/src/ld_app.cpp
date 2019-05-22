@@ -10,6 +10,7 @@
 #include "ld_app.h"
 #include "ld_msg.h"
 #include "ld_version.h"
+#include "px4lib_msgids.h"
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */

@@ -29,6 +29,8 @@
  ** Macro Definitions
  *************************************************************************/
 
+#define CS_CHILD_TASK_FLAGS							OS_ENABLE_CORE_0
+
 /**
 **  \cscfg EEPROM File Table -- default table filename
 **

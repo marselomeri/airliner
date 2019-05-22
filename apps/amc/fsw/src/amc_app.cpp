@@ -57,6 +57,8 @@ extern "C"
 #include "prm_lib.h"
 #include "prm_ids.h"
 #include "px4lib.h"
+#include "px4lib_msgids.h"
+#include "prmlib_msgids.h"
 
 /* TODO:  Delete this when the PWM is no longer simulated on the PX4 side. */
 #define PWM_SIM_DISARMED_MAGIC (900)

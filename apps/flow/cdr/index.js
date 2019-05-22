@@ -5,8 +5,10 @@ var path = require('path');
 const CdrPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrPlugin')).CdrPlugin;
 
 module.exports = class CfeCdrPlugin extends CdrPlugin {
-  constructor(urlBase) {
-    super('amc', path.join(__dirname, 'web', urlBase));
+    constructor(config) {
+        config.name = 'flow';
+        config.webRoot = path.join( __dirname, 'web');  
+        super(config);
   }
 
   getContent() {

@@ -1,11 +1,5 @@
-.row.os-theme-dark
-  article.col-xs-12.col-sm-12
-      header
-        span.widget-icon
-          i.fa.fa-table
-        h2 Pipe Stats
-          button.btn.cdr-primary.cdr-in-panel-header(data-cdr={cmd:{name:'/CFE/CFE_SB_SendStats'},indicator:'cmd'}) Send
-      div.widget-body.table-responsive
+button.btn.cdr-primary.cdr-in-panel-header(data-cdr={cmd:{name:'/CFE/CFE_SB_SendStats'}}) Send
+div.widget-body.table-responsive
         table.table.table-bordered.table-condensed
           thead
             tr
@@ -21,11 +15,11 @@
               - var PeakInUse = '/CFE/CFE_SB_StatMsg_t/Payload.PipeDepthStats[' + i + '].PeakInUse'
               tr
                 td 
-                  span(data-cdr={tlm:[{name:PipeId}],indicator:'text'}) ---
+                  span(data-cdr={tlm:[{name:PipeId}]}) ---
                 td 
-                  span(data-cdr={tlm:[{name:Depth}],indicator:'text'}) ---
+                  span(data-cdr={tlm:[{name:Depth}]}) ---
                 td
-                  span(data-cdr={tlm:[{name:InUse}],indicator:'text'}) ---
+                  span(data-cdr={tlm:[{name:InUse}]}) ---
                 td
-                  span(data-cdr={tlm:[{name:PeakInUse}],indicator:'text'}) ---
+                  span(data-cdr={tlm:[{name:PeakInUse}]}) ---
             - }  

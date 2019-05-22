@@ -11,37 +11,29 @@ var ProtobufDecoder = require(path.join(global.CDR_INSTALL_DIR, 'protobuf-decode
 var ConfigDatabase = require(path.join(global.CDR_INSTALL_DIR, 'config-database'));
 
 var commander = new Commander(global.CDR_WORKSPACE, `${global.CDR_WORKSPACE}/etc/commander-config.json`);
-var binaryEncoder = new BinaryEncoder(global.CDR_WORKSPACE, `${global.CDR_WORKSPACE}/etc/binary-encoder-config.json`);
-var binaryDecoder = new BinaryDecoder(global.CDR_WORKSPACE, `${global.CDR_WORKSPACE}/etc/binary-decoder-config.json`);
-var variableServer = new VariableServer(`${global.CDR_WORKSPACE}/etc/variable-server-config.json`);
-var fswConnector = new UdpStdProvider(`${global.CDR_WORKSPACE}/etc/udpstdprovider-config.json`);
-var pylinerConnector = new UdpStdProvider(`${global.CDR_WORKSPACE}/etc/pyliner-connector-config.json`);
-var protobufEncoder = new ProtobufEncoder(global.CDR_WORKSPACE, `${global.CDR_WORKSPACE}/etc/protobuf-encoder-config.json`);
-var protobufDecoder = new ProtobufDecoder(global.CDR_WORKSPACE, `${global.CDR_WORKSPACE}/etc/protobuf-decoder-config.json`);
-var configDB = new ConfigDatabase(global.CDR_WORKSPACE, `${global.CDR_WORKSPACE}/etc/config-database-config.json`);
 
 global.COMMANDER = commander;
 
-var airliner = commander.addInstance('airliner', function(instance) {
-	instance.addApp('binary-encoder',    binaryEncoder);
-	instance.addApp('binary-decoder',    binaryDecoder);
-	instance.addApp('fsw-connector',     fswConnector);
-	instance.addApp('pyliner-connector', pylinerConnector);
-	instance.addApp('variable-server',   variableServer);
-	instance.addApp('protobuf-encoder',  protobufEncoder);
-	instance.addApp('protobuf-decoder',  protobufDecoder);
-	instance.addApp('config-database',   configDB);
+var airliner = commander.addInstance('airliner', function(namespace) {
+    var binaryEncoder = new BinaryEncoder({namespace: namespace, name: 'binary-encoder', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/binary-encoder-config.json`});
+    var binaryDecoder = new BinaryDecoder({namespace: namespace, name: 'binary-decoder', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/binary-decoder-config.json`});
+    var variableServer = new VariableServer({namespace: namespace, name: 'variable-server', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/variable-server-config.json`});
+    var fswConnector = new UdpStdProvider({namespace: namespace, name: 'fsw-connector', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/udpstdprovider-config.json`});
+    var pylinerConnector = new UdpStdProvider({namespace: namespace, name: 'pyliner-connector', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/pyliner-connector-config.json`});
+    var protobufEncoder = new ProtobufEncoder({namespace: namespace, name: 'protobuf-encoder', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/protobuf-encoder-config.json`});
+    var protobufDecoder = new ProtobufDecoder({namespace: namespace, name: 'protobuf-decoder', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/protobuf-decoder-config.json`});
+    var configDB = new ConfigDatabase({namespace: namespace, name: 'config-database', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/config-database-config.json`});
 	
-	commander.setDefaultInstance(instance);
+    commander.setDefaultInstance(namespace);
 	
     var outFiles = [];
     var fullPath = path.join(global.CDR_WORKSPACE, 'plugins');
     
-    parsePluginPath(instance, path.join(fullPath, 'cfe/index.js'), '/');
+    parsePluginPath(namespace, path.join(fullPath, 'cfe/index.js'), '/');
     findIndex(path.join(fullPath, 'apps'), function(err, results) {
     	if(err) throw err;
     	for(var i = 0; i < results.length; ++i) {
-    		parsePluginPath(instance, results[i], '/');
+    		parsePluginPath(namespace, results[i], '/');
     	}
     });
 });
@@ -50,13 +42,14 @@ var airliner = commander.addInstance('airliner', function(instance) {
 
 function parsePluginPath(instance, indexFilePath, basePath) {
     if (fs.existsSync(indexFilePath)) {
+        var config = {namespace: instance};
         var NewPluginClass = require(path.dirname(indexFilePath));
-        var newPlugin = new NewPluginClass(basePath);
+        var newPlugin = new NewPluginClass(config);
         
-        newPlugin.initialize(commander, instance);
-	} else {
-		//parsePluginPath(pluginPath, newBasePath);
-	}
+        newPlugin.initialize(config);
+    } else {
+	parsePluginPath(pluginPath, newBasePath);
+    }
 }
 
 
