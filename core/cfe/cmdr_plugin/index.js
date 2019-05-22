@@ -49,6 +49,18 @@ module.exports = class CfeCdrPlugin extends CdrFlightPlugin {
                                 longDescription: 'Essential Services logging status and control.',
                                 filePath: 'es/logging.pug'
                             },
+                            logging_syslogbytesused_dp: {
+                                type: CdrFlightPlugin.ContentType.PANEL,
+                                shortDescription: 'SysLog Bytes Used',
+                                longDescription: 'System Log Bytes Used..',
+                                filePath: 'es/logging_syslogbytesused_dp.pug'
+                            },
+                            logging_syslogentries_dp: {
+                                type: CdrFlightPlugin.ContentType.PANEL,
+                                shortDescription: 'SysLog Entries',
+                                longDescription: 'System Log Entries',
+                                filePath: 'es/logging_syslogentries_dp.pug'
+                            },
                             memory: {
                                 type: CdrFlightPlugin.ContentType.PANEL,
                                 shortDescription: 'Memory',

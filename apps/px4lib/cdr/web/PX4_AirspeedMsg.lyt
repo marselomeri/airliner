@@ -1,4 +1,4 @@
-{
+﻿{
  "settings": {
   "hasHeaders": true,
   "constrainDragToContainer": false,
@@ -40,70 +40,132 @@
    "title": "",
    "content": [
     {
-     "type": "stack",
-     "header": {},
+     "type": "column",
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "activeItemIndex": 0,
-     "width": 42.88440651449667,
-     "height": 100,
+     "width": 50,
      "content": [
       {
-       "title": "Dataplot",
-       "type": "component",
-       "componentName": "Blank",
-       "componentState": {
-        "text": "text",
-        "link": "/flight/apps/px4lib/Dataplot"
-       },
+       "type": "stack",
+       "header": {},
        "isClosable": true,
-       "reorderEnabled": true
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "width": 50,
+       "height": 25,
+       "content": [
+        {
+         "title": "Message",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/apps/px4lib/PX4_Airspeed/PX4_AirspeedMsg"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
+      },
+      {
+       "type": "stack",
+       "header": {},
+       "isClosable": true,
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "height": 33.52803738317757,
+       "content": [
+        {
+         "title": "True",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/apps/px4lib/PX4_Airspeed/PX4_AirspeedMsg_TrueAirspeed_dp"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
+      },
+      {
+       "type": "stack",
+       "header": {},
+       "isClosable": true,
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "height": 41.47196261682243,
+       "content": [
+        {
+         "title": "True - Unfiltered",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/apps/px4lib/PX4_Airspeed/PX4_AirspeedMsg_Unfiltered"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
       }
      ]
     },
     {
-     "type": "stack",
-     "header": {},
+     "type": "column",
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "activeItemIndex": 0,
-     "width": 27.091282302359087,
+     "width": 50,
      "content": [
       {
-       "title": "Air Speed",
-       "type": "component",
-       "componentName": "Blank",
-       "componentState": {
-        "text": "text",
-        "link": "/flight/apps/px4lib/PX4_AirspeedMsg"
-       },
+       "type": "stack",
+       "header": {},
        "isClosable": true,
-       "reorderEnabled": true
-      }
-     ]
-    },
-    {
-     "type": "stack",
-     "header": {},
-     "isClosable": true,
-     "reorderEnabled": true,
-     "title": "",
-     "activeItemIndex": 0,
-     "height": 100,
-     "width": 30.024311183144246,
-     "content": [
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "width": 50,
+       "height": 50,
+       "content": [
+        {
+         "title": "Air Temperature",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/apps/px4lib/PX4_Airspeed/PX4_AirspeedMsg_AirTemperature_dp"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
+      },
       {
-       "title": "Telemetry Control",
-       "type": "component",
-       "componentName": "Blank",
-       "componentState": {
-        "text": "text",
-        "link": "/to/tlm_app?appName=PX4"
-       },
+       "type": "stack",
+       "header": {},
        "isClosable": true,
-       "reorderEnabled": true
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "height": 50,
+       "content": [
+        {
+         "title": "Indicated",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/apps/px4lib/PX4_Airspeed/PX4_AirspeedMsg_IndicatedAirspeed_dp"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
       }
      ]
     }

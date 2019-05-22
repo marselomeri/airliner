@@ -1,4 +1,4 @@
-{
+﻿{
  "settings": {
   "hasHeaders": true,
   "constrainDragToContainer": false,
@@ -34,111 +34,23 @@
  },
  "content": [
   {
-   "type": "row",
+   "type": "stack",
+   "header": {},
    "isClosable": true,
    "reorderEnabled": true,
    "title": "",
+   "activeItemIndex": 0,
    "content": [
     {
-     "type": "stack",
-     "header": {},
+     "title": "Message",
+     "type": "component",
+     "componentName": "Blank",
+     "componentState": {
+      "text": "text",
+      "link": "/flight/apps/px4lib/PX4_ActuatorsOutputs/PX4_ActuatorOutputsMsg"
+     },
      "isClosable": true,
-     "reorderEnabled": true,
-     "title": "",
-     "activeItemIndex": 0,
-     "width": 42.88440651449667,
-     "height": 100,
-     "content": [
-      {
-       "title": "Dataplot",
-       "type": "component",
-       "componentName": "Blank",
-       "componentState": {
-        "text": "text",
-        "link": "/flight/apps/px4lib/Dataplot",
-        "PlotDef": {
-         "data": [
-          {
-           "tlm": {
-            "name": "/PX4/PX4_ActuatorOutputsMsg_t/Output[0]"
-           },
-           "color": "#000",
-           "label": "/PX4/PX4_ActuatorOutputsMsg_t/Output[0]"
-          },
-          {
-           "tlm": {
-            "name": "/PX4/PX4_ActuatorOutputsMsg_t/Output[1]"
-           },
-           "color": "#C6C6C6",
-           "label": "/PX4/PX4_ActuatorOutputsMsg_t/Output[1]"
-          },
-          {
-           "tlm": {
-            "name": "/PX4/PX4_ActuatorOutputsMsg_t/Output[2]"
-           },
-           "color": "#535353",
-           "label": "/PX4/PX4_ActuatorOutputsMsg_t/Output[2]"
-          },
-          {
-           "tlm": {
-            "name": "/PX4/PX4_ActuatorOutputsMsg_t/Output[3]"
-           },
-           "color": "#FFF",
-           "label": "/PX4/PX4_ActuatorOutputsMsg_t/Output[3]"
-          }
-         ],
-         "options": {}
-        }
-       },
-       "isClosable": true,
-       "reorderEnabled": true
-      }
-     ]
-    },
-    {
-     "type": "stack",
-     "header": {},
-     "isClosable": true,
-     "reorderEnabled": true,
-     "title": "",
-     "activeItemIndex": 0,
-     "width": 27.091282302359087,
-     "content": [
-      {
-       "title": "Actuator Outputs",
-       "type": "component",
-       "componentName": "Blank",
-       "componentState": {
-        "text": "text",
-        "link": "/flight/apps/px4lib/PX4_ActuatorOutputsMsg"
-       },
-       "isClosable": true,
-       "reorderEnabled": true
-      }
-     ]
-    },
-    {
-     "type": "stack",
-     "header": {},
-     "isClosable": true,
-     "reorderEnabled": true,
-     "title": "",
-     "activeItemIndex": 0,
-     "height": 100,
-     "width": 30.024311183144246,
-     "content": [
-      {
-       "title": "Telemetry Control",
-       "type": "component",
-       "componentName": "Blank",
-       "componentState": {
-        "text": "text",
-        "link": "/to/tlm_app?appName=PX4"
-       },
-       "isClosable": true,
-       "reorderEnabled": true
-      }
-     ]
+     "reorderEnabled": true
     }
    ]
   }

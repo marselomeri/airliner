@@ -1,4 +1,4 @@
-{
+﻿{
  "settings": {
   "hasHeaders": true,
   "constrainDragToContainer": false,
@@ -34,10 +34,11 @@
  },
  "content": [
   {
-   "type": "row",
+   "type": "column",
    "isClosable": true,
    "reorderEnabled": true,
    "title": "",
+   "width": 100,
    "content": [
     {
      "type": "stack",
@@ -46,16 +47,16 @@
      "reorderEnabled": true,
      "title": "",
      "activeItemIndex": 0,
-     "width": 42.88440651449667,
-     "height": 100,
+     "width": 50,
+     "height": 21.934237484846836,
      "content": [
       {
-       "title": "Dataplot",
+       "title": "Message",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/flight/apps/px4lib/Dataplot"
+        "link": "/flight/apps/px4lib/PX4_DifferentialPressure/PX4_DifferentialPressureMsg"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -69,7 +70,7 @@
      "reorderEnabled": true,
      "title": "",
      "activeItemIndex": 0,
-     "width": 27.091282302359087,
+     "height": 37.807633863841,
      "content": [
       {
        "title": "Differential Pressure",
@@ -77,7 +78,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/flight/apps/px4lib/PX4_DifferentialPressureMsg"
+        "link": "/flight/apps/px4lib/PX4_DifferentialPressure/PX4_DifferentialPressureMsg_DiffPress"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -91,16 +92,15 @@
      "reorderEnabled": true,
      "title": "",
      "activeItemIndex": 0,
-     "height": 100,
-     "width": 30.024311183144246,
+     "height": 40.25812865131217,
      "content": [
       {
-       "title": "Telemetry Control",
+       "title": "Temperature",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/to/tlm_app?appName=PX4"
+        "link": "/flight/apps/px4lib/PX4_DifferentialPressure/PX4_DifferentialPressureMsg_Temperature"
        },
        "isClosable": true,
        "reorderEnabled": true

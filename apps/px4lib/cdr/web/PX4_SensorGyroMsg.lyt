@@ -34,57 +34,74 @@
  },
  "content": [
   {
-   "type": "row",
+   "type": "column",
    "isClosable": true,
    "reorderEnabled": true,
    "title": "",
+   "width": 100,
    "content": [
     {
-     "type": "stack",
-     "header": {},
+     "type": "row",
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "activeItemIndex": 0,
-     "width": 42.88440651449667,
-     "height": 100,
+     "height": 50,
      "content": [
       {
-       "title": "Dataplot",
-       "type": "component",
-       "componentName": "Blank",
-       "componentState": {
-        "text": "text",
-        "link": "/flight/apps/px4lib/Dataplot",
-        "PlotDef": {
-         "data": [
-          {
-           "tlm": {
-            "name": "/PX4/PX4_SensorGyroMsg_t/X"
-           },
-           "color": "#FF0000",
-           "label": "/PX4/PX4_SensorGyroMsg_t/X"
-          },
-          {
-           "tlm": {
-            "name": "/PX4/PX4_SensorGyroMsg_t/Y"
-           },
-           "color": "#B4115F",
-           "label": "/PX4/PX4_SensorGyroMsg_t/Y"
-          },
-          {
-           "tlm": {
-            "name": "/PX4/PX4_SensorGyroMsg_t/Z"
-           },
-           "color": "#F14CD9",
-           "label": "/PX4/PX4_SensorGyroMsg_t/Z"
-          }
-         ],
-         "options": {}
+       "type": "stack",
+       "header": {},
+       "isClosable": true,
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "height": 50,
+       "width": 50,
+       "content": [
+        {
+         "title": "Message",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/apps/px4lib/PX4_SensorGyro/PX4_SensorGyroMsg"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
         }
-       },
+       ]
+      },
+      {
+       "type": "stack",
+       "header": {},
        "isClosable": true,
-       "reorderEnabled": true
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 1,
+       "width": 50,
+       "content": [
+        {
+         "title": "Temperature",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/apps/px4lib/PX4_SensorGyro/PX4_SensorGyroMsg_Temperature"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        },
+        {
+         "title": "Temperature Raw",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/apps/px4lib/PX4_SensorGyro/PX4_SensorGyroMsg_TemperatureRaw"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
       }
      ]
     },
@@ -95,38 +112,38 @@
      "reorderEnabled": true,
      "title": "",
      "activeItemIndex": 0,
-     "width": 27.091282302359087,
+     "width": 50,
+     "height": 50,
      "content": [
       {
-       "title": "Sensor Gyro",
+       "title": "Gyro",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/flight/apps/px4lib/PX4_SensorGyroMsg"
+        "link": "/flight/apps/px4lib/PX4_SensorGyro/PX4_SensorGyroMsg_Gyro"
        },
        "isClosable": true,
        "reorderEnabled": true
-      }
-     ]
-    },
-    {
-     "type": "stack",
-     "header": {},
-     "isClosable": true,
-     "reorderEnabled": true,
-     "title": "",
-     "activeItemIndex": 0,
-     "height": 100,
-     "width": 30.024311183144246,
-     "content": [
+      },
       {
-       "title": "Telemetry Control",
+       "title": "Raw",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/to/tlm_app?appName=PX4"
+        "link": "/flight/apps/px4lib/PX4_SensorGyro/PX4_SensorGyroMsg_Raw"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "Integral",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "/flight/apps/px4lib/PX4_SensorGyro/PX4_SensorGyroMsg_Integral"
        },
        "isClosable": true,
        "reorderEnabled": true

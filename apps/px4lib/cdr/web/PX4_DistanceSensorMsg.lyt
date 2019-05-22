@@ -34,7 +34,7 @@
  },
  "content": [
   {
-   "type": "row",
+   "type": "column",
    "isClosable": true,
    "reorderEnabled": true,
    "title": "",
@@ -46,28 +46,15 @@
      "reorderEnabled": true,
      "title": "",
      "activeItemIndex": 0,
-     "width": 42.88440651449667,
-     "height": 100,
+     "height": 24.37791601866252,
      "content": [
       {
-       "title": "Dataplot",
+       "title": "Message",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/flight/apps/px4lib/Dataplot",
-        "PlotDef": {
-         "data": [
-          {
-           "tlm": {
-            "name": "/PX4/PX4_DistanceSensorMsg_t/CurrentDistance"
-           },
-           "color": "#26FF02",
-           "label": "/PX4/PX4_DistanceSensorMsg_t/CurrentDistance"
-          }
-         ],
-         "options": {}
-        }
+        "link": "/flight/apps/px4lib/PX4_DistanceSensor/PX4_DistanceSensorMsg"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -81,15 +68,15 @@
      "reorderEnabled": true,
      "title": "",
      "activeItemIndex": 0,
-     "width": 27.091282302359087,
+     "height": 35.477027052973135,
      "content": [
       {
-       "title": "Distance Sensor",
+       "title": "CurrentDistance",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/flight/apps/px4lib/PX4_DistanceSensorMsg"
+        "link": "/flight/apps/px4lib/PX4_DistanceSensor/PX4_DistanceSensorMsg_CurrentDistance"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -103,16 +90,15 @@
      "reorderEnabled": true,
      "title": "",
      "activeItemIndex": 0,
-     "height": 100,
-     "width": 30.024311183144246,
+     "height": 40.14505692836435,
      "content": [
       {
-       "title": "Telemetry Control",
+       "title": "Covariance",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/to/tlm_app?appName=PX4"
+        "link": "/flight/apps/px4lib/PX4_DistanceSensor/PX4_DistanceSensorMsg_Covariance"
        },
        "isClosable": true,
        "reorderEnabled": true

@@ -108,22 +108,22 @@ module.exports = class CommanderInstance extends EventEmitter {
 
     
     send( streamID, obj, callback ) {
-    	if(this.streams.hasOwnProperty(streamID) == false) {
-    		/* This stream has not been created.  Create an entry for the callbacks. */
-    		var this.streams[streamID] = {};
-    	}
-    	
-    	for(var callbackID in this.streams[streamID]) {
-    		this.streams[streamID](obj);
-    	}
+    	//if(this.streams.hasOwnProperty(streamID) == false) {
+    	//	/* This stream has not been created.  Create an entry for the callbacks. */
+    	//	var this.streams[streamID] = {};
+    	//}
+    	//
+    	//for(var callbackID in this.streams[streamID]) {
+    	//	this.streams[streamID](obj);
+    	//}
     }
 
     
     recv( streamID, callback ) {
-    	if(this.streams.hasOwnProperty(streamID) == false) {
-    		/* This stream has not been created.  Create an entry for the callbacks. */
-    		var this.streams[streamID] = {};
-    	}
+    	//if(this.streams.hasOwnProperty(streamID) == false) {
+    	//	/* This stream has not been created.  Create an entry for the callbacks. */
+    	//	var this.streams[streamID] = {};
+    	//}
     }
     
     

@@ -1,4 +1,4 @@
-{
+﻿{
  "settings": {
   "hasHeaders": true,
   "constrainDragToContainer": false,
@@ -46,15 +46,15 @@
      "reorderEnabled": true,
      "title": "",
      "activeItemIndex": 0,
-     "width": 28,
+     "width": 33.50400352710539,
      "content": [
       {
-       "title": "Telemetry Control",
+       "title": "Previous",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/to/tlm_app?appName=PX4"
+        "link": "/flight/apps/px4lib/PX4_PositionSetpointTriplet/PX4_PositionSetpointTripletPreviousMsg"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -68,15 +68,15 @@
      "reorderEnabled": true,
      "title": "",
      "activeItemIndex": 0,
-     "width": 24,
+     "width": 33.56868307059401,
      "content": [
       {
-       "title": "Position Setpoint Triplet - Previous",
+       "title": "Current",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/flight/apps/px4lib/PX4_PositionSetpointTripletPreviousMsg"
+        "link": "/flight/apps/px4lib/PX4_PositionSetpointTriplet/PX4_PositionSetpointTripletCurrentMsg"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -90,37 +90,15 @@
      "reorderEnabled": true,
      "title": "",
      "activeItemIndex": 0,
-     "width": 24,
+     "width": 32.92731340230061,
      "content": [
       {
-       "title": "Position Setpoint Triplet - Current",
+       "title": "Next",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/flight/apps/px4lib/PX4_PositionSetpointTripletCurrentMsg"
-       },
-       "isClosable": true,
-       "reorderEnabled": true
-      }
-     ]
-    },
-    {
-     "type": "stack",
-     "header": {},
-     "isClosable": true,
-     "reorderEnabled": true,
-     "title": "",
-     "activeItemIndex": 0,
-     "width": 24,
-     "content": [
-      {
-       "title": "Position Setpoint Triplet - Next",
-       "type": "component",
-       "componentName": "Blank",
-       "componentState": {
-        "text": "text",
-        "link": "/flight/apps/px4lib/PX4_PositionSetpointTripletNextMsg"
+        "link": "/flight/apps/px4lib/PX4_PositionSetpointTriplet/PX4_PositionSetpointTripletNextMsg"
        },
        "isClosable": true,
        "reorderEnabled": true
