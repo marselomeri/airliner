@@ -1,58 +1,51 @@
 -   var queryString = '$.Airliner.apps.TO.config';
 -   global.COMMANDER.queryConfigDB(queryString, function (config) {
 
-.row.os-theme-dark
-  article.col-xs-12.col-sm-12
-    header
-      span.widget-icon
-        i.fa.fa-table
-      h2 TO - Housekeeping
-    div.widget-body.table-responsive
-      table.table.table-condensed
-        tbody
-          tr
-            th Cmd Count
-            td
-              div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/usCmdCnt'}],indicator:'text'}) ---
-          tr
-            th Error Count
-            td
-              div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/usCmdErrCnt'}],indicator:'text'}) ---
-          tr
-            th Total Messages Dropped
-            td
-              div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/usTotalMsgDropped'}],indicator:'text'}) ---
-          tr
-            th Memory Pool Handle
-            td
-              div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/MemPoolHandle'}],indicator:'text'}) ---
-          tr
-            th Memory In Use
-            td
-              div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/MemInUse'}],indicator:'text'}) ---
-          tr
-            th Peak Mem In Use
-            td
-              div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/PeakMemInUse'}],indicator:'text'}) ---
-          tr
-            th Maximum Memory
-            td
-              div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/MaxMem'}],indicator:'text'}) ---
+table.table.table-condensed
+  tbody
+    tr
+      th Cmd Count
+      td
+        div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/usCmdCnt'}]}) ---
+    tr
+      th Error Count
+      td
+        div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/usCmdErrCnt'}]}) ---
+    tr
+      th Total Messages Dropped
+      td
+        div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/usTotalMsgDropped'}]}) ---
+    tr
+      th Memory Pool Handle
+      td
+        div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/MemPoolHandle'}]}) ---
+    tr
+      th Memory In Use
+      td
+        div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/MemInUse'}]}) ---
+    tr
+      th Peak Mem In Use
+      td
+        div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/PeakMemInUse'}]}) ---
+    tr
+      th Maximum Memory
+      td
+        div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/MaxMem'}]}) ---
           -  for (var ChannelIndex=0; ChannelIndex < config[0].TO_MAX_CHANNELS; ChannelIndex++) {
-          -      var tlmObj = {tlm:[{name:'/TO/TO_HkTlm_t/QueuedInOutputChannel[' + ChannelIndex +']'}],indicator:'text'}
-          tr
-            th Queued In Output Channel #{ChannelIndex}
-            td
-              div(data-cdr= tlmObj) ---
+          -      var tlmObj = {tlm:[{name:'/TO/TO_HkTlm_t/QueuedInOutputChannel[' + ChannelIndex +']'}]}
+    tr
+      th Queued In Output Channel #{ChannelIndex}
+      td
+        div(data-cdr= tlmObj) ---
           -  }
               
-    footer.btn-group(role="group")      
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/TO/Noop'},indicator:'cmd'}) No-Op    
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/TO/Reset'},indicator:'cmd'}) Reset   
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/TO/TO_AddMessageFlowCmd_t'},indicator:'cmd'}) Add Message Flow
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/TO/TO_RemoveMessageFlowCmd_t'},indicator:'cmd'}) Remove Message Flow  
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/TO/TO_QueryMessageFlowCmd_t'},indicator:'cmd'}) Query Message Flow   
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/TO/TO_QueryPriorityQueueCmd_t'},indicator:'cmd'}) Query Priority Queue   
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/TO/TO_QueryOutputChannelCmd_t'},indicator:'cmd'}) Query Output Channel 
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/Noop'}}) No-Op    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/Reset'}}) Reset   
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/TO_AddMessageFlowCmd_t'}}) Add Message Flow
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/TO_RemoveMessageFlowCmd_t'}}) Remove Message Flow  
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/TO_QueryMessageFlowCmd_t'}}) Query Message Flow   
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/TO_QueryPriorityQueueCmd_t'}}) Query Priority Queue   
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/TO_QueryOutputChannelCmd_t'}}) Query Output Channel 
 
 - });

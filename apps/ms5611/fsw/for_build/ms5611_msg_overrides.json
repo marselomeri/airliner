@@ -32,7 +32,7 @@
                   {"macro": "MS5611_MSGID_ERR_EID", "id": 9},
                   {"macro": "MS5611_CC_ERR_EID", "id": 10},
                   {"macro": "MS5611_MSGLEN_ERR_EID", "id": 11},
-                  {"macro": "MPU9250_CFGTBL_REG_ERR_EID", "id": 12},
+                  {"macro": "MS5611_CFGTBL_REG_ERR_EID", "id": 12},
                   {"macro": "MS5611_CMD_ERR_EID", "id": 13},
                   {"macro": "MS5611_UNINIT_ERR_EID", "id": 14},
                   {"macro": "MS5611_CFGTBL_LOAD_ERR_EID", "id": 15},

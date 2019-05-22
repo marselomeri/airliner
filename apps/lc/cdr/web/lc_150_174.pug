@@ -1,40 +1,33 @@
 -var STARTING_POINT = 150
--var POINTS_PER_DISPLAY = 175
+-var POINTS_PER_DISPLAY = 25
 -var ENDING_POINT = STARTING_POINT + POINTS_PER_DISPLAY - 1
-.row.os-theme-dark
-  article.col-xs-12.col-sm-12
-    header
-      span.widget-icon
-        i.fa.fa-table
-      h2 Limit Checker - WP Results #{STARTING_POINT}-#{ENDING_POINT}
-    div.widget-body.table-responsive
-      table.table.table-condensed
-        tbody
-          tr 
-            th #
-            th Watch
-            th Action State
-            th Action Result
-            th Commands
-            th
-            th
-            th
-            th
-          - for (var iPoint = STARTING_POINT; iPoint < ENDING_POINT; ++iPoint) {   
-          tr
-            th #{iPoint}
-            td
-              div(data-cdr={tlm:[{name:'/LC/LC_HkPacket_t/WPResults['+iPoint+']'}],indicator:'text'}) ---
-            td
-              div(data-cdr={tlm:[{name:'/LC/LC_HkPacket_t/APResults['+iPoint+']'}],indicator:'text'}) ---
-            td
-              div(data-cdr={tlm:[{name:'/LC/LC_HkPacket_t/x'}],indicator:'text'}) ---
-            td
-              button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/LC/SetAPState', argument:[{name:'APNumber', value:iPoint}]},indicator:'cmd'}) Set AP State
-            td
-              button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/LC/SetAPPermOff', argument:[{name:'APNumber', value:iPoint}]},indicator:'cmd'}) Set AP Perm Off
-            td
-              button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/LC/ResetAPStats', argument:[{name:'APNumber', value:iPoint}]},indicator:'cmd'}) Reset AP Stats 
-            td
-              button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/LC/ResetWPStats', argument:[{name:'APNumber', value:iPoint}]},indicator:'cmd'}) Reset WP Stats 
-          - }
+table.table.table-condensed
+  tbody
+    tr 
+      th #
+      th Watch
+      th Action State
+      th Action Result
+      th Commands
+      th
+      th
+      th
+      th
+    - for (var iPoint = STARTING_POINT; iPoint < ENDING_POINT; ++iPoint) {   
+    tr
+      th #{iPoint}
+      td
+        div(data-cdr={tlm:[{name:'/LC/LC_HkPacket_t/WPResults['+iPoint+']'}]}) ---
+      td
+        div(data-cdr={tlm:[{name:'/LC/LC_HkPacket_t/APResults['+iPoint+']'}]}) ---
+      td
+        div(data-cdr={tlm:[{name:'/LC/LC_HkPacket_t/x'}]}) ---
+      td
+        button.btn.cdr-primary(data-cdr={cmd:{name:'/LC/SetAPState', argument:[{name:'APNumber', value:iPoint}]}}) Set AP State
+      td
+        button.btn.cdr-primary(data-cdr={cmd:{name:'/LC/SetAPPermOff', argument:[{name:'APNumber', value:iPoint}]}}) Set AP Perm Off
+      td
+        button.btn.cdr-primary(data-cdr={cmd:{name:'/LC/ResetAPStats', argument:[{name:'APNumber', value:iPoint}]}}) Reset AP Stats 
+      td
+        button.btn.cdr-primary(data-cdr={cmd:{name:'/LC/ResetWPStats', argument:[{name:'APNumber', value:iPoint}]}}) Reset WP Stats 
+    - }

@@ -34,7 +34,7 @@
  },
  "content": [
   {
-   "type": "row",
+   "type": "column",
    "isClosable": true,
    "reorderEnabled": true,
    "title": "",
@@ -46,42 +46,15 @@
      "reorderEnabled": true,
      "title": "",
      "activeItemIndex": 0,
-     "width": 42.88440651449667,
-     "height": 100,
+     "height": 30.8584686774942,
      "content": [
       {
-       "title": "Dataplot",
+       "title": "Message",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/px4/Dataplot",
-        "PlotDef": {
-         "data": [
-          {
-           "tlm": {
-            "name": "/PX4/PX4_VehicleAttitudeMsg_t/PitchSpeed"
-           },
-           "color": "#D91515",
-           "label": "/PX4/PX4_VehicleAttitudeMsg_t/PitchSpeed"
-          },
-          {
-           "tlm": {
-            "name": "/PX4/PX4_VehicleAttitudeMsg_t/RollSpeed"
-           },
-           "color": "#C6D915",
-           "label": "/PX4/PX4_VehicleAttitudeMsg_t/RollSpeed"
-          },
-          {
-           "tlm": {
-            "name": "/PX4/PX4_VehicleAttitudeMsg_t/YawSpeed"
-           },
-           "color": "#15D969",
-           "label": "/PX4/PX4_VehicleAttitudeMsg_t/YawSpeed"
-          }
-         ],
-         "options": {}
-        }
+        "link": "/flight/apps/px4lib/PX4_VehicleAttitude/PX4_VehicleAttitudeMsg"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -95,38 +68,15 @@
      "reorderEnabled": true,
      "title": "",
      "activeItemIndex": 0,
-     "width": 27.091282302359087,
+     "height": 69.1415313225058,
      "content": [
       {
-       "title": "Vehicle Attitude",
+       "title": "Speed",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/px4/PX4_VehicleAttitudeMsg"
-       },
-       "isClosable": true,
-       "reorderEnabled": true
-      }
-     ]
-    },
-    {
-     "type": "stack",
-     "header": {},
-     "isClosable": true,
-     "reorderEnabled": true,
-     "title": "",
-     "activeItemIndex": 0,
-     "height": 100,
-     "width": 30.024311183144246,
-     "content": [
-      {
-       "title": "Telemetry Control",
-       "type": "component",
-       "componentName": "Blank",
-       "componentState": {
-        "text": "text",
-        "link": "/to/tlm_app?appName=PX4"
+        "link": "/flight/apps/px4lib/PX4_VehicleAttitude/PX4_VehicleAttitudeMsg_Speed"
        },
        "isClosable": true,
        "reorderEnabled": true

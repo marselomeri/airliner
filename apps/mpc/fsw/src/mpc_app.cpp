@@ -4,6 +4,7 @@
 #include "cfe.h"
 #include "mpc_app.h"
 #include "mpc_msg.h"
+#include "mpc_msgids.h"
 #include "mpc_version.h"
 #include "px4lib.h"
 #include "geo/geo.h"
@@ -17,6 +18,7 @@
 #include <string.h>
 #include <float.h>
 #include <math.h>
+#include "px4lib_msgids.h"
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */

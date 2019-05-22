@@ -1,101 +1,94 @@
-.row.os-theme-dark
-  article.col-xs-12.col-sm-12
-    header
-      span.widget-icon
-        i.fa.fa-table
-      h2 GPS - Vehicle GPS
-    div.widget-body.table-responsive
-      table.table.table-condensed
-        tbody
-          tr
-            th Timestamp
-            td
-              div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.Timestamp'}],indicator:'text'}) ---
-          tr
-            th Time UTC Usec
-            td
-              div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.TimeUtcUsec'}],indicator:'text'}) ---
-          tr
-            th Latitude
-            td
-              div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.Lat'}],indicator:'text'}) ---
-          tr
-            th Longitude
-            td
-              div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.Lon'}],indicator:'text'}) ---
-          tr
-            th Altitude
-            td
-              div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.Alt'}],indicator:'text'}) ---
-          tr
-            th Altitude Ellipsoid
-            td
-              div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.AltEllipsoid'}],indicator:'text'}) ---
-          tr
-            th S Variance
-            td
-              div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.SVariance'}],indicator:'text'}) ---
-          tr
-            th C Variance
-            td
-              div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.CVariance'}],indicator:'text'}) ---
-          tr
-            th EpH
-            td
-              div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.EpH'}],indicator:'text'}) ---
-          tr
-            th EpV
-            td
-              div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.EpV'}],indicator:'text'}) ---
-          tr
-            th HDOP
-            td
-              div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.HDOP'}],indicator:'text'}) ---
-          tr
-            th VDOP
-            td
-              div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.VDOP'}],indicator:'text'}) ---
-          tr
-            th Noise Per Ms
-            td
-              div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.NoisePerMs'}],indicator:'text'}) ---
-          tr
-            th JammingIndicator
-            td
-              div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.JammingIndicator'}],indicator:'text'}) ---
-          tr
-            th Vel_m_s
-            td
-              div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.Vel_m_s'}],indicator:'text'}) ---
-          tr
-            th Vel_n_m_s
-            td
-              div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.Vel_n_m_s'}],indicator:'text'}) ---
-          tr
-            th Vel_e_m_s
-            td
-              div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.Vel_e_m_s'}],indicator:'text'}) ---
-          tr
-            th Vel_d_m_s
-            td
-              div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.Vel_d_m_s'}],indicator:'text'}) ---
-          tr
-            th COG
-            td
-              div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.COG'}],indicator:'text'}) ---
-          tr
-            th TimestampTimeRelative
-            td
-              div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.TimestampTimeRelative'}],indicator:'text'}) ---
-          tr
-            th FixType
-            td
-              div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.FixType'}],indicator:'text'}) ---
-          tr
-            th VelNedValid
-            td
-              div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.VelNedValid'}],indicator:'text'}) ---
-          tr
-            th SatellitesUsed
-            td
-              div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.SatellitesUsed'}],indicator:'text'}) ---
+table.table.table-condensed
+  tbody
+    tr
+      th Timestamp
+      td
+        div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.Timestamp'}]}) ---
+    tr
+      th Time UTC Usec
+      td
+        div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.TimeUtcUsec'}]}) ---
+    tr
+      th Latitude
+      td
+        div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.Lat'}]}) ---
+    tr
+      th Longitude
+      td
+        div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.Lon'}]}) ---
+    tr
+      th Altitude
+      td
+        div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.Alt'}]}) ---
+    tr
+      th Altitude Ellipsoid
+      td
+        div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.AltEllipsoid'}]}) ---
+    tr
+      th S Variance
+      td
+        div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.SVariance'}]}) ---
+    tr
+      th C Variance
+      td
+        div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.CVariance'}]}) ---
+    tr
+      th EpH
+      td
+        div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.EpH'}]}) ---
+    tr
+      th EpV
+      td
+        div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.EpV'}]}) ---
+    tr
+      th HDOP
+      td
+        div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.HDOP'}]}) ---
+    tr
+      th VDOP
+      td
+        div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.VDOP'}]}) ---
+    tr
+      th Noise Per Ms
+      td
+        div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.NoisePerMs'}]}) ---
+    tr
+      th JammingIndicator
+      td
+        div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.JammingIndicator'}]}) ---
+    tr
+      th Vel_m_s
+      td
+        div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.Vel_m_s'}]}) ---
+    tr
+      th Vel_n_m_s
+      td
+        div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.Vel_n_m_s'}]}) ---
+    tr
+      th Vel_e_m_s
+      td
+        div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.Vel_e_m_s'}]}) ---
+    tr
+      th Vel_d_m_s
+      td
+        div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.Vel_d_m_s'}]}) ---
+    tr
+      th COG
+      td
+        div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.COG'}]}) ---
+    tr
+      th TimestampTimeRelative
+      td
+        div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.TimestampTimeRelative'}]}) ---
+    tr
+      th FixType
+      td
+        div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.FixType'}]}) ---
+    tr
+      th VelNedValid
+      td
+        div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.VelNedValid'}]}) ---
+    tr
+      th SatellitesUsed
+      td
+        div(data-cdr={tlm:[{name:'/GPS/GPS_HkTlm_t/VehicleGpsMsg.SatellitesUsed'}]}) ---

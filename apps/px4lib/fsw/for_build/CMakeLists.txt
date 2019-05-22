@@ -54,6 +54,10 @@ add_airliner_app_def(px4lib
 
     COMMANDER_PLUGIN
         ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr
+    
+    REFERENCE_CONFIG
+        ${PROJECT_SOURCE_DIR}/apps/px4lib/fsw/mission_inc
+        ${PROJECT_SOURCE_DIR}/apps/px4lib/fsw/platform_inc
 )
 
 # set optimization for px4lib

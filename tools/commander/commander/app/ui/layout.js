@@ -37,7 +37,7 @@ function InitLayout( mlyt ) {
         item.container._contentElement.load( link );
         item.container._contentElement.css( "overflow", "auto" );
       } catch ( e ) {
-        cu.logError( 'itemCreated | cannot load link onto component' )
+        //cu.logError( 'itemCreated | cannot load link onto component' )
       }
     }
   } );
@@ -136,7 +136,8 @@ function UpdateLayoutNode( node, display ) {
         path: node.path + '/' + entryID,
         urlPath: node.path + '/' + entryID,
         selectable: true,
-        checkable: false
+        checkable: false,
+        handlebarsContext: dirEntry.handlebarsContext
       };
       if ( dirEntry.hasOwnProperty( 'nodes' ) ) {
         layoutEntry.lazyLoad = true;
@@ -181,7 +182,8 @@ function UpdatePanelNode( node, display ) {
         path: node.path + '/' + entryID,
         urlPath: node.path + '/' + entryID,
         selectable: true,
-        checkable: false
+        checkable: false,
+        handlebarsContext: dirEntry.handlebarsContext
       };
       if ( dirEntry.hasOwnProperty( 'nodes' ) ) {
         panelEntry.lazyLoad = true;
@@ -225,7 +227,8 @@ function UpdateWidgetNode( node, display ) {
         path: node.path + '/' + entryID,
         urlPath: node.path + '/' + entryID,
         selectable: false,
-        checkable: false
+        checkable: false,
+        handlebarsContext: dirEntry.handlebarsContext
       };
       if ( dirEntry.hasOwnProperty( 'nodes' ) ) {
         panelEntry.lazyLoad = true;

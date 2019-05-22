@@ -34,18 +34,10 @@
 -       });
 
 
-
-        .row.os-theme-dark
-          article.col-xs-12.col-sm-12
-            header
-              span.widget-icon
-                i.fa.fa-table
-              h2 Scheduler (#{query.appName})
-            div.widget-body.table-responsive
-              button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/SCH/SendDiag'}, indicator:'cmd'}) Telemeter Schedule
-              #app-sch-content 
+button.btn.cdr-primary(data-cdr={cmd:{name:'/SCH/SendDiag'}, indicator:'cmd'}) Telemeter Schedule
+#app-sch-content 
               
-        script.
+script.
           var SendSchEnableCmd = function(slotID, activityID) {
               session.sendCommand({ops_path: '/SCH/Enable', args:{'SlotNumber':slotID, 'EntryNumber':activityID}});
           }

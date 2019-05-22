@@ -1,0 +1,21 @@
+#SensorCombinedMsg_Mag(style='width: 100%; height: 100%; font-size: 14px;')
+
+script.
+  $(function () {
+    var dataplotDef = {
+      'data': [
+        { 'tlm': {'name': '/PX4/PX4_SensorCombinedMsg_t/Mag[0]'},
+          'color': '#ffff00'
+        },
+        { 'tlm': {'name': '/PX4/PX4_SensorCombinedMsg_t/Mag[1]'},
+          'color': '#ff00ff'
+        },
+        { 'tlm': {'name': '/PX4/PX4_SensorCombinedMsg_t/Mag[2]'},
+          'color': '#00ffff'
+        }
+      ],
+      'options': {
+      }
+    };
+    var dataplot = new CdrTimeSeriesDataplot($('#SensorCombinedMsg_Mag'), dataplotDef);
+  });

@@ -29,7 +29,7 @@ extern "C" {
 **  \par Limits:
 **       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
 */
-#define MPC_SCH_PIPE_DEPTH             (2)
+#define MPC_SCH_PIPE_DEPTH             (15)
 
 /** \brief Pipe name for the Scheduler pipe 
 **
@@ -108,6 +108,9 @@ extern "C" {
 **       This parameter must be at least 1000 (ms).
 */
 #define MPC_STARTUP_TIMEOUT_MSEC    (1000)
+
+/** \brief Time for direction change hysteresis */
+#define DIRECTION_CHANGE_TRIGGER_TIME_US    (100000)
 
 
 #ifdef __cplusplus

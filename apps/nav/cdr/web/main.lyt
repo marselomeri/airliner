@@ -70,7 +70,7 @@
            "componentName": "Blank",
            "componentState": {
             "text": "text",
-            "link": "/nav/cdh"
+            "link": "flight/apps/nav/cdh"
            },
            "isClosable": true,
            "reorderEnabled": true
@@ -92,7 +92,7 @@
            "componentName": "Blank",
            "componentState": {
             "text": "text",
-            "link": "/nav/als"
+            "link": "flight/apps/nav/als"
            },
            "isClosable": true,
            "reorderEnabled": true
@@ -124,7 +124,7 @@
            "componentName": "Blank",
            "componentState": {
             "text": "text",
-            "link": "/nav/rtls"
+            "link": "flight/apps/nav/rtls"
            },
            "isClosable": true,
            "reorderEnabled": true
@@ -146,7 +146,7 @@
            "componentName": "Blank",
            "componentState": {
             "text": "text",
-            "link": "/nav/cms"
+            "link": "flight/apps/nav/cms"
            },
            "isClosable": true,
            "reorderEnabled": true
@@ -173,7 +173,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/cfe/evs/efltr?appName=NAV"
+        "link": "flight/core/evs/efltr?appName=NAV"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -184,7 +184,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/cfe/tbl/tc?appName=NAV"
+        "link": "flight/core/tbl/tc?appName=NAV"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -195,7 +195,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/cfe/es/appctrl?appName=NAV"
+        "link": "flight/core/es/appctrl?appName=NAV"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -206,7 +206,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/sch/app_sch?appName=NAV"
+        "link": "flight/apps/sch/app_sch?appName=NAV"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -217,7 +217,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/to/tlm_app?appName=NAV"
+        "link": "flight/apps/to/tlm_app?appName=NAV"
        },
        "isClosable": true,
        "reorderEnabled": true

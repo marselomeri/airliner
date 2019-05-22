@@ -656,4 +656,5 @@ CommanderUtilities.prototype = {
  * Commander Utilities Instance
  * @type {CommanderUtilities}
  */
+console.log("CREATING CU");
 var cu = new CommanderUtilities();

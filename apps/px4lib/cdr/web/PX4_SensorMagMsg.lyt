@@ -34,57 +34,62 @@
  },
  "content": [
   {
-   "type": "row",
+   "type": "column",
    "isClosable": true,
    "reorderEnabled": true,
    "title": "",
    "content": [
     {
-     "type": "stack",
-     "header": {},
+     "type": "row",
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "activeItemIndex": 0,
-     "width": 42.88440651449667,
-     "height": 100,
+     "height": 50,
      "content": [
       {
-       "title": "Dataplot",
-       "type": "component",
-       "componentName": "Blank",
-       "componentState": {
-        "text": "text",
-        "link": "/px4/Dataplot",
-        "PlotDef": {
-         "data": [
-          {
-           "tlm": {
-            "name": "/PX4/PX4_SensorMagMsg_t/X"
-           },
-           "color": "#0FDB05",
-           "label": "/PX4/PX4_SensorMagMsg_t/X"
-          },
-          {
-           "tlm": {
-            "name": "/PX4/PX4_SensorMagMsg_t/Y"
-           },
-           "color": "#DBDB05",
-           "label": "/PX4/PX4_SensorMagMsg_t/Y"
-          },
-          {
-           "tlm": {
-            "name": "/PX4/PX4_SensorMagMsg_t/Z"
-           },
-           "color": "#05DBDB",
-           "label": "/PX4/PX4_SensorMagMsg_t/Z"
-          }
-         ],
-         "options": {}
+       "type": "stack",
+       "header": {},
+       "isClosable": true,
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "width": 50,
+       "height": 50,
+       "content": [
+        {
+         "title": "Message",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/apps/px4lib/PX4_SensorMag/PX4_SensorMagMsg"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
         }
-       },
+       ]
+      },
+      {
+       "type": "stack",
+       "header": {},
        "isClosable": true,
-       "reorderEnabled": true
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "width": 50,
+       "content": [
+        {
+         "title": "Temperature",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/apps/px4lib/PX4_SensorMag/PX4_SensorMagMsg_Temperature"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
       }
      ]
     },
@@ -95,38 +100,26 @@
      "reorderEnabled": true,
      "title": "",
      "activeItemIndex": 0,
-     "width": 27.091282302359087,
+     "height": 50,
      "content": [
       {
-       "title": "Sensor Mag",
+       "title": "Mag",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/px4/PX4_SensorMagMsg"
+        "link": "/flight/apps/px4lib/PX4_SensorMag/PX4_SensorMagMsg_Mag"
        },
        "isClosable": true,
        "reorderEnabled": true
-      }
-     ]
-    },
-    {
-     "type": "stack",
-     "header": {},
-     "isClosable": true,
-     "reorderEnabled": true,
-     "title": "",
-     "activeItemIndex": 0,
-     "height": 100,
-     "width": 30.024311183144246,
-     "content": [
+      },
       {
-       "title": "Telemetry Control",
+       "title": "Raw",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/to/tlm_app?appName=PX4"
+        "link": "/flight/apps/px4lib/PX4_SensorMag/PX4_SensorMagMsg_Raw"
        },
        "isClosable": true,
        "reorderEnabled": true

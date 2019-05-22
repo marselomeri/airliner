@@ -20,7 +20,7 @@
   "borderGrabWidth": 15,
   "minItemHeight": 10,
   "minItemWidth": 10,
-  "headerHeight": 20,
+  "headerHeight": 25,
   "dragProxyWidth": 300,
   "dragProxyHeight": 200
  },
@@ -55,7 +55,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/cfe/tbl/general"
+        "link": "flight/core/tbl/general"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -77,7 +77,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/cfe/tbl/registry"
+        "link": "flight/core/tbl/registry"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -99,7 +99,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/cfe/evs/efltr?appName=CFE_TBL"
+        "link": "flight/core/evs/efltr?appName=CFE_TBL"
        },
        "isClosable": true,
        "reorderEnabled": true

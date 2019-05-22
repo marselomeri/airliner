@@ -63,7 +63,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/md/cdh"
+          "link": "flight/apps/md/cdh"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -85,7 +85,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/md/stats"
+          "link": "flight/apps/md/stats"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -109,7 +109,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/cfe/evs/efltr?appName=MD"
+        "link": "flight/core/evs/efltr?appName=MD"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -120,7 +120,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/to/tlm_app?appName=MD"
+        "link": "flight/apps/to/tlm_app?appName=MD"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -131,7 +131,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/sch/app_sch?appName=MD"
+        "link": "flight/apps/sch/app_sch?appName=MD"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -142,7 +142,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/cfe/tbl/tc?appName=MD"
+        "link": "flight/core/tbl/tc?appName=MD"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -153,7 +153,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/cfe/es/appctrl?appName=MD"
+        "link": "flight/core/es/appctrl?appName=MD"
        },
        "isClosable": true,
        "reorderEnabled": true

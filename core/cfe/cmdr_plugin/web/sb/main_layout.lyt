@@ -20,7 +20,7 @@
   "borderGrabWidth": 15,
   "minItemHeight": 10,
   "minItemWidth": 10,
-  "headerHeight": 20,
+  "headerHeight": 25,
   "dragProxyWidth": 300,
   "dragProxyHeight": 200
  },
@@ -62,7 +62,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/cfe/sb/hk"
+          "link": "flight/core/sb/hk"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -84,7 +84,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/cfe/sb/stats"
+          "link": "flight/core/sb/stats"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -109,7 +109,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/cfe/sb/pipestats"
+        "link": "flight/core/sb/pipestats"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -120,7 +120,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/cfe/es/memory?appName=CFE_SB"
+        "link": "flight/core/es/memory?appName=CFE_SB"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -142,7 +142,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/cfe/evs/efltr?appName=CFE_SB"
+        "link": "flight/core/evs/efltr?appName=CFE_SB"
        },
        "isClosable": true,
        "reorderEnabled": true

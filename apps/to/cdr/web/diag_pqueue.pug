@@ -27,63 +27,56 @@
 -               }
 -           }
 
-.row.os-theme-dark
-  article.col-xs-12.col-sm-12
-    header
-      span.widget-icon
-        i.fa.fa-table
-      h2 TO - Diagnostics
-    div.widget-body.table-responsive
-      table.table.table-condensed
-        tbody
-          tr
-            th Index
-            td
-              div(data-cdr={tlm:[{name:'/TO/TO_ChannelDiagTlm_t/Index'}],indicator:'text'}) ---
-          tr
-            th Channel Name
-            td
-              div(data-cdr={tlm:[{name:'/TO/TO_ChannelDiagTlm_t/ChannelName'}],indicator:'text'}) ---
-          tr
-            th Priority Queue ID
-            th State
-            th Message Limit
-            th Queue Type
-            th Queue Limit
-            th Dropped 
-            th Queued 
-            th Current
-            th Highwater
+table.table.table-condensed
+  tbody
+    tr
+      th Index
+      td
+        div(data-cdr={tlm:[{name:'/TO/TO_ChannelDiagTlm_t/Index'}]}) ---
+    tr
+      th Channel Name
+      td
+        div(data-cdr={tlm:[{name:'/TO/TO_ChannelDiagTlm_t/ChannelName'}]}) ---
+    tr
+      th Priority Queue ID
+      th State
+      th Message Limit
+      th Queue Type
+      th Queue Limit
+      th Dropped 
+      th Queued 
+      th Current
+      th Highwater
           -  for (var PQIndex=0; PQIndex < config[0].TO_MAX_PRIORITY_QUEUES; PQIndex++) {
-          -      var tlmStateObj = {tlm:[{name:'/TO/TO_ChannelDiagTlm_t/PQueue[' + PQIndex +'].State'}],indicator:'text'}
-          -      var tlmMsgLimitObj = {tlm:[{name:'/TO/TO_ChannelDiagTlm_t/PQueue[' + PQIndex +'].MsgLimit'}],indicator:'text'}
-          -      var tlmQTypeObj = {tlm:[{name:'/TO/TO_ChannelDiagTlm_t/PQueue[' + PQIndex +'].QType'}],indicator:'text'}
-          -      var tlmDroppedMsgCntObj = {tlm:[{name:'/TO/TO_ChannelDiagTlm_t/PQueue[' + PQIndex +'].DroppedMsgCnt'}],indicator:'text'}
-          -      var tlmQueuedMsgCntObj = {tlm:[{name:'/TO/TO_ChannelDiagTlm_t/PQueue[' + PQIndex +'].QueuedMsgCnt'}],indicator:'text'}
-          -      var tlmCurrentlyQueuedCntObj = {tlm:[{name:'/TO/TO_ChannelDiagTlm_t/PQueue[' + PQIndex +'].CurrentlyQueuedCnt'}],indicator:'text'}
-          -      var tlmHighwaterMarkObj = {tlm:[{name:'/TO/TO_ChannelDiagTlm_t/PQueue[' + PQIndex +'].HighwaterMark'}],indicator:'text'}
+          -      var tlmStateObj = {tlm:[{name:'/TO/TO_ChannelDiagTlm_t/PQueue[' + PQIndex +'].State'}]}
+          -      var tlmMsgLimitObj = {tlm:[{name:'/TO/TO_ChannelDiagTlm_t/PQueue[' + PQIndex +'].MsgLimit'}]}
+          -      var tlmQTypeObj = {tlm:[{name:'/TO/TO_ChannelDiagTlm_t/PQueue[' + PQIndex +'].QType'}]}
+          -      var tlmDroppedMsgCntObj = {tlm:[{name:'/TO/TO_ChannelDiagTlm_t/PQueue[' + PQIndex +'].DroppedMsgCnt'}]}
+          -      var tlmQueuedMsgCntObj = {tlm:[{name:'/TO/TO_ChannelDiagTlm_t/PQueue[' + PQIndex +'].QueuedMsgCnt'}]}
+          -      var tlmCurrentlyQueuedCntObj = {tlm:[{name:'/TO/TO_ChannelDiagTlm_t/PQueue[' + PQIndex +'].CurrentlyQueuedCnt'}]}
+          -      var tlmHighwaterMarkObj = {tlm:[{name:'/TO/TO_ChannelDiagTlm_t/PQueue[' + PQIndex +'].HighwaterMark'}]}
 
-          tr
-            th
-              div #{PQIndex}
-            td
-              div(data-cdr= tlmStateObj) ---
-            td
-              div(data-cdr= tlmMsgLimitObj) ---
-            td
-              div(data-cdr= tlmQTypeObj) ---
-            td
-              div(data-cdr= tlmDroppedMsgCntObj) ---
-            td
-              div(data-cdr= tlmQueuedMsgCntObj) ---
-            td
-              div(data-cdr= tlmCurrentlyQueuedCntObj) ---
-            td
-              div(data-cdr= tlmHighwaterMarkObj) ---
+    tr
+      th
+        div #{PQIndex}
+      td
+        div(data-cdr= tlmStateObj) ---
+      td
+        div(data-cdr= tlmMsgLimitObj) ---
+      td
+        div(data-cdr= tlmQTypeObj) ---
+      td
+        div(data-cdr= tlmDroppedMsgCntObj) ---
+      td
+        div(data-cdr= tlmQueuedMsgCntObj) ---
+      td
+        div(data-cdr= tlmCurrentlyQueuedCntObj) ---
+      td
+        div(data-cdr= tlmHighwaterMarkObj) ---
           -  }
                         
-    footer.btn-group(role="group")      
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/TO/TO_SendDiagCmd_t'},indicator:'cmd'}) Send Diagnostics
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/TO_SendDiagCmd_t'}}) Send Diagnostics
 
 -     });  
 - });

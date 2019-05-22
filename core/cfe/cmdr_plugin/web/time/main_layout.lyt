@@ -20,7 +20,7 @@
   "borderGrabWidth": 15,
   "minItemHeight": 10,
   "minItemWidth": 10,
-  "headerHeight": 20,
+  "headerHeight": 25,
   "dragProxyWidth": 300,
   "dragProxyHeight": 200
  },
@@ -61,7 +61,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/cfe/time/hk"
+          "link": "flight/core/time/hk"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -83,7 +83,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/cfe/time/diag_1"
+          "link": "flight/core/time/diag_1"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -94,7 +94,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/cfe/time/diag_2"
+          "link": "flight/core/time/diag_2"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -105,7 +105,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/cfe/time/diag_3"
+          "link": "flight/core/time/diag_3"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -129,7 +129,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/cfe/evs/efltr?appName=CFE_TIME"
+        "link": "flight/core/evs/efltr?appName=CFE_TIME"
        },
        "isClosable": true,
        "reorderEnabled": true

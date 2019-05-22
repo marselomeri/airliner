@@ -1,65 +1,67 @@
-.row.os-theme-dark
-  article.col-xs-12.col-sm-12
-    header
-      span.widget-icon
-        i.fa.fa-table
-      h2 CS - Housekeeping
-    div.widget-body.table-responsive
-      table.table.table-condensed
-        tbody
-          tr
-            th Cmd Count
-            td
-              div(data-cdr={tlm:[{name:'/CS/CS_HkPacket_t/CmdCounter'}],indicator:'text'}) ---
-          tr
-            th Error Count
-            td
-              div(data-cdr={tlm:[{name:'/CS/CS_HkPacket_t/CmdErrCounter'}],indicator:'text'}) ---
-          tr
-            th State
-            td
-              div(data-cdr={tlm:[{name:'/CS/CS_HkPacket_t/ChecksumState'}],indicator:'text'}) ---
-            td
-              .btn-group(role="group")
-                button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CS/EnableAllCS'},indicator:'cmd'}) Enable 
-                button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CS/DisableAllCS'},indicator:'cmd'}) Disable
-          tr
-            th Recompute In Progress
-            td
-              span(data-cdr={tlm: [{name:'/CS/CS_HkPacket_t/RecomputeInProgress'}], indicator:'text'}) ---
-          tr
-            th OneShot In Progress
-            td
-              span(data-cdr={tlm: [{name:'/CS/CS_HkPacket_t/OneShotInProgress'}], indicator:'text'}) ---
-            td
-              .btn-group(role="group")
-                button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CS/CS_OneShotCmd_t'},indicator:'cmd'}) Start 
-                button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CS/CancelOneShot'},indicator:'cmd'}) Cancel
-          tr
-            th Current Entry In Table
-            td
-              span(data-cdr={tlm: [{name:'/CS/CS_HkPacket_t/CurrentEntryInTable'}], indicator:'text'}) ---
-          tr
-            th Last One Shot Address
-            td
-              span(data-cdr={tlm: [{name:'/CS/CS_HkPacket_t/LastOneShotAddress'}], indicator:'text'}) ---
-          tr
-            th Last One Shot Size
-            td
-              span(data-cdr={tlm: [{name:'/CS/CS_HkPacket_t/LastOneShotSize'}], indicator:'text'}) ---
-          tr
-            th Last One Shot Max Bytes Per Cycle
-            td
-              span(data-cdr={tlm: [{name:'/CS/CS_HkPacket_t/LastOneShotMaxBytesPerCycle'}], indicator:'text'}) ---
-          tr
-            th Last One Shot Checksum
-            td
-              span(data-cdr={tlm: [{name:'/CS/CS_HkPacket_t/LastOneShotChecksum'}], indicator:'text'}) ---
-          tr
-            th Pass Counter
-            td
-              span(data-cdr={tlm: [{name:'/CS/CS_HkPacket_t/PassCounter'}], indicator:'text'}) ---
+table.table.table-condensed
+  tbody
+    tr
+      th Cmd Count
+      td
+        div(data-cdr={tlm:[{name:'/CS/CS_HkPacket_t/CmdCounter'}]}) ---
+      td
+    tr
+      th Error Count
+      td
+        div(data-cdr={tlm:[{name:'/CS/CS_HkPacket_t/CmdErrCounter'}]}) ---
+      td
+    tr
+      th State
+      td
+        div(data-cdr={tlm:[{name:'/CS/CS_HkPacket_t/ChecksumState'}]}) ---
+      td
+        .btn-group(role="group")
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/CS/EnableAllCS'}}) Enable 
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/CS/DisableAllCS'}}) Disable
+    tr
+      th Recompute In Progress
+      td
+        span(data-cdr={tlm: [{name:'/CS/CS_HkPacket_t/RecomputeInProgress'}]}) ---
+      td
+    tr
+      th OneShot In Progress
+      td
+        span(data-cdr={tlm: [{name:'/CS/CS_HkPacket_t/OneShotInProgress'}]}) ---
+      td
+        .btn-group(role="group")
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/CS/CS_OneShotCmd_t'}}) Start 
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/CS/CancelOneShot'}}) Cancel
+    tr
+      th Current Entry In Table
+      td
+        span(data-cdr={tlm: [{name:'/CS/CS_HkPacket_t/CurrentEntryInTable'}]}) ---
+      td
+    tr
+      th Last One Shot Address
+      td
+        span(data-cdr={tlm: [{name:'/CS/CS_HkPacket_t/LastOneShotAddress'}]}) ---
+      td
+    tr
+      th Last One Shot Size
+      td
+        span(data-cdr={tlm: [{name:'/CS/CS_HkPacket_t/LastOneShotSize'}]}) ---
+      td
+    tr
+      th Last One Shot Max Bytes Per Cycle
+      td
+        span(data-cdr={tlm: [{name:'/CS/CS_HkPacket_t/LastOneShotMaxBytesPerCycle'}]}) ---
+      td
+    tr
+      th Last One Shot Checksum
+      td
+        span(data-cdr={tlm: [{name:'/CS/CS_HkPacket_t/LastOneShotChecksum'}]}) ---
+      td
+    tr
+      th Pass Counter
+      td
+        span(data-cdr={tlm: [{name:'/CS/CS_HkPacket_t/PassCounter'}]}) ---
+      td
               
-    footer.btn-group(role="group")      
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CS/Noop'},indicator:'cmd'}) No-Op    
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CS/Reset'},indicator:'cmd'}) Reset  
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/CS/Noop'}}) No-Op    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/CS/Reset'}}) Reset  

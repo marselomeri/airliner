@@ -1,4 +1,4 @@
-{
+﻿{
  "settings": {
   "hasHeaders": true,
   "constrainDragToContainer": false,
@@ -40,70 +40,188 @@
    "title": "",
    "content": [
     {
-     "type": "stack",
-     "header": {},
+     "type": "column",
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "activeItemIndex": 0,
-     "width": 42.88440651449667,
-     "height": 100,
+     "width": 50.35460992907801,
      "content": [
       {
-       "title": "Dataplot",
-       "type": "component",
-       "componentName": "Blank",
-       "componentState": {
-        "text": "text",
-        "link": "/px4/Dataplot"
-       },
+       "type": "stack",
+       "header": {},
        "isClosable": true,
-       "reorderEnabled": true
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "width": 39.52288845905867,
+       "height": 50,
+       "content": [
+        {
+         "title": "Message",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/apps/px4lib/PX4_VehicleLocalPosition/PX4_VehicleLocalPositionMsg"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
+      },
+      {
+       "type": "stack",
+       "header": {},
+       "isClosable": true,
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "height": 25,
+       "width": 100,
+       "content": [
+        {
+         "title": "Attitude",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/apps/px4lib/PX4_VehicleLocalPosition/PX4_VehicleLocalPositionMsg_Attitude"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
+      },
+      {
+       "type": "stack",
+       "header": {},
+       "isClosable": true,
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "height": 25,
+       "content": [
+        {
+         "title": "Acceleration",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/apps/px4lib/PX4_VehicleLocalPosition/PX4_VehicleLocalPositionMsg_Acc"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
       }
      ]
     },
     {
-     "type": "stack",
-     "header": {},
+     "type": "column",
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "activeItemIndex": 0,
-     "width": 27.091282302359087,
+     "width": 49.64539007092199,
      "content": [
       {
-       "title": "Vehicle Local Position",
-       "type": "component",
-       "componentName": "Blank",
-       "componentState": {
-        "text": "text",
-        "link": "/px4/PX4_VehicleLocalPositionMsg"
-       },
+       "type": "column",
        "isClosable": true,
-       "reorderEnabled": true
-      }
-     ]
-    },
-    {
-     "type": "stack",
-     "header": {},
-     "isClosable": true,
-     "reorderEnabled": true,
-     "title": "",
-     "activeItemIndex": 0,
-     "height": 100,
-     "width": 30.024311183144246,
-     "content": [
+       "reorderEnabled": true,
+       "title": "",
+       "width": 100,
+       "height": 50,
+       "content": [
+        {
+         "type": "stack",
+         "header": {},
+         "isClosable": true,
+         "reorderEnabled": true,
+         "title": "",
+         "activeItemIndex": 0,
+         "width": 50,
+         "height": 50,
+         "content": [
+          {
+           "title": "Position",
+           "type": "component",
+           "componentName": "Blank",
+           "componentState": {
+            "text": "text",
+            "link": "/flight/apps/px4lib/PX4_VehicleLocalPosition/PX4_VehicleLocalPositionMsg_Pos"
+           },
+           "isClosable": true,
+           "reorderEnabled": true
+          }
+         ]
+        },
+        {
+         "type": "stack",
+         "header": {},
+         "isClosable": true,
+         "reorderEnabled": true,
+         "title": "",
+         "activeItemIndex": 0,
+         "height": 50,
+         "content": [
+          {
+           "title": "Velocity",
+           "type": "component",
+           "componentName": "Blank",
+           "componentState": {
+            "text": "text",
+            "link": "/flight/apps/px4lib/PX4_VehicleLocalPosition/PX4_VehicleLocalPositionMsg_Vel"
+           },
+           "isClosable": true,
+           "reorderEnabled": true
+          }
+         ]
+        }
+       ]
+      },
       {
-       "title": "Telemetry Control",
-       "type": "component",
-       "componentName": "Blank",
-       "componentState": {
-        "text": "text",
-        "link": "/to/tlm_app?appName=PX4"
-       },
+       "type": "stack",
+       "header": {},
        "isClosable": true,
-       "reorderEnabled": true
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "height": 25,
+       "width": 100,
+       "content": [
+        {
+         "title": "Ev",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/apps/px4lib/PX4_VehicleLocalPosition/PX4_VehicleLocalPositionMsg_Ev"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
+      },
+      {
+       "type": "stack",
+       "header": {},
+       "isClosable": true,
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "height": 25,
+       "content": [
+        {
+         "title": "Ep",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/apps/px4lib/PX4_VehicleLocalPosition/PX4_VehicleLocalPositionMsg_Ep"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
       }
      ]
     }

@@ -46,6 +46,7 @@
 #include "ms5607_version.h"
 #include <math.h>
 #include "px4lib.h"
+#include "px4lib_msgids.h"
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

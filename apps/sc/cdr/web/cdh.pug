@@ -1,20 +1,13 @@
-.row.os-theme-dark
-  article.col-xs-12.col-sm-12
-    header
-      span.widget-icon
-        i.fa.fa-table
-      h2 SC - Command and Data Handling
-    div.widget-body.table-responsive
-      table.table.table-condensed
-        tbody
-          tr
-            th Cmd Count
-            td
-              div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/CmdCtr'}],indicator:'text'}) ---
-          tr
-            th Error Count
-            td
-              div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/CmdErrCtr'}],indicator:'text'}) ---
-    footer.btn-group(role="group")      
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/SC/Noop'},indicator:'cmd'}) No-Op    
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/SC/Reset'},indicator:'cmd'}) Reset
+table.table.table-condensed
+  tbody
+    tr
+      th Cmd Count
+      td
+        div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/CmdCtr'}]}) ---
+    tr
+      th Error Count
+      td
+        div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/CmdErrCtr'}]}) ---
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/SC/Noop'}}) No-Op    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/SC/Reset'}}) Reset

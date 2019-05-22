@@ -15,26 +15,20 @@
 -     SCH_ENTRIES_PER_SLOT = config[0].SCH_ENTRIES_PER_SLOT;
 - });
 
-.row.row-fluid
-  article.col-xs-12.col-sm-12
-    header
-      span.widget-icon
-        i.fa.fa-table
-      h2 SCH Diag
-    div.widget-body
-      table.table.table-condensed
-        tbody
-          tr
-            th Total Slots
-            td 
-              div #{SCH_TOTAL_SLOTS}
-          tr
-            th Entries Per Slot
-            td 
-              div #{SCH_ENTRIES_PER_SLOT}   
-    footer
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/SCH/SendDiag'}, indicator:'cmd'}) Telemeter Diagnostic
-      #sch-diag-content
+table.table.table-condensed
+  tbody
+    tr
+      th Total Slots
+      td 
+        div #{SCH_TOTAL_SLOTS}
+    tr
+      th Entries Per Slot
+      td 
+        div #{SCH_ENTRIES_PER_SLOT}  
+         
+footer
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/SCH/SendDiag'}, indicator:'cmd'}) Telemeter Diagnostic
+  #sch-diag-content
       
 script.
   var SendSchEnableCmd = function(slotID, activityID) {
@@ -162,7 +156,7 @@ script#sch-accordian-template(type='text/x-handlebars-template')
               td {{state}}
               td
                 .btn-group(role="group")      
-                  button.btn.cdr-outline-primary(onClick='SendSchEnableCmd("{{../slotID}}", "{{activityID}}")') Enable    
-                  button.btn.cdr-outline-primary(onClick='SendSchDisableCmd("{{../slotID}}", "{{activityID}}")') Disable
+                  button.btn.cdr-primary(onClick='SendSchEnableCmd("{{../slotID}}", "{{activityID}}")') Enable    
+                  button.btn.cdr-primary(onClick='SendSchDisableCmd("{{../slotID}}", "{{activityID}}")') Disable
             | {{/each}}  
     | {{/each}}  

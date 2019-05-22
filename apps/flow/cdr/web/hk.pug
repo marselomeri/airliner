@@ -1,0 +1,75 @@
+table.table.table-condensed
+  tbody
+    tr
+      th Cmd Count
+      td(colspan=3)
+        div(data-cdr={tlm:[{name:'/FLOW/FLOW_HkTlm_t/usCmdCnt'}]}) ---
+    tr
+      th Error Count
+      td(colspan=3)
+        div(data-cdr={tlm:[{name:'/FLOW/FLOW_HkTlm_t/usCmdErrCnt'}]}) ---
+    tr
+      th Timestamp
+      td(colspan=3)
+        div(data-cdr={tlm:[{name:'/FLOW/FLOW_HkTlm_t/Timestamp'}]}) ---
+    tr
+      th Pixel Flow
+      td
+        div(data-cdr={tlm:[{name:'/FLOW/FLOW_HkTlm_t/PixelFlowX'}]}) ---
+      td
+        div(data-cdr={tlm:[{name:'/FLOW/FLOW_HkTlm_t/PixelFlowY'}]}) ---
+      td
+    tr
+      th Angular Flow
+      td
+        div(data-cdr={tlm:[{name:'/FLOW/FLOW_HkTlm_t/AngularFlowX'}]}) ---
+      td
+        div(data-cdr={tlm:[{name:'/FLOW/FLOW_HkTlm_t/AngularFlowY'}]}) ---
+      td
+    tr
+      th Gyro Rate Integral
+      td
+        div(data-cdr={tlm:[{name:'/FLOW/FLOW_HkTlm_t/GyroXRateIntegral'}]}) ---
+      td
+        div(data-cdr={tlm:[{name:'/FLOW/FLOW_HkTlm_t/GyroYRateIntegral'}]}) ---
+      td
+        div(data-cdr={tlm:[{name:'/FLOW/FLOW_HkTlm_t/GyroZRateIntegral'}]}) ---
+    tr
+      th Quality
+      td(colspan=3)
+        div(data-cdr={tlm:[{name:'/FLOW/FLOW_HkTlm_t/Quality'}]}) ---
+    tr
+      th Flow Sum
+      td
+        div(data-cdr={tlm:[{name:'/FLOW/FLOW_HkTlm_t/FlowSum_X'}]}) ---
+      td
+        div(data-cdr={tlm:[{name:'/FLOW/FLOW_HkTlm_t/FlowSum_Y'}]}) ---
+      td
+    tr
+      th Flow Quality Sum
+      td(colspan=3)
+        div(data-cdr={tlm:[{name:'/FLOW/FLOW_HkTlm_t/FlowQualitySum'}]}) ---
+    tr
+      th Valid Frame Count
+      td(colspan=3)
+        div(data-cdr={tlm:[{name:'/FLOW/FLOW_HkTlm_t/ValidFrameCount'}]}) ---
+    tr
+      th Delta Time
+      td(colspan=3)
+        div(data-cdr={tlm:[{name:'/FLOW/FLOW_HkTlm_t/DeltaTime'}]}) ---
+    tr
+      th Flow Initialized
+      td(colspan=3)
+        div(data-cdr={tlm:[{name:'/FLOW/FLOW_HkTlm_t/FlowInitalized'}]}) ---
+    tr
+      th Last Gyro Msg Appeared
+      td(colspan=3)
+        div(data-cdr={tlm:[{name:'/FLOW/FLOW_HkTlm_t/LastGyroMsgAppeared'}]}) ---
+    tr
+      th Time Last Published
+      td(colspan=3)
+        div(data-cdr={tlm:[{name:'/FLOW/FLOW_HkTlm_t/TimeLastPublished'}]}) ---
+              
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/FLOW/Noop'}}) No-Op    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/FLOW/Reset'}}) Reset

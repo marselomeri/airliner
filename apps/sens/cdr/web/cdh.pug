@@ -1,20 +1,14 @@
-.row.os-theme-dark
-  article.col-xs-12.col-sm-12
-    header
-      span.widget-icon
-        i.fa.fa-table
-      h2 SENS - Command and Data Handling
-    div.widget-body.table-responsive
-      table.table.table-condensed
-        tbody
-          tr
-            th Cmd Count
-            td
-              div(data-cdr={tlm:[{name:'/SENS/SENS_HkTlm_t/usCmdCnt'}],indicator:'text'}) ---
-          tr
-            th Error Count
-            td
-              div(data-cdr={tlm:[{name:'/SENS/SENS_HkTlm_t/usCmdErrCnt'}],indicator:'text'}) ---
-    footer.btn-group(role="group")      
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/SENS/Noop'},indicator:'cmd'}) No-Op    
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/SENS/Reset'},indicator:'cmd'}) Reset
+table.table.table-condensed
+  tbody
+    tr
+      th Cmd Count
+      td
+        div(data-cdr={tlm:[{name:'/SENS/SENS_HkTlm_t/usCmdCnt'}]}) ---
+    tr
+      th Error Count
+      td
+        div(data-cdr={tlm:[{name:'/SENS/SENS_HkTlm_t/usCmdErrCnt'}]}) ---
+        
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/SENS/Noop'}}) No-Op    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/SENS/Reset'}}) Reset

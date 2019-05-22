@@ -92,7 +92,7 @@ $( () => {
    * the starting cofiguration of current layout, If such a configuration exists
    * copy over default configuration */
   if ( window.__backupConfig != undefined | window.__backupConfig != null ) {
-    cu.lofDebug( 'Connection | window has preloaded configuration.' );
+    //cu.lofDebug( 'Connection | window has preloaded configuration.' );
     config = window.__backupConfig;
   }
 
@@ -100,19 +100,18 @@ $( () => {
    * sidebar and directory listing */
   session.on( 'connect', function() {
 
-    cu.logInfo( 'Connection | session connected' );
+    //cu.logInfo( 'Connection | session connected' );
 
     if ( _sescon_never ) {
       var defaultLayoutPromise = new Promise( ( resolve, reject ) => {
-
         session.getDefaultLayout( function( resp ) {
           if ( window.__backupConfig == undefined | window.__backupConfig == null ) {
             config = resp;
             resolve( 'Success!' );
           }
         } );
-
       } );
+      
       defaultLayoutPromise.then( () => {
         session.getPanels( '/', function( dirEntries ) {
           var panelEntries = [];
@@ -128,7 +127,8 @@ $( () => {
               lazyLoad: true,
               ext: entryID,
               selectable: false,
-              checkable: false
+              checkable: false,
+              handlebarsContext: dirEntries[ entryID ].handlebarsContext
             };
             panelEntries.push( entry );
           }
@@ -162,7 +162,8 @@ $( () => {
               lazyLoad: true,
               ext: entryID,
               selectable: false,
-              checkable: false
+              checkable: false,
+              handlebarsContext: dirEntries[ entryID ].handlebarsContext
             };
             entries.push( entry );
           }
@@ -196,7 +197,8 @@ $( () => {
               lazyLoad: true,
               ext: entryID,
               selectable: false,
-              checkable: false
+              checkable: false,
+              handlebarsContext: dirEntries[ entryID ].handlebarsContext
             };
             entries.push( entry );
           }
@@ -226,7 +228,7 @@ $( () => {
         InitLayout( myLayout );
 
         /* load resources */
-        InitModal();
+        InitCommandInputForm();
         InitMenuState();
         InitToolTips();
         InitScrollBar();
@@ -236,7 +238,7 @@ $( () => {
         /* false means previously, there had already been a session connection */
         _sescon_never = false;
       } ).catch( ( e ) => {
-        cu.logError( 'Error occured while loading default layout ', e );
+        //cu.logError( 'Error occured while loading default layout ', e );
       } )
     }
   } );

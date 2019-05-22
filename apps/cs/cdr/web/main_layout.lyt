@@ -61,7 +61,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/cs/hk"
+          "link": "flight/apps/cs/hk"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -83,7 +83,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/cs/cfecore"
+          "link": "flight/apps/cs/cfecore"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -94,7 +94,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/cs/apps"
+          "link": "flight/apps/cs/apps"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -105,7 +105,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/cs/tables"
+          "link": "flight/apps/cs/tables"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -116,7 +116,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/cs/os"
+          "link": "flight/apps/cs/os"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -127,7 +127,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/cs/memory"
+          "link": "flight/apps/cs/memory"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -138,7 +138,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/cs/eeprom"
+          "link": "flight/apps/cs/eeprom"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -162,7 +162,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/cfe/evs/efltr"
+        "link": "flight/core/evs/efltr"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -173,7 +173,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/sch/app_sch"
+        "link": "flight/apps/sch/app_sch"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -184,7 +184,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/to/tlm_app"
+        "link": "flight/apps/to/tlm_app"
        },
        "isClosable": true,
        "reorderEnabled": true

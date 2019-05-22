@@ -63,9 +63,42 @@ function CommanderClient() {
 
   this.videoConnected = false;
 
-  cu.logInfo( 'Clinet | CommanderClient' );
+  //cu.logInfo( 'Clinet | CommanderClient' );
   /* Connect */
   this.connect();
+  
+  var self = this;
+  
+  this.requestInterval = setInterval(function () {
+    var tlmSubOpsPaths = [];
+    var tlmUnsubOpsPaths = [];
+
+	for(var opsPath in self.subscriptions) {
+	  var subscription = self.subscriptions[opsPath];
+	  
+      if(subscription.pendingAction == 'subscribe') {           
+    	subscription.pendingAction = '';
+    	tlmSubOpsPaths.push(opsPath);
+      } else if(subscription.pendingAction == 'unsubscribe') {           
+        subscription.pendingAction = '';
+        tlmUnsubOpsPaths.push(opsPath);
+        delete self.subscriptions[opsPath];
+      }
+	}
+
+    if(tlmSubOpsPaths.length > 0) {
+      self.socket.emit( 'subscribe', tlmSubOpsPaths );
+      console.log('Subscribed to ' + tlmSubOpsPaths.length + ' items from the server.');
+    }
+
+    if(tlmUnsubOpsPaths.length > 0) {
+      self.socket.emit( 'unsubscribe', tlmUnsubOpsPaths );
+      console.log('Unsubscribed to ' + tlmUnsubOpsPaths.length + ' items from the server.');
+    }
+    
+    self.socket.emit( 'getMessageIDsAndMacros', {}, function(results) {
+    });
+  }, 1000);
 }
 
 /**
@@ -159,7 +192,7 @@ CommanderClient.prototype.loadWidgets = function( cb ) {
   if ( localStorage.widgetState != undefined && typeof JSON.parse( localStorage.widgetState ) == 'object' ) {
     cb( JSON.parse( localStorage.widgetState ) )
   } else {
-    cu.logError( 'loadWidgets | no widget state may be available' );
+    //cu.logError( 'loadWidgets | no widget state may be available' );
   }
 };
 
@@ -221,7 +254,7 @@ CommanderClient.prototype.getADSBJson = function( interval, cb ) {
     try {
       this.clearADSBInterval();
     } catch ( ex ) {
-      cu.logError( 'unable to clear ADSB interval ' );
+      //cu.logError( 'unable to clear ADSB interval ' );
     }
   }
   this.adsbInterval = setInterval( () => {
@@ -310,7 +343,7 @@ CommanderClient.prototype.getCmdDef = function( cmdObj, cb ) {
         };
         cb( outCmdDef );
       } catch ( e ) {
-        cu.logError( 'loadCommanding | command definition cannot be loaded' );
+        //cu.logError( 'loadCommanding | command definition cannot be loaded.  ' + e );
       }
     } );
   };
@@ -348,51 +381,55 @@ CommanderClient.prototype.updateTelemetry = function( items ) {
    * messages they subscribed to that arrived in this update.  To do this
    * first we loop through the items to find their subscribers.
    */
-  for ( var itemID in items ) {
-    var subs = self.subscriptions[ itemID ];
+  for ( var opsPath in items ) {
+	if(self.subscriptions.hasOwnProperty(opsPath)) {
+      var subscription = self.subscriptions[ opsPath ];
+    
+      /* Loop through all the subscriber callbacks
+       * assigned to this item. */
+      for ( var funcName in subscription.cb ) {
+        if ( subscribersToUpdate.hasOwnProperty(funcName) ) {
+          /* This subscription must have already got a item queued up for it in
+           * this call because it already has an entry.  Just get a handle to
+           * the subscriber record.
+           */
+          var subscriptionUpdate = subscribersToUpdate[funcName];
+        } else {
+          /* This is the first time we've added an item to this subscribers
+           * shopping cart in this call.  Create an entry for this subscription.
+           */
+          var subscriptionUpdate = {
+            cb: subscription.cb[funcName],
+            items: []
+          };
+          subscribersToUpdate[funcName] = subscriptionUpdate;
+        }
 
-    /* Loop through all the subscriber callbacks
-     * assigned to this item. */
-    for ( var funcName in subs ) {
-      var subscription = subs[ funcName ];
-
-      if ( subscribersToUpdate.hasOwnProperty( funcName ) ) {
-        /* This subscription must have already got a item queued up for it in
-         * this call because it already has an entry.  Just get a handle to
-         * the subscriber record.
+        /* Great.  Now we have the subscription entry.  Now build up an object
+         * and push the this new item onto the items array.
          */
-        var subscriptionUpdate = subscribersToUpdate[ funcName ];
-      } else {
-        /* This is the first time we've added an item to this subscribers
-         * shopping cart in this call.  Create an entry for this subscription.
-         */
-        var subscriptionUpdate = {
-          subscription: subscription,
-          items: []
+        var param = {
+          sample: items[ opsPath ].sample,
+          opsPath: opsPath
         };
-        subscribersToUpdate[ funcName ] = subscriptionUpdate;
+        subscriptionUpdate.items.push( param );
       }
-
-      /* Great.  Now we have the subscription entry.  Now build up an object
-       * and push the this new item onto the items array.
-       */
-      var param = {
-        sample: items[ itemID ].sample,
-        opsPath: itemID
-      };
-      subscriptionUpdate.items.push( param );
-    }
+	} else {
+	  console.log('Received unexpected telemetry update for ' + opsPath);
+	}
   }
 
   /* Now that we've built up a list of subscriptions to update.  Loop through
    * the list and send the updates.
    */
-  for ( var funcName in subscribersToUpdate ) {
+  for ( var funcName in subscribersToUpdate ) { 
     var subUpdate = subscribersToUpdate[ funcName ];
 
-    var cb = subUpdate.subscription.cb;
-
-    cb( subUpdate.items );
+    var cb = subUpdate.cb;
+    
+    if(typeof cb === 'function') {
+      cb( subUpdate.items );
+    }
   }
 }
 
@@ -401,24 +438,26 @@ CommanderClient.prototype.updateTelemetry = function( items ) {
  * @param  {Object} tlmObj Telemetry object
  */
 CommanderClient.prototype.unsubscribe = function( tlmObj ) {
-
   if ( this.isSocketConnected ) {
-    var tlmOpsPaths = [];
-
     for ( var i = 0; i < tlmObj.length; ++i ) {
       var opsPath = tlmObj[ i ].name;
-      tlmOpsPaths.push( opsPath );
 
-      if ( this.subscriptions.hasOwnProperty( opsPath ) ) {
-        delete this.subscriptions[ opsPath ];
-      }
-      cu.logDebug( 'Clinet | unsubscribed' )
-    }
-
-    this.socket.emit( 'unsubscribe', tlmOpsPaths );
-
-
-  };
+      /* Has this opsPath already been subscribed to? */
+      if ( this.subscriptions.hasOwnProperty( opsPath ) == false ) {
+        /* We have not subscribed to this yet.  Don't worry about this one. */
+      } else {
+    	var subscription = this.subscriptions[ opsPath ];
+   	    for ( var funcName in subscription.cb ) {
+    	  delete subscription.cb[funcName];
+   	    }
+   	    
+   	    if(Object.keys(subscription.cb).length === 0) {
+   	      /* There are no more subscribers for this opsPath.  Schedule it to be unsubscribed. */
+          this.subscriptions[ opsPath ].pendingAction = 'unsubscribe';
+   	    };
+      }; 
+	};
+  }
 };
 
 
@@ -429,23 +468,23 @@ CommanderClient.prototype.unsubscribe = function( tlmObj ) {
  */
 CommanderClient.prototype.subscribe = function( tlmObj, cb ) {
   if ( this.isSocketConnected ) {
-    var tlmOpsPaths = [];
-
     for ( var i = 0; i < tlmObj.length; ++i ) {
       var opsPath = tlmObj[ i ].name;
-      tlmOpsPaths.push( opsPath );
 
+      /* Has this opsPath already been subscribed to? */
       if ( this.subscriptions.hasOwnProperty( opsPath ) == false ) {
-        this.subscriptions[ opsPath ] = {};
-      }
+        /* We have not subscribed to this yet.  Add a new object and schedule a subscribe
+         * request to the server.
+         */
+        this.subscriptions[ opsPath ] = {
+          pendingAction: 'subscribe',
+          cb: {}
+        };
+      } 
 
-      this.subscriptions[ opsPath ][ cb ] = {
-        cb: cb,
-        opsPath: opsPath
-      };
+      /* Add the callback to the subscription. */
+      this.subscriptions[ opsPath ].cb[cb.name] = cb;
     }
-
-    this.socket.emit( 'subscribe', tlmOpsPaths );
   };
 };
 
@@ -455,7 +494,7 @@ CommanderClient.prototype.subscribe = function( tlmObj, cb ) {
  * @param  {Object} cmdObj Command object
  */
 CommanderClient.prototype.sendCommand = function( cmdObj ) {
-  cu.logInfo( 'Client | sent command : ', JSON.stringify( cmdObj, 2 ) );
+  //cu.logInfo( 'Client | sent command : ', JSON.stringify( cmdObj, 2 ) );
   if ( this.isSocketConnected ) {
     this.socket.emit( 'sendCmd', cmdObj );
 
@@ -468,11 +507,19 @@ CommanderClient.prototype.sendCommand = function( cmdObj ) {
  * @param  {Object} path XPath style query string
  */
 CommanderClient.prototype.queryConfigDB = function( path, cb ) {
-  cu.logInfo( 'Client | query config DB : ', JSON.stringify( path, 2 ) );
+  //cu.logInfo( 'Client | query config DB : ', JSON.stringify( path, 2 ) );
   if ( this.isSocketConnected ) {
     this.socket.emit( 'queryConfigDB', path, cb );
 
   };
+};
+
+
+/**
+ * Get the communication socket
+ */
+CommanderClient.prototype.getSocket = function() {
+  return this.socket;
 };
 
 
