@@ -128,22 +128,22 @@ module.exports = class CommanderInstance {
     
     
     onCommandDefRequest(cmd, callback) {
-        this.emitter.on( 'cmd-def-request', cmd, callback );
+        this.send( 'cmd-def-request', cmd, callback );
     }
     
     
     onCommand(callback) {
-        this.emitter.on( 'cmd-send', callback);
+        this.send( 'cmd-send', callback);
     }
 
     
     
     onTelemetryDefRequest(cmd, callback) {
-        this.emitter.on( 'tlm-def-request', cmd, callback );
+        this.recv( 'tlm-def-request', cmd, callback );
     }
     
     
     sendTelemetry(tlmObj) {
-        this.emitter.emit( 'json-tlm-stream', tlmObj );
+        this.recv( 'json-tlm-stream', tlmObj );
     }
 }
