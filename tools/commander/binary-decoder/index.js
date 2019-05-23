@@ -173,14 +173,14 @@ class BinaryDecoder extends CdrGroundPlugin {
                     readUntil: 'eof'
                 } );
         
-        this.namespace.emitter.on( config.get( 'binaryInputStreamID' ), function( buffer ) {
+        this.namespace.recv( config.get( 'binaryInputStreamID' ), function( buffer ) {
         	self.hk.content.msgRecvCount++;
         	
             self.processBinaryMessage( buffer );
         } );
 
 
-        this.namespace.emitter.on( config.get( 'tlmDefReqStreamID' ), function( tlmReqs, cb ) {
+        this.namespace.recv( config.get( 'tlmDefReqStreamID' ), function( tlmReqs, cb ) {
             var found = false;
             
             if ( typeof tlmReqs.length === 'number' ) {
@@ -593,7 +593,7 @@ class BinaryDecoder extends CdrGroundPlugin {
                                 msgTime: msgTime
                             };
                         
-                        this.namespace.emit( config.get( 'jsonOutputStreamID' ), output );
+                        this.namespace.send( config.get( 'jsonOutputStreamID' ), output );
                     }
                 }
             }

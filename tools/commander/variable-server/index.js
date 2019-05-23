@@ -82,7 +82,7 @@ class VariableServer extends CdrGroundPlugin {
 
 
         
-        this.namespace.emitter.on( config.get( 'jsonInputStreamID' ), function( message ) {
+        this.namespace.recv( config.get( 'jsonInputStreamID' ), function( message ) {
             var vars = self.getVariablesFromMsgOpsName( message.opsPath );
             
             self.hk.content.msgRecvCount++;
@@ -167,11 +167,11 @@ class VariableServer extends CdrGroundPlugin {
             self.instanceEmit( config.get( 'outputEventsStreamID' ), 'message-received' );
         } );
 
-        this.namespace.emitter.on( config.get( 'varDefReqStreamID' ), function( req, cb ) {
+        this.namespace.recv( config.get( 'varDefReqStreamID' ), function( req, cb ) {
             self.getTlmDefinitions( req, cb );
         } );
 
-        this.namespace.emitter.on( config.get( 'reqSubscribeStreamID' ), function( req, cb ) {
+        this.namespace.recv( config.get( 'reqSubscribeStreamID' ), function( req, cb ) {
             if ( req.cmd === 'addSubscription' ) {
                 if ( typeof req.opsPath === 'string' || req.opsPath instanceof String ) {
                     self.addSubscription( req.subscriberID, req.opsPath );
@@ -551,7 +551,7 @@ class VariableServer extends CdrGroundPlugin {
      * @param  {Function} cb       callback
      */
     instanceEmit( streamID, msg, cb ) {
-        this.namespace.emit( streamID, msg, cb );
+        this.namespace.send( streamID, msg, cb );
     }
     
     

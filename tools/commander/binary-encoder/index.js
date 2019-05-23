@@ -168,7 +168,7 @@ class BinaryEncoder extends CdrGroundPlugin {
             readUntil: 'eof'
         } );
         
-        this.namespace.emitter.on( config.get( 'cmdDefReqStreamID' ), function( cmdReqs, cb ) {
+        this.namespace.recv( config.get( 'cmdDefReqStreamID' ), function( cmdReqs, cb ) {
             if ( typeof cmdReqs.length === 'number' ) {
                 /* This must be an array. */
                 var outCmdDefs = [];
@@ -234,7 +234,7 @@ class BinaryEncoder extends CdrGroundPlugin {
             }
         } );
 
-        this.namespace.emitter.on( config.get( 'cmdSendStreamID' ), function( req ) {
+        this.namespace.recv( config.get( 'cmdSendStreamID' ), function( req ) {
             var cmdDef = self.getCmdDefByName( req.ops_path );
             if ( typeof cmdDef === 'undefined' ) {
                 self.logDebug( 'CmdSend: Ops path not found.  \'' + req + '\'' );
@@ -737,7 +737,7 @@ class BinaryEncoder extends CdrGroundPlugin {
                         }
                     }
                 }
-                this.namespace.emit( config.get( 'binaryOutputStreamID' ), buffer );
+                this.namespace.send( config.get( 'binaryOutputStreamID' ), buffer );
                 this.hk.content.msgSentCount++;
             }
         }

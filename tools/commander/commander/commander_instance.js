@@ -34,7 +34,7 @@
 var EventEmitter = require( 'events' );
 
 
-module.exports = class CommanderInstance extends EventEmitter {
+module.exports = class CommanderInstance {
 
     /**
      * Constructor for commander instance
@@ -42,9 +42,7 @@ module.exports = class CommanderInstance extends EventEmitter {
      * @param       {Object} server server object
      * @constructor
      */
-    constructor(name, server) {
-        super();
-        
+    constructor(name, server) {        
         this.name = name;
         this.server = server;
         this.apps = {};
@@ -102,22 +100,20 @@ module.exports = class CommanderInstance extends EventEmitter {
      * @param  {String}   msg      emit message
      * @param	 {Function} callback callback
      */
-    emit( streamID, obj, callback ) {
+    deleteme_emit( streamID, obj, callback ) {
         this.emitter.emit( streamID, obj, callback );
     }
 
     
     send( streamID, obj, callback ) {
-//    	if(this.streams.hasOwnProperty(streamID) == false) {
-//    		/* This stream has not been created.  Create an entry for the callbacks. */
-//    		this.streams[streamID] = {};
-//    	}
-//    	
-//    	for(var callbackID in this.streams[streamID]) {
-//    		this.streams[streamID](obj);
-//    	}
-    	
-    	console.log(this.server);
+    	if(this.streams.hasOwnProperty(streamID) == false) {
+    		/* This stream has not been created.  Create an entry for the callbacks. */
+    		this.streams[streamID] = {};
+    	}
+
+    	for(var callbackID in this.streams[streamID]) {
+    		this.streams[streamID][callbackID](obj,callback);
+    	}    	
     }
 
     
@@ -125,7 +121,9 @@ module.exports = class CommanderInstance extends EventEmitter {
     	if(this.streams.hasOwnProperty(streamID) == false) {
     		/* This stream has not been created.  Create an entry for the callbacks. */
     		this.streams[streamID] = {};
-    	}
+    	}  
+    	
+    	this.streams[streamID][callback] = callback;
     }
     
     

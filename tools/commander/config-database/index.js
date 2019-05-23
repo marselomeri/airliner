@@ -112,7 +112,7 @@ class ConfigDatabase extends CdrGroundPlugin {
             this.defs = mergeJSON.merge( this.defs, msgDefInput );
         }
         
-        this.namespace.emitter.on( config.get( 'queryConfigStreamID' ), function( query, cb ) {
+        this.namespace.recv( config.get( 'queryConfigStreamID' ), function( query, cb ) {
             var result = jp.query( self.defs, query );
             cb( result );
         } );

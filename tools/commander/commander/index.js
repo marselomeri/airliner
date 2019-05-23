@@ -296,7 +296,7 @@ module.exports = class Commander extends EventEmitter {
         
             for ( var i in self.registeredStreams ) {
                 var streamName = self.registeredStreams[ i ].streamName;
-                self.defaultInstance.emitter.on( streamName, function( newData ) {
+                self.defaultInstance.recv( streamName, function( newData ) {
                     var stream = socket.enabledStreams[ streamName ];
                     if ( typeof stream === 'boolean' ) {
                         if ( stream === true ) {
@@ -333,7 +333,7 @@ module.exports = class Commander extends EventEmitter {
         var self = this;
         this.defaultInstance = instance;
 
-        this.defaultInstance.emitter.on( 'advertise-stream', function( streamName ) {
+        this.defaultInstance.recv( 'advertise-stream', function( streamName ) {
             self.registeredStreams.push( {
                 treamName: streamName
             } );
@@ -558,8 +558,8 @@ module.exports = class Commander extends EventEmitter {
      * @param  {Function} cb     callback
      */
     queryConfigDB( inPath, cb ) {
-        if ( typeof this.defaultInstance.emit === 'function' & typeof inPath == 'string' ) {
-            this.defaultInstance.emit( config.get( 'queryConfigStreamID' ), inPath, function( resp ) {
+        if ( typeof this.defaultInstance.send === 'function' & typeof inPath == 'string' ) {
+            this.defaultInstance.send( config.get( 'queryConfigStreamID' ), inPath, function( resp ) {
                 cb( resp );
             } );
         };
@@ -572,9 +572,9 @@ module.exports = class Commander extends EventEmitter {
      * @param  {Function} cb     callback
      */
     getCmdDef( cmdObj, cb ) {
-        if ( typeof this.defaultInstance.emit === 'function' ) {
+        if ( typeof this.defaultInstance.send === 'function' ) {
             if ( typeof cmdObj == 'object' && cmdObj.hasOwnProperty( 'name' ) ) {
-                this.defaultInstance.emit( config.get( 'cmdDefReqStreamID' ), {
+                this.defaultInstance.send( config.get( 'cmdDefReqStreamID' ), {
                     opsPath: cmdObj.name
                 }, function( resp ) {
                     cb( resp );
@@ -589,8 +589,8 @@ module.exports = class Commander extends EventEmitter {
      * @param  {Function} cb      callback
      */
     getTlmDefs( tlmObjs, cb ) {
-        if ( typeof this.defaultInstance.emit === 'function' && typeof tlmObjs == 'object' ) {
-            this.defaultInstance.emit( config.get( 'varDefReqStreamID' ), tlmObjs, function( resp ) {
+        if ( typeof this.defaultInstance.send === 'function' && typeof tlmObjs == 'object' ) {
+            this.defaultInstance.send( config.get( 'varDefReqStreamID' ), tlmObjs, function( resp ) {
                 cb( resp );
             } );
         };
@@ -612,7 +612,7 @@ module.exports = class Commander extends EventEmitter {
      */
     sendCmd( cmdName, args ) {
         if ( cmdName.hasOwnProperty( 'ops_path' ) && cmdName.hasOwnProperty( 'args' ) ) {
-            this.defaultInstance.emit( config.get( 'cmdSendStreamID' ), cmdName, args );
+            this.defaultInstance.send( config.get( 'cmdSendStreamID' ), cmdName, args );
         }
     }
 
@@ -624,7 +624,7 @@ module.exports = class Commander extends EventEmitter {
      */
     subscribe( updateCallback, cb ) {
         var self = this;
-        this.defaultInstance.emit( config.get( 'reqSubscribeStreamID' ), {
+        this.defaultInstance.send( config.get( 'reqSubscribeStreamID' ), {
             cmd: 'addSubscriber',
             cb: updateCallback
         }, function( subscriberID ) {
@@ -641,7 +641,7 @@ module.exports = class Commander extends EventEmitter {
     addSubscription( subscriberID, varName ) {
         var self = this;
         if ( typeof varName == 'object' ) {
-            this.defaultInstance.emit( config.get( 'reqSubscribeStreamID' ), {
+            this.defaultInstance.send( config.get( 'reqSubscribeStreamID' ), {
                 cmd: 'addSubscription',
                 subscriberID: subscriberID,
                 opsPath: varName
@@ -658,7 +658,7 @@ module.exports = class Commander extends EventEmitter {
     removeSubscription( subscriberID, varName ) {
         var self = this;
         if ( typeof varName == 'object' ) {
-            this.defaultInstance.emit( config.get( 'reqSubscribeStreamID' ), {
+            this.defaultInstance.send( config.get( 'reqSubscribeStreamID' ), {
                 cmd: 'removeSubscription',
                 subscriberID: subscriberID,
                 opsPath: varName
@@ -674,7 +674,7 @@ module.exports = class Commander extends EventEmitter {
      */
     removeSubscriber( subscriberID ) {
         var self = this;
-        this.defaultInstance.emit( config.get( 'reqSubscribeStreamID' ), {
+        this.defaultInstance.send( config.get( 'reqSubscribeStreamID' ), {
             cmd: 'removeSubscriber',
             subscriberID: subscriberID
         } );
