@@ -49,23 +49,20 @@ class CdrTimeSeriesDataplot {
         };
 
         this.objMergedData = {
-            update_interval: 1000,
+            update_interval: 100,
             homogeneity: {tolerance: 0},
             maxcount: 120,
             ignore_count: 0,
             options : {
                 xaxis : {
-                	show:  false
-                },
-                yaxis : {
-                    min: 0,
-                    max: 300
+                	show:  true,
+                	mode: "time",
                 },
                 series : {
                 	shadowSize: 0	// Drawing is faster without shadows
                 },
                 grid: {
-                    //show: true,
+                    show: true,
                     //aboveData: boolean
                     //color: '#ffffff',
                     //backgroundColor: color/gradient or null
@@ -86,22 +83,8 @@ class CdrTimeSeriesDataplot {
         };
 
         mergeDeep(this.objMergedData, objData);
-
-        //this.UtilGraph = $.plot(domObject, [], this.objMergedData.options);
         
-
-        this.UtilGraph = $.plot(domObject, [], {
-			series: {
-                shadowSize: 0	// Drawing is faster without shadows
-			},
-			yaxis: {
-				min: 0,
-				max: 100
-			},
-			xaxis: {
-				show: false
-			}
-		});
+        this.UtilGraph = $.plot(domObject, [], this.objMergedData.options);
         	  
         var objTlm = [];
         for(var i=0; i < this.objMergedData.data.length; ++i) {
@@ -121,7 +104,11 @@ class CdrTimeSeriesDataplot {
         
         if(objTlm.length > 0)
         {         	
+        	self.UtilGraph.draw();
+    		self.UtilGraph.setupGrid();
+    		
             session.subscribe(objTlm, function(params) {
+            	console.log(objTlm.length);
                 count = count + 1;
                 if(self.objMergedData.ignore_count > 0){
                 	self.objMergedData.ignore_count = self.objMergedData.ignore_count - 1;
@@ -143,7 +130,7 @@ class CdrTimeSeriesDataplot {
     	        	    	}
             	    	}
             	    	
-            	        self.values[i].push([count, value]);
+            	        self.values[i].push([new Date(), value]);
         	        }
         		
         		    if(self.objMergedData.update_interval <= 0) {
@@ -151,20 +138,17 @@ class CdrTimeSeriesDataplot {
         		    };		
         	    }
             });
-
-            update();
+            
+            if(self.objMergedData.update_interval > 0) {
+            	setInterval(update, self.objMergedData.update_interval);
+            }
         }
 
         function update() {    		
-    		self.UtilGraph.setData([self.values]);
-
-        	console.log([self.values[0]]);
-            
-    		// since the axes don't change, we don't need to call plot.setupGrid()
-    		//self.UtilGraph.setupGrid();
-    		self.UtilGraph.draw();
-
-    		setTimeout(update, 1000);
+    		self.UtilGraph.setData(self.values);
+        	
+    		self.UtilGraph.setupGrid();
+        	self.UtilGraph.draw();
         }
     }    
 }

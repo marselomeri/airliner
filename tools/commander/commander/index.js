@@ -97,7 +97,7 @@ module.exports = class Commander extends EventEmitter {
         this.registeredFunctions = [];
         this.registeredStreams = [];
         
-        const LoggerConsoleFormat = printf(({ level, namespace, plugin, message, data, timestamp }) => {
+        const LoggerConsoleFormat = printf(function({ level, namespace, plugin, message, data, timestamp }) {
             var output = '';
 
             output += `${timestamp} [`;
@@ -504,15 +504,15 @@ module.exports = class Commander extends EventEmitter {
      * @param  {Function} cb Callback
      */
     getADSBJson( cb ) {
-        http.get( 'http://127.0.0.1:8080/dump1090/data.json', ( resp ) => {
+        http.get( 'http://127.0.0.1:8080/dump1090/data.json', function(resp) {
             var data = ''
-                resp.on( 'data', ( chunk ) => {
+                resp.on( 'data', function(chunk) {
                     data += chunk;
                 } );
-            resp.on( 'end', () => {
+            resp.on( 'end', function() {
                 cb( JSON.parse( data ) );
             } );
-        } ).on( 'error', ( e ) => {
+        } ).on( 'error', function(e) {
             this.logError( `${e.message}` );
         } );
     }

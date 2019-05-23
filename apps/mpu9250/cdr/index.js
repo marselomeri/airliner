@@ -1,44 +1,40 @@
 'use strict';
 
-var path = require( 'path' );
+var path = require('path');
 
-const CdrPlugin = require( path.join( global.CDR_INSTALL_DIR, '/commander/classes/CdrPlugin' ) ).CdrPlugin;
+const CdrFlightAppsPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrFlightAppsPlugin')).CdrFlightAppsPlugin;
 
-module.exports = class CfeCdrPlugin extends CdrPlugin {
-  constructor( urlBase ) {
-    super( 'mpu9250', path.join( __dirname, 'web', urlBase ) );
-  }
-
-  getContent() {
-    var result = {
-      shortDescription: 'MPU9250 Inertial Measurement Unit',
-      longDescription: 'MPU9250 Inertial Measurement Unit Driver.',
-      nodes: {
-        main: {
-          type: CdrPlugin.ContentType.LAYOUT,
-          shortDescription: 'Main',
-          longDescription: 'Main MPU9250.',
-          filePath: '/main.lyt'
-        },
-        cdh: {
-          type: CdrPlugin.ContentType.PANEL,
-          shortDescription: 'Command and Data Handling',
-          longDescription: 'Command counters.',
-          filePath: '/cdh.pug'
-        },
-        diag: {
-          type: CdrPlugin.ContentType.PANEL,
-          shortDescription: 'Diagnostic',
-          longDescription: 'MPU9250 Diagnostic Message',
-          filePath: '/diag.pug'
-        }
-      }
-    };
-
-    return result;
-  }
+module.exports = class Mpu9250CdrFlightAppsPlugin extends CdrFlightAppsPlugin {
+    constructor(config) {
+        config.name = 'mpu9250';
+        config.webRoot = path.join( __dirname, 'web');  
+        super(config);
+    	
+        var content = {
+            shortDescription: 'MPU9250 Inertial Measurement Unit',
+        	longDescription: 'MPU9250 Inertial Measurement Unit Driver.',
+        	nodes: {
+        	    main: {
+        	        type: CdrFlightAppsPlugin.ContentType.LAYOUT,
+        	        shortDescription: 'Main',
+        	        longDescription: 'Main MPU9250.',
+        	        filePath: '/main.lyt'
+        	    },
+        	    cdh: {
+        	        type: CdrFlightAppsPlugin.ContentType.PANEL,
+        	        shortDescription: 'Command and Data Handling',
+        	        longDescription: 'Command counters.',
+        	        filePath: '/cdh.pug'
+        	    },
+        	    diag: {
+        	        type: CdrFlightAppsPlugin.ContentType.PANEL,
+        	        shortDescription: 'Diagnostic',
+        	        longDescription: 'MPU9250 Diagnostic Message',
+        	        filePath: '/diag.pug'
+        	    }
+        	}
+        };
+    	
+    	this.addContent(content);
+    }
 };
-
-//var plugin = new CfeCdrPlugin();
-
-//let CfeCdrPlugin = new class extends CdrPlugin {

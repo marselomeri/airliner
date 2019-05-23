@@ -91,18 +91,18 @@ class UdpStdProvider extends CdrGroundPlugin {
             
             this.listener = dgram.createSocket( {type: 'udp4', reuseAddr: true} );
     
-            this.listener.on( 'listening', () => {
+            this.listener.on( 'listening', function() {
                 const listenerAddress = self.listener.address();
                 self.logInfo(`UDP connector listening ${listenerAddress.address}:${listenerAddress.port}` );
             } );
             
-            this.listener.bind( this.hk.content.inPort, () => {            
-                self.listener.on( 'message', ( msg, rinfo ) => {
+            this.listener.bind( this.hk.content.inPort, function() {            
+                self.listener.on( 'message', function(msg, rinfo) {
                     self.hk.content.msgRecvCount++;
                     self.namespace.emit( self.hk.content.outputStreamID, msg );
                 } );
     
-                self.listener.on( 'error', ( err ) => {
+                self.listener.on( 'error', function(err) {
                     self.logError( `UDP connector error:\n${err}.` );
                 } );
             });   
