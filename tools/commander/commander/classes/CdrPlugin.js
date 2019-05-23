@@ -310,6 +310,10 @@ class CdrPlugin extends Emitter {
         }
     }
     
+
+    send( streamID, obj, callback ) {
+    	this.namespace.send(streamID, obj, callback);
+    }
 }
 
 

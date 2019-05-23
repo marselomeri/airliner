@@ -2,43 +2,41 @@
 
 var path = require('path');
 
-const CdrPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrPlugin')).CdrPlugin;
+const CdrFlightAppsPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrFlightAppsPlugin')).CdrFlightAppsPlugin;
 
-module.exports = class CfeCdrPlugin extends CdrPlugin {
-  constructor(urlBase) {
-    super('HMC5883', path.join(__dirname, 'web', urlBase));
-  }
-
-  getContent() {
-    var result = {
-      shortDescription: 'HMC5883 Driver',
-      longDescription: 'HMC5883 Driver',
-      nodes: {
-				main: {
-					type: CdrPlugin.ContentType.LAYOUT,
-					shortDescription: 'Main',
-					longDescription: 'Main HMC5883.',
-					filePath: '/main_layout.lyt'
-				},
-				hk: {
-					type: CdrPlugin.ContentType.PANEL,
-					shortDescription: 'HMC5883 HK',
-					longDescription: 'HMC5883 Housekeeping',
-					filePath: '/hk.pug'
-				},
-                diag: {
-                    type: CdrPlugin.ContentType.PANEL,
-                    shortDescription: 'HMC5883 Diag',
-                    longDescription: 'HMC5883 Diagnostics',
-                    filePath: '/diag.pug'
+module.exports = class Hmc5883CdrFlightAppsPlugin extends CdrFlightAppsPlugin {
+    constructor(config) {
+        config.name = 'hmc5883';
+        config.webRoot = path.join( __dirname, 'web');  
+        super(config);
+    	
+        var content = {
+            amc: {
+                shortDescription: 'HMC5883 Driver',
+                longDescription: 'HMC5883 Driver',
+                nodes: {
+    				main: {
+    					type: CdrFlightAppsPlugin.ContentType.LAYOUT,
+    					shortDescription: 'Main',
+    					longDescription: 'Main HMC5883.',
+    					filePath: '/main_layout.lyt'
+    				},
+    				hk: {
+    					type: CdrFlightAppsPlugin.ContentType.PANEL,
+    					shortDescription: 'HMC5883 HK',
+    					longDescription: 'HMC5883 Housekeeping',
+    					filePath: '/hk.pug'
+    				},
+                    diag: {
+                        type: CdrFlightAppsPlugin.ContentType.PANEL,
+                        shortDescription: 'HMC5883 Diag',
+                        longDescription: 'HMC5883 Diagnostics',
+                        filePath: '/diag.pug'
+                    }
                 }
-      }
-    };
-
-    return result;
-  }
+            }
+        };
+    	
+    	this.addContent(content);
+    }
 };
-
-//var plugin = new CfeCdrPlugin();
-
-//let CfeCdrPlugin = new class extends CdrPlugin {

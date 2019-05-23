@@ -103,7 +103,7 @@ $( () => {
     //cu.logInfo( 'Connection | session connected' );
 
     if ( _sescon_never ) {
-      var defaultLayoutPromise = new Promise( ( resolve, reject ) => {
+      var defaultLayoutPromise = new Promise( function(resolve, reject) {
         session.getDefaultLayout( function( resp ) {
           if ( window.__backupConfig == undefined | window.__backupConfig == null ) {
             config = resp;
@@ -112,7 +112,7 @@ $( () => {
         } );
       } );
       
-      defaultLayoutPromise.then( () => {
+      defaultLayoutPromise.then( function() {
         session.getPanels( '/', function( dirEntries ) {
           var panelEntries = [];
           /* modify dirEntries */
@@ -237,7 +237,7 @@ $( () => {
         InitWidgets();
         /* false means previously, there had already been a session connection */
         _sescon_never = false;
-      } ).catch( ( e ) => {
+      } ).catch( function(e) {
         //cu.logError( 'Error occured while loading default layout ', e );
       } )
     }

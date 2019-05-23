@@ -77,7 +77,7 @@ class UdpStdProvider extends CdrGroundPlugin {
         this.initCommands();
         
         /* Start listening for data to send out the socket. */
-        this.namespace.emitter.on( this.config.get( 'inputStreamID' ), function( buffer ) {
+        this.namespace.recv( this.config.get( 'inputStreamID' ), function( buffer ) {
             self.hk.content.msgSentCount++;
             self.sender.send( buffer, 0, buffer.length, self.hk.content.outPort, self.hk.content.outAddress);
         } );
@@ -91,18 +91,18 @@ class UdpStdProvider extends CdrGroundPlugin {
             
             this.listener = dgram.createSocket( {type: 'udp4', reuseAddr: true} );
     
-            this.listener.on( 'listening', () => {
+            this.listener.on( 'listening', function() {
                 const listenerAddress = self.listener.address();
                 self.logInfo(`UDP connector listening ${listenerAddress.address}:${listenerAddress.port}` );
             } );
             
-            this.listener.bind( this.hk.content.inPort, () => {            
-                self.listener.on( 'message', ( msg, rinfo ) => {
+            this.listener.bind( this.hk.content.inPort, function() {            
+                self.listener.on( 'message', function(msg, rinfo) {
                     self.hk.content.msgRecvCount++;
-                    self.namespace.emit( self.hk.content.outputStreamID, msg );
+                    self.send( self.hk.content.outputStreamID, msg );
                 } );
     
-                self.listener.on( 'error', ( err ) => {
+                self.listener.on( 'error', function(err) {
                     self.logError( `UDP connector error:\n${err}.` );
                 } );
             });   

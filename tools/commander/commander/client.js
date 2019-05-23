@@ -257,7 +257,7 @@ CommanderClient.prototype.getADSBJson = function( interval, cb ) {
       //cu.logError( 'unable to clear ADSB interval ' );
     }
   }
-  this.adsbInterval = setInterval( () => {
+  this.adsbInterval = setInterval( function() {
     this.socket.emit( 'getADSBJson', function( result ) {
       cb( result );
     } );

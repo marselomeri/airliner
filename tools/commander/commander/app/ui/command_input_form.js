@@ -10,7 +10,7 @@ function InitCommandInputForm() {
   } );
   /* modal on show handle - generate a form based on custom
    * information from dom elements*/
-  $( "#CommandInputForm" ).on( 'show.bs.modal', ( event ) => {
+  $( "#CommandInputForm" ).on( 'show.bs.modal', function(event) {
 
     if ( event.hasOwnProperty( 'relatedTarget' ) ) {
       /* which invoked the modal to show */
@@ -64,7 +64,7 @@ function InitCommandInputForm() {
                 options = custom[ e ].getItem
               }
               cu.logDebug( "Modal | ", custom[ e ] );
-              options.forEach( ( sel ) => {
+              options.forEach( function(sel) {
                 var html = "<option value=" + sel.value + ">" + sel.label + "</option>"
                 $( '#select' + e ).append( html )
               } );
@@ -110,7 +110,7 @@ function InitCommandInputForm() {
   } );
 
   /* modal on hide handle - unload a form based */
-  $( "#CommandInputForm" ).on( 'hidden.bs.modal', ( e ) => {
+  $( "#CommandInputForm" ).on( 'hidden.bs.modal', function(e) {
     /* replace title */
     $( "#modalTitle" ).text( 'Title Placeholder' );
     /* Remove all attached children*/

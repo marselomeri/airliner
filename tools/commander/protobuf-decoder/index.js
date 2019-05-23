@@ -173,7 +173,7 @@ class ProtobufDecoder extends CdrGroundPlugin {
             this.parseProtoFile( protoFiles[ i ] );
         }
         
-        this.namespace.emitter.on( config.get( 'binaryInputStreamID' ), function( buffer ) {
+        this.namespace.recv( config.get( 'binaryInputStreamID' ), function( buffer ) {
             var message = self.ccsds.parse( buffer );
             var msgID = buffer.readUInt16BE( 0 );
             if ( self.isCommandMsg( msgID ) ) {
@@ -221,7 +221,7 @@ class ProtobufDecoder extends CdrGroundPlugin {
                             var pbMsgDef = msgDef.proto.lookupType( tlmDef.symbol + '_pb' );
                             var pbMsg = pbMsgDef.create( tlmJson );
                             var obj = pbMsgDef.decode( message.payload );
-                            this.namespace.emit( config.get( 'jsonTlmOutputStreamID' ), obj );;
+                            this.namespace.send( config.get( 'jsonTlmOutputStreamID' ), obj );;
                         }
                     } );
                 }
@@ -271,7 +271,7 @@ class ProtobufDecoder extends CdrGroundPlugin {
      * @param  {Object} args command arguments
      */
     sendCmd( cmdName, args ) {
-        this.namespace.emit( config.get( 'jsonCmdOutputStreamID' ), {
+        this.namespace.send( config.get( 'jsonCmdOutputStreamID' ), {
             ops_path: cmdName,
             args: args
         } );
@@ -285,7 +285,7 @@ class ProtobufDecoder extends CdrGroundPlugin {
      * @param  {Function} cb      callback
      */
     requestCmdDefinition( msgID, cmdCode, cb ) {
-        this.namespace.emit( config.get( 'cmdDefReqStreamID' ), {
+        this.namespace.send( config.get( 'cmdDefReqStreamID' ), {
             msgID: msgID,
             cmdCode: cmdCode
         }, function( resp ) {

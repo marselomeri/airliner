@@ -20,7 +20,7 @@ function InitLayout( mlyt ) {
     } else {
       container.getElement().html( '<h2>' + state.text + '</h2>' );
     }
-    $( window ).on( "LayoutSaved", () => {
+    $( window ).on( "LayoutSaved", function() {
       container.extendState( {
         link: container._config.componentState.link
       } );
@@ -30,7 +30,7 @@ function InitLayout( mlyt ) {
 
   /*  handles for when itemCreated, tabsCreated, stackCreadted
    * stateChanged events are triggered by myLayout */
-  mlyt.on( "itemCreated", ( item ) => {
+  mlyt.on( "itemCreated", function(item) {
     if ( item.type == "component" ) {
       try {
         link = item.config.componentState.link;

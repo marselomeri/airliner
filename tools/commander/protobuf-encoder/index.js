@@ -189,7 +189,7 @@ class ProtobufEncoder extends CdrGroundPlugin {
             this.parseProtoFile( protoFiles[ i ] );
         }
 
-        this.namespace.emitter.on( config.get( 'jsonInputStreamID' ), function( message ) {
+        this.namespace.recv( config.get( 'jsonInputStreamID' ), function( message ) {
             try {
                 var tlmDef = self.getTlmDefByPath( message.opsPath );
                 if ( typeof tlmDef === 'undefined' ) {
@@ -224,7 +224,7 @@ class ProtobufEncoder extends CdrGroundPlugin {
 
                                 var msgBuffer = Buffer.concat( [ hdrBuffer, pbBuffer ] );
 
-                                self.namespace.emit( config.get( 'binaryOutputStreamID' ), msgBuffer );
+                                self.namespace.send( config.get( 'binaryOutputStreamID' ), msgBuffer );
                             }
                         }
                     }
