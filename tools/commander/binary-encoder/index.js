@@ -41,6 +41,7 @@ const util = require( 'util' );
 const mergeJSON = require( 'merge-json' );
 const convict = require( 'convict' );
 const path = require( 'path' );
+const autoBind = require('auto-bind');
 const config = require( './config.js' );
 const CdrGroundPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrGroundPlugin')).CdrGroundPlugin;
 
@@ -56,6 +57,8 @@ class BinaryEncoder extends CdrGroundPlugin {
     constructor(configObj) {
         configObj.webRoot = path.join( __dirname, 'web');  
         super(configObj); 
+        
+        autoBind(this);
         
     	var self = this;
         

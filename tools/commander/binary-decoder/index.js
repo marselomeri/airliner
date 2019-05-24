@@ -48,6 +48,7 @@ const Uint64LE = require( 'int64-buffer' ).Uint64LE;
 const Uint64BE = require( 'int64-buffer' ).Uint64BE;
 const path = require( 'path' );
 const Long = require( 'long' );
+const autoBind = require('auto-bind');
 const CdrGroundPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrGroundPlugin')).CdrGroundPlugin;
 
 
@@ -62,6 +63,8 @@ class BinaryDecoder extends CdrGroundPlugin {
     constructor(configObj) {
         configObj.webRoot = path.join( __dirname, 'web');  
         super(configObj); 
+        
+        autoBind(this);
         
     	var self = this;
         this.defs;
@@ -173,50 +176,50 @@ class BinaryDecoder extends CdrGroundPlugin {
                     readUntil: 'eof'
                 } );
         
-        this.namespace.recv( config.get( 'binaryInputStreamID' ), function( buffer ) {
-        	self.hk.content.msgRecvCount++;
-        	
-            self.processBinaryMessage( buffer );
-        } );
+        this.namespace.recv( config.get( 'binaryInputStreamID' ), this.processBinaryMessage);
 
-
-        this.namespace.recv( config.get( 'tlmDefReqStreamID' ), function( tlmReqs, cb ) {
-            var found = false;
-            
-            if ( typeof tlmReqs.length === 'number' ) {
-                /* This must be an array. */
-                var outTlmDefs = [];
-                for ( var i = 0; i < tlmReqs.length; ++i ) {
-                    var tlmDef = self.getTlmDefByName( self.stripArrayIdentifiers( tlmReqs[ i ].name ) );
-                    if ( typeof tlmDef !== 'undefined' ) {
-                        tlmDef.opsPath = tlmReqs[ i ].name;
-                        outTlmDefs.push( tlmDef );
-                        found = true;
-                    } else {
-                        self.logDebug( 'TlmDefReq: Telemetry not found.  \'' + tlmReqs[ i ].name + '\'' );
-                    }
-                }
-                
-                if(found == true) {
-                    cb( outTlmDefs );
-                }
-            } else {
-                /* This is a single request. */
-                var tlmDef = self.getTlmDefByName( self.stripArrayIdentifiers( tlmReqs.name ) );
-                if ( typeof tlmDef === 'undefined' ) {
-                    self.logDebug('TlmDefReq: Telemetry not found.  \'' + tlmReqs.name + '\'' );
-                } else {
-                    tlmDef.opsPath = tlmReqs.name;
-                    found = true;
-                }
-                
-                if(found == true) {
-                    cb( tlmDef );
-                }
-            }
-        } );
+        this.namespace.recv( config.get( 'tlmDefReqStreamID' ), this.processTlmDefReq);
         
         this.logInfo('Initialized');
+    };
+    
+    
+    processTlmDefReq( tlmReqs, cb ) {
+        var found = false;
+        
+        var self = this;
+        
+        if ( typeof tlmReqs.length === 'number' ) {
+            /* This must be an array. */
+            var outTlmDefs = [];
+            for ( var i = 0; i < tlmReqs.length; ++i ) {
+                var tlmDef = self.getTlmDefByName( self.stripArrayIdentifiers( tlmReqs[ i ].name ) );
+                if ( typeof tlmDef !== 'undefined' ) {
+                    tlmDef.opsPath = tlmReqs[ i ].name;
+                    outTlmDefs.push( tlmDef );
+                    found = true;
+                } else {
+                    self.logDebug( 'TlmDefReq: Telemetry not found.  \'' + tlmReqs[ i ].name + '\'' );
+                }
+            }
+            
+            if(found == true) {
+                cb( outTlmDefs );
+            }
+        } else {
+            /* This is a single request. */
+            var tlmDef = self.getTlmDefByName( self.stripArrayIdentifiers( tlmReqs.name ) );
+            if ( typeof tlmDef === 'undefined' ) {
+                self.logDebug('TlmDefReq: Telemetry not found.  \'' + tlmReqs.name + '\'' );
+            } else {
+                tlmDef.opsPath = tlmReqs.name;
+                found = true;
+            }
+            
+            if(found == true) {
+                cb( tlmDef );
+            }
+        }
     };
 
 
@@ -556,7 +559,10 @@ class BinaryDecoder extends CdrGroundPlugin {
      */
     processBinaryMessage( buffer ) {
         var self = this;
+        
         try {
+            self.hk.content.msgRecvCount++;
+            
             var msgID = buffer.readUInt16BE( 0 );
 
             var message = this.ccsds.parse( buffer );
@@ -598,7 +604,7 @@ class BinaryDecoder extends CdrGroundPlugin {
                 }
             }
         } catch ( e ) {
-            self.logError('processBinaryMessage: Unable decode buffer.  \'' + e + '\'' );
+            self.logError('processBinaryMessage: Unable to decode buffer.  \'' + e + '\'' );
         }
     };
 

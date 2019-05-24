@@ -48,6 +48,7 @@ var path = require( 'path' );
 var dot = require( 'dot-object' );
 var Long = require( 'long' );
 var path = require( 'path' );
+const autoBind = require('auto-bind');
 const CdrGroundPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrGroundPlugin')).CdrGroundPlugin;
 
 /**
@@ -90,6 +91,8 @@ class ProtobufEncoder extends CdrGroundPlugin {
      */
     constructor( configObj ) {
         super(configObj);
+        
+        autoBind(this);
         
         this.parsers = {};
         this.defs = {};

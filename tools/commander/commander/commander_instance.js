@@ -31,6 +31,8 @@
  *
  *****************************************************************************/
 
+const autoBind = require('auto-bind');
+
 var EventEmitter = require( 'events' );
 
 
@@ -42,7 +44,9 @@ module.exports = class CommanderInstance {
      * @param       {Object} server server object
      * @constructor
      */
-    constructor(name, server) {        
+    constructor(name, server) {          
+        autoBind(this);
+        
         this.name = name;
         this.server = server;
         this.apps = {};
@@ -92,58 +96,48 @@ module.exports = class CommanderInstance {
                 appObj: newAppObj
         };
     }
-    
-
-    /**
-     * Emit data
-     * @param  {String}   streamID stream id
-     * @param  {String}   msg      emit message
-     * @param	 {Function} callback callback
-     */
-    deleteme_emit( streamID, obj, callback ) {
-        this.emitter.emit( streamID, obj, callback );
-    }
 
     
-    send( streamID, obj, callback ) {
+    send( streamID, obj, callback ) {        
     	if(this.streams.hasOwnProperty(streamID) == false) {
-    		/* This stream has not been created.  Create an entry for the callbacks. */
-    		this.streams[streamID] = {};
+    	    /* This stream has not been created.  Create an entry for the callbacks. */
+    	    this.streams[streamID] = [];
     	}
 
-    	for(var callbackID in this.streams[streamID]) {
-    		this.streams[streamID][callbackID](obj,callback);
-    	}    	
+    	for(var i in this.streams[streamID]) {
+    	    var cb = this.streams[streamID][i];
+    	    cb(obj, callback);
+    	}   
     }
 
     
     recv( streamID, callback ) {
     	if(this.streams.hasOwnProperty(streamID) == false) {
-    		/* This stream has not been created.  Create an entry for the callbacks. */
-    		this.streams[streamID] = {};
+    	    /* This stream has not been created.  Create an entry for the callbacks. */
+    	    this.streams[streamID] = [];
     	}  
-    	
-    	this.streams[streamID][callback] = callback;
+    	    	
+    	this.streams[streamID].push(callback);
     }
     
     
-    onCommandDefRequest(cmd, callback) {
-        this.emitter.on( 'cmd-def-request', cmd, callback );
+    onCommandDefRequest(callback) {
+        this.recv( 'cmd-def-request', callback );
     }
     
     
     onCommand(callback) {
-        this.emitter.on( 'cmd-send', callback);
+        this.recv( 'cmd-send', callback);
     }
 
     
     
-    onTelemetryDefRequest(cmd, callback) {
-        this.emitter.on( 'tlm-def-request', cmd, callback );
+    onTelemetryDefRequest(callback) {
+        this.recv( 'tlm-def-request', callback );
     }
     
     
-    sendTelemetry(tlmObj) {
-        this.emitter.emit( 'json-tlm-stream', tlmObj );
+    sendTelemetry(tlm) {
+        this.send( 'json-tlm-stream', tlm );
     }
 }

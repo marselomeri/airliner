@@ -5,6 +5,7 @@ var fs = require('fs');
 var express = require('express');
 const Emitter = require('events').EventEmitter;
 var mergeJSON = require('merge-json');
+const autoBind = require('auto-bind');
 
 /* Content Types */
 const ContentTypeEnum = Object.freeze({
@@ -26,6 +27,8 @@ class CdrPlugin extends Emitter {
      */
     constructor(config) {
 	super();
+        
+        autoBind(this);
 
         this.webRoot = config.webRoot;
         this.namespace = config.namespace;
@@ -33,6 +36,8 @@ class CdrPlugin extends Emitter {
         this.commands = {};
         this.telemetry = {};
         var self = this;
+        
+        this.processTelemetryDefRequest = this.processTelemetryDefRequest.bind(this);
         
         this.namespace.onCommandDefRequest(function(cmdReq, cb) {
             if(self.commands.hasOwnProperty(cmdReq.opsPath)) {
@@ -49,35 +54,38 @@ class CdrPlugin extends Emitter {
             }
         });
         
-        this.namespace.onTelemetryDefRequest(function(tlmReq, cb) {
-            for(var msgOpsPath in self.telemetry) {
-                for(var paramName in self.telemetry[msgOpsPath].content) {
-                    if(tlmReq.name == msgOpsPath + '/' + paramName) {
-                        var output = {opsPath: tlmReq.name};
-                        
-                        switch(typeof self.telemetry[msgOpsPath].content[paramName]) {
-                            case 'number':
-                                output.dataType = 'uint32';
-                                break;
-                                
-                            case 'string':
-                                output.dataType = 'char';
-                                output.arrayLength = 100;
-                                break;
-                                
-                            default:
-                                self.logError('Unsupported internal telemetry type of \'' + typeof self.telemetry[msgOpsPath].content[paramName] + '\'');
-                                break;
-                        }
-                        
-                        cb(output);
-                    }
-                }
-            }
-        });
+        this.namespace.onTelemetryDefRequest(this.processTelemetryDefRequest);
         
         this.logDebug('Created.');
     }
+    
+    
+    processTelemetryDefRequest(tlmReq, cb) {
+        for(var msgOpsPath in this.telemetry) {
+            for(var paramName in this.telemetry[msgOpsPath].content) {
+                if(tlmReq.name == msgOpsPath + '/' + paramName) {
+                    var output = {opsPath: tlmReq.name};
+                        
+                    switch(typeof this.telemetry[msgOpsPath].content[paramName]) {
+                        case 'number':
+                            output.dataType = 'uint32';
+                            break;
+                                
+                        case 'string':
+                            output.dataType = 'char';
+                            output.arrayLength = 100;
+                            break;
+                                
+                        default:
+                            self.logError('Unsupported internal telemetry type of \'' + typeof this.telemetry[msgOpsPath].content[paramName] + '\'');
+                            break;
+                    }
+                        
+                    cb(output);
+                }
+            }
+        }
+    } 
   
   
     addContent(content) {
