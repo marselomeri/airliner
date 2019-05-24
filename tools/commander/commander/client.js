@@ -558,7 +558,11 @@ CommanderClient.prototype.subscribe = function(tlmObj, cb) {
             }
             this.subscriptions[opsPath].cb.push(cbID);
         }
+        
+        return id;
     }
+    
+    return undefined;
 };
 
 /**
