@@ -47,10 +47,10 @@ class CdrPlugin extends Emitter {
             }
         });
         
-        this.namespace.onCommand(function(cmd) {
+        this.namespace.onCommand(function(cmd, cb) {
             if(self.commands.hasOwnProperty(cmd.ops_path)) {
                 self.logDebug('Received command \'' + cmd.ops_path + '\'', cmd);
-                self.commands[cmd.ops_path].cb(cmd);
+                self.commands[cmd.ops_path].cb(cmd, cb);
             }
         });
         
@@ -133,30 +133,6 @@ class CdrPlugin extends Emitter {
      */
     initialize( commander, instance ) {
         var self = this;
-
-//        if ( typeof this.getFunctions === 'function' ) {
-//            var functions = this.getFunctions();
-//            if(typeof functions !== 'undefined') {
-//                for(var funcName in functions) {
-//                    commander.registerFunction(self.name, functions[funcName]);
-//                }
-//            }
-//        }
-//
-//        if(typeof this.getStreams === 'function') {
-//            var functions = this.getStreams();
-//            if(typeof functions !== 'undefined') {
-//                for(var funcName in functions) {
-//                    commander.registerStreams(self.name);
-//                }
-//            }
-//        }
-//
-//        if(typeof this.getServerApp === 'function') {
-//            var serverApp = this.getServerApp();
-//  	  
-//            instance.addApp(serverApp.name, serverApp.obj);
-//        }
     }
 
 
@@ -210,48 +186,7 @@ class CdrPlugin extends Emitter {
             }
         }
     }
-
-
-//    /**
-//     * Process panel tree
-//     * @param  {Object} panels panel object
-//     */
-//    processPanelsTree(panels) {
-//        if(panels.hasOwnProperty('urlPath')) {
-//            var self = this;
-//            global.NODE_APP.get(panels.urlPath, function(req, res) {
-//                res.render(path.join(self.webRoot, panels.filePath));
-//            });
-//        }
-//
-//        if(panels.hasOwnProperty('nodes')) {
-//            for(var nodeID in panels.nodes) {
-//                this.processPanelsTree(panels.nodes[nodeID]);
-//            }
-//        }
-//    }
-//
-//
-//    /**
-//     * Process layout tree
-//     * @param  {Object} layouts layout object
-//     */
-//    processLayoutsTree(layouts) {
-//        if(layouts.hasOwnProperty('urlPath')) {
-//            var self = this;
-//            global.NODE_APP.get(layouts.urlPath, function(req, res) {
-//                self.readJSONFile(path.join(self.webRoot, layouts.filePath), function( err, json ) {
-//                    res.send( json );
-//                });
-//            });
-//        }
-//
-//        if(layouts.hasOwnProperty('nodes')) {
-//            for(var nodeID in layouts.nodes) {
-//                this.processLayoutsTree(layouts.nodes[nodeID]);
-//            }
-//        }
-//    }
+    
 
     /**
      * Reads a json file and applies a callback on read data.

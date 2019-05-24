@@ -214,7 +214,7 @@ class UdpStdProvider extends CdrGroundPlugin {
                 main: {
                     type: CdrGroundPlugin.ContentType.LAYOUT,
                     shortDescription: 'Main',
-                    longDescription: 'Main BAT.',
+                    longDescription: 'Main.',
                     filePath: '/main_layout.lyt',
                     handlebarsContext: {
                         pluginName: this.config.name

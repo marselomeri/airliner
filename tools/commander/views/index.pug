@@ -207,10 +207,17 @@ cdr-nav-iconshtml(lang='en-us')
                         }
                       }
                       btnObj[ 0 ].onclick = function( eventObject ) {
+                        var cb = undefined;
+                        if(cmdInfo.hasOwnProperty('returnType') == true) {
+                          cb = function(error, response) {
+                            var text = 'Error: ' + error + '\nResponse: ' + response;
+                            alert(text);
+                          }
+                        }
                         session.sendCommand( {
                           ops_path: cmdInfo.name,
                           args: args
-                        });
+                        }, cb );
                       };
                     } else {
                       /*
@@ -596,7 +603,7 @@ cdr-nav-iconshtml(lang='en-us')
       
       /**
        * Some command invoke a modal or a form to be filled out by the user. The
-       * submit action of that form will invoke this function. THis function scrapes
+       * submit action of that form will invoke this function. This function scrapes
        * the modal for form information and generates a complete command object and
        * sends it out.
        * @return {undefined}
@@ -610,10 +617,15 @@ cdr-nav-iconshtml(lang='en-us')
           args[ label ] = value;
         }
         var cmdObj = JSON.parse( $( "#CommandInputForm" ).attr( 'data-info' ) );
+        var cb = undefined;
+        cb = function(error, response) {
+          var text = 'Error: ' + error + '\nResponse: ' + response;
+          alert(text);
+        }
         session.sendCommand( {
           ops_path: cmdObj.cmd.name,
-          args: args
-        } )
+          args: args,
+        }, cb )
       }
       
     
