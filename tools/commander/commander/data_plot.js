@@ -45,6 +45,8 @@ class CdrTimeSeriesDataplot {
         this.legendFormatter = this.legendFormatter.bind(this);
         this.updatePlot = this.updatePlot.bind(this);
         this.processNewData = this.processNewData.bind(this);
+        
+        this.dataArray = [];
 
         this.objMergedData = {
             update_interval: 100,
@@ -53,11 +55,37 @@ class CdrTimeSeriesDataplot {
             ignore_count: 0,
             options : {
                 xaxis : {
-                	show:  true,
-                	mode: "time",
+                    show:  true,
+                    mode: 'time',
+                    font : {
+                        color: "#ffffff"
+                    }
+                },
+                yaxis : {
+                    font : {
+                        color: "#ffffff"
+                    }
                 },
                 series : {
-                	shadowSize: 0	// Drawing is faster without shadows
+                    lines : {
+                        show : true
+                    },
+                    points: {
+                        show: false
+                    },
+                    shadowSize: 0   // Drawing is faster without shadows
+                },
+                legend: {
+                    show: true,
+                    labelFormatter: this.legendFormatter,
+                    labelBoxBorderColor: 'rgba(255, 255, 255, 0.0)',
+                    noColumns: 1,
+                    position: 'ne',
+                    margin: [10,10],
+                    backgroundColor: null,
+                    backgroundOpacity: 0,
+                    container: null,
+                    sorted: false
                 },
                 grid: {
                     show: true,
@@ -123,7 +151,7 @@ class CdrTimeSeriesDataplot {
     
 
     updatePlot() {             
-        this.UtilGraph.setData(this.values);
+        this.UtilGraph.setData(this.dataArray);
         this.UtilGraph.setupGrid();
         this.UtilGraph.draw();
     }
@@ -131,12 +159,15 @@ class CdrTimeSeriesDataplot {
     
     
     processNewData(data) {
+        var dataArray = [];
+        
         this.count = this.count + 1;
         if(this.objMergedData.ignore_count > 0){
             this.objMergedData.ignore_count = this.objMergedData.ignore_count - 1;
         } else {
             for(var i = 0; i < data.length; ++i) {
                 var timeStamp = new Date(data[i].sample[0].gndTime);
+                
                 if (this.values[i].length >= this.objMergedData.maxcount) {
                     this.values[i] = this.values[i].slice(1);
                 }
@@ -144,10 +175,20 @@ class CdrTimeSeriesDataplot {
                 var value = data[i].sample[0].value;
                 
                 this.values[i].push([new Date(), value]);
+                
+                var entry = {
+                    data: this.values[i],
+                    label: this.objMergedData.data[i].label,
+                    color: this.objMergedData.data[i].color
+                };
+                
+                dataArray.push(entry);
             }
+            
+            this.dataArray = dataArray;
                 
             if(this.objMergedData.update_interval <= 0) {
-                update(this);
+                updatePlot();
             };          
         }
     };
