@@ -47,69 +47,110 @@
      "width": 50,
      "content": [
       {
-       "type": "stack",
-       "header": {},
+       "type": "row",
        "isClosable": true,
        "reorderEnabled": true,
        "title": "",
-       "activeItemIndex": 0,
-       "height": 50,
-       "width": 50,
+       "height": 48.60788863109048,
        "content": [
         {
-         "title": "Message",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "/flight/apps/px4lib/PX4_SensorCombined/PX4_SensorCombinedMsg"
-         },
+         "type": "stack",
+         "header": {},
          "isClosable": true,
-         "reorderEnabled": true
+         "reorderEnabled": true,
+         "title": "",
+         "activeItemIndex": 0,
+         "height": 48.60788863109048,
+         "width": 50,
+         "content": [
+          {
+           "title": "Message",
+           "type": "component",
+           "componentName": "Blank",
+           "componentState": {
+            "text": "text",
+            "link": "/flight/apps/px4lib/PX4_SensorCombined/PX4_SensorCombinedMsg"
+           },
+           "isClosable": true,
+           "reorderEnabled": true
+          }
+         ]
         },
         {
-         "title": "Rel Time Invalid",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "/flight/apps/px4lib/PX4_SensorCombined/PX4_SensorCombinedMsg_RelTimeInvalid"
-         },
+         "type": "stack",
+         "header": {},
          "isClosable": true,
-         "reorderEnabled": true
+         "reorderEnabled": true,
+         "title": "",
+         "activeItemIndex": 0,
+         "width": 50,
+         "content": [
+          {
+           "title": "Rel Time Invalid",
+           "type": "component",
+           "componentName": "Blank",
+           "componentState": {
+            "text": "text",
+            "link": "/flight/apps/px4lib/PX4_SensorCombined/PX4_SensorCombinedMsg_RelTimeInvalid"
+           },
+           "isClosable": true,
+           "reorderEnabled": true
+          }
+         ]
         }
        ]
       },
       {
-       "type": "stack",
-       "header": {},
+       "type": "row",
        "isClosable": true,
        "reorderEnabled": true,
        "title": "",
-       "activeItemIndex": 0,
-       "height": 50,
+       "height": 51.39211136890951,
        "content": [
         {
-         "title": "Baro Alt",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "/flight/apps/px4lib/PX4_SensorCombined/PX4_SensorCombinedMsg_BaroAlt"
-         },
+         "type": "stack",
+         "header": {},
          "isClosable": true,
-         "reorderEnabled": true
+         "reorderEnabled": true,
+         "title": "",
+         "activeItemIndex": 0,
+         "height": 51.39211136890951,
+         "width": 50,
+         "content": [
+          {
+           "title": "Baro Alt",
+           "type": "component",
+           "componentName": "Blank",
+           "componentState": {
+            "text": "text",
+            "link": "/flight/apps/px4lib/PX4_SensorCombined/PX4_SensorCombinedMsg_BaroAlt"
+           },
+           "isClosable": true,
+           "reorderEnabled": true
+          }
+         ]
         },
         {
-         "title": "Baro Temp",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "/flight/apps/px4lib/PX4_SensorCombined/PX4_SensorCombinedMsg_BaroTemp"
-         },
+         "type": "stack",
+         "header": {},
          "isClosable": true,
-         "reorderEnabled": true
+         "reorderEnabled": true,
+         "title": "",
+         "activeItemIndex": 0,
+         "width": 50,
+         "content": [
+          {
+           "title": "Baro Temp",
+           "type": "component",
+           "componentName": "Blank",
+           "componentState": {
+            "text": "text",
+            "link": "/flight/apps/px4lib/PX4_SensorCombined/PX4_SensorCombinedMsg_BaroTemp"
+           },
+           "isClosable": true,
+           "reorderEnabled": true
+          }
+         ]
         }
        ]
       }
