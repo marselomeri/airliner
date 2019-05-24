@@ -47,6 +47,7 @@ var CommanderInstance = require( './commander_instance.js' );
 var CommanderApp = require( './commander_app.js' );
 var path = require( 'path' );
 const http = require( 'http' );
+const autoBind = require('auto-bind');
 const ContentTypeEnum = require( './classes/CdrPlugin.js' ).ContentTypeEnum;
 const { createLogger, format, transports } = require('winston');
 const { combine, timestamp, label, printf } = format;
@@ -90,6 +91,8 @@ const ROOT_INSTANCE_NAME = 'ROOT';
 module.exports = class Commander extends EventEmitter {
     constructor(workspace, configFile) {
         super();
+        
+        autoBind(this);
         
         this.workspace = workspace;
         this.instances = {};

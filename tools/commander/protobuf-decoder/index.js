@@ -47,6 +47,7 @@ const Sparkles = require( 'sparkles' );
 var path = require( 'path' );
 var dot = require( 'dot-object' );
 var path = require( 'path' );
+const autoBind = require('auto-bind');
 const CdrGroundPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrGroundPlugin')).CdrGroundPlugin;
 
 /**
@@ -87,6 +88,8 @@ class ProtobufDecoder extends CdrGroundPlugin {
      */
     constructor(configObj) {
         super(configObj);
+        
+        autoBind(this);
 
         this.parsers = {};
         this.workspace = configObj.workspace;
@@ -300,7 +303,7 @@ class ProtobufDecoder extends CdrGroundPlugin {
      * @param  {Function} cb    callback
      */
     requestTlmDefinition( msgID, cb ) {
-        this.instanceEmitter.emit( config.get( 'tlmDefReqStreamID' ), {
+        this.namespace.send( config.get( 'tlmDefReqStreamID' ), {
             msgID: msgID
         }, function( resp ) {
             cb( resp );

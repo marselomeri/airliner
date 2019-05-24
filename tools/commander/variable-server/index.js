@@ -40,6 +40,7 @@ const config = require( './config.js' );
 const Sparkles = require( 'sparkles' );
 const uuidV1 = require( 'uuid/v1' );
 const path = require( 'path' );
+const autoBind = require('auto-bind');
 const CdrGroundPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrGroundPlugin')).CdrGroundPlugin;
 
 
@@ -61,6 +62,8 @@ class VariableServer extends CdrGroundPlugin {
     constructor(configObj) {
         configObj.webRoot = path.join( __dirname, 'web');  
         super(configObj); 
+        
+        autoBind(this);
         
     	var self = this;
 
@@ -283,6 +286,7 @@ class VariableServer extends CdrGroundPlugin {
             var splitName = path.split( '/' );
             return splitName[ 2 ];
         }
+        
         return undefined;
     }
 
