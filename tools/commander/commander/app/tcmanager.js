@@ -390,10 +390,17 @@
       args[ label ] = value;
     }
     var cmdObj = JSON.parse( $( "#CommandInputForm" ).attr( 'data-info' ) );
+    var cb = undefined;
+    if(cmdObj.cmd.hasOwnProperty('returnType') == true) {
+        cb = function(error, response) {
+            var text = 'Error: ' + error + '\nResponse: ' + response;
+            alert(text);
+        }
+    }
     session.sendCommand( {
       ops_path: cmdObj.cmd.name,
       args: args
-    } )
+    }, cb );
   }
 
 

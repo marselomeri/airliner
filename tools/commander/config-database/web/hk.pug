@@ -1,0 +1,19 @@
+- var pluginName = query.pluginName;
+table.table.table-condensed
+  tbody
+    tr
+      th Commands Accepted 
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/cmdAcceptCount'}]}) ---
+      td
+    tr
+      th Commands Rejected
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/cmdRejectCount'}]}) ---
+      td
+    tr
+      th Query Stream ID
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/queryConfigStreamID'}]}) ---
+      td
+button.btn.cdr-primary(data-cdr={cmd:{name:'/' + pluginName + '/getMessageIDFromOpsName'}}) Get Message ID By OpsName   
