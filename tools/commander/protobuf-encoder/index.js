@@ -48,6 +48,7 @@ var path = require( 'path' );
 var dot = require( 'dot-object' );
 var Long = require( 'long' );
 var path = require( 'path' );
+const autoBind = require('auto-bind');
 const CdrGroundPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrGroundPlugin')).CdrGroundPlugin;
 
 /**
@@ -90,6 +91,8 @@ class ProtobufEncoder extends CdrGroundPlugin {
      */
     constructor( configObj ) {
         super(configObj);
+        
+        autoBind(this);
         
         this.parsers = {};
         this.defs = {};
@@ -189,7 +192,7 @@ class ProtobufEncoder extends CdrGroundPlugin {
             this.parseProtoFile( protoFiles[ i ] );
         }
 
-        this.namespace.emitter.on( config.get( 'jsonInputStreamID' ), function( message ) {
+        this.namespace.recv( config.get( 'jsonInputStreamID' ), function( message ) {
             try {
                 var tlmDef = self.getTlmDefByPath( message.opsPath );
                 if ( typeof tlmDef === 'undefined' ) {
@@ -224,7 +227,7 @@ class ProtobufEncoder extends CdrGroundPlugin {
 
                                 var msgBuffer = Buffer.concat( [ hdrBuffer, pbBuffer ] );
 
-                                self.namespace.emit( config.get( 'binaryOutputStreamID' ), msgBuffer );
+                                self.namespace.send( config.get( 'binaryOutputStreamID' ), msgBuffer );
                             }
                         }
                     }

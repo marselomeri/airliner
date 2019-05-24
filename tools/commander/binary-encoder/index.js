@@ -41,6 +41,7 @@ const util = require( 'util' );
 const mergeJSON = require( 'merge-json' );
 const convict = require( 'convict' );
 const path = require( 'path' );
+const autoBind = require('auto-bind');
 const config = require( './config.js' );
 const CdrGroundPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrGroundPlugin')).CdrGroundPlugin;
 
@@ -56,6 +57,8 @@ class BinaryEncoder extends CdrGroundPlugin {
     constructor(configObj) {
         configObj.webRoot = path.join( __dirname, 'web');  
         super(configObj); 
+        
+        autoBind(this);
         
     	var self = this;
         
@@ -168,7 +171,7 @@ class BinaryEncoder extends CdrGroundPlugin {
             readUntil: 'eof'
         } );
         
-        this.namespace.emitter.on( config.get( 'cmdDefReqStreamID' ), function( cmdReqs, cb ) {
+        this.namespace.recv( config.get( 'cmdDefReqStreamID' ), function( cmdReqs, cb ) {
             if ( typeof cmdReqs.length === 'number' ) {
                 /* This must be an array. */
                 var outCmdDefs = [];
@@ -234,7 +237,7 @@ class BinaryEncoder extends CdrGroundPlugin {
             }
         } );
 
-        this.namespace.emitter.on( config.get( 'cmdSendStreamID' ), function( req ) {
+        this.namespace.recv( config.get( 'cmdSendStreamID' ), function( req ) {
             var cmdDef = self.getCmdDefByName( req.ops_path );
             if ( typeof cmdDef === 'undefined' ) {
                 self.logDebug( 'CmdSend: Ops path not found.  \'' + req + '\'' );
@@ -737,7 +740,7 @@ class BinaryEncoder extends CdrGroundPlugin {
                         }
                     }
                 }
-                this.namespace.emit( config.get( 'binaryOutputStreamID' ), buffer );
+                this.namespace.send( config.get( 'binaryOutputStreamID' ), buffer );
                 this.hk.content.msgSentCount++;
             }
         }

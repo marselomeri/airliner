@@ -44,6 +44,7 @@ var path = require( 'path' );
 var config = require( './config.js' );
 var jp = require( 'jsonpath' );
 var path = require( 'path' );
+const autoBind = require('auto-bind');
 const CdrGroundPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrGroundPlugin')).CdrGroundPlugin;
 
 /**
@@ -86,6 +87,8 @@ class ConfigDatabase extends CdrGroundPlugin {
      */
     constructor( configObj ) {
         super(configObj)
+        
+        autoBind(this);
 
         var self = this;
         this.defs;
@@ -112,7 +115,7 @@ class ConfigDatabase extends CdrGroundPlugin {
             this.defs = mergeJSON.merge( this.defs, msgDefInput );
         }
         
-        this.namespace.emitter.on( config.get( 'queryConfigStreamID' ), function( query, cb ) {
+        this.namespace.recv( config.get( 'queryConfigStreamID' ), function( query, cb ) {
             var result = jp.query( self.defs, query );
             cb( result );
         } );

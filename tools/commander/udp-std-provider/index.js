@@ -35,6 +35,7 @@ const emitter = require( 'events' ).EventEmitter;
 const convict = require( 'convict' );
 const dgram = require( 'dgram' );
 const path = require( 'path' );
+const autoBind = require('auto-bind');
 const CdrGroundPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrGroundPlugin')).CdrGroundPlugin;
 
 
@@ -57,8 +58,8 @@ class UdpStdProvider extends CdrGroundPlugin {
     constructor(configObj) {
         configObj.webRoot = path.join( __dirname, 'web');  
         super(configObj);
-        
-    	var self = this;
+    	
+    	autoBind(this);
 
         /* Initialize the configuration. */
         this.initConfig(configObj.name, configObj.configFile);
@@ -75,34 +76,41 @@ class UdpStdProvider extends CdrGroundPlugin {
 
         /* Initialize server side commands. */
         this.initCommands();
-        
-        /* Start listening for data to send out the socket. */
-        this.namespace.emitter.on( this.config.get( 'inputStreamID' ), function( buffer ) {
-            self.hk.content.msgSentCount++;
-            self.sender.send( buffer, 0, buffer.length, self.hk.content.outPort, self.hk.content.outAddress);
-        } );
 
         this.logInfo( 'Initialized' );
     };
     
+    
+    processOutgoingBuffer(buffer) {
+        this.hk.content.msgSentCount++;
+        this.sender.send( buffer, 0, buffer.length, this.hk.content.outPort, this.hk.content.outAddress);
+    }
+    
+    
+    processIncomingBuffer(buffer, rinfo) {
+        this.hk.content.msgRecvCount++;
+        this.send( this.hk.content.outputStreamID, buffer );
+    }
+    
+    
     startListener() {
-        try {
+        try {        
             var self = this;
+            
+            /* Start listening for data to send out the socket. */
+            this.namespace.recv( this.config.get( 'inputStreamID' ), this.processOutgoingBuffer);
             
             this.listener = dgram.createSocket( {type: 'udp4', reuseAddr: true} );
     
-            this.listener.on( 'listening', () => {
+            this.listener.on( 'listening', function() {
                 const listenerAddress = self.listener.address();
                 self.logInfo(`UDP connector listening ${listenerAddress.address}:${listenerAddress.port}` );
             } );
             
-            this.listener.bind( this.hk.content.inPort, () => {            
-                self.listener.on( 'message', ( msg, rinfo ) => {
-                    self.hk.content.msgRecvCount++;
-                    self.namespace.emit( self.hk.content.outputStreamID, msg );
-                } );
+            this.listener.bind( this.hk.content.inPort, function() {            
+                self.listener.on( 'message', self.processIncomingBuffer);
     
-                self.listener.on( 'error', ( err ) => {
+                self.listener.on( 'error', function(err) {
                     self.logError( `UDP connector error:\n${err}.` );
                 } );
             });   
@@ -260,6 +268,8 @@ class UdpStdProvider extends CdrGroundPlugin {
     
     
     setInput(cmd) {
+        var self = this;
+        
     	if(cmd.hasOwnProperty('args') == false) {
             this.logError('Invalid arguments.  Port is required.');
     	} else {
@@ -273,11 +283,11 @@ class UdpStdProvider extends CdrGroundPlugin {
             } else {
         	    this.logInfo('Commanded to bind to port ' + port);
         	    this.listener.close(function () {
-        		    this.hk.content.inPort = port;
-                    if(this.startListener()) {
-                	    this.hk.content.cmdAcceptCount++;
+        	        self.hk.content.inPort = port;
+                    if(self.startListener()) {
+                        self.hk.content.cmdAcceptCount++;
                     } else {
-                	    this.hk.content.cmdRejectCount++;
+                        self.hk.content.cmdRejectCount++;
                     }
                 });
             }

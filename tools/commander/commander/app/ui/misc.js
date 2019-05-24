@@ -152,7 +152,7 @@ function navBarTooltips( node, JQObj ) {
                   var theScript = document.createElement( 'script' );
 
                   function injectThis( x ) {
-                    setTimeout( () => {
+                    setTimeout( function() {
                       window.myLayout.destroy();
                       window.myLayout = new window.GoldenLayout( x, $( '#cdr-layout-container' ) );
                       updateDragSources();
@@ -288,7 +288,7 @@ function InitScrollBar() {
  */
 function InitResizeCtl() {
 
-  $( window ).resize( () => {
+  $( window ).resize( function() {
     //cu.logDebug( 'Layout | resize event occured' );
     myLayout.updateSize();
   } );

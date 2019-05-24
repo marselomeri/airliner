@@ -111,7 +111,7 @@ module.exports = class CfeCdrFlightAppsPlugin extends CdrFlightAppsPlugin {
             image: true,
             buffer: frame.toString( 'base64' )
           }
-          this.namespace.emit( 'video-stream', imageObject );
+          this.namespace.send( 'video-stream', imageObject );
 
           //socket.volatile.emit( 'stream', {
           //  image: true,
@@ -123,6 +123,6 @@ module.exports = class CfeCdrFlightAppsPlugin extends CdrFlightAppsPlugin {
 
         global.NODE_APP.videoServer = this.socket;
 
-        this.namespace.emit( 'advertise-stream', 'video-stream' );
+        this.namespace.send( 'advertise-stream', 'video-stream' );
     }
 };

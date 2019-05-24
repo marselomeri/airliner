@@ -40,6 +40,7 @@ const config = require( './config.js' );
 const Sparkles = require( 'sparkles' );
 const uuidV1 = require( 'uuid/v1' );
 const path = require( 'path' );
+const autoBind = require('auto-bind');
 const CdrGroundPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrGroundPlugin')).CdrGroundPlugin;
 
 
@@ -62,6 +63,8 @@ class VariableServer extends CdrGroundPlugin {
         configObj.webRoot = path.join( __dirname, 'web');  
         super(configObj); 
         
+        autoBind(this);
+        
     	var self = this;
 
         /* Initialize the configuration. */
@@ -82,7 +85,7 @@ class VariableServer extends CdrGroundPlugin {
 
 
         
-        this.namespace.emitter.on( config.get( 'jsonInputStreamID' ), function( message ) {
+        this.namespace.recv( config.get( 'jsonInputStreamID' ), function( message ) {
             var vars = self.getVariablesFromMsgOpsName( message.opsPath );
             
             self.hk.content.msgRecvCount++;
@@ -167,11 +170,11 @@ class VariableServer extends CdrGroundPlugin {
             self.instanceEmit( config.get( 'outputEventsStreamID' ), 'message-received' );
         } );
 
-        this.namespace.emitter.on( config.get( 'varDefReqStreamID' ), function( req, cb ) {
+        this.namespace.recv( config.get( 'varDefReqStreamID' ), function( req, cb ) {
             self.getTlmDefinitions( req, cb );
         } );
 
-        this.namespace.emitter.on( config.get( 'reqSubscribeStreamID' ), function( req, cb ) {
+        this.namespace.recv( config.get( 'reqSubscribeStreamID' ), function( req, cb ) {
             if ( req.cmd === 'addSubscription' ) {
                 if ( typeof req.opsPath === 'string' || req.opsPath instanceof String ) {
                     self.addSubscription( req.subscriberID, req.opsPath );
@@ -283,6 +286,7 @@ class VariableServer extends CdrGroundPlugin {
             var splitName = path.split( '/' );
             return splitName[ 2 ];
         }
+        
         return undefined;
     }
 
@@ -551,7 +555,7 @@ class VariableServer extends CdrGroundPlugin {
      * @param  {Function} cb       callback
      */
     instanceEmit( streamID, msg, cb ) {
-        this.namespace.emit( streamID, msg, cb );
+        this.namespace.send( streamID, msg, cb );
     }
     
     

@@ -31,10 +31,12 @@
  *
  *****************************************************************************/
 
+const autoBind = require('auto-bind');
+
 var EventEmitter = require( 'events' );
 
 
-module.exports = class CommanderInstance extends EventEmitter {
+module.exports = class CommanderInstance {
 
     /**
      * Constructor for commander instance
@@ -42,8 +44,8 @@ module.exports = class CommanderInstance extends EventEmitter {
      * @param       {Object} server server object
      * @constructor
      */
-    constructor(name, server) {
-        super();
+    constructor(name, server) {          
+        autoBind(this);
         
         this.name = name;
         this.server = server;
@@ -94,56 +96,48 @@ module.exports = class CommanderInstance extends EventEmitter {
                 appObj: newAppObj
         };
     }
-    
-
-    /**
-     * Emit data
-     * @param  {String}   streamID stream id
-     * @param  {String}   msg      emit message
-     * @param	 {Function} callback callback
-     */
-    emit( streamID, obj, callback ) {
-        this.emitter.emit( streamID, obj, callback );
-    }
 
     
-    send( streamID, obj, callback ) {
-    	//if(this.streams.hasOwnProperty(streamID) == false) {
-    	//	/* This stream has not been created.  Create an entry for the callbacks. */
-    	//	var this.streams[streamID] = {};
-    	//}
-    	//
-    	//for(var callbackID in this.streams[streamID]) {
-    	//	this.streams[streamID](obj);
-    	//}
+    send( streamID, obj, callback ) {        
+    	if(this.streams.hasOwnProperty(streamID) == false) {
+    	    /* This stream has not been created.  Create an entry for the callbacks. */
+    	    this.streams[streamID] = [];
+    	}
+
+    	for(var i in this.streams[streamID]) {
+    	    var cb = this.streams[streamID][i];
+    	    cb(obj, callback);
+    	}   
     }
 
     
     recv( streamID, callback ) {
-    	//if(this.streams.hasOwnProperty(streamID) == false) {
-    	//	/* This stream has not been created.  Create an entry for the callbacks. */
-    	//	var this.streams[streamID] = {};
-    	//}
+    	if(this.streams.hasOwnProperty(streamID) == false) {
+    	    /* This stream has not been created.  Create an entry for the callbacks. */
+    	    this.streams[streamID] = [];
+    	}  
+    	    	
+    	this.streams[streamID].push(callback);
     }
     
     
-    onCommandDefRequest(cmd, callback) {
-        this.emitter.on( 'cmd-def-request', cmd, callback );
+    onCommandDefRequest(callback) {
+        this.recv( 'cmd-def-request', callback );
     }
     
     
     onCommand(callback) {
-        this.emitter.on( 'cmd-send', callback);
+        this.recv( 'cmd-send', callback);
     }
 
     
     
-    onTelemetryDefRequest(cmd, callback) {
-        this.emitter.on( 'tlm-def-request', cmd, callback );
+    onTelemetryDefRequest(callback) {
+        this.recv( 'tlm-def-request', callback );
     }
     
     
-    sendTelemetry(tlmObj) {
-        this.emitter.emit( 'json-tlm-stream', tlmObj );
+    sendTelemetry(tlm) {
+        this.send( 'json-tlm-stream', tlm );
     }
 }
