@@ -54,7 +54,7 @@
        "reorderEnabled": true,
        "title": "",
        "activeItemIndex": 0,
-       "height": 50,
+       "height": 31.25,
        "width": 50,
        "content": [
         {
@@ -77,7 +77,7 @@
        "reorderEnabled": true,
        "title": "",
        "activeItemIndex": 0,
-       "height": 50,
+       "height": 31.25,
        "content": [
         {
          "title": "Remaining",
@@ -89,7 +89,19 @@
          },
          "isClosable": true,
          "reorderEnabled": true
-        },
+        }
+       ]
+      },
+      {
+       "type": "stack",
+       "header": {},
+       "isClosable": true,
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "width": 100,
+       "height": 37.5,
+       "content": [
         {
          "title": "Discharged",
          "type": "component",
@@ -106,76 +118,118 @@
      ]
     },
     {
-     "type": "column",
+     "type": "row",
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
+     "height": 100,
      "width": 50,
      "content": [
       {
-       "type": "stack",
-       "header": {},
+       "type": "column",
        "isClosable": true,
        "reorderEnabled": true,
        "title": "",
-       "activeItemIndex": 0,
        "width": 50,
-       "height": 50,
        "content": [
         {
-         "title": "Current (filtered)",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "/flight/apps/px4lib/PX4_BatteryStatus/PX4_BatteryStatusMsg_CurrentFiltered"
-         },
+         "type": "stack",
+         "header": {},
          "isClosable": true,
-         "reorderEnabled": true
+         "reorderEnabled": true,
+         "title": "",
+         "activeItemIndex": 0,
+         "height": 50,
+         "content": [
+          {
+           "title": "Current (filtered)",
+           "type": "component",
+           "componentName": "Blank",
+           "componentState": {
+            "text": "text",
+            "link": "/flight/apps/px4lib/PX4_BatteryStatus/PX4_BatteryStatusMsg_CurrentFiltered"
+           },
+           "isClosable": true,
+           "reorderEnabled": true
+          }
+         ]
         },
         {
-         "title": "Current",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "/flight/apps/px4lib/PX4_BatteryStatus/PX4_BatteryStatusMsg_Current"
-         },
+         "type": "stack",
+         "header": {},
          "isClosable": true,
-         "reorderEnabled": true
+         "reorderEnabled": true,
+         "title": "",
+         "activeItemIndex": 0,
+         "height": 50,
+         "width": 50,
+         "content": [
+          {
+           "title": "Voltage (filtered)",
+           "type": "component",
+           "componentName": "Blank",
+           "componentState": {
+            "text": "text",
+            "link": "/flight/apps/px4lib/PX4_BatteryStatus/PX4_BatteryStatusMsg_VotlageFiltered"
+           },
+           "isClosable": true,
+           "reorderEnabled": true
+          }
+         ]
         }
        ]
       },
       {
-       "type": "stack",
-       "header": {},
+       "type": "column",
        "isClosable": true,
        "reorderEnabled": true,
        "title": "",
-       "activeItemIndex": 0,
-       "height": 50,
+       "width": 50,
        "content": [
         {
-         "title": "Voltage (filtered)",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "/flight/apps/px4lib/PX4_BatteryStatus/PX4_BatteryStatusMsg_VotlageFiltered"
-         },
+         "type": "stack",
+         "header": {},
          "isClosable": true,
-         "reorderEnabled": true
+         "reorderEnabled": true,
+         "title": "",
+         "activeItemIndex": 0,
+         "height": 50,
+         "content": [
+          {
+           "title": "Current",
+           "type": "component",
+           "componentName": "Blank",
+           "componentState": {
+            "text": "text",
+            "link": "/flight/apps/px4lib/PX4_BatteryStatus/PX4_BatteryStatusMsg_Current"
+           },
+           "isClosable": true,
+           "reorderEnabled": true
+          }
+         ]
         },
         {
-         "title": "Voltage",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "/flight/apps/px4lib/PX4_BatteryStatus/PX4_BatteryStatusMsg_Voltage"
-         },
+         "type": "stack",
+         "header": {},
          "isClosable": true,
-         "reorderEnabled": true
+         "reorderEnabled": true,
+         "title": "",
+         "activeItemIndex": 0,
+         "width": 50,
+         "height": 50,
+         "content": [
+          {
+           "title": "Voltage",
+           "type": "component",
+           "componentName": "Blank",
+           "componentState": {
+            "text": "text",
+            "link": "/flight/apps/px4lib/PX4_BatteryStatus/PX4_BatteryStatusMsg_Voltage"
+           },
+           "isClosable": true,
+           "reorderEnabled": true
+          }
+         ]
         }
        ]
       }
