@@ -38,7 +38,8 @@ function mergeDeep(target, ...sources) {
 
 
 class CdrTimeSeriesDataplot {	
-    constructor(domObject, objData) {    
+    constructor(domObject, objData) {  
+        var self = this;
         this.objData = objData;
         this.objMergedData = {};
         
@@ -68,7 +69,8 @@ class CdrTimeSeriesDataplot {
                 },
                 series : {
                     lines : {
-                        show : true
+                        show : true,
+                        lineWidth: 1
                     },
                     points: {
                         show: false
@@ -109,6 +111,22 @@ class CdrTimeSeriesDataplot {
         };
 
         mergeDeep(this.objMergedData, objData);
+        
+        this.msgIDs = {};
+        
+        for(var i = 0; i < this.objMergedData.data.length; ++i) {
+            session.sendCommand({ops_path:'/config-database/getMessageIDFromOpsName', args: [{name:'OpsName', value:this.objMergedData.data[i].tlm.name}]}, function(err, msgID) {
+                var keyID = '' + msgID;
+                if(self.msgIDs.hasOwnProperty(keyID) == false) {
+                    var addAddMessageFlowCmdText = JSON.stringify({ops_path: "/TO/TO_AddMessageFlowCmd_t", args: {MsgID: ""+msgID, MsgLimit: ""+1, PQueueIdx: ""+0, ChannelIdx: ""+0}});
+                    var addRemoveMessageFlowCmdText = JSON.stringify({ops_path: "/TO/TO_RemoveMessageFlowCmd_t", args: {MsgID: ""+msgID, MsgLimit: ""+1, ChannelIdx: ""+0}});
+                    
+                    self.msgIDs[keyID] = msgID;
+                    domObject.after('<button class=\'btn cdr-primary\' onclick=\'session.sendCommand(' + addRemoveMessageFlowCmdText + ')\'> Remove </button>');
+                    domObject.after('<button class=\'btn cdr-primary\' onclick=\'session.sendCommand(' + addAddMessageFlowCmdText + ')\'> Add </button>');
+                } 
+            });
+        }
         
         this.UtilGraph = $.plot(domObject, [], this.objMergedData.options);
         	  

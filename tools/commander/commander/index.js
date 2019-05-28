@@ -250,8 +250,8 @@ module.exports = class Commander extends EventEmitter {
                 socket.enabledStreams[ streamName ] = false;
             } );
         
-            socket.on( 'sendCmd', function( cmdObj ) {
-                self.sendCmd( cmdObj );
+            socket.on( 'sendCmd', function( cmdObj, cb ) {
+                self.sendCmd( cmdObj, cb);
             } );
         
             socket.on( 'PING', function( startTime ) {

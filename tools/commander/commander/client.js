@@ -571,13 +571,11 @@ CommanderClient.prototype.subscribe = function(tlmObj, cb) {
  * @param {Object}
  *                cmdObj Command object
  */
-CommanderClient.prototype.sendCommand = function(cmdObj) {
+CommanderClient.prototype.sendCommand = function(cmdObj, cb) {
     // cu.logInfo( 'Client | sent command : ', JSON.stringify( cmdObj, 2 ) );
     if (this.isSocketConnected) {
-        this.socket.emit('sendCmd', cmdObj);
-
-    }
-    ;
+        this.socket.emit('sendCmd', cmdObj, cb);
+    };
 };
 
 /**
@@ -590,9 +588,7 @@ CommanderClient.prototype.queryConfigDB = function(path, cb) {
     // cu.logInfo( 'Client | query config DB : ', JSON.stringify( path, 2 ) );
     if (this.isSocketConnected) {
         this.socket.emit('queryConfigDB', path, cb);
-
-    }
-    ;
+    };
 };
 
 /**
