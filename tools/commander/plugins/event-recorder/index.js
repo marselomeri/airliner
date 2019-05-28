@@ -288,18 +288,18 @@ class EventRecorder extends CdrGroundPlugin {
     	    	eventObj.eventType = 'INFO';
     	    	break;
     	    	
-    	    case 4:
+    	    case 3:
     	    	this.hk.content.errorEventCount++;
     	    	eventObj.eventType = 'ERROR';
     	    	break;
 
-    	    case 8:
+    	    case 4:
     	    	this.hk.content.critEventCount++;
     	    	eventObj.eventType = 'CRIT';
     	    	break;
     	    	
     	    default:
-    	        this.logError('Received an invalid event type of ' + eventMsg.PacketID.EventType);
+    	        this.logError('Received an invalid event type of ' + inEventMsg.value.PacketID.EventType);
 	    	    eventObj.eventType = '<UNKNOWN>';
     	}
 
