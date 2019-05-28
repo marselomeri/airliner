@@ -180,11 +180,7 @@ class VariableServer extends CdrGroundPlugin {
                     self.addSubscription( req.subscriberID, req.opsPath );
                 } else if ( Array.isArray( req.opsPath ) ) {
                     for ( var i = 0; i < req.opsPath.length; ++i ) {
-                        self.getTlmDefinitions( {
-                            name: req.opsPath[ i ]
-                        }, function( tlmDef ) {
-                            self.addSubscription( req.subscriberID, req.opsPath[ i ] );
-                        } );
+                        self.addSubscription( req.subscriberID, req.opsPath[ i ] );
                     }
                 } else {
                     self.logError('Subscription request invalid. \'' + req + '\'' );

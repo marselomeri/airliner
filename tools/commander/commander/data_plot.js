@@ -69,7 +69,8 @@ class CdrTimeSeriesDataplot {
                 },
                 series : {
                     lines : {
-                        show : true
+                        show : true,
+                        lineWidth: 1
                     },
                     points: {
                         show: false

@@ -33,9 +33,12 @@
 
 // an example configuration file
 {
-    inPort:  5011,
-    outPort: 5010,
-    outAddress: '192.168.1.2',
-    inputStreamID: 'bin-cmd-stream',
-    outputStreamID: 'bin-tlm-stream'
+    CFE_SB_PACKET_TIME_FORMAT: 'CFE_SB_TIME_32_16_SUBS',
+    CFE_TIME_EPOCH_YEAR:       1980,
+    CFE_TIME_EPOCH_DAY:        1,
+    CFE_TIME_EPOCH_HOUR:       0,
+    CFE_TIME_EPOCH_MINUTE:     0,
+    CFE_TIME_EPOCH_SECOND:     0,
+    tlmStreamID:               'json-tlm-stream',
+    reqSubscribeStreamID:      'subscribe-request'
 }
