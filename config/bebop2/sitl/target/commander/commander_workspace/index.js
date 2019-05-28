@@ -1,30 +1,30 @@
 var path = require('path');
 var fs = require('fs');
 
-var Commander = require(path.join(global.CDR_INSTALL_DIR, 'commander'));
-var BinaryEncoder = require(path.join(global.CDR_INSTALL_DIR, 'binary-encoder'));
-var BinaryDecoder = require(path.join(global.CDR_INSTALL_DIR, 'binary-decoder'));
-var UdpStdProvider = require(path.join(global.CDR_INSTALL_DIR, 'udp-std-provider'));
-var VariableServer = require(path.join(global.CDR_INSTALL_DIR, 'variable-server'));
-var ProtobufEncoder = require(path.join(global.CDR_INSTALL_DIR, 'protobuf-encoder'));
-var ProtobufDecoder = require(path.join(global.CDR_INSTALL_DIR, 'protobuf-decoder'));
-var ConfigDatabase = require(path.join(global.CDR_INSTALL_DIR, 'config-database'));
-var EventRecorder = require(path.join(global.CDR_INSTALL_DIR, 'event-recorder'));
+var Commander       = require(path.join(global.CDR_INSTALL_DIR, 'commander'));
+var BinaryEncoder   = require(path.join(global.CDR_INSTALL_DIR, 'plugins', 'binary-encoder'));
+var BinaryDecoder   = require(path.join(global.CDR_INSTALL_DIR, 'plugins', 'binary-decoder'));
+var UdpStdProvider  = require(path.join(global.CDR_INSTALL_DIR, 'plugins', 'data-providers', 'udp-std-provider'));
+var VariableServer  = require(path.join(global.CDR_INSTALL_DIR, 'plugins', 'variable-server'));
+var ProtobufEncoder = require(path.join(global.CDR_INSTALL_DIR, 'plugins', 'protobuf-encoder'));
+var ProtobufDecoder = require(path.join(global.CDR_INSTALL_DIR, 'plugins', 'protobuf-decoder'));
+var ConfigDatabase  = require(path.join(global.CDR_INSTALL_DIR, 'plugins', 'config-database'));
+var EventRecorder   = require(path.join(global.CDR_INSTALL_DIR, 'plugins', 'event-recorder'));
 
 var commander = new Commander(global.CDR_WORKSPACE, `${global.CDR_WORKSPACE}/etc/commander-config.json`);
 
 global.COMMANDER = commander;
 
 var airliner = commander.addInstance('airliner', function(namespace) {
-    var binaryEncoder = new BinaryEncoder({namespace: namespace, name: 'binary-encoder', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/binary-encoder-config.json`});
-    var binaryDecoder = new BinaryDecoder({namespace: namespace, name: 'binary-decoder', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/binary-decoder-config.json`});
-    var variableServer = new VariableServer({namespace: namespace, name: 'variable-server', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/variable-server-config.json`});
-    var fswConnector = new UdpStdProvider({namespace: namespace, name: 'fsw-connector', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/udpstdprovider-config.json`});
+    var binaryEncoder    = new BinaryEncoder({namespace: namespace, name: 'binary-encoder', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/binary-encoder-config.json`});
+    var binaryDecoder    = new BinaryDecoder({namespace: namespace, name: 'binary-decoder', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/binary-decoder-config.json`});
+    var variableServer   = new VariableServer({namespace: namespace, name: 'variable-server', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/variable-server-config.json`});
+    var fswConnector     = new UdpStdProvider({namespace: namespace, name: 'fsw-connector', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/udpstdprovider-config.json`});
     var pylinerConnector = new UdpStdProvider({namespace: namespace, name: 'pyliner-connector', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/pyliner-connector-config.json`});
-    var protobufEncoder = new ProtobufEncoder({namespace: namespace, name: 'protobuf-encoder', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/protobuf-encoder-config.json`});
-    var protobufDecoder = new ProtobufDecoder({namespace: namespace, name: 'protobuf-decoder', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/protobuf-decoder-config.json`});
-    var configDB = new ConfigDatabase({namespace: namespace, name: 'config-database', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/config-database-config.json`});
-    var eventRecorder = new EventRecorder({namespace: namespace, name: 'event-recorder', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/event-recorder-config.json`});
+    var protobufEncoder  = new ProtobufEncoder({namespace: namespace, name: 'protobuf-encoder', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/protobuf-encoder-config.json`});
+    var protobufDecoder  = new ProtobufDecoder({namespace: namespace, name: 'protobuf-decoder', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/protobuf-decoder-config.json`});
+    var configDB         = new ConfigDatabase({namespace: namespace, name: 'config-database', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/config-database-config.json`});
+    var eventRecorder    = new EventRecorder({namespace: namespace, name: 'event-recorder', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/event-recorder-config.json`});
 	
     commander.setDefaultInstance(namespace);
 	
@@ -33,9 +33,12 @@ var airliner = commander.addInstance('airliner', function(namespace) {
     
     parsePluginPath(namespace, path.join(fullPath, 'cfe/index.js'), '/');
     findIndex(path.join(fullPath, 'apps'), function(err, results) {
-    	if(err) throw err;
+    	if(err) {
+    	    throw err;
+    	}
+    	
     	for(var i = 0; i < results.length; ++i) {
-    		parsePluginPath(namespace, results[i], '/');
+            parsePluginPath(namespace, results[i], '/');
     	}
     });
 });
