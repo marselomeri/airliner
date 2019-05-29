@@ -7,8 +7,9 @@
                     "Reset":                      { "airliner_cc":  1, "macro": "AK8963_CMD_MID", "airliner_msg": "AK8963_NoArgCmd_t" },
                     "SendDiag":                   { "airliner_cc":  2, "macro": "AK8963_CMD_MID", "airliner_msg": "AK8963_NoArgCmd_t" },
                     "AK8963_SetCalibrationCmd_t": { "airliner_cc":  3, "macro": "AK8963_CMD_MID", "airliner_msg": "AK8963_SetCalibrationCmd_t" },
-                    "AK8963_HkTlm_t":             {                    "macro": "AK8963_HK_TLM_MID", "airliner_msg": "AK8963_HkTlm_t" },
-                    "AK8963_SendHk":              {                    "macro": "AK8963_SEND_HK_MID", "airliner_msg": "AK8963_NoArgCmd_t"}
+                    "AK8963_HkTlm_t":             {                    "macro": "AK8963_HK_TLM_MID",   "airliner_msg": "AK8963_HkTlm_t" },
+                    "AK8963_SendHk":              {                    "macro": "AK8963_SEND_HK_MID",  "airliner_msg": "AK8963_NoArgCmd_t"},
+                    "AK8963_DiagPacket_t":        {                    "macro": "AK8963_DIAG_TLM_MID", "airliner_msg": "AK8963_DiagPacket_t" }
                 },    
                 "scheduler": {
                     "activities": [

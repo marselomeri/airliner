@@ -419,6 +419,7 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/mpu6050_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mpu6050_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mpu6050_perfids.h
+    MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/mpu6050/mpu6050_msg_overrides.json
 )
 
 add_airliner_app(
@@ -431,6 +432,7 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/ak8963_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ak8963_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ak8963_perfids.h
+    MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/ak8963/ak8963_msg_overrides.json
 )
 
 add_airliner_app(
