@@ -78,30 +78,6 @@ style.
           
 script.
   setTimeout(()=>{
-    var vgpp_add = {
-      "ops_path": "/TO/TO_AddMessageFlowCmd_t" ,
-      "args":{
-        "MsgID":2642,
-        "PQueueIdx":1,
-        "MsgLimit":1,
-        "ChannelIdx":0
-      }
-    }
-    
-    session.sendCommand(vgpp_add);
-
-    var vgp_add = {
-      "ops_path": "/TO/TO_AddMessageFlowCmd_t" ,
-      "args":{
-        "MsgID":2640,
-        "PQueueIdx":1,
-        "MsgLimit":1,
-        "ChannelIdx":0
-      }
-    }
-    
-    session.sendCommand(vgp_add);
-    
     
     /* LD Detected ? */  
     if(!('/PX4/PX4_VehicleLandDetectedMsg_t/Landed' in Object.keys(rogue_subscriptions))) {
@@ -114,17 +90,14 @@ script.
           if(value) {
             $('.pfd-ld-initialized').find('[data-info="DETECTED"]').addClass('active')
           }
-        }
-        catch(e){
-          cu.logError("RogueSubscribe | unable to process response. error= ",e.message)
-        } 
-      });
-      setRogueSubsc('/PX4/PX4_VehicleLandDetectedMsg_t/Landed','text','.pfd-ld-initialized');
-    }
+      }
+      catch(e){
+        cu.logError("RogueSubscribe | unable to process response. error= ",e.message)
+      } 
+    });
     
     /* PE Initialized ? */  
-    if(!('/PE/PE_HkTlm_t/EstimatorGlobalInitialized' in Object.keys(rogue_subscriptions))) {
-      session.subscribe([{name:'/PE/PE_HkTlm_t/EstimatorGlobalInitialized'}], (paramArr)=>{
+    session.subscribe([{name:'/PE/PE_HkTlm_t/EstimatorGlobalInitialized'}], (paramArr)=>{
         try {
           var param = paramArr[0];
           var sample = param.sample[param.sample.length - 1];
@@ -138,11 +111,8 @@ script.
           cu.logError("RogueSubscribe | unable to process response. error= ",e.message)
         } 
       });
-      setRogueSubsc('/PE/PE_HkTlm_t/EstimatorGlobalInitialized','text','.pfd-pe-initialized');
-    }
     
     /* ARM State ? */  
-    if(!('/VM/VM_HkTlm_t/ArmingState' in Object.keys(rogue_subscriptions))) {
       session.subscribe([{name:'/VM/VM_HkTlm_t/ArmingState'}], (paramArr)=>{
         try {
           var param = paramArr[0];
@@ -160,12 +130,10 @@ script.
           cu.logError("RogueSubscribe | unable to process response. error= ",e.message)
         } 
       });
-      setRogueSubsc('/VM/VM_HkTlm_t/ArmingState','text','.pfd-arm-initialized');
-    }
     
     /* NAV State ? */  
-    if(!('/VM/VM_HkTlm_t/NavState' in Object.keys(rogue_subscriptions))) {
-      session.subscribe([{name:'/VM/VM_HkTlm_t/NavState'}], (paramArr)=>{
+      session.subscribe([{name:'/VM/VM_HkTlm_t/NavState'}], function(paramArr) {
+        console.log(paramArr);
         try {
           var param = paramArr[0];
           var sample = param.sample[param.sample.length - 1];
@@ -206,8 +174,6 @@ script.
           cu.logError("RogueSubscribe | unable to process response. error= ",e.message)
         } 
       });
-      setRogueSubsc('/VM/VM_HkTlm_t/NavState','text','.pfd-mode-initialized');
-    }
   },2000);
   
 

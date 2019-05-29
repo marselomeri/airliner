@@ -90,6 +90,10 @@ class VariableServer extends CdrGroundPlugin {
             
             self.hk.content.msgRecvCount++;
             
+            if(message.opsPath == '/AK8963/AK8963_DiagPacket_t') {
+                console.log(message);
+            }
+            
             if ( self.isEmpty( vars ) == false ) {
                 /* We have variables either persisted or subscribed to in this message.  Iterate through
                  * each variable that we're looking for.

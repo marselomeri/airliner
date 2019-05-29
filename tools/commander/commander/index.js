@@ -294,7 +294,7 @@ module.exports = class Commander extends EventEmitter {
         
         
             function updateTelemetry( update ) {
-                socket.volatile.emit( 'telemetry-update', update );
+                socket.emit( 'telemetry-update', update );
             }
         
             for ( var i in self.registeredStreams ) {
@@ -497,7 +497,7 @@ module.exports = class Commander extends EventEmitter {
      */
     getDefaultLayout( cb ) {
         /* is a stub needs to go in some configuration */
-        var layout = fs.readFileSync( global.CDR_WORKSPACE + '/plugins/cfe/web/default.lyt' );
+        var layout = fs.readFileSync( global.CDR_WORKSPACE + '/plugins/cfe/web/pilot/main_layout.lyt' );
         cb( JSON.parse( layout ) );
     }
 

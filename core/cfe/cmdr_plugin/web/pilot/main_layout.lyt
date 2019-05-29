@@ -44,28 +44,71 @@
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "width": 18.529010803163434,
+     "width": 77.06470278800631,
      "content": [
       {
-       "type": "stack",
-       "header": {},
+       "type": "row",
        "isClosable": true,
        "reorderEnabled": true,
        "title": "",
-       "activeItemIndex": 0,
-       "width": 25,
-       "height": 35.60881417537483,
+       "height": 65.89327146171694,
        "content": [
         {
-         "title": "Vehicle Manager",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "cfe/pilot/vm"
-         },
+         "type": "stack",
+         "header": {},
          "isClosable": true,
-         "reorderEnabled": true
+         "reorderEnabled": true,
+         "title": "",
+         "activeItemIndex": 0,
+         "width": 26.272616654069658,
+         "height": 100,
+         "content": [
+          {
+           "title": "Vehicle Manager",
+           "type": "component",
+           "componentName": "Blank",
+           "componentState": {
+            "text": "text",
+            "link": "flight/core/pilot/vm"
+           },
+           "isClosable": true,
+           "reorderEnabled": true
+          },
+          {
+           "title": "Telemetry",
+           "type": "component",
+           "componentName": "Blank",
+           "componentState": {
+            "text": "text",
+            "link": "/flight/core/pilot/telem"
+           },
+           "isClosable": true,
+           "reorderEnabled": true
+          }
+         ]
+        },
+        {
+         "type": "stack",
+         "header": {},
+         "isClosable": true,
+         "reorderEnabled": true,
+         "title": "",
+         "activeItemIndex": 0,
+         "height": 100.00000000000001,
+         "width": 73.72738334593035,
+         "content": [
+          {
+           "title": "Display",
+           "type": "component",
+           "componentName": "Blank",
+           "componentState": {
+            "text": "text",
+            "link": "flight/core/pilot/display"
+           },
+           "isClosable": true,
+           "reorderEnabled": true
+          }
+         ]
         }
        ]
       },
@@ -76,60 +119,7 @@
        "reorderEnabled": true,
        "title": "",
        "activeItemIndex": 0,
-       "height": 22.489777373920944,
-       "content": [
-        {
-         "title": "Miscellaneous",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "cfe/pilot/misc"
-         },
-         "isClosable": true,
-         "reorderEnabled": true
-        }
-       ]
-      },
-      {
-       "type": "stack",
-       "header": {},
-       "isClosable": true,
-       "reorderEnabled": true,
-       "title": "",
-       "activeItemIndex": 0,
-       "height": 41.90140845070423,
-       "content": [
-        {
-         "title": "Vehicle Position",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "cfe/pilot/position"
-         },
-         "isClosable": true,
-         "reorderEnabled": true
-        }
-       ]
-      }
-     ]
-    },
-    {
-     "type": "column",
-     "isClosable": true,
-     "reorderEnabled": true,
-     "title": "",
-     "width": 72.35790315692196,
-     "content": [
-      {
-       "type": "stack",
-       "header": {},
-       "isClosable": true,
-       "reorderEnabled": true,
-       "title": "",
-       "activeItemIndex": 0,
-       "height": 17.99761620977354,
+       "height": 34.10672853828306,
        "content": [
         {
          "title": "Events",
@@ -137,30 +127,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "cfe/pilot/events"
-         },
-         "isClosable": true,
-         "reorderEnabled": true
-        }
-       ]
-      },
-      {
-       "type": "stack",
-       "header": {},
-       "isClosable": true,
-       "reorderEnabled": true,
-       "title": "",
-       "activeItemIndex": 0,
-       "height": 82.00238379022646,
-       "width": 72.35790315692196,
-       "content": [
-        {
-         "title": "Display",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "cfe/pilot/display"
+          "link": "flight/core/pilot/events"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -174,7 +141,7 @@
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "width": 9.113086039914608,
+     "width": 22.93529721199369,
      "content": [
       {
        "type": "stack",
@@ -184,7 +151,7 @@
        "title": "",
        "activeItemIndex": 0,
        "width": 50,
-       "height": 86.5967365967366,
+       "height": 60.092807424593964,
        "content": [
         {
          "title": "Indicators",
@@ -192,7 +159,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "cfe/pilot/indicator"
+          "link": "flight/core/pilot/indicator"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -206,15 +173,15 @@
        "reorderEnabled": true,
        "title": "",
        "activeItemIndex": 0,
-       "height": 13.403263403263399,
+       "height": 39.907192575406036,
        "content": [
         {
-         "title": "Vitals",
+         "title": "Vehicle Position",
          "type": "component",
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "cfe/pilot/vitals"
+          "link": "flight/core/pilot/position"
          },
          "isClosable": true,
          "reorderEnabled": true
