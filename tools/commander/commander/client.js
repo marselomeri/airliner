@@ -247,7 +247,7 @@ CommanderClient.prototype.getRandom = function(cb) {
  * @param {Function}
  *                cb Callback
  */
-CommanderClient.prototype.enableVideoSteam = function(cb) {
+CommanderClient.prototype.enableVideoStream = function(cb) {
     var self = this;
     self.videoConnected = true;
 

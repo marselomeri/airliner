@@ -44,28 +44,72 @@
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "width": 18.529010803163434,
+     "width": 77.11154094132817,
      "content": [
       {
-       "type": "stack",
-       "header": {},
+       "type": "row",
        "isClosable": true,
        "reorderEnabled": true,
        "title": "",
-       "activeItemIndex": 0,
-       "width": 25,
-       "height": 35.60881417537483,
+       "height": 65.2762119503946,
+       "width": 99.99999999999999,
        "content": [
         {
-         "title": "Vehicle Manager",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "cfe/pilot/vm"
-         },
+         "type": "stack",
+         "header": {},
          "isClosable": true,
-         "reorderEnabled": true
+         "reorderEnabled": true,
+         "title": "",
+         "activeItemIndex": 0,
+         "width": 26.272616654069658,
+         "height": 100,
+         "content": [
+          {
+           "title": "Vehicle Manager",
+           "type": "component",
+           "componentName": "Blank",
+           "componentState": {
+            "text": "text",
+            "link": "flight/core/pilot/vm"
+           },
+           "isClosable": true,
+           "reorderEnabled": true
+          },
+          {
+           "title": "Telemetry",
+           "type": "component",
+           "componentName": "Blank",
+           "componentState": {
+            "text": "text",
+            "link": "/flight/core/pilot/telem"
+           },
+           "isClosable": true,
+           "reorderEnabled": true
+          }
+         ]
+        },
+        {
+         "type": "stack",
+         "header": {},
+         "isClosable": true,
+         "reorderEnabled": true,
+         "title": "",
+         "activeItemIndex": 0,
+         "height": 100.00000000000001,
+         "width": 73.72738334593035,
+         "content": [
+          {
+           "title": "Display",
+           "type": "component",
+           "componentName": "Blank",
+           "componentState": {
+            "text": "text",
+            "link": "flight/core/pilot/display"
+           },
+           "isClosable": true,
+           "reorderEnabled": true
+          }
+         ]
         }
        ]
       },
@@ -76,37 +120,15 @@
        "reorderEnabled": true,
        "title": "",
        "activeItemIndex": 0,
-       "height": 22.489777373920944,
+       "height": 34.72378804960541,
        "content": [
         {
-         "title": "Miscellaneous",
+         "title": "Event Viewer",
          "type": "component",
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "cfe/pilot/misc"
-         },
-         "isClosable": true,
-         "reorderEnabled": true
-        }
-       ]
-      },
-      {
-       "type": "stack",
-       "header": {},
-       "isClosable": true,
-       "reorderEnabled": true,
-       "title": "",
-       "activeItemIndex": 0,
-       "height": 41.90140845070423,
-       "content": [
-        {
-         "title": "Vehicle Position",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "cfe/pilot/position"
+          "link": "/ground/event-recorder/hk"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -120,7 +142,7 @@
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "width": 72.35790315692196,
+     "width": 22.888459058671828,
      "content": [
       {
        "type": "stack",
@@ -129,53 +151,21 @@
        "reorderEnabled": true,
        "title": "",
        "activeItemIndex": 0,
-       "height": 17.99761620977354,
+       "height": 55.91882750845547,
        "content": [
         {
-         "title": "Events",
+         "title": "Indicators",
          "type": "component",
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "cfe/pilot/events"
+          "link": "flight/core/pilot/indicator"
          },
          "isClosable": true,
          "reorderEnabled": true
         }
        ]
       },
-      {
-       "type": "stack",
-       "header": {},
-       "isClosable": true,
-       "reorderEnabled": true,
-       "title": "",
-       "activeItemIndex": 0,
-       "height": 82.00238379022646,
-       "width": 72.35790315692196,
-       "content": [
-        {
-         "title": "Display",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "cfe/pilot/display"
-         },
-         "isClosable": true,
-         "reorderEnabled": true
-        }
-       ]
-      }
-     ]
-    },
-    {
-     "type": "column",
-     "isClosable": true,
-     "reorderEnabled": true,
-     "title": "",
-     "width": 9.113086039914608,
-     "content": [
       {
        "type": "stack",
        "header": {},
@@ -184,37 +174,15 @@
        "title": "",
        "activeItemIndex": 0,
        "width": 50,
-       "height": 86.5967365967366,
+       "height": 44.08117249154453,
        "content": [
         {
-         "title": "Indicators",
+         "title": "Vehicle Position",
          "type": "component",
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "cfe/pilot/indicator"
-         },
-         "isClosable": true,
-         "reorderEnabled": true
-        }
-       ]
-      },
-      {
-       "type": "stack",
-       "header": {},
-       "isClosable": true,
-       "reorderEnabled": true,
-       "title": "",
-       "activeItemIndex": 0,
-       "height": 13.403263403263399,
-       "content": [
-        {
-         "title": "Vitals",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "cfe/pilot/vitals"
+          "link": "flight/core/pilot/position"
          },
          "isClosable": true,
          "reorderEnabled": true

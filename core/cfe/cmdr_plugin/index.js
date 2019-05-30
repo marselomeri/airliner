@@ -220,6 +220,11 @@ module.exports = class CfeCdrPlugin extends CdrFlightPlugin {
                                 shortDescription: 'Vehicle Manager',
                                 filePath: 'pilot/vm.pug'
                             },
+                            telem: {
+                                type: CdrFlightPlugin.ContentType.PANEL,
+                                shortDescription: 'Telemetry',
+                                filePath: 'pilot/telem.pug'
+                            },
                             indicator: {
                                 type: CdrFlightPlugin.ContentType.PANEL,
                                 shortDescription: 'Indicators',
