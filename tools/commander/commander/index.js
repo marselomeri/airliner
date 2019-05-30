@@ -296,7 +296,8 @@ module.exports = class Commander extends EventEmitter {
             function updateTelemetry( update ) {
                 socket.emit( 'telemetry-update', update );
             }
-        
+
+            console.log(self.registeredStreams);
             for ( var i in self.registeredStreams ) {
                 var streamName = self.registeredStreams[ i ].streamName;
                 self.defaultInstance.recv( streamName, function( newData ) {
@@ -338,7 +339,7 @@ module.exports = class Commander extends EventEmitter {
 
         this.defaultInstance.recv( 'advertise-stream', function( streamName ) {
             self.registeredStreams.push( {
-                treamName: streamName
+                streamName: streamName
             } );
         } );
     }

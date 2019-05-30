@@ -33,12 +33,13 @@ const net = require( 'net' );
 const convict = require( 'convict' );
 const path = require( 'path' );
 const autoBind = require('auto-bind');
+const dgram = require( 'dgram' );
 const CdrGroundPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrGroundPlugin')).CdrGroundPlugin;
 
 
-class EventRecorder extends CdrGroundPlugin {
+class VideoServer extends CdrGroundPlugin {
 	/**
-	 * Constructor for EventRecorder
+	 * Constructor for VideoServer
 	 * 
 	 * @param {Object}
 	 *                configObj configuration object containing mandatory and
@@ -55,7 +56,7 @@ class EventRecorder extends CdrGroundPlugin {
     constructor(configObj) {
         configObj.webRoot = path.join( __dirname, 'web');  
         super(configObj);
-    	
+        
     	autoBind(this);
     	
     	var self = this;
@@ -74,31 +75,11 @@ class EventRecorder extends CdrGroundPlugin {
         /* Initialize server side commands. */
         this.initCommands();
         
-        /* Start events server. */
-        this.initEventServer();
-        
-        /* Initialize event handling. */
-        this.initEventHandling();
+        /* Start video server. */
+        this.initVideoServer();
 
         this.logInfo( 'Initialized' );
     };
-    
-    
-    initEventHandling() {
-    	var self = this;
-    	
-        /* Subscribe to flight software events. */
-        this.namespace.send( this.config.get( 'reqSubscribeStreamID' ), {
-            cmd: 'addSubscriber',
-            cb: this.processEventMessage
-        }, function( subscriberID ) {
-            self.namespace.send( self.config.get( 'reqSubscribeStreamID' ), {
-                cmd: 'addSubscription',
-                subscriberID: subscriberID,
-                opsPath: '/CFE/CFE_EVS_Packet_t/Payload'
-            } );
-        });
-    }
     
     
     initConfig(name, configFile) {
@@ -146,16 +127,16 @@ class EventRecorder extends CdrGroundPlugin {
                 format: 'int',
                 default: 0
             },
+            port: {
+                doc: 'UDP port.',
+                format: 'int',
+                default: 3001
+            },
             tlmStreamID: {
                 doc: 'Input JSON stream from binary decoder.',
                 format: String,
                 default: ''
-            },
-            reqSubscribeStreamID: {
-                doc: 'Stream ID for subscription requests.',
-                format: String,
-                default: ''
-            },
+            }
         } );
 
         /* Load environment dependent configuration */
@@ -176,13 +157,9 @@ class EventRecorder extends CdrGroundPlugin {
             content: {
                 cmdAcceptCount: 0,
                 cmdRejectCount: 0,
-                eventCount: 0,
-                critEventCount: 0,
-                errorEventCount: 0,
-                infoEventCount: 0,
-                debugEventCount: 0,
-                inputStreamID: this.config.get( 'tlmStreamID' ),
-                reqSubscribeStreamID: this.config.get( 'reqSubscribeStreamID' )
+                framesReceived: 0,
+                serverState: 'DISABLED',
+                port: this.config.get('port')
             }
         };
         this.addTelemetry(this.hk, 1000);
@@ -194,8 +171,8 @@ class EventRecorder extends CdrGroundPlugin {
         var content = {};
         
         content[this.config.name] = {
-            shortDescription: 'Event Recorder (' + this.config.name + ')',
-            longDescription: 'Event Recorder (' + this.config.name + ')',
+            shortDescription: 'Video Server (' + this.config.name + ')',
+            longDescription: 'Video Server (' + this.config.name + ')',
             nodes: {
                 main: {
                     type: CdrGroundPlugin.ContentType.LAYOUT,
@@ -215,11 +192,11 @@ class EventRecorder extends CdrGroundPlugin {
                         pluginName: this.config.name
                     }
                 },
-                hk: {
+                viewer: {
                     type: CdrGroundPlugin.ContentType.PANEL,
-                    shortDescription: 'Event Viewer',
-                    longDescription: 'Event Viewer',
-                    filePath: '/event_viewer.pug',
+                    shortDescription: 'Video Viewer',
+                    longDescription: 'Video Viewer',
+                    filePath: '/video_viewer.pug',
                     handlebarsContext: {
                         pluginName: this.config.name
                     }
@@ -273,98 +250,42 @@ class EventRecorder extends CdrGroundPlugin {
 //    	}
 //    };
     
-    processEventMessage(msg) { 
-    	var inEventMsg = msg['/CFE/CFE_EVS_Packet_t/Payload'].sample[0];
-    	var eventObj = {
-    		gndTime:     inEventMsg.gndTime,
-    	    vehicleTime: inEventMsg.msgTime,
-    	    appName:     trimNull(inEventMsg.value.PacketID.AppName),
-    	    eventID:     inEventMsg.value.PacketID.EventID,
-    	    vehicleID:   inEventMsg.value.PacketID.SpacecraftID,
-    	    processorID: inEventMsg.value.PacketID.ProcessorID,
-    	    text:        trimNull(inEventMsg.value.Message)
-    	}
-    	
-    	this.hk.content.eventCount++;
-    	switch(inEventMsg.value.PacketID.EventType) {
-    	    case 1:
-    	    	this.hk.content.debugEventCount++;
-    	    	eventObj.eventType = 'DEBUG';
-    	    	break;
-    	    	
-    	    case 2:
-    	    	this.hk.content.infoEventCount++;
-    	    	eventObj.eventType = 'INFO';
-    	    	break;
-    	    	
-    	    case 3:
-    	    	this.hk.content.errorEventCount++;
-    	    	eventObj.eventType = 'ERROR';
-    	    	break;
-
-    	    case 4:
-    	    	this.hk.content.critEventCount++;
-    	    	eventObj.eventType = 'CRIT';
-    	    	break;
-    	    	
-    	    default:
-    	        this.logError('Received an invalid event type of ' + inEventMsg.value.PacketID.EventType);
-	    	    eventObj.eventType = '<UNKNOWN>';
-    	}
-
-    	this.events.push(eventObj);
-    }
     
     
-    initEventServer() {
-    	var self = this;
-    	global.NODE_APP.get('/plugin/' + this.config.name + '/events', function(req, res) {
-    		var data = {
-    		    eventList: [],
-    		    recordsTotal: self.events.length,
-    		    recordsFiltered: self.events.length
-    		};
-    		var start = 0;
-    		var length = self.events.length;
-    		
-    		if(req.hasOwnProperty('query') == true) {
-    			if(req.query.hasOwnProperty('start')) {
-    				start = parseInt(req.query.start);
-    				data.draw = parseInt(req.query.draw);
-    			}
-    			if(req.query.hasOwnProperty('length')) {
-    				length = parseInt(req.query.length);
-    				
-    				if(length == -1) {
-    					length = self.events.length;
-    				}
-    			}
-    		}
+    initVideoServer() {
+        var self = this;
+        this.socket = dgram.createSocket( 'udp4' );
 
-            for(var i = start; i < (start+length); ++i) {
-            	var eventObj = self.events[(self.events.length-1) - i];
-            	if(typeof eventObj !== 'undefined') {
-            		data.eventList.push(eventObj);
-            	}
+        this.hk.content.serverState = 'LISTENING';
+        
+        this.socket.on( 'error', ( err ) => {
+            self.logError(`server error:\n${err.stack}` );
+            self.hk.content.serverState = 'FAILED';
+            self.socket.close();
+        } );
+
+        this.socket.on( 'message', ( frame, info ) => {
+            self.hk.content.framesReceived++;
+            var imageObject = {
+                image: true,
+                buffer: frame.toString( 'base64' )
             }
-    		     
-    		res.status(200);
-    		res.setHeader('Content-type', 'application/json');
-    		return res.send(JSON.stringify(data));
-        });
+            self.namespace.send( 'video-stream', imageObject );
+
+            //socket.volatile.emit( 'stream', {
+            //  image: true,
+            //  buffer: msg.toString( 'base64' )
+            //} );
+        } );
+
+        this.socket.bind( this.hk.content.port );
+
+        global.NODE_APP.videoServer = this.socket;
+
+        this.namespace.send( 'advertise-stream', 'video-stream' );
     }
 }
 
 
 
-function trimNull(a) {
-    var c = a.indexOf('\0');
-	if (c>-1) {
-	    return a.substr(0, c);
-	}
-	return a;
-}
-
-
-
-exports = module.exports = EventRecorder;
+exports = module.exports = VideoServer;
