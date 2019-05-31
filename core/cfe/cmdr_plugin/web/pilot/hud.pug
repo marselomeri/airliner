@@ -128,12 +128,15 @@ script.
      * @return {undefined}
      */
     function updateHUDHeading( newHeading ) {
-        if ( newHeading < 0 ) {
-            newHeading = newHeading + 360;
-        }
+        if(Number.isNaN(newHeading) == false) {
+            if ( newHeading < 0 ) {
+                newHeading = newHeading + 360;
+            }
     
-        textHeading.text( newHeading.toFixed( 0 ).toString() );
-        hdTicks.x( -newHeading * pxPerDegree );
+            hdTicks.stop(true, true);
+            textHeading.text( newHeading.toFixed( 0 ).toString() );
+            hdTicks.animate(avgQTimeDelta).x( -newHeading * pxPerDegree );
+        }
     }
     
     /**
@@ -142,7 +145,9 @@ script.
      * @return {undefined}
      */
     function updateHUDPitch( newPitch ) {
-        OffsetY = newPitch * pxPerDegreePitch;
+        if(Number.isNaN(newPitch) == false) {
+            OffsetY = newPitch * pxPerDegreePitch;
+        }
     }
     
     /**
@@ -152,10 +157,11 @@ script.
      */
     function updateHUDRoll( newRoll ) {
         if(Number.isNaN(newRoll) == false) {
-        	rotation = newRoll;
-        	pitchIndicator.rotate( 0 );
-        	pitchIndicator.y( 0 );
-        	pitchIndicator.y( OffsetY ).rotate( rotation );
+            pitchIndicator.stop(true, true);
+            rotation = newRoll;
+            pitchIndicator.rotate( 0 );
+            pitchIndicator.y( 0 );
+            pitchIndicator.animate(avgQTimeDelta).y( OffsetY ).rotate( rotation ).finish();
       	}
     }
     
@@ -485,8 +491,11 @@ script.
     
     var tlmAlt;
     var tlmQ = [];
-    var sampleQueue = [];
-    var avgTimeDelta = 1000;
+    const maxSampleQueueSize = 10;
+    var sampleAltQueue = [];
+    var avgAltTimeDelta = 1000;
+    var sampleQQueue = [];
+    var avgQTimeDelta = 1000;
     
     session.subscribe([
         {name: '/PX4/PX4_VehicleGlobalPositionMsg_t/Alt'},
@@ -499,6 +508,23 @@ script.
             switch(objs[i].opsPath) {
                 case '/PX4/PX4_VehicleGlobalPositionMsg_t/Alt':
                     alt = objs[i].sample[0].value;
+                
+                    if(sampleAltQueue.length >= maxSampleQueueSize) {
+                        sampleAltQueue.shift();
+                    }
+            
+                    sampleAltQueue.push(Date.parse(objs[i].sample[0].gndTime));
+            
+                    var prevTime = 0;
+                    var timeSum = 0;
+                    for(var i = 0; i < sampleAltQueue.length; ++i) {
+                        if(prevTime != 0) {
+                            timeSum += sampleAltQueue[i] - prevTime;
+                        }
+                        prevTime = sampleAltQueue[i];
+                    }
+            
+                    avgAltTimeDelta = timeSum / (sampleAltQueue.length - 1);
                     break;
                        
                 case '/PX4/PX4_VehicleAttitudeMsg_t/Q[0]':
@@ -515,6 +541,23 @@ script.
                        
                 case '/PX4/PX4_VehicleAttitudeMsg_t/Q[3]':
                     Q[3] = objs[i].sample[0].value;
+                
+                    if(sampleQQueue.length >= maxSampleQueueSize) {
+                        sampleQQueue.shift();
+                    }
+            
+                    sampleQQueue.push(Date.parse(objs[i].sample[0].gndTime));
+            
+                    var prevTime = 0;
+                    var timeSum = 0;
+                    for(var i = 0; i < sampleQQueue.length; ++i) {
+                        if(prevTime != 0) {
+                            timeSum += sampleQQueue[i] - prevTime;
+                        }
+                        prevTime = sampleQQueue[i];
+                    }
+            
+                    avgQTimeDelta = timeSum / (sampleQQueue.length - 1);
                     break;
                        
                 default:
