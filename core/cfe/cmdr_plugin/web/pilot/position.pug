@@ -74,6 +74,7 @@ script.
           var vx, vy, vz;
           for(var i in param){
             var opsPath = param[i].opsPath;
+            console.log(param[i]);
             var value = param[i].sample[ param[i].sample.length - 1 ].value;
             if(opsPath == '/PX4/PX4_VehicleLocalPositionMsg_t/VX'){
               vx = value;
