@@ -151,10 +151,12 @@ script.
      * @return {undefined}
      */
     function updateHUDRoll( newRoll ) {
-        rotation = newRoll;
-        pitchIndicator.rotate( 0 );
-        pitchIndicator.y( 0 );
-        pitchIndicator.y( OffsetY ).rotate( rotation );
+        if(Number.isNaN(newRoll) == false) {
+        	rotation = newRoll;
+        	pitchIndicator.rotate( 0 );
+        	pitchIndicator.y( 0 );
+        	pitchIndicator.y( OffsetY ).rotate( rotation );
+      	}
     }
     
     /**
@@ -177,7 +179,7 @@ script.
     
       } else {
     
-        draw.attr( 'preserveAspectRatio', 'x320Y180 meet' );
+        draw.attr( 'preserveAspectRatio', 'xMinYMin meet' );
     
         /* -------------------------
          Draw altimeter
@@ -483,6 +485,8 @@ script.
     
     var tlmAlt;
     var tlmQ = [];
+    var sampleQueue = [];
+    var avgTimeDelta = 1000;
     
     session.subscribe([
         {name: '/PX4/PX4_VehicleGlobalPositionMsg_t/Alt'},
@@ -537,8 +541,8 @@ script.
         var Yaw = psi;
         
         updateHUDPitch( Pitch * 57.2958 );
-        updateHUDRoll( Roll * 57.2958 );
         updateHUDHeading( Yaw * 57.2958 );
+        updateHUDRoll( Roll * 57.2958 );
             
     }, 100);
     

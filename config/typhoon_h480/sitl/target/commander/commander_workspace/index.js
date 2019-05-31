@@ -16,6 +16,8 @@ var commander = new Commander(global.CDR_WORKSPACE, `${global.CDR_WORKSPACE}/etc
 global.COMMANDER = commander;
 
 var airliner = commander.addInstance('airliner', function(namespace) {
+    commander.setDefaultInstance(namespace);
+    
     var binaryEncoder    = new BinaryEncoder({namespace: namespace, name: 'binary-encoder', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/binary-encoder-config.json`});
     var binaryDecoder    = new BinaryDecoder({namespace: namespace, name: 'binary-decoder', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/binary-decoder-config.json`});
     var variableServer   = new VariableServer({namespace: namespace, name: 'variable-server', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/variable-server-config.json`});
@@ -25,8 +27,6 @@ var airliner = commander.addInstance('airliner', function(namespace) {
     var protobufDecoder  = new ProtobufDecoder({namespace: namespace, name: 'protobuf-decoder', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/protobuf-decoder-config.json`});
     var configDB         = new ConfigDatabase({namespace: namespace, name: 'config-database', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/config-database-config.json`});
     var eventRecorder    = new EventRecorder({namespace: namespace, name: 'event-recorder', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/event-recorder-config.json`});
-	
-    commander.setDefaultInstance(namespace);
 	
     var outFiles = [];
     var fullPath = path.join(global.CDR_WORKSPACE, 'plugins');

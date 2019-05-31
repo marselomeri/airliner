@@ -90,10 +90,6 @@ class VariableServer extends CdrGroundPlugin {
             
             self.hk.content.msgRecvCount++;
             
-            if(message.opsPath == '/AK8963/AK8963_DiagPacket_t') {
-                console.log(message);
-            }
-            
             if ( self.isEmpty( vars ) == false ) {
                 /* We have variables either persisted or subscribed to in this message.  Iterate through
                  * each variable that we're looking for.
@@ -417,11 +413,16 @@ class VariableServer extends CdrGroundPlugin {
             /* Send however many values are currently persisted. */
             var outVar = {};
             outVar[ opsPath ] = {};
+            
+            /* Do we already have persisted values to send back? */
+            if(variable.sample !== undefined) {
+                if(variable.sample.legnth > 0) {
+                    /* Yes.  Send all the persisted values of the value */
+                    outVar[ opsPath ].sample = variable.sample;
 
-            /* Send all the persisted values of the value */
-            outVar[ opsPath ].sample = variable.sample;
-
-            this.subscribers[ subscriberID ]( outVar );
+                    this.subscribers[ subscriberID ]( outVar );
+                }
+            }
         }
 
         if ( variable.hasOwnProperty( 'subscribers' ) == false ) {
