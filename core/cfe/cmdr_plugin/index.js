@@ -11,6 +11,73 @@ module.exports = class CfeCdrPlugin extends CdrFlightPlugin {
         super(config);
 
         var content = {
+            pilot: {
+                shortDescription: 'Pilot',
+                longDescription: 'Pilot Displays.',
+                nodes: {
+                    main: {
+                        type: CdrFlightPlugin.ContentType.LAYOUT,
+                        shortDescription: 'PFD',
+                        longDescription: 'Primary Flight Dispaly',
+                        filePath: 'pilot/main_layout.lyt'
+                    },
+                    vm: {
+                        type: CdrFlightPlugin.ContentType.PANEL,
+                        shortDescription: 'Vehicle Manager',
+                        filePath: 'pilot/vm.pug'
+                    },
+                    telem: {
+                        type: CdrFlightPlugin.ContentType.PANEL,
+                        shortDescription: 'Telemetry',
+                        filePath: 'pilot/telem.pug'
+                    },
+                    indicator: {
+                        type: CdrFlightPlugin.ContentType.PANEL,
+                        shortDescription: 'Indicators',
+                        filePath: 'pilot/indicator.pug'
+                    },
+                    events: {
+                        type: CdrFlightPlugin.ContentType.PANEL,
+                        shortDescription: 'Events',
+                        filePath: 'pilot/events.pug'
+                    },
+                    position: {
+                        type: CdrFlightPlugin.ContentType.PANEL,
+                        shortDescription: 'Vehicle Position',
+                        filePath: 'pilot/position.pug'
+                    },
+                    misc: {
+                        type: CdrFlightPlugin.ContentType.PANEL,
+                        shortDescription: 'Miscellaneous',
+                        filePath: 'pilot/misc.pug'
+                    },
+                    vitals: {
+                        type: CdrFlightPlugin.ContentType.PANEL,
+                        shortDescription: 'Vitals',
+                        filePath: 'pilot/vitals.pug'
+                    },
+                    hud: {
+                        type: CdrFlightPlugin.ContentType.PANEL,
+                        shortDescription: 'Heads Up Display',
+                        filePath: 'pilot/hud.pug'
+                    },
+                    map: {
+                        type: CdrFlightPlugin.ContentType.PANEL,
+                        shortDescription: 'Ground Track',
+                        filePath: 'pilot/ground_track.pug'
+                    },
+                    air_traffic: {
+                        type: CdrFlightPlugin.ContentType.PANEL,
+                        shortDescription: 'Air Traffic',
+                        filePath: 'pilot/air_traffic.pug'
+                    },
+                    mission_manager: {
+                        type: CdrFlightPlugin.ContentType.PANEL,
+                        shortDescription: 'Mission Manager',
+                        filePath: 'pilot/mission_manager.pug'
+                    }
+                }
+            },
             core: {
                 shortDescription: 'Core',
                 longDescription: 'Core Services.',
@@ -202,58 +269,6 @@ module.exports = class CfeCdrPlugin extends CdrFlightPlugin {
                                 type: CdrFlightPlugin.ContentType.PANEL,
                                 shortDescription: 'Diagnostic (Partial - 3)',
                                 filePath: 'time/diag_3.pug'
-                            }
-                        }
-                    },
-                    pilot: {
-                        shortDescription: 'Pilot',
-                        longDescription: 'Pilot Services',
-                        nodes: {
-                            main: {
-                                type: CdrFlightPlugin.ContentType.LAYOUT,
-                                shortDescription: 'PFD',
-                                longDescription: 'Primary Flight Dispaly',
-                                filePath: 'pilot/main_layout.lyt'
-                            },
-                            vm: {
-                                type: CdrFlightPlugin.ContentType.PANEL,
-                                shortDescription: 'Vehicle Manager',
-                                filePath: 'pilot/vm.pug'
-                            },
-                            telem: {
-                                type: CdrFlightPlugin.ContentType.PANEL,
-                                shortDescription: 'Telemetry',
-                                filePath: 'pilot/telem.pug'
-                            },
-                            indicator: {
-                                type: CdrFlightPlugin.ContentType.PANEL,
-                                shortDescription: 'Indicators',
-                                filePath: 'pilot/indicator.pug'
-                            },
-                            events: {
-                                type: CdrFlightPlugin.ContentType.PANEL,
-                                shortDescription: 'Events',
-                                filePath: 'pilot/events.pug'
-                            },
-                            position: {
-                                type: CdrFlightPlugin.ContentType.PANEL,
-                                shortDescription: 'Vehicle Position',
-                                filePath: 'pilot/position.pug'
-                            },
-                            misc: {
-                                type: CdrFlightPlugin.ContentType.PANEL,
-                                shortDescription: 'Miscellaneous',
-                                filePath: 'pilot/misc.pug'
-                            },
-                            vitals: {
-                                type: CdrFlightPlugin.ContentType.PANEL,
-                                shortDescription: 'Vitals',
-                                filePath: 'pilot/vitals.pug'
-                            },
-                            display: {
-                                type: CdrFlightPlugin.ContentType.PANEL,
-                                shortDescription: 'Display',
-                                filePath: 'pilot/display.pug'
                             }
                         }
                     },

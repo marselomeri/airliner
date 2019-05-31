@@ -297,7 +297,6 @@ module.exports = class Commander extends EventEmitter {
                 socket.emit( 'telemetry-update', update );
             }
 
-            console.log(self.registeredStreams);
             for ( var i in self.registeredStreams ) {
                 var streamName = self.registeredStreams[ i ].streamName;
                 self.defaultInstance.recv( streamName, function( newData ) {
