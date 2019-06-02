@@ -5,7 +5,7 @@ VENV_DIR=$1
 mkdir -p $VENV_DIR
 cd $VENV_DIR
 rm -Rf venv
-virtualenv -p python3.5 venv
+virtualenv -p python3 venv
 source venv/bin/activate
 cd ${EXPLAIN_DIR}/../../pyelftools
 pip install .
