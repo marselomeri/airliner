@@ -135,7 +135,7 @@ script.
     
             hdTicks.stop(true, true);
             textHeading.text( newHeading.toFixed( 0 ).toString() );
-            hdTicks.animate(avgQTimeDelta).x( -newHeading * pxPerDegree );
+            hdTicks.animate(HUD_UPDATE_RATE).x( -newHeading * pxPerDegree );
         }
     }
     
@@ -161,7 +161,7 @@ script.
             rotation = newRoll;
             pitchIndicator.rotate( 0 );
             pitchIndicator.y( 0 );
-            pitchIndicator.animate(avgQTimeDelta).y( OffsetY ).rotate( rotation ).finish();
+            pitchIndicator.animate(HUD_UPDATE_RATE).y( OffsetY ).rotate( rotation );
       	}
     }
     
@@ -496,6 +496,7 @@ script.
     var avgAltTimeDelta = 1000;
     var sampleQQueue = [];
     var avgQTimeDelta = 1000;
+    const HUD_UPDATE_RATE = 100;
     
     session.subscribe([
         {name: '/PX4/PX4_VehicleGlobalPositionMsg_t/Alt'},
@@ -587,6 +588,6 @@ script.
         updateHUDHeading( Yaw * 57.2958 );
         updateHUDRoll( Roll * 57.2958 );
             
-    }, 100);
+    }, HUD_UPDATE_RATE);
     
     
