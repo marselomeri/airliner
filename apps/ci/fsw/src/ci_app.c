@@ -953,7 +953,7 @@ boolean CI_GetCmdAuthorized(CFE_SB_Msg_t* MsgPtr)
 	CmdData = CI_GetRegisterdCmd(msgID, cmdCode);
 	if (CmdData == NULL)
 	{
-		if (CI_AppData.IngestBehavior == BHV_OPTIMISTIC)
+		if (CI_INGEST_MODE == CI_BHV_OPTIMISTIC)
 		{
 			bResult = TRUE;
 		}

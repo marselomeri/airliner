@@ -43,7 +43,6 @@
 *************************************************************************/
 #include "cfe.h"
 #include "pb_lib.h"
-
 #include "ci_platform_cfg.h"
 #include "ci_mission_cfg.h"
 #include "ci_private_ids.h"
@@ -64,28 +63,35 @@ extern "C" {
 /************************************************************************
 ** Local Defines
 *************************************************************************/
-#define CI_MAX_CMD_INGEST           		(CFE_SB_MAX_SB_MSG_SIZE)
-#define CI_LISTENER_TASK_NAME  				"CI_LISTENER"
-#define CI_LISTENER_TASK_STACK_SIZE			160000
-#define CI_LISTENER_TASK_PRIORITY			109
-#define CI_SERIAL_LISTENER_TASK_NAME  		"CI_SERIAL_LISTENER"
-#define CI_SERIAL_LISTENER_TASK_STACK_SIZE	160000
-#define CI_SERIAL_LISTENER_TASK_PRIORITY	112
-#define CI_CFG_TBL_MUTEX_NAME 				"CI_CFG_TBL_MUTEX"
-#define CI_TIME_TBL_MUTEX_NAME 				"CI_TIME_TBL_MUTEX"
+#define CI_MAX_CMD_INGEST                   (CFE_SB_MAX_SB_MSG_SIZE)
+#define CI_LISTENER_TASK_NAME               ("CI_LISTENER")
+#define CI_LISTENER_TASK_STACK_SIZE         (160000)
+#define CI_LISTENER_TASK_PRIORITY           (109)
+#define CI_SERIAL_LISTENER_TASK_NAME        ("CI_SERIAL_LISTENER")
+#define CI_SERIAL_LISTENER_TASK_STACK_SIZE	(160000)
+#define CI_SERIAL_LISTENER_TASK_PRIORITY	(112)
+#define CI_CFG_TBL_MUTEX_NAME               ("CI_CFG_TBL_MUTEX")
+#define CI_TIME_TBL_MUTEX_NAME              ("CI_TIME_TBL_MUTEX")
 
 /************************************************************************
 ** Local Structure Definitions
 *************************************************************************/
 
 /**
-**  \brief CI Operational Data Structure
+**  \brief CI Ingest Mode
+**
+**  \note The various modes in which CI can run in. Optimistic means that 
+**        CI will allow unregistered (unknown) commands it ingests that
+**        are valid to be published to the CFE SB. Commands that are 
+**        registered will adhere to the stepping they are registered with.
+**        Pessimistic mode will reject any command ingested that is not 
+**        registered.
 */
 typedef enum
 {
-	BHV_OPTIMISTIC,
-	BHV_PESSIMISTIC,
-} CI_BEHAVIOR;
+	CI_BHV_OPTIMISTIC  = 0,
+	CI_BHV_PESSIMISTIC = 1,
+} CI_INGEST_BEHAVIOR;
 
 /**
 **  \brief CI Operational Data Structure
@@ -162,9 +168,6 @@ typedef struct
 
     /** \brief Run flag for ingest loop */
     boolean			IngestActive;
-
-    /** \brief Behavior for unknown commands to CI */
-    CI_BEHAVIOR		IngestBehavior;
 
 } CI_AppData_t;
 

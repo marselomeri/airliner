@@ -126,12 +126,13 @@ extern "C" {
 **  \par Limits:
 **       This parameter must be at least 1000 (ms).
 */
-#define CI_STARTUP_TIMEOUT_MSEC    (5000)
+#define CI_STARTUP_TIMEOUT_MSEC        (5000)
 
-//#define CI_SERIALIZED	(1)
-//#define CI_DEBUG_SERIALIZED	(1)
-#define CI_MAX_ENC_LEN (32768)
+/** \brief Max Length of Ingested Serialized Data */
+#define CI_MAX_ENC_LEN                 (32768)
 
+/** \brief CI Ingest Mode */
+#define CI_INGEST_MODE                 (CI_BHV_OPTIMISTIC)
 
 #ifdef __cplusplus
 }
