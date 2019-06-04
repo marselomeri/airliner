@@ -54,7 +54,7 @@ CI_AppCustomData_t CI_AppSerialCustomData = {0, 5009};
 
 int32 CI_InitCustom(void)
 {
-    int32 Status = 0;
+    int32 Status = CFE_SUCCESS;
     int reuseaddr = 1;
 	struct sockaddr_in address;
 	struct sockaddr_in serial_address;
@@ -132,9 +132,9 @@ int32 CI_ReadSerializedMessage(char* buffer, uint32* size)
 }
 
 
-int32 CI_CleanupCustom(void)
+void CI_CleanupCustom(void)
 {
-    return close(CI_AppCustomData.Socket);
-    return close(CI_AppSerialCustomData.Socket);
+    close(CI_AppCustomData.Socket);
+    close(CI_AppSerialCustomData.Socket);
 }
 
