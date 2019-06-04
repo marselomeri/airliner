@@ -52,7 +52,6 @@
 #include "ci_msg.h"
 #include "ci_events.h"
 #include "ci_config_utils.h"
-#include "ci_cds_utils.h"
 #include "ci_tbldefs.h"
 #include "ci_custom.h"
 
@@ -128,22 +127,6 @@ typedef struct
 
     /** \brief Timeout Table */
     CI_TimeoutTblEntry_t  TimeoutTbl;
-
-    /* Critical Data Storage (CDS) table-related */
-
-    /** \brief CDS Table Handle */
-    CFE_ES_CDSHandle_t  CdsTblHdl;
-
-    /** \brief CDS Table data */
-    CI_CdsTbl_t  CdsTbl;
-
-    /* Inputs/Outputs */
-
-    /** \brief Input Data from I/O or other apps */
-    CI_InData_t   InData;
-
-    /** \brief Output Data published at the end of cycle */
-    CI_OutData_t  OutData;
 
     /** \brief Housekeeping Telemetry for downlink */
     CI_HkTlm_t  HkTlm;
@@ -377,18 +360,6 @@ void  CI_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr);
 void  CI_ReportHousekeeping(void);
 
 /************************************************************************/
-/** \brief Sends CI output data
-**
-**  \par Description
-**       This function publishes the CI application output data.
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-*************************************************************************/
-void  CI_SendOutData(void);
-
-/************************************************************************/
 /** \brief Verify Command Length
 **
 **  \par Description
@@ -406,7 +377,7 @@ void  CI_SendOutData(void);
 **  \endreturns
 **
 *************************************************************************/
-boolean  CI_VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
+boolean  CI_VerifyCmdLength(const CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
 
 /************************************************************************/
 /** \brief Init Listener Task
@@ -489,7 +460,7 @@ void CI_ProcessIngestCmd(CFE_SB_MsgPtr_t CmdMsgPtr, uint32 MsgSize);
 **  \endreturns
 **
 *************************************************************************/
-boolean CI_ValidateCmd(CFE_SB_Msg_t* MsgPtr, uint32 MsgSize);
+boolean CI_ValidateCmd(const CFE_SB_Msg_t* MsgPtr, uint32 MsgSize);
 
 /************************************************************************/
 /** \brief Validate Serialized Command
@@ -508,7 +479,7 @@ boolean CI_ValidateCmd(CFE_SB_Msg_t* MsgPtr, uint32 MsgSize);
 **  \endreturns
 **
 *************************************************************************/
-boolean CI_ValidateSerialCmd(CFE_SB_Msg_t* MsgPtr);
+boolean CI_ValidateSerialCmd(const CFE_SB_Msg_t* MsgPtr);
 
 
 /************************************************************************/
@@ -528,7 +499,7 @@ boolean CI_ValidateSerialCmd(CFE_SB_Msg_t* MsgPtr);
 **  \endreturns
 **
 *************************************************************************/
-boolean CI_GetCmdAuthorized(CFE_SB_Msg_t* MsgPtr);
+boolean CI_GetCmdAuthorized(const CFE_SB_Msg_t* MsgPtr);
 
 /************************************************************************/
 /** \brief Log Command
@@ -543,7 +514,7 @@ boolean CI_GetCmdAuthorized(CFE_SB_Msg_t* MsgPtr);
 **                              references the software bus message
 **
 *************************************************************************/
-void CI_LogCmd(CFE_SB_Msg_t* MsgPtr);
+void CI_LogCmd(const CFE_SB_Msg_t* MsgPtr);
 
 /************************************************************************/
 /** \brief Process Timeouts
@@ -572,7 +543,7 @@ void CI_ProcessTimeouts(void);
 **                              references the software bus message
 **
 *************************************************************************/
-void CI_CmdAuthorize(CFE_SB_Msg_t* MsgPtr);
+void CI_CmdAuthorize(const CFE_SB_Msg_t* MsgPtr);
 
 /************************************************************************/
 /** \brief Command Deauthorize
@@ -587,7 +558,7 @@ void CI_CmdAuthorize(CFE_SB_Msg_t* MsgPtr);
 **                              references the software bus message
 **
 *************************************************************************/
-void CI_CmdDeauthorize(CFE_SB_Msg_t* MsgPtr);
+void CI_CmdDeauthorize(const CFE_SB_Msg_t* MsgPtr);
 
 /************************************************************************/
 /** \brief Get Registered Command
@@ -646,7 +617,7 @@ uint32 CI_GetRegisterdCmdIdx(CFE_SB_MsgId_t msgID, uint16 cmdCode);
 **                              references the software bus message
 **
 *************************************************************************/
-void CI_CmdRegister(CFE_SB_Msg_t* MsgPtr);
+void CI_CmdRegister(const CFE_SB_Msg_t* MsgPtr);
 
 /************************************************************************/
 /** \brief Deregister Command
@@ -661,7 +632,7 @@ void CI_CmdRegister(CFE_SB_Msg_t* MsgPtr);
 **                              references the software bus message
 **
 *************************************************************************/
-void CI_CmdDeregister(CFE_SB_Msg_t* MsgPtr);
+void CI_CmdDeregister(const CFE_SB_Msg_t* MsgPtr);
 
 /************************************************************************/
 /** \brief Update Command Register
@@ -676,7 +647,7 @@ void CI_CmdDeregister(CFE_SB_Msg_t* MsgPtr);
 **                              references the software bus message
 **
 *************************************************************************/
-void CI_UpdateCmdReg(CFE_SB_Msg_t* MsgPtr);
+void CI_UpdateCmdReg(const CFE_SB_Msg_t* MsgPtr);
 
 /************************************************************************/
 /** \brief Deserialize Message

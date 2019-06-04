@@ -81,7 +81,6 @@ CI_AppData_t  CI_AppData;
 /* Initialize event tables                                         */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 int32 CI_InitEvent()
 {
     int32  iStatus=CFE_SUCCESS;
@@ -101,9 +100,6 @@ int32 CI_InitEvent()
     CI_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
 
     CI_AppData.EventTbl[  ind].EventID = CI_CONFIG_TABLE_ERR_EID;
-    CI_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
-
-    CI_AppData.EventTbl[  ind].EventID = CI_CDS_ERR_EID;
     CI_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
 
     CI_AppData.EventTbl[  ind].EventID = CI_PIPE_ERR_EID;
@@ -132,7 +128,6 @@ int32 CI_InitEvent()
 /* Initialize Message Pipes                                        */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 int32 CI_InitPipe()
 {
     int32  iStatus=CFE_SUCCESS;
@@ -237,18 +232,9 @@ CI_InitPipe_Exit_Tag:
 /* Initialize Global Variables                                     */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 int32 CI_InitData()
 {
     int32  iStatus=CFE_SUCCESS;
-
-    /* Init input data */
-    memset((void*)&CI_AppData.InData, 0x00, sizeof(CI_AppData.InData));
-
-    /* Init output data */
-    memset((void*)&CI_AppData.OutData, 0x00, sizeof(CI_AppData.OutData));
-    CFE_SB_InitMsg(&CI_AppData.OutData,
-                   CI_OUT_DATA_MID, sizeof(CI_AppData.OutData), TRUE);
 
     /* Init housekeeping packet */
     memset((void*)&CI_AppData.HkTlm, 0x00, sizeof(CI_AppData.HkTlm));
@@ -264,7 +250,6 @@ int32 CI_InitData()
 /* CI initialization                                              */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 int32 CI_InitApp()
 {
     int32  iStatus   = CFE_SUCCESS;
@@ -305,15 +290,6 @@ int32 CI_InitApp()
     {
         (void) CFE_EVS_SendEvent(CI_INIT_ERR_EID, CFE_EVS_ERROR,
                                  "Failed to init config tables (0x%08X)",
-                                 (unsigned int)iStatus);
-        goto CI_InitApp_Exit_Tag;
-    }
-
-    iStatus = CI_InitCdsTbl();
-    if (iStatus != CFE_SUCCESS)
-    {
-        (void) CFE_EVS_SendEvent(CI_INIT_ERR_EID, CFE_EVS_ERROR,
-                                 "Failed to init CDS table (0x%08X)",
                                  (unsigned int)iStatus);
         goto CI_InitApp_Exit_Tag;
     }
@@ -378,7 +354,6 @@ CI_InitApp_Exit_Tag:
 /* CI Cleanup                                                     */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void CI_CleanupCallback()
 {
     CI_CleanupCustom();
@@ -392,7 +367,6 @@ void CI_CleanupCallback()
 /* Get Command Table Data Row                                 	   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 CI_CmdData_t *CI_GetRegisterdCmd(CFE_SB_MsgId_t msgID, uint16 cmdCode)
 {
 	uint32 				i = 0;
@@ -431,7 +405,6 @@ CI_GetRegisterdCmd_Exit_Tag:
 /* Get Command Table Data Row Index	                          	   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 uint32 CI_GetRegisterdCmdIdx(CFE_SB_MsgId_t msgID, uint16 cmdCode)
 {
 	uint32 				i = -1;
@@ -470,8 +443,7 @@ CI_GetRegisterdCmdIdx_Exit_Tag:
 /* Authorize Command			                                   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-void CI_CmdAuthorize(CFE_SB_Msg_t* MsgPtr)
+void CI_CmdAuthorize(const CFE_SB_Msg_t* MsgPtr)
 {
 	uint16              ExpectedLength = sizeof(CI_CmdAuthData_t);
 	CI_CmdData_t		*CmdData = NULL;
@@ -537,8 +509,7 @@ void CI_CmdAuthorize(CFE_SB_Msg_t* MsgPtr)
 /* Deauthorize Command 				                               */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-void CI_CmdDeauthorize(CFE_SB_Msg_t* MsgPtr)
+void CI_CmdDeauthorize(const CFE_SB_Msg_t* MsgPtr)
 {
 	uint16              ExpectedLength = sizeof(CI_CmdAuthData_t);
 	CI_CmdData_t		*CmdData = NULL;
@@ -605,8 +576,7 @@ void CI_CmdDeauthorize(CFE_SB_Msg_t* MsgPtr)
 /* Register Command				                                   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-void CI_CmdRegister(CFE_SB_Msg_t* MsgPtr)
+void CI_CmdRegister(const CFE_SB_Msg_t* MsgPtr)
 {
 	uint16              ExpectedLength = sizeof(CI_CmdRegData_t);
 	CI_CmdData_t		*CmdData = NULL;
@@ -692,8 +662,7 @@ void CI_CmdRegister(CFE_SB_Msg_t* MsgPtr)
 /* Deregister Command			                                   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-void CI_CmdDeregister(CFE_SB_Msg_t* MsgPtr)
+void CI_CmdDeregister(const CFE_SB_Msg_t* MsgPtr)
 {
 	uint16              ExpectedLength = sizeof(CI_CmdAuthData_t);
 	CI_CmdData_t		*CmdData = NULL;
@@ -756,8 +725,7 @@ void CI_CmdDeregister(CFE_SB_Msg_t* MsgPtr)
 /* Update Registered Commands	                                   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-void CI_UpdateCmdReg(CFE_SB_Msg_t* MsgPtr)
+void CI_UpdateCmdReg(const CFE_SB_Msg_t* MsgPtr)
 {
 	uint16              ExpectedLength = sizeof(CI_CmdRegData_t);
 	CI_CmdData_t		*CmdData = NULL;
@@ -835,7 +803,6 @@ CI_UpdateCmdReg_Exit_Tag:
 /* Process Authorized Command Timeouts                             */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void CI_ProcessTimeouts(void)
 {
 	uint32 			i = 0;
@@ -879,8 +846,7 @@ void CI_ProcessTimeouts(void)
 /* Determine Validity of Command                                   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-boolean CI_ValidateCmd(CFE_SB_Msg_t* MsgPtr, uint32 MsgSize)
+boolean CI_ValidateCmd(const CFE_SB_Msg_t* MsgPtr, uint32 MsgSize)
 {
 	boolean 			bResult = FALSE;
 	uint32  			usMsgLen = 0;
@@ -899,7 +865,7 @@ boolean CI_ValidateCmd(CFE_SB_Msg_t* MsgPtr, uint32 MsgSize)
 	}
 
 	/* Verify length */
-	usMsgLen = CFE_SB_GetTotalMsgLength(MsgPtr);
+	usMsgLen = CFE_SB_GetTotalMsgLength((CFE_SB_Msg_t *) MsgPtr);
 	if (usMsgLen != MsgSize)
 	{
 		goto CI_ValidateCmd_Exit_Tag;
@@ -938,8 +904,7 @@ CI_ValidateCmd_Exit_Tag:
 /* Lookup Command Authorization                                    */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-boolean CI_GetCmdAuthorized(CFE_SB_Msg_t* MsgPtr)
+boolean CI_GetCmdAuthorized(const CFE_SB_Msg_t* MsgPtr)
 {
 	boolean 			bResult = FALSE;
 	CFE_SB_MsgId_t  	msgID = 0;
@@ -948,8 +913,8 @@ boolean CI_GetCmdAuthorized(CFE_SB_Msg_t* MsgPtr)
 	uint32 				i = 0;
 
 	/* Check if command is not registered */
-	msgID = CFE_SB_GetMsgId(MsgPtr);
-	cmdCode = CFE_SB_GetCmdCode(MsgPtr);
+	msgID = CFE_SB_GetMsgId((CFE_SB_Msg_t *) MsgPtr);
+	cmdCode = CFE_SB_GetCmdCode((CFE_SB_Msg_t *) MsgPtr);
 	CmdData = CI_GetRegisterdCmd(msgID, cmdCode);
 	if (CmdData == NULL)
 	{
@@ -1004,8 +969,7 @@ CI_GetCmdAuthorized_Exit_tag:
 /* Determine Validity of Serialized Command                        */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-boolean CI_ValidateSerialCmd(CFE_SB_Msg_t* MsgPtr)
+boolean CI_ValidateSerialCmd(const CFE_SB_Msg_t* MsgPtr)
 {
 	boolean 			bResult = FALSE;
 
@@ -1032,7 +996,6 @@ CI_ValidateSerialCmd_Exit_Tag:
 /* Deserialize Message                                    		   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 uint32 CI_DeserializeMsg(CFE_SB_MsgPtr_t CmdMsgPtr)
 {
 	CFE_SB_MsgId_t  	msgId = 0;
@@ -1090,7 +1053,6 @@ CI_DeserializeMsg_Exit_Tag:
 /* Spawn Child Task				                                   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 int32 CI_InitListenerTask(void)
 {
     int32 Status = CFE_SUCCESS;
@@ -1154,7 +1116,6 @@ CI_InitListenerTask_Exit_Tag:
 /* Process Ingest Cmd			                                   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void CI_ProcessIngestCmd(CFE_SB_MsgPtr_t CmdMsgPtr, uint32 MsgSize)
 {
     CFE_SB_MsgId_t  CmdMsgId = 0;
@@ -1206,7 +1167,6 @@ void CI_ProcessIngestCmd(CFE_SB_MsgPtr_t CmdMsgPtr, uint32 MsgSize)
 /* Child Task Listener Main		                                   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void CI_ListenerTaskMain(void)
 {
     int32 			Status = -1;
@@ -1248,7 +1208,6 @@ void CI_ListenerTaskMain(void)
 /* Child Task Serialized Listener Main		                       */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void CI_SerializedListenerTaskMain(void)
 {
     int32 			Status = -1;
@@ -1334,7 +1293,6 @@ void CI_SerializedListenerTaskMain(void)
 /* Receive and Process CI Messages                                 */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 int32 CI_RcvMsg(int32 iBlocking)
 {
     int32           iStatus=CFE_SUCCESS;
@@ -1358,11 +1316,6 @@ int32 CI_RcvMsg(int32 iBlocking)
             case CI_WAKEUP_MID:
                 CI_ProcessNewCmds();
                 CI_ProcessNewData();
-                /* TODO:  Add more code here to handle other things when app wakes up */
-
-                /* The last thing to do at the end of this Wakeup cycle should be to
-                 * automatically publish new output. */
-                CI_SendOutData();
                 break;
 
             case CI_SEND_HK_MID:
@@ -1380,24 +1333,14 @@ int32 CI_RcvMsg(int32 iBlocking)
     }
     else if (iStatus == CFE_SB_NO_MESSAGE)
     {
-        /* TODO: If there's no incoming message, you can do something here, or 
-         * nothing.  Note, this section is dead code only if the iBlocking arg
-         * is CFE_SB_PEND_FOREVER. */
         iStatus = CFE_SUCCESS;
     }
     else if (iStatus == CFE_SB_TIME_OUT)
     {
-        /* TODO: If there's no incoming message within a specified time (via the
-         * iBlocking arg, you can do something here, or nothing.  
-         * Note, this section is dead code only if the iBlocking arg
-         * is CFE_SB_PEND_FOREVER. */
         iStatus = CFE_SUCCESS;
     }
     else
     {
-        /* TODO: This is an example of exiting on an error (either CFE_SB_BAD_ARGUMENT, or
-         * CFE_SB_PIPE_RD_ERROR).
-         */
         (void) CFE_EVS_SendEvent(CI_PIPE_ERR_EID, CFE_EVS_ERROR,
 			  "SB pipe read error (0x%08X), app will exit", (unsigned int)iStatus);
         CI_AppData.uiRunStatus= CFE_ES_APP_ERROR;
@@ -1412,7 +1355,6 @@ int32 CI_RcvMsg(int32 iBlocking)
 /* Process Incoming Data                                           */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void CI_ProcessNewData()
 {
     int iStatus = CFE_SUCCESS;
@@ -1462,7 +1404,6 @@ void CI_ProcessNewData()
 /* Process Incoming Commands                                       */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void CI_ProcessNewCmds()
 {
     int iStatus = CFE_SUCCESS;
@@ -1520,7 +1461,6 @@ void CI_ProcessNewCmds()
 /* Process CI Commands                                            */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void CI_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr)
 {
     uint32  uiCmdCode=0;
@@ -1584,46 +1524,18 @@ void CI_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr)
 /* Send CI Housekeeping                                           */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void CI_ReportHousekeeping()
 {
-    /* TODO:  Add code to update housekeeping data, if needed, here.  */
-
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&CI_AppData.HkTlm);
     int32 iStatus = CFE_SB_SendMsg((CFE_SB_Msg_t*)&CI_AppData.HkTlm);
-    if (iStatus != CFE_SUCCESS)
-    {
-        /* TODO: Decide what to do if the send message fails. */
-    }
 }
-
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/*                                                                 */
-/* Publish Output Data                                             */
-/*                                                                 */
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-void CI_SendOutData()
-{
-    /* TODO:  Add code to update output data, if needed, here.  */
-
-    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&CI_AppData.OutData);
-    int32 iStatus = CFE_SB_SendMsg((CFE_SB_Msg_t*)&CI_AppData.OutData);
-    if (iStatus != CFE_SUCCESS)
-    {
-        /* TODO: Decide what to do if the send message fails. */
-    }
-}
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Verify Command Length                                           */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-boolean CI_VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
+boolean CI_VerifyCmdLength(const CFE_SB_Msg_t* MsgPtr,
                            uint16 usExpectedLen)
 {
     boolean bResult  = TRUE;
@@ -1631,13 +1543,13 @@ boolean CI_VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
 
     if (MsgPtr != NULL)
     {
-        usMsgLen = CFE_SB_GetTotalMsgLength(MsgPtr);
+        usMsgLen = CFE_SB_GetTotalMsgLength((CFE_SB_Msg_t *) MsgPtr);
 
         if (usExpectedLen != usMsgLen)
         {
             bResult = FALSE;
-            CFE_SB_MsgId_t MsgId = CFE_SB_GetMsgId(MsgPtr);
-            uint16 usCmdCode = CFE_SB_GetCmdCode(MsgPtr);
+            CFE_SB_MsgId_t MsgId = CFE_SB_GetMsgId((CFE_SB_Msg_t *) MsgPtr);
+            uint16 usCmdCode = CFE_SB_GetCmdCode((CFE_SB_Msg_t *) MsgPtr);
 
             (void) CFE_EVS_SendEvent(CI_MSGLEN_ERR_EID, CFE_EVS_ERROR,
                               "Rcvd invalid msgLen: msgId=0x%08X, cmdCode=%d, "
@@ -1655,7 +1567,6 @@ boolean CI_VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
 /* CI application entry point and main process loop               */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void CI_AppMain()
 {
     /* Register the application with Executive Services */
@@ -1696,13 +1607,6 @@ void CI_AppMain()
         {
             /* TODO: Decide what to do for other return values in CI_RcvMsg(). */
         }
-        /* TODO: This is only a suggestion for when to update and save CDS table.
-        ** Depends on the nature of the application, the frequency of update
-        ** and save can be more or less independently.
-        */
-
-        CI_UpdateCdsTbl();
-        CI_SaveCdsTbl();
     }
 
     /* Stop Performance Log entry */
