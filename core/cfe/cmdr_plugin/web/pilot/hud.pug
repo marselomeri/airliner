@@ -159,8 +159,6 @@ script.
         if(Number.isNaN(newRoll) == false) {
             pitchIndicator.stop(true, true);
             rotation = newRoll;
-            pitchIndicator.rotate( 0 );
-            pitchIndicator.y( 0 );
             pitchIndicator.animate(HUD_UPDATE_RATE).y( OffsetY ).rotate( rotation );
       	}
     }
