@@ -134,6 +134,24 @@ extern "C" {
 /** \brief CI Ingest Mode */
 #define CI_INGEST_MODE                 (CI_BHV_OPTIMISTIC)
 
+/** \brief CI Listener Task Delay
+**
+**  \note The main ingest loop is a while loop and sleeps for this many  
+**        milliseconds each iteration.
+ */
+#define CI_LISTENER_TASK_DELAY         (100)
+
+/** \brief CI Lister Task Stack Size */
+#define CI_LISTENER_TASK_STACK_SIZE         (160000)
+
+/** \brief CI Lister Task Priority */
+#define CI_LISTENER_TASK_PRIORITY           (109)
+
+/** \brief CI Serialized Lister Task Stack Size */
+#define CI_SERIAL_LISTENER_TASK_STACK_SIZE	(160000)
+
+/** \brief CI Serialized Lister Task Priority */
+#define CI_SERIAL_LISTENER_TASK_PRIORITY	(112)
 
 #ifdef __cplusplus
 }

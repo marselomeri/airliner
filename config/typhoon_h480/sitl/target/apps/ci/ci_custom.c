@@ -117,14 +117,14 @@ end_of_function:
 }
 
 
-int32 CI_ReadMessage(char* buffer, uint32* size)
+void CI_ReadMessage(char* buffer, uint32* size)
 {
 	*size = recv(CI_AppCustomData.Socket,
 					   (char *)buffer,
 					   (size_t)size, 0);
 }
 
-int32 CI_ReadSerializedMessage(char* buffer, uint32* size)
+void CI_ReadSerializedMessage(char* buffer, uint32* size)
 {
 	*size = recv(CI_AppSerialCustomData.Socket,
 					   (char *)buffer,

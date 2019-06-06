@@ -64,13 +64,10 @@ extern "C" {
 *************************************************************************/
 #define CI_MAX_CMD_INGEST                   (CFE_SB_MAX_SB_MSG_SIZE)
 #define CI_LISTENER_TASK_NAME               ("CI_LISTENER")
-#define CI_LISTENER_TASK_STACK_SIZE         (160000)
-#define CI_LISTENER_TASK_PRIORITY           (109)
 #define CI_SERIAL_LISTENER_TASK_NAME        ("CI_SERIAL_LISTENER")
-#define CI_SERIAL_LISTENER_TASK_STACK_SIZE	(160000)
-#define CI_SERIAL_LISTENER_TASK_PRIORITY	(112)
 #define CI_CFG_TBL_MUTEX_NAME               ("CI_CFG_TBL_MUTEX")
 #define CI_TIME_TBL_MUTEX_NAME              ("CI_TIME_TBL_MUTEX")
+#define CI_INVALID_VALUE                    (CI_MAX_RGST_CMDS + 1)
 
 /************************************************************************
 ** Local Structure Definitions
@@ -105,9 +102,6 @@ typedef struct
 
     /** \brief Command Pipe ID */
     CFE_SB_PipeId_t  CmdPipeId;
-
-    /** \brief Data Pipe ID */
-    CFE_SB_PipeId_t  DataPipeId;
 
     /* Task-related */
 
@@ -303,20 +297,6 @@ void  CI_CleanupCallback(void);
 *************************************************************************/
 int32  CI_RcvMsg(int32 iBlocking);
 
-
-/************************************************************************/
-/** \brief Command Ingest Task incoming data processing
-**
-**  \par Description
-**       This function processes incoming data subscribed
-**       by CI application
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-*************************************************************************/
-void  CI_ProcessNewData(void);
-
 /************************************************************************/
 /** \brief Command Ingest Task incoming command processing
 **
@@ -345,7 +325,6 @@ void  CI_ProcessNewCmds(void);
 **
 *************************************************************************/
 void  CI_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr);
-
 
 /************************************************************************/
 /** \brief Sends CI housekeeping message
@@ -570,39 +549,20 @@ void CI_CmdDeauthorize(const CFE_SB_Msg_t* MsgPtr);
 **  \par Assumptions, External Events, and Notes:
 **       None
 **
-**  \param [in]   msgID        A #CFE_SB_MsgId_t that specifies the
-**  						   message ID if of the command
+**  \param [in]      msgID        A #CFE_SB_MsgId_t that specifies the
+**  						      message ID if of the command
 **
-**  \param [in]   cmdCode      A #uint16 that specifies the command code
+**  \param [in]      cmdCode      A #uint16 that specifies the command code
+**
+**  \param [in/out]  i            The index of the registered command in the
+**                                table
 **
 **  \returns
 **  #CI_CmdData_t if the command is registerd, NULL if it is not.
 **  \endreturns
 **
 *************************************************************************/
-CI_CmdData_t *CI_GetRegisterdCmd(CFE_SB_MsgId_t msgID, uint16 cmdCode);
-
-/************************************************************************/
-/** \brief Get Registered Command Index
-**
-**  \par Description
-**       This function searches for a cmd and returns an index
-**       of the config table containing that cmd
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]   msgID        A #CFE_SB_MsgId_t that specifies the
-**  						   message ID if of the command
-**
-**  \param [in]   cmdCode      A #uint16 that specifies the command code
-**
-**  \returns
-**  #uint32 if the command is registerd, -1 if it is not.
-**  \endreturns
-**
-*************************************************************************/
-uint32 CI_GetRegisterdCmdIdx(CFE_SB_MsgId_t msgID, uint16 cmdCode);
+CI_CmdData_t *CI_GetRegisterdCmd(CFE_SB_MsgId_t msgID, uint16 cmdCode, uint32* tblIdx);
 
 /************************************************************************/
 /** \brief Register Command

@@ -72,7 +72,8 @@ void CI_ReadMessage(char* buffer, uint32* size);
 /** \brief Read Serialized Message
 **
 **  \par Description
-**       This function verifies the command message length.
+**       This function reads a message from the serialized custom layer 
+**       interface.
 **
 **  \par Assumptions, External Events, and Notes:
 **       None

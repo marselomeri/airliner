@@ -145,7 +145,8 @@ CI_InitTbls_Exit_Tag:
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 CI_ValidateConfigTbl(void* ConfigTblPtr)
 {
-    int32  iStatus=0;
+    int32  iStatus = 0;
+    uint32 i = 0;
     CI_ConfigTblEntry_t* CI_ConfigTblPtr = (CI_ConfigTblEntry_t*)(ConfigTblPtr);
 
     if (ConfigTblPtr == NULL)
@@ -155,7 +156,7 @@ int32 CI_ValidateConfigTbl(void* ConfigTblPtr)
     }
 
     /* Perform simple validation on registered command states */
-    for(uint32 i = 0; i < CI_MAX_RGST_CMDS; ++i)
+    for(i = 0; i < CI_MAX_RGST_CMDS; ++i)
     {
         /* If message is non-zero perform validation. Skip otherwise. */
         if(CI_ConfigTblPtr->cmds[i].mid != 0)
