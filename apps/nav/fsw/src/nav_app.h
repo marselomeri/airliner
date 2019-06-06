@@ -78,12 +78,8 @@ typedef struct
 {
     /** \brief The home position message */
     PX4_HomePositionMsg_t HomePositionMsg;
-    /** \brief The sensor combined message */
-    PX4_SensorCombinedMsg_t SensorCombinedMsg;
     /** \brief The mission message */
     PX4_MissionMsg_t MissionMsg;
-    /** \brief The position message from GPS */
-    PX4_VehicleGpsPositionMsg_t VehicleGpsPositionMsg;
     /** \brief The global position message */
     PX4_VehicleGlobalPositionMsg_t VehicleGlobalPosition;
     /** \brief The vehicle status message */
@@ -94,8 +90,6 @@ typedef struct
     PX4_VehicleLocalPositionMsg_t VehicleLocalPositionMsg;
     /** \brief The vehicle command message */
     PX4_VehicleCommandMsg_t VehicleCommandMsg;
-    /** \brief The distance sensor message */
-    PX4_DistanceSensorMsg_t DistanceSensorMsg;
 }NAV_CurrentValueTable_t;
 
 /**
