@@ -315,8 +315,7 @@ int32 CI_InitApp()
     int32  iStatus   = CFE_SUCCESS;
     int8   hasEvents = 0;
     
-    /* Clear AppData and enable ingest */
-    CFE_PSP_MemSet(&CI_AppData, 0x00, sizeof(CI_AppData));
+    /* Enable ingest by default */
     CI_AppData.IngestActive = TRUE;
 
     iStatus = CI_InitEvent();
@@ -1547,6 +1546,9 @@ boolean CI_VerifyCmdLength(const CFE_SB_Msg_t* MsgPtr,
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void CI_AppMain()
 {
+    /* Clear AppData */
+    CFE_PSP_MemSet(&CI_AppData, 0x00, sizeof(CI_AppData));
+
     /* Register the application with Executive Services */
     CI_AppData.uiRunStatus = CFE_ES_APP_RUN;
 
