@@ -14,7 +14,6 @@ add_airliner_app_unit_test(ci-custom-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/ci_custom_test.c
 	    ${CMAKE_CURRENT_SOURCE_DIR}/ci_custom.c
         ${PROJECT_SOURCE_DIR}/apps/ci/fsw/src/ci_app.c
-        ${PROJECT_SOURCE_DIR}/apps/ci/fsw/src/ci_cds_utils.c
         ${PROJECT_SOURCE_DIR}/apps/ci/fsw/src/ci_config_utils.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/ci_mock_os_calls.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/ci_test_utils.c

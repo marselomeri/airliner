@@ -38,7 +38,7 @@
 extern "C" {
 #endif
 
-/** \brief Performance ID for the TO main task */
+/** \brief Performance ID for the CI main task */
 #define CI_MAIN_TASK_PERF_ID        33
 
 #define CI_SOCKET_RCV_PERF_ID       34
