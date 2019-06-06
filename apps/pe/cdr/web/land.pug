@@ -7,19 +7,19 @@ table.table.table-condensed
     tr
       th Initialized
       td
-        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/LandInitialized'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/LandInitialized', notext: true, class: [{eval: '==0', class: 'CDR-LED-RED'},{eval: '==1', class: 'CDR-LED-GREEN'}]}]})
     tr
       th Fault
       td
-        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/LandFault'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/LandFault', notext: true, class: [{eval: '==0', class: 'CDR-LED-OFF'},{eval: '==1', class: 'CDR-LED-RED'}]}]})
     tr
       th Timeout
       td
-        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/LandTimeout'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/LandTimeout', notext: true, class: [{eval: '==0', class: 'CDR-LED-OFF'},{eval: '==1', class: 'CDR-LED-RED'}]}]})
     tr
       th Fused
       td
-        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/LandFused'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/LandFused', notext: true, class: [{eval: '==0', class: 'CDR-LED-YELLOW'},{eval: '==1', class: 'CDR-LED-GREEN'}]}]})
               
 footer.btn-group(role="group")      
   button.btn.cdr-primary(data-cdr={cmd:{name:'/PE/EnableLanding'}}) Enable

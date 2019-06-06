@@ -542,7 +542,39 @@ cdr-nav-iconshtml(lang='en-us')
                       }
                         
                       if(typeof tlmObj === 'object') {
-                        tlmObj.text(value);
+                        if(jsonObj.tlm[j].hasOwnProperty('class')) {
+                          var classSet = false;
+                        
+                          var setClassObj = jsonObj.tlm[j].class;
+                          
+                          for(var evalIdx = 0; evalIdx < setClassObj.length; ++evalIdx) {
+                            var evalString = '' + value + ' ' + setClassObj[evalIdx].eval;
+                            var evalResult = eval(evalString);
+                            if(evalResult == true) {
+                              tlmObj.removeClass(jsonObj.tlm[j].classTemp);
+                              tlmObj.addClass(setClassObj[evalIdx].class);
+                              jsonObj.tlm[j].classTemp = setClassObj[evalIdx].class;
+                              classSet = true;
+                              CommanderTlmDataElements[i].attr('data-cdr', JSON.stringify(jsonObj));
+                            }
+                          }
+                          
+                          if(classSet == false) {
+                            tlmObj.removeClass(jsonObj.tlm[j].classTemp);
+                          }
+                        }                      
+                      
+                        var updateText = true;
+                        
+                        if(jsonObj.tlm[j].hasOwnProperty('notext') == true) {
+                          if(jsonObj.tlm[j].notext == true) {
+                            updateText = false;
+                          }
+                        }
+                        
+                        if(updateText == true) {
+                          tlmObj.text(value);
+                        }
                       } else {
                         console.log(tlmObj);
                       }

@@ -7,15 +7,15 @@ table.table.table-condensed
     tr
       th Initialized
       td
-        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/GpsInitialized'}]}) ---
+        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/GpsInitialized', notext: true, class: [{eval: '==0', class: 'CDR-LED-RED'},{eval: '==1', class: 'CDR-LED-GREEN'}]}]})
     tr
       th Fault
       td
-        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/GpsFault'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/GpsFault', notext: true, class: [{eval: '==0', class: 'CDR-LED-OFF'},{eval: '==1', class: 'CDR-LED-RED'}]}]})
     tr
       th Timeout
       td
-        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/GpsTimeout'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/GpsTimeout', notext: true, class: [{eval: '==0', class: 'CDR-LED-OFF'},{eval: '==1', class: 'CDR-LED-RED'}]}]})
     tr
       th Alt Origin
       td
@@ -23,7 +23,7 @@ table.table.table-condensed
     tr
       th Fused
       td
-        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/GpsFused'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/GpsFused', notext: true, class: [{eval: '==0', class: 'cdr-led-yellow'},{eval: '==1', class: 'cdr-led-green'}]}]})
               
 footer.btn-group(role="group")      
   button.btn.cdr-primary(data-cdr={cmd:{name:'/PE/EnableGPS'}}) Enable

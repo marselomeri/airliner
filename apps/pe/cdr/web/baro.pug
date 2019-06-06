@@ -7,23 +7,23 @@ table.table.table-condensed
     tr
       th Initialized
       td
-        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/BaroInitialized'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/BaroInitialized', notext: true, class: [{eval: '==0', class: 'CDR-LED-RED'},{eval: '==1', class: 'CDR-LED-GREEN'}]}]})
     tr
       th Fault
       td
-        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/BaroFault'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/BaroFault', notext: true, class: [{eval: '==0', class: 'CDR-LED-OFF'},{eval: '==1', class: 'CDR-LED-RED'}]}]})
     tr
       th Alt Origin
       td
-        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/BaroAltOrigin'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/BaroAltOrigin'}]}) ---
     tr
       th Timeout
       td
-        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/BaroTimeout'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/BaroTimeout', notext: true, class: [{eval: '==0', class: 'CDR-LED-OFF'},{eval: '==1', class: 'CDR-LED-RED'}]}]})
     tr
       th Fused
       td
-        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/BaroFused'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/BaroFused', notext: true, class: [{eval: '==0', class: 'CDR-LED-YELLOW'},{eval: '==1', class: 'CDR-LED-GREEN'}]}]})
             
 footer.btn-group(role="group")      
   button.btn.cdr-primary(data-cdr={cmd:{name:'/PE/EnableBaro'}}) Enable

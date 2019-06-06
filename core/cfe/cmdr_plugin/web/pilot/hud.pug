@@ -1,3 +1,8 @@
+style.
+  svg line { 
+      shape-rendering: geometricPrecision;
+  }
+
 
 .cdr-display-container
   img#cdr-video.cdr-display-container-item.cdr-video(style='position:absolute; z-index: 5')
@@ -135,7 +140,7 @@ script.
     
             hdTicks.stop(true, true);
             textHeading.text( newHeading.toFixed( 0 ).toString() );
-            hdTicks.animate(HUD_UPDATE_RATE).x( -newHeading * pxPerDegree );
+            hdTicks.animate(HUD_UPDATE_RATE, '-').x( -newHeading * pxPerDegree );
         }
     }
     
@@ -157,11 +162,15 @@ script.
      */
     function updateHUDRoll( newRoll ) {
         if(Number.isNaN(newRoll) == false) {
-            pitchIndicator.stop(true, true);
+            var myMatrix=new SVG.Matrix(1,0,0,1,0,0)
+            
             rotation = newRoll;
-            pitchIndicator.rotate( 0 );
-            pitchIndicator.y( 0 );
-            pitchIndicator.animate(HUD_UPDATE_RATE).y( OffsetY ).rotate( rotation );
+
+            var myMatrixTranslated = myMatrix.rotate(rotation, hudWidth / 2, hudHeight / 2).translate(0, OffsetY);
+            
+            pitchIndicator.finish();
+            pitchIndicator.animate(HUD_UPDATE_RATE, '-').transform(myMatrixTranslated);
+            
       	}
     }
     
@@ -291,39 +300,40 @@ script.
           }
         }
     
-        /* draw a mask for preventing ticks from overflow */
-        var headingMask = hdTicks.mask();
-    
-        headingMask.rect( hdWidth, hdHeight ).attr( {
-          fill: '#ffffff',
-          x: ( hudWidth - hdWidth ) / 2,
-          y: hudHeight - hdHeight - 7,
-          rx: 5,
-          ry: 5,
-        } );
-    
-        hdTicksArea.maskWith( headingMask );
-    
         /* Draw center heading indicator. */
         var hdCenter = heading.group();
     
-        hdCenter.polyline( [
-          [ ( ( hudWidth + 20 ) / 2 ) + 10, hudHeight - hdHeight - 48 ],
-          [ ( ( hudWidth + 20 ) / 2 ) + 10, hudHeight - hdHeight - 18 ],
-          [ ( hudWidth + 20 ) / 2, hudHeight - hdHeight - 18 ],
-          [ hudWidth / 2, hudHeight - hdHeight - 8 ],
-          [ ( hudWidth - 20 ) / 2, hudHeight - hdHeight - 18 ],
-          [ ( ( hudWidth - 20 ) / 2 ) - 10, hudHeight - hdHeight - 18 ],
-          [ ( ( hudWidth - 20 ) / 2 ) - 10, hudHeight - hdHeight - 48 ]
-        ] ).attr( {
-          'fill': '#000',
-          'fill-opacity': bgOpacity
-        } );
-        textHeading = draw.text( '0' ).move( ( hudWidth / 2 ), hudHeight - hdHeight - 43 );
+        var headingIndicatorPolyLine = [
+            [ ( ( hudWidth + 20 ) / 2 ) + 10, hudHeight - hdHeight + 43 ],
+            [ ( ( hudWidth + 20 ) / 2 ) + 10, hudHeight - hdHeight + 10 ],
+            [ ( hudWidth + 20 ) / 2, hudHeight - hdHeight + 10 ],
+            [ hudWidth / 2, hudHeight - hdHeight - 8 ],
+            [ ( hudWidth - 20 ) / 2, hudHeight - hdHeight + 10 ],
+            [ ( ( hudWidth - 20 ) / 2 ) - 10, hudHeight - hdHeight + 10 ],
+            [ ( ( hudWidth - 20 ) / 2 ) - 10, hudHeight - hdHeight + 43 ]
+        ];
+        
+        var headingIndicatorMask = hdCenter.polyline( headingIndicatorPolyLine ).fill('#000000');
+        var headingMask = hdCenter.rect( hdWidth, hdHeight ).attr( {
+            fill: '#ffffff',
+            x: ( hudWidth - hdWidth ) / 2,
+            y: hudHeight - hdHeight - 7,
+            rx: 5,
+            ry: 5,
+        });
+        
+        var hdTicksMask = draw.mask();
+        hdTicksMask.add(headingMask);
+        hdTicksMask.add(headingIndicatorMask);
+        hdTicksArea.maskWith(hdTicksMask);
+    
+        hdCenter.polyline( headingIndicatorPolyLine ).fill('none').stroke({color: '#00ff00'});
+        
+        textHeading = draw.text( '0' ).move( ( hudWidth / 2 ), hudHeight - hdHeight + 13 );
         textHeading.font( {
-          fill: text_color,
-          anchor: 'middle',
-          size: 16
+            fill: text_color,
+            anchor: 'middle',
+            size: 16
         } );
     
         /* -------------------------
@@ -377,7 +387,7 @@ script.
                 y: y - 10,
                 'fill-opacity': bgOpacity,
               } );
-              var leftTextPitchLine = pitchIndicator.text( fixedPitch.toString() ).move( ( hudWidth - hrzWidth ) / 2 - 5, y - 7 );
+              var leftTextPitchLine = pitchIndicator.text( fixedPitch.toString() ).move( ( hudWidth - hrzWidth ) / 2 - 5, y - 9 );
               leftTextPitchLine.font( {
                 fill: '#00ff00',
                 anchor: 'end',
@@ -390,7 +400,7 @@ script.
                 y: y - 10,
                 'fill-opacity': bgOpacity,
               } );
-              var rightTextPitchLine = pitchIndicator.text( fixedPitch.toString() ).move( ( hudWidth + hrzWidth ) / 2 + 5, y - 7 );
+              var rightTextPitchLine = pitchIndicator.text( fixedPitch.toString() ).move( ( hudWidth + hrzWidth ) / 2 + 5, y - 9 );
               rightTextPitchLine.font( {
                 fill: '#00ff00',
                 anchor: 'start',
@@ -448,7 +458,7 @@ script.
                 y: y - 10,
                 'fill-opacity': bgOpacity,
               } );
-              var leftTextPitchLine = pitchIndicator.text( fixedPitch.toString() ).move( ( hudWidth - hrzWidth ) / 2 - 5, y - 7 );
+              var leftTextPitchLine = pitchIndicator.text( fixedPitch.toString() ).move( ( hudWidth - hrzWidth ) / 2 - 5, y - 9 );
               leftTextPitchLine.font( {
                 fill: '#00ff00',
                 anchor: 'end',
@@ -461,7 +471,7 @@ script.
                 y: y - 10,
                 'fill-opacity': bgOpacity,
               } );
-              var rightTextPitchLine = pitchIndicator.text( fixedPitch.toString() ).move( ( hudWidth + hrzWidth ) / 2 + 5, y - 7 );
+              var rightTextPitchLine = pitchIndicator.text( fixedPitch.toString() ).move( ( hudWidth + hrzWidth ) / 2 + 5, y - 9 );
               rightTextPitchLine.font( {
                 fill: '#00ff00',
                 anchor: 'start',
@@ -566,8 +576,6 @@ script.
             }
         }
     });
-    
-    
     
     setInterval(function () {
         var phi = Math.atan2( 2 * ( ( Q[ 2 ] * Q[ 3 ] ) + ( Q[ 0 ] * Q[ 1 ] ) ), 1.0 - 2.0 * ( Q[ 1 ] * Q[ 1 ] ) - ( Q[ 2 ] * Q[ 2 ] ) );
