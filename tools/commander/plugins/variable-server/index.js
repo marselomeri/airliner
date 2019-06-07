@@ -82,7 +82,20 @@ class VariableServer extends CdrGroundPlugin {
         
         this.vars = {};
         this.subscribers = {};
+        this.prevMsgRecv = 0;
+        this.prevParamsUpdated = 0;
+        this.prevParamsForwarded = 0;
+        
+        setInterval(function () {
+        	self.hk.content.msgRecvPerSecond = self.hk.content.msgRecvCount - self.prevMsgRecv;
+        	self.prevMsgRecv = self.hk.content.msgRecvCount;
 
+        	self.hk.content.paramsUpdatedPerSecond = self.hk.content.paramsUpdated - self.prevParamsUpdated;
+        	self.prevParamsUpdated = self.hk.content.paramsUpdated;
+
+        	self.hk.content.paramsForwardedPerSecond = self.hk.content.paramsForwarded - self.prevParamsForwarded;
+        	self.prevParamsForwarded = self.hk.content.paramsForwarded;
+        }, 1000);
 
         
         this.namespace.recv( config.get( 'jsonInputStreamID' ), function( message ) {
@@ -149,6 +162,8 @@ class VariableServer extends CdrGroundPlugin {
                             var updatedVariable = subscribersToUpdate[ subscriber ].variables[ itemID ];
 
                             updatedVariable[ 'sample' ] = [ variable.sample[ variable.sample.length - 1 ] ];
+                            
+                            self.hk.content.paramsForwarded++;
                         }
                     }
                 }
@@ -567,9 +582,13 @@ class VariableServer extends CdrGroundPlugin {
                 cmdAcceptCount: 0,
                 cmdRejectCount: 0,
                 msgRecvCount: 0,
+                msgRecvPerSecond: 0,
                 paramsUpdated: 0,
+                paramsUpdatedPerSecond: 0,
                 subscribers: 0,
                 subscriptions: 0,
+                paramsForwarded: 0,
+                paramsForwardedPerSecond: 0,
                 inputStreamID: config.get( 'jsonInputStreamID' ),
                 outputEventsStreamID: config.get( 'outputEventsStreamID' ),
                 varDefReqStreamID: config.get( 'varDefReqStreamID' ),
@@ -606,6 +625,15 @@ class VariableServer extends CdrGroundPlugin {
                     handlebarsContext: {
                         pluginName: config.name
                     }
+                },
+                subscriptions: {
+                    type: CdrGroundPlugin.ContentType.PANEL,
+                    shortDescription: 'Subscriptions',
+                    longDescription: 'Subscriptions',
+                    filePath: '/subscriptions.pug',
+                    handlebarsContext: {
+                        pluginName: config.name
+                    }
                 }
             }
         }
@@ -617,53 +645,67 @@ class VariableServer extends CdrGroundPlugin {
     initCommands() {
     	var self = this;
     	
-        var cmdReset = {
+        var cmdResetDef = {
             opsPath: '/' + config.name + '/reset',
             args: []
         }
-        this.addCommand(cmdReset, function(cmd) {
-        	self.hk.content.cmdAcceptCount = 0;
-        	self.hk.content.cmdRejectCount = 0;
-        	self.hk.content.msgRecvCount = 0;
-        	self.hk.content.paramsUpdated = 0;
-        });
+        this.addCommand(cmdResetDef, this.cmdReset);
         
-        var cmdSetInput = {
-            opsPath: '/' + config.name + '/setInput',
+        var cmdGetSubscribersDef = {
+            opsPath: '/' + config.name + '/getSubscribers',
+            returnType: 'Array',
+            args: []
+        }
+        this.addCommand(cmdGetSubscribersDef, this.cmdGetSubscribers);
+        
+        var cmdGetSubscriptionsDef = {
+            opsPath: '/' + config.name + '/getSubscriptions',
+            returnType: 'Array',
             args: [
                 {
-                    name:    'Port',
-                    type:    'uint16',
-                    bitSize: 16
+                    name:    'SubscriberID',
+                    type:    'char',
+                    bitSize: 400
                 }
             ]
         }
-        this.addCommand(cmdSetInput, this.setInput);
-
-        var cmdSetOutput = {
-            opsPath: '/' + config.name + '/setOutput',
-            args: [
-                {
-                    name:    'Port',
-                    type:    'uint16',
-                    bitSize: 16
-                },{
-                    name:    'Address',
-                    type:    'char',
-                    bitSize: 1024
-                }
-            ]
-        };
-        this.addCommand(cmdSetOutput, this.setOutput);
+        this.addCommand(cmdGetSubscriptionsDef, this.cmdGetSubscriptions);
     }
     
     
-    setInput(cmd) {
-
+    cmdReset(cmd) {
+    	this.hk.content.cmdAcceptCount   = 0;
+    	this.hk.content.cmdRejectCount   = 0;
+    	this.hk.content.msgRecvCount     = 0;
+    	this.hk.content.paramsUpdated    = 0;
+    	this.hk.content.paramsForwarded  = 0;
     };
     
     
-    setOutput(cmd) {
+    cmdGetSubscribers(cmd, cb) {
+    	var outSubscribers = [];
+    	for(var subID in this.subscribers) {
+    		outSubscribers.push(subID);
+    	}
+    	cb(outSubscribers)
+    }
+    
+    
+    cmdGetSubscriptions(cmd, cb) {
+    	console.log(cmd);
+    	var outSubscriptions = [];
+
+        for(var itemID in this.vars) {
+        	for(var i = 0; i < this.vars[itemID].subscribers.length; ++i) {
+        		if(this.vars[itemID].subscribers[i] === cmd.args.SubscriberID) {
+            		outSubscriptions.push(itemID);
+        		}
+        	}
+        }
+    	
+        console.log(outSubscriptions);
+    	
+    	cb(outSubscriptions);
     }
 };
 
