@@ -104,11 +104,13 @@ function NodeSelected( e, node ) {
       if ( response !== null ) {
         /* destrory previous layout, make new layout with the configuration
          * .lyt file and emit layout loaded event for dependencies to react */
+        UnbindCdrDataFromVariableServer(myLayout.container);
         myLayout.destroy();
         myLayout = new window.GoldenLayout( jsonObj, $( '#cdr-layout-container' ) );
         updateDragSources();
         window.dispatchEvent( llc );
-        InitLayout( myLayout );
+        console.log('NodeSelected');
+        InitLayout( myLayout );        
       } else {
         cu.logError( 'Layout | cannot be loaded from config file' )
       }

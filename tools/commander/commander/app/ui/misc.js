@@ -153,10 +153,12 @@ function navBarTooltips( node, JQObj ) {
 
                   function injectThis( x ) {
                     setTimeout( function() {
+                      UnbindCdrDataFromVariableServer(window.myLayout.container);
                       window.myLayout.destroy();
                       window.myLayout = new window.GoldenLayout( x, $( '#cdr-layout-container' ) );
                       updateDragSources();
                       window.dispatchEvent( llc );
+                      console.log('navBarTooltips');
                       window.InitLayout( myLayout );
                     }, 2000 )
 

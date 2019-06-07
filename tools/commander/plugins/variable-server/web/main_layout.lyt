@@ -1,4 +1,4 @@
-﻿{
+{
  "settings": {
   "hasHeaders": true,
   "constrainDragToContainer": false,
@@ -47,25 +47,56 @@
      "width": 100,
      "content": [
       {
-       "type": "stack",
-       "header": {},
+       "type": "row",
        "isClosable": true,
        "reorderEnabled": true,
        "title": "",
-       "activeItemIndex": 0,
-       "width": 25,
        "height": 100,
        "content": [
         {
-         "title": "Housekeeping",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "/ground/variable-server/hk?pluginName={{pluginName}}"
-         },
+         "type": "stack",
+         "header": {},
          "isClosable": true,
-         "reorderEnabled": true
+         "reorderEnabled": true,
+         "title": "",
+         "activeItemIndex": 0,
+         "width": 50,
+         "height": 100,
+         "content": [
+          {
+           "title": "Housekeeping",
+           "type": "component",
+           "componentName": "Blank",
+           "componentState": {
+            "text": "text",
+            "link": "/ground/variable-server/hk?pluginName=variable-server"
+           },
+           "isClosable": true,
+           "reorderEnabled": true
+          }
+         ]
+        },
+        {
+         "type": "stack",
+         "header": {},
+         "isClosable": true,
+         "reorderEnabled": true,
+         "title": "",
+         "activeItemIndex": 0,
+         "width": 50,
+         "content": [
+          {
+           "title": "Subscriptions",
+           "type": "component",
+           "componentName": "Blank",
+           "componentState": {
+            "text": "text",
+            "link": "/ground/variable-server/subscriptions?pluginName=variable-server"
+           },
+           "isClosable": true,
+           "reorderEnabled": true
+          }
+         ]
         }
        ]
       }
