@@ -223,8 +223,8 @@ int32 NAV::InitPipe()
 
     /* Init command pipe and subscribe to command messages */
     iStatus = CFE_SB_CreatePipe(&CmdPipeId,
-    NAV_CMD_PIPE_DEPTH,
-    NAV_CMD_PIPE_NAME);
+                                NAV_CMD_PIPE_DEPTH,
+                                NAV_CMD_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
         /* Subscribe to command messages */
@@ -245,7 +245,8 @@ int32 NAV::InitPipe()
         goto NAV_InitPipe_Exit_Tag;
     }
 
-    NAV_InitPipe_Exit_Tag: return iStatus;
+NAV_InitPipe_Exit_Tag: 
+    return iStatus;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -256,20 +257,11 @@ int32 NAV::InitPipe()
 void NAV::InitData()
 {
     /* Init housekeeping message. */
-    CFE_SB_InitMsg(&HkTlm,
-    NAV_HK_TLM_MID, sizeof(HkTlm), TRUE);
-
-    /* Init output messages */
-    /*CFE_SB_InitMsg(&VehicleLandDetectedMsg,
-     PX4_VEHICLE_LAND_DETECTED_MID, sizeof(PX4_VehicleLandDetectedMsg_t), TRUE);*/
+    CFE_SB_InitMsg(&HkTlm, NAV_HK_TLM_MID, sizeof(HkTlm), TRUE);
 
     /* Init output messages */
     /*CFE_SB_InitMsg(&FenceMsg,
      PX4_FENCE_MID, sizeof(PX4_FenceMsg_t), TRUE);*/
-
-    /* Init output messages */
-    /*CFE_SB_InitMsg(&ActuatorControls3Msg,
-     PX4_ACTUATOR_CONTROLS_3_MID, sizeof(PX4_ActuatorControlsMsg_t), TRUE);*/
 
     /* Init output messages */
     CFE_SB_InitMsg(&MissionResultMsg, PX4_MISSION_RESULT_MID,
@@ -281,12 +273,9 @@ void NAV::InitData()
 
     /* Init output messages */
     CFE_SB_InitMsg(&PositionSetpointTripletMsg,
-    PX4_POSITION_SETPOINT_TRIPLET_MID, sizeof(PX4_PositionSetpointTripletMsg_t),
-    TRUE);
-
-    /* Init output messages */
-    /*CFE_SB_InitMsg(&VehicleCommandMsgOut,
-     PX4_POSITION_SETPOINT_TRIPLET_MID, sizeof(PX4_VehicleCommandMsg_t), TRUE);*/
+                   PX4_POSITION_SETPOINT_TRIPLET_MID, 
+                   sizeof(PX4_PositionSetpointTripletMsg_t),
+                   TRUE);
 
     HkTlm.NavState = PX4_NAVIGATION_STATE_MANUAL;
     HkTlm.RtlState = RTL_STATE_NONE;
@@ -338,7 +327,8 @@ int32 NAV::InitApp()
     /* Updating application params from platform-nav-config-table */
     UpdateParamsFromTable();
 
-    NAV_InitApp_Exit_Tag: if (iStatus == CFE_SUCCESS)
+NAV_InitApp_Exit_Tag: 
+    if (iStatus == CFE_SUCCESS)
     {
         (void) CFE_EVS_SendEvent(NAV_INIT_INF_EID, CFE_EVS_INFORMATION,
                 "Initialized.  Version %d.%d.%d.%d",
@@ -403,18 +393,8 @@ int32 NAV::RcvSchPipeMsg(int32 iBlocking)
             memcpy(&CVT.HomePositionMsg, MsgPtr, sizeof(CVT.HomePositionMsg));
             break;
 
-        case PX4_SENSOR_COMBINED_MID:
-            memcpy(&CVT.SensorCombinedMsg, MsgPtr,
-                    sizeof(CVT.SensorCombinedMsg));
-            break;
-
         case PX4_MISSION_MID:
             memcpy(&CVT.MissionMsg, MsgPtr, sizeof(CVT.MissionMsg));
-            break;
-
-        case PX4_VEHICLE_GPS_POSITION_MID:
-            memcpy(&CVT.VehicleGpsPositionMsg, MsgPtr,
-                    sizeof(CVT.VehicleGpsPositionMsg));
             break;
 
         case PX4_VEHICLE_GLOBAL_POSITION_MID:
@@ -440,11 +420,6 @@ int32 NAV::RcvSchPipeMsg(int32 iBlocking)
             new_command_arrived = true;
             memcpy(&CVT.VehicleCommandMsg, MsgPtr,
                     sizeof(CVT.VehicleCommandMsg));
-            break;
-
-        case PX4_DISTANCE_SENSOR_MID:
-            memcpy(&CVT.DistanceSensorMsg, MsgPtr,
-                    sizeof(CVT.DistanceSensorMsg));
             break;
 
         default:
