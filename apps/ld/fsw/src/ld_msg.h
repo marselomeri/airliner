@@ -159,6 +159,59 @@ typedef struct
 
 }LD_HkTlm_t;
 
+
+/**
+ * \brief 
+ */
+typedef struct
+{
+    /**\brief   */
+    boolean GC_MinThrust;
+
+    /**\brief   */
+    boolean GC_AltitudeLock;
+
+    /**\brief   */
+    boolean GC_PositionLock;
+
+    /**\brief   */
+    boolean GC_InDescent;
+
+    /**\brief   */
+    boolean GC_HitGround;
+
+    /**\brief   */
+    boolean GC_HorMovement;
+
+    /**\brief   */
+    boolean GC_VertMovement;
+
+    /**\brief   */
+    boolean GC_ManualControlIdlingOrAutomatic;
+
+    /**\brief   */
+    boolean GroundContact;
+
+    /**\brief   */
+    boolean LD_GC_history_state;
+    
+    /**\brief   */
+    boolean LD_MinThrust;
+
+    /**\brief   */
+    boolean LD_Rotation;
+    
+    /**\brief   */
+    boolean LD_HorMovement;
+    
+    /**\brief   */
+    boolean LD_PositionLock;
+
+    /**\brief   */
+    boolean Landed;
+
+} LD_Diag_t;
+
 #ifdef __cplusplus
 }
 #endif

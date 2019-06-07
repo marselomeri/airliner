@@ -26,6 +26,12 @@ module.exports = class CfeCdrFlightAppsPlugin extends CdrFlightAppsPlugin {
                         shortDescription: 'Command and Data Handling',
                         longDescription: 'Command counters.',
                         filePath: 'cdh.pug'
+                    },
+                    diag: {
+                        type: CdrFlightAppsPlugin.ContentType.PANEL,
+                        shortDescription: 'Diagnostic',
+                        longDescription: 'Diagnostic',
+                        filePath: 'diag.pug'
                     }
                 }
             }

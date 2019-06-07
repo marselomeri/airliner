@@ -198,6 +198,9 @@ void LD::InitData() {
     /* Init output messages */
     CFE_SB_InitMsg(&VehicleLandDetectedMsg, PX4_VEHICLE_LAND_DETECTED_MID,
             sizeof(PX4_VehicleLandDetectedMsg_t), TRUE);
+            
+    CFE_SB_InitMsg(&DiagTlm, LD_DIAG_TLM_MID, sizeof(DiagTlm), TRUE);
+    
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -457,6 +460,17 @@ void LD::SendVehicleLandDetectedMsg() {
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
+/* Publish LD Diag                                             */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+void LD::SendDiag() {
+    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*) &DiagTlm);
+    CFE_SB_SendMsg((CFE_SB_Msg_t*) &DiagTlm);
+}
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
 /* Verify Command Length                                           */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -618,10 +632,20 @@ boolean LD::DetectGroundContactState() {
         horizontal_movement = sqrtf(CVT.VehicleLocalPositionMsg.VX * CVT.VehicleLocalPositionMsg.VX + CVT.VehicleLocalPositionMsg.VY * CVT.VehicleLocalPositionMsg.VY) > ld_params.lndmc_xy_vel_max;
 
         minimal_thrust = MinimalThrust();
+        OS_printf("minimal_thrust %i\n", minimal_thrust);
         altitude_lock = AltitudeLock();
         position_lock = altitude_lock && CVT.VehicleLocalPositionMsg.XY_Valid;
         in_descent = (CVT.VehicleLocalPositionMsg.VZ >= land_speed_threshold);
         hit_ground = in_descent && !vertical_movement;
+        
+//        DiagTlm.GC_MinThrust = minimal_thrust;
+//        DiagTlm.GC_AltitudeLock = altitude_lock;
+//        DiagTlm.GC_PositionLock = position_lock;
+//        DiagTlm.GC_InDescent = in_descent;
+//        DiagTlm.GC_HitGround = hit_ground;
+//        DiagTlm.GC_HorMovement = horizontal_movement;
+//        DiagTlm.GC_VertMovement = vertical_movement;
+//        DiagTlm.GC_ManualControlIdlingOrAutomatic = manual_control_idling_or_automatic;
         
         if ((minimal_thrust || hit_ground) && (!horizontal_movement || !position_lock) && (!vertical_movement || !altitude_lock) 
             && manual_control_idling_or_automatic)
@@ -633,6 +657,7 @@ boolean LD::DetectGroundContactState() {
             inGroundContact = false;
         }
 
+//        DiagTlm.GroundContact = inGroundContact;
     }
 
     return inGroundContact;
@@ -708,11 +733,19 @@ boolean LD::DetectLandedState() {
                         || (fabsf(CVT.VehicleAttitudeMsg.YawSpeed)
                                 > max_rotation_scaled);
 
+//        DiagTlm.LD_GC_history_state = ground_contact_history.getState();
+//        DiagTlm.LD_MinThrust = MinimalThrust();
+//        DiagTlm.LD_Rotation = rotation;
+//        DiagTlm.LD_HorMovement = horizontal_movement;
+//        DiagTlm.LD_PositionLock = PositionLock();
+
         if (ground_contact_history.getState() && MinimalThrust() && !rotation
                 && (!horizontal_movement || !PositionLock())) {
             isLandDetected = true;
             //return true;
         }
+
+//        DiagTlm.Landed = isLandDetected;
 
     }
     return isLandDetected;
@@ -890,6 +923,7 @@ void LD::Execute() {
 
     DetectStateChange();
     SendVehicleLandDetectedMsg();
+    SendDiag();
 }
 void LD::DetectStateChange() {
     /* When there is a change in state this function will return true flag */
