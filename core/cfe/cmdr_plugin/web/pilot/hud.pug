@@ -97,6 +97,7 @@ script.
     var hrzWidth;
     var cameraImage;
     var imageBuffer;
+    var hdgDegPerMajorTick = 15;
     
     /**
      * Quaternions
@@ -239,7 +240,7 @@ script.
         hdTicksArea = heading.group();
         hdTicks = hdTicksArea.group();
         for ( i = 0; i < ( 360 + 90 ); i++ ) {
-          if ( i % 5 == 0 ) {
+          if ( i % hdgDegPerMajorTick == 0 ) {
     
             x = ( ( hudWidth ) / 2 ) + ( pxPerDegree * i );
     
@@ -269,7 +270,7 @@ script.
           }
         }
         for ( i = 0; i > ( -360 - 90 ); i-- ) {
-          if ( i % 5 == 0 ) {
+          if ( i % hdgDegPerMajorTick == 0 ) {
     
             x = ( ( hudWidth ) / 2 ) + ( pxPerDegree * i );
     

@@ -3,19 +3,19 @@ table.table.table-condensed
     tr
       th Acc[0]
       td
-        div(data-cdr={tlm:[{name:'/PX4/PX4_SensorCombinedMsg_t/Acc[0]'}]}) ---
+        div(data-cdr={tlm:[{name:'/PX4/PX4_SensorCombinedMsg_t/Acc[0]', format:'%.3f'}]}) ---
     tr
       th Acc[1]
       td
-        div(data-cdr={tlm:[{name:'/PX4/PX4_SensorCombinedMsg_t/Acc[1]'}]}) ---
+        div(data-cdr={tlm:[{name:'/PX4/PX4_SensorCombinedMsg_t/Acc[1]', format:'%.3f'}]}) ---
     tr
       th Acc[2]
       td
-        div(data-cdr={tlm:[{name:'/PX4/PX4_SensorCombinedMsg_t/Acc[2]'}]}) ---
+        div(data-cdr={tlm:[{name:'/PX4/PX4_SensorCombinedMsg_t/Acc[2]', format:'%.3f'}]}) ---
     tr
       th AccIntegralDt
       td
-        div(data-cdr={tlm:[{name:'/PX4/PX4_SensorCombinedMsg_t/AccIntegralDt'}]}) ---
+        div(data-cdr={tlm:[{name:'/PX4/PX4_SensorCombinedMsg_t/AccIntegralDt', format:'%.6f'}]}) ---
     tr
       th AccRelTimeInvalid
       td
@@ -27,11 +27,11 @@ table.table.table-condensed
     tr
       th BaroAlt
       td
-        div(data-cdr={tlm:[{name:'/PX4/PX4_SensorCombinedMsg_t/BaroAlt'}]}) ---
+        div(data-cdr={tlm:[{name:'/PX4/PX4_SensorCombinedMsg_t/BaroAlt', format:'%.2f'}]}) ---
     tr
       th BaroRelTimeInvalid
       td
-        div(data-cdr={tlm:[{name:'/PX4/PX4_SensorCombinedMsg_t/BaroRelTimeInvalid'}]}) ---
+        div.led-basic(data-cdr={tlm:[{name:'/PX4/PX4_SensorCombinedMsg_t/BaroRelTimeInvalid', notext: true, class: [{eval: '==0', class: 'CDR-LED-OFF'},{eval: '==1', class: 'CDR-LED-RED'}]}]})
     tr
       th BaroTemp
       td
@@ -43,35 +43,35 @@ table.table.table-condensed
     tr
       th GyroIntegralDt
       td
-        div(data-cdr={tlm:[{name:'/PX4/PX4_SensorCombinedMsg_t/GyroIntegralDt'}]}) ---
+        div(data-cdr={tlm:[{name:'/PX4/PX4_SensorCombinedMsg_t/GyroIntegralDt', format:'%.6f'}]}) ---
     tr
       th GyroRad[0]
       td
-        div(data-cdr={tlm:[{name:'/PX4/PX4_SensorCombinedMsg_t/GyroRad[0]'}]}) ---
+        div(data-cdr={tlm:[{name:'/PX4/PX4_SensorCombinedMsg_t/GyroRad[0]', format:'%.6f'}]}) ---
     tr
       th GyroRad[1]
       td
-        div(data-cdr={tlm:[{name:'/PX4/PX4_SensorCombinedMsg_t/GyroRad[1]'}]}) ---
+        div(data-cdr={tlm:[{name:'/PX4/PX4_SensorCombinedMsg_t/GyroRad[1]', format:'%.6f'}]}) ---
     tr
       th GyroRad[2]
       td
-        div(data-cdr={tlm:[{name:'/PX4/PX4_SensorCombinedMsg_t/GyroRad[2]'}]}) ---
+        div(data-cdr={tlm:[{name:'/PX4/PX4_SensorCombinedMsg_t/GyroRad[2]', format:'%.6f'}]}) ---
     tr
       th Mag[0]
       td
-        div(data-cdr={tlm:[{name:'/PX4/PX4_SensorCombinedMsg_t/Mag[0]'}]}) ---
+        div(data-cdr={tlm:[{name:'/PX4/PX4_SensorCombinedMsg_t/Mag[0]', format:'%.3f'}]}) ---
     tr
       th Mag[1]
       td
-        div(data-cdr={tlm:[{name:'/PX4/PX4_SensorCombinedMsg_t/Mag[1]'}]}) ---
+        div(data-cdr={tlm:[{name:'/PX4/PX4_SensorCombinedMsg_t/Mag[1]', format:'%.3f'}]}) ---
     tr
       th Mag[2]
       td
-        div(data-cdr={tlm:[{name:'/PX4/PX4_SensorCombinedMsg_t/Mag[2]'}]}) ---
+        div(data-cdr={tlm:[{name:'/PX4/PX4_SensorCombinedMsg_t/Mag[2]', format:'%.3f'}]}) ---
     tr
       th MagRelTimeInvalid
       td
-        div(data-cdr={tlm:[{name:'/PX4/PX4_SensorCombinedMsg_t/MagRelTimeInvalid'}]}) ---
+        div.led-basic(data-cdr={tlm:[{name:'/PX4/PX4_SensorCombinedMsg_t/MagRelTimeInvalid', notext: true, class: [{eval: '==0', class: 'CDR-LED-OFF'},{eval: '==1', class: 'CDR-LED-RED'}]}]})
     tr
       th MagTimestampRelative
       td
