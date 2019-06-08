@@ -92,14 +92,10 @@ function CommanderClient() {
 
         if (tlmSubOpsPaths.length > 0) {
             self.socket.emit('subscribe', tlmSubOpsPaths);
-            console.log('Subscribed to ' + tlmSubOpsPaths.length
-                    + ' items from the server.');
         }
 
         if (tlmUnsubOpsPaths.length > 0) {
             self.socket.emit('unsubscribe', tlmUnsubOpsPaths);
-            console.log('Unsubscribed to ' + tlmUnsubOpsPaths.length
-                    + ' items from the server.');
         }
 
         self.socket.emit('getMessageIDsAndMacros', {}, function(results) {
@@ -404,7 +400,6 @@ CommanderClient.prototype.getTlmDefs = function(tlmObj, cb) {
             cb(tlmDef);
         });
     }
-    ;
 };
 
 /**
@@ -444,6 +439,7 @@ CommanderClient.prototype.updateTelemetry = function(items) {
                      * get a handle to the subscriber record.
                      */
                     var subscriptionUpdate = subscribersToUpdate[cbID.id];
+                    
                 } else {
                     /*
                      * This is the first time we've added an item to this
@@ -483,6 +479,8 @@ CommanderClient.prototype.updateTelemetry = function(items) {
 
         if (typeof cb === 'function') {
             cb(subUpdate.items);
+        } else {
+        	console.log('Callback is not a function');
         }
     }
 }
@@ -497,7 +495,6 @@ CommanderClient.prototype.unsubscribe = function(tlmObj) {
     if (this.isSocketConnected) {
         for (var i = 0; i < tlmObj.length; ++i) {
             var opsPath = tlmObj[i].name;
-            console.log('Unsubscribe ' + opsPath + '  ' + this.subscriptions[opsPath].refCount);
         	
             /* Has this opsPath already been subscribed to? */
             if (this.subscriptions.hasOwnProperty(opsPath) == false) {
@@ -514,8 +511,25 @@ CommanderClient.prototype.unsubscribe = function(tlmObj) {
                      * it to be unsubscribed.
                      */
                     this.subscriptions[opsPath].pendingAction = 'unsubscribe';
+                    this.subscriptions[opsPath].cb = [];
                 }
             }
+        }
+    }
+};
+
+/**
+ * Unsubscribe all telemetry
+ * 
+ * @param {Object}
+ *                tlmObj Telemetry object
+ */
+CommanderClient.prototype.unsubscribeAll = function() {
+    if (this.isSocketConnected) {
+        for(var opsPath in this.subscriptions) {
+            this.subscriptions[opsPath].pendingAction = 'unsubscribe';
+            this.subscriptions[opsPath].cb = [];
+            this.subscriptions[opsPath].refCount = 0;
         }
     }
 };
@@ -554,8 +568,6 @@ CommanderClient.prototype.subscribe = function(tlmObj, cb) {
             }
             this.subscriptions[opsPath].cb.push(cbID);
             this.subscriptions[opsPath].refCount++;
-            
-            console.log('Subscribe ' + opsPath + '  ' + this.subscriptions[opsPath].refCount);
         }
         
         return id;

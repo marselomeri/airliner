@@ -242,6 +242,10 @@ module.exports = class Commander extends EventEmitter {
                 self.addSubscription( socket.subscriberID, opsPaths );
             } );
         
+            socket.on( 'unsubscribe', function( opsPaths ) {
+                self.removeSubscription( socket.subscriberID, opsPaths );
+            } );
+        
             socket.on( 'enable-stream', function( streamName ) {
                 socket.enabledStreams[ streamName ] = true;
             } );

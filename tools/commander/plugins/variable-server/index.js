@@ -202,10 +202,10 @@ class VariableServer extends CdrGroundPlugin {
                 }
             } else if ( req.cmd === 'removeSubscription' ) {
                 if ( typeof req.opsPath === 'string' || req.opsPath instanceof String ) {
-                    self.removeSubscription( req, cb );
+                    self.removeSubscription( req.subscriberID, req.opsPath, cb );
                 } else if ( Array.isArray( req.opsPath ) ) {
                     for ( var i = 0; i < req.opsPath.length; ++i ) {
-                        self.removeSubscription( req.opsPath[ i ], cb );
+                        self.removeSubscription( req.subscriberID, req.opsPath[ i ], cb );
                     }
                 } else {
                     self.logError( 'Unsubscribe request invalid. \'' + req + '\'' );
@@ -548,19 +548,22 @@ class VariableServer extends CdrGroundPlugin {
 
 
     /**
-     * Remove subscriber for variable (opsPath) for associated callback
+     * Remove subscription for variable (opsPath) for associated callback
      * @param  {string}   opsPath operation path
      * @param  {Function} cb      callback function
      */
-    removeSubscription( opsPath, cb ) {
-        if ( this.vars.hasOwnProperty( opsPath ) == true ) {
-            /* We've already received this or have a predefinition. */
-            var variable = this.vars[ opsPath ];
+    removeSubscription( subscriberID, opsPath, cb ) {
+        var variable = this.vars[ opsPath ];
 
-            if ( variable.hasOwnProperty( 'subscribers' ) == true ) {
-                variable.subscribers = [];
+        for( var i = 0; i < variable.subscribers.length; i++){ 
+            if ( variable.subscribers[i] === subscriberID) {
+                variable.subscribers.splice(i, 1); 
+                i--;
             }
         }
+            
+        /* TODO - Remove the callbacks. */
+        //this.subscribers[ subscriberID ]( outVar );
     }
 
 
@@ -692,7 +695,6 @@ class VariableServer extends CdrGroundPlugin {
     
     
     cmdGetSubscriptions(cmd, cb) {
-    	console.log(cmd);
     	var outSubscriptions = [];
 
         for(var itemID in this.vars) {
@@ -702,8 +704,6 @@ class VariableServer extends CdrGroundPlugin {
         		}
         	}
         }
-    	
-        console.log(outSubscriptions);
     	
     	cb(outSubscriptions);
     }
