@@ -497,7 +497,8 @@ CommanderClient.prototype.unsubscribe = function(tlmObj) {
     if (this.isSocketConnected) {
         for (var i = 0; i < tlmObj.length; ++i) {
             var opsPath = tlmObj[i].name;
-
+            console.log('Unsubscribe ' + opsPath + '  ' + this.subscriptions[opsPath].refCount);
+        	
             /* Has this opsPath already been subscribed to? */
             if (this.subscriptions.hasOwnProperty(opsPath) == false) {
                 /*
@@ -506,22 +507,16 @@ CommanderClient.prototype.unsubscribe = function(tlmObj) {
                  */
             } else {
                 var subscription = this.subscriptions[opsPath];
-                for ( var i in subscription.cb) {
-                    delete subscription.cb[i];
-                }
-
-                if (subscription.cb.length === 0) {
+                subscription.refCount--;
+                if (subscription.refCount <= 0) {
                     /*
                      * There are no more subscribers for this opsPath. Schedule
                      * it to be unsubscribed.
                      */
                     this.subscriptions[opsPath].pendingAction = 'unsubscribe';
                 }
-                ;
             }
-            ;
         }
-        ;
     }
 };
 
@@ -553,10 +548,14 @@ CommanderClient.prototype.subscribe = function(tlmObj, cb) {
                  */
                 this.subscriptions[opsPath] = {
                     pendingAction : 'subscribe',
-                    cb : []
+                    cb : [],
+                    refCount : 0
                 };
             }
             this.subscriptions[opsPath].cb.push(cbID);
+            this.subscriptions[opsPath].refCount++;
+            
+            console.log('Subscribe ' + opsPath + '  ' + this.subscriptions[opsPath].refCount);
         }
         
         return id;
