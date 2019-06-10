@@ -242,6 +242,10 @@ module.exports = class Commander extends EventEmitter {
                 self.addSubscription( socket.subscriberID, opsPaths );
             } );
         
+            socket.on( 'unsubscribe', function( opsPaths ) {
+                self.removeSubscription( socket.subscriberID, opsPaths );
+            } );
+        
             socket.on( 'enable-stream', function( streamName ) {
                 socket.enabledStreams[ streamName ] = true;
             } );
@@ -294,9 +298,9 @@ module.exports = class Commander extends EventEmitter {
         
         
             function updateTelemetry( update ) {
-                socket.volatile.emit( 'telemetry-update', update );
+                socket.emit( 'telemetry-update', update );
             }
-        
+
             for ( var i in self.registeredStreams ) {
                 var streamName = self.registeredStreams[ i ].streamName;
                 self.defaultInstance.recv( streamName, function( newData ) {
@@ -338,7 +342,7 @@ module.exports = class Commander extends EventEmitter {
 
         this.defaultInstance.recv( 'advertise-stream', function( streamName ) {
             self.registeredStreams.push( {
-                treamName: streamName
+                streamName: streamName
             } );
         } );
     }
@@ -497,7 +501,7 @@ module.exports = class Commander extends EventEmitter {
      */
     getDefaultLayout( cb ) {
         /* is a stub needs to go in some configuration */
-        var layout = fs.readFileSync( global.CDR_WORKSPACE + '/plugins/cfe/web/default.lyt' );
+        var layout = fs.readFileSync( global.CDR_WORKSPACE + '/plugins/cfe/web/pilot/main_layout.lyt' );
         cb( JSON.parse( layout ) );
     }
 

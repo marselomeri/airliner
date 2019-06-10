@@ -3,6 +3,9 @@ cdr-nav-iconshtml(lang='en-us')
     meta(charset='utf-8')
     meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
     meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
+    meta(http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate")
+    meta(http-equiv="Pragma" content="no-cache")
+    meta(http-equiv="Expires" content="0")
     title Commander
     <!-- JS Libraries -->
     script(type="text/javascript" src="/scripts/popper.js/dist/umd/popper.min.js")
@@ -57,6 +60,7 @@ cdr-nav-iconshtml(lang='en-us')
     
     <!--script(type="text/javascript" src="/scripts/jquery-bootgrid/dist/jquery.bootgrid.min.js")-->
     <!--script(type="text/javascript" src="/scripts/jquery-bootgrid/dist/jquery.bootgrid.fa.min.js")-->
+    
 
 
     
@@ -157,338 +161,346 @@ cdr-nav-iconshtml(lang='en-us')
     <!-- Custom Scripts -->
     
     script(type="text/javascript").
-      
-      var targetNodes         = $("body");
-      var MutationObserver    = window.MutationObserver || window.WebKitMutationObserver;
-      var myObserver          = new MutationObserver (mutationHandler);
-      var obsConfig           = { childList: true, characterData: true, attributes: true, subtree: true };
-
-      //--- Add a target node to the observer. Can only add one node at a time.
-      targetNodes.each ( function () {
-        myObserver.observe (this, obsConfig);
-      });
 
       var CommanderTlmDataElements = [];
       
-      function mutationHandler (mutationRecords) {
-        mutationRecords.forEach ( function (mutation) {
-          if (typeof mutation.addedNodes == "object" && mutation.addedNodes.length > 0) {
-            var jq = $(mutation.addedNodes);
-            
-            jq.find('[data-cdr]').not('.cdr-bound').each(function () {
+      function UnbindCdrDataFromVariableServer(jqObj) {
+          if(typeof jqObj === 'undefined') {
+              jqObj = $('body');
+          }
+
+          jqObj.find('[data-cdr].cdr-bound').each(function () {
               var obj = $(this).attr('data-cdr');
               
               var jsonObj;
               if (typeof obj === 'string' || obj instanceof String) {
-                /* It's a string, so convert it to an object. */
-                jsonObj = JSON.parse(obj);
+                  /* It's a string, so convert it to an object. */
+                  jsonObj = JSON.parse(obj);
               }
               else if (typeof obj === 'object' || obj instanceof Object) {
-                /* It's alaready an object, so just reference it. */
-                jsonObj = obj;
+                  /* It's alaready an object, so just reference it. */
+                  jsonObj = obj;
               }
               else {
-                /* It's something else that we don't understand.  Skip it. */
-                console.log('data-cdr improperly formatted.  Must be either a string or an object.');
-                return;
+                  /* It's something else that we don't understand.  Skip it. */
+                  console.log('data-cdr improperly formatted.  Must be either a string or an object.');
+                  return;
               }
               
               if (jsonObj.hasOwnProperty('tlm')) {
-                /* This is a telemetry object. */
-                session.subscribe(jsonObj.tlm, processTelemetryUpdate);
-                //session.getTlmInfo(jsonObj,processTlmInfo);
-                CommanderTlmDataElements.push($(this));
-                $(this).addClass('cdr-bound');
-              }
-              if (jsonObj.hasOwnProperty('cmd')) {
-                /* This is a command object. */
-                var cmdObj = jsonObj.cmd;
-                var btnObj = $(this);
-                $(this).addClass('cdr-bound');
-                session.getCmdDef({name:cmdObj.name}, function (cmdInfo) {
-                  if (cmdObj.hasOwnProperty('uuid')) {
-                    /* We already bound this element. */
-                  } else {
-                    var uuid = generateUUID();
-                    cmdInfo.uuid = uuid;
-                    cmdObj.uuid = uuid;
-                    btnObj.attr('data-cdr', JSON.stringify(jsonObj));
-                    /* Copy any arguments we have from the command button into the cmdInfo struct. */
-                    if (cmdObj.hasOwnProperty('argument')) {
-                      for (i = 0; i < cmdObj.argument.length; i++) {
-                        for (j = 0; j < cmdInfo.argument.length; j++) {
-                          if (cmdInfo.argument[j].name == cmdObj.argument[i].name) {
-                            cmdInfo.argument[j].value = cmdObj.argument[i].value;
-                          }
-                        }
+                  /* This is a telemetry object. */
+                  session.unsubscribe(jsonObj.tlm);
+                  
+                  for(var i = CommanderTlmDataElements.length - 1; i >= 0; i--) {
+                      var tlmDataObj = CommanderTlmDataElements[i].attr('data-cdr');
+                      var tlmDataJsonObj;
+		              
+                      if (typeof tlmDataObj === 'string' || tlmDataObj instanceof String) {
+                          /* It's a string, so convert it to an object. */
+                          tlmDataJsonObj = JSON.parse(tlmDataObj);
+                      } else if (typeof tlmDataObj === 'object' || tlmDataObj instanceof Object) {
+                          /* It's already an object, so just reference it. */
+                          tlmDataJsonObj = tlmDataObj;
+                      } else {
+                          /* It's something else that we don't understand.  Skip it. */
+                          console.log('data-cdr improperly formatted.  Must be either a string or an object.');
+                          return;
                       }
-                    };
-                      
-                    if ( isTemplateCommand( cmdInfo ) == false ) {
-                      /*
-                       * This is a fully instantiated command. No need to
-                       * create a popup form. Just send the command when
-                       * the user clicks the button.
-                       */
-                      var args = {};
-                      if ( cmdInfo.hasOwnProperty( 'argument' ) ) {
-                        for ( var i = 0; i < cmdInfo.argument.length; i++ ) {
-                          args[ cmdInfo.argument[ i ].name ] = cmdInfo.argument[ i ].value
-                        }
+                  
+                      if(tlmDataJsonObj.uuid === jsonObj.uuid) {
+                          CommanderTlmDataElements.splice(i, 1);
                       }
-                      btnObj[ 0 ].onclick = function( eventObject ) {
-                        var cb = undefined;
-                        if(cmdInfo.hasOwnProperty('returnType') == true) {
-                          cb = function(error, response) {
-                            var text = 'Error: ' + error + '\nResponse: ' + response;
-                            alert(text);
-                          }
-                        }
-                        session.sendCommand( {
-                          ops_path: cmdInfo.name,
-                          args: args
-                        }, cb );
-                      };
-                    } else {
-                      /*
-                       * This is not a fully instantiated command. We need
-                       * to present a popup form to allow the user to
-                       * enter the remaining command arguments before
-                       * sending the command.
-                       *
-                       * First, generate UUIDs to be used later as element
-                       * IDs.
-                       */
-                      for ( i = 0; i < cmdInfo.argument.length; i++ ) {
-                        cmdInfo.argument[ i ].uuid = uuid + "_" + cmdInfo.argument[ i ].name;
-                      }
-                      /*
-                       * Next set stringLength for string parameters to be
-                       * used for form validation later.
-                       */
-                      for ( i = 0; i < cmdInfo.argument.length; i++ ) {
-                        if ( cmdInfo.argument[ i ].type === 'string' ) {
-                          /*
-                           * Add a new stringLength (in bytes)
-                           * attribute for parameter validation later.
-                           */
-                          cmdInfo.argument[ i ].stringLength = cmdOut.argument[ i ].bitSize / 8;
-                        }
-                      }
-      
-                      /* Make button fire modal */
-                      btnObj.attr( 'data-toggle', 'modal' );
-                      btnObj.attr( 'data-target', '#CommandInputForm' );
-                      btnObj.attr( 'data-title', 'Submit ' + cmdInfo.name + ' Arguments' );
-                      btnObj.attr( 'data-submit', 'sendCmd' );
-                      var argArray = [];
-      
-                      for ( var i in cmdInfo.argument ) {
-                        var label = cmdInfo.argument[ i ].name;
-                        var type = cmdInfo.argument[ i ].type;
-                        var value = cmdInfo.argument[ i ].value;
-                        switch ( type ) {
-                          case 'char':
-                            {
-                              /* integer action */
-                              argArray.push( {
-                                'label': label,
-                                'type': 'field',
-                                'dtype': 'text',
-                                'value': value
-                              } );
-                              break;
-                            }
-      
-                          case 'uint8':
-                            {
-                              /* integer action */
-                              argArray.push( {
-                                'label': label,
-                                'type': 'field',
-                                'dtype': 'integer',
-                                'value': value
-                              } );
-                              break;
-                            }
-      
-                          case 'int8':
-                            {
-                              /* integer action */
-                              argArray.push( {
-                                'label': label,
-                                'type': 'field',
-                                'dtype': 'integer',
-                                'value': value
-                              } );
-                              break;
-                            }
-      
-                          case 'string':
-                            {
-                              /* integer action */
-                              argArray.push( {
-                                'label': label,
-                                'type': 'field',
-                                'dtype': 'text',
-                                'value': value
-                              } );
-                              break;
-                            }
-      
-                          case 'uint16':
-                            {
-                              /* integer action */
-                              argArray.push( {
-                                'label': label,
-                                'type': 'field',
-                                'dtype': 'text',
-                                'value': value
-                              } );
-                              break;
-                            }
-      
-                          case 'int16':
-                            {
-                              /* integer action */
-                              argArray.push( {
-                                'label': label,
-                                'type': 'field',
-                                'dtype': 'text',
-                                'value': value
-                              } );
-                              break;
-                            }
-      
-                          case 'uint32':
-                            {
-                              /* integer action */
-                              argArray.push( {
-                                'label': label,
-                                'type': 'field',
-                                'dtype': 'text',
-                                'value': value
-                              } );
-                              break;
-                            }
-      
-                          case 'int32':
-                            {
-                              /* integer action */
-                              argArray.push( {
-                                'label': label,
-                                'type': 'field',
-                                'dtype': 'text',
-                                'value': value
-                              } );
-                              break;
-                            }
-      
-                          case 'float':
-                            {
-                              /* integer action */
-                              argArray.push( {
-                                'label': label,
-                                'type': 'field',
-                                'dtype': 'float',
-                                'value': value
-                              } );
-                              break;
-                            }
-      
-                          case 'double':
-                            {
-                              /* integer action */
-                              argArray.push( {
-                                'label': label,
-                                'type': 'field',
-                                'dtype': 'float',
-                                'value': value
-                              } );
-                              break;
-                            }
-      
-                          case 'boolean':
-                            {
-                              /* integer action */
-                              argArray.push( {
-                                'label': label,
-                                'type': 'field',
-                                'dtype': 'integer',
-                                'value': value
-                              } );
-                              break;
-                            }
-      
-                          case 'uint64':
-                            {
-                              /* integer action */
-                              argArray.push( {
-                                'label': label,
-                                'type': 'field',
-                                'dtype': 'text',
-                                'value': value
-                              } );
-                              break;
-                            }
-      
-                          case 'int64':
-                            {
-                              /* integer action */
-                              argArray.push( {
-                                'label': label,
-                                'type': 'field',
-                                'dtype': 'text',
-                                'value': value
-                              } );
-                              break;
-                            }
-      
-      
-                        }
-                        btnObj.attr( 'data-custom', JSON.stringify( argArray ) );
-                      }
-                    }
                   }
-                });
-              };
-            });
-          };
-          
-          if (typeof mutation.removedNodes == "object" && mutation.removedNodes.length > 0) {
-            var jq = $(mutation.removedNodes);
+              }
+          });
+      };
+      
+      
+      function BindCdrDataToVariableServer(jqObj) {
+          if(typeof jqObj === 'undefined') {
+              jqObj = $('body');
+          }
             
-            jq.find('[data-cdr],.cdr-bound').each(function () {
+          jqObj.find('[data-cdr]').not('.cdr-bound').each(function () {
               var obj = $(this).attr('data-cdr');
               
               var jsonObj;
               if (typeof obj === 'string' || obj instanceof String) {
-                /* It's a string, so convert it to an object. */
-                jsonObj = JSON.parse(obj);
+                  /* It's a string, so convert it to an object. */
+                  jsonObj = JSON.parse(obj);
               }
               else if (typeof obj === 'object' || obj instanceof Object) {
-                /* It's alaready an object, so just reference it. */
-                jsonObj = obj;
+                  /* It's alaready an object, so just reference it. */
+                  jsonObj = obj;
               }
               else {
-                /* It's something else that we don't understand.  Skip it. */
-                return;
+                  /* It's something else that we don't understand.  Skip it. */
+                  console.log('data-cdr improperly formatted.  Must be either a string or an object.');
+                  return;
               }
               
-              //if (jsonObj.hasOwnProperty('tlm')) {
-              //  /* This is a telemetry object. */
-              //  session.unsubscribe(jsonObj.tlm);
-              //  $(this).removeClass('cdr-bound');
-              //}
-              //if (jsonObj.hasOwnProperty('cmd')) {
-              //  /* This is a command object. */
-              //  var cmdObj = jsonObj.cmd;
-              //}
-            });
-          }
-        });
-      };      
+              if (jsonObj.hasOwnProperty('tlm')) {
+                  /* This is a telemetry object. */
+                  var tlmObj = jsonObj.tlm;
+                  
+                  if (jsonObj.hasOwnProperty('uuid')) {
+                      /* We already bound this element. */
+                  } else {
+                      jsonObj.uuid = generateUUID();
+                      $(this).attr('data-cdr', JSON.stringify(jsonObj));
+                      session.subscribe(tlmObj, processTelemetryUpdate);
+                      CommanderTlmDataElements.push($(this));
+                      $(this).addClass('cdr-bound');
+                  }
+              }
+              if (jsonObj.hasOwnProperty('cmd')) {
+                  /* This is a command object. */
+                  var cmdObj = jsonObj.cmd;
+                  var btnObj = $(this);
+                  $(this).addClass('cdr-bound');
+                  if (cmdObj.hasOwnProperty('uuid')) {
+                      /* We already bound this element. */
+                  } else {
+                      session.getCmdDef({name:cmdObj.name}, function (cmdInfo) {
+                          var uuid = generateUUID();
+                          cmdInfo.uuid = uuid;
+                          cmdObj.uuid = uuid;
+                          btnObj.attr('data-cdr', JSON.stringify(jsonObj));
+                          /* Copy any arguments we have from the command button into the cmdInfo struct. */
+                          if (cmdObj.hasOwnProperty('argument')) {
+                            for (i = 0; i < cmdObj.argument.length; i++) {
+                              for (j = 0; j < cmdInfo.argument.length; j++) {
+                                  if (cmdInfo.argument[j].name == cmdObj.argument[i].name) {
+                                      cmdInfo.argument[j].value = cmdObj.argument[i].value;
+                                  }
+                              }
+                            }
+                          }
+                      
+                          if ( isTemplateCommand( cmdInfo ) == false ) {
+                              /*
+                               * This is a fully instantiated command. No need to
+                               * create a popup form. Just send the command when
+                               * the user clicks the button.
+                               */
+                              var args = {};
+                              if ( cmdInfo.hasOwnProperty( 'argument' ) ) {
+                                  for ( var i = 0; i < cmdInfo.argument.length; i++ ) {
+                                      args[ cmdInfo.argument[ i ].name ] = cmdInfo.argument[ i ].value
+                                  }
+                              }
+                              btnObj[ 0 ].onclick = function( eventObject ) {
+                                  var cb = undefined;
+                                  if(cmdInfo.hasOwnProperty('returnType') == true) {
+                                      cb = function(error, response) {
+                                          var text = 'Error: ' + error + '\nResponse: ' + response;
+                                          alert(text);
+                                      }
+                                  }
+                        
+                                  if(typeof cmdObj.cb === 'function') {
+                                      cb = cmdObj.cb;  
+                                  } else if(typeof cmdObj.cb === 'string') {
+                                      cb = window[cmdObj.cb];
+                                  }
+
+                                  session.sendCommand( {
+                                      ops_path: cmdInfo.name,
+                                      args: args
+                                  }, cb );
+                              };
+                          } else {
+                              /*
+                               * This is not a fully instantiated command. We need
+                               * to present a popup form to allow the user to
+                               * enter the remaining command arguments before
+                               * sending the command.
+                               *
+                               * First, generate UUIDs to be used later as element
+                               * IDs.
+                               */
+                              for ( i = 0; i < cmdInfo.argument.length; i++ ) {
+                                  cmdInfo.argument[ i ].uuid = uuid + "_" + cmdInfo.argument[ i ].name;
+                              }
+                              /*
+                               * Next set stringLength for string parameters to be
+                               * used for form validation later.
+                               */
+                              for ( i = 0; i < cmdInfo.argument.length; i++ ) {
+                                  if ( cmdInfo.argument[ i ].type === 'string' ) {
+                                      /*
+                                       * Add a new stringLength (in bytes)
+                                       * attribute for parameter validation later.
+                                       */
+                                      cmdInfo.argument[ i ].stringLength = cmdOut.argument[ i ].bitSize / 8;
+                                  }
+                              }
       
+                              /* Make button fire modal */
+                              btnObj.attr( 'data-toggle', 'modal' );
+                              btnObj.attr( 'data-target', '#CommandInputForm' );
+                              btnObj.attr( 'data-title', 'Submit ' + cmdInfo.name + ' Arguments' );
+                              btnObj.attr( 'data-submit', 'sendCmd' );
+                              var argArray = [];
+      
+                              for ( var i in cmdInfo.argument ) {
+                                var label = cmdInfo.argument[ i ].name;
+                                var type = cmdInfo.argument[ i ].type;
+                                var value = cmdInfo.argument[ i ].value;
+                                switch ( type ) {
+                                  case 'char': {
+                                      /* integer action */
+                                      argArray.push( {
+                                          'label': label,
+                                          'type': 'field',
+                                          'dtype': 'text',
+                                          'value': value
+                                      } );
+                                      break;
+                                  }
+      
+                                  case 'uint8': {
+                                      /* integer action */
+                                      argArray.push( {
+                                          'label': label,
+                                          'type': 'field',
+                                          'dtype': 'integer',
+                                          'value': value
+                                      } );
+                                      break;
+                                  }
+      
+                                  case 'int8': {
+                                      /* integer action */
+                                      argArray.push( {
+                                          'label': label,
+                                          'type': 'field',
+                                          'dtype': 'integer',
+                                          'value': value
+                                      } );
+                                      break;
+                                  }
+      
+                                  case 'string': {
+                                      /* integer action */
+                                      argArray.push( {
+                                          'label': label,
+                                          'type': 'field',
+                                          'dtype': 'text',
+                                          'value': value
+                                      } );
+                                      break;
+                                  }
+      
+                                  case 'uint16': {
+                                      /* integer action */
+                                      argArray.push( {
+                                          'label': label,
+                                          'type': 'field',
+                                          'dtype': 'text',
+                                          'value': value
+                                      } );
+                                      break;
+                                  }
+      
+                                  case 'int16': {
+                                      /* integer action */
+                                      argArray.push( {
+                                          'label': label,
+                                          'type': 'field',
+                                          'dtype': 'text',
+                                          'value': value
+                                      } );
+                                      break;
+                                  }
+      
+                                  case 'uint32': {
+                                      /* integer action */
+                                      argArray.push( {
+                                          'label': label,
+                                          'type': 'field',
+                                          'dtype': 'text',
+                                          'value': value
+                                      } );
+                                      break;
+                                  }
+      
+                                  case 'int32': {
+                                      /* integer action */
+                                      argArray.push( {
+                                          'label': label,
+                                          'type': 'field',
+                                          'dtype': 'text',
+                                          'value': value
+                                      } );
+                                      break;
+                                  }
+      
+                                  case 'float': {
+                                      /* integer action */
+                                      argArray.push( {
+                                          'label': label,
+                                          'type': 'field',
+                                          'dtype': 'float',
+                                          'value': value
+                                      } );
+                                      break;
+                                  }
+      
+                                  case 'double': {
+                                      /* integer action */
+                                      argArray.push( {
+                                          'label': label,
+                                          'type': 'field',
+                                          'dtype': 'float',
+                                          'value': value
+                                      } );
+                                      break;
+                                  }
+      
+                                  case 'boolean': {
+                                      /* integer action */
+                                      argArray.push( {
+                                          'label': label,
+                                          'type': 'field',
+                                          'dtype': 'integer',
+                                          'value': value
+                                      } );
+                                      break;
+                                  }
+      
+                                  case 'uint64': {
+                                      /* integer action */
+                                      argArray.push( {
+                                          'label': label,
+                                          'type': 'field',
+                                          'dtype': 'text',
+                                          'value': value
+                                      } );
+                                      break;
+                                  }
+      
+                                  case 'int64': {
+                                      /* integer action */
+                                      argArray.push( {
+                                          'label': label,
+                                          'type': 'field',
+                                          'dtype': 'text',
+                                          'value': value
+                                      } );
+                                      break;
+                                  }
+                                } // switch
+                                
+                                btnObj.attr( 'data-custom', JSON.stringify( argArray ) );
+                              } // for
+                          } // if...else
+                      }); // session.getCmdDef
+                  } // if...else
+              }; // if
+          }); // jqObj.find
+      }; // function BindCdrDataToVariableServer   
+     
       var processTelemetryUpdate = function (param) {
         var found = false;
         for (var k = 0; k < param.length; k++) {
@@ -496,20 +508,13 @@ cdr-nav-iconshtml(lang='en-us')
             var jsonObj = JSON.parse(CommanderTlmDataElements[i].attr('data-cdr'));
             for (var j = 0; j < jsonObj.tlm.length; j++) {
               var tlmObj = CommanderTlmDataElements[i];
+
               if(tlmObj.is(':visible')) {
                   if (jsonObj.tlm[j].name == param[k].opsPath) {
+                    
                     found = true;
                     if(typeof param[k].sample !== 'undefined') {
                       var value = param[k].sample[0].value;
-    	                
-                      if(tlmObj.hasClass('bool-led')) {
-                        if(value > 0) {
-                          BoolLedEnable(tlmObj);
-                        } else {
-                          BoolLedDisable(tlmObj);
-                        }
-                        value = '';
-                      }
     	                
                       if(tlmObj.hasClass('format-microseconds')){
                         value = GetFormattedSystemTimeInMicroseconds(param.engValue.uint32Value)
@@ -538,7 +543,39 @@ cdr-nav-iconshtml(lang='en-us')
                       }
                         
                       if(typeof tlmObj === 'object') {
-                        tlmObj.text(value);
+                        if(jsonObj.tlm[j].hasOwnProperty('class')) {
+                          var classSet = false;
+                        
+                          var setClassObj = jsonObj.tlm[j].class;
+                          
+                          for(var evalIdx = 0; evalIdx < setClassObj.length; ++evalIdx) {
+                            var evalString = '' + value + ' ' + setClassObj[evalIdx].eval;
+                            var evalResult = eval(evalString);
+                            if(evalResult == true) {
+                              tlmObj.removeClass(jsonObj.tlm[j].classTemp);
+                              tlmObj.addClass(setClassObj[evalIdx].class);
+                              jsonObj.tlm[j].classTemp = setClassObj[evalIdx].class;
+                              classSet = true;
+                              CommanderTlmDataElements[i].attr('data-cdr', JSON.stringify(jsonObj));
+                            }
+                          }
+                          
+                          if(classSet == false) {
+                            tlmObj.removeClass(jsonObj.tlm[j].classTemp);
+                          }
+                        }                      
+                      
+                        var updateText = true;
+                        
+                        if(jsonObj.tlm[j].hasOwnProperty('notext') == true) {
+                          if(jsonObj.tlm[j].notext == true) {
+                            updateText = false;
+                          }
+                        }
+                        
+                        if(updateText == true) {
+                          tlmObj.text(value);
+                        }
                       } else {
                         console.log(tlmObj);
                       }
@@ -547,10 +584,9 @@ cdr-nav-iconshtml(lang='en-us')
                 }
               }
           
-            //if (found == false) {
-            //  console.log('Unsubscribing from ' + param[i].opsPath);
-            //  session.unsubscribe({tlm:[{'name':param[k].opsPath}]});
-            //}
+            if (found == false) {
+              session.unsubscribe({tlm:[{'name':param[k].opsPath}]});
+            }
           }
         }
       };
@@ -652,9 +688,16 @@ cdr-nav-iconshtml(lang='en-us')
           var text = 'Error: ' + error + '\nResponse: ' + response;
           alert(text);
         }
+                        
+        if(typeof cmdObj.cb === 'function') {
+            cb = cmdObj.cb;  
+        } else if(typeof cmdObj.cb === 'string') {
+            cb = window[cmdObj.cb];
+        }
+                        
         session.sendCommand( {
           ops_path: cmdObj.cmd.name,
-          args: args,
+          args: args
         }, cb )
       }
       

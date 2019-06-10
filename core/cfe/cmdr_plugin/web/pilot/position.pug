@@ -65,17 +65,7 @@ script.
   /* PX4 Messages */
   /* add local position Message */
   setTimeout(()=>{
-    
-    var vlp_add = {
-      "ops_path": "/TO/TO_AddMessageFlowCmd_t" ,
-      "args":{
-        "MsgID":2644,
-        "PQueueIdx":1,
-        "MsgLimit":1,
-        "ChannelIdx":0
-      }
-    }
-    session.sendCommand(vlp_add);
+  
     /* VXY calculation */  
     session.subscribe([{name:'/PX4/PX4_VehicleLocalPositionMsg_t/VX'},
       {name:'/PX4/PX4_VehicleLocalPositionMsg_t/VY'},
@@ -84,6 +74,7 @@ script.
           var vx, vy, vz;
           for(var i in param){
             var opsPath = param[i].opsPath;
+            console.log(param[i]);
             var value = param[i].sample[ param[i].sample.length - 1 ].value;
             if(opsPath == '/PX4/PX4_VehicleLocalPositionMsg_t/VX'){
               vx = value;

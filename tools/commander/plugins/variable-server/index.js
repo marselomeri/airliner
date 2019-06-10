@@ -82,7 +82,20 @@ class VariableServer extends CdrGroundPlugin {
         
         this.vars = {};
         this.subscribers = {};
+        this.prevMsgRecv = 0;
+        this.prevParamsUpdated = 0;
+        this.prevParamsForwarded = 0;
+        
+        setInterval(function () {
+        	self.hk.content.msgRecvPerSecond = self.hk.content.msgRecvCount - self.prevMsgRecv;
+        	self.prevMsgRecv = self.hk.content.msgRecvCount;
 
+        	self.hk.content.paramsUpdatedPerSecond = self.hk.content.paramsUpdated - self.prevParamsUpdated;
+        	self.prevParamsUpdated = self.hk.content.paramsUpdated;
+
+        	self.hk.content.paramsForwardedPerSecond = self.hk.content.paramsForwarded - self.prevParamsForwarded;
+        	self.prevParamsForwarded = self.hk.content.paramsForwarded;
+        }, 1000);
 
         
         this.namespace.recv( config.get( 'jsonInputStreamID' ), function( message ) {
@@ -130,25 +143,20 @@ class VariableServer extends CdrGroundPlugin {
                         }
 
                         /* Now loop through all the subscribers, if any. */
-                        for ( var subscriber in variable.subscribers ) {
+                        for ( var subscriberID in variable.subscribers ) {
                             /* First make sure this subscriber callback still exists. */
-                            if ( subscribersToUpdate.hasOwnProperty( subscriber ) == false ) {
+                            if ( subscribersToUpdate.hasOwnProperty( subscriberID ) == false ) {
                                 /* This is the first time in this function call that we've
                                  * processed a variable for this particular subscriber.
                                  * Create a new subscriber record in this temporary
                                  * object.
                                  */
-                                subscribersToUpdate[ subscriber ] = {
-                                        subscriber: variable.subscribers[ subscriber ],
-                                        variables: {}
-                                };
+                                subscribersToUpdate[ subscriberID ] = {};
                             }
-
-                            subscribersToUpdate[ subscriber ].variables[ itemID ] = {};
-
-                            var updatedVariable = subscribersToUpdate[ subscriber ].variables[ itemID ];
-
-                            updatedVariable[ 'sample' ] = [ variable.sample[ variable.sample.length - 1 ] ];
+                            
+                            subscribersToUpdate[subscriberID][itemID] = {sample: [ variable.sample[ variable.sample.length - 1 ] ]};
+                            
+                            self.hk.content.paramsForwarded++;
                         }
                     }
                 }
@@ -156,12 +164,12 @@ class VariableServer extends CdrGroundPlugin {
                 /* Lastly, loop through all the subscriptions to update, and send them
                  * an array of updates.
                  */
-                for ( var subscriber in subscribersToUpdate ) {
-                    var callback = self.subscribers[ subscribersToUpdate[ subscriber ].subscriber ];
-
+                for ( var subscriberID in subscribersToUpdate ) {
+                	var callback = self.subscribers[subscriberID];
+                	
                     /* Make sure this callback still exists. */
                     if ( typeof callback === 'function' ) {
-                        callback( subscribersToUpdate[ subscriber ].variables );
+                        callback( subscribersToUpdate[ subscriberID ]);                        
                     } else {
                         /* TODO:  Release this subscriber. */
                     }
@@ -187,10 +195,10 @@ class VariableServer extends CdrGroundPlugin {
                 }
             } else if ( req.cmd === 'removeSubscription' ) {
                 if ( typeof req.opsPath === 'string' || req.opsPath instanceof String ) {
-                    self.removeSubscription( req, cb );
+                    self.removeSubscription( req.subscriberID, req.opsPath, cb );
                 } else if ( Array.isArray( req.opsPath ) ) {
                     for ( var i = 0; i < req.opsPath.length; ++i ) {
-                        self.removeSubscription( req.opsPath[ i ], cb );
+                        self.removeSubscription( req.subscriberID, req.opsPath[ i ], cb );
                     }
                 } else {
                     self.logError( 'Unsubscribe request invalid. \'' + req + '\'' );
@@ -413,18 +421,23 @@ class VariableServer extends CdrGroundPlugin {
             /* Send however many values are currently persisted. */
             var outVar = {};
             outVar[ opsPath ] = {};
+            
+            /* Do we already have persisted values to send back? */
+            if(variable.sample !== undefined) {
+                if(variable.sample.legnth > 0) {
+                    /* Yes.  Send all the persisted values of the value */
+                    outVar[ opsPath ].sample = variable.sample;
 
-            /* Send all the persisted values of the value */
-            outVar[ opsPath ].sample = variable.sample;
-
-            this.subscribers[ subscriberID ]( outVar );
+                    this.subscribers[ subscriberID ]( outVar );
+                }
+            }
         }
 
         if ( variable.hasOwnProperty( 'subscribers' ) == false ) {
-            variable[ 'subscribers' ] = new Array();
+            variable[ 'subscribers' ] = {};
         }
 
-        variable.subscribers.push( subscriberID );
+        variable.subscribers[subscriberID] = subscriberID;
         this.hk.content.subscriptions++;
     }
 
@@ -528,19 +541,17 @@ class VariableServer extends CdrGroundPlugin {
 
 
     /**
-     * Remove subscriber for variable (opsPath) for associated callback
+     * Remove subscription for variable (opsPath) for associated callback
      * @param  {string}   opsPath operation path
      * @param  {Function} cb      callback function
      */
-    removeSubscription( opsPath, cb ) {
-        if ( this.vars.hasOwnProperty( opsPath ) == true ) {
-            /* We've already received this or have a predefinition. */
-            var variable = this.vars[ opsPath ];
+    removeSubscription( subscriberID, opsPath, cb ) {
+        var variable = this.vars[ opsPath ];
 
-            if ( variable.hasOwnProperty( 'subscribers' ) == true ) {
-                variable.subscribers = [];
-            }
-        }
+        variable.subscribers[subscriberID] = undefined;
+            
+        /* TODO - Remove the callbacks. */
+        //this.subscribers[ subscriberID ]( outVar );
     }
 
 
@@ -562,9 +573,13 @@ class VariableServer extends CdrGroundPlugin {
                 cmdAcceptCount: 0,
                 cmdRejectCount: 0,
                 msgRecvCount: 0,
+                msgRecvPerSecond: 0,
                 paramsUpdated: 0,
+                paramsUpdatedPerSecond: 0,
                 subscribers: 0,
                 subscriptions: 0,
+                paramsForwarded: 0,
+                paramsForwardedPerSecond: 0,
                 inputStreamID: config.get( 'jsonInputStreamID' ),
                 outputEventsStreamID: config.get( 'outputEventsStreamID' ),
                 varDefReqStreamID: config.get( 'varDefReqStreamID' ),
@@ -601,6 +616,15 @@ class VariableServer extends CdrGroundPlugin {
                     handlebarsContext: {
                         pluginName: config.name
                     }
+                },
+                subscriptions: {
+                    type: CdrGroundPlugin.ContentType.PANEL,
+                    shortDescription: 'Subscriptions',
+                    longDescription: 'Subscriptions',
+                    filePath: '/subscriptions.pug',
+                    handlebarsContext: {
+                        pluginName: config.name
+                    }
                 }
             }
         }
@@ -612,53 +636,64 @@ class VariableServer extends CdrGroundPlugin {
     initCommands() {
     	var self = this;
     	
-        var cmdReset = {
+        var cmdResetDef = {
             opsPath: '/' + config.name + '/reset',
             args: []
         }
-        this.addCommand(cmdReset, function(cmd) {
-        	self.hk.content.cmdAcceptCount = 0;
-        	self.hk.content.cmdRejectCount = 0;
-        	self.hk.content.msgRecvCount = 0;
-        	self.hk.content.paramsUpdated = 0;
-        });
+        this.addCommand(cmdResetDef, this.cmdReset);
         
-        var cmdSetInput = {
-            opsPath: '/' + config.name + '/setInput',
+        var cmdGetSubscribersDef = {
+            opsPath: '/' + config.name + '/getSubscribers',
+            returnType: 'Array',
+            args: []
+        }
+        this.addCommand(cmdGetSubscribersDef, this.cmdGetSubscribers);
+        
+        var cmdGetSubscriptionsDef = {
+            opsPath: '/' + config.name + '/getSubscriptions',
+            returnType: 'Array',
             args: [
                 {
-                    name:    'Port',
-                    type:    'uint16',
-                    bitSize: 16
+                    name:    'SubscriberID',
+                    type:    'char',
+                    bitSize: 400
                 }
             ]
         }
-        this.addCommand(cmdSetInput, this.setInput);
-
-        var cmdSetOutput = {
-            opsPath: '/' + config.name + '/setOutput',
-            args: [
-                {
-                    name:    'Port',
-                    type:    'uint16',
-                    bitSize: 16
-                },{
-                    name:    'Address',
-                    type:    'char',
-                    bitSize: 1024
-                }
-            ]
-        };
-        this.addCommand(cmdSetOutput, this.setOutput);
+        this.addCommand(cmdGetSubscriptionsDef, this.cmdGetSubscriptions);
     }
     
     
-    setInput(cmd) {
-
+    cmdReset(cmd) {
+    	this.hk.content.cmdAcceptCount   = 0;
+    	this.hk.content.cmdRejectCount   = 0;
+    	this.hk.content.msgRecvCount     = 0;
+    	this.hk.content.paramsUpdated    = 0;
+    	this.hk.content.paramsForwarded  = 0;
     };
     
     
-    setOutput(cmd) {
+    cmdGetSubscribers(cmd, cb) {
+    	var outSubscribers = [];
+    	for(var subID in this.subscribers) {
+    		outSubscribers.push(subID);
+    	}
+    	cb(outSubscribers)
+    }
+    
+    
+    cmdGetSubscriptions(cmd, cb) {
+    	var outSubscriptions = [];
+
+        for(var itemID in this.vars) {
+        	for(var subscriberID in this.vars[itemID].subscribers) {
+        		if(subscriberID === cmd.args.SubscriberID) {
+            		outSubscriptions.push(itemID);
+        		}
+        	}
+        }
+    	
+    	cb(outSubscriptions);
     }
 };
 

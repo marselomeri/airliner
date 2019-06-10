@@ -27,6 +27,10 @@ function InitLayout( mlyt ) {
     } );
   } );
   mlyt.init();
+  
+  setTimeout(function () {
+      BindCdrDataToVariableServer(myLayout.container);
+  },1000);
 
   /*  handles for when itemCreated, tabsCreated, stackCreadted
    * stateChanged events are triggered by myLayout */
@@ -45,6 +49,7 @@ function InitLayout( mlyt ) {
   mlyt.on( "stateChanged", function() {
     InitScrollBar();
   } );
+  
 }
 
 /**
@@ -85,6 +90,9 @@ function SaveLayout() {
  * @constructor
  */
 function LoadLayout() {
+  UnbindCdrDataFromVariableServer(myLayout.container);
+  session.unsubscribeAll();
+  
   var files = document.getElementById( 'browse0' ).files;
   var reader = new FileReader();
   reader.onload = ( function( theFile ) {
