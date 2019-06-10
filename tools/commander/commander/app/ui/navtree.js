@@ -105,6 +105,7 @@ function NodeSelected( e, node ) {
         /* destrory previous layout, make new layout with the configuration
          * .lyt file and emit layout loaded event for dependencies to react */
         UnbindCdrDataFromVariableServer(myLayout.container);
+        session.unsubscribeAll();
         myLayout.destroy();
         myLayout = new window.GoldenLayout( jsonObj, $( '#cdr-layout-container' ) );
         updateDragSources();

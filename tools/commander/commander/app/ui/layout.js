@@ -91,6 +91,7 @@ function SaveLayout() {
  */
 function LoadLayout() {
   UnbindCdrDataFromVariableServer(myLayout.container);
+  session.unsubscribeAll();
   
   var files = document.getElementById( 'browse0' ).files;
   var reader = new FileReader();

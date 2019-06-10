@@ -208,7 +208,6 @@ cdr-nav-iconshtml(lang='en-us')
                       }
                   
                       if(tlmDataJsonObj.uuid === jsonObj.uuid) {
-                          console.log('Deleting ' + tlmDataJsonObj.uuid);
                           CommanderTlmDataElements.splice(i, 1);
                       }
                   }
@@ -298,6 +297,13 @@ cdr-nav-iconshtml(lang='en-us')
                                           alert(text);
                                       }
                                   }
+                        
+                                  if(typeof cmdObj.cb === 'function') {
+                                      cb = cmdObj.cb;  
+                                  } else if(typeof cmdObj.cb === 'string') {
+                                      cb = window[cmdObj.cb];
+                                  }
+
                                   session.sendCommand( {
                                       ops_path: cmdInfo.name,
                                       args: args
@@ -502,20 +508,13 @@ cdr-nav-iconshtml(lang='en-us')
             var jsonObj = JSON.parse(CommanderTlmDataElements[i].attr('data-cdr'));
             for (var j = 0; j < jsonObj.tlm.length; j++) {
               var tlmObj = CommanderTlmDataElements[i];
+
               if(tlmObj.is(':visible')) {
                   if (jsonObj.tlm[j].name == param[k].opsPath) {
+                    
                     found = true;
                     if(typeof param[k].sample !== 'undefined') {
                       var value = param[k].sample[0].value;
-    	                
-                      if(tlmObj.hasClass('bool-led')) {
-                        if(value > 0) {
-                          BoolLedEnable(tlmObj);
-                        } else {
-                          BoolLedDisable(tlmObj);
-                        }
-                        value = '';
-                      }
     	                
                       if(tlmObj.hasClass('format-microseconds')){
                         value = GetFormattedSystemTimeInMicroseconds(param.engValue.uint32Value)
@@ -585,10 +584,9 @@ cdr-nav-iconshtml(lang='en-us')
                 }
               }
           
-            //if (found == false) {
-            //  console.log('Unsubscribing from ' + param[i].opsPath);
-            //  session.unsubscribe({tlm:[{'name':param[k].opsPath}]});
-            //}
+            if (found == false) {
+              session.unsubscribe({tlm:[{'name':param[k].opsPath}]});
+            }
           }
         }
       };
@@ -690,9 +688,16 @@ cdr-nav-iconshtml(lang='en-us')
           var text = 'Error: ' + error + '\nResponse: ' + response;
           alert(text);
         }
+                        
+        if(typeof cmdObj.cb === 'function') {
+            cb = cmdObj.cb;  
+        } else if(typeof cmdObj.cb === 'string') {
+            cb = window[cmdObj.cb];
+        }
+                        
         session.sendCommand( {
           ops_path: cmdObj.cmd.name,
-          args: args,
+          args: args
         }, cb )
       }
       
