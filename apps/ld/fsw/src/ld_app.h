@@ -46,7 +46,6 @@ extern "C" {
  ** Includes
  *************************************************************************/
 #include "cfe.h"
-
 #include "ld_platform_cfg.h"
 #include "ld_mission_cfg.h"
 #include "ld_perfids.h"
@@ -56,12 +55,12 @@ extern "C" {
 #include "ld_tbldefs.h"
 #include "px4_msgs.h"
 #include "px4lib.h"
-
 #include "ld_state_history.h"
 
 /************************************************************************
  ** Local Defines
  *************************************************************************/
+#define LD_MAX_EVENT_FILTERS (64)
 
 /************************************************************************
  ** Local Structure Definitions
@@ -89,7 +88,7 @@ typedef struct
     PX4_VehicleLocalPositionMsg_t VehicleLocalPositionMsg;
     /** \brief The vehicle control mode message */
     PX4_VehicleControlModeMsg_t VehicleControlModeMsg;
-}LD_CurrentValueTable_t;
+} LD_CurrentValueTable_t;
 
 /**
  * \brief parameter table
@@ -132,13 +131,13 @@ typedef struct
     float manual_stick_down_threshold;                                //= 0.15f;
     /**\brief  Landing descend rate. */
     float landing_speed;
-
-}LD_Params_t;
+} LD_Params_t;
 
 /**
  * \brief Land detection states
  */
-enum LandDetectionState {
+enum LandDetectionState
+{
     /**! Vehicle is in flying state */
     FLYING = 0,
     /**! Vehicle is in flying landed state */
@@ -191,11 +190,11 @@ public:
     /** \brief The previous land detection message */
     PX4_VehicleLandDetectedMsg_t PreviousLandDetectedMsg;
     /** \brief The free fall state history variable */
-    StateHistory freefall_history = {false};
+    StateHistory freefall_history = {FALSE};
     /** \brief The landed state history variable */
-    StateHistory landed_history = {true};
+    StateHistory landed_history = {TRUE};
     /** \brief The ground contact state history variable */
-    StateHistory ground_contact_history = {true};
+    StateHistory ground_contact_history = {TRUE};
     /** \brief The arming time variable */
     uint64 arming_time = 0;
     /** \brief The minimum thrust on start variable */
