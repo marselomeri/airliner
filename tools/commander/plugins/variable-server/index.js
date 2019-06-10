@@ -143,25 +143,18 @@ class VariableServer extends CdrGroundPlugin {
                         }
 
                         /* Now loop through all the subscribers, if any. */
-                        for ( var subscriber in variable.subscribers ) {
+                        for ( var subscriberID in variable.subscribers ) {
                             /* First make sure this subscriber callback still exists. */
-                            if ( subscribersToUpdate.hasOwnProperty( subscriber ) == false ) {
+                            if ( subscribersToUpdate.hasOwnProperty( subscriberID ) == false ) {
                                 /* This is the first time in this function call that we've
                                  * processed a variable for this particular subscriber.
                                  * Create a new subscriber record in this temporary
                                  * object.
                                  */
-                                subscribersToUpdate[ subscriber ] = {
-                                        subscriber: variable.subscribers[ subscriber ],
-                                        variables: {}
-                                };
+                                subscribersToUpdate[ subscriberID ] = {};
                             }
-
-                            subscribersToUpdate[ subscriber ].variables[ itemID ] = {};
-
-                            var updatedVariable = subscribersToUpdate[ subscriber ].variables[ itemID ];
-
-                            updatedVariable[ 'sample' ] = [ variable.sample[ variable.sample.length - 1 ] ];
+                            
+                            subscribersToUpdate[subscriberID][itemID] = {sample: [ variable.sample[ variable.sample.length - 1 ] ]};
                             
                             self.hk.content.paramsForwarded++;
                         }
@@ -171,12 +164,12 @@ class VariableServer extends CdrGroundPlugin {
                 /* Lastly, loop through all the subscriptions to update, and send them
                  * an array of updates.
                  */
-                for ( var subscriber in subscribersToUpdate ) {
-                    var callback = self.subscribers[ subscribersToUpdate[ subscriber ].subscriber ];
-
+                for ( var subscriberID in subscribersToUpdate ) {
+                	var callback = self.subscribers[subscriberID];
+                	
                     /* Make sure this callback still exists. */
                     if ( typeof callback === 'function' ) {
-                        callback( subscribersToUpdate[ subscriber ].variables );
+                        callback( subscribersToUpdate[ subscriberID ]);                        
                     } else {
                         /* TODO:  Release this subscriber. */
                     }
@@ -441,10 +434,10 @@ class VariableServer extends CdrGroundPlugin {
         }
 
         if ( variable.hasOwnProperty( 'subscribers' ) == false ) {
-            variable[ 'subscribers' ] = new Array();
+            variable[ 'subscribers' ] = {};
         }
 
-        variable.subscribers.push( subscriberID );
+        variable.subscribers[subscriberID] = subscriberID;
         this.hk.content.subscriptions++;
     }
 
@@ -555,12 +548,7 @@ class VariableServer extends CdrGroundPlugin {
     removeSubscription( subscriberID, opsPath, cb ) {
         var variable = this.vars[ opsPath ];
 
-        for( var i = 0; i < variable.subscribers.length; i++){ 
-            if ( variable.subscribers[i] === subscriberID) {
-                variable.subscribers.splice(i, 1); 
-                i--;
-            }
-        }
+        variable.subscribers[subscriberID] = undefined;
             
         /* TODO - Remove the callbacks. */
         //this.subscribers[ subscriberID ]( outVar );
@@ -698,8 +686,8 @@ class VariableServer extends CdrGroundPlugin {
     	var outSubscriptions = [];
 
         for(var itemID in this.vars) {
-        	for(var i = 0; i < this.vars[itemID].subscribers.length; ++i) {
-        		if(this.vars[itemID].subscribers[i] === cmd.args.SubscriberID) {
+        	for(var subscriberID in this.vars[itemID].subscribers) {
+        		if(subscriberID === cmd.args.SubscriberID) {
             		outSubscriptions.push(itemID);
         		}
         	}
