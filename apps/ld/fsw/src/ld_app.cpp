@@ -242,13 +242,14 @@ LD_InitPipe_Exit_Tag:
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void LD::InitData()
 {
-    /* Init housekeeping message. */
+    /* Init housekeeping message */
     CFE_SB_InitMsg(&HkTlm, LD_HK_TLM_MID, sizeof(HkTlm), TRUE);
 
-    /* Init output messages */
+    /* Init output message */
     CFE_SB_InitMsg(&VehicleLandDetectedMsg, PX4_VEHICLE_LAND_DETECTED_MID,
             sizeof(PX4_VehicleLandDetectedMsg_t), TRUE);
-            
+
+    /* Init diagnostic message */
     CFE_SB_InitMsg(&DiagTlm, LD_DIAG_TLM_MID, sizeof(DiagTlm), TRUE);
 }
 
@@ -492,7 +493,6 @@ void LD::ProcessCmdPipe()
 /* Process LD Commands                                             */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void LD::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 {
     uint32 uiCmdCode = 0;
@@ -637,7 +637,9 @@ void LD::AppMain()
         CFE_ES_PerfLogExit(LD_MAIN_TASK_PERF_ID);
         CFE_ES_WaitForStartupSync(LD_STARTUP_TIMEOUT_MSEC);
         CFE_ES_PerfLogEntry(LD_MAIN_TASK_PERF_ID);
-    } else {
+    }
+    else
+    {
         uiRunStatus = CFE_ES_APP_ERROR;
     }
 
@@ -682,6 +684,7 @@ boolean LD::DetectFreeFall()
             inFreefall = TRUE;
         }
     }
+
     return inFreefall;
 }
 
@@ -985,13 +988,16 @@ void LD::UpdateState()
     if (freefall_history.getState())
     {
         state = LandDetectionState::FREEFALL;
-    } else if (landed_history.getState())
+    }
+    else if (landed_history.getState())
     {
         state = LandDetectionState::LANDED;
-    } else if (ground_contact_history.getState())
+    }
+    else if (ground_contact_history.getState())
     {
         state = LandDetectionState::GROUND_CONTACT;
-    } else
+    }
+    else
     {
         state = LandDetectionState::FLYING;
     }
