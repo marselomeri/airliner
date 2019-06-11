@@ -10,6 +10,7 @@ var ProtobufEncoder = require(path.join(global.CDR_INSTALL_DIR, 'plugins', 'prot
 var ProtobufDecoder = require(path.join(global.CDR_INSTALL_DIR, 'plugins', 'protobuf-decoder'));
 var ConfigDatabase  = require(path.join(global.CDR_INSTALL_DIR, 'plugins', 'config-database'));
 var EventRecorder   = require(path.join(global.CDR_INSTALL_DIR, 'plugins', 'event-recorder'));
+var VideoServer     = require(path.join(global.CDR_INSTALL_DIR, 'plugins', 'video-server'));
 
 var commander = new Commander(global.CDR_WORKSPACE, `${global.CDR_WORKSPACE}/etc/commander-config.json`);
 
@@ -27,6 +28,7 @@ var airliner = commander.addInstance('airliner', function(namespace) {
     var protobufDecoder  = new ProtobufDecoder({namespace: namespace, name: 'protobuf-decoder', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/protobuf-decoder-config.json`});
     var configDB         = new ConfigDatabase({namespace: namespace, name: 'config-database', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/config-database-config.json`});
     var eventRecorder    = new EventRecorder({namespace: namespace, name: 'event-recorder', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/event-recorder-config.json`});
+    var videoServer      = new VideoServer({namespace: namespace, name: 'video-server', workspace: global.CDR_WORKSPACE, configFile: `${global.CDR_WORKSPACE}/etc/video-server-config.json`});
 	
     var outFiles = [];
     var fullPath = path.join(global.CDR_WORKSPACE, 'plugins');
