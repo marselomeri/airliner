@@ -632,7 +632,6 @@ boolean LD::DetectGroundContactState() {
         horizontal_movement = sqrtf(CVT.VehicleLocalPositionMsg.VX * CVT.VehicleLocalPositionMsg.VX + CVT.VehicleLocalPositionMsg.VY * CVT.VehicleLocalPositionMsg.VY) > ld_params.lndmc_xy_vel_max;
 
         minimal_thrust = MinimalThrust();
-        OS_printf("minimal_thrust %i\n", minimal_thrust);
         altitude_lock = AltitudeLock();
         position_lock = altitude_lock && CVT.VehicleLocalPositionMsg.XY_Valid;
         in_descent = (CVT.VehicleLocalPositionMsg.VZ >= land_speed_threshold);
