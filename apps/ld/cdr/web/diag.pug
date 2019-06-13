@@ -4,36 +4,53 @@ table.table.table-condensed
       th GC_MinThrust
       td
         div(data-cdr={tlm:[{name:'/LD/LD_Diag_t/GC_MinThrust'}]}) ---
-    
     tr
-      th GC_AltitudeLock
-      td
-        div(data-cdr={tlm:[{name:'/LD/LD_Diag_t/GC_AltitudeLock'}]}) ---
-
-    tr
-      th GC_PositionLock
-      td
-        div(data-cdr={tlm:[{name:'/LD/LD_Diag_t/GC_PositionLock'}]}) ---
-
-    tr
-      th GC_InDescent
-      td
-        div(data-cdr={tlm:[{name:'/LD/LD_Diag_t/GC_InDescent'}]}) ---
-
+      th OR
     tr
       th GC_HitGround
       td
         div(data-cdr={tlm:[{name:'/LD/LD_Diag_t/GC_HitGround'}]}) ---
-
     tr
-      th GC_HorMovement
+      th ...
+    tr
+      th AND
+    tr
+      th ...
+    tr
+      th NOT GC_HorMovement
       td
         div(data-cdr={tlm:[{name:'/LD/LD_Diag_t/GC_HorMovement'}]}) ---
+    tr
+      th OR
+    tr
+      th NOT GC_PositionLock
+      td
+        div(data-cdr={tlm:[{name:'/LD/LD_Diag_t/GC_PositionLock'}]}) ---
 
     tr
-      th GC_VertMovement
+      th ...
+    tr
+      th AND
+    tr
+      th ...
+    
+    tr
+      th NOT GC_VertMovement
       td
         div(data-cdr={tlm:[{name:'/LD/LD_Diag_t/GC_VertMovement'}]}) ---
+    tr
+      th OR
+    tr
+      th NOT GC_AltitudeLock
+      td
+        div(data-cdr={tlm:[{name:'/LD/LD_Diag_t/GC_AltitudeLock'}]}) ---
+
+    tr
+      th ...
+    tr
+      th AND
+    tr
+      th ...
 
     tr
       th GC_ManualControlIdlingOrAutomatic
@@ -41,9 +58,20 @@ table.table.table-condensed
         div(data-cdr={tlm:[{name:'/LD/LD_Diag_t/GC_ManualControlIdlingOrAutomatic'}]}) ---
 
     tr
+      th ...
+
+    tr
+      th Result
+
+    tr
       th GroundContact
       td
         div(data-cdr={tlm:[{name:'/LD/LD_Diag_t/GroundContact'}]}) ---
+
+    tr
+      th GC_InDescent
+      td
+        div(data-cdr={tlm:[{name:'/LD/LD_Diag_t/GC_InDescent'}]}) ---
 
     tr
       th LD_GC_history_state
@@ -51,24 +79,43 @@ table.table.table-condensed
         div(data-cdr={tlm:[{name:'/LD/LD_Diag_t/LD_GC_history_state'}]}) ---
 
     tr
+      th AND
+
+    tr
       th LD_MinThrust
       td
         div(data-cdr={tlm:[{name:'/LD/LD_Diag_t/LD_MinThrust'}]}) ---
 
     tr
-      th LD_Rotation
+      th AND
+
+    tr
+      th NOT LD_Rotation
       td
         div(data-cdr={tlm:[{name:'/LD/LD_Diag_t/LD_Rotation'}]}) ---
 
     tr
-      th LD_HorMovement
+      th ...
+    tr
+      th AND
+    tr
+      th ...
+
+    tr
+      th NOT LD_HorMovement
       td
         div(data-cdr={tlm:[{name:'/LD/LD_Diag_t/LD_HorMovement'}]}) ---
 
     tr
-      th LD_PositionLock
+      th OR
+
+    tr
+      th NOT LD_PositionLock
       td
         div(data-cdr={tlm:[{name:'/LD/LD_Diag_t/LD_PositionLock'}]}) ---
+
+    tr
+      th Result
 
     tr
       th Landed
