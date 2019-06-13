@@ -165,6 +165,9 @@ typedef struct
  */
 typedef struct
 {
+    /** \brief cFE SB Tlm Msg Hdr */
+    uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
+
     /**\brief   */
     boolean GC_MinThrust;
 
