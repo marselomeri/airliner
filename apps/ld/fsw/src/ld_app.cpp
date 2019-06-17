@@ -834,9 +834,7 @@ boolean LD::ManualControlPresent() {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 boolean LD::MinimalThrust() {
 
-    float min_throttle = ld_params.minThrottle
-            + (ld_params.hoverThrottle - ld_params.minThrottle)
-                    * ld_params.throttleRange;
+    float min_throttle = ld_params.lowThrottleThreshold;
 
     if (!CVT.VehicleControlModeMsg.ControlAltitudeEnabled) {
         min_throttle = (ld_params.minManThrottle + 0.01f);
@@ -974,9 +972,7 @@ void LD::UpdateParamsFromTable() {
         ld_params.lnd_flight_t_hi = ConfigTblPtr->LD_FLT_TME_HI;
         ld_params.lnd_flight_t_lo = ConfigTblPtr->LD_FLT_TME_LO;
         ld_params.lndmc_alt_max = ConfigTblPtr->LD_ALT_MAX;
-        ld_params.minThrottle = ConfigTblPtr->LD_MIN_THR;
-        ld_params.hoverThrottle = ConfigTblPtr->LD_HVR_THR;
-        ld_params.throttleRange = ConfigTblPtr->LD_THR_RANGE_AUTO;
+        ld_params.lowThrottleThreshold = ConfigTblPtr->LD_LOW_T_THR;
         ld_params.minManThrottle = ConfigTblPtr->LD_MAN_MIN_THR;
         ld_params.manual_stick_up_position_takeoff_threshold =
                 ConfigTblPtr->LD_POS_STK_UP_THRES;

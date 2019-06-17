@@ -113,17 +113,13 @@ typedef struct
     /**\brief  Multicopter Flight stick up threshold for take off */
     float lndmc_pos_upthr;                                            //= 0.65f;
     /**\brief  Total flight time in ms, higher 32 bits of the value */
-    uint32 lnd_flight_t_hi;                                               //= 0;
+    uint32 lnd_flight_t_hi;                                           //= 0;
     /**\brief  Total flight time in ms, lower 32 bits of the value */
-    uint32 lnd_flight_t_lo;                                        //= 60299599;
+    uint32 lnd_flight_t_lo;                                           //= 60299599;
     /**\brief  Multicopter maximum altitude (m) */
-    float lndmc_alt_max;                                           //= 10000.0f;
-    /**\brief  Multicopter minimum throttle */
-    float minThrottle;                                                //= 0.12f;
-    /**\brief  Multicopter hover throttle */
-    float hoverThrottle;                                               //= 0.5f;
-    /**\brief  Multicopter throttle range (m) */
-    float throttleRange;                                               //= 0.1f;
+    float lndmc_alt_max;                                              //= 10000.0f;
+    /**\brief  Multicopter low throttle threshold */
+    float lowThrottleThreshold;                                       //= 0.3f;
     /**\brief  Multicopter minimum throttle in manual mode */
     float minManThrottle;                                             //= 0.08f;
     /**\brief  Multicopter takeoff stick up threshold in position control mode */
