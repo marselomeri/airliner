@@ -120,7 +120,7 @@ function navBarTooltips( node, JQObj ) {
                 html: '<div class="cdr-tooltip-container">' +
                   '<div class="cdr-tooltip-row"> Description : <span>' + node.longDescription +
                   '</span></div>' +
-                  '<div class="cdr-tooltip-row"> Path : <span>' + node.urlPath +
+                  '<div class="cdr-tooltip-row"> Path : <span>' + node.href +
                   '</div>' +
                   '</div>'
               }
@@ -145,33 +145,8 @@ function navBarTooltips( node, JQObj ) {
             name: 'Open in new window',
             callback: function( itemKey, opt, e ) {
               if ( node.type == 'config' ) {
-                $.get( node.urlPath, ( response ) => {
-                  var jsonObj = JSON.parse( response );
-                  var newWindow = window.open( window.location.href );
-                  var theDoc = newWindow.document;
-                  var theScript = document.createElement( 'script' );
-
-                  function injectThis( x ) {
-                    setTimeout( function() {
-                      UnbindCdrDataFromVariableServer(window.myLayout.container);
-                      session.unsubscribeAll();
-                      window.myLayout.destroy();
-                      window.myLayout = new window.GoldenLayout( x, $( '#cdr-layout-container' ) );
-                      updateDragSources();
-                      window.dispatchEvent( llc );
-                      console.log('navBarTooltips');
-                      window.InitLayout( myLayout );
-                    }, 2000 )
-
-                  }
-                  theScript.innerHTML = '(' + injectThis.toString() + '(' + response + '));';
-                  newWindow.onload = function() {
-                    // Append the script to the new window's body.
-                    // Only seems to work with `this`
-                    this.document.body.appendChild( theScript );
-                  };
-
-                } );
+                window.open(node.href,"_blank");
+                location.reload(true); 
               }
             }
           },
@@ -183,7 +158,7 @@ function navBarTooltips( node, JQObj ) {
                 html: '<div class="cdr-tooltip-container">' +
                   '<div class="cdr-tooltip-row"> Description : <span>' + node.longDescription +
                   '</span></div>' +
-                  '<div class="cdr-tooltip-row"> Path : <span>' + node.urlPath +
+                  '<div class="cdr-tooltip-row"> Path : <span>' + node.href +
                   '</div>' +
                   '</div>'
               }
@@ -212,7 +187,7 @@ function navBarTooltips( node, JQObj ) {
                 html: '<div class="cdr-tooltip-container">' +
                   '<div class="cdr-tooltip-row"> Description : <span>' + node.longDescription +
                   '</span></div>' +
-                  '<div class="cdr-tooltip-row"> Path : <span>' + node.urlPath +
+                  '<div class="cdr-tooltip-row"> Path : <span>' + node.href +
                   '</div>' +
                   '</div>'
               }

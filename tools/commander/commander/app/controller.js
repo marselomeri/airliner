@@ -51,68 +51,99 @@ var global_drag_source_dict = [];
 
 /* appctl main - this script execution starts from here */
 $( () => {
-  /**
-   * Session instance
-   * @type {CommanderClient}
-   */
-  session = new CommanderClient();
+    /**
+     * Session instance
+     * @type {CommanderClient}
+     */
+	session = new CommanderClient();
 
-  /**
-   * Default GoldenLayout configuration
-   * @type {Object}
-   */
-  var config = {
-    settings: {
-      selectionEnabled: true,
-      showPopoutIcon: false
-    },
-    content: [ {
-      type: 'row',
-      content: [ {
-          type: 'component',
-          componentName: 'Blank',
-          componentState: {
-            text: 'Component 1'
-          }
+	/**
+     * Default GoldenLayout configuration
+     * @type {Object}
+     */
+    var config = {
+        settings: {
+            selectionEnabled: true,
+            showPopoutIcon: false
         },
-        {
-          type: 'component',
-          componentName: 'Blank',
-          componentState: {
-            text: 'Component 2'
-          }
-        }
-      ]
-    } ]
-  }
+        content: [ {
+            type: 'row',
+            content: [ {
+                type: 'component',
+                componentName: 'Blank',
+                componentState: {
+                    text: 'Component 1'
+                }
+            },
+            {
+                type: 'component',
+                componentName: 'Blank',
+                componentState: {
+                    text: 'Component 2'
+                }
+            } ]
+        } ]
+    }
 
 
 
-  /* if a different browser opened this application then that browser will set
-   * the starting cofiguration of current layout, If such a configuration exists
-   * copy over default configuration */
-  if ( window.__backupConfig != undefined | window.__backupConfig != null ) {
-    //cu.lofDebug( 'Connection | window has preloaded configuration.' );
-    config = window.__backupConfig;
-  }
+    /* if a different browser opened this application then that browser will set
+     * the starting cofiguration of current layout, If such a configuration exists
+     * copy over default configuration */
+    if ( window.__backupConfig != undefined | window.__backupConfig != null ) {
+        //cu.lofDebug( 'Connection | window has preloaded configuration.' );
+        config = window.__backupConfig;
+    }
 
-  /* connecting to a session, upon connection load
-   * sidebar and directory listing */
-  session.on( 'connect', function() {
+    /* connecting to a session, upon connection load
+     * sidebar and directory listing */
+    session.on( 'connect', function() {
+        //cu.logInfo( 'Connection | session connected' );
 
-    //cu.logInfo( 'Connection | session connected' );
-
-    if ( _sescon_never ) {
-      var defaultLayoutPromise = new Promise( function(resolve, reject) {
-        session.getDefaultLayout( function( resp ) {
-          if ( window.__backupConfig == undefined | window.__backupConfig == null ) {
-            config = resp;
-            resolve( 'Success!' );
-          }
-        } );
+        if ( _sescon_never ) {  
+            var defaultLayoutPromise = new Promise( function(resolve, reject) {
+    	    
+            if(window.location.href.includes('#')) {
+                var layoutView = window.location.href.replace('#', '');
+              
+    	        $.ajax({
+    	            type: "GET",
+    	            url: layoutView,
+    	            complete: function(e, xhr, settings){
+    	                switch(e.status){
+    	                    case 500:
+    	                        alert('500 internal server error!');
+    	                        break;
+    	                        
+    	                    case 404:
+    	                        alert('404 Page not found!');
+    	                        break;
+    	                        
+    	                    case 401:
+    	                        alert('401 unauthorized access');     
+    	                        break;       
+    	                }
+    	            }           
+    	        }).done(function( data ) {
+    	            var resp = jQuery.parseJSON(data)
+    
+                    if ( window.__backupConfig == undefined | window.__backupConfig == null ) {
+                        config = resp;
+                        resolve( 'Success!' );
+                    }
+    	        });
+          } else {
+              session.getDefaultLayout( function( resp ) {
+                  if ( window.__backupConfig == undefined | window.__backupConfig == null ) {
+                      config = resp;
+                      resolve( 'Success!' );
+                  }
+              } );
+          }  
       } );
       
       defaultLayoutPromise.then( function() {
+    	
         session.getPanels( '/', function( dirEntries ) {
           var panelEntries = [];
           /* modify dirEntries */
@@ -122,7 +153,7 @@ $( () => {
               text: dirEntries[ entryID ].shortDescription,
               longDescription: dirEntries[ entryID ].longDescription,
               path: '/' + entryID,
-              urlPath: '/' + entryID,
+              href: '/' + entryID,
               type: dirEntries[ entryID ].type,
               lazyLoad: true,
               ext: entryID,
@@ -157,12 +188,13 @@ $( () => {
               text: dirEntries[ entryID ].shortDescription,
               longDescription: dirEntries[ entryID ].longDescription,
               path: '/' + entryID,
-              urlPath: '/' + entryID,
+              href: '/' + entryID,
               type: dirEntries[ entryID ].type,
               lazyLoad: true,
               ext: entryID,
               selectable: false,
               checkable: false,
+              enableLinks: true,
               handlebarsContext: dirEntries[ entryID ].handlebarsContext
             };
             entries.push( entry );
@@ -181,6 +213,7 @@ $( () => {
             lazyLoad: UpdateLayoutNode,
             onNodeRendered: NodeRendered,
             onNodeSelected: NodeSelected,
+            enableLinks: true
           } );
         } );
         session.getWidgets( '/', function( dirEntries ) {
@@ -192,7 +225,7 @@ $( () => {
               text: dirEntries[ entryID ].shortDescription,
               longDescription: dirEntries[ entryID ].longDescription,
               path: '/' + entryID,
-              urlPath: '/' + entryID,
+              href: '/' + entryID,
               type: dirEntries[ entryID ].type,
               lazyLoad: true,
               ext: entryID,
