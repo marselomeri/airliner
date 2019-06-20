@@ -66,7 +66,7 @@ cf_config_table_t     CF_ConfigTable =
                 
                 { /* Polling Directory 0 */
                     CF_ENTRY_IN_USE,/* Poll Directory In Use or Not */
-                    CF_DISABLED,    /* Enable State */
+                    CF_ENABLED,    /* Enable State */
                     1,              /* Class (1 or 2)*/
                     5,              /* Priority */                  
                     CF_KEEP_FILE, /* Preserve files after successful transfer? */                    
@@ -74,7 +74,7 @@ cf_config_table_t     CF_ConfigTable =
                     0,              /* Reserved2 */
                     0,              /* Reserved3 */
                     "0.23",         /* Gnd EntityId - 2 byte dotted-decimal string eg. "0.255"*/
-                    "/cf/ch0poll0/", /* SrcPath, no spaces, fwd slash at end */
+                    "/cf/log/", /* SrcPath, no spaces, fwd slash at end */
                     "cftesting/",    /* DstPath, no spaces */
                 },/* End Polling Directory 0 */
                 

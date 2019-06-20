@@ -31,22 +31,19 @@
 *
 *****************************************************************************/
 
-// an example configuration file
+// An example configuration file
 {
-    "mibParameters": {
-      "ACK_TIMEOUT": "10",
-      "ACK_LIMIT": "2",
-      "NAK_TIMEOUT": "5",
-      "NAK_LIMIT": "3",
-      "INACTIVITY_TIMEOUT": "20",
-      "OUTGOING_FILE_CHUNK_SIZE": "2000",
-      "SAVE_INCOMPLETE_FILES": "no",
-      "MY_ID": "0.23",
-    },
-    "config":{
-      "DEFAULT_TEMP_BASE_DIR": "/tmp/cf/",
-    },
-    "CfdpClientStreamID"  : "cfdp-client-stream",
-    "cfdpInputStream"     : "cfdp-json-stream",
-    "cfdpOutputStream"    : "bin-cmd-stream",
+    "AckTimeout"            : 10,
+    "AckLimit"              : 2,
+    "NakTimeout"            : 5,
+    "NakLimit"              : 3,
+    "InactivityTimeout"     : 20,
+    "OutgoingFileChunkSize" : 200,
+    "SaveIncompleteFiles"   : false,
+    "MyID"                  : "0.23",
+    "TempDir"               : "/home/mbenson/git/airliner/build/bebop2/sitl/target/commander/commander_workspace/temp", 
+    "BasePath"              : "/home/mbenson/git/airliner/build/bebop2/sitl/target/commander/commander_workspace/cfdp",
+    "CfdpClientStreamID"    : "json-cmd-stream",
+    "CfdpInputStream"       : "json-tlm-stream",
+    "CfdpOutputStream"      : "bin-cmd-stream",
 }

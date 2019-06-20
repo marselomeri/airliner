@@ -33,11 +33,12 @@
 
 'use strict';
 
+const Parser = require( 'binary-parser' ).Parser;
 var fs = require( 'fs' );
 var convict = require( 'convict' );
 var path = require( 'path' );
 const autoBind = require('auto-bind');
-var CfdpLib = require( './build/Release/cfdp' );
+//var CfdpLib = require( './build/Release/cfdp' );
 var config = require( './config.js' );
 const CdrGroundPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrGroundPlugin')).CdrGroundPlugin;
 
@@ -72,97 +73,21 @@ class CFDPServer extends CdrGroundPlugin {
     
     
     initConfig(name, configFile) {
-    	var config;
-    	
-        /**
-         * Define varibale server schema
-         * 
-         * @type {Object}
-         */
-        this.config = convict( {
-            env: {
-        	    doc: 'The application environment.',
-        		format: [ 'production', 'development', 'test' ],
-        		default: 'development',
-        		env: 'NODE_ENV'
-            },
-            ACK_TIMEOUT: {
-                doc: 'Path for cfdp engine to store temporary files',
-                format: 'int',
-                default: 10
-            },
-            ACK_LIMIT: {
-                doc: 'Path for cfdp engine to store temporary files',
-                format: 'int',
-                default: 2
-            },
-            NAK_TIMEOUT: {
-                doc: 'Path for cfdp engine to store temporary files',
-                format: 'int',
-                default: 5
-            },
-            NAK_LIMIT: {
-                doc: 'Path for cfdp engine to store temporary files',
-                format: 'int',
-                default: 3
-            },
-            INACTIVITY_TIMEOUT: {
-                doc: 'Path for cfdp engine to store temporary files',
-                format: 'int',
-                default: 20
-            },
-            OUTGOING_FILE_CHUNK_SIZE: {
-                doc: 'Path for cfdp engine to store temporary files',
-                format: 'int',
-                default: 64
-            },
-            SAVE_INCOMPLETE_FILES: {
-                doc: 'Path for cfdp engine to store temporary files',
-                format: String,
-                default: 'no'
-            },
-            MY_ID: {
-                doc: 'Path for cfdp engine to store temporary files',
-                format: String,
-                default: '0.23'
-            },
-            DEFAULT_TEMP_BASE_DIR: {
-                doc: 'Path for cfdp engine to store temporary files',
-                format: String,
-                default: '/tmp/cf/'
-            },
-            CfdpClientStreamID: {
-                doc: 'Stream ID for cfdp queries',
-                format: String,
-                default: ''
-            },
-            cfdpInputStream: {
-                doc: 'Stream ID for listening to binary data',
-                format: String,
-                default: ''
-            },
-            cfdpOutputStream: {
-                doc: 'Stream ID for sending to binary data',
-                format: String,
-                default: ''
-            }
-        });
-
         /* Load environment dependent configuration */
-        this.config.loadFile( configFile );
+        config.loadFile( configFile );
 
         /* Perform validation */
-        this.config.validate( {
+        config.validate( {
             allowed: 'strict'
         } );
         
-        this.config.name = name;
+        config.name = name;
     }
     
     
     initTelemetry() {
         this.hk = {
-            opsPath: '/' + this.config.name + '/hk',
+            opsPath: '/' + config.name + '/hk',
             content: {
                 cmdAcceptCount: 0,
                 cmdRejectCount: 0
@@ -176,9 +101,9 @@ class CFDPServer extends CdrGroundPlugin {
     initClientInterface() {
         var content = {};
         
-        content[this.config.name] = {
-            shortDescription: 'CFDP Server (' + this.config.name + ')',
-            longDescription: 'CFDP Server (' + this.config.name + ')',
+        content[config.name] = {
+            shortDescription: 'CFDP Server (' + config.name + ')',
+            longDescription: 'CFDP Server (' + config.name + ')',
             nodes: {
                 main: {
                     type: CdrGroundPlugin.ContentType.LAYOUT,
@@ -186,7 +111,7 @@ class CFDPServer extends CdrGroundPlugin {
                     longDescription: 'Main.',
                     filePath: '/main_layout.lyt',
                     handlebarsContext: {
-                        pluginName: this.config.name
+                        pluginName: config.name
                     }
                 },
                 hk: {
@@ -195,7 +120,7 @@ class CFDPServer extends CdrGroundPlugin {
                     longDescription: 'Housekeeping',
                     filePath: '/hk.pug',
                     handlebarsContext: {
-                        pluginName: this.config.name
+                        pluginName: config.name
                     }
                 }
             }
@@ -207,7 +132,7 @@ class CFDPServer extends CdrGroundPlugin {
     
     initCommands() {
 //        var cmdSetInput = {
-//            opsPath: '/' + this.config.name + '/setInput',
+//            opsPath: '/' + config.name + '/setInput',
 //            args: [
 //                {
 //                    name:    'Port',
@@ -221,77 +146,272 @@ class CFDPServer extends CdrGroundPlugin {
     
     
     initServer() {
-        this.outGoingFileChunkSize = this.config.get( 'OUTGOING_FILE_CHUNK_SIZE' ) + 100;
+    	var self = this;
+    	
+        this.pduHdrDef = new Parser()
+            .endianess( 'big' )
+            .bit3( 'version' )
+            .bit1( 'pduType' )
+            .bit1( 'direction' )
+            .bit1( 'transMode' )
+            .bit1( 'crc' )
+            .bit1( 'spare1' )
+            .uint16( 'dataFieldLength' )
+            .bit1( 'spare2' )
+            .bit3( 'entityIDLength' )
+            .bit1( 'spare3' )
+            .bit3( 'transSeqNumLength' );
 
-    	/* Set CFDP API configuration */
-    	//CfdpLib.SetConfig( this.config.get( 'config' ) );
+        this.namespace.recv( config.get( 'CfdpInputStream' ), function( message ) {
+        	if(message.msgID == 0x1FFE) {                
+                var pdu = self.pduHdrDef.parse(message.content.payload);
+                
+                /* The byte offset after the 'transSeqnumLength' field. */
+                var offset = 4;
 
-    	/* Register Required Callbacks */
-    	/* End users may not be able to alter following callbacks */
-    	CfdpLib.RegisterCallbackOn( 'info', ( value ) => {
-    	    this.logInfo( 'EventEnum.LOG_EVENTS, value' );
-    	} );
+                /* Add 1 to the entity ID length because the field is the actual length - 1 */
+                pdu.entityIDLength++;
+                /* Add 1 to the transaction sequence number length because the field is the actual 
+                 * length - 1 */
+                pdu.transSeqNumLength++;
+                
+                pdu.srcEntityID = [];
+                pdu.transSeqNum = [];
+                pdu.destEntityID = [];
+                
+                for(var i = 0; i < pdu.entityIDLength; ++i) { 
+                	pdu.srcEntityID.push(message.content.payload[offset++]);
+                }
+                
+                for(var i = 0; i < pdu.transSeqNumLength; ++i) {
+                	pdu.transSeqNum.push(message.content.payload[offset++]);
+                }
+                
+                for(var i = 0; i < pdu.entityIDLength; ++i) {                	
+                	pdu.destEntityID.push(message.content.payload[offset++]);
+                }
+                
+                if(pdu.pduType == 0) {
+                	pdu.directiveCode = message.content.payload.readUInt8(offset++);
+                	
+                	switch(pdu.directiveCode) {
+                	    /* EOF */
+                	    case 4: {
+                	    	pdu.eof = {};
+                	    	pdu.eof.condCode = (message.content.payload.readUInt8(offset++) >> 4) & 0x0f;
+                	    	pdu.eof.fileChecksum = message.content.payload.readUInt32BE(offset);
+                	    	offset = offset + 4;
+                	    	pdu.eof.fileSize = message.content.payload.readUInt32BE(offset);
+                	    	offset = offset + 4;
+                	    	
+                	    	/* Omitted if condition code is ‘No error’.  Otherwise, entity ID in the 
+                	    	 * TLV is the ID of the entity at which transaction cancellation was 
+                	    	 * initiated. */ 
+                	    	if(pdu.eof.condCode != 0) {
+                	    		/* The Type of the Entity ID TLV shall be 06 hex; the Value shall 
+                	    		 * be an Entity ID as discussed in 5.1. */
+                	    	    pdu.eof.faultLocation = {};
+                	    	    pdu.eof.faultLocation.Type = message.content.payload.readUInt8(offset++);
+                	    	    pdu.eof.faultLocation.Length = message.content.payload.readUInt8(offset++);
+                	    	    pdu.eof.faultLocation.Value = [];
+                	    	    for(var i = 0; i < pdu.faultLocation.Length; ++i) {
+                    	    	    pdu.eof.faultLocation.Value.push(message.content.payload.readUInt8(offset++));
+                	    	    }
+                	    	}
+                	    	break;
+                	    }
+                	    
+                	    /* Finished */
+                	    case 5: {
+                	    	pdu.finished = {};
+                	    	
+                	    	var tempByte   = message.content.payload.readUInt8(offset++);
+                	    	pdu.finished.condCode   = (tempByte >> 4) & 0x0f;
+                	    	pdu.finished.endSysStat = (tempByte >> 3) & 0x01;
+                	    	pdu.finished.delCode    = (tempByte >> 2) & 0x01;
+                	    	pdu.finished.fileStat   = (tempByte >> 0) & 0x03;
+                	    	pdu.finished.endSysStat = (tempByte >> 3) & 0x01;
 
-    	CfdpLib.RegisterCallbackOn( 'debug', ( value ) => {
-    	    this.logDebug( 'EventEnum.LOG_EVENTS, value' );
-    	} );
+                	    	/* The Type of the Entity ID TLV shall be 06 hex; the Value shall 
+                	    	 * be an Entity ID as discussed in 5.1. */
+                	    	pdu.finished.filestoreResponse = {};
+                	    	tempByte = message.content.payload.readUInt8(offset++);
+                	    	pdu.finished.filestoreResponse.actionCode = (tempByte >> 4) & 0x0f;
+                	    	pdu.finished.filestoreResponse.statusCode = tempByte & 0x0f;
+                	    	
+                	    	pdu.finished.filestoreResponse.firstFileName = {};
+                	    	pdu.finished.filestoreResponse.firstFileName.Length = message.content.payload.readUInt8(offset++);
+                	    	pdu.finished.filestoreREsponse.firstFileName.Value = message.content.payload.toString('utf8', offset, offset + pdu.filestoreResponse.firstFileName.Length);
+                	    	offset = offset + pdu.filestoreResponse.firstFileName.Length;
+                	    	
+                	    	pdu.finished.filestoreResponse.secondFileName = {};
+                	    	pdu.finished.filestoreResponse.secondFileName.Length = message.content.payload.readUInt8(offset++);
+                	    	pdu.finished.filestoreREsponse.secondFileName.Value = message.content.payload.toString('utf8', offset, offset + pdu.filestoreResponse.secondFileName.Length);
+                	    	offset = offset + pdu.filestoreResponse.secondFileName.Length;
+                	    	
+                	    	pdu.finished.filestoreResponse.filestoreMessage = {};
+                	    	pdu.finished.filestoreResponse.filestoreMessage.Length = message.content.payload.readUInt8(offset++);
+                	    	pdu.finished.filestoreResponse.filestoreMessage.Value = message.content.payload.toString('utf8', offset, offset + pdu.finished.filestoreResponse.filestoreMessage.Length);
+                	    	offset = offset + pdu.finished.filestoreResponse.filestoreMessage.Length;
+                	    	break;
+                	    }
+                	    
+                	    /* ACK */
+                	    case 6: {
+                	    	pdu.ack = {};
+                	    	
+                	    	var tempByte   = message.content.payload.readUInt8(offset++);
+                	    	pdu.ack.directiveCode   = (tempByte >> 4) & 0x0f;
+                	    	pdu.ack.directiveSubCode = tempByte & 0x0f;
+                	    	tempByte   = message.content.payload.readUInt8(offset++);
+                	    	pdu.ack.condCode = (tempByte >> 4) & 0x0f;
+                	    	pdu.ack.transStatus = tempByte & 0x03;
+                	    	break;
+                	    }
+                	    
+                	    /* Metadata */
+                	    case 7: {
+                	    	pdu.meta = {};
+                	    	
+                	    	pdu.meta.segCtrl = message.content.payload.readUInt8(offset++) & 0x01;
+                	    	pdu.meta.fileSize = message.content.payload.readUInt32BE(offset);
+                	    	offset = offset + 4;
+                	    	
+                	    	pdu.meta.srcFileName = {};
+                	    	pdu.meta.srcFileName.Length = message.content.payload.readUInt8(offset++);
+                	    	pdu.meta.srcFileName.Value = message.content.payload.toString('utf8', offset, offset + pdu.meta.srcFileName.Length);
+                	    	offset = offset + pdu.meta.srcFileName.Length;
+                	    	
+                	    	pdu.meta.destFileName = {};
+                	    	pdu.meta.destFileName.Length = message.content.payload.readUInt8(offset++);
+                	    	pdu.meta.destFileName.Value = message.content.payload.toString('utf8', offset, offset + pdu.meta.destFileName.Length);
+                	    	offset = offset + pdu.meta.destFileName.Length;
 
-    	CfdpLib.RegisterCallbackOn( 'error', ( value ) => {
-    	    this.logError( 'EventEnum.LOG_EVENTS, value' );
-    	} );
-
-    	CfdpLib.RegisterCallbackOn( 'warning', ( value ) => {
-    	    this.logInfo( 'EventEnum.LOG_EVENTS, value' );
-    	} );
-
-    	CfdpLib.RegisterCallbackOn( 'pduOutputOpen', () => {} );
-    	CfdpLib.RegisterCallbackOn( 'pduOutputReady', () => {} );
-    	CfdpLib.RegisterCallbackOn( 'indication', () => {} );
-
-        CfdpLib.RegisterCallbackOn( 'pduOutputSend', ( bufferObj ) => {
-
-   	    var buffer = new Buffer( self.outGoingFileChunkSize );
-    	    buffer.fill( 0x00 );
-    	    /* CCSDS MSG ID for sending pdu to space - 4093*/
-    	    buffer.writeUInt16BE( 4093, 0 );
-    	    /* Sequence Number */
-    	    buffer.writeUInt16BE( 1, 2 );
-    	    /* Pdu length*/
-    	    buffer.writeUInt16BE( self.outGoingFileChunkSize - 7, 4 );
-    	    /* Has no command code and sub code */
-    	    buffer.writeUInt8( 0, 6 );
-    	    buffer.writeUInt8( 0, 7 );
-
-    	    /* Copy buffer */
-    	    for ( var i = 0; i < bufferObj.length; i++ ) {
-    	      buffer.writeUInt8( bufferObj.pdu[ i ], 12 + i );
-    	    }
-
-    	    //this.instanceEmit( config.get( 'cfdpOutputStream' ), buffer );
-    	    this.logDebug( 'EventEnum.PDU_EVENTS, buffer' );
-        } );
-
-    	/* Init CFDP Engine */
-    	CfdpLib.AppInit();
-
-    	/* Set MIB parmeters from default config */
-    	//var mibParams = this.config.get( 'mibParameters' );
-    	//for ( var key in mibParams ) {
-    	//	  CfdpLib.SetMibParams( key, mibParams[ key ] );
-    	//}
-
-    	//this.instanceEmitter.on( config.get( 'CfdpClientStreamID' ), function( obj ) {
-    	//    self.handleClientRequest( obj );
-    	//  } );
-
-    	// this.instanceEmitter.on( config.get( 'cfdpInputStream' ), function( msg ) {
-    	    /* Send buffer to ground cfdp engine */
-    		//  CfdpLib.GivePdu( msg.payload, msg.payload.length );
-    	//} );
-
-    	/* Start Cycling Trasactions */
-    	CfdpLib.StartCycle();
-    	this.TransCycleStarted = true;
+                	    	/* TODO */
+                	    	//pdu.meta.options = {};
+                	    	//pdu.meta.options.filestoreRequest = {};
+                	    	//pdu.meta.options.destFileName.Length = message.content.payload.readUInt8(offset++);
+                	    	//pdu.meta.options.destFileName.Value = message.content.payload.toString('utf8', offset, offset + pdu.meta.options.destFileName.Length);
+                	    	//offset = offset + pdu.meta.options.destFileName.Length;
+                	    	break;
+                	    }
+                	    
+                	    /* NAK */
+                	    case 8: {
+                	    	pdu.nak = {};
+                	    	
+                	    	pdu.nak.startOfScope = message.content.payload.readUInt32BE(offset);
+                	    	offset = offset + 4;
+                	    	pdu.nak.endOfScope = message.content.payload.readUInt32BE(offset);
+                	    	offset = offset + 4;
+                	    	/* TODO */
+                	    	break;
+                	    }
+                	    
+                	    /* Prompt */
+                	    case 9: {
+                	    	pdu.prompt = {};
+                	    	
+                	    	pdu.prompt.responseRequired = message.content.payload.readUInt8(offset++) & 0x01;
+                	    	
+                	    	break;
+                	    }
+                	    
+                	    /* Keep Alive */
+                	    case 12: {
+                	    	pdu.keepAlive = {};
+                	    	
+                	    	pdu.keepAlive.progress = message.content.payload.readUInt32BE(offset++);
+                	    	
+                	    	break;
+                	    }
+                	}
+                	
+                	console.log(pdu);
+                } else {
+                	pdu.dataOffset = message.content.payload.readUInt32BE(offset);
+                	offset = offset + 4;
+                	
+                	pdu.data = [];
+                	var startOffset = offset;
+                	var endOffset = pdu.dataOffset + pdu.dataFieldLength;
+                	
+                    for(var i = 0; i < pdu.dataFieldLength; ++i) {
+                    	pdu.data.push(message.content.payload[offset++]);
+                    }
+                }
+        	}
+        });
+        
+//    	/* Set CFDP API configuration */
+//    	//CfdpLib.SetConfig( config.get( 'config' ) );
+//
+//    	/* Register Required Callbacks */
+//    	/* End users may not be able to alter following callbacks */
+//    	CfdpLib.RegisterCallbackOn( 'info', ( value ) => {
+//    	    this.logInfo( 'EventEnum.LOG_EVENTS, value' );
+//    	} );
+//
+//    	CfdpLib.RegisterCallbackOn( 'debug', ( value ) => {
+//    	    this.logDebug( 'EventEnum.LOG_EVENTS, value' );
+//    	} );
+//
+//    	CfdpLib.RegisterCallbackOn( 'error', ( value ) => {
+//    	    this.logError( 'EventEnum.LOG_EVENTS, value' );
+//    	} );
+//
+//    	CfdpLib.RegisterCallbackOn( 'warning', ( value ) => {
+//    	    this.logInfo( 'EventEnum.LOG_EVENTS, value' );
+//    	} );
+//
+//    	CfdpLib.RegisterCallbackOn( 'pduOutputOpen', () => {} );
+//    	CfdpLib.RegisterCallbackOn( 'pduOutputReady', () => {} );
+//    	CfdpLib.RegisterCallbackOn( 'indication', () => {} );
+//
+//        CfdpLib.RegisterCallbackOn( 'pduOutputSend', ( bufferObj ) => {
+//
+//   	    var buffer = new Buffer( self.outGoingFileChunkSize );
+//    	    buffer.fill( 0x00 );
+//    	    /* CCSDS MSG ID for sending pdu to space - 4093*/
+//    	    buffer.writeUInt16BE( 4093, 0 );
+//    	    /* Sequence Number */
+//    	    buffer.writeUInt16BE( 1, 2 );
+//    	    /* Pdu length*/
+//    	    buffer.writeUInt16BE( self.outGoingFileChunkSize - 7, 4 );
+//    	    /* Has no command code and sub code */
+//    	    buffer.writeUInt8( 0, 6 );
+//    	    buffer.writeUInt8( 0, 7 );
+//
+//    	    /* Copy buffer */
+//    	    for ( var i = 0; i < bufferObj.length; i++ ) {
+//    	      buffer.writeUInt8( bufferObj.pdu[ i ], 12 + i );
+//    	    }
+//
+//    	    //this.instanceEmit( config.get( 'cfdpOutputStream' ), buffer );
+//    	    this.logDebug( 'EventEnum.PDU_EVENTS, buffer' );
+//        } );
+//
+//    	/* Init CFDP Engine */
+//    	CfdpLib.AppInit();
+//
+//    	/* Set MIB parmeters from default config */
+//    	//var mibParams = config.get( 'mibParameters' );
+//    	//for ( var key in mibParams ) {
+//    	//	  CfdpLib.SetMibParams( key, mibParams[ key ] );
+//    	//}
+//
+//    	//this.instanceEmitter.on( config.get( 'CfdpClientStreamID' ), function( obj ) {
+//    	//    self.handleClientRequest( obj );
+//    	//  } );
+//
+//    	// this.instanceEmitter.on( config.get( 'cfdpInputStream' ), function( msg ) {
+//    	    /* Send buffer to ground cfdp engine */
+//    		//  CfdpLib.GivePdu( msg.payload, msg.payload.length );
+//    	//} );
+//
+//    	/* Start Cycling Trasactions */
+//    	CfdpLib.StartCycle();
+//    	this.TransCycleStarted = true;
     	this.logInfo( 'Initialized engine' );
     };
 

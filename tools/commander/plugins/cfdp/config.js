@@ -44,69 +44,70 @@ var config = convict( {
     default: 'development',
     env: 'NODE_ENV'
   },
-  mibParameters: {
-    ACK_TIMEOUT: {
+  AckTimeout: {
       doc: 'Path for cfdp engine to store temporary files',
       format: 'int',
-      default: '10'
-    },
-    ACK_LIMIT: {
+      default: 10
+  },
+  AckLimit: {
       doc: 'Path for cfdp engine to store temporary files',
       format: 'int',
-      default: '2'
-    },
-    NAK_TIMEOUT: {
+      default: 2
+  },
+  NakTimeout: {
       doc: 'Path for cfdp engine to store temporary files',
       format: 'int',
-      default: '5'
-    },
-    NAK_LIMIT: {
+      default: 5
+  },
+  NakLimit: {
       doc: 'Path for cfdp engine to store temporary files',
       format: 'int',
-      default: '3'
-    },
-    INACTIVITY_TIMEOUT: {
+      default: 3
+  },
+  InactivityTimeout: {
       doc: 'Path for cfdp engine to store temporary files',
       format: 'int',
-      default: '20'
-    },
-    OUTGOING_FILE_CHUNK_SIZE: {
+      default: 20
+  },
+  OutgoingFileChunkSize: {
       doc: 'Path for cfdp engine to store temporary files',
       format: 'int',
-      default: '64'
-    },
-    SAVE_INCOMPLETE_FILES: {
+      default: 64
+  },
+  SaveIncompleteFiles: {
       doc: 'Path for cfdp engine to store temporary files',
-      format: String,
-      default: 'no'
-    },
-    MY_ID: {
+      format: Boolean,
+      default: false
+  },
+  MyID: {
       doc: 'Path for cfdp engine to store temporary files',
       format: String,
       default: '0.23'
-    }
   },
-  config: {
-    DEFAULT_TEMP_BASE_DIR: {
+  TempDir: {
       doc: 'Path for cfdp engine to store temporary files',
       format: String,
       default: '/tmp/cf/'
-    }
+  },
+  BasePath: {
+      doc: 'Path to the base directory',
+      format: String,
+      default: ''
   },
   CfdpClientStreamID: {
-    doc: 'Stream ID for cfdp queries',
-    format: String,
-    default: ''
+      doc: 'Stream ID for cfdp queries',
+      format: String,
+      default: ''
   },
-  cfdpInputStream: {
-    doc: 'Stream ID for listening to binary data',
-    format: String,
-    default: ''
+  CfdpInputStream: {
+      doc: 'Stream ID for listening to binary data',
+      format: String,
+      default: ''
   },
-  cfdpOutputStream: {
-    doc: 'Stream ID for sending to binary data',
-    format: String,
-    default: ''
+  CfdpOutputStream: {
+      doc: 'Stream ID for sending to binary data',
+      format: String,
+      default: ''
   }
 } );
 
