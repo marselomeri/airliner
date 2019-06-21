@@ -52,6 +52,82 @@ class CFDPServer extends CdrGroundPlugin {
     	
     	var self = this;
 
+        this.PDUTypeEnum = Object.freeze({
+            'FileDirective'  :  0, 
+            'FileData'       :  1});
+
+        this.DirectionEnum = Object.freeze({
+            'ToFileReceiver' :  0, 
+            'ToFileSender'   :  1});
+
+        this.CrcFlagEnum = Object.freeze({
+            'NotPresent'     :  0, 
+            'Present'        :  1});
+
+        this.DirectiveCodeEnum = Object.freeze({
+            'EOF'            :  4, 
+            'FIN'            :  5, 
+            'ACK'            :  6, 
+            'METADATA'       :  7, 
+            'NAK'            :  8, 
+            'PROMPT'         :  9, 
+            'KEEPALIVE'      : 10});
+
+        this.ConditionCodeEnum = Object.freeze({
+            'NoError'                 :  0, 
+            'PositiveAckLimitReached' :  1, 
+            'KeepAliveLimitReached'   :  2, 
+            'InvalidTransMode'        :  3, 
+            'FilestoreRejection'      :  4, 
+            'FileChecksumFailure'     :  5, 
+            'FileSizeError'           :  6, 
+            'NAKLimitReached'         :  7, 
+            'InactivityDetected'      :  8, 
+            'InvalidFileStructure'    :  9, 
+            'CheckLimitReached'       : 10, 
+            'SuspendRequestReceived'  : 14, 
+            'CancelRequestReceived'   : 15});
+
+        this.EndSystemStatusEnum = Object.freeze({
+            'GeneratedByWaypoint'     :  0, 
+            'GeneratedByEndSystem'    :  1});
+
+        this.DeliveryCodeEnum = Object.freeze({
+            'DataComplete'            :  0, 
+            'DataIncomplete'          :  1});
+
+        this.FileStatusEnum = Object.freeze({
+            'DiscardedDeliberately'   :  0, 
+            'DiscardedDueToReject'    :  1, 
+            'SuccessfullyRetained'    :  2, 
+            'StatusUnreported'        :  3});
+
+        this.SegCtrlEnum = Object.freeze({
+            'BoundariesRespected'     :  0, 
+            'BoundariesNotRespected'  :  1});
+
+        this.ResponseRequiredEnum = Object.freeze({
+            'NAK'                     :  0, 
+            'Keepalive'               :  1});
+
+        this.ActionCodeEnum = Object.freeze({
+            'CreateFile'              :  0, 
+            'DeleteFile'              :  1, 
+            'RenameFile'              :  2, 
+            'AppendFile'              :  3, 
+            'ReplaceFile'             :  4, 
+            'CreateDirectory'         :  5, 
+            'RemoveDirectory'         :  6, 
+            'DenyFile'                :  7, 
+            'DenyDirectory'           :  8});
+
+        this.HandlerCodeEnum = Object.freeze({
+            'Cancel'                  :  0, 
+            'Suspend'                 :  1, 
+            'IgnoreError'             :  2, 
+            'AppendFile'              :  3, 
+            'Abandon'                 :  4});
+        
         /* Initialize the configuration. */
         this.initConfig(configObj.name, configObj.configFile);
         
@@ -70,6 +146,8 @@ class CFDPServer extends CdrGroundPlugin {
 
         this.logInfo( 'Initialized' );
     };
+    
+    
     
     
     initConfig(name, configFile) {
@@ -145,6 +223,195 @@ class CFDPServer extends CdrGroundPlugin {
     }
     
     
+    BufferToPDU(inBuffer) {
+        var pdu = this.pduHdrDef.parse(inBuffer);
+        
+        /* The byte offset after the 'transSeqnumLength' field. */
+        var offset = 4;
+
+        /* Add 1 to the entity ID length because the field is the actual length - 1 */
+        pdu.entityIDLength++;
+        /* Add 1 to the transaction sequence number length because the field is the actual 
+         * length - 1 */
+        pdu.transSeqNumLength++;
+        
+        pdu.srcEntityID = [];
+        pdu.transSeqNum = [];
+        pdu.destEntityID = [];
+        
+        for(var i = 0; i < pdu.entityIDLength; ++i) { 
+        	pdu.srcEntityID.push(inBuffer[offset++]);
+        }
+        
+        for(var i = 0; i < pdu.transSeqNumLength; ++i) {
+        	pdu.transSeqNum.push(inBuffer[offset++]);
+        }
+        
+        for(var i = 0; i < pdu.entityIDLength; ++i) {                	
+        	pdu.destEntityID.push(inBuffer[offset++]);
+        }
+        
+        if(pdu.pduType == 0) {
+        	pdu.directiveCode = inBuffer.readUInt8(offset++);
+        	
+        	switch(pdu.directiveCode) {
+        	    /* EOF */
+        	    case 4: {
+        	    	pdu.eof = {};
+        	    	pdu.eof.condCode = (inBuffer.readUInt8(offset++) >> 4) & 0x0f;
+        	    	pdu.eof.fileChecksum = inBuffer.readUInt32BE(offset);
+        	    	offset = offset + 4;
+        	    	pdu.eof.fileSize = inBuffer.readUInt32BE(offset);
+        	    	offset = offset + 4;
+        	    	
+        	    	/* Omitted if condition code is ‘No error’.  Otherwise, entity ID in the 
+        	    	 * TLV is the ID of the entity at which transaction cancellation was 
+        	    	 * initiated. */ 
+        	    	if(pdu.eof.condCode != 0) {
+        	    		/* The Type of the Entity ID TLV shall be 06 hex; the Value shall 
+        	    		 * be an Entity ID as discussed in 5.1. */
+        	    	    pdu.eof.faultLocation = {};
+        	    	    pdu.eof.faultLocation.Type = inBuffer.readUInt8(offset++);
+        	    	    pdu.eof.faultLocation.Length = inBuffer.readUInt8(offset++);
+        	    	    pdu.eof.faultLocation.Value = [];
+        	    	    for(var i = 0; i < pdu.faultLocation.Length; ++i) {
+            	    	    pdu.eof.faultLocation.Value.push(inBuffer.readUInt8(offset++));
+        	    	    }
+        	    	}
+        	    	break;
+        	    }
+        	    
+        	    /* Finished */
+        	    case 5: {
+        	    	pdu.finished = {};
+        	    	
+        	    	var tempByte   = inBuffer.readUInt8(offset++);
+        	    	pdu.finished.condCode   = (tempByte >> 4) & 0x0f;
+        	    	pdu.finished.endSysStat = (tempByte >> 3) & 0x01;
+        	    	pdu.finished.delCode    = (tempByte >> 2) & 0x01;
+        	    	pdu.finished.fileStat   = (tempByte >> 0) & 0x03;
+        	    	pdu.finished.endSysStat = (tempByte >> 3) & 0x01;
+
+        	    	/* The Type of the Entity ID TLV shall be 06 hex; the Value shall 
+        	    	 * be an Entity ID as discussed in 5.1. */
+        	    	pdu.finished.filestoreResponse = {};
+        	    	tempByte = inBuffer.readUInt8(offset++);
+        	    	pdu.finished.filestoreResponse.actionCode = (tempByte >> 4) & 0x0f;
+        	    	pdu.finished.filestoreResponse.statusCode = tempByte & 0x0f;
+        	    	
+        	    	pdu.finished.filestoreResponse.firstFileName = {};
+        	    	pdu.finished.filestoreResponse.firstFileName.Length = inBuffer.readUInt8(offset++);
+        	    	pdu.finished.filestoreREsponse.firstFileName.Value = inBuffer.toString('utf8', offset, offset + pdu.filestoreResponse.firstFileName.Length);
+        	    	offset = offset + pdu.filestoreResponse.firstFileName.Length;
+        	    	
+        	    	pdu.finished.filestoreResponse.secondFileName = {};
+        	    	pdu.finished.filestoreResponse.secondFileName.Length = inBuffer.readUInt8(offset++);
+        	    	pdu.finished.filestoreREsponse.secondFileName.Value = inBuffer.toString('utf8', offset, offset + pdu.filestoreResponse.secondFileName.Length);
+        	    	offset = offset + pdu.filestoreResponse.secondFileName.Length;
+        	    	
+        	    	pdu.finished.filestoreResponse.filestoreMessage = {};
+        	    	pdu.finished.filestoreResponse.filestoreMessage.Length = inBuffer.readUInt8(offset++);
+        	    	pdu.finished.filestoreResponse.filestoreMessage.Value = inBuffer.toString('utf8', offset, offset + pdu.finished.filestoreResponse.filestoreMessage.Length);
+        	    	offset = offset + pdu.finished.filestoreResponse.filestoreMessage.Length;
+        	    	break;
+        	    }
+        	    
+        	    /* ACK */
+        	    case 6: {
+        	    	pdu.ack = {};
+        	    	
+        	    	var tempByte   = inBuffer.readUInt8(offset++);
+        	    	pdu.ack.directiveCode   = (tempByte >> 4) & 0x0f;
+        	    	pdu.ack.directiveSubCode = tempByte & 0x0f;
+        	    	tempByte   = inBuffer.readUInt8(offset++);
+        	    	pdu.ack.condCode = (tempByte >> 4) & 0x0f;
+        	    	pdu.ack.transStatus = tempByte & 0x03;
+        	    	break;
+        	    }
+        	    
+        	    /* Metadata */
+        	    case 7: {
+        	    	pdu.meta = {};
+        	    	
+        	    	pdu.meta.segCtrl = inBuffer.readUInt8(offset++) & 0x01;
+        	    	pdu.meta.fileSize = inBuffer.readUInt32BE(offset);
+        	    	offset = offset + 4;
+        	    	
+        	    	pdu.meta.srcFileName = {};
+        	    	pdu.meta.srcFileName.Length = inBuffer.readUInt8(offset++);
+        	    	pdu.meta.srcFileName.Value = inBuffer.toString('utf8', offset, offset + pdu.meta.srcFileName.Length);
+        	    	offset = offset + pdu.meta.srcFileName.Length;
+        	    	
+        	    	pdu.meta.destFileName = {};
+        	    	pdu.meta.destFileName.Length = inBuffer.readUInt8(offset++);
+        	    	pdu.meta.destFileName.Value = inBuffer.toString('utf8', offset, offset + pdu.meta.destFileName.Length);
+        	    	offset = offset + pdu.meta.destFileName.Length;
+
+        	    	/* TODO */
+        	    	//pdu.meta.options = {};
+        	    	//pdu.meta.options.filestoreRequest = {};
+        	    	//pdu.meta.options.destFileName.Length = inBuffer.readUInt8(offset++);
+        	    	//pdu.meta.options.destFileName.Value = inBuffer.toString('utf8', offset, offset + pdu.meta.options.destFileName.Length);
+        	    	//offset = offset + pdu.meta.options.destFileName.Length;
+        	    	break;
+        	    }
+        	    
+        	    /* NAK */
+        	    case 8: {
+        	    	pdu.nak = {};
+        	    	
+        	    	pdu.nak.startOfScope = inBuffer.readUInt32BE(offset);
+        	    	offset = offset + 4;
+        	    	pdu.nak.endOfScope = inBuffer.readUInt32BE(offset);
+        	    	offset = offset + 4;
+        	    	/* TODO */
+        	    	break;
+        	    }
+        	    
+        	    /* Prompt */
+        	    case 9: {
+        	    	pdu.prompt = {};
+        	    	
+        	    	pdu.prompt.responseRequired = inBuffer.readUInt8(offset++) & 0x01;
+        	    	
+        	    	break;
+        	    }
+        	    
+        	    /* Keep Alive */
+        	    case 12: {
+        	    	pdu.keepAlive = {};
+        	    	
+        	    	pdu.keepAlive.progress = inBuffer.readUInt32BE(offset++);
+        	    	
+        	    	break;
+        	    }
+        	}
+        	
+        	console.log(pdu);
+        } else {
+        	pdu.dataOffset = inBuffer.readUInt32BE(offset);
+        	offset = offset + 4;
+        	
+        	pdu.data = [];
+        	var startOffset = offset;
+        	var endOffset = pdu.dataOffset + pdu.dataFieldLength;
+        	
+            for(var i = 0; i < pdu.dataFieldLength; ++i) {
+            	pdu.data.push(inBuffer[offset++]);
+            }
+        }
+    }
+    
+    
+    
+    MessageToPDU(inMessage) {
+    	if(inMessage.msgID == 0x1FFE) {                
+            var pdu = this.BufferToPDU(inMessage.content.payload);
+    	}
+    };
+    
+    
+    
     initServer() {
     	var self = this;
     	
@@ -162,186 +429,7 @@ class CFDPServer extends CdrGroundPlugin {
             .bit1( 'spare3' )
             .bit3( 'transSeqNumLength' );
 
-        this.namespace.recv( config.get( 'CfdpInputStream' ), function( message ) {
-        	if(message.msgID == 0x1FFE) {                
-                var pdu = self.pduHdrDef.parse(message.content.payload);
-                
-                /* The byte offset after the 'transSeqnumLength' field. */
-                var offset = 4;
-
-                /* Add 1 to the entity ID length because the field is the actual length - 1 */
-                pdu.entityIDLength++;
-                /* Add 1 to the transaction sequence number length because the field is the actual 
-                 * length - 1 */
-                pdu.transSeqNumLength++;
-                
-                pdu.srcEntityID = [];
-                pdu.transSeqNum = [];
-                pdu.destEntityID = [];
-                
-                for(var i = 0; i < pdu.entityIDLength; ++i) { 
-                	pdu.srcEntityID.push(message.content.payload[offset++]);
-                }
-                
-                for(var i = 0; i < pdu.transSeqNumLength; ++i) {
-                	pdu.transSeqNum.push(message.content.payload[offset++]);
-                }
-                
-                for(var i = 0; i < pdu.entityIDLength; ++i) {                	
-                	pdu.destEntityID.push(message.content.payload[offset++]);
-                }
-                
-                if(pdu.pduType == 0) {
-                	pdu.directiveCode = message.content.payload.readUInt8(offset++);
-                	
-                	switch(pdu.directiveCode) {
-                	    /* EOF */
-                	    case 4: {
-                	    	pdu.eof = {};
-                	    	pdu.eof.condCode = (message.content.payload.readUInt8(offset++) >> 4) & 0x0f;
-                	    	pdu.eof.fileChecksum = message.content.payload.readUInt32BE(offset);
-                	    	offset = offset + 4;
-                	    	pdu.eof.fileSize = message.content.payload.readUInt32BE(offset);
-                	    	offset = offset + 4;
-                	    	
-                	    	/* Omitted if condition code is ‘No error’.  Otherwise, entity ID in the 
-                	    	 * TLV is the ID of the entity at which transaction cancellation was 
-                	    	 * initiated. */ 
-                	    	if(pdu.eof.condCode != 0) {
-                	    		/* The Type of the Entity ID TLV shall be 06 hex; the Value shall 
-                	    		 * be an Entity ID as discussed in 5.1. */
-                	    	    pdu.eof.faultLocation = {};
-                	    	    pdu.eof.faultLocation.Type = message.content.payload.readUInt8(offset++);
-                	    	    pdu.eof.faultLocation.Length = message.content.payload.readUInt8(offset++);
-                	    	    pdu.eof.faultLocation.Value = [];
-                	    	    for(var i = 0; i < pdu.faultLocation.Length; ++i) {
-                    	    	    pdu.eof.faultLocation.Value.push(message.content.payload.readUInt8(offset++));
-                	    	    }
-                	    	}
-                	    	break;
-                	    }
-                	    
-                	    /* Finished */
-                	    case 5: {
-                	    	pdu.finished = {};
-                	    	
-                	    	var tempByte   = message.content.payload.readUInt8(offset++);
-                	    	pdu.finished.condCode   = (tempByte >> 4) & 0x0f;
-                	    	pdu.finished.endSysStat = (tempByte >> 3) & 0x01;
-                	    	pdu.finished.delCode    = (tempByte >> 2) & 0x01;
-                	    	pdu.finished.fileStat   = (tempByte >> 0) & 0x03;
-                	    	pdu.finished.endSysStat = (tempByte >> 3) & 0x01;
-
-                	    	/* The Type of the Entity ID TLV shall be 06 hex; the Value shall 
-                	    	 * be an Entity ID as discussed in 5.1. */
-                	    	pdu.finished.filestoreResponse = {};
-                	    	tempByte = message.content.payload.readUInt8(offset++);
-                	    	pdu.finished.filestoreResponse.actionCode = (tempByte >> 4) & 0x0f;
-                	    	pdu.finished.filestoreResponse.statusCode = tempByte & 0x0f;
-                	    	
-                	    	pdu.finished.filestoreResponse.firstFileName = {};
-                	    	pdu.finished.filestoreResponse.firstFileName.Length = message.content.payload.readUInt8(offset++);
-                	    	pdu.finished.filestoreREsponse.firstFileName.Value = message.content.payload.toString('utf8', offset, offset + pdu.filestoreResponse.firstFileName.Length);
-                	    	offset = offset + pdu.filestoreResponse.firstFileName.Length;
-                	    	
-                	    	pdu.finished.filestoreResponse.secondFileName = {};
-                	    	pdu.finished.filestoreResponse.secondFileName.Length = message.content.payload.readUInt8(offset++);
-                	    	pdu.finished.filestoreREsponse.secondFileName.Value = message.content.payload.toString('utf8', offset, offset + pdu.filestoreResponse.secondFileName.Length);
-                	    	offset = offset + pdu.filestoreResponse.secondFileName.Length;
-                	    	
-                	    	pdu.finished.filestoreResponse.filestoreMessage = {};
-                	    	pdu.finished.filestoreResponse.filestoreMessage.Length = message.content.payload.readUInt8(offset++);
-                	    	pdu.finished.filestoreResponse.filestoreMessage.Value = message.content.payload.toString('utf8', offset, offset + pdu.finished.filestoreResponse.filestoreMessage.Length);
-                	    	offset = offset + pdu.finished.filestoreResponse.filestoreMessage.Length;
-                	    	break;
-                	    }
-                	    
-                	    /* ACK */
-                	    case 6: {
-                	    	pdu.ack = {};
-                	    	
-                	    	var tempByte   = message.content.payload.readUInt8(offset++);
-                	    	pdu.ack.directiveCode   = (tempByte >> 4) & 0x0f;
-                	    	pdu.ack.directiveSubCode = tempByte & 0x0f;
-                	    	tempByte   = message.content.payload.readUInt8(offset++);
-                	    	pdu.ack.condCode = (tempByte >> 4) & 0x0f;
-                	    	pdu.ack.transStatus = tempByte & 0x03;
-                	    	break;
-                	    }
-                	    
-                	    /* Metadata */
-                	    case 7: {
-                	    	pdu.meta = {};
-                	    	
-                	    	pdu.meta.segCtrl = message.content.payload.readUInt8(offset++) & 0x01;
-                	    	pdu.meta.fileSize = message.content.payload.readUInt32BE(offset);
-                	    	offset = offset + 4;
-                	    	
-                	    	pdu.meta.srcFileName = {};
-                	    	pdu.meta.srcFileName.Length = message.content.payload.readUInt8(offset++);
-                	    	pdu.meta.srcFileName.Value = message.content.payload.toString('utf8', offset, offset + pdu.meta.srcFileName.Length);
-                	    	offset = offset + pdu.meta.srcFileName.Length;
-                	    	
-                	    	pdu.meta.destFileName = {};
-                	    	pdu.meta.destFileName.Length = message.content.payload.readUInt8(offset++);
-                	    	pdu.meta.destFileName.Value = message.content.payload.toString('utf8', offset, offset + pdu.meta.destFileName.Length);
-                	    	offset = offset + pdu.meta.destFileName.Length;
-
-                	    	/* TODO */
-                	    	//pdu.meta.options = {};
-                	    	//pdu.meta.options.filestoreRequest = {};
-                	    	//pdu.meta.options.destFileName.Length = message.content.payload.readUInt8(offset++);
-                	    	//pdu.meta.options.destFileName.Value = message.content.payload.toString('utf8', offset, offset + pdu.meta.options.destFileName.Length);
-                	    	//offset = offset + pdu.meta.options.destFileName.Length;
-                	    	break;
-                	    }
-                	    
-                	    /* NAK */
-                	    case 8: {
-                	    	pdu.nak = {};
-                	    	
-                	    	pdu.nak.startOfScope = message.content.payload.readUInt32BE(offset);
-                	    	offset = offset + 4;
-                	    	pdu.nak.endOfScope = message.content.payload.readUInt32BE(offset);
-                	    	offset = offset + 4;
-                	    	/* TODO */
-                	    	break;
-                	    }
-                	    
-                	    /* Prompt */
-                	    case 9: {
-                	    	pdu.prompt = {};
-                	    	
-                	    	pdu.prompt.responseRequired = message.content.payload.readUInt8(offset++) & 0x01;
-                	    	
-                	    	break;
-                	    }
-                	    
-                	    /* Keep Alive */
-                	    case 12: {
-                	    	pdu.keepAlive = {};
-                	    	
-                	    	pdu.keepAlive.progress = message.content.payload.readUInt32BE(offset++);
-                	    	
-                	    	break;
-                	    }
-                	}
-                	
-                	console.log(pdu);
-                } else {
-                	pdu.dataOffset = message.content.payload.readUInt32BE(offset);
-                	offset = offset + 4;
-                	
-                	pdu.data = [];
-                	var startOffset = offset;
-                	var endOffset = pdu.dataOffset + pdu.dataFieldLength;
-                	
-                    for(var i = 0; i < pdu.dataFieldLength; ++i) {
-                    	pdu.data.push(message.content.payload[offset++]);
-                    }
-                }
-        	}
-        });
+        this.namespace.recv( config.get( 'CfdpInputStream' ), this.MessageToPDU);
         
 //    	/* Set CFDP API configuration */
 //    	//CfdpLib.SetConfig( config.get( 'config' ) );

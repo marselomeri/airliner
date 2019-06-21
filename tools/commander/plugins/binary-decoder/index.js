@@ -602,6 +602,14 @@ class BinaryDecoder extends CdrGroundPlugin {
                         this.namespace.send( config.get( 'jsonOutputStreamID' ), output );
                     }
                 }
+            } else {
+                var output = {
+                	content: message,
+                    msgID: msgID,
+                    msgTime: msgTime
+                };
+                
+                this.namespace.send( config.get( 'jsonOutputStreamID' ), output );
             }
         } catch ( e ) {
             self.logError('processBinaryMessage: Unable to decode buffer.  \'' + e + '\'' );
