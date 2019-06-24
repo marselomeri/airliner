@@ -79,8 +79,6 @@ typedef struct
 {
 	/** \brief The home position message */
 	PX4_HomePositionMsg_t HomePositionMsg;
-	/** \brief The sensor combined message */
-	PX4_SensorCombinedMsg_t SensorCombinedMsg;
 	/** \brief The mission message */
 	PX4_MissionMsg_t MissionMsg;
 	/** \brief The position message from GPS */
@@ -95,8 +93,6 @@ typedef struct
 	PX4_VehicleLocalPositionMsg_t VehicleLocalPositionMsg;
 	/** \brief The vehicle command message */
 	PX4_VehicleCommandMsg_t VehicleCommandMsg;
-	/** \brief The distance sensor message */
-	PX4_DistanceSensorMsg_t DistanceSensorMsg;
 }NAV_CurrentValueTable_t;
 
 /**
@@ -474,42 +470,7 @@ public:
 	 **
 	 *************************************************************************/
 	void ReportHousekeeping(void);
-	/************************************************************************/
-	/** \brief Sends the VehicleLandDetectedMsg message.
-	 **
-	 **  \par Description
-	 **       This function publishes the VehicleLandDetectedMsg message containing
-	 **       <TODO>
-	 **
-	 **  \par Assumptions, External Events, and Notes:
-	 **       None
-	 **
-	 *************************************************************************/
-	void SendVehicleLandDetectedMsg(void);
-	/************************************************************************/
-	/** \brief Sends the FenceMsg message.
-	 **
-	 **  \par Description
-	 **       This function publishes the FenceMsg message containing
-	 **       <TODO>
-	 **
-	 **  \par Assumptions, External Events, and Notes:
-	 **       None
-	 **
-	 *************************************************************************/
-	void SendFenceMsg(void);
-	/************************************************************************/
-	/** \brief Sends the ActuatorControls3Msg message.
-	 **
-	 **  \par Description
-	 **       This function publishes the ActuatorControls3Msg message containing
-	 **       <TODO>
-	 **
-	 **  \par Assumptions, External Events, and Notes:
-	 **       None
-	 **
-	 *************************************************************************/
-	void SendActuatorControls3Msg(void);
+	
 	/************************************************************************/
 	/** \brief Sends the MissionResultMsg message.
 	 **
@@ -522,18 +483,7 @@ public:
 	 **
 	 *************************************************************************/
 	void SendMissionResultMsg(void);
-	/************************************************************************/
-	/** \brief Sends the GeofenceResultMsg message.
-	 **
-	 **  \par Description
-	 **       This function publishes the GeofenceResultMsg message containing
-	 **       <TODO>
-	 **
-	 **  \par Assumptions, External Events, and Notes:
-	 **       None
-	 **
-	 *************************************************************************/
-	void SendGeofenceResultMsg(void);
+	
 	/************************************************************************/
 	/** \brief Sends the PositionSetpointTripletMsg message.
 	 **
@@ -546,6 +496,7 @@ public:
 	 **
 	 *************************************************************************/
 	void SendPositionSetpointTripletMsg(void);
+	
 	/************************************************************************/
 	/** \brief Verify Command Length
 	 **
@@ -565,6 +516,7 @@ public:
 	 **
 	 *************************************************************************/
 	boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
+	
 	/************************************************************************/
 	/** \brief Navigation Task
 	 **
@@ -580,7 +532,8 @@ public:
 	 **  \endreturns
 	 **
 	 *************************************************************************/
-	int Execute(void);
+	int32 Execute(void);
+	
 	/************************************************************************/
 	/** \brief Vehicle Takeoff
 	 **
@@ -593,6 +546,7 @@ public:
 	 **
 	 *************************************************************************/
 	void Takeoff(void);
+	
 	/************************************************************************/
 	/** \brief Takeoff Routine
 	 **
@@ -606,6 +560,7 @@ public:
 	 **
 	 *************************************************************************/
 	void TakeoffActive(void);
+	
 	/************************************************************************/
 	/** \brief Vehicle Land
 	 **
@@ -617,6 +572,7 @@ public:
 	 **
 	 *************************************************************************/
 	void Land(void);
+	
 	/************************************************************************/
 	/** \brief Land Routine
 	 **
@@ -629,6 +585,7 @@ public:
 	 **
 	 *************************************************************************/
 	void LandActive(void);
+	
 	/************************************************************************/
 	/** \brief Vehicle Loiter
 	 **
@@ -640,6 +597,7 @@ public:
 	 **
 	 *************************************************************************/
 	void Loiter(void);
+	
 	/************************************************************************/
 	/** \brief Loiter Routine
 	 **
@@ -652,6 +610,7 @@ public:
 	 **
 	 *************************************************************************/
 	void LoiterActive(void);
+	
 	/************************************************************************/
 	/** \brief Loiter Reposition routine
 	 **
@@ -663,6 +622,7 @@ public:
 	 **
 	 *************************************************************************/
 	void LoiterReposition(void);
+	
 	/************************************************************************/
 	/** \brief Set Loiter Position Setpoint
 	 **
@@ -674,6 +634,7 @@ public:
 	 **
 	 *************************************************************************/
 	void LoiterSetPosition(void);
+	
 	/************************************************************************/
 	/** \brief Vehicle return to launch
 	 **
@@ -685,6 +646,7 @@ public:
 	 **
 	 *************************************************************************/
 	void Rtl(void);
+	
 	/************************************************************************/
 	/** \brief Set RTL Position Setpoint
 	 **
@@ -696,6 +658,7 @@ public:
 	 **
 	 *************************************************************************/
 	void SetRtlItem(void);
+	
 	/************************************************************************/
 	/** \brief RTL State Transitions
 	 **
@@ -707,6 +670,7 @@ public:
 	 **
 	 *************************************************************************/
 	void AdvanceRtl(void);
+	
 	/************************************************************************/
 	/** \brief RTL Routine
 	 **
@@ -719,6 +683,7 @@ public:
 	 **
 	 *************************************************************************/
 	void RtlActive(void);
+	
 	/************************************************************************/
 	/** \brief Detect State change
 	 **
@@ -734,6 +699,7 @@ public:
 	 **
 	 *************************************************************************/
 	boolean StateChangeDetect(void);
+	
 	/************************************************************************/
 	/** \brief Store Previous Commands
 	 **
@@ -746,6 +712,7 @@ public:
 	 **
 	 *************************************************************************/
 	void CommandEventHist(void);
+	
 	/************************************************************************/
 	/** \brief Verify Mission Item Reach
 	 **
@@ -762,6 +729,7 @@ public:
 	 **
 	 *************************************************************************/
 	boolean IsMissionItemReached(void);
+	
 	/************************************************************************/
 	/** \brief Marks Mission Result Message as Fail
 	 **
@@ -776,6 +744,7 @@ public:
 	 **
 	 *************************************************************************/
 	void SetMissionFaliure(const char* );
+	
 	/************************************************************************/
 	/** \brief Sets Current Position Setpoint
 	 **
@@ -791,6 +760,7 @@ public:
 	 **
 	 *************************************************************************/
 	void ConvertMissionItemToCurrentSetpoint(PX4_PositionSetpoint_t *, NAV_MissionItem_t *);
+	
 	/************************************************************************/
 	/** \brief Sets Loiter Setpoint Triplet
 	 **
@@ -804,6 +774,7 @@ public:
 	 **
 	 *************************************************************************/
 	void SetLoiterItem(NAV_MissionItem_t *);
+	
 	/************************************************************************/
 	/** \brief Returns Value Assigned to GetTimeInside
 	 **
@@ -821,6 +792,7 @@ public:
 	 **
 	 *************************************************************************/
 	float GetTimeInside(NAV_MissionItem_t * );
+	
 	/************************************************************************/
 	/** \brief Validate Home Position Message
 	 **
@@ -836,6 +808,7 @@ public:
 	 **
 	 *************************************************************************/
 	boolean HomePositionValid(void);
+	
 	/************************************************************************/
 	/** \brief Return Default Accepted Radius
 	 **
@@ -848,6 +821,7 @@ public:
 	 **
 	 *************************************************************************/
 	float GetDefaultAcceptedRadius(void);
+	
 	/************************************************************************/
 	/** \brief Sets Accepted Radius
 	 **
@@ -858,6 +832,7 @@ public:
 	 **
 	 *************************************************************************/
 	void SetAcceptedRadius(float);
+	
 	/************************************************************************/
 	/** \brief Return Altitude Accepted Radius
 	 **
@@ -870,6 +845,7 @@ public:
 	 **
 	 *************************************************************************/
 	float GetAltitudeAcceptedRadius(void);
+	
 	/************************************************************************/
 	/** \brief Return Cruising Throttle
 	 **
@@ -882,6 +858,7 @@ public:
 	 **
 	 *************************************************************************/
 	float GetCruisingThrottle(void);
+	
 	/************************************************************************/
 	/** \brief Return Cruising Speed
 	 **
@@ -894,6 +871,7 @@ public:
 	 **
 	 *************************************************************************/
 	float GetCruisingSpeed(void);
+	
 	/************************************************************************/
 	/** \brief Updates application params from param table
 	 **
@@ -902,6 +880,7 @@ public:
 	 **
 	 *************************************************************************/
 	void UpdateParamsFromTable(void);
+	
 	/************************************************************************/
 	/** \brief Returns Address of Mission Result Message
 	 **
@@ -917,6 +896,7 @@ public:
 	{
 		return &MissionResultMsg;
 	}
+	
 	/************************************************************************/
 	/** \brief Returns Address of Position Setpoint Triplet Message
 	 **
@@ -932,6 +912,7 @@ public:
 	{
 		return &PositionSetpointTripletMsg;
 	}
+	
 	/************************************************************************/
 	/** \brief Returns Address of Take off Triplet Message
 	 **
@@ -947,6 +928,7 @@ public:
 	{
 		return &TakeoffTripletMsg;
 	}
+	
 	/************************************************************************/
 	/** \brief Returns Address of Reposition Triplet Message
 	 **
@@ -962,6 +944,7 @@ public:
 	{
 		return &RepositionTripletMsg;
 	}
+	
 	/************************************************************************/
 	/** \brief Returns Address of Home Position Message
 	 **
@@ -977,6 +960,7 @@ public:
 	{
 		return &CVT.HomePositionMsg;
 	}
+	
 	/************************************************************************/
 	/** \brief Returns Address of Sensor Combined Message
 	 **
@@ -992,6 +976,7 @@ public:
 	{
 		return &CVT.SensorCombinedMsg;
 	}
+	
 	/************************************************************************/
 	/** \brief Returns Address of Mission Message
 	 **
@@ -1007,6 +992,7 @@ public:
 	{
 		return &CVT.MissionMsg;
 	}
+	
 	/************************************************************************/
 	/** \brief Returns Address of Vehicle GPS Position Message
 	 **
@@ -1022,6 +1008,7 @@ public:
 	{
 		return &CVT.VehicleGpsPositionMsg;
 	}
+	
 	/************************************************************************/
 	/** \brief Returns Address of Vehicle Global Position Message
 	 **
@@ -1037,6 +1024,7 @@ public:
 	{
 		return &CVT.VehicleGlobalPosition;
 	}
+	
 	/************************************************************************/
 	/** \brief Returns Address of Vehicle Status Message
 	 **
@@ -1052,6 +1040,7 @@ public:
 	{
 		return &CVT.VehicleStatusMsg;
 	}
+	
 	/************************************************************************/
 	/** \brief Returns Address of Vehicle Land Detected Message
 	 **
@@ -1067,6 +1056,7 @@ public:
 	{
 		return &CVT.VehicleLandDetectedMsg;
 	}
+	
 	/************************************************************************/
 	/** \brief Returns Address of Vehicle Local Position Message
 	 **
@@ -1082,6 +1072,7 @@ public:
 	{
 		return &CVT.VehicleLocalPositionMsg;
 	}
+	
 	/************************************************************************/
 	/** \brief Returns Address of Vehicle Command Message
 	 **
@@ -1097,6 +1088,7 @@ public:
 	{
 		return &CVT.VehicleCommandMsg;
 	}
+	
 	/************************************************************************/
 	/** \brief Returns False to function call
 	 **
@@ -1112,6 +1104,7 @@ public:
 	{
 		return false;
 	}
+	
 	/************************************************************************/
 	/** \brief Sets CanLoiterAtSetpoint
 	 **
@@ -1125,6 +1118,7 @@ public:
 	{
 		CanLoiterAtSetpoint = can_loiter;
 	}
+	
 	/************************************************************************/
 	/** \brief Sets PositionSetpointTripletUpdated to True
 	 **

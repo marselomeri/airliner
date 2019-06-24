@@ -1,3 +1,36 @@
+/****************************************************************************
+*
+*   Copyright (c) 2017 Windhover Labs, L.L.C. All rights reserved.
+*
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions
+* are met:
+*
+* 1. Redistributions of source code must retain the above copyright
+*    notice, this list of conditions and the following disclaimer.
+* 2. Redistributions in binary form must reproduce the above copyright
+*    notice, this list of conditions and the following disclaimer in
+*    the documentation and/or other materials provided with the
+*    distribution.
+* 3. Neither the name Windhover Labs nor the names of its
+*    contributors may be used to endorse or promote products derived
+*    from this software without specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+* FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+* COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+* INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+* BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+* OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+* AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+* LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+* ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+* POSSIBILITY OF SUCH DAMAGE.
+*
+*****************************************************************************/
+
 /************************************************************************
  ** Includes
  *************************************************************************/
@@ -53,7 +86,7 @@ int32 NAV::InitEvent()
                 "NAV - Failed to register with EVS (0x%08lX)\n", iStatus);
     }
 
-    return iStatus;
+    return (iStatus);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -99,16 +132,6 @@ int32 NAV::InitPipe()
         {
             (void) CFE_EVS_SendEvent(NAV_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
                     "CMD Pipe failed to subscribe to PX4_HOME_POSITION_MID. (0x%08lX)",
-                    iStatus);
-            goto NAV_InitPipe_Exit_Tag;
-        }
-
-        iStatus = CFE_SB_SubscribeEx(PX4_SENSOR_COMBINED_MID, SchPipeId,
-                                     CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS)
-        {
-            (void) CFE_EVS_SendEvent(NAV_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_SENSOR_COMBINED_MID. (0x%08lX)",
                     iStatus);
             goto NAV_InitPipe_Exit_Tag;
         }
@@ -215,7 +238,7 @@ int32 NAV::InitPipe()
     }
 
 NAV_InitPipe_Exit_Tag: 
-        return iStatus;
+        return (iStatus);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -229,34 +252,15 @@ void NAV::InitData()
     CFE_SB_InitMsg(&HkTlm, NAV_HK_TLM_MID, sizeof(HkTlm), TRUE);
 
     /* Init output messages */
-    /*CFE_SB_InitMsg(&VehicleLandDetectedMsg,
-     PX4_VEHICLE_LAND_DETECTED_MID, sizeof(PX4_VehicleLandDetectedMsg_t), TRUE);*/
-
-    /* Init output messages */
-    /*CFE_SB_InitMsg(&FenceMsg,
-     PX4_FENCE_MID, sizeof(PX4_FenceMsg_t), TRUE);*/
-
-    /* Init output messages */
-    /*CFE_SB_InitMsg(&ActuatorControls3Msg,
-     PX4_ACTUATOR_CONTROLS_3_MID, sizeof(PX4_ActuatorControlsMsg_t), TRUE);*/
-
-    /* Init output messages */
     CFE_SB_InitMsg(&MissionResultMsg, PX4_MISSION_RESULT_MID,
                    sizeof(PX4_MissionResultMsg_t), TRUE);
 
-    /* Init output messages */
-    /*CFE_SB_InitMsg(&GeofenceResultMsg,
-     PX4_GEOFENCE_RESULT_MID, sizeof(PX4_GeofenceResultMsg_t), TRUE);*/
 
     /* Init output messages */
     CFE_SB_InitMsg(&PositionSetpointTripletMsg,
                    PX4_POSITION_SETPOINT_TRIPLET_MID, 
                    sizeof(PX4_PositionSetpointTripletMsg_t),
                    TRUE);
-
-    /* Init output messages */
-    /*CFE_SB_InitMsg(&VehicleCommandMsgOut,
-     PX4_POSITION_SETPOINT_TRIPLET_MID, sizeof(PX4_VehicleCommandMsg_t), TRUE);*/
 
     HkTlm.NavState = PX4_NAVIGATION_STATE_MANUAL;
     HkTlm.RtlState = RTL_STATE_NONE;
@@ -327,7 +331,7 @@ NAV_InitApp_Exit_Tag:
         }
     }
 
-    return iStatus;
+    return (iStatus);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -355,87 +359,70 @@ int32 NAV::RcvSchPipeMsg(int32 iBlocking)
         MsgId = CFE_SB_GetMsgId(MsgPtr);
         switch (MsgId)
         {
-        case NAV_WAKEUP_MID:
+            case NAV_WAKEUP_MID:
+                /* Check global position availability */
+                if (!CVT.VehicleGlobalPosition.Timestamp == 0)
+                {
+                    Execute();
+                }
 
-            /* Check global position availability */
-            if (!CVT.VehicleGlobalPosition.Timestamp == 0)
-            {
-                Execute();
-            }
+                break;
 
-            break;
+            case NAV_SEND_HK_MID:
+                ProcessCmdPipe();
+                ReportHousekeeping();
+                break;
 
-        case NAV_SEND_HK_MID:
-            ProcessCmdPipe();
-            ReportHousekeeping();
-            break;
+            case PX4_HOME_POSITION_MID:
+                CFE_PSP_MemCpy(&CVT.HomePositionMsg, MsgPtr, sizeof(CVT.HomePositionMsg));
+                break;
 
-        case PX4_HOME_POSITION_MID:
-            memcpy(&CVT.HomePositionMsg, MsgPtr, sizeof(CVT.HomePositionMsg));
-            break;
+            case PX4_MISSION_MID:
+                CFE_PSP_MemCpy(&CVT.MissionMsg, MsgPtr, sizeof(CVT.MissionMsg));
+                break;
 
-        case PX4_SENSOR_COMBINED_MID:
-            memcpy(&CVT.SensorCombinedMsg, MsgPtr,
-                    sizeof(CVT.SensorCombinedMsg));
-            break;
+            case PX4_VEHICLE_GPS_POSITION_MID:
+                CFE_PSP_MemCpy(&CVT.VehicleGpsPositionMsg, MsgPtr,
+                        sizeof(CVT.VehicleGpsPositionMsg));
+                break;
 
-        case PX4_MISSION_MID:
-            memcpy(&CVT.MissionMsg, MsgPtr, sizeof(CVT.MissionMsg));
-            break;
+            case PX4_VEHICLE_GLOBAL_POSITION_MID:
+                CFE_PSP_MemCpy(&CVT.VehicleGlobalPosition, MsgPtr,
+                        sizeof(CVT.VehicleGlobalPosition));
+                break;
 
-        case PX4_VEHICLE_GPS_POSITION_MID:
-            memcpy(&CVT.VehicleGpsPositionMsg, MsgPtr,
-                    sizeof(CVT.VehicleGpsPositionMsg));
-            break;
+            case PX4_VEHICLE_STATUS_MID:
+                CFE_PSP_MemCpy(&CVT.VehicleStatusMsg, MsgPtr, sizeof(CVT.VehicleStatusMsg));
+                break;
 
-        case PX4_VEHICLE_GLOBAL_POSITION_MID:
-            memcpy(&CVT.VehicleGlobalPosition, MsgPtr,
-                    sizeof(CVT.VehicleGlobalPosition));
-            break;
+            case PX4_VEHICLE_LAND_DETECTED_MID:
+                CFE_PSP_MemCpy(&CVT.VehicleLandDetectedMsg, MsgPtr,
+                        sizeof(CVT.VehicleLandDetectedMsg));
+                break;
 
-        case PX4_VEHICLE_STATUS_MID:
-            memcpy(&CVT.VehicleStatusMsg, MsgPtr, sizeof(CVT.VehicleStatusMsg));
-            break;
+            case PX4_VEHICLE_LOCAL_POSITION_MID:
+                CFE_PSP_MemCpy(&CVT.VehicleLocalPositionMsg, MsgPtr,
+                        sizeof(CVT.VehicleLocalPositionMsg));
+                break;
 
-        case PX4_VEHICLE_LAND_DETECTED_MID:
-            memcpy(&CVT.VehicleLandDetectedMsg, MsgPtr,
-                    sizeof(CVT.VehicleLandDetectedMsg));
-            break;
+            case PX4_VEHICLE_COMMAND_MID:
+                new_command_arrived = true;
+                CFE_PSP_MemCpy(&CVT.VehicleCommandMsg, MsgPtr,
+                        sizeof(CVT.VehicleCommandMsg));
+                break;
 
-        case PX4_VEHICLE_LOCAL_POSITION_MID:
-            memcpy(&CVT.VehicleLocalPositionMsg, MsgPtr,
-                    sizeof(CVT.VehicleLocalPositionMsg));
-            break;
-
-        case PX4_VEHICLE_COMMAND_MID:
-            new_command_arrived = true;
-            memcpy(&CVT.VehicleCommandMsg, MsgPtr,
-                    sizeof(CVT.VehicleCommandMsg));
-            break;
-
-        case PX4_DISTANCE_SENSOR_MID:
-            memcpy(&CVT.DistanceSensorMsg, MsgPtr,
-                    sizeof(CVT.DistanceSensorMsg));
-            break;
-
-        default:
-            (void) CFE_EVS_SendEvent(NAV_MSGID_ERR_EID, CFE_EVS_ERROR,
-                    "Recvd invalid SCH msgId (0x%04X)", MsgId);
+            default:
+                (void) CFE_EVS_SendEvent(NAV_MSGID_ERR_EID, CFE_EVS_ERROR,
+                        "Recvd invalid SCH msgId (0x%04X)", MsgId);
+                break;
         }
     }
     else if (iStatus == CFE_SB_NO_MESSAGE)
     {
-        /* TODO: If there's no incoming message, you can do something here, or
-         * nothing.  Note, this section is dead code only if the iBlocking arg
-         * is CFE_SB_PEND_FOREVER. */
         iStatus = CFE_SUCCESS;
     }
     else if (iStatus == CFE_SB_TIME_OUT)
     {
-        /* TODO: If there's no incoming message within a specified time (via the
-         * iBlocking arg, you can do something here, or nothing.
-         * Note, this section is dead code only if the iBlocking arg
-         * is CFE_SB_PEND_FOREVER. */
         iStatus = CFE_SUCCESS;
     }
     else
@@ -444,7 +431,7 @@ int32 NAV::RcvSchPipeMsg(int32 iBlocking)
                 "SCH pipe read error (0x%08lX).", iStatus);
     }
 
-    return iStatus;
+    return (iStatus);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -467,19 +454,19 @@ void NAV::ProcessCmdPipe()
             CmdMsgId = CFE_SB_GetMsgId(CmdMsgPtr);
             switch (CmdMsgId)
             {
-            case NAV_CMD_MID:
-                ProcessAppCmds(CmdMsgPtr);
-                break;
+                case NAV_CMD_MID:
+                    ProcessAppCmds(CmdMsgPtr);
+                    break;
 
-            default:
-                /* Bump the command error counter for an unknown command.
-                 * (This should only occur if it was subscribed to with this
-                 *  pipe, but not handled in this switch-case.) */
-                HkTlm.usCmdErrCnt++;
-                (void) CFE_EVS_SendEvent(NAV_MSGID_ERR_EID, CFE_EVS_ERROR,
-                        "Recvd invalid CMD msgId (0x%04X)",
-                        (unsigned short) CmdMsgId);
-                break;
+                default:
+                    /* Bump the command error counter for an unknown command.
+                     * (This should only occur if it was subscribed to with this
+                     *  pipe, but not handled in this switch-case.) */
+                    HkTlm.usCmdErrCnt++;
+                    (void) CFE_EVS_SendEvent(NAV_MSGID_ERR_EID, CFE_EVS_ERROR,
+                            "Recvd invalid CMD msgId (0x%04X)",
+                            (unsigned short) CmdMsgId);
+                    break;
             }
         }
         else if (iStatus == CFE_SB_NO_MESSAGE)
@@ -554,34 +541,10 @@ void NAV::ReportHousekeeping()
 /* Publish Output Data                                             */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void NAV::SendVehicleLandDetectedMsg()
-{
-    /*CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&VehicleLandDetectedMsg);
-     CFE_SB_SendMsg((CFE_SB_Msg_t*)&VehicleLandDetectedMsg);*/
-}
-
-void NAV::SendFenceMsg()
-{
-    /*CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&FenceMsg);
-     CFE_SB_SendMsg((CFE_SB_Msg_t*)&FenceMsg);*/
-}
-
-void NAV::SendActuatorControls3Msg()
-{
-    /*CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&ActuatorControls3Msg);
-     CFE_SB_SendMsg((CFE_SB_Msg_t*)&ActuatorControls3Msg);*/
-}
-
 void NAV::SendMissionResultMsg()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*) &MissionResultMsg);
     CFE_SB_SendMsg((CFE_SB_Msg_t*) &MissionResultMsg);
-}
-
-void NAV::SendGeofenceResultMsg()
-{
-    /*CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&GeofenceResultMsg);
-     CFE_SB_SendMsg((CFE_SB_Msg_t*)&GeofenceResultMsg);*/
 }
 
 void NAV::SendPositionSetpointTripletMsg()
@@ -688,7 +651,7 @@ void NAV::AppMain()
     CFE_ES_ExitApp(uiRunStatus);
 }
 
-int NAV::Execute()
+int32 NAV::Execute()
 {
     /* Set vehicle arming state */
     if (CVT.VehicleStatusMsg.Timestamp != 0 && !vehicle_status_update_once)
@@ -1340,7 +1303,7 @@ void NAV::LoiterReposition()
                     VehicleGlobalPosition_ptr->Lon;
             PositionSetpointTriplet_ptr->Previous.Alt =
                     VehicleGlobalPosition_ptr->Alt;
-            memcpy(&PositionSetpointTriplet_ptr->Current,
+            CFE_PSP_MemCpy(&PositionSetpointTriplet_ptr->Current,
                     &RepositionTriplet_ptr->Current,
                     sizeof(RepositionTriplet_ptr->Current));
             PositionSetpointTriplet_ptr->Next.Valid = false;
