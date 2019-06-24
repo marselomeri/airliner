@@ -2234,10 +2234,8 @@ float NAV::GetCruisingThrottle()
     {
         msnThrottle = MissionThrottle;
     }
-    else
-    {
-        return msnThrottle; //TODO This is a bug!
-    }
+
+    return msnThrottle;
 }
 
 float NAV::GetCruisingSpeed()
@@ -2249,11 +2247,8 @@ float NAV::GetCruisingSpeed()
     {
         msnCruisingSpeed = MissionCruisingSpeed;
     }
-    else
-    {
-        return msnCruisingSpeed; //TODO This is a bug!
-    }
 
+    return msnCruisingSpeed;
 }
 
 void NAV::UpdateParamsFromTable()
