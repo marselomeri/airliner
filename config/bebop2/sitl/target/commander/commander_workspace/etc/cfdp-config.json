@@ -41,9 +41,33 @@
     "OutgoingFileChunkSize" : 200,
     "SaveIncompleteFiles"   : false,
     "MyID"                  : "0.23",
-    "TempDir"               : "/home/mbenson/git/airliner/build/bebop2/sitl/target/commander/commander_workspace/temp", 
-    "BasePath"              : "/home/mbenson/git/airliner/build/bebop2/sitl/target/commander/commander_workspace/cfdp",
+    "TempDir"               : "/home/mbenson/git/airliner/build/bebop2/sitl/target/commander/commander_workspace/cfdp/temp",
     "CfdpClientStreamID"    : "json-cmd-stream",
     "CfdpInputStream"       : "json-tlm-stream",
     "CfdpOutputStream"      : "bin-cmd-stream",
+    "RX"                    : [
+        {
+            "PhyBasePath"           : "/home/mbenson/git/airliner/build/bebop2/sitl/target/commander/commander_workspace/cfdp/rx",
+            "DestBasePath"          : "/",
+            "RetainFailures"        : false,
+            "Overwrite"             : true,
+            "CreateSubDirectories"  : true
+        }
+    ],
+    "TX"                    : [
+        {
+            "TransactionClass"      : 1,
+            "PhyBasePath"           : "/home/mbenson/git/airliner/build/bebop2/sitl/target/commander/commander_workspace/cfdp/tx/class1",
+            "DestinationPath"       : "/cf/uplink",
+            "DeleteOnSuccess"       : true,
+            "CreateSubDirectories"  : true
+        },
+        {
+            "TransactionClass"      : 2,
+            "PhyBasePath"           : "/home/mbenson/git/airliner/build/bebop2/sitl/target/commander/commander_workspace/cfdp/tx/class2",
+            "DestinationPath"       : "/cf/uplink",
+            "DeleteOnSuccess"       : true,
+            "CreateSubDirectories"  : true
+        }
+    ]
 }

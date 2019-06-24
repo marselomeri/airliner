@@ -41,6 +41,86 @@ const autoBind = require('auto-bind');
 //var CfdpLib = require( './build/Release/cfdp' );
 var config = require( './config.js' );
 const CdrGroundPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrGroundPlugin')).CdrGroundPlugin;
+const XState = require('xstate');
+
+
+
+const PDUTypeEnum = Object.freeze({
+    'FileDirective'  :  0, 
+    'FileData'       :  1});
+
+const DirectionEnum = Object.freeze({
+    'ToFileReceiver' :  0, 
+    'ToFileSender'   :  1});
+
+const CrcFlagEnum = Object.freeze({
+    'NotPresent'     :  0, 
+    'Present'        :  1});
+
+const DirectiveCodeEnum = Object.freeze({
+    'EOF'            :  4, 
+    'FIN'            :  5, 
+    'ACK'            :  6, 
+    'METADATA'       :  7, 
+    'NAK'            :  8, 
+    'PROMPT'         :  9, 
+    'KEEPALIVE'      : 10});
+
+const ConditionCodeEnum = Object.freeze({
+    'NoError'                 :  0, 
+    'PositiveAckLimitReached' :  1, 
+    'KeepAliveLimitReached'   :  2, 
+    'InvalidTransMode'        :  3, 
+    'FilestoreRejection'      :  4, 
+    'FileChecksumFailure'     :  5, 
+    'FileSizeError'           :  6, 
+    'NAKLimitReached'         :  7, 
+    'InactivityDetected'      :  8, 
+    'InvalidFileStructure'    :  9, 
+    'CheckLimitReached'       : 10, 
+    'SuspendRequestReceived'  : 14, 
+    'CancelRequestReceived'   : 15});
+
+const EndSystemStatusEnum = Object.freeze({
+    'GeneratedByWaypoint'     :  0, 
+    'GeneratedByEndSystem'    :  1});
+
+const DeliveryCodeEnum = Object.freeze({
+    'DataComplete'            :  0, 
+    'DataIncomplete'          :  1});
+
+const FileStatusEnum = Object.freeze({
+    'DiscardedDeliberately'   :  0, 
+    'DiscardedDueToReject'    :  1, 
+    'SuccessfullyRetained'    :  2, 
+    'StatusUnreported'        :  3});
+
+const SegCtrlEnum = Object.freeze({
+    'BoundariesRespected'     :  0, 
+    'BoundariesNotRespected'  :  1});
+
+const ResponseRequiredEnum = Object.freeze({
+    'NAK'                     :  0, 
+    'Keepalive'               :  1});
+
+const ActionCodeEnum = Object.freeze({
+    'CreateFile'              :  0, 
+    'DeleteFile'              :  1, 
+    'RenameFile'              :  2, 
+    'AppendFile'              :  3, 
+    'ReplaceFile'             :  4, 
+    'CreateDirectory'         :  5, 
+    'RemoveDirectory'         :  6, 
+    'DenyFile'                :  7, 
+    'DenyDirectory'           :  8});
+
+const HandlerCodeEnum = Object.freeze({
+    'Cancel'                  :  0, 
+    'Suspend'                 :  1, 
+    'IgnoreError'             :  2, 
+    'AppendFile'              :  3, 
+    'Abandon'                 :  4});
+
 
 
 class CFDPServer extends CdrGroundPlugin {
@@ -50,83 +130,19 @@ class CFDPServer extends CdrGroundPlugin {
         
     	autoBind(this);
     	
+    	this.Transactions = {
+    	    RX: {
+    	    	Active:    {},
+    	    	Completed: {},
+    	    },
+    	    TX: {
+    	        Queued:    {},
+    	        Active:    {},
+    	        Completed: {},
+    	    }
+    	};
+    	
     	var self = this;
-
-        this.PDUTypeEnum = Object.freeze({
-            'FileDirective'  :  0, 
-            'FileData'       :  1});
-
-        this.DirectionEnum = Object.freeze({
-            'ToFileReceiver' :  0, 
-            'ToFileSender'   :  1});
-
-        this.CrcFlagEnum = Object.freeze({
-            'NotPresent'     :  0, 
-            'Present'        :  1});
-
-        this.DirectiveCodeEnum = Object.freeze({
-            'EOF'            :  4, 
-            'FIN'            :  5, 
-            'ACK'            :  6, 
-            'METADATA'       :  7, 
-            'NAK'            :  8, 
-            'PROMPT'         :  9, 
-            'KEEPALIVE'      : 10});
-
-        this.ConditionCodeEnum = Object.freeze({
-            'NoError'                 :  0, 
-            'PositiveAckLimitReached' :  1, 
-            'KeepAliveLimitReached'   :  2, 
-            'InvalidTransMode'        :  3, 
-            'FilestoreRejection'      :  4, 
-            'FileChecksumFailure'     :  5, 
-            'FileSizeError'           :  6, 
-            'NAKLimitReached'         :  7, 
-            'InactivityDetected'      :  8, 
-            'InvalidFileStructure'    :  9, 
-            'CheckLimitReached'       : 10, 
-            'SuspendRequestReceived'  : 14, 
-            'CancelRequestReceived'   : 15});
-
-        this.EndSystemStatusEnum = Object.freeze({
-            'GeneratedByWaypoint'     :  0, 
-            'GeneratedByEndSystem'    :  1});
-
-        this.DeliveryCodeEnum = Object.freeze({
-            'DataComplete'            :  0, 
-            'DataIncomplete'          :  1});
-
-        this.FileStatusEnum = Object.freeze({
-            'DiscardedDeliberately'   :  0, 
-            'DiscardedDueToReject'    :  1, 
-            'SuccessfullyRetained'    :  2, 
-            'StatusUnreported'        :  3});
-
-        this.SegCtrlEnum = Object.freeze({
-            'BoundariesRespected'     :  0, 
-            'BoundariesNotRespected'  :  1});
-
-        this.ResponseRequiredEnum = Object.freeze({
-            'NAK'                     :  0, 
-            'Keepalive'               :  1});
-
-        this.ActionCodeEnum = Object.freeze({
-            'CreateFile'              :  0, 
-            'DeleteFile'              :  1, 
-            'RenameFile'              :  2, 
-            'AppendFile'              :  3, 
-            'ReplaceFile'             :  4, 
-            'CreateDirectory'         :  5, 
-            'RemoveDirectory'         :  6, 
-            'DenyFile'                :  7, 
-            'DenyDirectory'           :  8});
-
-        this.HandlerCodeEnum = Object.freeze({
-            'Cancel'                  :  0, 
-            'Suspend'                 :  1, 
-            'IgnoreError'             :  2, 
-            'AppendFile'              :  3, 
-            'Abandon'                 :  4});
         
         /* Initialize the configuration. */
         this.initConfig(configObj.name, configObj.configFile);
@@ -149,6 +165,185 @@ class CFDPServer extends CdrGroundPlugin {
     
     
     
+    getActiveRXTransaction(transID) {
+        return this.Transactions.RX.Active[transID];
+    }
+    
+    
+    
+    allocActiveRXTransaction(transID, rxConfig) {
+    	var newTransaction = undefined;
+    	
+        if(typeof this.Transactions.RX.Active[transID] === 'undefined') {
+        	newTransaction = {};
+        	
+        	newTransaction.stateMachine = this.allocClass1RXStateMachine(rxConfig);
+        	newTransaction.service = XState.interpret(newTransaction.stateMachine).start();
+        	
+        	this.Transactions.RX.Active[transID] = newTransaction;
+        }
+        
+        return newTransaction;
+    }
+    
+    
+    
+    allocClass1RXStateMachine(rxConfig) {
+    	var newSM = new XState.Machine(
+    		{
+    		    id: 'Class1Receiver',
+    		    initial: 'WaitForMetaData',
+    		    strict: true,
+    		    context: {
+    		    	config:  rxConfig,
+    		    	TempDir: config.get('TempDir')
+    		    },
+    		    states: {
+    		        WaitForMetaData: {
+    		            type: 'atomic',
+    		            on: {
+    		                ABANDON: {
+    		                    target: 'Shutdown', actions: ['issueAbandoned']
+    		                },
+    		                CANCEL: {
+    		                    target: 'Shutdown', actions: ['issueTransactionFinished']
+    		                },
+    		                RX_METADATA: {
+    		                    /* Issue Metadata-Recv */
+    		                    target: 'WaitForEOF', actions: ['storeMetadata']
+    		                },
+    		                RX_EOF: {
+    		                    /* Let the User know that the transaction completed without
+    		                     * any Metadata being received.  
+    		                     * Issue Transaction-Finished */
+    		                    target: 'Shutdown', actions: ['issueTransactionFinished']
+    		                },
+    		                INACTIVITY_TIMEOUT: {
+    		                    target: 'Shutdown' 
+    		                },
+    		                RX_CANCEL_RQUEST: {
+    		                    target: 'Shutdown', actions: ['issueTransactionFinished']
+    		                }
+    		            }
+    		        },
+    		        WaitForEOF: {
+    		            type: 'atomic',
+    		            on: {
+    		                ABANDON: {
+    		                    target: 'Shutdown', actions: ['issueAbandoned']
+    		                },
+    		                CANCEL: {
+    		                    target: 'Shutdown', actions: ['retainTempFile','issueTransactionFinished']
+    		                },
+    		                RX_FILEDATA: {
+    		                    target: 'WaitForEOF', actions: ['storeFileData']
+    		                },
+    		                RX_EOF: {
+    		                    target: 'Shutdown', cond: 'isFileTransfer', actions: ['completeFile', 'issueTransactionFinished']
+    		                },
+    		                INACTIVITY_TIMEOUT: {
+    		                    target: 'Shutdown' 
+    		                },
+    		                RX_CANCEL_RQUEST: {
+    		                    target: 'Shutdown', actions: ['issueTransactionFinished']
+    		                }
+    		            }
+    		        },
+    		        Shutdown: {
+    		            type: 'final'
+    		        }
+    		    }
+    		},{
+    		    actions: {
+    		        startFile: (context, event) => {
+    		            /* Try to open the file. */
+    		            console.log('startFile');
+    		        },
+    		        copyTempFileToDest: (context, event) => {
+    		            /* Copy the temporary file to the destination directory/file */
+    		            console.log('copyTempFileToDest');
+    		        },    
+    		        execFilestoreRequests: (context, event) => {
+    		            console.log('execFilestoreRequests');
+    		        },
+    		        issueTransactionFinished: (context, event) => {
+    		            console.log('issueTransactionFinished');
+    		        },
+    		        issueAbandoned: (context, event) => {
+    		            console.log('issueTransactionFinished');
+    		        },
+    		        issueTransactionFinished: (context, event) => {
+    		            console.log('issueTransactionFinished');
+    		        },
+    		        issueMetadataRecv: (context, event) => {
+    		            console.log('issueMetadataRecv');
+    		        },
+    		        issueReport: (context, event) => {
+    		            console.log('issueReport');
+    		        },
+    		        retainTempFile: (context, event) => {
+    		            console.log('retainTempFile');
+    		        },
+    		        storeFileData: (context, event) => {
+                        console.log('storeFileData');
+    		        },
+    		        updateFileSize: (context, event) => {
+    		            console.log('updateFileSize');
+    		        },
+    		        storeFileData: (context, event) => {
+    		            console.log('*** storeFileData ***');
+    		        	fs.writeSync(context.fd, event.pdu.data, 0, event.pdu.data.length, event.pdu.dataOffset);
+    		        },
+    		        storeMetadata: (context, event) => {
+    		        	console.log('*** storeMetadata ***');
+    		        	context.srcFileName = event.pdu.meta.srcFileName;
+    		        	context.dstFileName = event.pdu.meta.destFileName;
+    		        	context.tmpFileName = path.join(context.TempDir, context.dstFileName);
+
+    		        	this.createSubDirectories(context.tmpFileName);
+    		        	
+    		        	context.fd = fs.openSync(context.tmpFileName, 'w');
+    		        },
+    		        completeFile: (context, event) => {
+    		        	console.log('*** completeFile ***');
+    		        	fs.closeSync(context.fd);
+    		        	context.absDstFileName = path.join(context.config.PhyBasePath, context.dstFileName);
+    		        	this.createSubDirectories(context.absDstFileName);
+    		        	fs.createReadStream(context.tmpFileName).pipe(fs.createWriteStream(context.absDstFileName));
+    		        },
+    		    },
+    		    guards: {
+    		        isFileTransfer: (context, event) => {
+    		            return true;
+    		        },
+    		        isFileOpen: (context, event) => {
+    		            return true;
+    		        }
+    		    }
+    		}
+        );
+    	
+    	return newSM;
+    }
+    
+    
+    
+    DeleteFolderRecursive(inPath) {
+    	var self = this;
+        if (fs.existsSync(inPath)) {
+    	    fs.readdirSync(inPath).forEach(function(file, index){
+    	        var curPath = inPath + '/' + file;
+    	        if (fs.lstatSync(curPath).isDirectory()) { // recurse
+    	        	self.DeleteFolderRecursive(curPath);
+    	        } else { // delete file
+      	            fs.unlinkSync(curPath);
+    	        }
+    	    });
+    	    fs.rmdirSync(inPath);
+    	  }
+    };
+    
+    
     
     initConfig(name, configFile) {
         /* Load environment dependent configuration */
@@ -160,7 +355,62 @@ class CFDPServer extends CdrGroundPlugin {
         } );
         
         config.name = name;
+        
+        /* Create the temporary and base directories. */
+        var tmpDir = config.get('TempDir');
+        if (!fs.existsSync(tmpDir)) {
+            this.createSubDirectoriesFull(tmpDir);
+        } else {
+        	this.DeleteFolderRecursive(tmpDir);
+        }
+    	
+    	var rxConfigs = config.get('RX');
+    	for(var i = 0; i < rxConfigs.length; ++i) {
+    		var rxConfig = rxConfigs[i];
+    	    if (!fs.existsSync(rxConfig.PhyBasePath)) {
+    	    	this.createSubDirectoriesFull(rxConfig.PhyBasePath);
+    		}
+    	}
+    	
+    	var txConfigs = config.get('TX');
+    	for(var i = 0; i < txConfigs.length; ++i) {
+  		    var txConfig = txConfigs[i];
+    	    if (!fs.existsSync(txConfig.PhyBasePath)) {
+    	    	this.createSubDirectoriesFull(txConfig.PhyBasePath);
+    		}
+    	}
     }
+    
+    
+    
+    createSubDirectoriesFull(usrPath) {
+    	var pathElements = path.parse(usrPath);
+    	var location = '/';
+        pathElements.dir.split(path.sep).forEach (function (item) {
+            location = path.join(location, item);
+            if (!fs.existsSync(location)) {
+                fs.mkdirSync(location);
+            }
+        });
+
+        if (!fs.existsSync(usrPath)) {
+            fs.mkdirSync(usrPath);
+        }
+    }
+    
+    
+    
+    createSubDirectories(usrPath) {
+    	var pathElements = path.parse(usrPath);
+    	var location = '/';
+        pathElements.dir.split(path.sep).forEach (function (item) {
+            location = path.join(location, item);
+            if (!fs.existsSync(location)) {
+                fs.mkdirSync(location);
+            }
+        });
+    }
+    
     
     
     initTelemetry() {
@@ -172,6 +422,22 @@ class CFDPServer extends CdrGroundPlugin {
             }
         };
         this.addTelemetry(this.hk, 1000);
+    }
+    
+    
+    
+    getRxConfig(dstPath) {
+    	var rxConfig = undefined;
+    	var rxConfigs = config.get('RX');
+
+    	/* Find the configuration. */
+    	for(var i = 0; i < rxConfigs.length; ++i) {
+    		if(dstPath.startsWith(rxConfigs[i].DestBasePath)) {
+    			rxConfig = rxConfigs[i];
+    		}
+    	}
+    	
+        return rxConfig;
     }
     
     
@@ -208,6 +474,7 @@ class CFDPServer extends CdrGroundPlugin {
     }
     
     
+    
     initCommands() {
 //        var cmdSetInput = {
 //            opsPath: '/' + config.name + '/setInput',
@@ -223,6 +490,7 @@ class CFDPServer extends CdrGroundPlugin {
     }
     
     
+    
     BufferToPDU(inBuffer) {
         var pdu = this.pduHdrDef.parse(inBuffer);
         
@@ -235,28 +503,32 @@ class CFDPServer extends CdrGroundPlugin {
          * length - 1 */
         pdu.transSeqNumLength++;
         
-        pdu.srcEntityID = [];
-        pdu.transSeqNum = [];
-        pdu.destEntityID = [];
+        pdu.transSeqNum = 0;
+        pdu.srcEntityID = '';
+        pdu.destEntityID = '';
         
         for(var i = 0; i < pdu.entityIDLength; ++i) { 
-        	pdu.srcEntityID.push(inBuffer[offset++]);
+        	pdu.srcEntityID = pdu.srcEntityID + inBuffer[offset++].toString(10) + '.';
         }
+        pdu.srcEntityID = pdu.srcEntityID.substring(0, pdu.srcEntityID.length-1);
         
-        for(var i = 0; i < pdu.transSeqNumLength; ++i) {
-        	pdu.transSeqNum.push(inBuffer[offset++]);
+        var value = 0;
+        for(var i = pdu.transSeqNumLength-1; i >= 0; --i) {
+        	value = value + (inBuffer[offset++] * Math.pow(10, i));
         }
+        pdu.transSeqNum = value;
         
-        for(var i = 0; i < pdu.entityIDLength; ++i) {                	
-        	pdu.destEntityID.push(inBuffer[offset++]);
+        for(var i = 0; i < pdu.entityIDLength; ++i) { 
+        	pdu.destEntityID = pdu.destEntityID + inBuffer[offset++].toString(10) + '.';
         }
+        pdu.destEntityID = pdu.destEntityID.substring(0, pdu.destEntityID.length-1);
         
         if(pdu.pduType == 0) {
         	pdu.directiveCode = inBuffer.readUInt8(offset++);
         	
         	switch(pdu.directiveCode) {
         	    /* EOF */
-        	    case 4: {
+        	    case DirectiveCodeEnum.EOF: {
         	    	pdu.eof = {};
         	    	pdu.eof.condCode = (inBuffer.readUInt8(offset++) >> 4) & 0x0f;
         	    	pdu.eof.fileChecksum = inBuffer.readUInt32BE(offset);
@@ -282,7 +554,7 @@ class CFDPServer extends CdrGroundPlugin {
         	    }
         	    
         	    /* Finished */
-        	    case 5: {
+        	    case DirectiveCodeEnum.FIN: {
         	    	pdu.finished = {};
         	    	
         	    	var tempByte   = inBuffer.readUInt8(offset++);
@@ -317,7 +589,7 @@ class CFDPServer extends CdrGroundPlugin {
         	    }
         	    
         	    /* ACK */
-        	    case 6: {
+        	    case DirectiveCodeEnum.ACK: {
         	    	pdu.ack = {};
         	    	
         	    	var tempByte   = inBuffer.readUInt8(offset++);
@@ -330,34 +602,35 @@ class CFDPServer extends CdrGroundPlugin {
         	    }
         	    
         	    /* Metadata */
-        	    case 7: {
+        	    case DirectiveCodeEnum.METADATA: {
         	    	pdu.meta = {};
+        	    	var length = 0;
         	    	
         	    	pdu.meta.segCtrl = inBuffer.readUInt8(offset++) & 0x01;
         	    	pdu.meta.fileSize = inBuffer.readUInt32BE(offset);
         	    	offset = offset + 4;
         	    	
-        	    	pdu.meta.srcFileName = {};
-        	    	pdu.meta.srcFileName.Length = inBuffer.readUInt8(offset++);
-        	    	pdu.meta.srcFileName.Value = inBuffer.toString('utf8', offset, offset + pdu.meta.srcFileName.Length);
-        	    	offset = offset + pdu.meta.srcFileName.Length;
+        	    	length = inBuffer.readUInt8(offset++);
+        	    	pdu.meta.srcFileName = path.join('/', inBuffer.toString('utf8', offset, offset + length));
+        	    	offset = offset + length;
         	    	
-        	    	pdu.meta.destFileName = {};
-        	    	pdu.meta.destFileName.Length = inBuffer.readUInt8(offset++);
-        	    	pdu.meta.destFileName.Value = inBuffer.toString('utf8', offset, offset + pdu.meta.destFileName.Length);
-        	    	offset = offset + pdu.meta.destFileName.Length;
+        	    	length = inBuffer.readUInt8(offset++);
+        	    	pdu.meta.destFileName = path.join('/', inBuffer.toString('utf8', offset, offset + length));
+        	    	offset = offset + length;
 
-        	    	/* TODO */
-        	    	//pdu.meta.options = {};
-        	    	//pdu.meta.options.filestoreRequest = {};
-        	    	//pdu.meta.options.destFileName.Length = inBuffer.readUInt8(offset++);
-        	    	//pdu.meta.options.destFileName.Value = inBuffer.toString('utf8', offset, offset + pdu.meta.options.destFileName.Length);
-        	    	//offset = offset + pdu.meta.options.destFileName.Length;
+        	    	if(inBuffer.length >= (offset + 2)) {
+            	    	pdu.meta.option.type = inBuffer.readUInt8(offset++);
+            	    	pdu.meta.option.Length = inBuffer.readUInt8(offset++);
+            	    	if(inBuffer.length >= (offset + pdu.meta.option.Length)) {
+            	    	    pdu.meta.option.Value = inBuffer.toString('utf8', offset, offset + pdu.meta.option.Length);
+            	    	    offset = offset + pdu.meta.option.Length;
+            	    	}
+        	    	}
         	    	break;
         	    }
         	    
         	    /* NAK */
-        	    case 8: {
+        	    case DirectiveCodeEnum.NAK: {
         	    	pdu.nak = {};
         	    	
         	    	pdu.nak.startOfScope = inBuffer.readUInt32BE(offset);
@@ -369,7 +642,7 @@ class CFDPServer extends CdrGroundPlugin {
         	    }
         	    
         	    /* Prompt */
-        	    case 9: {
+        	    case DirectiveCodeEnum.PROMPT: {
         	    	pdu.prompt = {};
         	    	
         	    	pdu.prompt.responseRequired = inBuffer.readUInt8(offset++) & 0x01;
@@ -378,7 +651,7 @@ class CFDPServer extends CdrGroundPlugin {
         	    }
         	    
         	    /* Keep Alive */
-        	    case 12: {
+        	    case DirectiveCodeEnum.KEEPALIVE: {
         	    	pdu.keepAlive = {};
         	    	
         	    	pdu.keepAlive.progress = inBuffer.readUInt32BE(offset++);
@@ -386,28 +659,28 @@ class CFDPServer extends CdrGroundPlugin {
         	    	break;
         	    }
         	}
-        	
-        	console.log(pdu);
         } else {
         	pdu.dataOffset = inBuffer.readUInt32BE(offset);
         	offset = offset + 4;
         	
-        	pdu.data = [];
         	var startOffset = offset;
         	var endOffset = pdu.dataOffset + pdu.dataFieldLength;
-        	
-            for(var i = 0; i < pdu.dataFieldLength; ++i) {
-            	pdu.data.push(inBuffer[offset++]);
-            }
+        	pdu.data = inBuffer.slice(startOffset);
         }
+        
+        return pdu;
     }
     
     
     
     MessageToPDU(inMessage) {
-    	if(inMessage.msgID == 0x1FFE) {                
-            var pdu = this.BufferToPDU(inMessage.content.payload);
+    	var pdu = undefined;
+    	    	
+    	if(inMessage.msgID == 0x1FFE) {
+            pdu = this.BufferToPDU(inMessage.content.payload);
     	}
+    	
+    	return pdu;
     };
     
     
@@ -429,80 +702,99 @@ class CFDPServer extends CdrGroundPlugin {
             .bit1( 'spare3' )
             .bit3( 'transSeqNumLength' );
 
-        this.namespace.recv( config.get( 'CfdpInputStream' ), this.MessageToPDU);
+        this.namespace.recv( config.get( 'CfdpInputStream' ), this.ProcessIncomingMessage);
         
-//    	/* Set CFDP API configuration */
-//    	//CfdpLib.SetConfig( config.get( 'config' ) );
-//
-//    	/* Register Required Callbacks */
-//    	/* End users may not be able to alter following callbacks */
-//    	CfdpLib.RegisterCallbackOn( 'info', ( value ) => {
-//    	    this.logInfo( 'EventEnum.LOG_EVENTS, value' );
-//    	} );
-//
-//    	CfdpLib.RegisterCallbackOn( 'debug', ( value ) => {
-//    	    this.logDebug( 'EventEnum.LOG_EVENTS, value' );
-//    	} );
-//
-//    	CfdpLib.RegisterCallbackOn( 'error', ( value ) => {
-//    	    this.logError( 'EventEnum.LOG_EVENTS, value' );
-//    	} );
-//
-//    	CfdpLib.RegisterCallbackOn( 'warning', ( value ) => {
-//    	    this.logInfo( 'EventEnum.LOG_EVENTS, value' );
-//    	} );
-//
-//    	CfdpLib.RegisterCallbackOn( 'pduOutputOpen', () => {} );
-//    	CfdpLib.RegisterCallbackOn( 'pduOutputReady', () => {} );
-//    	CfdpLib.RegisterCallbackOn( 'indication', () => {} );
-//
-//        CfdpLib.RegisterCallbackOn( 'pduOutputSend', ( bufferObj ) => {
-//
-//   	    var buffer = new Buffer( self.outGoingFileChunkSize );
-//    	    buffer.fill( 0x00 );
-//    	    /* CCSDS MSG ID for sending pdu to space - 4093*/
-//    	    buffer.writeUInt16BE( 4093, 0 );
-//    	    /* Sequence Number */
-//    	    buffer.writeUInt16BE( 1, 2 );
-//    	    /* Pdu length*/
-//    	    buffer.writeUInt16BE( self.outGoingFileChunkSize - 7, 4 );
-//    	    /* Has no command code and sub code */
-//    	    buffer.writeUInt8( 0, 6 );
-//    	    buffer.writeUInt8( 0, 7 );
-//
-//    	    /* Copy buffer */
-//    	    for ( var i = 0; i < bufferObj.length; i++ ) {
-//    	      buffer.writeUInt8( bufferObj.pdu[ i ], 12 + i );
-//    	    }
-//
-//    	    //this.instanceEmit( config.get( 'cfdpOutputStream' ), buffer );
-//    	    this.logDebug( 'EventEnum.PDU_EVENTS, buffer' );
-//        } );
-//
-//    	/* Init CFDP Engine */
-//    	CfdpLib.AppInit();
-//
-//    	/* Set MIB parmeters from default config */
-//    	//var mibParams = config.get( 'mibParameters' );
-//    	//for ( var key in mibParams ) {
-//    	//	  CfdpLib.SetMibParams( key, mibParams[ key ] );
-//    	//}
-//
-//    	//this.instanceEmitter.on( config.get( 'CfdpClientStreamID' ), function( obj ) {
-//    	//    self.handleClientRequest( obj );
-//    	//  } );
-//
-//    	// this.instanceEmitter.on( config.get( 'cfdpInputStream' ), function( msg ) {
-//    	    /* Send buffer to ground cfdp engine */
-//    		//  CfdpLib.GivePdu( msg.payload, msg.payload.length );
-//    	//} );
-//
-//    	/* Start Cycling Trasactions */
-//    	CfdpLib.StartCycle();
-//    	this.TransCycleStarted = true;
     	this.logInfo( 'Initialized engine' );
     };
+    
+    
+    
+    ProcessIncomingMessage(message) {
+    	var pdu = this.MessageToPDU(message);
+    	
+    	if(typeof pdu !== 'undefined') {
+    		var transID = this.getTransactionIDFromPDU(pdu);
+    	    
+    	    var transaction = this.getActiveRXTransaction(transID);
+    	    
+    	    if(typeof transaction === 'undefined') {
+    	    	/* This is a new transaction.  Get the RX configuration and allocate a new 
+    	    	 * transaction object. */
+    	    	if((pdu.pduType == PDUTypeEnum.FileDirective) && (pdu.directiveCode == DirectiveCodeEnum.METADATA)) {
+    	    	    var dstPath = pdu.meta.destFileName;
+    	    	    var config = this.getRxConfig(dstPath);
+    	    	
+    	    	    if(typeof config === 'undefined') {
+    	    		    /* TODO */
+    	    		    console.log('Destination path not defined.');
+    	    	    } else {
+    	    	        transaction = this.allocActiveRXTransaction(transID, config);
+    	    	    }
+    	    	}
+    	    	/* TODO: Log this and update metrics. */
+    	    } else {
+    	    	/* TODO: Log this and update metrics. */
+    	    }
+    	    
+    	    if(typeof transaction !== 'undefined') {
+		    	switch(pdu.pduType) {
+		    	    case PDUTypeEnum.FileDirective: {
+		    	    	switch(pdu.directiveCode) {
+		    	    		case DirectiveCodeEnum.EOF: {
+		    	    	    	transaction.service.send({type: 'RX_EOF', pdu: pdu});
+		    	    			break;
+		    	    		}
+	
+		    	    		case DirectiveCodeEnum.FIN: {
+		    	    	    	transaction.service.send({type: 'RX_FIN', pdu: pdu});
+		    	    			break;
+		    	    		}
+	
+		    	    		case DirectiveCodeEnum.ACK: {
+		    	    	    	transaction.service.send({type: 'RX_ACK', pdu: pdu});
+		    	    			break;
+		    	    		}
+	
+		    	    		case DirectiveCodeEnum.METADATA: {
+		    	    	    	transaction.service.send({type: 'RX_METADATA', pdu: pdu});
+		    	    			break;
+		    	    		}
+	
+		    	    		case DirectiveCodeEnum.NAK: {
+		    	    	    	transaction.service.send({type: 'RX_NAK', pdu: pdu});
+		    	    			break;
+		    	    		}
+	
+		    	    		case DirectiveCodeEnum.PROMPT: {
+		    	    	    	transaction.service.send({type: 'RX_PROMPT', pdu: pdu});
+		    	    			break;
+		    	    		}
+	
+		    	    		case DirectiveCodeEnum.KEEPALIVE: {
+		    	    	    	transaction.service.send({type: 'RX_KEEPALIVE', pdu: pdu});
+		    	    			break;
+		    	    		}
+		    	    	}
+		    	        break;	
+		    	    }
+	
+		    	    case PDUTypeEnum.FileData: {
+		    	    	transaction.service.send({type: 'RX_FILEDATA', pdu: pdu});
+		    	        break;	
+		    	    }
+		    	}
+    	    }
+    	}
+    }
+    
+    
+    
+    getTransactionIDFromPDU(pdu) {
+	    return pdu.srcEntityID + '_' + pdu.transSeqNum;
+    }
 
+    
+    
     handleClientRequest( obj ) {
         var self = this;
         var outObj = {
@@ -597,143 +889,8 @@ class CFDPServer extends CdrGroundPlugin {
                 break;
         }
     }
-
-    /**
-     * Gets value of MIB parameter
-     * @param  {Object} outData default response object
-     * @param  {Objext} inData  input object
-     * @return {Object}         response object
-     */
-    GetMibParams(outData, inData) {
-        /* inData  is a list of arguments */
-        if ( inData.length == 1 ) {
-            if ( typeof( inData[ 0 ] ) == 'string' ) {
-                outData.msg = "SUCCESS";
-                outData.value = {}
-                outData.value.mib_name = ( inData[ 0 ].toUpperCase() );
-                outData.value.mib_value = cf.GetMibParams( inData[ 0 ] );
-                if ( outData.value.mib_value == '' ) {
-                    outData.msg = "FAILIURE";
-                    outData.value.mib_value = undefined;
-                }
-            }
-        }
-        return outData;
-    }
-
-    /**
-     * Sets MIB parameter
-     * @param  {Object} outData default response object
-     * @param  {Objext} inData  input object
-     * @return {Object}         response object
-     */
-    SetMibParams(outData, inData) {
-        if ( inData.length == 2 ) {
-            if ( typeof( inData[ 0 ] ) == 'string' & typeof( inData[ 1 ] ) == 'string' ) {
-                var resp = cf.SetMibParams( inData[ 0 ], inData[ 1 ] );
-                if ( resp == 'PASS' ) {
-                    outData.msg = "SUCCESS";
-                } else {
-                    outData.msg = "FAILIURE"
-                }
-            }
-        }
-        return outData;
-    }
-
-    /**
-     * Restarts Transaction Cycle
-     * @param  {Object} outData default response object
-     * @param  {Objext} inData  input object
-     * @return {Object}         response object
-     */
-    RestartEngine(outData, inData) {
-        var self = this;
-        if ( !self.TransCycleStarted ) {
-            cf.StopCycle();
-            cf.StartCycle();
-            outData.msg = "SUCCESS";
-            self.TransCycleStarted = true;
-        } else {
-            outData.msg = "FAILIURE";
-        }
-        return outData;
-    }
-
-    /**
-     * Stops Transaction Cycle
-     * @param  {Object} outData default response object
-     * @param  {Objext} inData  input object
-     * @return {Object}         response object
-     */
-    StopEngine( outData, inData ) {
-        cf.StopCycle();
-        self.TransCycleStarted = false;
-        outData.msg = "SUCCESS";
-        return outData;
-    }
-
-    /**
-     * Sends files from ground to space
-     * @param  {Object} outData default response object
-     * @param  {Objext} inData  input object
-     * @return {Object}         response object
-     */
-    SendFromGnd( outData, inData ) {
-        if ( inData.length == 4 ) {
-            if ( inData[ 0 ] <= 2 & typeof( inData[ 1 ] ) == 'string' & typeof( inData[ 2 ] ) == 'string' & typeof( inData[ 3 ] ) == 'string' ) {
-                cf.RequestPdu( inData[ 0 ], inData[ 1 ], inData[ 2 ], inData[ 3 ] );
-                outData.msg = "SUCCESS";
-            }
-        }
-        return outData;
-    }
-
-    /**
-     * Get Status Summary
-     * @param  {Object} outData default response object
-     * @param  {Objext} inData  input object
-     * @return {Object}         response object
-     */
-    CGetSummaryStatus( outData, inData ) {
-        outData.msg = "SUCCESS";
-        outData.value = cf.GetSummaryStatus();
-        return outData;
-    }
-
-    /**
-     * Signals engine to send transaction status on callback.
-     * @param  {Object} outData default response object
-     * @param  {Objext} inData  input object
-     * @return {Object}         response object
-     */
-    GetTransactionStatus( outData, inData ) {
-        outData.msg = "FAILIURE";
-        if ( inData.length == 2 ) {
-            if ( typeof( inData[ 0 ] ) == "number" & typeof( inData[ 1 ] ) == "string" ) {
-                var transIDObj = cf.GetIdFromString( inData[ 1 ] );
-                cf.GetTransactionStatus( inData[ 0 ], transIDObj.length, new Buffer( transIDObj.value ) );
-                outData.msg = "SUCCESS";
-            }
-        }
-        return outData;
-    }
-
-    /**
-     * Given a length will generate a string or a paragraph of that length
-     * @param  {Number} len length of the requested string
-     * @return {String}     response string
-     */
-    stringGen( len ) {
-        var text = "";
-
-        var charset = "abcdefghijklmnopqrstuvwxyz0123456789 \n\r";
-
-        for ( var i = 0; i < len; i++ )
-            text += charset.charAt( Math.floor( Math.random() * charset.length ) );
-
-        return text;
-    }
+    
+    
 
     /**
      * Makes necessary files to perform uplink test
@@ -741,7 +898,6 @@ class CFDPServer extends CdrGroundPlugin {
     makeTestCases() {
         var self = this;
         var fileCount = 0
-        // console.log( 'heloo', self.testkit.numberOfFilesGenerated )
 
         while ( fileCount < self.testkit.numberOfFilesGenerated ) {
             if ( fs.existsSync( self.testkit.originPath ) ) {
@@ -801,6 +957,8 @@ class CFDPServer extends CdrGroundPlugin {
         }
     }
 
+    
+    
     /**
      * Run a test to check cdfp ground node work
      */
@@ -817,6 +975,8 @@ class CFDPServer extends CdrGroundPlugin {
         });
     }
 
+    
+    
     /**
      * Validates the test that ran in this instance
      */

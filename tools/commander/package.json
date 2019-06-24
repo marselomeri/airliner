@@ -73,6 +73,7 @@
     "uuid": "^3.3.2",
     "websocket": "^1.0.28",
     "winston": "^3.2.1",
-    "wolfy87-eventemitter": "^5.2.6"
+    "wolfy87-eventemitter": "^5.2.6",
+    "xstate": "^4.6.2"
   }
 }

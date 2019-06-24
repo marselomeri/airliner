@@ -89,11 +89,6 @@ var config = convict( {
       format: String,
       default: '/tmp/cf/'
   },
-  BasePath: {
-      doc: 'Path to the base directory',
-      format: String,
-      default: ''
-  },
   CfdpClientStreamID: {
       doc: 'Stream ID for cfdp queries',
       format: String,
@@ -108,7 +103,59 @@ var config = convict( {
       doc: 'Stream ID for sending to binary data',
       format: String,
       default: ''
-  }
+  },
+  RX: [ {
+	  PhyBasePath: {
+	      doc: 'Path to the base directory',
+	      format: String,
+	      default: ''
+	  },
+	  SourcePath: {
+	      doc: 'Source base path',
+	      format: String,
+	      default: '/'
+	  },
+	  RetainFailures: {
+	      doc: 'Set to true to retain partial files from failed transactions.',
+          format: Boolean,
+          default: false
+	  },
+	  Overwrite: {
+	      doc: 'Set to true to automatically a file if the file already exists.',
+          format: Boolean,
+          default: false
+	  },
+	  CreateSubDirectories: {
+	      doc: 'Automatically create subdirectories as needed.',
+          format: Boolean,
+          default: false
+	  }
+  } ],
+  TX: [ {
+	  TransactionClass: {
+	      doc: 'Set to 1 or 2.',
+          format: 'int'
+	  },
+	  PhyBasePath: {
+	      doc: 'Path to the base directory',
+	      format: String,
+	      default: ''
+	  },
+	  DeleteOnSuccess: {
+	      doc: 'Set to true to retain partial files from failed transactions.',
+          format: Boolean,
+          default: false
+	  },
+	  DestinationPath: {
+	      doc: 'Set to true to automatically a file if the file already exists.',
+          format: String
+	  },
+	  CreateSubDirectories: {
+	      doc: 'Automatically create subdirectories as needed.',
+          format: Boolean,
+          default: true
+	  }
+  } ]
 } );
 
 module.exports = config;
