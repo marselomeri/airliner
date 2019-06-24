@@ -102,11 +102,11 @@
     
   The NAV Application is responsible for safely navigating or moving the vehicle from one location to another.
     
-  VM Design Overview
+  NAV Design Overview
   ====
-  1. Fuses position, vehicle status and land detection data to set position setpoint triplet.
+  1. Reads position, vehicle status, and land detection data to generate position setpoint triplet for commanded action.
   2. This message has enough information for a vehicle to move from one position to another.
-  3. The message is published on the software bus which is eventually picked up by MPC.
+  3. The message is published on the software bus which is then received by MPC.
     
   Prev: \ref cfsnavintro <BR>
   Next: \ref cfsnavopr
@@ -115,10 +115,10 @@
 /**
     \page cfsnavopr NAV Application Operation
     
-    The following operations are carried out by the VM Application:
+    The following operations are carried out by the NAV Application:
   	1. Receive and act to vehicle command message
      ----
-     a. When a command is passed, either takeoff, land or return to launch navigator reads the command.<BR>
+     a. Vehicle command is parsed (takeoff, land, return to launch, mission)<BR>
      b. Store current position as previous and goal as next.<BR>
      c. Store new current position.<BR>
      d. Assign yaw to current position set point.<BR>
