@@ -682,6 +682,8 @@ int32 NAV::Execute()
             /* Store new current position */
             RepositionTriplet_ptr->Current.LoiterRadius =
                     nav_params.nav_loiter_rad;
+            /* Not clear as to what this 1 signifies, but PX4 still has it 
+             * it there as of 1.9 */
             RepositionTriplet_ptr->Current.LoiterDirection = 1;
             RepositionTriplet_ptr->Current.Type =
                     PX4_SetpointType_t::PX4_SETPOINT_TYPE_LOITER;

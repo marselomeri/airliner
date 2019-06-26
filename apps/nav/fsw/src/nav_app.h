@@ -962,22 +962,6 @@ public:
 	}
 	
 	/************************************************************************/
-	/** \brief Returns Address of Sensor Combined Message
-	 **
-	 **  \par Assumptions, External Events, and Notes:
-	 **       None
-	 **
-	 **  \returns
-	 **  Returns Address of Sensor Combined Message.
-	 **  \endreturns
-	 **
-	 *************************************************************************/
-	PX4_SensorCombinedMsg_t* GetSensorCombined()
-	{
-		return &CVT.SensorCombinedMsg;
-	}
-	
-	/************************************************************************/
 	/** \brief Returns Address of Mission Message
 	 **
 	 **  \par Assumptions, External Events, and Notes:
