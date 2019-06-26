@@ -271,8 +271,6 @@ public:
 	PX4_VehicleCommandMsg_t previous_command;
 	/** \brief Flag is set to true if a previously unseen command is encountered */
 	boolean new_command_arrived = false;
-	/** \brief Flag is set to turn on and off subsequent take offs */
-	boolean subsequent_takeoffs = false;
 	/** \brief Will allow to loiter at setpoint */
 	boolean CanLoiterAtSetpoint
 	{	false};
@@ -711,7 +709,7 @@ public:
 	 **       None
 	 **
 	 *************************************************************************/
-	void CommandEventHist(void);
+	void CacheCommandEventHist(void);
 	
 	/************************************************************************/
 	/** \brief Verify Mission Item Reach
