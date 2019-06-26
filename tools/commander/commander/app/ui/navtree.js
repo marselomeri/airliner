@@ -35,7 +35,7 @@ function NodeRendered( e, node ) {
       componentName: 'Blank',
       componentState: {
         text: "text",
-        link: node.urlPath
+        link: node.href
       }
     };
     /* make this node dragable on to the layout
@@ -77,7 +77,7 @@ function NodeSelected( e, node ) {
       componentName: 'Blank',
       componentState: {
         text: 'text',
-        link: node.urlPath
+        link: node.href
       }
     }; 
     /* a colum or stack has to be seleted before selecting the node.
@@ -90,29 +90,8 @@ function NodeSelected( e, node ) {
       myLayout.selectedItem.addChild( newItemConfig );
     }
   } else if ( node.type === 'config' ) {
-    /* if node to be rendered is a layout file, a .lyt file */
-    /* read the file into json object */
-    $.get( node.urlPath, ( response ) => {
-      if(typeof node.handlebarsContext !== 'undefined') {
-          //console.log(response);
-          var templateScript = Handlebars.compile(response);
-          var context = node.handlebarsContext;
-          response = templateScript(context);
-      }
-      var jsonObj = JSON.parse( response );
-      
-      if ( response !== null ) {
-        /* destrory previous layout, make new layout with the configuration
-         * .lyt file and emit layout loaded event for dependencies to react */
-        myLayout.destroy();
-        myLayout = new window.GoldenLayout( jsonObj, $( '#cdr-layout-container' ) );
-        updateDragSources();
-        window.dispatchEvent( llc );
-        InitLayout( myLayout );
-      } else {
-        cu.logError( 'Layout | cannot be loaded from config file' )
-      }
-    } );
+	window.open(node.href,"_self");
+	location.reload(true);
   }
 }
 

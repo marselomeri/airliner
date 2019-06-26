@@ -119,33 +119,19 @@ LD_ConfigTbl_t LD_ConfigTbl =
 	     */
 	    10000.0,
 
-	    /** \brief Multicopter minimum throttle.
+	    /** \brief Multicopter low throttle threshold.
 	     *
 	     *  \par Limits:
-	     *  	default 0.12.
+	     *  	default 0.3.
 	     */
-	    0.12,
-
-	    /** \brief Multicopter hover throttle.
-	     *
-	     *  \par Limits:
-	     *  	default 0.5.
-	     */
-	    0.5,
-
-	    /** \brief Multicopter throttle range.
-	     *
-	     *  \par Limits:
-	     *  	default 0.1.
-	     */
-	    0.5,
+	    0.3,
 
 	    /** \brief Multicopter minimum throttle in manual mode.
 	     *
 	     *  \par Limits:
 	     *  	default 0.08.
 	     */
-	   0.08,
+	    0.08,
 
 	    /** \brief Multicopter takeoff stick up threshold in position control mode.
 	     *
@@ -166,7 +152,7 @@ LD_ConfigTbl_t LD_ConfigTbl =
          *  \par Limits:
          *      default 0.5.
          */
-        0.55f
+        0.5f
 };
 
 /*

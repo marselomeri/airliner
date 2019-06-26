@@ -214,6 +214,15 @@ class EventRecorder extends CdrGroundPlugin {
                     handlebarsContext: {
                         pluginName: this.config.name
                     }
+                },
+                hk: {
+                    type: CdrGroundPlugin.ContentType.PANEL,
+                    shortDescription: 'Event Viewer',
+                    longDescription: 'Event Viewer',
+                    filePath: '/event_viewer.pug',
+                    handlebarsContext: {
+                        pluginName: this.config.name
+                    }
                 }
             }
         }

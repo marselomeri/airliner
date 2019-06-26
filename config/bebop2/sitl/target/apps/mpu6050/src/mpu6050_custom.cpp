@@ -254,9 +254,9 @@ boolean MPU6050_Apply_Platform_Rotation(float *X, float *Y, float *Z)
     }
     /* TODO move to a table */
     /* ROTATION_ROLL_180_YAW_90 */
-    temp = *X; 
-    *X = *Y; 
-    *Y = temp; 
+    temp = *X;
+    *X = *Y;
+    *Y = temp;
     *Z = -*Z;
 
 end_of_function:

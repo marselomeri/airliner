@@ -89,6 +89,7 @@ typedef struct
 	int32 MapStabSw;                                /* RC_MAP_STAB_SW       */
 	int32 MapManSw;                                 /* RC_MAP_MAN_SW        */
 	int32 MapFlaps;                                 /* RC_MAP_FLAPS         */
+	int32 MapAltctlSw;                              /* RC_MAP_ALTCTL_SW     */
 
 	int32 MapAux1;                                  /* RC_MAP_AUX1          */
 	int32 MapAux2;                                  /* RC_MAP_AUX2          */
@@ -115,7 +116,8 @@ typedef struct
 	float GearTh;                                   /* RC_GEAR_TH           */
 	float StabTh;                                   /* RC_STAB_TH           */
 	float ManTh;                                    /* RC_MAN_TH            */
-
+	float AltctlTh;                                 /* RC_ALTCTL_TH         */
+	
 	float FltSmpRate;                               /* RC_FLT_SMP_RATE      */
 	float FltCutoff;                                /* RC_FLT_CUTOFF        */
 
@@ -124,7 +126,6 @@ typedef struct
     *  mode switch position rather than individual switches
     *  for  individual modes */
 	boolean ModeSwitchControl;                      /* ModeSwitchControl    */
-
 
 
 } SENS_ConfigTbl_t;

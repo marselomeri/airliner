@@ -61,6 +61,17 @@
        },
        "isClosable": true,
        "reorderEnabled": true
+      },
+      {
+       "title": "Diag",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "flight/apps/ld/diag"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
       }
      ]
     },

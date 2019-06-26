@@ -1,0 +1,41 @@
+table.table.table-condensed
+  tbody
+    tr#pfd_tlm_messages
+      th Message
+      th 
+
+script.
+    var domObject = $('#pfd_tlm_messages');
+    
+    var tlmMsgs = [
+        {opsName: '/PX4/PX4_VehicleAttitudeMsg_t', label: 'Vehicle Attitude'}, 
+        {opsName: '/PX4/PX4_BatteryStatusMsg_t', label: 'Battery Status'}, 
+        {opsName: '/PX4/PX4_VehicleLandDetectedMsg_t', label: 'Land Detected'},
+        {opsName: '/PE/PE_HkTlm_t/EstimatorGlobalInitialized', label: 'PE HK'},
+        {opsName: '/VM/VM_HkTlm_t', label: 'VM HK'},
+        {opsName: '/PX4/PX4_VehicleLocalPositionMsg_t', label: 'Local Position'}];
+        
+    var msgIDs = {};
+    var tlmIdx = 0;
+    
+    for(var i = 0; i < tlmMsgs.length; ++i) {
+        
+        session.sendCommand({ops_path:'/config-database/getMessageIDFromOpsName', args: [{name:'OpsName', value:tlmMsgs[i].opsName}]}, function(err, msgID) {
+            var keyID = '' + msgID;
+            if(msgIDs.hasOwnProperty(keyID) == false) {
+                var addAddMessageFlowCmdText = JSON.stringify({ops_path: "/TO/TO_AddMessageFlowCmd_t", args: {MsgID: ""+msgID, MsgLimit: ""+1, PQueueIdx: ""+0, ChannelIdx: ""+0}});
+                var addRemoveMessageFlowCmdText = JSON.stringify({ops_path: "/TO/TO_RemoveMessageFlowCmd_t", args: {MsgID: ""+msgID, MsgLimit: ""+1, ChannelIdx: ""+0}});
+                    
+                msgIDs[keyID] = msgID;
+                    
+                var htmlElements = '<tr><td>' + tlmMsgs[tlmIdx].label + '<div class=\'btn-group\'></td><td>';
+                htmlElements +=    '<button class=\'btn cdr-primary\' onclick=\'session.sendCommand(' + addAddMessageFlowCmdText + ')\'> Add </button>';
+                htmlElements +=    '<button class=\'btn cdr-primary\' onclick=\'session.sendCommand(' + addRemoveMessageFlowCmdText + ')\'> Remove </button>';
+                htmlElements +=    '</div></td></tr>';
+                
+                domObject.after(htmlElements);
+                
+                tlmIdx++;
+            } 
+        });
+    }

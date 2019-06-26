@@ -1,6 +1,8 @@
 #ifndef CI_PLATFORM_CFG_H
 #define CI_PLATFORM_CFG_H
 
+#include "ci_app.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -126,12 +128,32 @@ extern "C" {
 **  \par Limits:
 **       This parameter must be at least 1000 (ms).
 */
-#define CI_STARTUP_TIMEOUT_MSEC    (5000)
+#define CI_STARTUP_TIMEOUT_MSEC        (5000)
 
-//#define CI_SERIALIZED	(1)
-//#define CI_DEBUG_SERIALIZED	(1)
-#define CI_MAX_ENC_LEN (32768)
+/** \brief Max Length of Ingested Serialized Data */
+#define CI_MAX_ENC_LEN                 (32768)
 
+/** \brief CI Ingest Mode */
+#define CI_INGEST_MODE                 (CI_BHV_OPTIMISTIC)
+
+/** \brief CI Listener Task Delay
+**
+**  \note The main ingest loop is a while loop and sleeps for this many  
+**        milliseconds each iteration.
+ */
+#define CI_LISTENER_TASK_DELAY         (100)
+
+/** \brief CI Lister Task Stack Size */
+#define CI_LISTENER_TASK_STACK_SIZE         (160000)
+
+/** \brief CI Lister Task Priority */
+#define CI_LISTENER_TASK_PRIORITY           (109)
+
+/** \brief CI Serialized Lister Task Stack Size */
+#define CI_SERIAL_LISTENER_TASK_STACK_SIZE	(160000)
+
+/** \brief CI Serialized Lister Task Priority */
+#define CI_SERIAL_LISTENER_TASK_PRIORITY	(112)
 
 #ifdef __cplusplus
 }

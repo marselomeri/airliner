@@ -46,7 +46,6 @@ extern "C" {
  ** Includes
  *************************************************************************/
 #include "cfe.h"
-
 #include "ld_platform_cfg.h"
 #include "ld_mission_cfg.h"
 #include "ld_perfids.h"
@@ -56,12 +55,12 @@ extern "C" {
 #include "ld_tbldefs.h"
 #include "px4_msgs.h"
 #include "px4lib.h"
-
 #include "ld_state_history.h"
 
 /************************************************************************
  ** Local Defines
  *************************************************************************/
+#define LD_MAX_EVENT_FILTERS (64)
 
 /************************************************************************
  ** Local Structure Definitions
@@ -89,7 +88,7 @@ typedef struct
     PX4_VehicleLocalPositionMsg_t VehicleLocalPositionMsg;
     /** \brief The vehicle control mode message */
     PX4_VehicleControlModeMsg_t VehicleControlModeMsg;
-}LD_CurrentValueTable_t;
+} LD_CurrentValueTable_t;
 
 /**
  * \brief parameter table
@@ -113,17 +112,13 @@ typedef struct
     /**\brief  Multicopter Flight stick up threshold for take off */
     float lndmc_pos_upthr;                                            //= 0.65f;
     /**\brief  Total flight time in ms, higher 32 bits of the value */
-    uint32 lnd_flight_t_hi;                                               //= 0;
+    uint32 lnd_flight_t_hi;                                           //= 0;
     /**\brief  Total flight time in ms, lower 32 bits of the value */
-    uint32 lnd_flight_t_lo;                                        //= 60299599;
+    uint32 lnd_flight_t_lo;                                           //= 60299599;
     /**\brief  Multicopter maximum altitude (m) */
-    float lndmc_alt_max;                                           //= 10000.0f;
-    /**\brief  Multicopter minimum throttle */
-    float minThrottle;                                                //= 0.12f;
-    /**\brief  Multicopter hover throttle */
-    float hoverThrottle;                                               //= 0.5f;
-    /**\brief  Multicopter throttle range (m) */
-    float throttleRange;                                               //= 0.1f;
+    float lndmc_alt_max;                                              //= 10000.0f;
+    /**\brief  Multicopter low throttle threshold */
+    float lowThrottleThreshold;                                       //= 0.3f;
     /**\brief  Multicopter minimum throttle in manual mode */
     float minManThrottle;                                             //= 0.08f;
     /**\brief  Multicopter takeoff stick up threshold in position control mode */
@@ -132,13 +127,13 @@ typedef struct
     float manual_stick_down_threshold;                                //= 0.15f;
     /**\brief  Landing descend rate. */
     float landing_speed;
-
-}LD_Params_t;
+} LD_Params_t;
 
 /**
  * \brief Land detection states
  */
-enum LandDetectionState {
+enum LandDetectionState
+{
     /**! Vehicle is in flying state */
     FLYING = 0,
     /**! Vehicle is in flying landed state */
@@ -191,11 +186,11 @@ public:
     /** \brief The previous land detection message */
     PX4_VehicleLandDetectedMsg_t PreviousLandDetectedMsg;
     /** \brief The free fall state history variable */
-    StateHistory freefall_history = {false};
+    StateHistory freefall_history = {FALSE};
     /** \brief The landed state history variable */
-    StateHistory landed_history = {true};
+    StateHistory landed_history = {TRUE};
     /** \brief The ground contact state history variable */
-    StateHistory ground_contact_history = {true};
+    StateHistory ground_contact_history = {TRUE};
     /** \brief The arming time variable */
     uint64 arming_time = 0;
     /** \brief The minimum thrust on start variable */
@@ -216,6 +211,8 @@ public:
     static constexpr uint64 GROUND_CONTACT_TRIGGER_TIME_US = 350000;
     /** \brief Time interval in us in which wider acceptance thresholds are used after arming. */
     static constexpr uint64 LAND_DETECTOR_ARM_PHASE_TIME_US = 2000000;
+    
+    LD_Diag_t DiagTlm;
 
     /************************************************************************/
     /** \brief Landing Detector (LD) application entry point
@@ -385,6 +382,19 @@ public:
      **
      *************************************************************************/
     void SendVehicleLandDetectedMsg(void);
+
+    /************************************************************************/
+    /** \brief Sends the Diagnotic message.
+     **
+     **  \par Description
+     **       This function publishes the diag message to the SB
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/    
+    void SendDiag(void);
+    
     /************************************************************************/
     /** \brief Verify Command Length
      **

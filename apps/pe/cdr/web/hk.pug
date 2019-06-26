@@ -19,27 +19,27 @@ table.table.table-condensed
     tr
       th Estimator Global Initialized
       td
-        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/EstimatorGlobalInitialized'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/EstimatorGlobalInitialized', notext: true, class: [{eval: '==0', class: 'CDR-LED-RED'},{eval: '==1', class: 'CDR-LED-GREEN'}]}]})
     tr
       th Alt Origin Initialized
       td
-        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/AltOriginInitialized'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/AltOriginInitialized', notext: true, class: [{eval: '==0', class: 'CDR-LED-RED'},{eval: '==1', class: 'CDR-LED-GREEN'}]}]})
     tr
       th XY Est Valid
       td
-        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/XyEstValid'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/XyEstValid', notext: true, class: [{eval: '==0', class: 'CDR-LED-RED'},{eval: '==1', class: 'CDR-LED-GREEN'}]}]})
     tr
       th Z Est Valid
       td
-        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/ZEstValid'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/ZEstValid', notext: true, class: [{eval: '==0', class: 'CDR-LED-RED'},{eval: '==1', class: 'CDR-LED-GREEN'}]}]})
     tr
       th Terrain Z Est Valid
       td
-        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/TzEstValid'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/TzEstValid', notext: true, class: [{eval: '==0', class: 'CDR-LED-RED'},{eval: '==1', class: 'CDR-LED-GREEN'}]}]})
     tr
       th Estimator Local Initialized
       td
-        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/EstimatorLocalInitialized'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/EstimatorLocalInitialized', notext: true, class: [{eval: '==0', class: 'CDR-LED-RED'},{eval: '==1', class: 'CDR-LED-GREEN'}]}]})
               
 footer.btn-group(role="group")      
   button.btn.cdr-primary(data-cdr={cmd:{name:'/PE/Noop'}}) No-Op    

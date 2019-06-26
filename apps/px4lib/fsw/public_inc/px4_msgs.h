@@ -267,7 +267,8 @@ typedef enum
 	PX4_RC_CHANNELS_FUNCTION_ARMSWITCH  = 23,
 	PX4_RC_CHANNELS_FUNCTION_STAB       = 24,
 	PX4_RC_CHANNELS_FUNCTION_MAN        = 25,
-	PX4_RC_CHANNELS_FUNCTION_COUNT      = 26
+	PX4_RC_CHANNELS_FUNCTION_ALTCTL     = 26,
+	PX4_RC_CHANNELS_FUNCTION_COUNT      = 27
 } PX4_RcChannelFunction_t;
 
 typedef enum
@@ -1115,6 +1116,7 @@ typedef struct
 	PX4_SwitchPos_t ManSwitch;
 	PX4_ModeSlot_t ModeSlot;
 	PX4_ManualControlDataSource_t DataSource;
+	PX4_SwitchPos_t AltctlSwitch;
 } PX4_ManualControlSetpointMsg_t;
 
 typedef struct

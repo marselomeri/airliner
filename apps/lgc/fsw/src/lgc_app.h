@@ -62,6 +62,11 @@ extern "C" {
 /************************************************************************
  ** Local Structure Definitions
  *************************************************************************/
+typedef struct
+{
+    PX4_ManualControlSetpointMsg_t m_ManualControlSetpointMsg;
+    PX4_VehicleStatusMsg_t m_VehicleStatusMsg;
+} LGC_CurrentValueTable_t;
 
 /**
  * \brief application status
@@ -108,6 +113,9 @@ public:
 
     /** \brief Housekeeping Telemetry for downlink */
     LGC_HkTlm_t HkTlm;
+
+    /** \brief Current Value Table */
+    LGC_CurrentValueTable_t CVT;
 
     /************************************************************************/
     /** \brief Landing Gear Control (LGC) application entry point
@@ -265,7 +273,6 @@ public:
      **
      *************************************************************************/
     void ReportHousekeeping(void);
-
     /************************************************************************/
     /** \brief Verify Command Length
      **
@@ -325,6 +332,19 @@ private:
      **
      *************************************************************************/
     int32 InitDevice(void);
+
+    /************************************************************************/
+    /** \brief Decode the landing gear switch position.
+     **
+     **  \par Description
+     **       This function decodes the switch position to extend or
+     **       retract the landing gear.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
+    void CheckSwitchPosition(void);
 
     /************************************************************************/
     /** \brief Extend the landing gear

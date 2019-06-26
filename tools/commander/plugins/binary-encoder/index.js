@@ -622,6 +622,16 @@ class BinaryEncoder extends CdrGroundPlugin {
                     }
                     break;
 
+                case 'float':
+                    for ( var i = 0; i < fieldDef.array_length; ++i ) {
+                        if ( self.endian == 'little' ) {
+                            buffer.writeFloatLE( value, ( bitOffset / 8 ) + i );
+                        } else {
+                            buffer.writeFloatBE( value, ( bitOffset / 8 ) + i );
+                        }
+                    }
+                    break;
+
                 default:
                     self.logError( 'setField: Unknown data type.  \'' + fieldType + '\'' );
                 }
@@ -668,6 +678,14 @@ class BinaryEncoder extends CdrGroundPlugin {
                         buffer.writeInt32LE( value, bitOffset / 8 );
                     } else {
                         buffer.writeInt32BE( value, bitOffset / 8 );
+                    }
+                    break;
+
+                case 'float':
+                    if ( self.endian == 'little' ) {
+                        buffer.writeFloatLE( value, bitOffset / 8 );
+                    } else {
+                        buffer.writeFloatBE( value, bitOffset / 8 );
                     }
                     break;
 

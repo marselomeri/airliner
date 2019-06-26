@@ -17,9 +17,29 @@ table.table.table-condensed
         div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/msgRecvCount'}]}) ---
       td
     tr
+      th Messages Per Second
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/msgRecvPerSecond'}]}) ---
+      td
+    tr
       th Parameters Updated
       td
         div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/paramsUpdated'}]}) ---
+      td
+    tr
+      th Parameters Per Second
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/paramsUpdatedPerSecond'}]}) ---
+      td
+    tr
+      th Parameters Forwarded
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/paramsForwarded'}]}) ---
+      td
+    tr
+      th Params Forwarded Per Second
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/paramsForwardedPerSecond'}]}) ---
       td
     tr
       th Subscribers
@@ -60,3 +80,4 @@ table.table.table-condensed
               
 footer.btn-group(role="group")       
   button.btn.cdr-primary(data-cdr={cmd:{name:'/' + pluginName + '/reset'}}) Reset
+  

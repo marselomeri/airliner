@@ -1,0 +1,63 @@
+- var pluginName = query.pluginName;
+
+
+table.table.table-condensed
+  tbody
+    tr
+      th Commands Accepted 
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/cmdAcceptCount'}]}) ---
+      td
+    tr
+      th Commands Rejected
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/cmdRejectCount'}]}) ---
+footer.btn-group(role="group")       
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/' + pluginName + '/getSubscribers', cb: 'VarServerProcessSubscribers'}}) Get Subscribers
+  
+table.table.table-condensed
+  tbody#subscribers_table
+    tr
+      th ID
+      th   
+
+table.table.table-condensed
+  tbody#subscription_table
+    tr
+      th ID
+      th   
+  
+script.
+    var domSubscribersTable = $('#subscribers_table');
+    var domSubscriptionTable = $('#subscription_table');
+    
+    var pluginName = '#{pluginName}';
+    
+    var VarServerProcessSubscribers = function (subIDs) {
+        domSubscribersTable.empty();
+        
+        var htmlElements = '<tr><th>ID</th><th></th></tr>';
+        domSubscribersTable.append(htmlElements);
+        
+        for(var i = 0; i < subIDs.length; ++i) {
+            var getSubscriptionsCmdText = JSON.stringify({ops_path: '/' + pluginName + '/getSubscriptions', args: {SubscriberID: ''+subIDs[i]}});
+            
+            var htmlElements = '<tr><td>' + subIDs[i] + '</td><td><div class=\'btn-group\'>';
+            htmlElements    += '<button class=\'btn cdr-primary\' onclick=\'session.sendCommand(' + getSubscriptionsCmdText + ', VarServerProcessSubscriptions)\'> Get Subscriptions </button></td></tr>';
+            
+            domSubscribersTable.append(htmlElements);
+        }
+    };
+    
+    var VarServerProcessSubscriptions = function (subIDs) {
+        domSubscriptionTable.empty();
+        
+        var htmlElements = '<tr><th>ID</th><th></th></tr>';
+        domSubscriptionTable.append(htmlElements);
+        
+        for(var i = 0; i < subIDs.length; ++i) {            
+            var htmlElements = '<tr><td>' + subIDs[i] + '</td><td></tr>';
+            
+            domSubscriptionTable.append(htmlElements);
+        }
+    };

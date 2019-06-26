@@ -160,32 +160,14 @@ typedef struct
      */
     float LD_ALT_MAX;
 
-    /** \ldcfg LD_MIN_THR
+    /** \ldcfg LD_LOW_T_THR
      *
-     *  \brief Multicopter minimum throttle.
-     *
-     *  \par Limits:
-     *      default 0.12.
-     */
-    float LD_MIN_THR;
-
-    /** \ldcfg LD_HVR_THR
-     *
-     *  \brief Multicopter hover throttle.
+     *  \brief Multicopter low throttle threshold
      *
      *  \par Limits:
-     *      default 0.5.
+     *      default 0.3
      */
-    float LD_HVR_THR;
-
-    /** \ldcfg LD_THR_RANGE_AUTO
-     *
-     *  \brief Multicopter throttle range.
-     *
-     *  \par Limits:
-     *      default 0.1.
-     */
-    float LD_THR_RANGE_AUTO;
+    float LD_LOW_T_THR;
 
     /** \ldcfg LD_MAN_MIN_THR
      *

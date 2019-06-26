@@ -5,21 +5,21 @@ table.table.table-condensed
       td
         span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/TimeLastFlow'}]}) ---
     tr
-      th Flow Fused
-      td
-        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/FlowFused'}]}) ---
-    tr
       th Flow Initialized
       td
-        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/FlowInitialized'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/FlowInitialized', notext: true, class: [{eval: '==0', class: 'CDR-LED-RED'},{eval: '==1', class: 'CDR-LED-GREEN'}]}]})
     tr
       th Flow Fault
       td
-        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/FlowFault'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/FlowFault', notext: true, class: [{eval: '==0', class: 'CDR-LED-OFF'},{eval: '==1', class: 'CDR-LED-RED'}]}]})
     tr
       th Flow Timeout
       td
-        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/FlowTimeout'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/FlowTimeout', notext: true, class: [{eval: '==0', class: 'CDR-LED-OFF'},{eval: '==1', class: 'CDR-LED-RED'}]}]})
+    tr
+      th Flow Fused
+      td
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/FlowFused', notext: true, class: [{eval: '==0', class: 'CDR-LED-YELLOW'},{eval: '==1', class: 'CDR-LED-GREEN'}]}]})
               
 footer.btn-group(role="group")      
   button.btn.cdr-primary(data-cdr={cmd:{name:'/PE/EnableFlow'}}) Enable

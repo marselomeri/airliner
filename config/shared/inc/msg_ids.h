@@ -667,6 +667,9 @@
 /* MPC                                                   */
 #define MPC_DIAG_TLM_MID                            0x0cea
 
+/* LD                                                   */
+#define LD_DIAG_TLM_MID                             0x0ceb
+
 #define SCH_ACTIVITY_DONE_MID                       0x0f00
 
 #endif

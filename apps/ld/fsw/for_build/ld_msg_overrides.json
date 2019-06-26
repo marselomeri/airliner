@@ -6,6 +6,7 @@
                     "Noop":             { "airliner_cc":  0, "macro": "LD_CMD_MID", "airliner_msg": "" },
                     "Reset":            { "airliner_cc":  1, "macro": "LD_CMD_MID", "airliner_msg": "" },
                     "LD_HkTlm_t":       { "airliner_cc":  -1, "macro": "LD_HK_TLM_MID", "airliner_msg": "LD_HkTlm_t" },
+                    "LD_Diag_t":     { "airliner_cc":  -1, "macro": "LD_DIAG_TLM_MID", "airliner_msg": "LD_Diag_t" },
                     "Wakeup":           { "airliner_cc":  0, "macro": "LD_WAKEUP_MID", "airliner_msg": ""},
                     "SendHk":           { "airliner_cc":  0, "macro": "LD_SEND_HK_MID", "airliner_msg": ""}
                 },
