@@ -90,7 +90,7 @@ extern "C" {
 **  \par Description:
 **       The SBUS channel count.
 */
-#define RCIN_SBUS_CHANNEL_COUNT         (8)
+#define RCIN_SBUS_CHANNEL_COUNT         (16)
 
 /* define range mapping here, -+100% -> 1000..2000 */
 /** \brief SBUS range minimum. */

@@ -90,6 +90,22 @@ int32 LGC::InitPipe()
                      (unsigned int)iStatus);
             goto LGC_InitPipe_Exit_Tag;
         }
+        iStatus = CFE_SB_SubscribeEx(PX4_MANUAL_CONTROL_SETPOINT_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(LGC_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                     "CMD Pipe failed to subscribe to PX4_MANUAL_CONTROL_SETPOINT_MID. (0x%08lX)",
+                     iStatus);
+            goto LGC_InitPipe_Exit_Tag;
+        }
+        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_STATUS_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(LGC_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                     "CMD Pipe failed to subscribe to PX4_VEHICLE_STATUS_MID. (0x%08lX)",
+                     iStatus);
+            goto LGC_InitPipe_Exit_Tag;
+        }
     }
     else
     {
@@ -137,7 +153,8 @@ LGC_InitPipe_Exit_Tag:
 void LGC::InitData()
 {
     /* Init housekeeping message. */
-    CFE_SB_InitMsg(&HkTlm, LGC_HK_TLM_MID, sizeof(HkTlm), TRUE);
+    CFE_SB_InitMsg(&HkTlm,
+            LGC_HK_TLM_MID, sizeof(HkTlm), TRUE);
 }
 
 
@@ -186,7 +203,7 @@ int32 LGC::InitApp()
         goto LGC_InitApp_Exit_Tag;
     }
 
-    HkTlm.State = LGC_INITIALIZED;
+        HkTlm.State = LGC_INITIALIZED;
 
 LGC_InitApp_Exit_Tag:
     if (iStatus == CFE_SUCCESS)
@@ -237,12 +254,23 @@ int32 LGC::RcvSchPipeMsg(int32 iBlocking)
         {
             case LGC_WAKEUP_MID:
             {
-                ProcessCmdPipe();
+                CheckSwitchPosition();
                 break;
             }
             case LGC_SEND_HK_MID:
             {
+                ProcessCmdPipe();
                 ReportHousekeeping();
+                break;
+            }
+            case PX4_MANUAL_CONTROL_SETPOINT_MID:
+            {
+                memcpy(&CVT.m_ManualControlSetpointMsg, MsgPtr, sizeof(CVT.m_ManualControlSetpointMsg));
+                break;
+            }
+            case PX4_VEHICLE_STATUS_MID:
+            {
+                memcpy(&CVT.m_VehicleStatusMsg, MsgPtr, sizeof(CVT.m_VehicleStatusMsg));
                 break;
             }
             default:
@@ -361,29 +389,6 @@ void LGC::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
                 HkTlm.usCmdErrCnt = 0;
                 break;
             }
-            case LGC_EXTEND_CC:
-            {
-                if(HkTlm.State != LGC_EXTENDED)
-                {
-                    (void) CFE_EVS_SendEvent(LGC_EXTEND_INF_EID, CFE_EVS_ERROR,
-                        "Landing gear in Extended State");
-                    ExtendGear();
-                    HkTlm.State = LGC_EXTENDED;
-                }
-                break;
-            }
-            case LGC_RETRACT_CC:
-            {
-                if(HkTlm.State != LGC_RETRACTED)
-                {
-                    (void) CFE_EVS_SendEvent(LGC_RETRACT_INF_EID, CFE_EVS_ERROR,
-                        "Landing Gear in Retracted State");
-                    RetractGear();
-                    HkTlm.State = LGC_RETRACTED;
-                }
-                break;
-            }
-            
             default:
             {
                 HkTlm.usCmdErrCnt++;
@@ -548,6 +553,55 @@ void LGC::RetractGear(void)
 
     return;
 }
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Decode landing gear switch position.                            */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+void LGC::CheckSwitchPosition(void)
+{
+        switch(CVT.m_ManualControlSetpointMsg.GearSwitch)
+        {
+            case PX4_SWITCH_POS_NONE:
+            {
+                /* Do nothing */
+                break;
+            }
+            case PX4_SWITCH_POS_ON:
+            {
+                if(HkTlm.State != LGC_RETRACTED)
+                {
+                    (void) CFE_EVS_SendEvent(LGC_RETRACT_INF_EID, CFE_EVS_ERROR,
+                        "Landing Gear in Retracted State");
+                    RetractGear();
+                    HkTlm.State = LGC_RETRACTED;
+                }
+                break;
+            }
+            case PX4_SWITCH_POS_MIDDLE:
+            {
+                /* Do nothing */
+                break;
+            }
+            case PX4_SWITCH_POS_OFF:
+            {
+                if(HkTlm.State != LGC_EXTENDED)
+                {
+                    (void) CFE_EVS_SendEvent(LGC_EXTEND_INF_EID, CFE_EVS_ERROR,
+                        "Landing gear in Extended State");
+                    ExtendGear();
+                    HkTlm.State = LGC_EXTENDED;
+                }
+                break;
+            }
+        }
+    return;
+}
+
+
+
 
 /************************/
 /*  End of File Comment */

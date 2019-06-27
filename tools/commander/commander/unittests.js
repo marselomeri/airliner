@@ -835,8 +835,8 @@ describe( 'Commander Plugin', () => {
 
   it( 'Should excercise panels, layouts', () => {
     spyOn( global.NODE_APP, 'get' ).and.callThrough();
-    var panels = jasmine.createSpyObj( 'Panels', [ 'urlPath', 'nodes' ] );
-    var layouts = jasmine.createSpyObj( 'Layouts', [ 'urlPath', 'nodes' ] );
+    var panels = jasmine.createSpyObj( 'Panels', [ 'href', 'nodes' ] );
+    var layouts = jasmine.createSpyObj( 'Layouts', [ 'href', 'nodes' ] );
     this.cdr_plugin.processPanelsTree( panels );
     this.cdr_plugin.processLayoutsTree( layouts );
     expect( global.NODE_APP.get ).toHaveBeenCalledTimes( 2 );

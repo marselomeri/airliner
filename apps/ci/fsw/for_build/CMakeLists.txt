@@ -38,8 +38,6 @@ add_airliner_app_def(ci
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ci_app.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ci_app.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/ci_cds_utils.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/ci_cds_utils.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ci_config_utils.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ci_config_utils.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ci_custom.h
@@ -90,8 +88,6 @@ add_airliner_app_unit_test(ci-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ci_app.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ci_app.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ci_mock_custom.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/ci_cds_utils.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/ci_cds_utils.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ci_config_utils.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ci_config_utils.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ci_events.h

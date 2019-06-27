@@ -1112,7 +1112,7 @@ void MAC::ControlAttitude(float dt)
 	}
 
 	/* feed forward yaw setpoint rate */
-	m_AngularRatesSetpoint[2] += CVT.VAttSp.YawSpMoveRate * yaw_w * m_Params.yaw_ff;
+	m_AngularRatesSetpoint[2] += CVT.VAttSp.YawSpMoveRate * yaw_w; // * m_Params.yaw_ff; Note: PX4 removed this param
 
 	/* weather-vane mode, dampen yaw rate */
 	if ((CVT.VControlMode.ControlVelocityEnabled || CVT.VControlMode.ControlAutoEnabled) &&

@@ -62,15 +62,15 @@ MAC_ParamTbl_t MAC_ParamTbl =
 		0.0,		/* MC_TPA_RATE_I   */
 		0.0,		/* MC_TPA_RATE_D   */
 		2.8,		/* MC_YAW_P        */
-		0.2,		/* MC_YAWRATE_P	   */
-		0.1,		/* MC_YAWRATE_I    */
+		0.28,		/* MC_YAWRATE_P	   */
+		0.15,		/* MC_YAWRATE_I    */
 		0.30,       /* MC_YR_INT_LIM   */
-		0.0,		/* MC_YAWRATE_D    */
+		0.005,		/* MC_YAWRATE_D    */
 		0.0,		/* MC_YAWRATE_FF   */
-		0.6,		/* MC_YAW_FF       */
+		0.5,		/* MC_YAW_FF       */
 		220.0,		/* MC_ROLLRATE_MAX */
 		220.0,		/* MC_PITCHRATE_MAX */
-		200.0,		/* MC_YAWRATE_MAX   */
+		120.0,		/* MC_YAWRATE_MAX   */
 		45.0,		/* MC_YAWRAUTO_MAX  */
 		360.0,      /* MC_ACRO_R_MAX    */
 		360.0,		/* MC_ACRO_P_MAX    */

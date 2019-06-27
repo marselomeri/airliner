@@ -1420,6 +1420,8 @@ void VM::RcModes() {
 
     boolean posctl =
             (ManualControlSetpointMsg.PosctlSwitch == PX4_SWITCH_POS_ON);
+    boolean altctl =
+            (ManualControlSetpointMsg.AltctlSwitch == PX4_SWITCH_POS_ON);
     boolean rtl = (ManualControlSetpointMsg.ReturnSwitch == PX4_SWITCH_POS_ON);
     boolean loiter =
             (ManualControlSetpointMsg.LoiterSwitch == PX4_SWITCH_POS_ON);
@@ -1429,9 +1431,10 @@ void VM::RcModes() {
     boolean mode_changed = !(posctl == previous_modes.inPosCtl
             && rtl == previous_modes.inRtl && loiter == previous_modes.inLoiter
             && manual == previous_modes.inManual
-            && takeoff == previous_modes.intakeoff);
+            && takeoff == previous_modes.intakeoff
+            && altctl == previous_modes.inAltCtl);
 
-    if (posctl && !rtl && !loiter && !takeoff && mode_changed) {
+    if (posctl && !altctl && !rtl && !loiter && !takeoff && mode_changed) {
 
         try {
             NavigationSM.FSM.trPositionControl();
@@ -1447,7 +1450,7 @@ void VM::RcModes() {
                     GetNavStateAsString(PrevState), "POSCTL");
         }
 
-    } else if (!posctl && rtl && !loiter && !takeoff && mode_changed) {
+    } else if (rtl && mode_changed) {
 
         try {
             NavigationSM.FSM.trAutoReturnToLaunch();
@@ -1463,7 +1466,7 @@ void VM::RcModes() {
                     GetNavStateAsString(PrevState), "AUTORTL");
         }
 
-    } else if (!posctl && !rtl && loiter && !takeoff && mode_changed) {
+    } else if (!posctl && !altctl && !rtl && loiter && !takeoff && mode_changed) {
         try {
             NavigationSM.FSM.trAutoLoiter();
             HkTlm.usCmdCnt++;
@@ -1477,7 +1480,7 @@ void VM::RcModes() {
                     "Illegal Nav transition [%s -> %s].  Command rejected.",
                     GetNavStateAsString(PrevState), "AUTOLTR");
         }
-    } else if (!posctl && !rtl && !loiter && takeoff && mode_changed) {
+    } else if (takeoff && mode_changed) {
         try {
             NavigationSM.FSM.trAutoTakeoff();
             HkTlm.usCmdCnt++;
@@ -1490,6 +1493,20 @@ void VM::RcModes() {
             CFE_EVS_INFORMATION,
                     "Illegal Nav transition [%s -> %s].  Command rejected.",
                     GetNavStateAsString(PrevState), "AUTOTAKOF");
+        }
+    } else if (!posctl && altctl && !rtl && !loiter && !takeoff && mode_changed) {
+        try {
+            NavigationSM.FSM.trAltitudeControl();
+            HkTlm.usCmdCnt++;
+            (void) CFE_EVS_SendEvent(VM_RC_TAKE_OFF_INFO_EID,
+            CFE_EVS_INFORMATION, "Mode switched to altitude control by rc");
+        } catch (statemap::TransitionUndefinedException e) {
+            HkTlm.usCmdErrCnt++;
+            uint32 PrevState = NavigationSM.GetCurrentStateID();
+            CFE_EVS_SendEvent(VM_NAV_ILLEGAL_TRANSITION_ERR_EID,
+            CFE_EVS_INFORMATION,
+                    "Illegal Nav transition [%s -> %s].  Command rejected.",
+                    GetNavStateAsString(PrevState), "ALTCTL");
         }
     } else if (manual && mode_changed) {
         try {
@@ -1507,6 +1524,7 @@ void VM::RcModes() {
         }
     }
     previous_modes.inPosCtl = posctl;
+    previous_modes.inAltCtl = altctl;
     previous_modes.inRtl = rtl;
     previous_modes.inLoiter = loiter;
     previous_modes.inManual = manual;

@@ -1,2 +1,2 @@
 #!/bin/bash
-sudo ./joystick_remote -d /dev/input/js1 -t frsky -r 192.168.42.1:777
+sudo ./joystick_remote -d /dev/input/js2 -t frsky -r 192.168.42.1:777
