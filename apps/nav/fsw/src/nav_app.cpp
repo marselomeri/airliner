@@ -671,71 +671,67 @@ int32 NAV::Execute()
         {
             /* EVENT: DO REPOSITION
              * store current position as previous and goal as next */
-            PX4_PositionSetpointTripletMsg_t* RepositionTriplet_ptr =
-                    GetRepositionTripletMsg();
-
-            RepositionTriplet_ptr->Previous.Yaw = CVT.VehicleGlobalPosition.Yaw;
-            RepositionTriplet_ptr->Previous.Lat = CVT.VehicleGlobalPosition.Lat;
-            RepositionTriplet_ptr->Previous.Lon = CVT.VehicleGlobalPosition.Lon;
-            RepositionTriplet_ptr->Previous.Alt = CVT.VehicleGlobalPosition.Alt;
+            RepositionTripletMsg.Previous.Yaw = CVT.VehicleGlobalPosition.Yaw;
+            RepositionTripletMsg.Previous.Lat = CVT.VehicleGlobalPosition.Lat;
+            RepositionTripletMsg.Previous.Lon = CVT.VehicleGlobalPosition.Lon;
+            RepositionTripletMsg.Previous.Alt = CVT.VehicleGlobalPosition.Alt;
 
             /* Store new current position */
-            RepositionTriplet_ptr->Current.LoiterRadius =
+            RepositionTripletMsg.Current.LoiterRadius =
                     nav_params.nav_loiter_rad;
             /* Not clear as to what this 1 signifies, but PX4 still has it 
              * it there as of 1.9 */
-            RepositionTriplet_ptr->Current.LoiterDirection = 1;
-            RepositionTriplet_ptr->Current.Type =
+            RepositionTripletMsg.Current.LoiterDirection = 1;
+            RepositionTripletMsg.Current.Type =
                     PX4_SetpointType_t::PX4_SETPOINT_TYPE_LOITER;
 
             /* Assign yaw to current position set point */
             if (isfinite(CVT.VehicleCommandMsg.Param4))
             {
-                RepositionTriplet_ptr->Current.Yaw =
+                RepositionTripletMsg.Current.Yaw =
                         CVT.VehicleCommandMsg.Param4;
             }
             else
             {
-                RepositionTriplet_ptr->Current.Yaw = NAN;
+                RepositionTripletMsg.Current.Yaw = NAN;
             }
 
             /* Assign latitude and longitude to current set point */
             if (isfinite(CVT.VehicleCommandMsg.Param5) &&
                 isfinite(CVT.VehicleCommandMsg.Param6))
             {
-                RepositionTriplet_ptr->Current.Lat =
+                RepositionTripletMsg.Current.Lat =
                         (CVT.VehicleCommandMsg.Param5 < 1000) ?
                                 CVT.VehicleCommandMsg.Param5 :
                                 CVT.VehicleCommandMsg.Param5 / (double) 1e7;
-                RepositionTriplet_ptr->Current.Lon =
+                RepositionTripletMsg.Current.Lon =
                         (CVT.VehicleCommandMsg.Param6 < 1000) ?
                                 CVT.VehicleCommandMsg.Param6 :
                                 CVT.VehicleCommandMsg.Param6 / (double) 1e7;
-
             }
             else
             {
-                RepositionTriplet_ptr->Current.Lat =
+                RepositionTripletMsg.Current.Lat =
                         CVT.VehicleGlobalPosition.Lat;
-                RepositionTriplet_ptr->Current.Lon =
+                RepositionTripletMsg.Current.Lon =
                         CVT.VehicleGlobalPosition.Lon;
             }
 
             /* Assign altitude to current set point */
             if (isfinite(CVT.VehicleCommandMsg.Param7))
             {
-                RepositionTriplet_ptr->Current.Alt =
+                RepositionTripletMsg.Current.Alt =
                         CVT.VehicleCommandMsg.Param7;
             }
             else
             {
-                RepositionTriplet_ptr->Current.Alt =
+                RepositionTripletMsg.Current.Alt =
                         CVT.VehicleGlobalPosition.Alt;
             }
             /* Assign set point triplet validity */
-            RepositionTriplet_ptr->Previous.Valid = TRUE;
-            RepositionTriplet_ptr->Current.Valid = TRUE;
-            RepositionTriplet_ptr->Next.Valid = FALSE;
+            RepositionTripletMsg.Previous.Valid = TRUE;
+            RepositionTripletMsg.Current.Valid = TRUE;
+            RepositionTripletMsg.Next.Valid = FALSE;
 
         }
         else if (CVT.VehicleCommandMsg.Command
@@ -745,61 +741,59 @@ int32 NAV::Execute()
              * store of command hist */
             CacheCommandEventHist();
 
-            PX4_PositionSetpointTripletMsg_t *TakeoffTriplet_ptr =
-                    GetTakeoffTripletMsg();
             /* Store current position as previous and goal as next */
-            TakeoffTriplet_ptr->Previous.Yaw =
+            TakeoffTripletMsg.Previous.Yaw =
                     CVT.VehicleGlobalPosition.Yaw;
-            TakeoffTriplet_ptr->Previous.Lat =
+            TakeoffTripletMsg.Previous.Lat =
                     CVT.VehicleGlobalPosition.Lat;
-            TakeoffTriplet_ptr->Previous.Lon =
+            TakeoffTripletMsg.Previous.Lon =
                     CVT.VehicleGlobalPosition.Lon;
-            TakeoffTriplet_ptr->Previous.Alt =
+            TakeoffTripletMsg.Previous.Alt =
                     CVT.VehicleGlobalPosition.Alt;
 
             /* Store new current position */
-            TakeoffTriplet_ptr->Current.LoiterRadius =
+            TakeoffTripletMsg.Current.LoiterRadius =
                     nav_params.nav_loiter_rad;
-            TakeoffTriplet_ptr->Current.LoiterDirection = 1;
-            TakeoffTriplet_ptr->Current.Type =
+            TakeoffTripletMsg.Current.LoiterDirection = 1;
+            TakeoffTripletMsg.Current.Type =
                     PX4_SetpointType_t::PX4_SETPOINT_TYPE_TAKEOFF;
 
             /* Check if home position is valid, set current yaw and previous valid accordingly */
             if (CVT.HomePositionMsg.Timestamp > 0)
             {
-                TakeoffTriplet_ptr->Current.Yaw =
+                TakeoffTripletMsg.Current.Yaw =
                         CVT.VehicleCommandMsg.Param4;
-                TakeoffTriplet_ptr->Previous.Valid = TRUE;
+                TakeoffTripletMsg.Previous.Valid = TRUE;
             }
             else
             {
-                TakeoffTriplet_ptr->Current.Yaw =
+                TakeoffTripletMsg.Current.Yaw =
                         CVT.VehicleLocalPositionMsg.Yaw;
-                TakeoffTriplet_ptr->Previous.Valid = FALSE;
+                TakeoffTripletMsg.Previous.Valid = FALSE;
             }
 
             /*  Check if param5 and param6 is finite, set Latitude, Longitude, Altitude and current and next position set point validity */
             if (isfinite(CVT.VehicleCommandMsg.Param5) &&
                 isfinite(CVT.VehicleCommandMsg.Param6))
             {
-                TakeoffTriplet_ptr->Current.Lat =
+                TakeoffTripletMsg.Current.Lat =
                         (CVT.VehicleCommandMsg.Param5 < 1000) ?
                                 CVT.VehicleCommandMsg.Param5 :
                                 CVT.VehicleCommandMsg.Param5 / (double) 1e7;
-                TakeoffTriplet_ptr->Current.Lon =
+                TakeoffTripletMsg.Current.Lon =
                         (CVT.VehicleCommandMsg.Param6 < 1000) ?
                                 CVT.VehicleCommandMsg.Param6 :
                                 CVT.VehicleCommandMsg.Param6 / (double) 1e7;
             }
             else
             {
-                TakeoffTriplet_ptr->Current.Lat = NAN;
-                TakeoffTriplet_ptr->Current.Lon = NAN;
+                TakeoffTripletMsg.Current.Lat = NAN;
+                TakeoffTripletMsg.Current.Lon = NAN;
             }
             /* Assign set point triplet validity */
-            TakeoffTriplet_ptr->Current.Alt = CVT.VehicleCommandMsg.Param7;
-            TakeoffTriplet_ptr->Current.Valid = TRUE;
-            TakeoffTriplet_ptr->Next.Valid = FALSE;
+            TakeoffTripletMsg.Current.Alt = CVT.VehicleCommandMsg.Param7;
+            TakeoffTripletMsg.Current.Valid = TRUE;
+            TakeoffTripletMsg.Next.Valid = FALSE;
         }
     }
 
@@ -934,8 +928,6 @@ int32 NAV::Execute()
 void NAV::Takeoff()
 {
     /* Initialize pointers to messages */
-    PX4_PositionSetpointTripletMsg_t *TakeoffTriplet_ptr =
-            GetTakeoffTripletMsg();
     PX4_VehicleGlobalPositionMsg_t *VehicleGlobalPosition_ptr =
             GetVehicleGlobalPositionMsg();
 
@@ -957,10 +949,10 @@ void NAV::Takeoff()
 
     /* Use altitude if it is already set. If home position is invalid use 
      * MinAbsoluteAltitude */
-    if (TakeoffTriplet_ptr->Current.Valid &&
-        isfinite(TakeoffTriplet_ptr->Current.Alt) && hpv)
+    if (TakeoffTripletMsg.Current.Valid &&
+        isfinite(TakeoffTripletMsg.Current.Alt) && hpv)
     {
-        AbsoluteAltitude = TakeoffTriplet_ptr->Current.Alt;
+        AbsoluteAltitude = TakeoffTripletMsg.Current.Alt;
 
         /* If set altitude is less than minimum clearance raise it to that level and throw a warning */
         if (AbsoluteAltitude < MinAbsoluteAltitude)
@@ -1029,26 +1021,25 @@ void NAV::Takeoff()
     /* Set YawValid to true */
     PositionSetpointTripletMsg.Current.YawValid = TRUE;
 
-    if (TakeoffTriplet_ptr->Current.Valid)
+    if (TakeoffTripletMsg.Current.Valid)
     {
-        if (isfinite(TakeoffTriplet_ptr->Current.Yaw))
+        if (isfinite(TakeoffTripletMsg.Current.Yaw))
         {
             PositionSetpointTripletMsg.Current.Yaw =
-                    TakeoffTriplet_ptr->Current.Yaw;
+                    TakeoffTripletMsg.Current.Yaw;
         }
 
-        if (isfinite(TakeoffTriplet_ptr->Current.Lat) &&
-            isfinite(TakeoffTriplet_ptr -> Current.Lon))
+        if (isfinite(TakeoffTripletMsg.Current.Lat) &&
+            isfinite(TakeoffTripletMsg.Current.Lon))
         {
             PositionSetpointTripletMsg.Current.Lat =
-                    TakeoffTriplet_ptr->Current.Lat;
+                    TakeoffTripletMsg.Current.Lat;
             PositionSetpointTripletMsg.Current.Lon =
-                    TakeoffTriplet_ptr->Current.Lon;
+                    TakeoffTripletMsg.Current.Lon;
         }
 
         /* Mark this as done */
-        CFE_PSP_MemSet(TakeoffTriplet_ptr, 0, sizeof(*TakeoffTriplet_ptr));
-
+        CFE_PSP_MemSet(&TakeoffTripletMsg, 0, sizeof(TakeoffTripletMsg));
     }
 
     CanLoiterAtSetpoint = TRUE;
@@ -1058,13 +1049,9 @@ void NAV::Takeoff()
 
 void NAV::TakeoffActive()
 {
-
-    /* Initialize pointers to messages */
-    PX4_PositionSetpointTripletMsg_t *TakeoffTriplet_ptr =
-            GetTakeoffTripletMsg();
     boolean is_mission_item_reached = IsMissionItemReached();
 
-    if (TakeoffTriplet_ptr->Current.Valid)
+    if (TakeoffTripletMsg.Current.Valid)
     {
         Takeoff();
     }
@@ -1084,7 +1071,6 @@ void NAV::Land()
 
     PX4_VehicleGlobalPositionMsg_t *VehicleGlobalPosition_ptr =
             GetVehicleGlobalPositionMsg();
-    PX4_HomePositionMsg_t* HomePosition_ptr = GetHomePosition();
     NAV_MissionItem_t * item = &mission_item;
     boolean at_current_position = TRUE;
 
@@ -1129,7 +1115,6 @@ void NAV::Land()
 void NAV::LandActive()
 {
     boolean is_mission_item_reached = IsMissionItemReached();
-    PX4_HomePositionMsg_t* HomePosition_ptr = GetHomePosition();
     NAV_MissionItem_t * item = &mission_item;
     PX4_VehicleGlobalPositionMsg_t* VehicleGlobalPosition_ptr =
             GetVehicleGlobalPositionMsg();
@@ -1183,7 +1168,6 @@ void NAV::LandActive()
     {
         if (is_mission_item_reached && !MissionResultMsg.Finished)
         {
-            PX4_HomePositionMsg_t* HomePosition_ptr = GetHomePosition();
             NAV_MissionItem_t * item = &mission_item;
 
             MissionResultMsg.Reached = TRUE;
@@ -1212,10 +1196,7 @@ void NAV::LandActive()
 
 void NAV::Loiter()
 {
-    PX4_PositionSetpointTripletMsg_t *RepositionTriplet_ptr =
-            GetRepositionTripletMsg();
-
-    if (RepositionTriplet_ptr->Current.Valid)
+    if (RepositionTripletMsg.Current.Valid)
     {
         LoiterReposition();
     }
@@ -1227,11 +1208,9 @@ void NAV::Loiter()
 
 void NAV::LoiterActive()
 {
-    PX4_PositionSetpointTripletMsg_t *RepositionTriplet_ptr =
-            GetRepositionTripletMsg();
     PX4_VehicleStatusMsg_t *VehicleStatus_ptr = GetVehicleStatusMsg();
 
-    if (RepositionTriplet_ptr->Current.Valid)
+    if (RepositionTripletMsg.Current.Valid)
     {
         LoiterReposition();
     }
@@ -1246,8 +1225,6 @@ void NAV::LoiterActive()
 
 void NAV::LoiterReposition()
 {
-    PX4_PositionSetpointTripletMsg_t *RepositionTriplet_ptr =
-            GetRepositionTripletMsg();
     PX4_VehicleStatusMsg_t *VehicleStatus_ptr = GetVehicleStatusMsg();
     PX4_VehicleGlobalPositionMsg_t *VehicleGlobalPosition_ptr =
             GetVehicleGlobalPositionMsg();
@@ -1256,10 +1233,8 @@ void NAV::LoiterReposition()
     if (VehicleStatus_ptr->ArmingState
             == PX4_ArmingState_t::PX4_ARMING_STATE_ARMED)
     {
-
-        if (RepositionTriplet_ptr->Current.Valid)
+        if (RepositionTripletMsg.Current.Valid)
         {
-
             PositionSetpointTripletMsg.Current.VelocityValid = FALSE;
             PositionSetpointTripletMsg.Previous.Yaw =
                     VehicleGlobalPosition_ptr->Yaw;
@@ -1270,8 +1245,8 @@ void NAV::LoiterReposition()
             PositionSetpointTripletMsg.Previous.Alt =
                     VehicleGlobalPosition_ptr->Alt;
             CFE_PSP_MemCpy(&PositionSetpointTripletMsg.Current,
-                    &RepositionTriplet_ptr->Current,
-                    sizeof(RepositionTriplet_ptr->Current));
+                    &RepositionTripletMsg.Current,
+                    sizeof(RepositionTripletMsg.Current));
             PositionSetpointTripletMsg.Next.Valid = FALSE;
 
             /* Set yaw */
@@ -1296,8 +1271,9 @@ void NAV::LoiterReposition()
             {
                 CanLoiterAtSetpoint = TRUE;
             }
+            
             PositionSetpointTripletUpdated = TRUE;
-            CFE_PSP_MemSet(RepositionTriplet_ptr, 0, sizeof(*RepositionTriplet_ptr));
+            CFE_PSP_MemSet(&RepositionTripletMsg, 0, sizeof(RepositionTripletMsg));
         }
     }
 }
@@ -1309,7 +1285,6 @@ void NAV::LoiterSetPosition()
             GetVehicleGlobalPositionMsg();
     PX4_VehicleLandDetectedMsg_t* VehicleLandDetected_ptr =
             GetVehicleLandDetectedMsg();
-    PX4_HomePositionMsg_t* HomePosition_ptr = GetHomePosition();
     NAV_MissionItem_t * item = &mission_item;
 
     float min_clearance = nav_params.nav_mis_ltrmin_alt;
@@ -1366,9 +1341,9 @@ void NAV::LoiterSetPosition()
 
                 if (min_clearance > 0.0f
                         && item->Altitude
-                                < HomePosition_ptr->Alt + min_clearance)
+                                < CVT.HomePositionMsg.Alt + min_clearance)
                 {
-                    item->Altitude = HomePosition_ptr->Alt + min_clearance;
+                    item->Altitude = CVT.HomePositionMsg.Alt + min_clearance;
                 }
             }
 
@@ -1403,7 +1378,6 @@ void NAV::Rtl()
             GetVehicleGlobalPositionMsg();
     PX4_VehicleLandDetectedMsg_t* VehicleLandDetected_ptr =
             GetVehicleLandDetectedMsg();
-    PX4_HomePositionMsg_t* HomePosition_ptr = GetHomePosition();
     NAV_MissionItem_t * item = &mission_item;
 
     /* Sets current position item */
@@ -1437,7 +1411,7 @@ void NAV::Rtl()
 
     }
     else if (VehicleGlobalPosition_ptr->Alt
-            < (HomePosition_ptr->Alt + rtl_altitude))
+            < (CVT.HomePositionMsg.Alt + rtl_altitude))
     {
         /* If lower than return altitude, climb up first */
         rtl_state = RTLState::RTL_STATE_CLIMB;
@@ -1448,8 +1422,8 @@ void NAV::Rtl()
         item->AltitudeIsRelative = FALSE;
         item->Altitude = VehicleGlobalPosition_ptr->Alt;
     }
-    SetRtlItem();
 
+    SetRtlItem();
 }
 
 void NAV::SetRtlItem()
@@ -1458,7 +1432,6 @@ void NAV::SetRtlItem()
             GetVehicleGlobalPositionMsg();
     PX4_VehicleLandDetectedMsg_t* VehicleLandDetected_ptr =
             GetVehicleLandDetectedMsg();
-    PX4_HomePositionMsg_t* HomePosition_ptr = GetHomePosition();
     NAV_MissionItem_t * item = &mission_item;
 
     CanLoiterAtSetpoint = FALSE;
@@ -1469,18 +1442,18 @@ void NAV::SetRtlItem()
         {
             /* Check if we are pretty close to home already */
             float home_distance = get_distance_to_next_waypoint(
-                    HomePosition_ptr->Lat, HomePosition_ptr->Lon,
+                    CVT.HomePositionMsg.Lat, CVT.HomePositionMsg.Lon,
                     VehicleGlobalPosition_ptr->Lat, VehicleGlobalPosition_ptr->Lon);
             /* If we are close to home we do not climb as high, otherwise we climb to return alt */
             float rtl_altitude =
                     (nav_params.nav_rtl_return_alt < VehicleLandDetected_ptr->AltMax) ?
                             nav_params.nav_rtl_return_alt :
                             VehicleLandDetected_ptr->AltMax;
-            float climb_alt = HomePosition_ptr->Alt + rtl_altitude;
+            float climb_alt = CVT.HomePositionMsg.Alt + rtl_altitude;
             /* We are close to home, limit climb to min */
             if (home_distance < nav_params.nav_rtl_min_dist)
             {
-                climb_alt = HomePosition_ptr->Alt + nav_params.nav_rtl_descend_alt;
+                climb_alt = CVT.HomePositionMsg.Alt + nav_params.nav_rtl_descend_alt;
             }
             item->NavCmd = PX4_VehicleCmd_t::PX4_VEHICLE_CMD_NAV_WAYPOINT;
             item->Lat = VehicleGlobalPosition_ptr->Lat;
@@ -1495,28 +1468,28 @@ void NAV::SetRtlItem()
             item->Origin = NAV_Origin_t::ORIGIN_ONBOARD;
             (void) CFE_EVS_SendEvent(NAV_RTL_CLIMB_ST_EID, CFE_EVS_INFORMATION,
                     "RTL: Commencing climb to %d m (%d m above home)",
-                    (int) climb_alt, (int) (climb_alt - HomePosition_ptr->Alt));
+                    (int) climb_alt, (int) (climb_alt - CVT.HomePositionMsg.Alt));
             break;
         }
         case RTLState::RTL_STATE_RETURN:
         {
-            item->Lat = HomePosition_ptr->Lat;
-            item->Lon = HomePosition_ptr->Lon;
+            item->Lat = CVT.HomePositionMsg.Lat;
+            item->Lon = CVT.HomePositionMsg.Lon;
             /* Check if we are pretty close to home already */
             float home_distance = get_distance_to_next_waypoint(
-                    HomePosition_ptr->Lat, HomePosition_ptr->Lon,
+                    CVT.HomePositionMsg.Lat, CVT.HomePositionMsg.Lon,
                     VehicleGlobalPosition_ptr->Lat, VehicleGlobalPosition_ptr->Lon);
             if (home_distance < nav_params.nav_rtl_min_dist)
             {
-                item->Yaw = HomePosition_ptr->Yaw;
+                item->Yaw = CVT.HomePositionMsg.Yaw;
             }
             else
             {
                 /* Use current heading to home */
                 item->Yaw = get_bearing_to_next_waypoint(
                         VehicleGlobalPosition_ptr->Lat,
-                        VehicleGlobalPosition_ptr->Lon, HomePosition_ptr->Lat,
-                        HomePosition_ptr->Lon);
+                        VehicleGlobalPosition_ptr->Lon, CVT.HomePositionMsg.Lat,
+                        CVT.HomePositionMsg.Lon);
             }
             item->LoiterRadius = nav_params.nav_loiter_rad;
             item->NavCmd = PX4_VehicleCmd_t::PX4_VEHICLE_CMD_NAV_WAYPOINT;
@@ -1527,21 +1500,21 @@ void NAV::SetRtlItem()
             (void) CFE_EVS_SendEvent(NAV_RTL_RETURN_ST_EID, CFE_EVS_INFORMATION,
                     "RTL: Commencing return at %d m (%d m above home)",
                     (int) item->Altitude,
-                    (int) (item->Altitude - HomePosition_ptr->Alt));
+                    (int) (item->Altitude - CVT.HomePositionMsg.Alt));
             break;
         }
         case RTLState::RTL_STATE_DESCEND:
         {
-            item->Lat = HomePosition_ptr->Lat;
-            item->Lon = HomePosition_ptr->Lon;
+            item->Lat = CVT.HomePositionMsg.Lat;
+            item->Lon = CVT.HomePositionMsg.Lon;
             item->AltitudeIsRelative = FALSE;
-            item->Altitude = HomePosition_ptr->Alt + nav_params.nav_rtl_descend_alt;
+            item->Altitude = CVT.HomePositionMsg.Alt + nav_params.nav_rtl_descend_alt;
             /* Check if we are already lower - then we will just stay there */
             if (item->Altitude > VehicleGlobalPosition_ptr->Alt)
             {
                 item->Altitude = VehicleGlobalPosition_ptr->Alt;
             }
-            item->Yaw = HomePosition_ptr->Yaw;
+            item->Yaw = CVT.HomePositionMsg.Yaw;
             float d_current = get_distance_to_next_waypoint(
                     VehicleGlobalPosition_ptr->Lat, VehicleGlobalPosition_ptr->Lon,
                     item->Lat, item->Lon);
@@ -1557,17 +1530,17 @@ void NAV::SetRtlItem()
             (void) CFE_EVS_SendEvent(NAV_RTL_RETURN_ST_EID, CFE_EVS_INFORMATION,
                     "RTL: Commencing descend to %d m (%d m above home)",
                     (int) item->Altitude,
-                    (int) (item->Altitude - HomePosition_ptr->Alt));
+                    (int) (item->Altitude - CVT.HomePositionMsg.Alt));
             break;
         }
         case RTLState::RTL_STATE_LOITER:
         {
             bool autoland = nav_params.nav_rtl_land_delay > -DELAY_SIGMA;
 
-            item->Lat = HomePosition_ptr->Lat;
-            item->Lon = HomePosition_ptr->Lon;
+            item->Lat = CVT.HomePositionMsg.Lat;
+            item->Lon = CVT.HomePositionMsg.Lon;
             /* Don't change altitude */
-            item->Yaw = HomePosition_ptr->Yaw;
+            item->Yaw = CVT.HomePositionMsg.Yaw;
             item->LoiterRadius = nav_params.nav_loiter_rad;
             item->NavCmd =
                     autoland ?
@@ -1600,9 +1573,9 @@ void NAV::SetRtlItem()
             /* Set the land item */
             item->NavCmd = PX4_VehicleCmd_t::PX4_VEHICLE_CMD_NAV_LAND;
             /* Use current position */
-            item->Lat = HomePosition_ptr->Lat;
-            item->Lon = HomePosition_ptr->Lon;
-            item->Yaw = HomePosition_ptr->Yaw;
+            item->Lat = CVT.HomePositionMsg.Lat;
+            item->Lon = CVT.HomePositionMsg.Lon;
+            item->Yaw = CVT.HomePositionMsg.Yaw;
             item->Altitude = 0;
             item->AltitudeIsRelative = FALSE;
             item->LoiterRadius = nav_params.nav_loiter_rad;
@@ -1617,10 +1590,10 @@ void NAV::SetRtlItem()
         case RTLState::RTL_STATE_LANDED:
         {
             item->NavCmd = PX4_VehicleCmd_t::PX4_VEHICLE_CMD_CUSTOM_0;
-            item->Lat = HomePosition_ptr->Lat;
-            item->Lon = HomePosition_ptr->Lon;
+            item->Lat = CVT.HomePositionMsg.Lat;
+            item->Lon = CVT.HomePositionMsg.Lon;
             item->AltitudeIsRelative = FALSE;
-            item->Altitude = HomePosition_ptr->Alt;
+            item->Altitude = CVT.HomePositionMsg.Alt;
             item->Yaw = NAN;
             item->LoiterRadius = nav_params.nav_loiter_rad;
             item->AcceptanceRadius = nav_params.nav_acc_rad;
@@ -1685,7 +1658,6 @@ void NAV::AdvanceRtl()
 void NAV::RtlActive()
 {
     boolean is_mission_item_reached = IsMissionItemReached();
-    PX4_HomePositionMsg_t* HomePosition_ptr = GetHomePosition();
     NAV_MissionItem_t * item = &mission_item;
     PX4_VehicleGlobalPositionMsg_t* VehicleGlobalPosition_ptr =
             GetVehicleGlobalPositionMsg();
@@ -1806,7 +1778,6 @@ boolean NAV::IsMissionItemReached()
     PX4_PositionSetpointTripletMsg_t* pst = GetPositionSetpointTripletMsg();
     PX4_VehicleLandDetectedMsg_t* vld = GetVehicleLandDetectedMsg();
     PX4_VehicleGlobalPositionMsg_t* vgp = GetVehicleGlobalPositionMsg();
-    PX4_HomePositionMsg_t* hp = GetHomePosition();
     PX4_VehicleStatusMsg_t* vs = GetVehicleStatusMsg();
 
     if (!vld->Landed && !WaypointPositionReached)
@@ -1818,7 +1789,7 @@ boolean NAV::IsMissionItemReached()
 
         float altitude_amsl =
                 mission_item.AltitudeIsRelative ?
-                        mission_item.Altitude + hp->Alt : mission_item.Altitude;
+                        mission_item.Altitude + CVT.HomePositionMsg.Alt : mission_item.Altitude;
         dist = get_distance_to_point_global_wgs84(mission_item.Lat,
                 mission_item.Lon, altitude_amsl, vgp->Lat, vgp->Lon, vgp->Alt,
                 &dist_xy, &dist_z);
@@ -1831,7 +1802,7 @@ boolean NAV::IsMissionItemReached()
             float takeoff_alt =
                     mission_item.AltitudeIsRelative ?
                             mission_item.Altitude :
-                            (mission_item.Altitude - hp->Alt);
+                            (mission_item.Altitude - CVT.HomePositionMsg.Alt);
             float altitude_acceptance_radius = GetAltitudeAcceptedRadius();
 
             /* It should be safe to takeoff using half of the takeoff_alt as accepted radius */
@@ -2001,14 +1972,11 @@ void NAV::ConvertMissionItemToCurrentSetpoint(PX4_PositionSetpoint_t *ps,
             || !mi->NavCmd == PX4_VehicleCmd_t::PX4_VEHICLE_CMD_NAV_LAND
             || !mi->NavCmd == PX4_VehicleCmd_t::PX4_VEHICLE_CMD_NAV_TAKEOFF))
     {
-
-        PX4_HomePositionMsg_t *HomePositionMsg_ptr = GetHomePosition();
-
         ps->Lat = mi->Lat;
         ps->Lon = mi->Lon;
         ps->Alt =
                 mi->AltitudeIsRelative ?
-                        mi->Altitude + HomePositionMsg_ptr->Alt : mi->Altitude;
+                        mi->Altitude + CVT.HomePositionMsg.Alt : mi->Altitude;
         ps->Yaw = mi->Yaw;
         ps->LoiterRadius =
                 (fabsf(mi->LoiterRadius) > NAV_EPSILON_POSITION) ?
@@ -2089,14 +2057,13 @@ void NAV::SetLoiterItem(NAV_MissionItem_t * item)
         {
             /* Use current position and use return altitude as clearance */
             PX4_VehicleGlobalPositionMsg_t* vgp = GetVehicleGlobalPositionMsg();
-            PX4_HomePositionMsg_t* hp = GetHomePosition();
             item->Lat = vgp->Lat;
             item->Lon = vgp->Lon;
             item->Altitude = vgp->Alt;
             if (min_clearance > 0.0f
-                    && item->Altitude < hp->Alt + min_clearance)
+                    && item->Altitude < CVT.HomePositionMsg.Alt + min_clearance)
             {
-                item->Altitude = hp->Alt = min_clearance;
+                item->Altitude = CVT.HomePositionMsg.Alt = min_clearance;
             }
 
         }
@@ -2124,8 +2091,7 @@ float NAV::GetTimeInside(NAV_MissionItem_t * mi)
 
 boolean NAV::HomePositionValid()
 {
-    PX4_HomePositionMsg_t* ghp = GetHomePosition();
-    boolean hpv = (ghp->Timestamp > 0);
+    boolean hpv = (CVT.HomePositionMsg.Timestamp > 0);
     
     return hpv;
 }
