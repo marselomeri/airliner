@@ -257,7 +257,7 @@ public:
     /** \brief The mission item variable */
     NAV_MissionItem_t MissionItem;
     /** \brief RTL state initialization */
-    RTLState rtl_state = RTLState::RTL_STATE_NONE;
+    RTLState RtlState = RTLState::RTL_STATE_NONE;
     /** \brief This variable stores previously encountered navigation state */
     PX4_VehicleStatusMsg_t PreviousState;
     /** \brief This variable stores previously encountered navigation command */
