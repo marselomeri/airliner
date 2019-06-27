@@ -99,27 +99,27 @@ typedef struct
 typedef struct
 {
     /** \brief The accepted radius */
-    float nav_acc_rad;                                                // = 2.0f;
+    float NavAccRad;                                                // = 2.0f;
     /** \brief The altitude accepted radius for multi-copters */
-    float nav_alt_rad;                                                // = 0.8f;
+    float NavAltRad;                                                // = 0.8f;
     /** \brief The loiter radius */
-    float nav_loiter_rad;                                            // = 50.0f;
+    float NavLoiterRad;                                            // = 50.0f;
     /** \brief The minimum altitude the vehicle will take off to */
-    float nav_mis_takeoff_alt;                                        // = 2.5f;
+    float NavMisTakeoffAlt;                                        // = 2.5f;
     /** \brief The Max yaw error in degrees needed for waypoint heading acceptance */
-    float nav_mis_yaw_err;                                           // = 12.0f;
+    float NavMisYawErr;                                           // = 12.0f;
     /** \brief The time in seconds we wait on reaching target heading at a waypoint if it is forced */
-    float nav_mis_yaw_tmt;                                           // = -1.0f;
+    float NavMisYawTmt;                                           // = -1.0f;
     /** \brief The minimum loiter altitude */
-    float nav_mis_ltrmin_alt;                                        // = 1.20f;
+    float NavMisLtrMinAlt;                                        // = 1.20f;
     /** \brief The altitude to fly back in RTL in meters */
-    float nav_rtl_return_alt;                                        // = 30.0f;
+    float NavRtlReturnAlt;                                        // = 30.0f;
     /** \brief The RTL loiter altitude */
-    float nav_rtl_descend_alt;                                       // = 10.0f;
+    float NavRtlDescendAlt;                                       // = 10.0f;
     /** \brief The RTL delay */
-    float nav_rtl_land_delay;                                        // = 0.0f;
+    float NavRtlLandDelay;                                        // = 0.0f;
     /** \brief The minimum distance to trigger rising to a safe altitude */
-    float nav_rtl_min_dist;                                           // = 5.0f;
+    float NavRtlMinDist;                                           // = 5.0f;
 }NAV_Params_t;
 
 /**
@@ -253,17 +253,17 @@ public:
     NAV_CurrentValueTable_t CVT = {};
 
     /** \brief The parameter table variable */
-    NAV_Params_t nav_params;
+    NAV_Params_t NavParams;
     /** \brief The mission item variable */
-    NAV_MissionItem_t mission_item;
+    NAV_MissionItem_t MissionItem;
     /** \brief RTL state initialization */
     RTLState rtl_state = RTLState::RTL_STATE_NONE;
     /** \brief This variable stores previously encountered navigation state */
-    PX4_VehicleStatusMsg_t previous_state;
+    PX4_VehicleStatusMsg_t PreviousState;
     /** \brief This variable stores previously encountered navigation command */
-    PX4_VehicleCommandMsg_t previous_command;
+    PX4_VehicleCommandMsg_t PreviousCommand;
     /** \brief Flag is set to true if a previously unseen command is encountered */
-    boolean new_command_arrived = false;
+    boolean NewCommandArrived = false;
     /** \brief Will allow to loiter at setpoint */
     boolean CanLoiterAtSetpoint {false};
     /** \brief True if loiter position is set */
@@ -283,7 +283,7 @@ public:
     /** \brief Default mission throttle in mission item */
     float MissionThrottle {-1.0f};
     /** \brief True if vehicle status message is updated once by navigation states */
-    boolean vehicle_status_update_once {false};
+    boolean VehicleStatusUpdateOnce {false};
     /** \brief True if mission result message is updated by navigation states */
     boolean MissionResultUpdated {false};
     /** \brief True if position setpoint triplet message is updated by navigation states */
