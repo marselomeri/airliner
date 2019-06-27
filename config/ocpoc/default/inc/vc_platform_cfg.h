@@ -120,7 +120,7 @@ extern "C" {
 **  \par Limits:
 **       Minimum of 1.
 */
-#define VC_MAX_DEVICES                  (2)
+#define VC_MAX_DEVICES                  (1)
 
 /** \brief Max buffer size
 **
@@ -172,14 +172,14 @@ extern "C" {
 **  \par Limits:
 **       Specific to device
 */
-#define VC_FRAME_WIDTH                  (160)
+#define VC_FRAME_WIDTH                  (320)
 
 /** \brief Video resolution height
 **
 **  \par Limits:
 **       Specific to device
 */
-#define VC_FRAME_HEIGHT                 (90)
+#define VC_FRAME_HEIGHT                 (240)
 
 /** \brief Video frame rate
 **
@@ -193,7 +193,7 @@ extern "C" {
 **  \par Limits:
 **       OS_MAX_LOCAL_PATH_LEN
 */
-#define VC_DEVICE_PATH                  "/dev/c920"
+#define VC_DEVICE_PATH                  "/dev/video0"
 
 
 /* Ground system settings */
@@ -203,7 +203,7 @@ extern "C" {
 **  \par Limits:
 **       INET_ADDRSTRLEN
 */
-#define VC_DESTINATION_IP               "192.168.1.4"
+#define VC_DESTINATION_IP               "192.168.1.66"
 
 /** \brief Ground system port 
 **
@@ -247,8 +247,7 @@ extern "C" {
 **  \par Limits:
 **       V4L specific.
 */
-#define VC_V4L_VIDEO_FORMAT             V4L2_PIX_FMT_YUYV
-									  //V4L2_PIX_FMT_MJPEG
+#define VC_V4L_VIDEO_FORMAT             V4L2_PIX_FMT_MJPEG
 
 /** \brief V4L field order
 **

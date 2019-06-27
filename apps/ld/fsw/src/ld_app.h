@@ -216,6 +216,8 @@ public:
     static constexpr uint64 GROUND_CONTACT_TRIGGER_TIME_US = 350000;
     /** \brief Time interval in us in which wider acceptance thresholds are used after arming. */
     static constexpr uint64 LAND_DETECTOR_ARM_PHASE_TIME_US = 2000000;
+    
+    LD_Diag_t DiagTlm;
 
     /************************************************************************/
     /** \brief Landing Detector (LD) application entry point
@@ -385,6 +387,19 @@ public:
      **
      *************************************************************************/
     void SendVehicleLandDetectedMsg(void);
+
+    /************************************************************************/
+    /** \brief Sends the Diagnotic message.
+     **
+     **  \par Description
+     **       This function publishes the diag message to the SB
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/    
+    void SendDiag(void);
+    
     /************************************************************************/
     /** \brief Verify Command Length
      **

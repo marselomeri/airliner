@@ -142,31 +142,28 @@ function UpdateLayoutNode( node, display ) {
         text: dirEntry.shortDescription,
         longDescription: dirEntry.longDescription,
         path: node.path + '/' + entryID,
-        urlPath: node.path + '/' + entryID,
-        selectable: true,
-        checkable: false,
+        href: node.path + '/' + entryID,
         handlebarsContext: dirEntry.handlebarsContext
       };
       if ( dirEntry.hasOwnProperty( 'nodes' ) ) {
+    	layoutEntry.selectable = false;
+    	layoutEntry.checkable = false;
         layoutEntry.lazyLoad = true;
-        layoutEntry.selectable = false;
       } else {
         layoutEntry.icon = 'fa fa-th-large'
-        layoutEntry.lazyLoad = false;
-        layoutEntry.selectable = true;
         layoutEntry.type = 'config';
-        layoutEntry.url = dirEntry.urlPath;
+        layoutEntry.href = window.location.origin + window.location.pathname + '#' + node.path.replace(/^\/+/, '') + '/' + entryID;
+        layoutEntry.enableLinks = true;
+    	layoutEntry.selectable = true;
+    	layoutEntry.checkable = false;
+        layoutEntry.lazyLoad = false;
       }
 
       layoutEntries.push( layoutEntry );
     }
-    var tree = $( '#cdr-layout-menu-container' ).treeview( true )
+    var tree = $( '#cdr-layout-menu-container' ).treeview( true );
     tree.addNode( layoutEntries, node, node.index, {
-      silent: true
-    } );
-    tree.expandNode( node, {
-      silent: true,
-      ignoreChildren: true
+      enableLinks: true
     } );
   } );
 }
@@ -188,7 +185,7 @@ function UpdatePanelNode( node, display ) {
         text: dirEntry.shortDescription,
         longDescription: dirEntry.longDescription,
         path: node.path + '/' + entryID,
-        urlPath: node.path + '/' + entryID,
+        href: node.path + '/' + entryID,
         selectable: true,
         checkable: false,
         handlebarsContext: dirEntry.handlebarsContext
@@ -233,7 +230,7 @@ function UpdateWidgetNode( node, display ) {
         text: dirEntry.shortDescription,
         longDescription: dirEntry.longDescription,
         path: node.path + '/' + entryID,
-        urlPath: node.path + '/' + entryID,
+        href: node.path + '/' + entryID,
         selectable: false,
         checkable: false,
         handlebarsContext: dirEntry.handlebarsContext
