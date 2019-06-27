@@ -956,22 +956,6 @@ public:
     }
     
     /************************************************************************/
-    /** \brief Returns Address of Vehicle GPS Position Message
-     **
-     **  \par Assumptions, External Events, and Notes:
-     **       None
-     **
-     **  \returns
-     **  Returns Address of Vehicle GPS Position Message.
-     **  \endreturns
-     **
-     *************************************************************************/
-    PX4_VehicleGpsPositionMsg_t* GetVehicleGpsPositionMsg()
-    {
-        return &CVT.VehicleGpsPositionMsg;
-    }
-    
-    /************************************************************************/
     /** \brief Returns Address of Vehicle Global Position Message
      **
      **  \par Assumptions, External Events, and Notes:
