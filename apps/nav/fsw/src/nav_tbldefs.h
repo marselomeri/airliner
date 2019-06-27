@@ -51,6 +51,28 @@ extern "C" {
 /************************************************************************
  ** Local Defines
  *************************************************************************/
+#define NAV_ACC_RAD_MIN          (0.05f)
+#define NAV_ACC_RAD_MAX          (200.0f)
+#define NAV_ALT_RAD_MIN          (0.05f)
+#define NAV_ALT_RAD_MAX          (200.0f)
+#define NAV_LOITER_RAD_MIN       (25.0f)
+#define NAV_LOITER_RAD_MAX       (1000.0f)
+#define NAV_MIS_TAKEOFF_ALT_MIN  (0.0f)
+#define NAV_MIS_TAKEOFF_ALT_MAX  (80.0f)
+#define NAV_MIS_YAW_ERR_MIN      (0.0f)
+#define NAV_MIS_YAW_ERR_MAX      (90.0f)
+#define NAV_MIS_YAW_TMT_MIN      (-1.0f)
+#define NAV_MIS_YAW_TMT_MAX      (20.0f)
+#define NAV_MIS_LTRMIN_ALT_MIN   (-1.0f)
+#define NAV_MIS_LTRMIN_ALT_MAX   (80.0f)
+#define NAV_RTL_RETURN_ALT_MIN   (0.0f)
+#define NAV_RTL_RETURN_ALT_MAX   (150.0f)
+#define NAV_RTL_DESCEND_ALT_MIN  (2.0f)
+#define NAV_RTL_DESCEND_ALT_MAX  (100.0f)
+#define NAV_RTL_LAND_DELAY_MIN   (-1.0f)
+#define NAV_RTL_LAND_DELAY_MAX   (300.0f)
+#define NAV_RTL_MIN_DIST_MIN     (0.5f)
+#define NAV_RTL_MIN_DIST_MAX     (20.0f)
 
 /**
  * \brief Defines the table identification name used for the
