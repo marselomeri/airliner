@@ -689,7 +689,7 @@ int32 NAV::Execute()
                     PX4_SetpointType_t::PX4_SETPOINT_TYPE_LOITER;
 
             /* Assign yaw to current position set point */
-            if (PX4_ISFINITE(CVT.VehicleCommandMsg.Param4))
+            if (isfinite(CVT.VehicleCommandMsg.Param4))
             {
                 RepositionTriplet_ptr->Current.Yaw =
                         CVT.VehicleCommandMsg.Param4;
@@ -700,8 +700,8 @@ int32 NAV::Execute()
             }
 
             /* Assign latitude and longitude to current set point */
-            if (PX4_ISFINITE(
-                    CVT.VehicleCommandMsg.Param5) && PX4_ISFINITE(CVT.VehicleCommandMsg.Param6))
+            if (isfinite(CVT.VehicleCommandMsg.Param5) &&
+                isfinite(CVT.VehicleCommandMsg.Param6))
             {
                 RepositionTriplet_ptr->Current.Lat =
                         (CVT.VehicleCommandMsg.Param5 < 1000) ?
@@ -722,7 +722,7 @@ int32 NAV::Execute()
             }
 
             /* Assign altitude to current set point */
-            if (PX4_ISFINITE(CVT.VehicleCommandMsg.Param7))
+            if (isfinite(CVT.VehicleCommandMsg.Param7))
             {
                 RepositionTriplet_ptr->Current.Alt =
                         CVT.VehicleCommandMsg.Param7;
@@ -779,8 +779,8 @@ int32 NAV::Execute()
             }
 
             /*  Check if param5 and param6 is finite, set Latitude, Longitude, Altitude and current and next position set point validity */
-            if (PX4_ISFINITE(
-                    CVT.VehicleCommandMsg.Param5) && PX4_ISFINITE(CVT.VehicleCommandMsg.Param6))
+            if (isfinite(CVT.VehicleCommandMsg.Param5) &&
+                isfinite(CVT.VehicleCommandMsg.Param6))
             {
                 TakeoffTriplet_ptr->Current.Lat =
                         (CVT.VehicleCommandMsg.Param5 < 1000) ?
@@ -960,8 +960,8 @@ void NAV::Takeoff()
 
     /* Use altitude if it is already set. If home position is invalid use 
      * MinAbsoluteAltitude */
-    if (TakeoffTriplet_ptr->Current.Valid
-            && PX4_ISFINITE(TakeoffTriplet_ptr->Current.Alt) && hpv)
+    if (TakeoffTriplet_ptr->Current.Valid &&
+        isfinite(TakeoffTriplet_ptr->Current.Alt) && hpv)
     {
         AbsoluteAltitude = TakeoffTriplet_ptr->Current.Alt;
 
@@ -1037,14 +1037,14 @@ void NAV::Takeoff()
 
     if (TakeoffTriplet_ptr->Current.Valid)
     {
-        if (PX4_ISFINITE(TakeoffTriplet_ptr->Current.Yaw))
+        if (isfinite(TakeoffTriplet_ptr->Current.Yaw))
         {
             PositionSetpointTriplet_ptr->Current.Yaw =
                     TakeoffTriplet_ptr->Current.Yaw;
         }
 
-        if (PX4_ISFINITE(
-                TakeoffTriplet_ptr->Current.Lat) && PX4_ISFINITE(TakeoffTriplet_ptr -> Current.Lon))
+        if (isfinite(TakeoffTriplet_ptr->Current.Lat) &&
+            isfinite(TakeoffTriplet_ptr -> Current.Lon))
         {
             PositionSetpointTriplet_ptr->Current.Lat =
                     TakeoffTriplet_ptr->Current.Lat;
@@ -1914,7 +1914,7 @@ boolean NAV::IsMissionItemReached()
                 || (mission_item.NavCmd
                         == PX4_VehicleCmd_t::PX4_VEHICLE_CMD_NAV_LOITER_TO_ALT
                         && mission_item.ForceHeading))
-                && PX4_ISFINITE(mission_item.Yaw))
+                && isfinite(mission_item.Yaw))
         {
             /* Check course if defined only for rotary wing except takeoff */
             float cog =
