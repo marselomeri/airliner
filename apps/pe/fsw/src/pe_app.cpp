@@ -361,14 +361,14 @@ void PE::InitData()
     m_BaroTimeout           = TRUE;
     m_GpsTimeout            = TRUE;
     m_LandTimeout           = TRUE;
-    m_DistTimeout            = TRUE;
+    m_DistTimeout           = TRUE;
     m_FlowTimeout           = TRUE;
 
     /* Faults */
     m_BaroFault             = TRUE;
     m_GpsFault              = TRUE;
     m_LandFault             = TRUE;
-    m_DistFault              = TRUE;
+    m_DistFault             = TRUE;
     m_FlowFault             = TRUE;
 
     /* Validity */
@@ -380,16 +380,16 @@ void PE::InitData()
     m_AltOrigin             = 0.0f;
     m_BaroAltOrigin         = 0.0f;
     m_GpsAltOrigin          = 0.0f;
-    m_DistAltOrigin          = 0.0f;
+    m_DistAltOrigin         = 0.0f;
 
     /* Status */
     m_EstimatorLocalInitialized   = FALSE;
     m_EstimatorGlobalInitialized  = FALSE;
-    m_BaroInitialized              = FALSE;
-    m_GpsInitialized                = FALSE;
-    m_LandInitialized                = FALSE;
-    m_DistInitialized              = FALSE;
-    m_FlowInitialized              = FALSE;
+    m_BaroInitialized             = FALSE;
+    m_GpsInitialized              = FALSE;
+    m_LandInitialized             = FALSE;
+    m_DistInitialized             = FALSE;
+    m_FlowInitialized             = FALSE;
     m_ReceivedGps                 = FALSE;
     m_LastArmedState              = FALSE;
     m_AltOriginInitialized        = FALSE;
@@ -702,7 +702,7 @@ int32 PE::RcvSchPipeMsg(int32 iBlocking)
                 break;
 
             case PX4_VEHICLE_GPS_POSITION_MID:
-                memcpy(&m_VehicleGpsPositionMsg, MsgPtr, sizeof(m_VehicleGpsPositionMsg));
+                CFE_PSP_MemCpy(&m_VehicleGpsPositionMsg, MsgPtr, sizeof(m_VehicleGpsPositionMsg));
 
                 /* Check if fusing distance sensor */
                 if(TRUE == m_Params.GPS_FUSE)
@@ -719,11 +719,11 @@ int32 PE::RcvSchPipeMsg(int32 iBlocking)
                 break;
 
             case PX4_VEHICLE_STATUS_MID:
-                memcpy(&m_VehicleStatusMsg, MsgPtr, sizeof(m_VehicleStatusMsg));
+                CFE_PSP_MemCpy(&m_VehicleStatusMsg, MsgPtr, sizeof(m_VehicleStatusMsg));
                 break;
 
             case PX4_VEHICLE_LAND_DETECTED_MID:
-                memcpy(&m_VehicleLandDetectedMsg, MsgPtr, sizeof(m_VehicleLandDetectedMsg));
+                CFE_PSP_MemCpy(&m_VehicleLandDetectedMsg, MsgPtr, sizeof(m_VehicleLandDetectedMsg));
 
                 /* Check if fusing land */
                 if(TRUE == m_Params.LAND_FUSE)
@@ -747,16 +747,16 @@ int32 PE::RcvSchPipeMsg(int32 iBlocking)
                 break;
 
             case PX4_ACTUATOR_ARMED_MID:
-                memcpy(&m_ActuatorArmedMsg, MsgPtr, sizeof(m_ActuatorArmedMsg));
+                CFE_PSP_MemCpy(&m_ActuatorArmedMsg, MsgPtr, sizeof(m_ActuatorArmedMsg));
                 break;
 
             case PX4_VEHICLE_ATTITUDE_MID:
-                memcpy(&m_VehicleAttitudeMsg, MsgPtr, sizeof(m_VehicleAttitudeMsg));
+                CFE_PSP_MemCpy(&m_VehicleAttitudeMsg, MsgPtr, sizeof(m_VehicleAttitudeMsg));
                 break;
 
             case PX4_SENSOR_COMBINED_MID:
-                /* Don't prevent memcpy - we fuse accel every cycle */
-                memcpy(&m_SensorCombinedMsg, MsgPtr, sizeof(m_SensorCombinedMsg));
+                /* Don't prevent CFE_PSP_MemCpy - we fuse accel every cycle */
+                CFE_PSP_MemCpy(&m_SensorCombinedMsg, MsgPtr, sizeof(m_SensorCombinedMsg));
 
                 /* Check if fusing baro */
                 if(TRUE == m_Params.BARO_FUSE)
@@ -789,11 +789,11 @@ int32 PE::RcvSchPipeMsg(int32 iBlocking)
                 break;
 
             case PX4_VEHICLE_ATTITUDE_SETPOINT_MID:
-                memcpy(&m_VehicleAttitudeSetpointMsg, MsgPtr, sizeof(m_VehicleAttitudeSetpointMsg));
+                CFE_PSP_MemCpy(&m_VehicleAttitudeSetpointMsg, MsgPtr, sizeof(m_VehicleAttitudeSetpointMsg));
                 break;
 
             case PX4_DISTANCE_SENSOR_MID:
-                memcpy(&m_DistanceSensor, MsgPtr, sizeof(m_DistanceSensor));
+                CFE_PSP_MemCpy(&m_DistanceSensor, MsgPtr, sizeof(m_DistanceSensor));
                 
                 /* Check that distance sensor is expected type for this platform */
                 if(m_DistanceSensor.Type == DIST_SENSOR_TYPE)
@@ -822,7 +822,7 @@ int32 PE::RcvSchPipeMsg(int32 iBlocking)
                 break;
 
             case PX4_OPTICAL_FLOW_MID:
-                memcpy(&m_OpticalFlowMsg, MsgPtr, sizeof(m_OpticalFlowMsg));
+                CFE_PSP_MemCpy(&m_OpticalFlowMsg, MsgPtr, sizeof(m_OpticalFlowMsg));
 
                 /* Check if fusing distance sensor */
                 if(TRUE == m_Params.FLOW_FUSE)
@@ -1197,7 +1197,7 @@ void PE::SendVehicleLocalPositionMsg()
         }
     }
 
-    if(    isfinite(m_XLowPass[X_vx]) &&
+    if( isfinite(m_XLowPass[X_vx]) &&
         isfinite(m_XLowPass[X_vy]) &&
         isfinite(m_XLowPass[X_vz]) &&
         isfinite(m_XLowPass[X_x]) &&
@@ -1246,14 +1246,14 @@ void PE::SendVehicleLocalPositionMsg()
 
 void PE::SendVehicleGlobalPositionMsg()
 {
-    double lat             = 0;
-    double lon                = 0;
-    float alt              = 0;
-    float vxy_stddev     = 0;
-    float epv              = 0;
-    float eph             = 0;
-    float eph_thresh     = 3.0f;
-    float epv_thresh     = 3.0f;
+    double lat         = 0.0f;
+    double lon         = 0.0f;
+    float alt          = 0.0f;
+    float vxy_stddev   = 0.0f;
+    float epv          = 0.0f;
+    float eph          = 0.0f;
+    float eph_thresh   = 3.0f;
+    float epv_thresh   = 3.0f;
     boolean data_valid = FALSE;
 
     map_projection_reproject(&m_MapRef, m_XLowPass[X_x], m_XLowPass[X_y], &lat, &lon);
