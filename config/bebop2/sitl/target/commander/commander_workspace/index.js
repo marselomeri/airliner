@@ -11,7 +11,7 @@ var ProtobufDecoder = require(path.join(global.CDR_INSTALL_DIR, 'plugins', 'prot
 var ConfigDatabase  = require(path.join(global.CDR_INSTALL_DIR, 'plugins', 'config-database'));
 var EventRecorder   = require(path.join(global.CDR_INSTALL_DIR, 'plugins', 'event-recorder'));
 var VideoServer     = require(path.join(global.CDR_INSTALL_DIR, 'plugins', 'video-server'));
-var CfdpServer      = require(path.join(global.CDR_INSTALL_DIR, 'plugins', 'cfdp'));
+var CfdpServer      = require(path.join(global.CDR_INSTALL_DIR, 'plugins', 'cfdp-server'));
 
 var commander = new Commander(global.CDR_WORKSPACE, `${global.CDR_WORKSPACE}/etc/commander-config.json`);
 

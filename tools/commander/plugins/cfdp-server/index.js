@@ -294,7 +294,6 @@ class CFDPServer extends CdrGroundPlugin {
     		            console.log('updateFileSize');
     		        },
     		        storeFileData: (context, event) => {
-    		            console.log('*** storeFileData ***');
     		            fs.writeSync(context.fd, event.pdu.data, 0, event.pdu.data.length, event.pdu.dataOffset);
     		        },
     		        storeMetadata: (context, event) => {
@@ -367,7 +366,7 @@ class CFDPServer extends CdrGroundPlugin {
         if (!fs.existsSync(tmpDir)) {
             this.createSubDirectoriesFull(tmpDir);
         } else {
-        	this.DeleteFolderRecursive(tmpDir);
+            this.DeleteFolderRecursive(tmpDir);
         }
     	
     	var rxConfigs = config.get('RX');
@@ -882,7 +881,7 @@ class CFDPServer extends CdrGroundPlugin {
     
     
     reportFileReceived(physicalPath, virtualPath) {
-        this.namespace.send('file-received', {physicalPath: physicalPath, virtualPath: virtualPath} );
+        this.namespace.send('file-received', {physicalPath: physicalPath, virtualPath: virtualPath, gndTime: new Date()});
     }
     
     
