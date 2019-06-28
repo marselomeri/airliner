@@ -314,7 +314,8 @@ class CFDPServer extends CdrGroundPlugin {
     		        	this.createSubDirectories(context.absDstFileName);
     		        	fs.createReadStream(context.tmpFileName).pipe(fs.createWriteStream(context.absDstFileName));
                                 this.hk.content.fileRxCount++;
-                                this.reportFileReceived(context.config.PhyBasePath, context.dstFileName);
+
+                                this.reportFileReceived(context.absDstFileName, context.dstFileName);
     		        },
     		    },
     		    guards: {

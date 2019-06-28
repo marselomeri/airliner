@@ -1,6 +1,8 @@
 'use strict';
 
 var path = require( 'path' );
+const Parser = require(path.join(global.CDR_INSTALL_DIR, 'node_modules', 'binary-parser')).Parser;
+var fs = require('fs');
 
 const CdrFlightPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrFlightPlugin')).CdrFlightPlugin;
 
@@ -9,6 +11,8 @@ module.exports = class CfeCdrPlugin extends CdrFlightPlugin {
         config.name = 'core';
         config.webRoot = path.join( __dirname, 'web');  
         super(config);
+        
+        var self = this;
 
         var content = {
             pilot: {
@@ -312,10 +316,133 @@ module.exports = class CfeCdrPlugin extends CdrFlightPlugin {
 	    }
         }
         
-	this.addContent(content);
+	    this.addContent(content);
+        
+
+
+        this.cfeFsHeader = new Parser()
+            .endianess( 'big' )
+            .uint32( 'ContentType' )
+            .uint32( 'SubType' )
+            .uint32( 'Length' )
+            .uint32( 'VehicleID' )
+            .uint32( 'ProcessorID' )
+            .uint32( 'ApplicationID' )
+            .uint32( 'TimeSeconds' )
+            .uint32( 'TimeSubSeconds' )
+            .string( 'Description', {length: 32} );
+        
+        this.perfLogHdrBig = new Parser()
+            .endianess( 'big' )
+            .uint32( 'TimerTicksPerSecond' )
+            .uint32( 'TimerLow32Rollover' )
+            .uint32( 'State' )
+            .uint32( 'Mode' )
+            .uint32( 'TriggerCount' )
+            .uint32( 'DataStart' )
+            .uint32( 'DataEnd' )
+            .uint32( 'DataCount' )
+            .uint32( 'InvalidMarkerReported' )
+            .uint32( 'FilterTriggerMaskSize' )
+            .array('FilterMask', {
+                type: 'uint32be',
+                length: 'FilterTriggerMaskSize'
+            })
+            .array('TriggerMask', {
+                type: 'uint32be',
+                length: 'FilterTriggerMaskSize'
+            });
+        
+        this.perfLogHdrLittle = new Parser()
+            .endianess( 'Little' )
+            .uint32( 'TimerTicksPerSecond' )
+            .uint32( 'TimerLow32Rollover' )
+            .uint32( 'State' )
+            .uint32( 'Mode' )
+            .uint32( 'TriggerCount' )
+            .uint32( 'DataStart' )
+            .uint32( 'DataEnd' )
+            .uint32( 'DataCount' )
+            .uint32( 'InvalidMarkerReported' )
+            .uint32( 'FilterTriggerMaskSize' )
+            .array('FilterMask', {
+                type: 'uint32le',
+                length: 'FilterTriggerMaskSize'
+            })
+            .array('TriggerMask', {
+                type: 'uint32le',
+                length: 'FilterTriggerMaskSize'
+            });
+            
+
+        this.perfLogMetadata = new Parser()
+            .endianess( 'big' )
+            .uint8( 'version' )
+            .uint8( 'endian' )
+            .uint8( 'spare1' )
+            .uint8( 'spare2' )
+            .choice( 'SecHdr', {
+                tag: 'endian',
+                choices: {
+                    0: this.perfLogHdrLittle,
+                    1: this.perfLogHdrBig
+                }
+            } )
         
         this.namespace.recv('file-received', function(obj) {
-            console.log(obj);
+            console.log(obj.physicalPath);
+            
+            fs.readFile(obj.physicalPath, function(err, contents) {
+                var fileHeader = self.cfeFsHeader.parse(contents);
+                
+                fileHeader.Description = fileHeader.Description.replace(/\0[\s\S]*$/g,'');
+                
+                if(fileHeader.ContentType === 0x63464531) {
+                	/* This is probably a CFE Table header. */
+                	fileHeader.content = contents.slice(64);
+
+                    self.namespace.send('log-file-received', fileHeader);
+                    
+                    switch(fileHeader.SubType) {
+                        case 4: 
+                    	    /* CFE_FS_ES_PERFDATA_SUBTYPE */
+                        	var perfLog = {Metadata: {}, DataBuffer: []};
+                        	var contentOffset = 48;
+                        	
+                        	console.log('CFE_FS_ES_PERFDATA_SUBTYPE');
+                        	perfLog.Metadata = self.perfLogMetadata.parse(fileHeader.content);
+                            
+                            for(var i = 0; i < perfLog.Metadata.SecHdr.DataCount; ++i) {
+                            	var data;
+                            	var timerUpper32;
+                            	var timerLower32;
+                            	
+                                if ( perfLog.Metadata.endian == 0 ) {
+                                	data = fileHeader.content.readUInt32LE(contentOffset);
+                                	contentOffset = contentOffset + 4;
+                                	timerUpper32 = fileHeader.content.readUInt32LE(contentOffset);
+                                	contentOffset = contentOffset + 4;
+                                	timerLower32 = fileHeader.content.readUInt32LE(contentOffset);
+                                	contentOffset = contentOffset + 4;
+                                } else {
+                                	data = fileHeader.content.readUInt32BE(contentOffset);
+                                	contentOffset = contentOffset + 4;
+                                	timerUpper32 = fileHeader.content.readUInt32BE(contentOffset);
+                                	contentOffset = contentOffset + 4;
+                                	timerLower32 = fileHeader.content.readUInt32BE(contentOffset);
+                                	contentOffset = contentOffset + 4;
+                                }
+                                
+                            	var entry = {Data: data, TimerUpper32: timerUpper32, TimerLower32: timerLower32};
+                            	perfLog.DataBuffer.push(entry);
+                            }
+                            
+                            console.log(perfLog);
+                    }
+                }
+            });
+            
+            //var message = this.ccsds.parse( buffer );
         });
     }
 };
