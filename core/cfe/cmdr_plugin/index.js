@@ -313,5 +313,9 @@ module.exports = class CfeCdrPlugin extends CdrFlightPlugin {
         }
         
 	this.addContent(content);
+        
+        this.namespace.recv('file-received', function(obj) {
+            console.log(obj);
+        });
     }
 };

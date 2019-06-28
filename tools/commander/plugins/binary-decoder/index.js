@@ -557,7 +557,7 @@ class BinaryDecoder extends CdrGroundPlugin {
      * Processes binary message
      * @param  {Object} buffer buffer object
      */
-    processBinaryMessage( buffer ) {
+    processBinaryMessage( buffer, cb ) {
         var self = this;
         
         try {
@@ -609,7 +609,11 @@ class BinaryDecoder extends CdrGroundPlugin {
                     msgTime: msgTime
                 };
                 
-                this.namespace.send( config.get( 'jsonOutputStreamID' ), output );
+                if(typeof cb === 'undefined') {
+                    this.namespace.send( config.get( 'jsonOutputStreamID' ), output );
+                } else {
+                    cb(output);
+                }
             }
         } catch ( e ) {
             self.logError('processBinaryMessage: Unable to decode buffer.  \'' + e + '\'' );

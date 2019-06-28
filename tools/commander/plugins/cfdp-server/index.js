@@ -159,6 +159,9 @@ class CFDPServer extends CdrGroundPlugin {
 
         /* Initialize CFDP server. */
         this.initServer();
+        
+        /* Initial the file server. */
+        this.initFileServer();
 
         this.logInfo( 'Initialized' );
     };
@@ -285,24 +288,24 @@ class CFDPServer extends CdrGroundPlugin {
     		            console.log('retainTempFile');
     		        },
     		        storeFileData: (context, event) => {
-                        console.log('storeFileData');
+                            console.log('storeFileData');
     		        },
     		        updateFileSize: (context, event) => {
     		            console.log('updateFileSize');
     		        },
     		        storeFileData: (context, event) => {
     		            console.log('*** storeFileData ***');
-    		        	fs.writeSync(context.fd, event.pdu.data, 0, event.pdu.data.length, event.pdu.dataOffset);
+    		            fs.writeSync(context.fd, event.pdu.data, 0, event.pdu.data.length, event.pdu.dataOffset);
     		        },
     		        storeMetadata: (context, event) => {
-    		        	console.log('*** storeMetadata ***');
-    		        	context.srcFileName = event.pdu.meta.srcFileName;
-    		        	context.dstFileName = event.pdu.meta.destFileName;
-    		        	context.tmpFileName = path.join(context.TempDir, context.dstFileName);
+                            console.log('*** storeMetadata ***');
+                            context.srcFileName = event.pdu.meta.srcFileName;
+                            context.dstFileName = event.pdu.meta.destFileName;
+                            context.tmpFileName = path.join(context.TempDir, context.dstFileName);
 
-    		        	this.createSubDirectories(context.tmpFileName);
+                            this.createSubDirectories(context.tmpFileName);
     		        	
-    		        	context.fd = fs.openSync(context.tmpFileName, 'w');
+                            context.fd = fs.openSync(context.tmpFileName, 'w');
     		        },
     		        completeFile: (context, event) => {
     		        	console.log('*** completeFile ***');
@@ -310,6 +313,8 @@ class CFDPServer extends CdrGroundPlugin {
     		        	context.absDstFileName = path.join(context.config.PhyBasePath, context.dstFileName);
     		        	this.createSubDirectories(context.absDstFileName);
     		        	fs.createReadStream(context.tmpFileName).pipe(fs.createWriteStream(context.absDstFileName));
+                                this.hk.content.fileRxCount++;
+                                this.reportFileReceived(context.config.PhyBasePath, context.dstFileName);
     		        },
     		    },
     		    guards: {
@@ -418,7 +423,12 @@ class CFDPServer extends CdrGroundPlugin {
             opsPath: '/' + config.name + '/hk',
             content: {
                 cmdAcceptCount: 0,
-                cmdRejectCount: 0
+                cmdRejectCount: 0,
+                pduInCount: 0,
+                pduOutCount: 0,
+                fileRxCount: 0,
+                fileTxCount: 0,
+                inputStreamID: config.get( 'CfdpInputStream' )
             }
         };
         this.addTelemetry(this.hk, 1000);
@@ -438,6 +448,22 @@ class CFDPServer extends CdrGroundPlugin {
     	}
     	
         return rxConfig;
+    }
+    
+    
+    
+    getTxConfig(dstPath) {
+        var txConfig = undefined;
+        var txConfigs = config.get('TX');
+
+        ///* Find the configuration. */
+        //for(var i = 0; i < txConfigs.length; ++i) {
+        //        if(dstPath.startsWith(txConfigs[i].DestBasePath)) {
+        //                txConfig = txConfigs[i];
+        //        }
+        //}
+        
+        return txConfig;
     }
     
     
@@ -463,6 +489,33 @@ class CFDPServer extends CdrGroundPlugin {
                     shortDescription: 'Housekeeping',
                     longDescription: 'Housekeeping',
                     filePath: '/hk.pug',
+                    handlebarsContext: {
+                        pluginName: config.name
+                    }
+                },
+                rx_browser: {
+                    type: CdrGroundPlugin.ContentType.PANEL,
+                    shortDescription: 'RX File Browser',
+                    longDescription: 'RX File Browser',
+                    filePath: '/rx_file_browser.pug',
+                    handlebarsContext: {
+                        pluginName: config.name
+                    }
+                },
+                tx_browser: {
+                    type: CdrGroundPlugin.ContentType.PANEL,
+                    shortDescription: 'TX File Browser',
+                    longDescription: 'TX File Browser',
+                    filePath: '/tx_file_browser.pug',
+                    handlebarsContext: {
+                        pluginName: config.name
+                    }
+                },
+                temp_browser: {
+                    type: CdrGroundPlugin.ContentType.PANEL,
+                    shortDescription: 'Temp File Browser',
+                    longDescription: 'Temp File Browser',
+                    filePath: '/temp_file_browser.pug',
                     handlebarsContext: {
                         pluginName: config.name
                     }
@@ -677,6 +730,7 @@ class CFDPServer extends CdrGroundPlugin {
     	var pdu = undefined;
     	    	
     	if(inMessage.msgID == 0x1FFE) {
+    	    this.hk.content.pduInCount++;
             pdu = this.BufferToPDU(inMessage.content.payload);
     	}
     	
@@ -790,7 +844,176 @@ class CFDPServer extends CdrGroundPlugin {
     
     
     getTransactionIDFromPDU(pdu) {
-	    return pdu.srcEntityID + '_' + pdu.transSeqNum;
+        return pdu.srcEntityID + '_' + pdu.transSeqNum;
+    }
+    
+    
+    
+    getPhysicalRxPath(logicalPath) {
+        var rxConfig = this.getRxConfig(logicalPath);
+        
+        var physicalPath = path.join(rxConfig.PhyBasePath, logicalPath);
+        
+        return physicalPath;
+    }
+    
+    
+    
+    getPhysicalTxPath(logicalPath) {
+        var txConfig = this.getTxConfig(logicalPath);
+
+        console.log(logicalPath);
+        console.log(txConfig);
+        
+        var physicalPath = path.join(txConfig.PhyBasePath, logicalPath);
+        
+        return physicalPath;
+    }
+    
+    
+    
+    getPhysicalTempPath(logicalPath) {
+        var physicalPath = path.join(config.get('TempDir'), logicalPath);
+        
+        return physicalPath;
+    }
+    
+    
+    
+    reportFileReceived(physicalPath, virtualPath) {
+        this.namespace.send('file-received', {physicalPath: physicalPath, virtualPath: virtualPath} );
+    }
+    
+    
+    
+    initFileServer() {
+        var self = this;
+        global.NODE_APP.get('/plugin/' + config.name + '/rx_files', function(req, res) {
+            var start = 0;
+            var idxFile = 0;
+            var length = -1;
+            var fileList = [];
+          
+            if(req.hasOwnProperty('query') == true) {  
+                var requestedPath = req.query.path || '/';
+                var physicalPath = self.getPhysicalRxPath(requestedPath);
+                
+                fs.readdir(physicalPath, (err, files) => {      
+                    if (err) {
+                        throw err;
+                    }
+                    
+                    var data = [];
+
+                    if(requestedPath !== '/') {
+                        data.push({ Name : '..', IsDirectory: true, Path : path.join(requestedPath, '..')  });
+                    }
+                    
+                    for(var i = 0; i < files.length; ++i) {
+                        try {
+                            //console.log("processingile);
+                            var isDirectory = fs.statSync(path.join(physicalPath, files[i])).isDirectory();
+                            if (isDirectory) {
+                                data.push({ Name : files[i], IsDirectory: true, Path : path.join(requestedPath, files[i])  });
+                            } else {
+                                var ext = path.extname(files[i]);
+
+                                data.push({ Name : files[i], Ext : ext, IsDirectory: false, Path : path.join(requestedPath, files[i]) });
+                            }
+                        } catch(e) {
+                            console.log(e); 
+                        } 
+                    }
+
+                    res.json(data);
+                });
+            } 
+        });
+
+        global.NODE_APP.get('/plugin/' + config.name + '/tx_files', function(req, res) {
+            var start = 0;
+            var idxFile = 0;
+            var length = -1;
+            var fileList = [];
+          
+            if(req.hasOwnProperty('query') == true) {  
+                var requestedPath = req.query.path || '/';
+                var physicalPath = self.getPhysicalTxPath(requestedPath);
+                
+                fs.readdir(physicalPath, (err, files) => {      
+                    if (err) {
+                        throw err;
+                    }
+                    
+                    var data = [];
+
+                    if(requestedPath !== '/') {
+                        data.push({ Name : '..', IsDirectory: true, Path : path.join(requestedPath, '..')  });
+                    }
+                    
+                    for(var i = 0; i < files.length; ++i) {
+                        try {
+                            //console.log("processingile);
+                            var isDirectory = fs.statSync(path.join(physicalPath, files[i])).isDirectory();
+                            if (isDirectory) {
+                                data.push({ Name : files[i], IsDirectory: true, Path : path.join(requestedPath, files[i])  });
+                            } else {
+                                var ext = path.extname(files[i]);
+
+                                data.push({ Name : files[i], Ext : ext, IsDirectory: false, Path : path.join(requestedPath, files[i]) });
+                            }
+                        } catch(e) {
+                            console.log(e); 
+                        } 
+                    }
+
+                    res.json(data);
+                });
+            } 
+        });
+        global.NODE_APP.get('/plugin/' + config.name + '/temp_files', function(req, res) {
+            var start = 0;
+            var idxFile = 0;
+            var length = -1;
+            var fileList = [];
+          
+            if(req.hasOwnProperty('query') == true) {  
+                var requestedPath = req.query.path || '/';
+                var physicalPath = self.getPhysicalTempPath(requestedPath);
+                
+                console.log(physicalPath);
+                
+                fs.readdir(physicalPath, (err, files) => {      
+                    if (err) {
+                        throw err;
+                    }
+                    
+                    var data = [];
+
+                    if(requestedPath !== '/') {
+                        data.push({ Name : '..', IsDirectory: true, Path : path.join(requestedPath, '..')  });
+                    }
+                    
+                    for(var i = 0; i < files.length; ++i) {
+                        try {
+                            //console.log("processingile);
+                            var isDirectory = fs.statSync(path.join(physicalPath, files[i])).isDirectory();
+                            if (isDirectory) {
+                                data.push({ Name : files[i], IsDirectory: true, Path : path.join(requestedPath, files[i])  });
+                            } else {
+                                var ext = path.extname(files[i]);
+
+                                data.push({ Name : files[i], Ext : ext, IsDirectory: false, Path : path.join(requestedPath, files[i]) });
+                            }
+                        } catch(e) {
+                            console.log(e); 
+                        } 
+                    }
+
+                    res.json(data);
+                });
+            } 
+        });
     }
 
     
