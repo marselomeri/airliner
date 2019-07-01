@@ -1,12 +1,5 @@
 set(APP_NAME ea)
 
-add_airliner_app_table(
-    ${APP_NAME}
-    NAME ea_config
-    SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/ea_config.c
-    INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/src/
-)
-
 add_airliner_app_unit_test(ea-custom-ut
     UTASSERT 
 	NANOPB
@@ -15,7 +8,6 @@ add_airliner_app_unit_test(ea-custom-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/ea_custom_test.c
 	    ${CMAKE_CURRENT_SOURCE_DIR}/src/ea_custom.c
         ${PROJECT_SOURCE_DIR}/apps/ea/fsw/src/ea_app.c
-        ${PROJECT_SOURCE_DIR}/apps/ea/fsw/src/ea_config_utils.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/ea_mock_os_calls.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/ea_test_utils.c
         ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_es_hooks.c
@@ -42,7 +34,6 @@ add_airliner_app_unit_test(ea-perfmon-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/ea_perfmon_test.c
 	    ${CMAKE_CURRENT_SOURCE_DIR}/src/ea_custom.c
         ${PROJECT_SOURCE_DIR}/apps/ea/fsw/src/ea_app.c
-        ${PROJECT_SOURCE_DIR}/apps/ea/fsw/src/ea_config_utils.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/ea_test_utils.c
         ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_es_hooks.c
         
