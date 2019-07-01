@@ -24,7 +24,7 @@ cf_config_table_t     CF_ConfigTable =
 
     "CF Default Table",/* TableIdString */
     2,      /* TableVersion (integer)   */    
-    4,      /* NumEngCyclesPerWakeup    */
+    20,     /* NumEngCyclesPerWakeup    */
     2,      /* NumWakeupsPerQueueChk    */
     4,      /* NumWakeupsPerPollDirChk  */
     100,    /* UplinkHistoryQDepth      */
@@ -35,7 +35,7 @@ cf_config_table_t     CF_ConfigTable =
     "5",    /* NakTimeout (secs, string)            */
     "3",    /* NakLimit (max timeouts, string)      */
     "20",   /* InactivityTimeout (secs, string)     */
-    "200",  /* OutgoingFileChunkSize (bytes, string)*/
+    "1000",  /* OutgoingFileChunkSize (bytes, string)*/
     "no",   /* SaveIncompleteFiles (yes,no, string) */
     "0.24", /* Flight EntityId - 2 byte dotted-decimal string eg. "0.255"*/
 
