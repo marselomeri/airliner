@@ -13,7 +13,6 @@ add_airliner_app_unit_test(ea-custom-ut
         ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_es_hooks.c
         
 	INCLUDES
-	    ${EA_PROTOBUF_MSGS_DIR}
         ${PROJECT_SOURCE_DIR}/apps/ea/fsw/src/
         
     WRAPPERS
@@ -38,7 +37,6 @@ add_airliner_app_unit_test(ea-perfmon-ut
         ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_es_hooks.c
         
 	INCLUDES
-	    ${EA_PROTOBUF_MSGS_DIR}
         ${PROJECT_SOURCE_DIR}/apps/ea/fsw/src/
         
     VALGRIND_SUPPRESSION_FILE
