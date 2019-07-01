@@ -39,12 +39,10 @@
 ** Includes
 *************************************************************************/
 #include <string.h>
-
 #include "cfe.h"
 #include "ea_app.h"
 #include "ea_msg.h"
 #include "ea_version.h"
-
 #include <unistd.h>
 
 /************************************************************************
@@ -77,7 +75,6 @@ EA_AppData_t  EA_AppData;
 /* Initialize event tables                                         */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 int32 EA_InitEvent()
 {
     int32  iStatus=CFE_SUCCESS;
@@ -97,9 +94,6 @@ int32 EA_InitEvent()
     EA_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
 
     EA_AppData.EventTbl[  ind].EventID = EA_CONFIG_TABLE_ERR_EID;
-    EA_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
-
-    EA_AppData.EventTbl[  ind].EventID = EA_CDS_ERR_EID;
     EA_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
 
     EA_AppData.EventTbl[  ind].EventID = EA_PIPE_ERR_EID;
@@ -128,7 +122,6 @@ int32 EA_InitEvent()
 /* Initialize Message Pipes                                        */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 int32 EA_InitPipe()
 {
     int32  iStatus=CFE_SUCCESS;
@@ -223,18 +216,9 @@ EA_InitPipe_Exit_Tag:
 /* Initialize Global Variables                                     */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 int32 EA_InitData()
 {
     int32  iStatus=CFE_SUCCESS;
-
-    /* Init input data */
-    memset((void*)&EA_AppData.InData, 0x00, sizeof(EA_AppData.InData));
-
-    /* Init output data */
-    memset((void*)&EA_AppData.OutData, 0x00, sizeof(EA_AppData.OutData));
-    CFE_SB_InitMsg(&EA_AppData.OutData,
-                   EA_OUT_DATA_MID, sizeof(EA_AppData.OutData), TRUE);
 
     /* Init housekeeping packet */
     memset((void*)&EA_AppData.HkTlm, 0x00, sizeof(EA_AppData.HkTlm));
@@ -250,7 +234,6 @@ int32 EA_InitData()
 /* EA initialization                                              */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 int32 EA_InitApp()
 {
     int32  iStatus   = CFE_SUCCESS;
@@ -294,15 +277,6 @@ int32 EA_InitApp()
         goto EA_InitApp_Exit_Tag;
     }
 
-    iStatus = EA_InitCdsTbl();
-    if (iStatus != CFE_SUCCESS)
-    {
-        (void) CFE_EVS_SendEvent(EA_INIT_ERR_EID, CFE_EVS_ERROR,
-                                 "Failed to init CDS table (0x%08X)",
-                                 (unsigned int)iStatus);
-        goto EA_InitApp_Exit_Tag;
-    }
-
 EA_InitApp_Exit_Tag:
     if (iStatus == CFE_SUCCESS)
     {
@@ -334,7 +308,6 @@ EA_InitApp_Exit_Tag:
 /* Receive and Process Messages                                    */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 int32 EA_RcvMsg(int32 iBlocking)
 {
     int32           iStatus=CFE_SUCCESS;
@@ -357,7 +330,6 @@ int32 EA_RcvMsg(int32 iBlocking)
             case EA_WAKEUP_MID:
                 EA_ProcessNewData();
                 EA_ProcessNewCmds();
-                EA_SendOutData();
                 break;
 
             case EA_SEND_HK_MID:
@@ -402,7 +374,6 @@ int32 EA_RcvMsg(int32 iBlocking)
 /* Process Incoming Data                                           */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void EA_ProcessNewData()
 {
     int iStatus = CFE_SUCCESS;
@@ -452,7 +423,6 @@ void EA_ProcessNewData()
 /* Process Incoming Commands                                       */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void EA_ProcessNewCmds()
 {
     int iStatus = CFE_SUCCESS;
@@ -509,7 +479,6 @@ void EA_ProcessNewCmds()
 /* Process EA Commands                                            */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void EA_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr)
 {
     uint32  uiCmdCode=0;
@@ -577,7 +546,6 @@ void EA_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr)
 /* EA Start App                                                    */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 int32 EA_StartApp(CFE_SB_Msg_t* MsgPtr)
 {
 	/* command verification variables */
@@ -665,7 +633,6 @@ int32 EA_StartApp(CFE_SB_Msg_t* MsgPtr)
 /* EA Terminate App                                                */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void EA_TermApp(CFE_SB_Msg_t* MsgPtr)
 {
 	uint16 ExpectedLength = sizeof(EA_NoArgCmd_t);
@@ -686,7 +653,6 @@ void EA_TermApp(CFE_SB_Msg_t* MsgPtr)
 /* EA Performance Monitor                                          */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void EA_Perfmon()
 {
     /*
@@ -710,7 +676,6 @@ void EA_Perfmon()
 /* Send EA Housekeeping                                           */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void EA_ReportHousekeeping()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&EA_AppData.HkTlm);
@@ -724,27 +689,9 @@ void EA_ReportHousekeeping()
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* Publish Output Data                                             */
-/*                                                                 */
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-void EA_SendOutData()
-{
-    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&EA_AppData.OutData);
-    int32 iStatus = CFE_SB_SendMsg((CFE_SB_Msg_t*)&EA_AppData.OutData);
-    if (iStatus != CFE_SUCCESS)
-    {
-        /* Decide what to do if the send message fails. */
-    }
-}
-
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/*                                                                 */
 /* Verify Command Length                                           */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 boolean EA_VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
                            uint16 usExpectedLen)
 {
@@ -777,7 +724,6 @@ boolean EA_VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
 /* EA application entry point and main process loop               */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void EA_AppMain()
 {
     /* Register the application with Executive Services */

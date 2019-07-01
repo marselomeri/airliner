@@ -38,8 +38,6 @@ add_airliner_app_def(ea
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ea_app.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ea_app.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/ea_cds_utils.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/ea_cds_utils.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ea_config_utils.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ea_config_utils.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ea_custom.h
@@ -82,8 +80,6 @@ add_airliner_app_unit_test(ea-ut
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ea_app_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ea_app_test.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ea_cds_tbl_test.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ea_cds_tbl_test.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ea_cmds_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ea_cmds_test.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ea_config_tbl_test.c
@@ -95,8 +91,6 @@ add_airliner_app_unit_test(ea-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ea_test_utils.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ea_app.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ea_app.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/ea_cds_utils.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/ea_cds_utils.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ea_config_utils.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ea_config_utils.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ea_custom.h

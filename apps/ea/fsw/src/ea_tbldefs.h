@@ -100,15 +100,6 @@ typedef struct
     */
 } EA_ConfigTblEntry_t;
 
-
-/** \brief Definition for Critical Data Storage (CDS) table entry */
-typedef struct
-{
-    int32  iParam;
-
-    /* Add type declaration for CDS data here. */
-} EA_CdsTbl_t;
-
 /************************************************************************
 ** External Global Variables
 *************************************************************************/

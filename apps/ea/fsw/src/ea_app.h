@@ -47,12 +47,12 @@
 #include "ea_mission_cfg.h"
 #include "ea_private_ids.h"
 #include "ea_private_types.h"
+#include "ea_tbldefs.h"
 #include "ea_perfids.h"
 #include "ea_msgids.h"
 #include "ea_msg.h"
 #include "ea_events.h"
 #include "ea_config_utils.h"
-#include "ea_cds_utils.h"
 #include "ea_custom.h"
 #include "ea_serialization.h"
 #include "ea_start.pb.h"
@@ -99,22 +99,6 @@ typedef struct
 
     /** \brief Config Table Pointer */
     EA_ConfigTblEntry_t*  ConfigTblPtr;
-
-    /* Critical Data Storage (CDS) table-related */
-
-    /** \brief CDS Table Handle */
-    CFE_ES_CDSHandle_t  CdsTblHdl;
-
-    /** \brief CDS Table data */
-    EA_CdsTbl_t  CdsTbl;
-
-    /* Inputs/Outputs */
-
-    /** \brief Input Data from I/O or other apps */
-    EA_InData_t   InData;
-
-    /** \brief Output Data published at the end of cycle */
-    EA_OutData_t  OutData;
 
     /**< \brief Flag for a child task in use */
     boolean  ChildAppTaskInUse;
@@ -186,7 +170,6 @@ void  EA_AppMain(void);
 **  \retstmt Return codes from #EA_InitPipe                \endcode
 **  \retstmt Return codes from #EA_InitData                \endcode
 **  \retstmt Return codes from #EA_InitConfigTbl           \endcode
-**  \retstmt Return codes from #EA_InitCdsTbl              \endcode
 **  \retstmt Return codes from #OS_TaskInstallDeleteHandler \endcode
 **  \endreturns
 **
