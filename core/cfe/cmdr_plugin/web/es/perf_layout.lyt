@@ -66,6 +66,28 @@
          },
          "isClosable": true,
          "reorderEnabled": true
+        },
+        {
+         "title": "Perf Log Filter",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/core/es/perf_log_filter"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        },
+        {
+         "title": "Perf Log Trigger",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/core/es/perf_log_trigger"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
         }
        ]
       },

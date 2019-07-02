@@ -86,6 +86,9 @@ script.
     var PerfIDs = undefined;
     var PerfLogDisplayed = false;
     
+    var temp1;
+    var temp2;
+    
     session.sendCommand({ops_path:'/config-database/cmdGetPerfIDs'}, function(err, response) {
         if(err != null) {
             /* TODO */
@@ -606,12 +609,14 @@ script.
     
     var createData = function(objResp) {
         TicksPerSecond = objResp.Metadata.SecHdr.TimerTicksPerSecond;
+        TimerLow32Rollover = objResp.Metadata.SecHdr.TimerLow32Rollover;
         
         var input = objResp.DataBuffer;
         var data = {lanes:[], items:[]};
         var laneLastData = [];
         var smallestValue = {Upper32:-1, Lower32:-1};
-        var largestValue = {Upper32:-1, Lower32:-1};
+        var largestValue = {Upper32:-1, Lower32:-1};        
+        
         for(var iData = 0; iData < input.length; iData++) {
             /* Extract the perf IDs for the lanes array. */
             var laneExists = false;
@@ -682,21 +687,24 @@ script.
                      * interrupt occurred.
                      */
                     var startTickCount = laneLastData[iLaneIndex].start;
-                    data.items.push(
-                        {start:{
-                            Upper32:laneLastData[iLaneIndex].start.Upper32, 
-                            Lower32:laneLastData[iLaneIndex].start.Lower32}, 
-                         stop:{
-                            Upper32:newValue.Upper32,
-                            Lower32:newValue.Lower32},
-                         lane:iLaneIndex, 
-                         id:'',
-                         spurious:true});
+                    var tempObj = {
+                         'start': {
+                            'Upper32': laneLastData[iLaneIndex].stop.Upper32, 
+                            'Lower32': laneLastData[iLaneIndex].stop.Lower32}, 
+                         'stop': {
+                            'Upper32': newValue.Upper32,
+                            'Lower32': newValue.Lower32},
+                         'lane': iLaneIndex, 
+                         'id': '',
+                         spurious:true};
+                    data.items.push(tempObj);
 
                     /* Now update laneLastData to reflect a new start time. */
                     laneLastData[iLaneIndex].start.Upper32 = newValue.Upper32;
                     laneLastData[iLaneIndex].start.Lower32 = newValue.Lower32;
-                    laneLastData[iLaneIndex].stop = {Upper32:-1, Lower32:-1};
+                    laneLastData[iLaneIndex].stop.Upper32 = -1;
+                    laneLastData[iLaneIndex].stop.Lower32 = -1;
+                    laneLastData[iLaneIndex].spurious = true;
                 }
                 else
                 {
@@ -706,7 +714,8 @@ script.
                      */
                     laneLastData[iLaneIndex].start.Upper32 = newValue.Upper32;
                     laneLastData[iLaneIndex].start.Lower32 = newValue.Lower32;
-                    laneLastData[iLaneIndex].stop = {Upper32:-1, Lower32:-1};
+                    laneLastData[iLaneIndex].stop.Upper32 = -1;
+                    laneLastData[iLaneIndex].stop.Lower32 = -1;
                     laneLastData[iLaneIndex].spurious = false;
                 } 
             }
@@ -730,29 +739,31 @@ script.
                      * new start value.  This will let us denote where the spurious 
                      * interrupt occurred.
                      */
-                    data.items.push(
-                        {start:{
-                            Upper32:laneLastData[iLaneIndex].stop.Upper32, 
-                            Lower32:laneLastData[iLaneIndex].stop.Lower32}, 
-                         stop:{
-                            Upper32:newValue.Upper32,
-                            Lower32:newValue.Lower32},
-                         lane:iLaneIndex, 
-                         id:'',
-                         spurious:true});
+                    var tempObj = {
+                         'start': {
+                            'Upper32': laneLastData[iLaneIndex].stop.Upper32, 
+                            'Lower32': laneLastData[iLaneIndex].stop.Lower32}, 
+                         'stop': {
+                            'Upper32': newValue.Upper32,
+                            'Lower32': newValue.Lower32},
+                         'lane': iLaneIndex, 
+                         'id': '',
+                         spurious:true};
+                    data.items.push(tempObj);
                                              
                     /* Now update laneLastData to reflect a new stop time. */
                     laneLastData[iLaneIndex].stop.Upper32 = newValue.Upper32;
                     laneLastData[iLaneIndex].stop.Lower32 = newValue.Lower32;
-                    laneLastData[iLaneIndex].start = {Upper32:-1, Lower32:-1};
+                    laneLastData[iLaneIndex].start.Upper32 = -1;
+                    laneLastData[iLaneIndex].start.Lower32 = -1;
                 }
                 else 
-                {
+                {                    
                     /* This is a nominal stop.  Go ahead and close the item out by pushing it to the
                      * data array with spurious set to false.
                      */
-                    data.items.push(
-                        {start:{
+                    var tempObj = {
+                         start:{
                             Upper32:laneLastData[iLaneIndex].start.Upper32, 
                             Lower32:laneLastData[iLaneIndex].start.Lower32}, 
                          stop:{
@@ -760,13 +771,16 @@ script.
                             Lower32:newValue.Lower32},
                          lane:iLaneIndex, 
                          id:'',
-                         spurious:false});
+                         spurious:false};
+                         
+                    data.items.push(tempObj);
                     
                     laneLastData[iLaneIndex].stop.Upper32 = newValue.Upper32;
                     laneLastData[iLaneIndex].stop.Lower32 = newValue.Lower32;
                     laneLastData[iLaneIndex].start.Upper32 = -1;
                     laneLastData[iLaneIndex].start.Lower32 = -1;
                     laneLastData[iLaneIndex].spurious = false;
+                    
                 } 
             }    
         }
@@ -826,10 +840,10 @@ script.
         
         for(var i = 0; i < data.items.length; i++) 
         {
-            var newStartTime = ((data.items[i].start.Upper32 * 4294967296) / TicksPerSecond);
+            var newStartTime = data.items[i].start.Upper32 * (TicksPerSecond / TimerLow32Rollover);
             newStartTime += (data.items[i].start.Lower32 / TicksPerSecond);
             
-            var newStopTime = ((data.items[i].stop.Upper32 * 4294967296) / TicksPerSecond);
+            var newStopTime = data.items[i].stop.Upper32 * (TicksPerSecond / TimerLow32Rollover);
             newStopTime += (data.items[i].stop.Lower32 / TicksPerSecond);
             
             timeData.items.push({start:newStartTime, end:newStopTime, id:"i" + i, lane:data.items[i].lane, spurious:data.items[i].spurious});
@@ -845,6 +859,9 @@ script.
             timeData.items[i].start = timeData.items[i].start - smallestTime;
             timeData.items[i].end = timeData.items[i].end - smallestTime;
         }
+        
+        var timeBegin = GetSmallestTimerValue(timeData.items);
+        var timeEnd = GetLargestTimerValue(timeData.items);
                      
         return timeData;
     }

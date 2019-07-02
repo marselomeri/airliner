@@ -307,14 +307,28 @@ class CFDPServer extends CdrGroundPlugin {
                             context.fd = fs.openSync(context.tmpFileName, 'w');
     		        },
     		        completeFile: (context, event) => {
-    		        	console.log('*** completeFile ***');
-    		        	fs.closeSync(context.fd);
-    		        	context.absDstFileName = path.join(context.config.PhyBasePath, context.dstFileName);
-    		        	this.createSubDirectories(context.absDstFileName);
-    		        	fs.createReadStream(context.tmpFileName).pipe(fs.createWriteStream(context.absDstFileName));
-                                this.hk.content.fileRxCount++;
+    		            console.log('*** completeFile ***');
+    		            var self = this;
+    		            console.log(context);
+    		            fs.closeSync(context.fd);
+    		            context.absDstFileName = path.join(context.config.PhyBasePath, context.dstFileName);
+    		            this.createSubDirectories(context.absDstFileName);
+    		            
+    		            var readStream = fs.createReadStream(context.tmpFileName);
+    		            var writeStream = fs.createWriteStream(context.absDstFileName);
+    		            
+    		            readStream.pipe(writeStream);
+    		            
+    		            readStream.on('close', function () {
+    		                fs.unlink(context.tmpFileName);
+    		            });
+    		            
+    		            writeStream.on('close', function () {
+                                self.hk.content.fileRxCount++;
 
-                                this.reportFileReceived(context.absDstFileName, context.dstFileName);
+                                self.reportFileReceived(context.absDstFileName, context.dstFileName);
+    		            })
+    		        
     		        },
     		    },
     		    guards: {
@@ -547,6 +561,13 @@ class CFDPServer extends CdrGroundPlugin {
     BufferToPDU(inBuffer) {
         var pdu = this.pduHdrDef.parse(inBuffer);
         
+        /* Check to see if the CRC is included. */
+        if(pdu.crc == CrcFlagEnum.Present) {
+            /* It is present.  Verify that the CRC is correct. */
+            /* TODO */
+            console.log('The CRC is present.')
+        }
+        
         /* The byte offset after the 'transSeqnumLength' field. */
         var offset = 4;
 
@@ -658,7 +679,7 @@ class CFDPServer extends CdrGroundPlugin {
         	    case DirectiveCodeEnum.METADATA: {
         	    	pdu.meta = {};
         	    	var length = 0;
-        	    	
+        	    	        	    	
         	    	pdu.meta.segCtrl = inBuffer.readUInt8(offset++) & 0x01;
         	    	pdu.meta.fileSize = inBuffer.readUInt32BE(offset);
         	    	offset = offset + 4;
@@ -672,13 +693,16 @@ class CFDPServer extends CdrGroundPlugin {
         	    	offset = offset + length;
 
         	    	if(inBuffer.length >= (offset + 2)) {
-            	    	pdu.meta.option.type = inBuffer.readUInt8(offset++);
-            	    	pdu.meta.option.Length = inBuffer.readUInt8(offset++);
-            	    	if(inBuffer.length >= (offset + pdu.meta.option.Length)) {
-            	    	    pdu.meta.option.Value = inBuffer.toString('utf8', offset, offset + pdu.meta.option.Length);
-            	    	    offset = offset + pdu.meta.option.Length;
-            	    	}
+            	    	    pdu.meta.option.type = inBuffer.readUInt8(offset++);
+            	    	    pdu.meta.option.Length = inBuffer.readUInt8(offset++);
+            	    	    if(inBuffer.length >= (offset + pdu.meta.option.Length)) {
+            	    	        pdu.meta.option.Value = inBuffer.toString('utf8', offset, offset + pdu.meta.option.Length);
+            	    	        offset = offset + pdu.meta.option.Length;
+            	    	    }
         	    	}
+        	    	
+                        console.log(pdu);
+                        
         	    	break;
         	    }
         	    

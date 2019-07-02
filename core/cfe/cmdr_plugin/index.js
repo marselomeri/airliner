@@ -168,6 +168,18 @@ module.exports = class CfeCdrPlugin extends CdrFlightPlugin {
                                 longDescription: 'Performance Log Viewer.',
                                 filePath: 'es/perf_log_viewer.pug'
                             },
+                            perf_log_filter: {
+                                type: CdrFlightPlugin.ContentType.PANEL,
+                                shortDescription: 'Perf Log Filter',
+                                longDescription: 'Performance Log Filter.',
+                                filePath: 'es/perf_log_filter.pug'
+                            },
+                            perf_log_trigger: {
+                                type: CdrFlightPlugin.ContentType.PANEL,
+                                shortDescription: 'Perf Log Trigger',
+                                longDescription: 'Performance Log Trigger.',
+                                filePath: 'es/perf_log_trigger.pug'
+                            },
                             reset: {
                                 type: CdrFlightPlugin.ContentType.PANEL,
                                 shortDescription: 'Reset',
@@ -418,8 +430,12 @@ module.exports = class CfeCdrPlugin extends CdrFlightPlugin {
             } )
         
         this.namespace.recv('file-received', function(obj) {   
-        	console.log('1');
+            console.log('1');
             fs.readFile(obj.physicalPath, function(err, contents) {
+                console.log(obj.physicalPath);
+                console.log(err);
+                console.log(contents);
+                console.log(contents.length);
                 var fileHeader = self.cfeFsHeader.parse(contents); 
             	console.log('2');
                 
@@ -675,5 +691,4 @@ module.exports = class CfeCdrPlugin extends CdrFlightPlugin {
     initCommands() {
     	/* TODO:  Add commands. */
     }
-   
 };
