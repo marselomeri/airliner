@@ -63,10 +63,10 @@ extern "C" {
  ** Local Structure Definitions
  *************************************************************************/
 
-#define BAT_LISTENER_TASK_NAME  		"BAT_LISTENER"
-#define BAT_LISTENER_TASK_STACK_SIZE	16000
-#define BAT_LISTENER_TASK_PRIORITY		103
-#define BAT_MUTEX_NAME 					"BAT_MUTEX"
+#define BAT_LISTENER_TASK_NAME          "BAT_LISTENER"
+#define BAT_LISTENER_TASK_STACK_SIZE    16000
+#define BAT_LISTENER_TASK_PRIORITY        103
+#define BAT_MUTEX_NAME                     "BAT_MUTEX"
 
 extern "C" void BAT_ListenerTaskMain();
 
@@ -84,6 +84,9 @@ class BAT
 public:
     BAT();
     ~BAT();
+
+    /** \brief CFE Event Table */
+    CFE_EVS_BinFilter_t  EventTbl[BAT_EVT_CNT];
 
     /**\brief Scheduling Pipe ID */
     CFE_SB_PipeId_t SchPipeId;

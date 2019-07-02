@@ -54,10 +54,10 @@ int32 BAT::InitConfigTbl()
 
     /* Register Config table */
     iStatus = CFE_TBL_Register(&ConfigTblHdl,
-		BAT_CONFIG_TABLENAME,
-		(sizeof(BAT_ConfigTbl_t)),
-		CFE_TBL_OPT_DEFAULT,
-		BAT::ValidateConfigTbl);
+        BAT_CONFIG_TABLENAME,
+        (sizeof(BAT_ConfigTbl_t)),
+        CFE_TBL_OPT_DEFAULT,
+        BAT::ValidateConfigTbl);
     if (iStatus != CFE_SUCCESS)
     {
         /* Note, a critical table could return another nominal code.  If this table is
@@ -71,7 +71,7 @@ int32 BAT::InitConfigTbl()
     /* Load Config table file */
     iStatus = CFE_TBL_Load(ConfigTblHdl,
                            CFE_TBL_SRC_FILE,
-						   BAT_CONFIG_TABLE_FILENAME);
+                           BAT_CONFIG_TABLE_FILENAME);
     if (iStatus != CFE_SUCCESS)
     {
         /* Note, CFE_SUCCESS is for a successful full table load.  If a partial table
@@ -147,7 +147,7 @@ int32 BAT::AcquireConfigPointers(void)
     }
     else if(iStatus != CFE_SUCCESS)
     {
-    	ConfigTblPtr = 0;
+        ConfigTblPtr = 0;
         (void) CFE_EVS_SendEvent(BAT_CFGTBL_GETADDR_ERR_EID, CFE_EVS_ERROR,
                                  "Failed to get Config table's address (0x%08lX)",
                                  iStatus);

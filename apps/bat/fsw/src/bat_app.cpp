@@ -2,9 +2,7 @@
 ** Includes
 *************************************************************************/
 #include <string.h>
-
 #include "cfe.h"
-
 #include "bat_app.h"
 #include "bat_msg.h"
 #include "bat_version.h"
@@ -12,15 +10,12 @@
 #include "px4lib.h"
 #include "px4lib_msgids.h"
 
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Instantiate the application object.                             */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 BAT oBAT;
-
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -50,18 +45,64 @@ BAT::~BAT()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 BAT::InitEvent()
 {
-    int32  iStatus=CFE_SUCCESS;
+    int32  iStatus = CFE_SUCCESS;
+    int32  ind = 0;
+
+    /* Initialize the event filter table.
+     * Note: 0 is the CFE_EVS_NO_FILTER mask and event 0 is reserved (not used) */
+    CFE_PSP_MemSet((void*)EventTbl, 0x00, sizeof(EventTbl));
+
+    EventTbl[  ind].EventID = BAT_RESERVED_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    EventTbl[  ind].EventID = BAT_INIT_INF_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    EventTbl[  ind].EventID = BAT_CMD_NOOP_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    EventTbl[  ind].EventID = BAT_SUBSCRIBE_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    EventTbl[  ind].EventID = BAT_PIPE_INIT_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    EventTbl[  ind].EventID = BAT_CFGTBL_MANAGE_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    EventTbl[  ind].EventID = BAT_CFGTBL_GETADDR_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    EventTbl[  ind].EventID = BAT_RCVMSG_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    EventTbl[  ind].EventID = BAT_MSGID_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    EventTbl[  ind].EventID = BAT_CC_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    EventTbl[  ind].EventID = BAT_MSGLEN_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    EventTbl[  ind].EventID = BAT_CFGTBL_REG_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    EventTbl[  ind].EventID = BAT_CFGTBL_LOAD_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    EventTbl[  ind].EventID = BAT_LISTENER_CREATE_CHDTASK_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
 
     /* Register the table with CFE */
-    iStatus = CFE_EVS_Register(0, 0, CFE_EVS_BINARY_FILTER);
+    iStatus = CFE_EVS_Register(EventTbl, BAT_EVT_CNT, CFE_EVS_BINARY_FILTER);
     if (iStatus != CFE_SUCCESS)
     {
         (void) CFE_ES_WriteToSysLog("BAT - Failed to register with EVS (0x%08lX)\n", iStatus);
     }
 
-    return iStatus;
+    return (iStatus);
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -70,19 +111,19 @@ int32 BAT::InitEvent()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 BAT::InitPipe()
 {
-    int32  iStatus=CFE_SUCCESS;
+    int32  iStatus = CFE_SUCCESS;
 
     /* Init schedule pipe and subscribe to wakeup messages */
     iStatus = CFE_SB_CreatePipe(&SchPipeId,
-    		BAT_SCH_PIPE_DEPTH,
-			BAT_SCH_PIPE_NAME);
+            BAT_SCH_PIPE_DEPTH,
+            BAT_SCH_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
         iStatus = CFE_SB_SubscribeEx(BAT_WAKEUP_MID, SchPipeId, CFE_SB_Default_Qos, BAT_WAKEUP_MID_MAX_MSG_COUNT);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(BAT_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-            		"SCH Pipe failed to subscribe to BAT_WAKEUP_MID. (0x%08lX)",
+                    "SCH Pipe failed to subscribe to BAT_WAKEUP_MID. (0x%08lX)",
                     iStatus);
             goto BAT_InitPipe_Exit_Tag;
         }
@@ -91,8 +132,8 @@ int32 BAT::InitPipe()
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(BAT_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-					 "SCH Pipe failed to subscribe to BAT_SEND_HK_MID. (0x%08X)",
-					 (unsigned int)iStatus);
+                     "SCH Pipe failed to subscribe to BAT_SEND_HK_MID. (0x%08X)",
+                     (unsigned int)iStatus);
             goto BAT_InitPipe_Exit_Tag;
         }
 
@@ -108,15 +149,15 @@ int32 BAT::InitPipe()
     else
     {
         (void) CFE_EVS_SendEvent(BAT_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
-			 "Failed to create SCH pipe (0x%08lX)",
-			 iStatus);
+             "Failed to create SCH pipe (0x%08lX)",
+             iStatus);
         goto BAT_InitPipe_Exit_Tag;
     }
 
     /* Init command pipe and subscribe to command messages */
     iStatus = CFE_SB_CreatePipe(&CmdPipeId,
-    		BAT_CMD_PIPE_DEPTH,
-			BAT_CMD_PIPE_NAME);
+            BAT_CMD_PIPE_DEPTH,
+            BAT_CMD_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
         /* Subscribe to command messages */
@@ -125,16 +166,16 @@ int32 BAT::InitPipe()
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(BAT_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-				 "CMD Pipe failed to subscribe to BAT_CMD_MID. (0x%08lX)",
-				 iStatus);
+                 "CMD Pipe failed to subscribe to BAT_CMD_MID. (0x%08lX)",
+                 iStatus);
             goto BAT_InitPipe_Exit_Tag;
         }
     }
     else
     {
         (void) CFE_EVS_SendEvent(BAT_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
-			 "Failed to create CMD pipe (0x%08lX)",
-			 iStatus);
+             "Failed to create CMD pipe (0x%08lX)",
+             iStatus);
         goto BAT_InitPipe_Exit_Tag;
     }
 
@@ -142,7 +183,6 @@ BAT_InitPipe_Exit_Tag:
     return iStatus;
 }
     
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Initialize Global Variables                                     */
@@ -151,24 +191,22 @@ BAT_InitPipe_Exit_Tag:
 void BAT::InitData()
 {
     /* Init housekeeping message. */
-    CFE_SB_InitMsg(&HkTlm,
-    		BAT_HK_TLM_MID, sizeof(HkTlm), TRUE);
+    CFE_SB_InitMsg(&HkTlm, BAT_HK_TLM_MID, sizeof(HkTlm), TRUE);
 
     /* Init output messages */
     CFE_SB_InitMsg(&BatteryStatusMsg,
-      		PX4_BATTERY_STATUS_MID, sizeof(PX4_BatteryStatusMsg_t), TRUE);
+              PX4_BATTERY_STATUS_MID, sizeof(PX4_BatteryStatusMsg_t), TRUE);
     BatteryStatusMsg.Timestamp = PX4LIB_GetPX4TimeUs();
     BatteryStatusMsg.CurrentFiltered = -1.0f;
     BatteryStatusMsg.VoltageFiltered = -1.0f;
 
-	SampleTime.Seconds = 0;
-	SampleTime.Subseconds = 0;
+    SampleTime.Seconds = 0;
+    SampleTime.Subseconds = 0;
 
-	RemainingVoltage = 1.0f;
-	RemainingCapacity = 1.0f;
-	Discharged = 0.0f;
+    RemainingVoltage = 1.0f;
+    RemainingCapacity = 1.0f;
+    Discharged = 0.0f;
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -222,10 +260,10 @@ BAT_InitApp_Exit_Tag:
     {
         (void) CFE_EVS_SendEvent(BAT_INIT_INF_EID, CFE_EVS_INFORMATION,
                                  "Initialized.  Version %d.%d.%d.%d",
-								 BAT_MAJOR_VERSION,
-								 BAT_MINOR_VERSION,
-								 BAT_REVISION,
-								 BAT_MISSION_REV);
+                                 BAT_MAJOR_VERSION,
+                                 BAT_MINOR_VERSION,
+                                 BAT_REVISION,
+                                 BAT_MISSION_REV);
     }
     else
     {
@@ -244,7 +282,6 @@ BAT_InitApp_Exit_Tag:
 /* Receive and Process Messages                                    */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 int32 BAT::RcvSchPipeMsg(int32 iBlocking)
 {
     int32           iStatus=CFE_SUCCESS;
@@ -305,19 +342,17 @@ int32 BAT::RcvSchPipeMsg(int32 iBlocking)
     else
     {
         (void) CFE_EVS_SendEvent(BAT_RCVMSG_ERR_EID, CFE_EVS_ERROR,
-			  "SCH pipe read error (0x%08lX).", iStatus);
+              "SCH pipe read error (0x%08lX).", iStatus);
     }
 
     return iStatus;
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Process Incoming Commands                                       */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void BAT::ProcessCmdPipe()
 {
     int32 iStatus = CFE_SUCCESS;
@@ -360,13 +395,11 @@ void BAT::ProcessCmdPipe()
     }
 }
 
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Process BAT Commands                                            */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void BAT::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 {
     uint32  uiCmdCode=0;
@@ -379,11 +412,11 @@ void BAT::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
             case BAT_NOOP_CC:
                 HkTlm.usCmdCnt++;
                 (void) CFE_EVS_SendEvent(BAT_CMD_NOOP_EID, CFE_EVS_INFORMATION,
-					"Recvd NOOP. Version %d.%d.%d.%d",
-					BAT_MAJOR_VERSION,
-					BAT_MINOR_VERSION,
-					BAT_REVISION,
-					BAT_MISSION_REV);
+                    "Recvd NOOP. Version %d.%d.%d.%d",
+                    BAT_MAJOR_VERSION,
+                    BAT_MINOR_VERSION,
+                    BAT_REVISION,
+                    BAT_MISSION_REV);
                 break;
 
             case BAT_RESET_CC:
@@ -405,27 +438,25 @@ void BAT::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 /* Send BAT Housekeeping                                           */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void BAT::ReportHousekeeping()
 {
     OS_MutSemTake(Mutex);
-	HkTlm.Timestamp = BatteryStatusMsg.Timestamp;
-	HkTlm.Voltage = BatteryStatusMsg.Voltage;
-	HkTlm.VoltageFiltered = BatteryStatusMsg.VoltageFiltered;
-	HkTlm.Current = BatteryStatusMsg.Current;
-	HkTlm.CurrentFiltered = BatteryStatusMsg.CurrentFiltered;
-	HkTlm.Discharged = BatteryStatusMsg.Discharged;
-	HkTlm.Remaining = BatteryStatusMsg.Remaining;
-	HkTlm.Scale = BatteryStatusMsg.Scale;
-	HkTlm.CellCount = BatteryStatusMsg.CellCount;
-	HkTlm.Connected = BatteryStatusMsg.Connected;
-	HkTlm.Warning = BatteryStatusMsg.Warning;
+    HkTlm.Timestamp = BatteryStatusMsg.Timestamp;
+    HkTlm.Voltage = BatteryStatusMsg.Voltage;
+    HkTlm.VoltageFiltered = BatteryStatusMsg.VoltageFiltered;
+    HkTlm.Current = BatteryStatusMsg.Current;
+    HkTlm.CurrentFiltered = BatteryStatusMsg.CurrentFiltered;
+    HkTlm.Discharged = BatteryStatusMsg.Discharged;
+    HkTlm.Remaining = BatteryStatusMsg.Remaining;
+    HkTlm.Scale = BatteryStatusMsg.Scale;
+    HkTlm.CellCount = BatteryStatusMsg.CellCount;
+    HkTlm.Connected = BatteryStatusMsg.Connected;
+    HkTlm.Warning = BatteryStatusMsg.Warning;
     OS_MutSemGive(Mutex);
 
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&HkTlm);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&HkTlm);
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -544,7 +575,6 @@ void BAT::AppMain()
     CFE_ES_ExitApp(uiRunStatus);
 }
 
-
 void BAT::PublishBatteryStatus(void)
 {
     OS_MutSemTake(Mutex);
@@ -554,18 +584,16 @@ void BAT::PublishBatteryStatus(void)
     OS_MutSemGive(Mutex);
 }
 
-
 bool  BAT::ChildContinueExec(void)
 {
-	bool result;
+    bool result;
 
     OS_MutSemTake(Mutex);
     result = ChildContinueFlag;
     OS_MutSemGive(Mutex);
 
-	return result;
+    return result;
 }
-
 
 void BAT::StopChild(void)
 {
@@ -574,266 +602,253 @@ void BAT::StopChild(void)
     OS_MutSemGive(Mutex);
 }
 
-
 int32 BAT::InitListenerTask(void)
 {
     int32 Status = CFE_SUCCESS;
 
     /* Create mutex for shared data */
     Status = OS_MutSemCreate(&Mutex, BAT_MUTEX_NAME, 0);
-	if (Status != CFE_SUCCESS)
-	{
-		goto end_of_function;
-	}
+    if (Status != CFE_SUCCESS)
+    {
+        goto end_of_function;
+    }
 
-	ChildContinueFlag = true;
+    ChildContinueFlag = true;
 
-	Status= CFE_ES_CreateChildTask(&ListenerTaskID,
-			BAT_LISTENER_TASK_NAME,
-			BAT_ListenerTaskMain,
-			NULL,
-			BAT_LISTENER_TASK_STACK_SIZE,
-			BAT_LISTENER_TASK_PRIORITY,
-			BAT_LISTENER_TASK_FLAGS);
-	if (Status != CFE_SUCCESS)
-	{
-		goto end_of_function;
-	}
+    Status= CFE_ES_CreateChildTask(&ListenerTaskID,
+            BAT_LISTENER_TASK_NAME,
+            BAT_ListenerTaskMain,
+            NULL,
+            BAT_LISTENER_TASK_STACK_SIZE,
+            BAT_LISTENER_TASK_PRIORITY,
+            BAT_LISTENER_TASK_FLAGS);
+    if (Status != CFE_SUCCESS)
+    {
+        goto end_of_function;
+    }
 
 end_of_function:
-	if (Status != CFE_SUCCESS)
-	{
-		CFE_EVS_SendEvent (BAT_LISTENER_CREATE_CHDTASK_ERR_EID,
-						   CFE_EVS_ERROR,
-						   "Listener child task failed.  CFE_ES_CreateChildTask returned: 0x%08lX",
-						   Status);
-	}
+    if (Status != CFE_SUCCESS)
+    {
+        CFE_EVS_SendEvent (BAT_LISTENER_CREATE_CHDTASK_ERR_EID,
+                           CFE_EVS_ERROR,
+                           "Listener child task failed.  CFE_ES_CreateChildTask returned: 0x%08lX",
+                           Status);
+    }
 
     return Status;
 }
 
 void BAT::ListenerTaskMain(void)
 {
-	int32 iStatus = CFE_SUCCESS;
+    int32 iStatus = CFE_SUCCESS;
 
-	CFE_ES_RegisterChildTask();
+    CFE_ES_RegisterChildTask();
 
-	while(ChildContinueExec())
-	{
-		float voltage = 0.0f;
-		float current = 0.0f;
+    while(ChildContinueExec())
+    {
+        float voltage = 0.0f;
+        float current = 0.0f;
 
-		iStatus = ReadDevice(voltage, current);
-		if(iStatus == CFE_SUCCESS)
-		{
-			CFE_TIME_SysTime_t msgTime;
+        iStatus = ReadDevice(voltage, current);
+        if(iStatus == CFE_SUCCESS)
+        {
+            CFE_TIME_SysTime_t msgTime;
 
-		    OS_MutSemTake(Mutex);
+            OS_MutSemTake(Mutex);
 
-		    voltage = voltage * ConfigTblPtr->VoltageScale;
-		    current = current * ConfigTblPtr->CurrentScale;
+            voltage = voltage * ConfigTblPtr->VoltageScale;
+            current = current * ConfigTblPtr->CurrentScale;
 
-		    BatteryStatusMsg.Voltage = voltage;
-		    BatteryStatusMsg.VoltageFiltered = GetFilteredVoltage(voltage);
-		    BatteryStatusMsg.Current = current;
-		    BatteryStatusMsg.CurrentFiltered = GetFilteredCurrent(current);
-		    BatteryStatusMsg.Discharged = GetDischarged(current);
-		    BatteryStatusMsg.Remaining = GetRemaining(voltage, current,
-		    		CVT.ActuatorControls0.Control[PX4_ACTUATOR_CONTROL_THROTTLE],
-		    		CVT.ActuatorArmed.Armed);
-		    BatteryStatusMsg.Scale = GetScale();
-		    BatteryStatusMsg.CellCount = ConfigTblPtr->NumCells;
-		    BatteryStatusMsg.Connected = true;
-		    BatteryStatusMsg.Warning = GetWarningSeverity(BatteryStatusMsg.Remaining);
+            BatteryStatusMsg.Voltage = voltage;
+            BatteryStatusMsg.VoltageFiltered = GetFilteredVoltage(voltage);
+            BatteryStatusMsg.Current = current;
+            BatteryStatusMsg.CurrentFiltered = GetFilteredCurrent(current);
+            BatteryStatusMsg.Discharged = GetDischarged(current);
+            BatteryStatusMsg.Remaining = GetRemaining(voltage, current,
+                    CVT.ActuatorControls0.Control[PX4_ACTUATOR_CONTROL_THROTTLE],
+                    CVT.ActuatorArmed.Armed);
+            BatteryStatusMsg.Scale = GetScale();
+            BatteryStatusMsg.CellCount = ConfigTblPtr->NumCells;
+            BatteryStatusMsg.Connected = true;
+            BatteryStatusMsg.Warning = GetWarningSeverity(BatteryStatusMsg.Remaining);
 
-		    OS_MutSemGive(Mutex);
-		}
-	}
+            OS_MutSemGive(Mutex);
+        }
+    }
 
-	CFE_ES_ExitChildTask();
+    CFE_ES_ExitChildTask();
 }
-
 
 float BAT::GetFilteredVoltage(float Voltage)
 {
-	float newVoltageFiltered = 0.0f;
+    float newVoltageFiltered = 0.0f;
 
-	if(BatteryStatusMsg.VoltageFiltered < 0.0f)
-	{
-		newVoltageFiltered = Voltage;
-	}
-	else
-	{
-		newVoltageFiltered = BatteryStatusMsg.VoltageFiltered * 0.99f + Voltage * 0.01f;
-	}
+    if(BatteryStatusMsg.VoltageFiltered < 0.0f)
+    {
+        newVoltageFiltered = Voltage;
+    }
+    else
+    {
+        newVoltageFiltered = BatteryStatusMsg.VoltageFiltered * 0.99f + Voltage * 0.01f;
+    }
 
-	return newVoltageFiltered;
+    return newVoltageFiltered;
 }
-
 
 float BAT::GetFilteredCurrent(float Current)
 {
-	float newCurrentFiltered = 0.0f;
+    float newCurrentFiltered = 0.0f;
 
-	if(BatteryStatusMsg.CurrentFiltered < 0.0f)
-	{
-		newCurrentFiltered = Current;
-	}
-	else
-	{
-		newCurrentFiltered = BatteryStatusMsg.CurrentFiltered * 0.99f + Current * 0.01f;
-	}
+    if(BatteryStatusMsg.CurrentFiltered < 0.0f)
+    {
+        newCurrentFiltered = Current;
+    }
+    else
+    {
+        newCurrentFiltered = BatteryStatusMsg.CurrentFiltered * 0.99f + Current * 0.01f;
+    }
 
-	return newCurrentFiltered;
+    return newCurrentFiltered;
 }
-
 
 float BAT::GetDischarged(float Current)
 {
-	CFE_TIME_SysTime_t zeroTime;
-	CFE_TIME_SysTime_t msgTime;
-	zeroTime.Seconds = 0;
-	zeroTime.Subseconds = 0;
+    CFE_TIME_SysTime_t zeroTime;
+    CFE_TIME_SysTime_t msgTime;
+    zeroTime.Seconds = 0;
+    zeroTime.Subseconds = 0;
 
-	if(Current < 0.0f)
-	{
-		/* Not a valid measurement.  Because the measurement was invalid we
-		 * need to stop integration and re-init8ialize with the next valid
-		 * measurement.
-		 */
-		SampleTime.Seconds = 0;
-		SampleTime.Subseconds = 0;
-	}
+    if(Current < 0.0f)
+    {
+        /* Not a valid measurement.  Because the measurement was invalid we
+         * need to stop integration and re-init8ialize with the next valid
+         * measurement.
+         */
+        SampleTime.Seconds = 0;
+        SampleTime.Subseconds = 0;
+    }
 
-	/* Check to see if we have read a valid measurement yet.  If not, ignore
-	 * the first measurement since we don't know dT yet.
-	 */
-	if(CFE_TIME_Compare(SampleTime, zeroTime) != CFE_TIME_EQUAL)
-	{
-		CFE_TIME_SysTime_t currentTime = CFE_TIME_GetMET();
-		CFE_TIME_SysTime_t dSysTime = CFE_TIME_Subtract(currentTime, SampleTime);
-		float dt = dSysTime.Seconds + (CFE_TIME_Sub2MicroSecs(dSysTime.Subseconds)* 0.000001);
+    /* Check to see if we have read a valid measurement yet.  If not, ignore
+     * the first measurement since we don't know dT yet.
+     */
+    if(CFE_TIME_Compare(SampleTime, zeroTime) != CFE_TIME_EQUAL)
+    {
+        CFE_TIME_SysTime_t currentTime = CFE_TIME_GetMET();
+        CFE_TIME_SysTime_t dSysTime = CFE_TIME_Subtract(currentTime, SampleTime);
+        float dt = dSysTime.Seconds + (CFE_TIME_Sub2MicroSecs(dSysTime.Subseconds)* 0.000001);
 
-		/* Integrate the current to calculate the new discharge, but calculate
-		 * it using mAh units. */
-		Discharged += Discharged + (Current * dt / 1000.0 / 3600.0f);
+        /* Integrate the current to calculate the new discharge, but calculate
+         * it using mAh units. */
+        Discharged += Discharged + (Current * dt / 1000.0 / 3600.0f);
 
-		/* Finally, set the message time to the current time. */
-		SampleTime.Seconds = currentTime.Seconds;
-		SampleTime.Subseconds = currentTime.Subseconds;
-	}
+        /* Finally, set the message time to the current time. */
+        SampleTime.Seconds = currentTime.Seconds;
+        SampleTime.Subseconds = currentTime.Subseconds;
+    }
 
-	return Discharged;
+    return Discharged;
 }
-
 
 float BAT::GetRemaining(float Voltage, float Current, float ThrottleNormalized, bool Armed)
 {
-	float remaining = 0.0f;
-	float batVEmptyDynamic = 0.0f;
-	float voltageRange = 0.0f;
-	float rVoltage = 0.0f;
-	float rVoltageFilt = 0.0f;
-	float rCap = 0.0f;
-	float rCapFilt = 0.0f;
+    float remaining = 0.0f;
+    float batVEmptyDynamic = 0.0f;
+    float voltageRange = 0.0f;
+    float rVoltage = 0.0f;
+    float rVoltageFilt = 0.0f;
+    float rCap = 0.0f;
+    float rCapFilt = 0.0f;
 
-	if(ConfigTblPtr->RInternal >= 0.0f)
-	{
-		batVEmptyDynamic = ConfigTblPtr->VEmpty - (Current * ConfigTblPtr->RInternal);
-	}
-	else
-	{
-		/* Assume 10% voltage drop of the full drop range with motors idle */
-		float thr = (Armed) ? ((fabsf(ThrottleNormalized) + 0.1f) / 1.1f) : 0.0f;
+    if(ConfigTblPtr->RInternal >= 0.0f)
+    {
+        batVEmptyDynamic = ConfigTblPtr->VEmpty - (Current * ConfigTblPtr->RInternal);
+    }
+    else
+    {
+        /* Assume 10% voltage drop of the full drop range with motors idle */
+        float thr = (Armed) ? ((fabsf(ThrottleNormalized) + 0.1f) / 1.1f) : 0.0f;
 
-		batVEmptyDynamic = ConfigTblPtr->VEmpty - (ConfigTblPtr->VLoadDrop * thr);
-	}
+        batVEmptyDynamic = ConfigTblPtr->VEmpty - (ConfigTblPtr->VLoadDrop * thr);
+    }
 
-	/* The range from full to empty is the same for batteries under load and
-	 * without load, since the voltage drop applies to both the full and
-	 * empty state.
-	 */
-	voltageRange = ConfigTblPtr->VFull - ConfigTblPtr->VEmpty;
+    /* The range from full to empty is the same for batteries under load and
+     * without load, since the voltage drop applies to both the full and
+     * empty state.
+     */
+    voltageRange = ConfigTblPtr->VFull - ConfigTblPtr->VEmpty;
 
-	/* Remaining battery capacity based on voltage. */
-	rVoltage = (Voltage - (ConfigTblPtr->NumCells * batVEmptyDynamic))
-			/ (ConfigTblPtr->NumCells * voltageRange);
-	rVoltageFilt = RemainingVoltage * 0.99f + rVoltage * 0.01f;
-	RemainingVoltage = rVoltageFilt;
+    /* Remaining battery capacity based on voltage. */
+    rVoltage = (Voltage - (ConfigTblPtr->NumCells * batVEmptyDynamic))
+            / (ConfigTblPtr->NumCells * voltageRange);
+    rVoltageFilt = RemainingVoltage * 0.99f + rVoltage * 0.01f;
+    RemainingVoltage = rVoltageFilt;
 
-	/* Remaining battery capacity based on used current integrated time. */
-	rCap = 1.0f - Discharged / ConfigTblPtr->Capacity;
-	rCapFilt = RemainingCapacity * 0.99f + rCap * 0.01f;
+    /* Remaining battery capacity based on used current integrated time. */
+    rCap = 1.0f - Discharged / ConfigTblPtr->Capacity;
+    rCapFilt = RemainingCapacity * 0.99f + rCap * 0.01f;
 
-	RemainingCapacity = rCapFilt;
+    RemainingCapacity = rCapFilt;
 
-	if(ConfigTblPtr->Capacity > 0.0f)
-	{
-		remaining = fminf(RemainingVoltage, RemainingCapacity);
-	}
-	else
-	{
-		remaining = RemainingVoltage;
-	}
+    if(ConfigTblPtr->Capacity > 0.0f)
+    {
+        remaining = fminf(RemainingVoltage, RemainingCapacity);
+    }
+    else
+    {
+        remaining = RemainingVoltage;
+    }
 
-	return remaining;
+    return remaining;
 }
-
 
 PX4_BatteryWarningSeverity_t BAT::GetWarningSeverity(float Remaining)
 {
-	PX4_BatteryWarningSeverity_t severity = PX4_BATTERY_WARNING_NONE;
+    PX4_BatteryWarningSeverity_t severity = PX4_BATTERY_WARNING_NONE;
 
-	if(Remaining < ConfigTblPtr->EmergencyThreshold)
-	{
-		severity = PX4_BATTERY_WARNING_EMERGENCY;
-	}
-	else if(Remaining < ConfigTblPtr->CriticalThreshold)
-	{
-		severity = PX4_BATTERY_WARNING_CRITICAL;
-	}
-	else if(Remaining < ConfigTblPtr->LowThreshold)
-	{
-		severity = PX4_BATTERY_WARNING_LOW;
-	}
+    if(Remaining < ConfigTblPtr->EmergencyThreshold)
+    {
+        severity = PX4_BATTERY_WARNING_EMERGENCY;
+    }
+    else if(Remaining < ConfigTblPtr->CriticalThreshold)
+    {
+        severity = PX4_BATTERY_WARNING_CRITICAL;
+    }
+    else if(Remaining < ConfigTblPtr->LowThreshold)
+    {
+        severity = PX4_BATTERY_WARNING_LOW;
+    }
 
-	return severity;
+    return severity;
 }
-
-
 
 float BAT::GetScale(void)
 {
-	float scale = 0.0;
-	float voltageRange = ConfigTblPtr->VFull - ConfigTblPtr->VEmpty;
-	float batV = ConfigTblPtr->VEmpty + (voltageRange * RemainingVoltage);
+    float scale = 0.0;
+    float voltageRange = ConfigTblPtr->VFull - ConfigTblPtr->VEmpty;
+    float batV = ConfigTblPtr->VEmpty + (voltageRange * RemainingVoltage);
 
-	/* Reusing capacity calculation to get single cell voltage before drop. */
-	scale = ConfigTblPtr->VFull / batV;
+    /* Reusing capacity calculation to get single cell voltage before drop. */
+    scale = ConfigTblPtr->VFull / batV;
 
-	if(scale > 1.3f)
-	{
-		/* Allow at most, 30% compensation */
-		scale = 1.3f;
-	}
-	else if(scale < 1.0f)
-	{
-		/* Shouldn't ever be more than the power at full battery. */
-		scale = 1.0f;
-	}
+    if(scale > 1.3f)
+    {
+        /* Allow at most, 30% compensation */
+        scale = 1.3f;
+    }
+    else if(scale < 1.0f)
+    {
+        /* Shouldn't ever be more than the power at full battery. */
+        scale = 1.0f;
+    }
 
-	return scale;
+    return scale;
 }
-
-
 
 extern "C" void BAT_ListenerTaskMain()
 {
     oBAT.ListenerTaskMain();
 }
-
-
-
 
 /************************/
 /*  End of File Comment */
