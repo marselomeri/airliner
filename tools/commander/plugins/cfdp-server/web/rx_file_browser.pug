@@ -1,0 +1,111 @@
+- var pluginName = query.pluginName;
+
+style.
+  .mainpanel { 
+    height:90%;
+    min-height:400px;
+  }
+  
+  .linksholder ul { 
+    list-style-type: none;
+  }
+  
+  .linksholder li { 
+    font-size: 16px; 
+    line-height: 1.5em;
+  }
+  
+  .linksholder li .fa { 
+    margin-right: 5px; 
+  }
+  
+  .linksholder a { 
+    color : black;
+  }
+  
+  .linksholder .fa { 
+    color: black;
+  }
+  
+  .dataTables_filter label { 
+    float: right; 
+    font-weight:normal; 
+    position: absolute; 
+    top : 10px; 
+    right: 5px; 
+  }
+  
+  .up { 
+    margin-left: 20px;
+    border:solid 1px black;
+    cursor:pointer; width:100px;
+    padding-left: 10px;
+    padding-right:10px;
+  }
+    
+    
+    
+div.panel.panel-default.mainpanel
+  div.panel-heading 
+    span#rxPath
+  div.panel-body
+    table#rxFileTable
+      
+      
+      
+      
+script.      
+    'use strict';
+    
+    var isInitialized = false;
+    var fileCount = 0;      
+    var fileTableUpdated = false;
+    var currentPath = '/';
+    
+    var pluginName = '#{pluginName}';
+    
+    var getCurrentPath = function() { 
+        return currentPath;
+    };
+    
+    $('#rxPath').text(currentPath);
+            
+    var initFileTable = function() {  
+        var fileTable = $('#rxFileTable').dataTable({
+            "aoColumns": [
+                { 
+                    "sTitle": "", 
+                    "mData": null, 
+                    "bSortable": false, 
+                    "sClass": "head0", 
+                    "sWidth": "55px",
+                    "render": function (data, type, row, meta) {
+                        if (data.IsDirectory) {
+                            return "<a href='#' target='_blank'><i class='fa fa-folder'></i>&nbsp;" + data.Name +"</a>";
+                        } else {
+                            return "<i class='fa '></i>&nbsp;" + data.Name;
+                        }
+                    }
+                }
+            ],
+            "fnCreatedRow" :  function( nRow, aData, iDataIndex ) {                
+                var newPath = aData.Path;
+                $(nRow).bind('click', function(e){
+                    $.get('/plugin/cfdp-server/rx_files?path='+ newPath).then(function(data){
+                        fileTable.fnClearTable();
+                        fileTable.fnAddData(data);
+                        currentPath = newPath;
+                        $('#rxPath').text(newPath);
+                    });
+                    e.preventDefault();
+                });
+            }
+        });
+        
+        $.get('/plugin/cfdp-server/rx_files').then(function(data){
+            fileTable.fnClearTable();
+            fileTable.fnAddData(data);
+        });
+    }
+    
+    initFileTable();

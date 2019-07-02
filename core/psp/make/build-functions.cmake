@@ -54,7 +54,7 @@ include(${PARSED_ARGS_PSP}/make/build-functions.cmake)
 #)
 function(psp_initialize_airliner_build)
     # Define the function arguments.
-    cmake_parse_arguments(PARSED_ARGS "REFERENCE" "CORE_BINARY;CONFIG;PREFIX;OSAL;STARTUP_SCRIPT;UNIT_TEST_WRAPPER;CONFIG_SOURCES;MSG_OVERRIDES" "FILESYS" ${ARGN})
+    cmake_parse_arguments(PARSED_ARGS "REFERENCE" "CORE_BINARY;CONFIG;PREFIX;OSAL;STARTUP_SCRIPT;UNIT_TEST_WRAPPER;CONFIG_SOURCES" "FILESYS;MSG_OVERRIDES" ${ARGN})
 
     set(PSP_UNIT_TEST_WRAPPER target/${PARSED_ARGS_UNIT_TEST_WRAPPER})
     
@@ -145,15 +145,14 @@ function(psp_initialize_airliner_build)
     # Add the generic JSON override files
     #CFE_MSG_OVERRIDES
 
-    # Add the custom JSON override files
-    if(PARSED_ARGS_MSG_OVERRIDES)
-        if(EXISTS ${PARSED_ARGS_MSG_OVERRIDES}) 
-            add_airliner_json_input(
-                INPUT_FILE ${PARSED_ARGS_MSG_OVERRIDES}
-                OUTPUT_DIR ${EXPLAIN_DIR}
-            )
-        endif()
-    endif()
+    # Add the common and custom JSON override files
+    foreach(override_file ${PARSED_ARGS_MSG_OVERRIDES})
+        file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/exe/${override_file})
+        add_airliner_json_input(
+           INPUT_FILE ${override_file}
+           OUTPUT_DIR ${EXPLAIN_DIR}
+        )
+    endforeach()
 
     generate_serialization_code(
         INPUT_FILE     ${EXPLAIN_DIR}/cookiecutter.json

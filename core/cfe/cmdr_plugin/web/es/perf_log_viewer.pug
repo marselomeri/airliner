@@ -1,0 +1,867 @@
+   
+style.
+    .nav-tabs > li .close {
+      margin: -2px 0 0 10px;
+      font-size: 18px;
+    }
+    
+    .chart {
+        shape-rendering: crispEdges;
+    }
+
+    .mini text {
+        font: 9px sans-serif;   
+        fill: white;
+    }
+
+    .main text {
+        font: 12px sans-serif;   
+        fill: white; 
+    }
+
+    .miniItem {
+        fill: green;
+        stroke-width: 1; 
+        vector-effect: non-scaling-stroke;
+        stroke: darkgreen;
+        stroke-location: inside;
+    }
+
+    .miniItemError {
+        fill: red;
+        stroke-width: 1; 
+        vector-effect: non-scaling-stroke;
+        stroke: darkred;
+        stroke-location: inside;
+    }
+
+    .brush .extent {
+        stroke: gray;
+        fill: dodgerblue;
+        fill-opacity: .365;
+    }
+  
+   .d3-tip {
+        line-height: 1;
+        font-weight: bold;
+        padding: 12px;
+        background: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        border-radius: 2px;
+    }
+        
+    /* Creates a small triangle extender for the tooltip */
+   .d3-tip:after {
+        box-sizing: border-box;
+        display: inline;
+        font-size: 10px;
+        width: 100%;
+        line-height: 1;
+        color: rgba(0, 0, 0, 0.8);
+        content: "\25BC";
+        position: absolute;
+        text-align: center;
+    }
+        
+    /* Style northward tooltips differently */
+   .d3-tip.n:after {
+        margin: -1px 0 0 0;
+        top: 100%;
+        left: 0;
+    }
+    
+    .axis line, .axis path {
+        stroke: white;
+        color:  white;
+        fill:  white;
+    }
+    
+    .laneText {
+        fill:  white;
+    }   
+
+#perfLogViewer   
+ 
+script.    
+    var PerfIDs = undefined;
+    var PerfLogDisplayed = false;
+    
+    var temp1;
+    var temp2;
+    
+    session.sendCommand({ops_path:'/config-database/cmdGetPerfIDs'}, function(err, response) {
+        if(err != null) {
+            /* TODO */
+            console.log('PerfLogViewer::sendCommand(\'/config-database/cmdGetPerfIDs\') returned an error.  ' + err);
+        } else {
+            PerfIDs = response;
+            if(PerfLogDisplayed == true) {
+                /* A log was displayed before we could get the perf IDs from the server.  This
+                 * means that just the perf ID value is currently being displayed.  Go ahead and
+                 * parse through the display and replace the ID values with macro names. */
+                console.log('TODO:  Update the DOM of the Perf Log View to have the macros rather than just ID values.');
+            }
+        }
+    });
+
+
+    var updatePerfLogViewer = function(logInfo) {        
+        var getLowestTime = function(data) {
+            var lowestTime = 0;
+            
+            var time = (data.DataBuffer[0].TimerLower32) + 0;
+            lowestTime = time;
+            
+            for(var i = 0; i < data.DataBuffer.length; ++i) {
+                var time = (data.DataBuffer[i].TimerLower32) + 0;
+                
+                if(time < lowestTime) {
+                    lowestTime = time;
+                }
+            }
+            
+            return lowestTime;
+        }       
+        
+               
+        var getHighestTime = function(data) {
+            var highestTime = 0;
+            
+            var time = (data.DataBuffer[0].TimerLower32) + 0;
+            highestTime = time;
+            
+            for(var i = 0; i < data.DataBuffer.length; ++i) {
+                var time = (data.DataBuffer[i].TimerLower32) + 0;
+                
+                if(time > highestTime) {
+                    highestTime = time;
+                }
+            }
+            
+            return highestTime;
+        }       
+        
+        
+        
+        var getLaneNames = function(data) {
+            var highestPerfID = 0;
+            
+            for(var i = 0; i < data.DataBuffer.length; ++i) {
+                var perfID = data.DataBuffer[i].Data & 0x7fffffff;
+                if(perfID > highestPerfID) {
+                    highestPerfID = perfID;
+                }
+            }
+            
+            var aNames = new Array(highestPerfID+1);
+            
+            for(var i = 0; i < aNames.length; ++i) {
+                aNames[i] = 'PerfID' + i;
+            }
+            
+            return aNames;
+        }
+        
+        
+        var getLaneItems = function(data, length) {
+            var itemCurrent = new Array(length);
+            var items = [];
+            
+            for(var i = 0; i < length; ++i) {
+                itemCurrent[i] = {ID: i, Start: 0, Stop: 0};
+            }
+            
+            for(var i = 0; i < data.DataBuffer.length; ++i) {
+                var perfID = data.DataBuffer[i].Data & 0x7fffffff;
+                var entryType = (data.DataBuffer[i].Data & 0x80000000) >>> 31;
+                var time = (data.DataBuffer[i].TimerLower32) + 0;
+                                
+                if(entryType == 0) {
+                    /* This is a start entry. */
+                    itemCurrent[perfID].Start = time;
+                } else {
+                    /* This is a stop entry. */
+                    itemCurrent[perfID].Stop = time;
+                    items.push({Lane: perfID, ID: perfID, Start: itemCurrent[perfID].Start, Stop: itemCurrent[perfID].Stop});
+                }
+            }
+            
+            return items;
+        }
+        
+        
+        
+        $.ajax({
+            url: '/plugin/core/es/perfLogFile/' + logInfo.jsonFile,
+            method: 'GET',
+            dataType: 'json',
+            error: function() {
+                console.log('error');
+            },
+            success: function(data) {
+                $('#perfLogViewer').empty();
+                drawPerfLogView(data);
+                PerfLogDisplayed = true;
+            }
+        });
+    }
+    
+    
+    
+    function drawPerfLogView (objResp) {   
+        var fullWidth = $('#perfLogViewer').width(); 
+        var data = createData(objResp)
+          , lanes = data.lanes
+          , items = data.items
+          , laneLength = data.lanes.length;
+        
+        var timeBegin = GetSmallestTimerValue(items);
+        var timeEnd = GetLargestTimerValue(items); 
+         
+        var m = [20, 15, 20, 225]; //top right bottom left
+        var w = 1250 - m[1] - m[3];
+        var miniHeight = laneLength * 12 + 50;
+        var mainHeight = laneLength * 25 + 50;
+        var h = mainHeight + miniHeight;
+        $('#perfLogViewer').height(h);
+        h = h + m[0] + m[2];
+        
+        //scales
+        var x = d3.scale.linear()
+                .domain([timeBegin, timeEnd])
+                .range([0, w]);
+        var x1 = d3.scale.linear()
+                .range([0, w]);
+        var y1 = d3.scale.linear()
+                .domain([0, laneLength])
+                .range([0, mainHeight]);
+        var y2 = d3.scale.linear()
+                .domain([0, laneLength])
+                .range([0, miniHeight]);
+
+        var chartHeight = h - 55;
+        var chart = d3.select('#perfLogViewer')
+                    .append("svg")
+                    .attr("viewBox", "0 0 1250 " + h) // 0 0 1250 500
+                    .attr("style", "height: " + chartHeight + "px; width: auto;")
+                    .attr("class", "chart");
+        
+        chart.append("defs").append("clipPath")
+            .attr("id", "clip")
+            .append("rect")
+            .attr("width", w)
+            .attr("height", mainHeight);
+
+        var main = chart.append("g")
+                    .attr("transform", "translate(" + m[3] + "," + m[0] + ")")
+                    .attr("width", w)
+                    .attr("height", mainHeight)
+                    .attr("class", "main");
+
+        var mini = chart.append("g")
+                    .attr("transform", "translate(" + m[3] + "," + (mainHeight + m[0]) + ")")
+                    .attr("width", w)
+                    .attr("height", miniHeight)
+                    .attr("class", "mini");
+    
+        //main lanes and texts
+        main.append("g").selectAll(".laneLines")
+            .data(items)
+            .enter().append("line")
+            .attr("x1", 0)
+            .attr("y1", function(d) {return y1(d.lane);})
+            .attr("x2", w)
+            .attr("y2", function(d) {return y1(d.lane);})
+            .attr("stroke", "lightgray")
+
+        main.append("g").selectAll(".laneText")
+            .data(lanes)
+            .enter().append("text")
+            .text(function(d) {return d;})
+            .attr("x", -m[1])
+            .attr("y", function(d, i) {return y1(i + .5);})
+            .attr("dy", ".5ex")
+            .attr("text-anchor", "end")
+            .attr("class", "laneText");
+        
+        //mini lanes and texts
+        mini.append("g").selectAll(".laneLines")
+            .data(items)
+            .enter().append("line")
+            .attr("x1", 0)
+            .attr("y1", function(d) {return y2(d.lane);})
+            .attr("x2", w)
+            .attr("y2", function(d) {return y2(d.lane);})
+            .attr("stroke", "lightgray");
+
+        mini.append("g").selectAll(".laneText")
+            .data(lanes)
+            .enter().append("text")
+            .text(function(d) {return d;})
+            .attr("x", -m[1])
+            .attr("y", function(d, i) {return y2(i + .5);})
+            .attr("dy", ".5ex")
+            .attr("text-anchor", "end")
+            .attr("class", "laneText");
+
+        var itemRects = main.append("g")
+                            .attr("clip-path", "url(#clip)");
+        
+        //mini item rects
+        mini.append("g").selectAll("miniItems")
+            .data(items)
+            .enter().append("rect")
+            .attr("class", function(d) {
+                if(d.spurious == true)
+                {
+                    return "miniItemError";
+                }
+                else
+                {
+                    return "miniItem";
+                }})
+            .attr("x", function(d) {return x(d.start);})
+            .attr("y", function(d) {return y2(d.lane + .5) - 5;})
+            .attr("width", function(d) {return x(d.end - d.start);})
+            .attr("height", 10);
+
+        //mini labels
+        //mini.append("g").selectAll(".miniLabels")
+        //    .data(items)
+        //    .enter().append("text")
+        //    .text(function(d) {return "";})
+        //    .attr("x", function(d) {return x(d.start);})
+        //    .attr("y", function(d) {return y2(d.lane + .5);})
+        //    .attr("dy", ".5ex");
+
+        //brush
+        var brush = d3.svg.brush()
+                            .x(x)
+                            .on("brush", display);
+                            
+        var tip = d3.tip()
+            .attr('class', 'd3-tip')
+            .offset([-10, 0])
+            .html(function(d) {
+                var duration = d.end - d.start;
+                var sDuration = duration.toPrecision(6);
+                return "<strong>Start:</strong> <span style='color:red'>" + d.start + "</span><br><strong>Stop:</strong> <span style='color:red'>" + d.end + "</span><br><strong>Duration:</strong><span style='color:red'>" + duration + "</span>";
+        })
+        
+        chart.call(tip);
+        
+        // draw the x axis
+        var xMainAxis = d3.svg.axis()
+            .scale(x1)
+            .orient('top')
+            .tickSize(6, 0, 0);
+
+        main.append("g")
+            .attr("class", "axis")
+            .attr('transform', 'translate(0, -0.5)')
+            .call(xMainAxis);
+        
+        var xMiniAxis = d3.svg.axis()
+            .scale(x)
+            .orient('bottom')
+            .tickSize(6, 0, 0);
+        
+        mini.append("g")
+            .attr("class", "x brush")
+            .call(brush)
+            .selectAll("rect")
+            .attr("y", 1)
+            .attr("height", miniHeight - 1);
+
+        mini.append("g")
+            .attr("class", "axis")
+            .attr('transform', 'translate(0,' + miniHeight + ')')
+            .call(xMiniAxis);
+            
+        display();
+        
+        function display() {
+            var rects, 
+                minExtent = brush.extent()[0],
+                maxExtent = brush.extent()[1],
+                visItems = items.filter(function(d) {return d.start < maxExtent && d.end > minExtent;});
+        
+            mini.select(".brush")
+                .call(brush.extent([minExtent, maxExtent]));
+        
+            x1.domain([minExtent, maxExtent]);
+            
+            main.select('.axis').call(xMainAxis);
+        
+            //update main item rects                
+            rects = itemRects.selectAll("rect")
+                    .data(visItems, function(d) { return d.id; })
+                .attr("x", function(d) {return x1(d.start);})
+                .attr("width", function(d) {return x1(d.end) - x1(d.start);});
+            
+            rects.enter().append("rect")
+                .attr("class", function(d) {
+                    if(d.spurious == true)
+                    {
+                        return "miniItemError";
+                    }
+                    else
+                    {
+                        return "miniItem";
+                    }})
+                .attr("x", function(d) {return x1(d.start);})
+                .attr("y", function(d) {return y1(d.lane) + 2;})
+                .attr("width", function(d) {return x1(d.end) - x1(d.start);})
+                .attr("height", function(d) {return .8 * y1(1);})
+                .attr("vector-effect", "non-scaling-stroke")
+                .attr("stroke", "black")
+                .attr("stroke-width", "1") 
+                .on('mouseover', tip.show)
+                .on('mouseout', tip.hide);
+        
+            rects.exit().remove();
+        
+            //update the item labels
+            //labels = itemRects.selectAll("text")
+            //    .data(visItems, function (d) { return d.id; })
+            //    .attr("x", function(d) {return x1(Math.max(d.start, minExtent) + 2);});
+            //
+            //labels.enter().append("text")
+            //    .text(function(d) {return d.id;})
+            //    .attr("x", function(d) {return x1(Math.max(d.start, minExtent));})
+            //    .attr("y", function(d) {return y1(d.lane + .5);})
+            //    .attr("text-anchor", "start");
+        
+            //labels.exit().remove();
+        }       
+    }
+    
+    
+    function GetLargestTimerValue(A)
+    {
+        var value = 0;
+        for(var i=0; i < A.length; i++)
+        {
+            if(A[i].start > value)
+            {
+                value = A[i].start;
+            }
+            if(A[i].end > value)
+            {
+                value = A[i].end;
+            }
+        }
+        
+        return value;
+    }
+    
+    
+    function GetSmallestTimerValue(A)
+    {
+        var value = 0;
+        for(var i=0; i < A.length; i++)
+        {
+            if(i==0)
+            {
+                value = A[i].start;
+            }
+            
+            if(A[i].start < value)
+            {
+                value = A[i].start;
+            }
+            
+            if(A[i].end < value)
+            {
+                value = A[i].end;
+            }
+        }
+        
+        return value;
+    }
+    
+    
+    function GetSmallestUpper32(A)
+    {
+        var value = 0;
+        for(var i=0; i < A.length; i++)
+        {
+            if(i==0)
+            {
+                value = A[i].start.Upper32;
+            }
+            
+            if(A[i].start.Upper32 < value)
+            {
+                value = A[i].start.Upper32;
+            }
+            
+            if(A[i].stop.Upper32 < value)
+            {
+                value = A[i].stop.Upper32;
+            }
+        }
+        
+        return value;
+    }
+    
+    
+    function IsTimerEqualTo(A, B)
+    {
+        if(A.Upper32 == B.Upper32)
+        {
+            if(A.Lower32 == B.Lower32)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    
+    function IsTimerNotEqualTo(A, B)
+    {
+        if(A.Upper32 != B.Upper32)
+        {
+            if(A.Lower32 != B.Lower32)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+    function IsTimerLessThan(A, B)
+    {
+        if(A.Upper32 < B.Upper32)
+        {
+            return true;
+        }
+        else if(A.Upper32 == B.Upper32)
+        {
+            if(A.Lower32 < B.Lower32)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }   
+    
+    
+    function IsTimerGreaterThan(A, B)
+    {
+        if(A.Upper32 > B.Upper32)
+        {
+            return true;
+        }
+        else if(A.Upper32 == B.Upper32)
+        {
+            if(A.Lower32 > B.Lower32)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }   
+    
+    
+    var GetPerfIDName = function(perfID) {
+        var newName = 'Unknown-' + perfID;
+        
+        for(var perfName in PerfIDs) {
+            if(PerfIDs[perfName].perf_id == perfID) {
+                newName = perfName;
+            }
+        }
+        
+        return newName;
+    }
+    
+    
+    
+    var createData = function(objResp) {
+        TicksPerSecond = objResp.Metadata.SecHdr.TimerTicksPerSecond;
+        TimerLow32Rollover = objResp.Metadata.SecHdr.TimerLow32Rollover;
+        
+        var input = objResp.DataBuffer;
+        var data = {lanes:[], items:[]};
+        var laneLastData = [];
+        var smallestValue = {Upper32:-1, Lower32:-1};
+        var largestValue = {Upper32:-1, Lower32:-1};        
+        
+        for(var iData = 0; iData < input.length; iData++) {
+            /* Extract the perf IDs for the lanes array. */
+            var laneExists = false;
+            var iLaneIndex = 0;
+            var perfID = input[iData].Data & 0x7fffffff;
+            /* Protect against zero entries. */
+            if(perfID == 0)
+            {
+                continue;
+            }
+            for(iLaneIndex = 0; iLaneIndex < data.lanes.length; iLaneIndex++) {
+                if( perfID == data.lanes[iLaneIndex].id ) {
+                    laneExists = true;
+                    break;
+                }
+            }
+            if(laneExists == false)
+            {
+                /* This is the first occurance of this ID.  Give it a name. */
+                var newName = GetPerfIDName(perfID);
+                data.lanes.push({id:perfID, label:newName, offset:data.lanes.length});
+                
+                /* Create an object in the laneLastData array so we can track the 
+                 * starts and stops.
+                 */
+                laneLastData.push({id:perfID, start:{Upper32:-1, Lower32:-1}, stop:{Upper32:-1, Lower32:-1}, spurious:false});
+                
+                /* Update the iLaneIndex so the remaining code can just assume the 
+                 * lane already existed so iLaneIndex can be used on the laneLastData
+                 * array.
+                 */
+                iLaneIndex = data.lanes.length - 1;
+            }
+            
+            /* First, lets see if we have new smallest or largest values. */
+            var newValue = {Upper32:input[iData].TimerUpper32, Lower32:input[iData].TimerLower32};
+            if(IsTimerEqualTo(smallestValue, {Upper32:-1, Lower32:-1}) || IsTimerLessThan(newValue, smallestValue))
+            {
+                smallestValue = newValue;
+            }
+            if(IsTimerEqualTo(largestValue, {Upper32:-1, Lower32:-1}) || IsTimerGreaterThan(newValue, largestValue))
+            {
+                largestValue = newValue;
+            }
+                
+            /*  Determine if this is a start or a stop.  A stop has the 32nd bit set.
+             */ 
+            if(input[iData].Data < 0x80000000)
+            {                
+                /* This is a start entry.  Now check to see if the previous entry was
+                 * also a start entry. 
+                 */
+                if(IsTimerNotEqualTo(laneLastData[iLaneIndex].start, {Upper32:-1, Lower32:-1}))
+                {
+                    /* The previous entry was a start entry.  Flag this as a spurious 
+                     * event, close the event by giving it a stop time and immediately 
+                     * create a new one.  This should appear as a single bar with a 
+                     * break at the time the second start occured. 
+                     */
+                     
+                    /* Set the spurious flag so we can change the block color to
+                     * signify spurious interrupts. 
+                     */
+                    laneLastData[iLaneIndex].spurious = true;
+                    
+                    /* Push a data item with the previous start but the stop set to 
+                     * new start value.  This will let us denote where the spurious 
+                     * interrupt occurred.
+                     */
+                    var startTickCount = laneLastData[iLaneIndex].start;
+                    var tempObj = {
+                         'start': {
+                            'Upper32': laneLastData[iLaneIndex].stop.Upper32, 
+                            'Lower32': laneLastData[iLaneIndex].stop.Lower32}, 
+                         'stop': {
+                            'Upper32': newValue.Upper32,
+                            'Lower32': newValue.Lower32},
+                         'lane': iLaneIndex, 
+                         'id': '',
+                         spurious:true};
+                    data.items.push(tempObj);
+
+                    /* Now update laneLastData to reflect a new start time. */
+                    laneLastData[iLaneIndex].start.Upper32 = newValue.Upper32;
+                    laneLastData[iLaneIndex].start.Lower32 = newValue.Lower32;
+                    laneLastData[iLaneIndex].stop.Upper32 = -1;
+                    laneLastData[iLaneIndex].stop.Lower32 = -1;
+                    laneLastData[iLaneIndex].spurious = true;
+                }
+                else
+                {
+                    /* This is a nominal start.  We can't push the data item until we get the 
+                     * corresponding stop.  Just store the start time in the laneLastData and
+                     * continue.
+                     */
+                    laneLastData[iLaneIndex].start.Upper32 = newValue.Upper32;
+                    laneLastData[iLaneIndex].start.Lower32 = newValue.Lower32;
+                    laneLastData[iLaneIndex].stop.Upper32 = -1;
+                    laneLastData[iLaneIndex].stop.Lower32 = -1;
+                    laneLastData[iLaneIndex].spurious = false;
+                } 
+            }
+            else
+            {
+                /* This is a stop entry.  Now check to see if the previous entry was
+                 * also a stop entry. */
+                if(IsTimerNotEqualTo(laneLastData[iLaneIndex].stop, {Upper32:-1, Lower32:-1}))
+                {
+                    /* The previous entry was a stop entry.  Flag this as a spurious 
+                     * event, open a new event by giving it a start and stop time.  This s
+                     * hould appear as a single bar with a break at the time the second 
+                     * start occured. 
+                     */  
+                    /* Set the spurious flag so we can change the block color to
+                     * signify spurious interrupts. 
+                     */
+                    laneLastData[iLaneIndex].spurious = true;
+                    
+                    /* Push a data item with the previous start but the stop set to 
+                     * new start value.  This will let us denote where the spurious 
+                     * interrupt occurred.
+                     */
+                    var tempObj = {
+                         'start': {
+                            'Upper32': laneLastData[iLaneIndex].stop.Upper32, 
+                            'Lower32': laneLastData[iLaneIndex].stop.Lower32}, 
+                         'stop': {
+                            'Upper32': newValue.Upper32,
+                            'Lower32': newValue.Lower32},
+                         'lane': iLaneIndex, 
+                         'id': '',
+                         spurious:true};
+                    data.items.push(tempObj);
+                                             
+                    /* Now update laneLastData to reflect a new stop time. */
+                    laneLastData[iLaneIndex].stop.Upper32 = newValue.Upper32;
+                    laneLastData[iLaneIndex].stop.Lower32 = newValue.Lower32;
+                    laneLastData[iLaneIndex].start.Upper32 = -1;
+                    laneLastData[iLaneIndex].start.Lower32 = -1;
+                }
+                else 
+                {                    
+                    /* This is a nominal stop.  Go ahead and close the item out by pushing it to the
+                     * data array with spurious set to false.
+                     */
+                    var tempObj = {
+                         start:{
+                            Upper32:laneLastData[iLaneIndex].start.Upper32, 
+                            Lower32:laneLastData[iLaneIndex].start.Lower32}, 
+                         stop:{
+                            Upper32:newValue.Upper32,
+                            Lower32:newValue.Lower32},
+                         lane:iLaneIndex, 
+                         id:'',
+                         spurious:false};
+                         
+                    data.items.push(tempObj);
+                    
+                    laneLastData[iLaneIndex].stop.Upper32 = newValue.Upper32;
+                    laneLastData[iLaneIndex].stop.Lower32 = newValue.Lower32;
+                    laneLastData[iLaneIndex].start.Upper32 = -1;
+                    laneLastData[iLaneIndex].start.Lower32 = -1;
+                    laneLastData[iLaneIndex].spurious = false;
+                    
+                } 
+            }    
+        }
+        
+        /* Now look for items that are still open.  In other words, items at the very end with 
+         * start times but no stop times.  Go ahead and set the stop times to the largest value.
+         */
+        for(var iLaneIndex = 0; iLaneIndex < laneLastData.length; iLaneIndex++) 
+        {
+            if(laneLastData[iLaneIndex].start != -1)
+            {
+                if(laneLastData[iLaneIndex].stop == -1)
+                {
+                    var startTickCount = {
+                        Lower32:laneLastData[iLaneIndex].start.Lower32,
+                        Upper32:laneLastData[iLaneIndex].start.Upper32
+                        };
+                    var stopTickCount = {
+                        Lower32:laneLastData[iLaneIndex].stop.Lower32,
+                        Upper32:laneLastData[iLaneIndex].stop.Upper32
+                        };
+                    data.items.push({start:startTickCount, stop:stopTickCount, lane:iLaneIndex, id:'', spurious:false});
+                }
+            }
+        }
+        
+        /* Next we need to replace all -1 start times with the lowest value.  This 
+         * will make it appear that the event was already in the started state at the start of 
+         * the recording, which is correct.
+         */
+        for(var iData = 0; iData < data.items.length; iData++) 
+        {
+            if(IsTimerEqualTo(data.items[iData].start, {Upper32:-1, Lower32:-1}))
+            {
+                data.items[iData].start.Lower32 = smallestValue.Lower32;
+                data.items[iData].start.Upper32 = smallestValue.Upper32;
+            }
+        }
+        
+        /* Next lets normalize the upper 32 bits to make this number a bit smaller and
+         * more managable.
+         */
+        for(var i = 0; i < data.items.length; i++) 
+        {
+            data.items[i].start.Upper32 = data.items[i].start.Upper32 - smallestValue.Upper32;
+            data.items[i].stop.Upper32 = data.items[i].stop.Upper32 - smallestValue.Upper32;
+        }
+        
+        /* The next step is to convert these counts to actual time.  We're just going to create
+         * a new array of structures.
+         */
+        var timeData = {lanes:[], items:[]};
+        for(var i = 0; i < data.lanes.length; i++)
+        {
+            timeData.lanes.push(data.lanes[i].label);
+        }
+        
+        for(var i = 0; i < data.items.length; i++) 
+        {
+            var newStartTime = data.items[i].start.Upper32 * (TicksPerSecond / TimerLow32Rollover);
+            newStartTime += (data.items[i].start.Lower32 / TicksPerSecond);
+            
+            var newStopTime = data.items[i].stop.Upper32 * (TicksPerSecond / TimerLow32Rollover);
+            newStopTime += (data.items[i].stop.Lower32 / TicksPerSecond);
+            
+            timeData.items.push({start:newStartTime, end:newStopTime, id:"i" + i, lane:data.items[i].lane, spurious:data.items[i].spurious});
+            
+        }
+        
+        /* Finally, lets normalize this data so the start is at 0 seconds.
+         */
+        var smallestTime = GetSmallestTimerValue(timeData.items);
+        
+        for(var i = 0; i < timeData.items.length; i++) 
+        {
+            timeData.items[i].start = timeData.items[i].start - smallestTime;
+            timeData.items[i].end = timeData.items[i].end - smallestTime;
+        }
+        
+        var timeBegin = GetSmallestTimerValue(timeData.items);
+        var timeEnd = GetLargestTimerValue(timeData.items);
+                     
+        return timeData;
+    }

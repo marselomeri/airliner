@@ -86,6 +86,7 @@ class ConfigDatabase extends CdrGroundPlugin {
     };
     
     
+    
     initConfig(name, configFile) {  
         var config;
         
@@ -164,6 +165,7 @@ class ConfigDatabase extends CdrGroundPlugin {
     }
         
 
+    
     initCommands() {
         var cmdGetMessageIDFromOpsName = {
             opsPath: '/' + this.config.name + '/getMessageIDFromOpsName',
@@ -177,9 +179,16 @@ class ConfigDatabase extends CdrGroundPlugin {
             ]
         }
         this.addCommand(cmdGetMessageIDFromOpsName, this.getMessageIDFromOpsName);
+
+        var cmdGetPerfIDs = {
+            opsPath: '/' + this.config.name + '/cmdGetPerfIDs',
+            returnType: 'object'
+        }
+        this.addCommand(cmdGetPerfIDs, this.cmdGetPerfIDs);
     };
 
 
+    
     getMessageIDFromOpsName(cmd, cb) {
         var self = this;
 
@@ -221,6 +230,7 @@ class ConfigDatabase extends CdrGroundPlugin {
     };
     
     
+    
     getOperationFromPath( path ) {
         if ( typeof path === 'string' ) {
             var splitName = path.split( '/' );
@@ -230,6 +240,7 @@ class ConfigDatabase extends CdrGroundPlugin {
     }
     
     
+    
     getAppFromPath( path ) {
         if ( typeof path === 'string' ) {
             var splitName = path.split( '/' );
@@ -237,6 +248,7 @@ class ConfigDatabase extends CdrGroundPlugin {
         }
         return undefined;
     }
+    
     
     
     initTelemetry() {
@@ -282,6 +294,29 @@ class ConfigDatabase extends CdrGroundPlugin {
         }
         
         this.addContent(content);
+    }
+
+
+    
+    cmdGetPerfIDs(cmd, cb) {
+        var self = this;
+        var perfIDs = undefined;
+        
+        console.log('Executing cmdGetPerfIDs');
+
+        if(typeof cb !== 'function') {
+            var errorText = 'Callback is required.';
+            this.logError(errorText);
+            this.hk.content.cmdRejectCount++;
+            return 
+        } else if(cmd.hasOwnProperty('args') == true) {
+        	var errText = 'Invalid arguments.  No arguments are required for this command.';
+            this.logError(errText);
+            cb(errText, null);
+      	} else {
+            perfIDs = self.defs.Airliner.common.performance;
+            cb(null, perfIDs);
+      	}
     }
 }
 

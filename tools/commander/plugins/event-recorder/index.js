@@ -215,7 +215,7 @@ class EventRecorder extends CdrGroundPlugin {
                         pluginName: this.config.name
                     }
                 },
-                hk: {
+                viewer: {
                     type: CdrGroundPlugin.ContentType.PANEL,
                     shortDescription: 'Event Viewer',
                     longDescription: 'Event Viewer',
@@ -276,8 +276,8 @@ class EventRecorder extends CdrGroundPlugin {
     processEventMessage(msg) { 
     	var inEventMsg = msg['/CFE/CFE_EVS_Packet_t/Payload'].sample[0];
     	var eventObj = {
-    		gndTime:     inEventMsg.gndTime,
-    	    vehicleTime: inEventMsg.msgTime,
+            gndTime:     inEventMsg.gndTime,
+            vehicleTime: inEventMsg.msgTime,
     	    appName:     trimNull(inEventMsg.value.PacketID.AppName),
     	    eventID:     inEventMsg.value.PacketID.EventID,
     	    vehicleID:   inEventMsg.value.PacketID.SpacecraftID,

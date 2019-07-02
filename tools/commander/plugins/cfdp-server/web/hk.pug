@@ -1,0 +1,38 @@
+- var pluginName = query.pluginName;
+table.table.table-condensed
+  tbody
+    tr
+      th Commands Accepted 
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/cmdAcceptCount'}]}) ---
+      td
+    tr
+      th Commands Rejected
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/cmdRejectCount'}]}) ---
+      td
+    tr
+      th PDU In Count
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/pduInCount'}]}) ---
+      td
+    tr
+      th PDU Out Count
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/pduOutCount'}]}) ---
+      td
+    tr
+      th File Rx Count
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/fileRxCount'}]}) ---
+      td
+    tr
+      th File Tx Count
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/fileTxCount'}]}) ---
+      td
+    tr
+      th Subscription Request Stream
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/inputStreamID'}]}) ---
+      td
