@@ -200,15 +200,15 @@ void BAT::InitData()
     BatteryStatusMsg.Timestamp = PX4LIB_GetPX4TimeUs();
     BatteryStatusMsg.CurrentFiltered = BAT_CURRENT_FILTER_INIT_VALUE;
     BatteryStatusMsg.VoltageFiltered = BAT_VOLTAGE_FILTER_INIT_VALUE;
-    ThrottleFiltered = BAT_THROTTLE_FILTER_INIT_VALUE;
+    m_ThrottleFiltered = BAT_THROTTLE_FILTER_INIT_VALUE;
 
-    SampleTime.Seconds = 0;
-    SampleTime.Subseconds = 0;
+    m_SampleTime.Seconds = 0;
+    m_SampleTime.Subseconds = 0;
 
-    RemainingVoltage = 0.0f;
-    RemainingCapacity = 0.0f;
-    Discharged = 0.0f;
-    DischargedLoop = 0.0f;
+    m_RemainingVoltage = 0.0f;
+    m_RemainingCapacity = 0.0f;
+    m_Discharged = 0.0f;
+    m_DischargedLoop = 0.0f;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -448,19 +448,19 @@ void BAT::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void BAT::ReportHousekeeping()
 {
-    OS_MutSemTake(Mutex);
+    OS_MutSemTake(BatteryMutex);
     HkTlm.Timestamp = BatteryStatusMsg.Timestamp;
     HkTlm.Voltage = BatteryStatusMsg.Voltage;
     HkTlm.VoltageFiltered = BatteryStatusMsg.VoltageFiltered;
     HkTlm.Current = BatteryStatusMsg.Current;
     HkTlm.CurrentFiltered = BatteryStatusMsg.CurrentFiltered;
-    HkTlm.Discharged = BatteryStatusMsg.Discharged;
+    HkTlm.m_Discharged = BatteryStatusMsg.m_Discharged;
     HkTlm.Remaining = BatteryStatusMsg.Remaining;
     HkTlm.Scale = BatteryStatusMsg.Scale;
     HkTlm.CellCount = BatteryStatusMsg.CellCount;
     HkTlm.Connected = BatteryStatusMsg.Connected;
     HkTlm.Warning = BatteryStatusMsg.Warning;
-    OS_MutSemGive(Mutex);
+    OS_MutSemGive(BatteryMutex);
 
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&HkTlm);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&HkTlm);
@@ -572,30 +572,30 @@ void BAT::AppMain()
 
 void BAT::PublishBatteryStatus(void)
 {
-    OS_MutSemTake(Mutex);
+    OS_MutSemTake(BatteryMutex);
     
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&BatteryStatusMsg);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&BatteryStatusMsg);
 
-    OS_MutSemGive(Mutex);
+    OS_MutSemGive(BatteryMutex);
 }
 
 boolean  BAT::ChildContinueExec(void)
 {
     boolean result;
 
-    OS_MutSemTake(Mutex);
-    result = ChildContinueFlag;
-    OS_MutSemGive(Mutex);
+    OS_MutSemTake(BatteryMutex);
+    result = m_ChildContinueFlag;
+    OS_MutSemGive(BatteryMutex);
 
     return result;
 }
 
 void BAT::StopChild(void)
 {
-    OS_MutSemTake(Mutex);
-    ChildContinueFlag = false;
-    OS_MutSemGive(Mutex);
+    OS_MutSemTake(BatteryMutex);
+    m_ChildContinueFlag = false;
+    OS_MutSemGive(BatteryMutex);
 }
 
 int32 BAT::InitListenerTask(void)
@@ -603,13 +603,13 @@ int32 BAT::InitListenerTask(void)
     int32 Status = CFE_SUCCESS;
 
     /* Create mutex for shared data */
-    Status = OS_MutSemCreate(&Mutex, BAT_MUTEX_NAME, 0);
+    Status = OS_MutSemCreate(&BatteryMutex, BAT_MUTEX_NAME, 0);
     if (Status != CFE_SUCCESS)
     {
         goto end_of_function;
     }
 
-    ChildContinueFlag = true;
+    m_ChildContinueFlag = true;
 
     Status= CFE_ES_CreateChildTask(&ListenerTaskID,
                                    BAT_LISTENER_TASK_NAME,
@@ -645,12 +645,12 @@ void BAT::ListenerTaskMain(void)
     {
         float voltage = 0.0f;
         float current = 0.0f;
-        float filteredThrottle = GetFilteredThrottle(CVT.ActuatorControls0.Control[PX4_ACTUATOR_CONTROL_THROTTLE]);
+        m_ThrottleFiltered = GetFilteredThrottle(CVT.ActuatorControls0.Control[PX4_ACTUATOR_CONTROL_THROTTLE]);
 
         iStatus = ReadDevice(voltage, current);
         if(iStatus == CFE_SUCCESS)
         {
-            OS_MutSemTake(Mutex);
+            OS_MutSemTake(BatteryMutex);
 
             voltage = voltage * ConfigTblPtr->VoltageScale;
             current = current * ConfigTblPtr->CurrentScale;
@@ -660,16 +660,17 @@ void BAT::ListenerTaskMain(void)
             BatteryStatusMsg.VoltageFiltered = GetFilteredVoltage(voltage);
             BatteryStatusMsg.Current = current;
             BatteryStatusMsg.CurrentFiltered = GetFilteredCurrent(current);
-            BatteryStatusMsg.Discharged = GetDischarged(current);
-            BatteryStatusMsg.Remaining = GetRemaining(voltage, current,
-                    CVT.ActuatorControls0.Control[PX4_ACTUATOR_CONTROL_THROTTLE],
-                    CVT.ActuatorArmed.Armed);
+            BatteryStatusMsg.m_Discharged = GetDischarged(current);
+            BatteryStatusMsg.Remaining = GetRemaining(voltage, 
+                                                      current,
+                                                      m_ThrottleFiltered,
+                                                      CVT.ActuatorArmed.Armed);
             BatteryStatusMsg.Scale = GetScale();
             BatteryStatusMsg.CellCount = ConfigTblPtr->NumCells;
             BatteryStatusMsg.Connected = true;
             BatteryStatusMsg.Warning = GetWarningSeverity(BatteryStatusMsg.Remaining);
 
-            OS_MutSemGive(Mutex);
+            OS_MutSemGive(BatteryMutex);
         }
     }
 
@@ -724,7 +725,7 @@ float BAT::GetFilteredThrottle(float Throttle)
 {
     float newThrottleFiltered = 0.0f;
 
-    if(ThrottleFiltered < 0.0f)
+    if(m_ThrottleFiltered < 0.0f)
     {
         newThrottleFiltered = Throttle;
     }
@@ -744,86 +745,90 @@ float BAT::GetFilteredThrottle(float Throttle)
 
 float BAT::GetDischarged(float Current)
 {
-    CFE_TIME_SysTime_t zeroTime;
-    zeroTime.Seconds = 0;
-    zeroTime.Subseconds = 0;
+	CFE_TIME_SysTime_t zeroTime;
+	CFE_TIME_SysTime_t msgTime;
+	zeroTime.Seconds = 0;
+	zeroTime.Subseconds = 0;
 
-    if(Current < 0.0f)
-    {
-        /* Not a valid measurement.  Because the measurement was invalid we
-         * need to stop integration and re-init8ialize with the next valid
-         * measurement. */
-        SampleTime.Seconds = 0;
-        SampleTime.Subseconds = 0;
-    }
+	if(Current < 0.0f)
+	{
+		/* Not a valid measurement.  Because the measurement was invalid we
+		 * need to stop integration and re-init8ialize with the next valid
+		 * measurement. */
+		m_SampleTime.Seconds = 0;
+		m_SampleTime.Subseconds = 0;
+	}
 
-    /* Check to see if we have read a valid measurement yet.  If not, ignore
-     * the first measurement since we don't know dT yet. */
-    if(CFE_TIME_Compare(SampleTime, zeroTime) != CFE_TIME_EQUAL)
-    {
-        CFE_TIME_SysTime_t currentTime = CFE_TIME_GetMET();
-        CFE_TIME_SysTime_t dSysTime = CFE_TIME_Subtract(currentTime, SampleTime);
-        const float dt = dSysTime.Seconds + (CFE_TIME_Sub2MicroSecs(dSysTime.Subseconds)* 0.000001f);
+	/* Check to see if we have read a valid measurement yet.  If not, ignore
+	 * the first measurement since we don't know dT yet. */
+	if(CFE_TIME_Compare(m_SampleTime, zeroTime) != CFE_TIME_EQUAL)
+	{
+		CFE_TIME_SysTime_t currentTime = CFE_TIME_GetMET();
+		CFE_TIME_SysTime_t dSysTime = CFE_TIME_Subtract(currentTime, m_SampleTime);
+		float dt = dSysTime.Seconds + (CFE_TIME_Sub2MicroSecs(dSysTime.Subseconds)* 0.000001);
 
-        /* Integrate the current to calculate the new discharge, but calculate
-         * it using mAh units. */
-        //Discharged += Discharged + (Current * dt / 1000.0f / 3600.0f); // TODO: Verify this!
-        DischargedLoop = (Current * 1000.0f) * (dt / 3600.0f);
-        Discharged += DischargedLoop;
+		/* Integrate the current to calculate the new discharge, but calculate
+		 * it using mAh units. */
+		m_Discharged += m_Discharged + (Current * dt / 1000.0 / 3600.0f);
 
-        /* Finally, set the message time to the current time. */
-        SampleTime.Seconds = currentTime.Seconds;
-        SampleTime.Subseconds = currentTime.Subseconds;
-    }
+		/* Finally, set the message time to the current time. */
+		m_SampleTime.Seconds = currentTime.Seconds;
+		m_SampleTime.Subseconds = currentTime.Subseconds;
+	}
 
-    return Discharged;
+	return m_Discharged;
 }
 
-float BAT::GetRemaining(float Voltage, float Current, float ThrottleNormalized, boolean Armed)
+
+float BAT::GetRemaining(float Voltage, float Current, float ThrottleNormalized, bool Armed)
 {
-    /* Remaining battery capacity based on voltage */
-	float cellVoltage = Voltage / ConfigTblPtr->NumCells;
-	float Remaining = 0.0f;
+	float remaining = 0.0f;
+	float batVEmptyDynamic = 0.0f;
+	float voltageRange = 0.0f;
+	float rVoltage = 0.0f;
+	float rVoltageFilt = 0.0f;
+	float rCap = 0.0f;
+	float rCapFilt = 0.0f;
 
-	/* Correct battery voltage locally for load drop to avoid estimation fluctuations */
-	if (ConfigTblPtr->RInternal >= 0.f)
+	if(ConfigTblPtr->RInternal > 0.0f)
 	{
-		cellVoltage += ConfigTblPtr->RInternal * Current;
+		batVEmptyDynamic = ConfigTblPtr->VEmpty - (Current * ConfigTblPtr->RInternal);
 	}
 	else
 	{
-		/* Assume linear relation between throttle and voltage drop */
-		cellVoltage += ThrottleNormalized * ConfigTblPtr->VLoadDrop;
+		/* Assume 10% voltage drop of the full drop range with motors idle */
+		float thr = (Armed) ? ((fabsf(ThrottleNormalized) + 0.1f) / 1.1f) : 0.0f;
+
+		batVEmptyDynamic = ConfigTblPtr->VEmpty - (ConfigTblPtr->VLoadDrop * thr);
 	}
 
-	RemainingVoltage = math::gradual(cellVoltage, ConfigTblPtr->VEmpty, ConfigTblPtr->VFull, 0.f, 1.f);
+	/* The range from full to empty is the same for batteries under load and
+	 * without load, since the voltage drop applies to both the full and
+	 * empty state. */
+	voltageRange = ConfigTblPtr->VFull - ConfigTblPtr->VEmpty;
 
-	/* Choose which quantity we're using for final reporting */
-	if (ConfigTblPtr->Capacity > 0.f) 
+	/* Remaining battery capacity based on voltage. */
+	rVoltage = (Voltage - (ConfigTblPtr->NumCells * batVEmptyDynamic))
+			/ (ConfigTblPtr->NumCells * voltageRange);
+	rVoltageFilt = m_RemainingVoltage * 0.99f + rVoltage * 0.01f;
+	m_RemainingVoltage = rVoltageFilt;
+
+	/* Remaining battery capacity based on used current integrated time. */
+	rCap = 1.0f - m_Discharged / ConfigTblPtr->Capacity;
+	rCapFilt = m_RemainingCapacity * 0.99f + rCap * 0.01f;
+
+	m_RemainingCapacity = rCapFilt;
+
+	if(ConfigTblPtr->Capacity > 0.0f)
 	{
-		/* If battery capacity is known, fuse voltage measurement with used capacity */
-		if (BatteryStatusMsg.VoltageFiltered < 0.0f) 
-		{
-			/* Initialization of the estimation state */
-			Remaining = RemainingVoltage;
-		}
-		else
-		{
-			/* The lower the voltage the more adjust the estimate with it to avoid deep discharge */
-			const float weightV = 3e-4f * (1 - RemainingVoltage);
-			Remaining = (1 - weightV) * Remaining + weightV * RemainingVoltage;
-			/* Directly apply current capacity slope calculated using current */
-			Remaining -= DischargedLoop / ConfigTblPtr->Capacity;
-			Remaining = math::max(Remaining, 0.f);
-		}
+		remaining = fminf(m_RemainingVoltage, m_RemainingCapacity);
 	}
 	else
 	{
-		/* Else use voltage */
-		Remaining = RemainingVoltage;
+		remaining = m_RemainingVoltage;
 	}
 
-    return Remaining;
+	return remaining;
 }
 
 PX4_BatteryWarningSeverity_t BAT::GetWarningSeverity(float Remaining)
@@ -850,7 +855,7 @@ float BAT::GetScale(void)
 {
     float scale = 0.0;
     float voltageRange = ConfigTblPtr->VFull - ConfigTblPtr->VEmpty;
-    float batV = ConfigTblPtr->VEmpty + (voltageRange * RemainingVoltage);
+    float batV = ConfigTblPtr->VEmpty + (voltageRange * m_RemainingVoltage);
 
     /* Reusing capacity calculation to get single cell voltage before drop. */
     scale = ConfigTblPtr->VFull / batV;
