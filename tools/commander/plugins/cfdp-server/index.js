@@ -177,12 +177,12 @@ class CFDPServer extends CdrGroundPlugin {
     	var newTransaction = undefined;
     	
         if(typeof this.Transactions.RX.Active[transID] === 'undefined') {
-        	newTransaction = {};
+            newTransaction = {};
         	
-        	newTransaction.stateMachine = this.allocClass1RXStateMachine(rxConfig);
-        	newTransaction.service = XState.interpret(newTransaction.stateMachine).start();
+            newTransaction.stateMachine = this.allocClass1RXStateMachine(rxConfig);
+            newTransaction.service = XState.interpret(newTransaction.stateMachine).start();
         	
-        	this.Transactions.RX.Active[transID] = newTransaction;
+            this.Transactions.RX.Active[transID] = newTransaction;
         }
         
         return newTransaction;
@@ -452,6 +452,8 @@ class CFDPServer extends CdrGroundPlugin {
     
     
     getRxConfig(dstPath) {
+        var rxConfig = undefined;
+        
     	/* Find the configuration. */
     	for(var i = 0; i < this.rxConfigs.length; ++i) {
     	    if(dstPath.startsWith(this.rxConfigs[i].DestBasePath)) {
