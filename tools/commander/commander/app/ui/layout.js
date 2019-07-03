@@ -46,10 +46,13 @@ function InitLayout( mlyt ) {
     }
   } );
   /* occurs very frequetly */
-  mlyt.on( "stateChanged", function() {
+  mlyt.on( "stateChanged", function(obj) {
     InitScrollBar();
   } );
-  
+
+  mlyt.on( "stateChanged", function(obj) {
+      $(document).trigger('commander-layout-changed');
+  } );
 }
 
 /**
