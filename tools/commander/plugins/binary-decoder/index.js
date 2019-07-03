@@ -690,8 +690,7 @@ class BinaryDecoder extends CdrGroundPlugin {
                         /* This field is truncated. */
                         fieldLength = ( buffer.length - ( bitOffset / 8 ) );
                     }
-
-                    value = buffer.toString( 'utf8', bitOffset / 8, fieldLength );
+                    
                     break;
 
                 case 'uint16':
@@ -969,7 +968,7 @@ class BinaryDecoder extends CdrGroundPlugin {
                         fieldLength = ( buffer.length - ( bitOffset / 8 ) );
                     }
 
-                    value = buffer.toString( 'utf8', bitOffset / 8, fieldLength );
+                    value = buffer.toString( 'utf8', bitOffset / 8, (bitOffset / 8) + fieldLength );
                     break;
 
                 case 'uint16':
