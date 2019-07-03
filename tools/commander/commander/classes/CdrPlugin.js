@@ -6,6 +6,7 @@ var express = require('express');
 const Emitter = require('events').EventEmitter;
 var mergeJSON = require('merge-json');
 const autoBind = require('auto-bind');
+const Handlebars = require('handlebars');
 
 /* Content Types */
 const ContentTypeEnum = Object.freeze({
@@ -164,9 +165,17 @@ class CdrPlugin extends Emitter {
                 });
             } else if(path.extname(fullFilePath) === '.lyt') {
                 global.NODE_APP.get(inPath, function(req, res) {
-                    self.readJSONFile(fullFilePath, function(err, json) {
+                    var json = fs.readFileSync(fullFilePath, 'utf8');
+
+                    if(content.hasOwnProperty('handlebarsContext')) {
+                        var layoutString = JSON.stringify(json);
+                        var template = Handlebars.compile(layoutString);
+                        var instantiatedContent = template(content.handlebarsContext);
+                        var newJSON = JSON.parse(instantiatedContent);
+                        res.send(newJSON);
+                    } else {
                         res.send(json);
-                    });
+                    }
                 });
             }
 

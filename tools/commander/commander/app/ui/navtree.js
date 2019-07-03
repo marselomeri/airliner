@@ -90,8 +90,8 @@ function NodeSelected( e, node ) {
       myLayout.selectedItem.addChild( newItemConfig );
     }
   } else if ( node.type === 'config' ) {
-	window.open(node.href,"_self");
-	location.reload(true);
+    window.open(node.href,"_self");
+    location.reload(true);
   }
 }
 

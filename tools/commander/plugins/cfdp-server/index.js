@@ -884,9 +884,6 @@ class CFDPServer extends CdrGroundPlugin {
     
     getPhysicalTxPath(logicalPath) {
         var txConfig = this.getTxConfig(logicalPath);
-
-        console.log(logicalPath);
-        console.log(txConfig);
         
         var physicalPath = path.join(txConfig.PhyBasePath, logicalPath);
         

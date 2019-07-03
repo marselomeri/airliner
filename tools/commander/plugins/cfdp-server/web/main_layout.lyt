@@ -54,7 +54,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/ground/cfdp-server/hk?pluginName=cfdp-server"
+        "link": "/ground/cfdp-server/hk?pluginName={{pluginName}}"
        },
        "isClosable": true,
        "reorderEnabled": true
