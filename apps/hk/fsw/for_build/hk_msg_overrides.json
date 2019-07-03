@@ -3,11 +3,11 @@
         "apps": {
             "HK": {
                 "operations": {
-                    "Noop":              { "airliner_cc":  0, "macro": "HK_CMD_MID",               "airliner_msg": "HK_NoArgCmd_t"     },
-                    "Reset":             { "airliner_cc":  1, "macro": "HK_CMD_MID",               "airliner_msg": "HK_NoArgCmd_t"     },
+                    "Noop":              { "airliner_cc":  0, "macro": "HK_CMD_MID",               "airliner_msg": "CFE_SB_CmdHdr_t"   },
+                    "Reset":             { "airliner_cc":  1, "macro": "HK_CMD_MID",               "airliner_msg": "CFE_SB_CmdHdr_t"   },
                     "HK_HkPacket_t":     {                    "macro": "HK_HK_TLM_MID",            "airliner_msg": "HK_HkPacket_t"     },
                     "HK_Send_Out_Msg_t": {                    "macro": "HK_SEND_COMBINED_PKT_MID", "airliner_msg": "HK_Send_Out_Msg_t" },
-                    "HK_SendHk":         { "airliner_cc":  0, "macro": "HK_SEND_HK_MID",           "airliner_msg": "HK_NoArgCmd_t"     }
+                    "HK_SendHk":         { "airliner_cc":  0, "macro": "HK_SEND_HK_MID",           "airliner_msg": "CFE_SB_CmdHdr_t"   }
                 },    
                 "scheduler": {
                     "activities": [
