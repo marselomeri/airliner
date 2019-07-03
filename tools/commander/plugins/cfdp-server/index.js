@@ -141,7 +141,6 @@ class CFDPServer extends CdrGroundPlugin {
     	        Completed: {},
     	    }
     	};
-    	
     	var self = this;
         
         /* Initialize the configuration. */
@@ -199,7 +198,7 @@ class CFDPServer extends CdrGroundPlugin {
     		    strict: true,
     		    context: {
     		    	config:  rxConfig,
-    		    	TempDir: config.get('TempDir')
+    		    	TempDir: this.TempDir
     		    },
     		    states: {
     		        WaitForMetaData: {
@@ -300,7 +299,7 @@ class CFDPServer extends CdrGroundPlugin {
                             console.log('*** storeMetadata ***');
                             context.srcFileName = event.pdu.meta.srcFileName;
                             context.dstFileName = event.pdu.meta.destFileName;
-                            context.tmpFileName = path.join(context.TempDir, context.dstFileName);
+                            context.tmpFileName = path.join(this.TempDir, context.dstFileName);
 
                             this.createSubDirectories(context.tmpFileName);
     		        	
@@ -373,30 +372,32 @@ class CFDPServer extends CdrGroundPlugin {
             allowed: 'strict'
         } );
         
-        config.name = name;
+        config.name = name;        
         
         /* Create the temporary and base directories. */
-        var tmpDir = config.get('TempDir');
-        if (!fs.existsSync(tmpDir)) {
-            this.createSubDirectoriesFull(tmpDir);
+        this.TempDir = path.join(global.CDR_WORKSPACE, config.get('TempDir'));
+        if (!fs.existsSync(this.TempDir)) {
+            this.createSubDirectoriesFull(this.TempDir);
         } else {
-            this.DeleteFolderRecursive(tmpDir);
+            this.DeleteFolderRecursive(this.TempDir);
         }
     	
-    	var rxConfigs = config.get('RX');
-    	for(var i = 0; i < rxConfigs.length; ++i) {
-    		var rxConfig = rxConfigs[i];
+    	this.rxConfigs = config.get('RX');
+    	for(var i = 0; i < this.rxConfigs.length; ++i) {
+    	    var rxConfig = this.rxConfigs[i];
+    	    rxConfig.PhyBasePath = path.join(global.CDR_WORKSPACE, rxConfig.PhyBasePath);
     	    if (!fs.existsSync(rxConfig.PhyBasePath)) {
     	    	this.createSubDirectoriesFull(rxConfig.PhyBasePath);
-    		}
+    	    }
     	}
     	
-    	var txConfigs = config.get('TX');
-    	for(var i = 0; i < txConfigs.length; ++i) {
-  		    var txConfig = txConfigs[i];
+    	this.txConfigs = config.get('TX');
+    	for(var i = 0; i < this.txConfigs.length; ++i) {
+            var txConfig = this.txConfigs[i];
+            txConfig.PhyBasePath = path.join(global.CDR_WORKSPACE, txConfig.PhyBasePath);
     	    if (!fs.existsSync(txConfig.PhyBasePath)) {
     	    	this.createSubDirectoriesFull(txConfig.PhyBasePath);
-    		}
+    	    }
     	}
     }
     
@@ -451,14 +452,11 @@ class CFDPServer extends CdrGroundPlugin {
     
     
     getRxConfig(dstPath) {
-    	var rxConfig = undefined;
-    	var rxConfigs = config.get('RX');
-
     	/* Find the configuration. */
-    	for(var i = 0; i < rxConfigs.length; ++i) {
-    		if(dstPath.startsWith(rxConfigs[i].DestBasePath)) {
-    			rxConfig = rxConfigs[i];
-    		}
+    	for(var i = 0; i < this.rxConfigs.length; ++i) {
+    	    if(dstPath.startsWith(this.rxConfigs[i].DestBasePath)) {
+    		rxConfig = this.rxConfigs[i];
+    	    }
     	}
     	
         return rxConfig;
@@ -468,7 +466,6 @@ class CFDPServer extends CdrGroundPlugin {
     
     getTxConfig(dstPath) {
         var txConfig = undefined;
-        var txConfigs = config.get('TX');
 
         ///* Find the configuration. */
         //for(var i = 0; i < txConfigs.length; ++i) {
@@ -897,7 +894,7 @@ class CFDPServer extends CdrGroundPlugin {
     
     
     getPhysicalTempPath(logicalPath) {
-        var physicalPath = path.join(config.get('TempDir'), logicalPath);
+        var physicalPath = path.join(this.TempDir, logicalPath);
         
         return physicalPath;
     }
