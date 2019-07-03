@@ -65,8 +65,11 @@ extern "C" {
 
 #define BAT_LISTENER_TASK_NAME          "BAT_LISTENER"
 #define BAT_LISTENER_TASK_STACK_SIZE    16000
-#define BAT_LISTENER_TASK_PRIORITY        103
-#define BAT_MUTEX_NAME                     "BAT_MUTEX"
+#define BAT_LISTENER_TASK_PRIORITY      103
+#define BAT_MUTEX_NAME                  "BAT_MUTEX"
+#define BAT_CURRENT_FILTER_INIT_VALUE   (-1.0f)
+#define BAT_VOLTAGE_FILTER_INIT_VALUE   (-1.0f)
+#define BAT_THROTTLE_FILTER_INIT_VALUE  (-1.0f)
 
 extern "C" void BAT_ListenerTaskMain();
 
@@ -118,13 +121,16 @@ public:
 
     uint32 Mutex;
 
-    bool ChildContinueFlag;
+    boolean ChildContinueFlag;
 
     CFE_TIME_SysTime_t SampleTime;
 
     float RemainingVoltage;
     float RemainingCapacity;
     float Discharged;
+    float DischargedLoop;
+    
+    float ThrottleFiltered;
 
     BAT_CurrentValueTable_t CVT;
 
@@ -355,13 +361,14 @@ private:
     **
     *************************************************************************/
     int32 AcquireConfigPointers(void);
-    bool  ChildContinueExec(void);
+    boolean  ChildContinueExec(void);
     void  StopChild(void);
     int32 InitListenerTask(void);
     float GetFilteredVoltage(float Voltage);
     float GetFilteredCurrent(float Current);
+    float GetFilteredThrottle(float Throttle);
     float GetDischarged(float Current);
-    float GetRemaining(float Voltage, float Current, float ThrottleNormalized, bool Armed);
+    float GetRemaining(float Voltage, float Current, float ThrottleNormalized, boolean Armed);
     PX4_BatteryWarningSeverity_t GetWarningSeverity(float Remaining);
     float GetScale(void);
 
