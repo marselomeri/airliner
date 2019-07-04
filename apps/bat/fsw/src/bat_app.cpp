@@ -208,7 +208,6 @@ void BAT::InitData()
     m_RemainingVoltage = 0.0f;
     m_RemainingCapacity = 0.0f;
     m_Discharged = 0.0f;
-    m_DischargedLoop = 0.0f;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -454,7 +453,7 @@ void BAT::ReportHousekeeping()
     HkTlm.VoltageFiltered = BatteryStatusMsg.VoltageFiltered;
     HkTlm.Current = BatteryStatusMsg.Current;
     HkTlm.CurrentFiltered = BatteryStatusMsg.CurrentFiltered;
-    HkTlm.m_Discharged = BatteryStatusMsg.m_Discharged;
+    HkTlm.Discharged = BatteryStatusMsg.Discharged;
     HkTlm.Remaining = BatteryStatusMsg.Remaining;
     HkTlm.Scale = BatteryStatusMsg.Scale;
     HkTlm.CellCount = BatteryStatusMsg.CellCount;
@@ -660,7 +659,7 @@ void BAT::ListenerTaskMain(void)
             BatteryStatusMsg.VoltageFiltered = GetFilteredVoltage(voltage);
             BatteryStatusMsg.Current = current;
             BatteryStatusMsg.CurrentFiltered = GetFilteredCurrent(current);
-            BatteryStatusMsg.m_Discharged = GetDischarged(current);
+            BatteryStatusMsg.Discharged = GetDischarged(current);
             BatteryStatusMsg.Remaining = GetRemaining(voltage, 
                                                       current,
                                                       m_ThrottleFiltered,
@@ -731,7 +730,7 @@ float BAT::GetFilteredThrottle(float Throttle)
     }
     else
     {
-        newThrottleFiltered = ThrottleFiltered * 0.99f + Throttle * 0.01f;
+        newThrottleFiltered = m_ThrottleFiltered * 0.99f + Throttle * 0.01f;
     }
     
     /* Don't propogate an error is this isn't a valid number */
@@ -780,7 +779,7 @@ float BAT::GetDischarged(float Current)
 }
 
 
-float BAT::GetRemaining(float Voltage, float Current, float ThrottleNormalized, bool Armed)
+float BAT::GetRemaining(float Voltage, float Current, float ThrottleNormalized, boolean Armed)
 {
 	float remaining = 0.0f;
 	float batVEmptyDynamic = 0.0f;
