@@ -325,8 +325,7 @@ private:
     /** \brief Initialize the BAT configuration tables.
     **
     **  \par Description
-    **       This function initializes BAT's configuration tables.  This
-    **       includes <TODO>.
+    **       This function initializes BAT's configuration table.
     **
     **  \par Assumptions, External Events, and Notes:
     **       None

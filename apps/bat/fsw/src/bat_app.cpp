@@ -116,8 +116,8 @@ int32 BAT::InitPipe()
 
     /* Init schedule pipe and subscribe to wakeup messages */
     iStatus = CFE_SB_CreatePipe(&SchPipeId,
-            BAT_SCH_PIPE_DEPTH,
-            BAT_SCH_PIPE_NAME);
+                                BAT_SCH_PIPE_DEPTH,
+                                BAT_SCH_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
         iStatus = CFE_SB_SubscribeEx(BAT_WAKEUP_MID, SchPipeId, CFE_SB_Default_Qos, BAT_WAKEUP_MID_MAX_MSG_COUNT);
@@ -157,8 +157,8 @@ int32 BAT::InitPipe()
 
     /* Init command pipe and subscribe to command messages */
     iStatus = CFE_SB_CreatePipe(&CmdPipeId,
-            BAT_CMD_PIPE_DEPTH,
-            BAT_CMD_PIPE_NAME);
+                                BAT_CMD_PIPE_DEPTH,
+                                BAT_CMD_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
         /* Subscribe to command messages */
@@ -415,12 +415,13 @@ void BAT::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
             case BAT_NOOP_CC:
             {
                 HkTlm.usCmdCnt++;
-                (void) CFE_EVS_SendEvent(BAT_CMD_NOOP_EID, CFE_EVS_INFORMATION,
-                    "Recvd NOOP. Version %d.%d.%d.%d",
-                    BAT_MAJOR_VERSION,
-                    BAT_MINOR_VERSION,
-                    BAT_REVISION,
-                    BAT_MISSION_REV);
+                (void) CFE_EVS_SendEvent(BAT_CMD_NOOP_EID, 
+                                         CFE_EVS_INFORMATION,
+                                         "Recvd NOOP. Version %d.%d.%d.%d",
+                                         BAT_MAJOR_VERSION,
+                                         BAT_MINOR_VERSION,
+                                         BAT_REVISION,
+                                         BAT_MISSION_REV);
                 break;
             }
             case BAT_RESET_CC:
@@ -559,7 +560,6 @@ void BAT::AppMain()
     }
 
     CloseDevice();
-
     StopChild();
 
     /* Stop Performance Log entry */
@@ -744,90 +744,90 @@ float BAT::GetFilteredThrottle(float Throttle)
 
 float BAT::GetDischarged(float Current)
 {
-	CFE_TIME_SysTime_t zeroTime;
-	CFE_TIME_SysTime_t msgTime;
-	zeroTime.Seconds = 0;
-	zeroTime.Subseconds = 0;
+    CFE_TIME_SysTime_t zeroTime;
+    CFE_TIME_SysTime_t msgTime;
+    zeroTime.Seconds = 0;
+    zeroTime.Subseconds = 0;
 
-	if(Current < 0.0f)
-	{
-		/* Not a valid measurement.  Because the measurement was invalid we
-		 * need to stop integration and re-init8ialize with the next valid
-		 * measurement. */
-		m_SampleTime.Seconds = 0;
-		m_SampleTime.Subseconds = 0;
-	}
+    if(Current < 0.0f)
+    {
+        /* Not a valid measurement.  Because the measurement was invalid we
+         * need to stop integration and re-init8ialize with the next valid
+         * measurement. */
+        m_SampleTime.Seconds = 0;
+        m_SampleTime.Subseconds = 0;
+    }
 
-	/* Check to see if we have read a valid measurement yet.  If not, ignore
-	 * the first measurement since we don't know dT yet. */
-	if(CFE_TIME_Compare(m_SampleTime, zeroTime) != CFE_TIME_EQUAL)
-	{
-		CFE_TIME_SysTime_t currentTime = CFE_TIME_GetMET();
-		CFE_TIME_SysTime_t dSysTime = CFE_TIME_Subtract(currentTime, m_SampleTime);
-		float dt = dSysTime.Seconds + (CFE_TIME_Sub2MicroSecs(dSysTime.Subseconds)* 0.000001);
+    /* Check to see if we have read a valid measurement yet.  If not, ignore
+     * the first measurement since we don't know dT yet. */
+    if(CFE_TIME_Compare(m_SampleTime, zeroTime) != CFE_TIME_EQUAL)
+    {
+        CFE_TIME_SysTime_t currentTime = CFE_TIME_GetMET();
+        CFE_TIME_SysTime_t dSysTime = CFE_TIME_Subtract(currentTime, m_SampleTime);
+        float dt = dSysTime.Seconds + (CFE_TIME_Sub2MicroSecs(dSysTime.Subseconds)* 0.000001);
 
-		/* Integrate the current to calculate the new discharge, but calculate
-		 * it using mAh units. */
-		m_Discharged += m_Discharged + (Current * dt / 1000.0 / 3600.0f);
+        /* Integrate the current to calculate the new discharge, but calculate
+         * it using mAh units. */
+        m_Discharged += m_Discharged + (Current * dt / 1000.0 / 3600.0f);
 
-		/* Finally, set the message time to the current time. */
-		m_SampleTime.Seconds = currentTime.Seconds;
-		m_SampleTime.Subseconds = currentTime.Subseconds;
-	}
+        /* Finally, set the message time to the current time. */
+        m_SampleTime.Seconds = currentTime.Seconds;
+        m_SampleTime.Subseconds = currentTime.Subseconds;
+    }
 
-	return m_Discharged;
+    return m_Discharged;
 }
 
 
 float BAT::GetRemaining(float Voltage, float Current, float ThrottleNormalized, boolean Armed)
 {
-	float remaining = 0.0f;
-	float batVEmptyDynamic = 0.0f;
-	float voltageRange = 0.0f;
-	float rVoltage = 0.0f;
-	float rVoltageFilt = 0.0f;
-	float rCap = 0.0f;
-	float rCapFilt = 0.0f;
+    float remaining = 0.0f;
+    float batVEmptyDynamic = 0.0f;
+    float voltageRange = 0.0f;
+    float rVoltage = 0.0f;
+    float rVoltageFilt = 0.0f;
+    float rCap = 0.0f;
+    float rCapFilt = 0.0f;
 
-	if(ConfigTblPtr->RInternal > 0.0f)
-	{
-		batVEmptyDynamic = ConfigTblPtr->VEmpty - (Current * ConfigTblPtr->RInternal);
-	}
-	else
-	{
-		/* Assume 10% voltage drop of the full drop range with motors idle */
-		float thr = (Armed) ? ((fabsf(ThrottleNormalized) + 0.1f) / 1.1f) : 0.0f;
+    if(ConfigTblPtr->RInternal > 0.0f)
+    {
+        batVEmptyDynamic = ConfigTblPtr->VEmpty - (Current * ConfigTblPtr->RInternal);
+    }
+    else
+    {
+        /* Assume 10% voltage drop of the full drop range with motors idle */
+        float thr = (Armed) ? ((fabsf(ThrottleNormalized) + 0.1f) / 1.1f) : 0.0f;
 
-		batVEmptyDynamic = ConfigTblPtr->VEmpty - (ConfigTblPtr->VLoadDrop * thr);
-	}
+        batVEmptyDynamic = ConfigTblPtr->VEmpty - (ConfigTblPtr->VLoadDrop * thr);
+    }
 
-	/* The range from full to empty is the same for batteries under load and
-	 * without load, since the voltage drop applies to both the full and
-	 * empty state. */
-	voltageRange = ConfigTblPtr->VFull - ConfigTblPtr->VEmpty;
+    /* The range from full to empty is the same for batteries under load and
+     * without load, since the voltage drop applies to both the full and
+     * empty state. */
+    voltageRange = ConfigTblPtr->VFull - ConfigTblPtr->VEmpty;
 
-	/* Remaining battery capacity based on voltage. */
-	rVoltage = (Voltage - (ConfigTblPtr->NumCells * batVEmptyDynamic))
-			/ (ConfigTblPtr->NumCells * voltageRange);
-	rVoltageFilt = m_RemainingVoltage * 0.99f + rVoltage * 0.01f;
-	m_RemainingVoltage = rVoltageFilt;
+    /* Remaining battery capacity based on voltage. */
+    rVoltage = (Voltage - (ConfigTblPtr->NumCells * batVEmptyDynamic))
+            / (ConfigTblPtr->NumCells * voltageRange);
+    rVoltageFilt = m_RemainingVoltage * 0.99f + rVoltage * 0.01f;
+    m_RemainingVoltage = rVoltageFilt;
 
-	/* Remaining battery capacity based on used current integrated time. */
-	rCap = 1.0f - m_Discharged / ConfigTblPtr->Capacity;
-	rCapFilt = m_RemainingCapacity * 0.99f + rCap * 0.01f;
+    /* Remaining battery capacity based on used current integrated time. */
+    rCap = 1.0f - m_Discharged / ConfigTblPtr->Capacity;
+    rCapFilt = m_RemainingCapacity * 0.99f + rCap * 0.01f;
 
-	m_RemainingCapacity = rCapFilt;
+    m_RemainingCapacity = rCapFilt;
 
-	if(ConfigTblPtr->Capacity > 0.0f)
-	{
-		remaining = fminf(m_RemainingVoltage, m_RemainingCapacity);
-	}
-	else
-	{
-		remaining = m_RemainingVoltage;
-	}
+    if(ConfigTblPtr->Capacity > 0.0f)
+    {
+        remaining = fminf(m_RemainingVoltage, m_RemainingCapacity);
+    }
+    else
+    {
+        remaining = m_RemainingVoltage;
+    }
 
-	return remaining;
+    return remaining;
 }
 
 PX4_BatteryWarningSeverity_t BAT::GetWarningSeverity(float Remaining)
