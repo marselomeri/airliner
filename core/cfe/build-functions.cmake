@@ -92,7 +92,13 @@ function(initialize_airliner_build)
     
     set_global_airliner_includes(${PARSED_ARGS_CONFIG})
     
-    psp_initialize_airliner_build(${ARGN})
+    if(${BUILD_CORE_FROM_SOURCE})    
+        add_subdirectory(${PARSED_ARGS_PSP}/src psp/platform)
+        add_subdirectory(${PSP_SHARED_DIR} psp/shared)
+    
+        # Parse the various CFE component CMake files that will specify the various source files.
+        add_subdirectory(${CFE_CORE_SRC}/make cfe)
+    endif()
     
     set(CFS_DOCS_DIR ${CFS_DOCS_DIR} PARENT_SCOPE)
     set(CFS_DOCS_HTML_DIR ${CFS_DOCS_HTML_DIR} PARENT_SCOPE)
@@ -100,6 +106,9 @@ function(initialize_airliner_build)
     set(HELGRIND_COMMAND ${HELGRIND_COMMAND} PARENT_SCOPE)
     set(MASSIF_COMMAND ${MASSIF_COMMAND} PARENT_SCOPE)
     set(UNIT_TEST_WRAPPER ${UNIT_TEST_WRAPPER} PARENT_SCOPE)
+    
+    psp_initialize_airliner_build(${ARGN})
+    
 endfunction(initialize_airliner_build)
 
 
