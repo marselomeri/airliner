@@ -36,7 +36,6 @@ script.
     //});
     
     session.subscribe({tlm: [{name: '/CFE/ES_HK/Payload.ShellOutput'}]}, function(tlm) {
-      console.log(tlm);
       $('#CFE_ES_ConsoleOutput').val($('#CFE_ES_ConsoleOutput').val() + tlm.engValue.stringValue);
       $('#CFE_ES_ConsoleOutput').scrollTop($('#CFE_ES_ConsoleOutput')[0].scrollHeight);
     });

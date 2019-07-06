@@ -30,6 +30,7 @@ function InitLayout( mlyt ) {
   
   setTimeout(function () {
       BindCdrDataToVariableServer(myLayout.container);
+      InitScrollBar();
   },1000);
 
   /*  handles for when itemCreated, tabsCreated, stackCreadted
@@ -45,10 +46,10 @@ function InitLayout( mlyt ) {
       }
     }
   } );
-  /* occurs very frequetly */
-  mlyt.on( "stateChanged", function(obj) {
-    InitScrollBar();
-  } );
+  //* occurs very frequetly */
+  //mlyt.on( "stateChanged", function(obj) {
+  //  InitScrollBar();
+  //} );
 
   mlyt.on( "stateChanged", function(obj) {
       $(document).trigger('commander-layout-changed');

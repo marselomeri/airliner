@@ -47,7 +47,7 @@
     "CfdpOutputStream"      : "bin-cmd-stream",
     "RX"                    : [
         {
-            "PhyBasePath"           : "cfdp/rx}",
+            "PhyBasePath"           : "cfdp/rx",
             "DestBasePath"          : "/",
             "RetainFailures"        : false,
             "Overwrite"             : true,
@@ -64,7 +64,7 @@
         },
         {
             "TransactionClass"      : 2,
-            "PhyBasePath"           : "cfdp/tx/class2}",
+            "PhyBasePath"           : "cfdp/tx/class2",
             "DestinationPath"       : "/cf/uplink",
             "DeleteOnSuccess"       : true,
             "CreateSubDirectories"  : true

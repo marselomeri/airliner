@@ -308,7 +308,6 @@ class CFDPServer extends CdrGroundPlugin {
     		        completeFile: (context, event) => {
     		            console.log('*** completeFile ***');
     		            var self = this;
-    		            console.log(context);
     		            fs.closeSync(context.fd);
     		            context.absDstFileName = path.join(context.config.PhyBasePath, context.dstFileName);
     		            this.createSubDirectories(context.absDstFileName);
@@ -699,8 +698,6 @@ class CFDPServer extends CdrGroundPlugin {
             	    	        offset = offset + pdu.meta.option.Length;
             	    	    }
         	    	}
-        	    	
-                        console.log(pdu);
                         
         	    	break;
         	    }
@@ -1001,8 +998,6 @@ class CFDPServer extends CdrGroundPlugin {
                 var requestedPath = req.query.path || '/';
                 var physicalPath = self.getPhysicalTempPath(requestedPath);
                 
-                console.log(physicalPath);
-                
                 fs.readdir(physicalPath, (err, files) => {      
                     if (err) {
                         throw err;
@@ -1016,7 +1011,6 @@ class CFDPServer extends CdrGroundPlugin {
                     
                     for(var i = 0; i < files.length; ++i) {
                         try {
-                            //console.log("processingile);
                             var isDirectory = fs.statSync(path.join(physicalPath, files[i])).isDirectory();
                             if (isDirectory) {
                                 data.push({ Name : files[i], IsDirectory: true, Path : path.join(requestedPath, files[i])  });

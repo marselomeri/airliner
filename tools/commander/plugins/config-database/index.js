@@ -301,8 +301,6 @@ class ConfigDatabase extends CdrGroundPlugin {
     cmdGetPerfIDs(cmd, cb) {
         var self = this;
         var perfIDs = undefined;
-        
-        console.log('Executing cmdGetPerfIDs');
 
         if(typeof cb !== 'function') {
             var errorText = 'Callback is required.';

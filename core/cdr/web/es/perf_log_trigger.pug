@@ -30,8 +30,6 @@ script.
             
             var cmdObj = {ops_path:'/CFE/CFE_ES_PerfSetTrigMaskCmd_t', args:{'Payload.TriggerMaskNum': iWord, 'Payload.TriggerMask': mask}};
             
-            console.log('[' + iWord + '] = ' + mask);
-            
             session.sendCommand(cmdObj);
         }
     }

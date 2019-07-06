@@ -151,15 +151,12 @@ block main
         for (var i = 0; i < log_arr.length; i++) {
             var row = []
             var children =log_arr[i][0]['childNodes'];
-            console.log(children)
             for (var j = 0; j < children.length; j++){ 
                 
                 var tx = children[j].innerText;
-                console.log(tx);
                 tx=tx.replace(/[\n\r]+/g, '');
                 row.push(tx);
             }    
-            console.log(row);
             csv.push(row.join(","));        
         }
     
