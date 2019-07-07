@@ -101,48 +101,15 @@
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "activeItemIndex": 4,
+     "activeItemIndex": 0,
      "content": [
       {
-       "title": "Event Filter",
+       "title": "Events",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
         "text": "text",
         "link": "flight/core/evs/efltr?appName=MD"
-       },
-       "isClosable": true,
-       "reorderEnabled": true
-      },
-      {
-       "title": "Tlm Ctrl",
-       "type": "component",
-       "componentName": "Blank",
-       "componentState": {
-        "text": "text",
-        "link": "flight/apps/to/tlm_app?appName=MD"
-       },
-       "isClosable": true,
-       "reorderEnabled": true
-      },
-      {
-       "title": "SCH Ctrl",
-       "type": "component",
-       "componentName": "Blank",
-       "componentState": {
-        "text": "text",
-        "link": "flight/apps/sch/app_sch?appName=MD"
-       },
-       "isClosable": true,
-       "reorderEnabled": true
-      },
-      {
-       "title": "Tbl Ctrl",
-       "type": "component",
-       "componentName": "Blank",
-       "componentState": {
-        "text": "text",
-        "link": "flight/core/tbl/tc?appName=MD"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -154,6 +121,39 @@
        "componentState": {
         "text": "text",
         "link": "flight/core/es/appctrl?appName=MD"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "Scheduling",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "flight/apps/sch/app_sch?appName=MD"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "Telemetry",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "flight/apps/to/tlm_app?appName=MD"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "Tables",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "flight/core/tbl/tbl_ctl?appName=MD"
        },
        "isClosable": true,
        "reorderEnabled": true
