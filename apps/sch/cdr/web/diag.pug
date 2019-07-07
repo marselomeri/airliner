@@ -40,8 +40,7 @@ script.
   }
   
   session.subscribe([{name:'/SCH/SCH_DiagPacket_t/EntryStates'}, {name:'/SCH/SCH_DiagPacket_t/MsgIDs'}], function(params) {
-    if(params.length == 2) {
-        session.callPlugin('sch', 'getMessageIDsAndMacros', {}, function(msgMacros) { 
+    if(params.length == 2) {        
             if(params[0].opsPath === '/SCH/SCH_DiagPacket_t/EntryStates') {
                 var sampleCount = params[0].sample.length;
                 var EntryStates = params[0].sample[sampleCount-1].value;
@@ -65,37 +64,30 @@ script.
                 var entryState = 3 & (EntryStates[WordIndex] >> BitIndex);
                 var entry = {};
                 var msgID = MsgIDs[TblIndex];
-                var msgMacro = msgID;
-                
-                for(var i = 0; i < msgMacros.length; i++) {
-                    if(msgMacros[i].msgID === msgID) {
-                        msgMacro = msgMacros[i].macro;
-                    }
-                }
                         
                 switch(entryState) {
                     case 0:
                         entry.State = 'UNUSED';
                         entry.MsgID = 0;
-                        entry.Macro = '';
+                        entry.Macro = '0x' + msgID.toString(16);
                         break;
                         
                     case 1:
                         entry.State = 'ENABLED';
                         entry.MsgID = msgID;
-                        entry.Macro = msgMacro;
+                        entry.Macro = '0x' + msgID.toString(16);
                         break;
                         
                     case 2:
                         entry.State = 'DISABLED';
                         entry.MsgID = msgID;
-                        entry.Macro = msgMacro;
+                        entry.Macro = '0x' + msgID.toString(16);
                         break;
                         
                     default:
                         entry.State = 'UNDEFINED (' + entryState + ')';
                         entry.MsgID = 0;
-                        entry.Macro = '';
+                        entry.Macro = '0x' + msgID.toString(16);
                         break;
                 }   
                 SchTable[TblIndex] = entry;
@@ -125,8 +117,38 @@ script.
 
             // Add the compiled html to the page
             $('#sch-diag-content').html(theCompiledHtml);
-        });
+            
+            /* Consolidate all the message IDs into unique message IDs so we can send 1 macro query per message ID. */
+            var uniqueMsgIDs = [];
+            for(var i = 0; i < MsgIDs.length; ++i) {
+                var found = false;
+                for(var j = 0; j < uniqueMsgIDs.length; ++j) {
+                    if(MsgIDs[i] == uniqueMsgIDs[j]) {
+                        found = true;
+                    }
+                }
+                
+                if(found == false) {
+                    uniqueMsgIDs.push(MsgIDs[i]);
+                }
+            }
+            
+            /* Now query the server for macros so we can replace the message IDs with macros. */
+            for(var i = 0; i < uniqueMsgIDs.length; ++i) {
+                var msgID = uniqueMsgIDs[i];
+                session.sendCommand({ops_path:'/config-database/getMacroFromMsgID', args: {'MsgID': uniqueMsgIDs[i]}}, function(err, result) {                    
+                    var selector = '.msgid_0x' + result.msgID.toString(16);
+                    
+                    $(selector).each(function () {
+                        $(this).text(result.macro);
+                    });
+                });
+            }
     }
+    
+    
+                 
+    
   });
                       
 script#sch-accordian-template(type='text/x-handlebars-template') 
@@ -152,7 +174,7 @@ script#sch-accordian-template(type='text/x-handlebars-template')
             | {{#each activity}}
             tr
               td {{activityID}}
-              td {{macro}}
+              td(class='msgid_{{macro}}') {{macro}}
               td {{state}}
               td
                 .btn-group(role="group")      
