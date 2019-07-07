@@ -19,13 +19,19 @@ module.exports = class CfeCdrFlightAppsPlugin extends CdrFlightAppsPlugin {
                         type: CdrFlightAppsPlugin.ContentType.LAYOUT,
                         shortDescription: 'Main',
                         longDescription: 'Main LC.',
-                        filePath: 'main.lyt'
+                        filePath: 'main_layout.lyt'
                     },
                     cdh: {
                         type: CdrFlightAppsPlugin.ContentType.PANEL,
                         shortDescription: 'Command and Data Handling',
                         longDescription: 'Command counters.',
                         filePath: 'cdh.pug'
+                    },
+                    lc: {
+                        type: CdrFlightAppsPlugin.ContentType.PANEL,
+                        shortDescription: 'LC',
+                        longDescription: 'Limit Checker - WP Results',
+                        filePath: '/lc.pug'
                     },
                     lc_0_24: {
                         type: CdrFlightAppsPlugin.ContentType.PANEL,
