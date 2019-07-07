@@ -4,29 +4,23 @@ style.
   }
   textarea,
   input{
-  background-color: var(--btn-font-color-drk);
-  border: var(--btn-font-color-drk);
-  color: green;
+    background-color: var(--btn-font-color-drk);
+    border: var(--btn-font-color-drk);
+    color: white;
   }
 
-    header
-      span.widget-icon
-        i.fa.fa-table
-      h2 Console
-    div.widget-body.table-responsive
-      form.smart-form(action='')
-        fieldset
-          section
-            label.label Output
-            label.textarea.textarea-resizable                                         
-              textarea#CFE_ES_ConsoleOutput.custom-scroll(style='font-family: monospace' rows='20') 
-            label.label Command
-            label.input                                        
-              input#CFE_ES_ConsoleCommand.input-xs(style='font-family: monospace' type='text') 
-            label.label File
-            label.input                                        
-              input#CFE_ES_ConsoleOutputFile.input-xs(style='font-family: monospace' type='text') 
-            button#CFE_ES_ConsoleSendCmd.btn.cdr-outline-primary Send
+form.smart-form(action='' style='height: 100%;')
+  fieldset(style='height: 100%;')
+    section(style='display: flex; flex-flow: column; height: 100%;')
+      textarea.textarea-resizable#CFE_ES_ConsoleOutput.custom-scroll(style='font-family: monospace; flex: 1 1 auto; width: 100%') 
+      label.label Command
+      .input-group
+        span.input-group-btn
+          button#CFE_ES_ConsoleSendCmdBtn.btn.cdr-primary(type='button' style='height: 100%;') Send
+        input#CFE_ES_ConsoleCommand.input-xs(style='font-family: monospace; flex: 1 1 auto; margin: 0 0 0 10;' type='text')
+      label.label Output File
+      label.input                                        
+        input#CFE_ES_ConsoleOutputFile.input-xs(style='font-family: monospace' type='text') 
 
 script.
   $(function () {
@@ -35,13 +29,22 @@ script.
     //  $("#CFE_ES_LastUpdate").text($.format.date(timeStamp, "MM/dd/yyyy HH:mm:ss.") + timeStamp.getMilliseconds().toString().paddingLeft("000"));
     //});
     
-    session.subscribe({tlm: [{name: '/CFE/ES_HK/Payload.ShellOutput'}]}, function(tlm) {
-      $('#CFE_ES_ConsoleOutput').val($('#CFE_ES_ConsoleOutput').val() + tlm.engValue.stringValue);
-      $('#CFE_ES_ConsoleOutput').scrollTop($('#CFE_ES_ConsoleOutput')[0].scrollHeight);
-    });
+    session.subscribe([{name:'/CFE/CFE_ES_ShellPacket_t/Payload.ShellOutput'}], function(obj) {
+        var output = obj[0].sample[0].value;
+        
+        $('#CFE_ES_ConsoleOutput').val($('#CFE_ES_ConsoleOutput').val() + output);
+        $('#CFE_ES_ConsoleOutput').scrollTop($('#CFE_ES_ConsoleOutput')[0].scrollHeight);
+    }); 
+
      
-    $('#CFE_ES_ConsoleSendCmd').click(function(){
-      session.sendCommand('/CFS/CFE_ES_ShellCmd_t', [{name:'Command', value:$('#CFE_ES_ConsoleCommand').val()},{name:'OutputFile', value:$('#CFE_ES_ConsoleOutputFile').val()}]);
+    $('#CFE_ES_ConsoleSendCmdBtn').click(function(){
+      var cmdText = $('#CFE_ES_ConsoleCommand').val();
+      var fileNameText = $('#CFE_ES_ConsoleOutputFile').val();
+      var cmdObj = {ops_path:'/CFE/CFE_ES_ShellCmd_t', args:{'Payload.CmdString': cmdText, 'Payload.OutputFilename': ''}};
+            
+      session.sendCommand(cmdObj);
+      
       $('#CFE_ES_ConsoleOutput').val($('#CFE_ES_ConsoleOutput').val() + '\n');
+      $('#CFE_ES_ConsoleCommand').val('');
     });
   });

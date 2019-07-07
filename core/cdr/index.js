@@ -100,6 +100,12 @@ module.exports = class CfeCdrPlugin extends CdrFlightPlugin {
                                 longDescription: 'Main Essential Services.',
                                 filePath: 'es/main_layout.lyt'
                             },
+                            console_main: {
+                                type: CdrFlightPlugin.ContentType.LAYOUT,
+                                shortDescription: 'Console',
+                                longDescription: 'System Console.',
+                                filePath: 'es/console_layout.lyt'
+                            },
                             perf: {
                                 type: CdrFlightPlugin.ContentType.LAYOUT,
                                 shortDescription: 'Performance',
