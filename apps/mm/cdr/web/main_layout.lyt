@@ -140,7 +140,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "flight/core/to/tlm_app?appName=MM"
+        "link": "flight/apps/to/tlm_app?appName=MM"
        },
        "isClosable": true,
        "reorderEnabled": true
