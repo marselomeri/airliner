@@ -153,7 +153,7 @@
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "activeItemIndex": 3,
+     "activeItemIndex": 1,
      "width": 47.48637189582071,
      "content": [
       {
@@ -163,6 +163,17 @@
        "componentState": {
         "text": "text",
         "link": "flight/core/evs/efltr?appName=CS"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "App Ctrl",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "/flight/core/es/appctrl?appName=CS"
        },
        "isClosable": true,
        "reorderEnabled": true
