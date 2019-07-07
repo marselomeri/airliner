@@ -48,7 +48,7 @@ DS_DestFileTable_t DS_DestFileTable =
       /* .Extension     = */ ".dat",
 
       /* .FileNameType  = */ DS_BY_COUNT,
-      /* .EnableState   = */ DS_ENABLED,
+      /* .EnableState   = */ DS_DISABLED,
       /* .MaxFileSize   = */ (1024 * 1024 * 200),         /* 200 M-bytes */
       /* .MaxFileAge    = */ (60 * 60 * 2),               /* 2 hours */
       /* .SequenceCount = */ 1000,
@@ -63,7 +63,7 @@ DS_DestFileTable_t DS_DestFileTable =
       /* .Extension     = */ ".hk",
 
       /* .FileNameType  = */ DS_BY_COUNT,
-      /* .EnableState   = */ DS_ENABLED,
+      /* .EnableState   = */ DS_DISABLED,
       /* .MaxFileSize   = */ (1024 * 1024 * 200),         /* 200 M-bytes */
       /* .MaxFileAge    = */ (60 * 60 * 2),             /* 2 hours */
       /* .SequenceCount = */ 2000,
@@ -78,7 +78,7 @@ DS_DestFileTable_t DS_DestFileTable =
       /* .Extension     = */ ".tlm",
 
       /* .FileNameType  = */ DS_BY_COUNT,
-      /* .EnableState   = */ DS_ENABLED,
+      /* .EnableState   = */ DS_DISABLED,
       /* .MaxFileSize   = */ (1024 * 1024 * 200),       /* 200 M-bytes */
       /* .MaxFileAge    = */ (60 * 60 * 2),             /* 2 hours */
       /* .SequenceCount = */ 3000,
@@ -138,7 +138,7 @@ DS_DestFileTable_t DS_DestFileTable =
       /* .Extension     = */ ".cmd",
 
       /* .FileNameType  = */ DS_BY_COUNT,
-      /* .EnableState   = */ DS_ENABLED,
+      /* .EnableState   = */ DS_DISABLED,
       /* .MaxFileSize   = */ (1024 * 1024 * 200),       /* 200 M-bytes */
       /* .MaxFileAge    = */ (60 * 60 * 2),             /* 2 hours */
       /* .SequenceCount = */ 7000,
