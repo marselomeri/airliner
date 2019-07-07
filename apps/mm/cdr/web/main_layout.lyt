@@ -44,7 +44,7 @@
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "width": 24.902329588731785,
+     "width": 36.25744524647562,
      "content": [
       {
        "type": "stack",
@@ -99,8 +99,19 @@
      "reorderEnabled": true,
      "title": "",
      "activeItemIndex": 0,
-     "width": 33.46630147168588,
+     "width": 63.742554753524395,
      "content": [
+      {
+       "title": "Events",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "/flight/core/evs/efltr?appName=MM"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
       {
        "title": "App Ctrl",
        "type": "component",
@@ -111,60 +122,28 @@
        },
        "isClosable": true,
        "reorderEnabled": true
-      }
-     ]
-    },
-    {
-     "type": "column",
-     "isClosable": true,
-     "reorderEnabled": true,
-     "title": "",
-     "width": 41.63136893958233,
-     "content": [
-      {
-       "type": "stack",
-       "header": {},
-       "isClosable": true,
-       "reorderEnabled": true,
-       "title": "",
-       "activeItemIndex": 0,
-       "height": 50,
-       "content": [
-        {
-         "title": "Tlm Ctrl",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "flight/core/to/tlm_app?appName=MM"
-         },
-         "isClosable": true,
-         "reorderEnabled": true
-        }
-       ]
       },
       {
-       "type": "stack",
-       "header": {},
+       "title": "Scheduling",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "flight/apps/sch/app_sch?appName=MM"
+       },
        "isClosable": true,
-       "reorderEnabled": true,
-       "title": "",
-       "activeItemIndex": 0,
-       "width": 100,
-       "height": 50,
-       "content": [
-        {
-         "title": "SCH Ctrl",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "flight/apps/sch/app_sch?appName=MM"
-         },
-         "isClosable": true,
-         "reorderEnabled": true
-        }
-       ]
+       "reorderEnabled": true
+      },
+      {
+       "title": "Telemetry",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "flight/core/to/tlm_app?appName=MM"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
       }
      ]
     }
