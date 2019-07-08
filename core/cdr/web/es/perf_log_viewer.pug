@@ -134,7 +134,7 @@ script.
             method: 'GET',
             dataType: 'json',
             error: function() {
-                console.log('error');
+                console.log('PerfLogViewer:: ajax error');
             },
             success: function(data) {
                 d3.select('#perfLogViewer svg').remove();

@@ -1,4 +1,4 @@
-﻿{
+{
  "settings": {
   "hasHeaders": true,
   "constrainDragToContainer": false,
@@ -20,6 +20,7 @@
   "borderGrabWidth": 15,
   "minItemHeight": 10,
   "minItemWidth": 10,
+  "headerHeight": 20,
   "dragProxyWidth": 300,
   "dragProxyHeight": 200
  },
@@ -73,7 +74,7 @@
        "isClosable": true,
        "reorderEnabled": true,
        "title": "",
-       "activeItemIndex": 2,
+       "activeItemIndex": 0,
        "height": 47.67309875141884,
        "content": [
         {
@@ -114,24 +115,78 @@
      ]
     },
     {
-     "type": "stack",
-     "header": {},
+     "type": "column",
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "activeItemIndex": 0,
      "width": 50,
      "content": [
       {
-       "title": "Event Filter",
-       "type": "component",
-       "componentName": "Blank",
-       "componentState": {
-        "text": "text",
-        "link": "flight/core/evs/efltr?appName=CFE_TIME"
-       },
+       "type": "stack",
+       "header": {},
        "isClosable": true,
-       "reorderEnabled": true
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "height": 24.494556765163296,
+       "content": [
+        {
+         "title": "Scheduling",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/apps/sch/app_sch?appName=CFE_TIME"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
+      },
+      {
+       "type": "stack",
+       "header": {},
+       "isClosable": true,
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "height": 23.34016792421536,
+       "content": [
+        {
+         "title": "Telemetry",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/apps/to/tlm_app?appName=CFE_TIME"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
+      },
+      {
+       "type": "stack",
+       "header": {},
+       "isClosable": true,
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "width": 50,
+       "height": 52.16527531062133,
+       "content": [
+        {
+         "title": "Event Filter",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "flight/core/evs/efltr?appName=CFE_TIME"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
       }
      ]
     }

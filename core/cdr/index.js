@@ -12,8 +12,6 @@ module.exports = class CfeCdrPlugin extends CdrFlightPlugin {
         config.name = 'core';
         config.webRoot = path.join( __dirname, 'web');  
         super(config);
-        
-        console.log(config);
 
         this.config = config;
         var self = this;
@@ -101,6 +99,12 @@ module.exports = class CfeCdrPlugin extends CdrFlightPlugin {
                                 shortDescription: 'Main',
                                 longDescription: 'Main Essential Services.',
                                 filePath: 'es/main_layout.lyt'
+                            },
+                            console_main: {
+                                type: CdrFlightPlugin.ContentType.LAYOUT,
+                                shortDescription: 'Console',
+                                longDescription: 'System Console.',
+                                filePath: 'es/console_layout.lyt'
                             },
                             perf: {
                                 type: CdrFlightPlugin.ContentType.LAYOUT,
@@ -429,15 +433,9 @@ module.exports = class CfeCdrPlugin extends CdrFlightPlugin {
                 }
             } )
         
-        this.namespace.recv('file-received', function(obj) {   
-            console.log('1');
+        this.namespace.recv('file-received', function(obj) {
             fs.readFile(obj.physicalPath, function(err, contents) {
-                console.log(obj.physicalPath);
-                console.log(err);
-                console.log(contents);
-                console.log(contents.length);
                 var fileHeader = self.cfeFsHeader.parse(contents); 
-            	console.log('2');
                 
                 /* Convert CFE time to Javascript time. */
                 fileHeader.Time = self.cfeTimeToJsTime( fileHeader.TimeSeconds, fileHeader.TimeSubSeconds );
@@ -445,8 +443,7 @@ module.exports = class CfeCdrPlugin extends CdrFlightPlugin {
                 /* Remove nulls from the end of the description. */
                 fileHeader.Description = fileHeader.Description.replace(/\0[\s\S]*$/g,'');
                 
-                if(fileHeader.ContentType === 0x63464531) { 
-                	console.log('3');
+                if(fileHeader.ContentType === 0x63464531) {
                     /* This is probably a CFE Table header. */
                     fileHeader.content = contents.slice(64);
 
@@ -454,7 +451,6 @@ module.exports = class CfeCdrPlugin extends CdrFlightPlugin {
                     
                     switch(fileHeader.SubType) {
                         case 4:  
-                        	console.log('4');
                     	    /* CFE_FS_ES_PERFDATA_SUBTYPE */
                             var perfLog = {Metadata: {}, DataBuffer: []};
                             var contentOffset = 76;
@@ -489,10 +485,7 @@ module.exports = class CfeCdrPlugin extends CdrFlightPlugin {
                             var data = JSON.stringify(perfLog); 
                             var outFileName = self.getDateString() + '.json';
                             var outFullPath = path.join(__dirname, 'logs', 'perf', outFileName);
-                            fs.writeFile(outFullPath, data, function (err) { 
-                            	console.log('5');
-                                console.log(err);
-                                
+                            fs.writeFile(outFullPath, data, function (err) {                                 
                                 var perfLogEntry = {
                                     binFile: obj.virtualPath,
                                     jsonFile: outFileName,

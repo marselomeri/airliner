@@ -38,14 +38,13 @@
    "isClosable": true,
    "reorderEnabled": true,
    "title": "",
-   "height": 100,
    "content": [
     {
      "type": "column",
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "width": 37.25015142337977,
+     "width": 57.91688584955287,
      "content": [
       {
        "type": "stack",
@@ -54,8 +53,8 @@
        "reorderEnabled": true,
        "title": "",
        "activeItemIndex": 0,
-       "width": 25,
-       "height": 50,
+       "width": 50,
+       "height": 14.541389302456812,
        "content": [
         {
          "title": "Command and Data Handling",
@@ -63,7 +62,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "flight/apps/md/cdh"
+          "link": "flight/apps/sc/cdh"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -77,15 +76,59 @@
        "reorderEnabled": true,
        "title": "",
        "activeItemIndex": 0,
-       "height": 50,
+       "height": 25.675249563016067,
        "content": [
         {
-         "title": "Stats",
+         "title": "General",
          "type": "component",
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "flight/apps/md/stats"
+          "link": "flight/apps/sc/gen"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
+      },
+      {
+       "type": "stack",
+       "header": {},
+       "isClosable": true,
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "height": 29.128238823895337,
+       "content": [
+        {
+         "title": "RTS",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "flight/apps/sc/rts"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
+      },
+      {
+       "type": "stack",
+       "header": {},
+       "isClosable": true,
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "height": 30.655122310631786,
+       "content": [
+        {
+         "title": "ATS",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "flight/apps/sc/ats"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -96,53 +139,32 @@
     },
     {
      "type": "stack",
-     "width": 62.749848576620224,
-     "height": 100,
+     "header": {},
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "activeItemIndex": 4,
+     "activeItemIndex": 0,
+     "height": 62.5,
+     "width": 42.08311415044713,
      "content": [
       {
-       "title": "Event Filter",
+       "title": "Events",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "flight/core/evs/efltr?appName=MD"
+        "link": "/flight/core/evs/efltr?appName=SC"
        },
        "isClosable": true,
        "reorderEnabled": true
       },
       {
-       "title": "Tlm Ctrl",
+       "title": "Telemetry",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "flight/apps/to/tlm_app?appName=MD"
-       },
-       "isClosable": true,
-       "reorderEnabled": true
-      },
-      {
-       "title": "SCH Ctrl",
-       "type": "component",
-       "componentName": "Blank",
-       "componentState": {
-        "text": "text",
-        "link": "flight/apps/sch/app_sch?appName=MD"
-       },
-       "isClosable": true,
-       "reorderEnabled": true
-      },
-      {
-       "title": "Tbl Ctrl",
-       "type": "component",
-       "componentName": "Blank",
-       "componentState": {
-        "text": "text",
-        "link": "flight/core/tbl/tc?appName=MD"
+        "link": "flight/apps/to/tlm_app?appName=SC"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -153,7 +175,29 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "flight/core/es/appctrl?appName=MD"
+        "link": "flight/core/es/appctrl?appName=SC"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "Scheduling",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "flight/apps/sch/app_sch?appName=SC"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "Tables",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "flight/core/tbl/tbl_ctl?appName=SC"
        },
        "isClosable": true,
        "reorderEnabled": true

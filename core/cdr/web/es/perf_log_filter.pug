@@ -28,8 +28,6 @@ script.
             
             var cmdObj = {ops_path:'/CFE/CFE_ES_PerfSetFilterMaskCmd_t', args:{'Payload.FilterMaskNum': iWord, 'Payload.FilterMask': mask}};
             
-            console.log('[' + iWord + '] = ' + mask);
-            
             session.sendCommand(cmdObj);
         }
     }
@@ -97,10 +95,6 @@ script.
                             $('#' + domID + '_actual').prop('checked', false);
                         } else {
                             $('#' + domID + '_actual').prop('checked', true);
-                            //console.log(iWord);
-                            //console.log(mask[iWord]);
-                            //console.log(bit);
-                            //console.log(perfID);
                         }
                     }
                 }

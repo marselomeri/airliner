@@ -1,4 +1,4 @@
-﻿{
+{
  "settings": {
   "hasHeaders": true,
   "constrainDragToContainer": false,
@@ -40,25 +40,67 @@
    "title": "",
    "content": [
     {
-     "type": "stack",
-     "header": {},
+     "type": "column",
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "activeItemIndex": 0,
-     "height": 100,
      "width": 34.76680799515445,
      "content": [
       {
-       "title": "FM Housekeeping",
-       "type": "component",
-       "componentName": "Blank",
-       "componentState": {
-        "text": "text",
-        "link": "flight/apps/fm/hk"
-       },
+       "type": "stack",
+       "header": {},
        "isClosable": true,
-       "reorderEnabled": true
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "height": 37.93503480278422,
+       "width": 34.76680799515445,
+       "content": [
+        {
+         "title": "HK",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "flight/apps/fm/hk"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
+      },
+      {
+       "type": "stack",
+       "header": {},
+       "isClosable": true,
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "height": 62.064965197215784,
+       "content": [
+        {
+         "title": "App Ctrl",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/core/es/appctrl?appName=FM"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        },
+        {
+         "title": "Tables",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/core/tbl/tbl_ctl?appName=FM"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
       }
      ]
     },
@@ -68,11 +110,11 @@
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "activeItemIndex": 0,
+     "activeItemIndex": 1,
      "width": 65.23319200484553,
      "content": [
       {
-       "title": "FM Free Space",
+       "title": "Free Space",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
@@ -94,7 +136,7 @@
        "reorderEnabled": true
       },
       {
-       "title": "FM File Info",
+       "title": "File Info",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
@@ -105,7 +147,7 @@
        "reorderEnabled": true
       },
       {
-       "title": "FM Directory Listing",
+       "title": "Directory Listing",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
@@ -116,7 +158,7 @@
        "reorderEnabled": true
       },
       {
-       "title": "Event Filter",
+       "title": "Events",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
@@ -127,7 +169,7 @@
        "reorderEnabled": true
       },
       {
-       "title": "Schedule Control",
+       "title": "Scheduling",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
@@ -138,7 +180,7 @@
        "reorderEnabled": true
       },
       {
-       "title": "Telemetry Control",
+       "title": "Telemetry",
        "type": "component",
        "componentName": "Blank",
        "componentState": {

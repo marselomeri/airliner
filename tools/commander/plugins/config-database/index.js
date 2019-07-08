@@ -82,6 +82,11 @@ class ConfigDatabase extends CdrGroundPlugin {
         /* Initialize server side commands. */
         this.initCommands();
         
+        global.COMMANDER.queryConfigDB = function(query, cb) {
+            var result = jp.query( self.defs, query );
+            cb( result );
+        };
+        
         this.logInfo( 'Initialized' );
     };
     
@@ -185,6 +190,32 @@ class ConfigDatabase extends CdrGroundPlugin {
             returnType: 'object'
         }
         this.addCommand(cmdGetPerfIDs, this.cmdGetPerfIDs);
+
+        var cmdGetMacroFromMsgID = {
+            opsPath: '/' + this.config.name + '/getMacroFromMsgID',
+            returnType: 'object',
+            args: [
+                {
+                    name:    'MsgID',
+                    type:    'uint16',
+                    bitSize: 16
+                }
+            ]
+        }
+        this.addCommand(cmdGetMacroFromMsgID, this.cmdGetMacroFromMsgID);
+
+        var cmdGetMsgIDFromMacro = {
+            opsPath: '/' + this.config.name + '/getMsgIDFromMacro',
+            returnType: 'uint16',
+            args: [
+                {
+                    name:    'macro',
+                    type:    'string',
+                    bitSize: 1024
+                }
+            ]
+        }
+        this.addCommand(cmdGetMsgIDFromMacro, this.cmdGetMsgIDFromMacro);
     };
 
 
@@ -224,6 +255,71 @@ class ConfigDatabase extends CdrGroundPlugin {
                 } else {
                     cb(undefined, parseInt(self.defs.Airliner.apps[app].operations[opName].airliner_mid));
                     this.hk.content.cmdAcceptCount++;
+                }
+            }
+        }
+    };
+
+
+    
+    cmdGetMacroFromMsgID(cmd, cb) {
+        var self = this;
+
+        if(typeof cb !== 'function') {
+            var errorText = 'Callback is required.';
+            this.logError(errorText);
+            this.hk.content.cmdRejectCount++;
+        } else if(cmd.hasOwnProperty('args') == false) {
+            var errorText = 'Invalid arguments.  MsgID is required.';
+            this.logError(errorText);
+            this.hk.content.cmdRejectCount++;
+            cb(errrorText);
+        } else {
+            var msgID = parseInt(cmd.args.MsgID);
+            this.hk.content.cmdAcceptCount++;
+                                
+            for(var appID in self.defs.Airliner.apps) {
+                var objOps = self.defs.Airliner.apps[appID].operations;
+                
+                for(var opName in objOps) {
+                    var objOp = objOps[opName];
+                    var airliner_mid = parseInt(objOp.airliner_mid);
+                    
+                    if(msgID == airliner_mid) {
+                    	cb(undefined, {msgID: msgID, macro: objOp.macro});
+                    }
+                }
+            }
+        }
+    };
+
+
+    
+    cmdGetMsgIDFromMacro(cmd, cb) {
+        var self = this;
+
+        if(typeof cb !== 'function') {
+            var errorText = 'Callback is required.';
+            this.logError(errorText);
+            this.hk.content.cmdRejectCount++;
+        } else if(cmd.hasOwnProperty('args') == false) {
+            var errorText = 'Invalid arguments.  MsgID is required.';
+            this.logError(errorText);
+            this.hk.content.cmdRejectCount++;
+            cb(errrorText);
+        } else {
+            var macro = cmd.args.macro;
+            this.hk.content.cmdAcceptCount++;
+                                
+            for(var appID in self.defs.Airliner.apps) {
+                var objOps = self.defs.Airliner.apps[appID].operations;
+                
+                for(var opName in objOps) {
+                    var objOp = objOps[opName];
+
+                    if(macro === objOp.macro) {
+                    	cb(undefined, {MsgID: parseInt(objOp.airliner_mid), Macro: macro});
+                    }
                 }
             }
         }
@@ -301,8 +397,6 @@ class ConfigDatabase extends CdrGroundPlugin {
     cmdGetPerfIDs(cmd, cb) {
         var self = this;
         var perfIDs = undefined;
-        
-        console.log('Executing cmdGetPerfIDs');
 
         if(typeof cb !== 'function') {
             var errorText = 'Callback is required.';

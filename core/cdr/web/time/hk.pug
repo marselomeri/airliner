@@ -69,18 +69,6 @@ div.widget-body
             td 
               span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HkPacket_t/Payload.Subsecs1HzAdj'}], indicator:'text'}) ---
             td
-          tr
-            th Delay at Tone
-            td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HkPacket_t/Payload.SecondsDelay'}], indicator:'text'}) ---
-            td
-              button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_AddDelayCmd'}, indicator:'cmd'}) Add Delay
-              button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SubDelayCmd'}, indicator:'cmd'}) Sub Delay
-          tr
-            th 
-            td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HkPacket_t/Payload.SubsecsDelay'}], indicator:'text'}) ---
-            td
 footer
   .btn-group
      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_StateCmd_t'}, indicator:'cmd'}) Set State

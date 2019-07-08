@@ -1041,13 +1041,6 @@ header>button {
 
 
 
-
-
-
-
-
-
-
 .cdr-outline-primary {
   border: 1px solid #25729a; 
   color: #FFFFFF;
@@ -1375,12 +1368,12 @@ header>button {
   --tt-bg:#000000e6;
   /*** Button ***/
   --btn-trasperant-color: #00008000;
-  --btn-bg-color: #ffae00;
+  --btn-bg-color: #3093c7;
   --btn-bg-hvr-color: #b78509;
   /*** Primary Button ***/
   --btn-primary-background-color: #7079ff;
   --btn-primary-background-hover-color: #b78509;
-  --btn-primary-border-color: #7079ff;
+  --btn-primary-border-color: #25729a;
   --btn-primary-footer-bg:#fff0;
   /*** Important Button ***/
   --btn-important-background-color: #dc3545;
