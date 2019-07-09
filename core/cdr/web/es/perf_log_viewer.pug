@@ -1,5 +1,5 @@
    
-style.
+style.  
     .nav-tabs > li .close {
       margin: -2px 0 0 10px;
       font-size: 18px;
@@ -19,7 +19,7 @@ style.
         fill: white; 
     }
 
-    .miniItem {
+    .perfItem {
         fill: green;
         stroke-width: 1; 
         vector-effect: non-scaling-stroke;
@@ -27,7 +27,7 @@ style.
         stroke-location: inside;
     }
 
-    .miniItemError {
+    .perfItemError {
         fill: red;
         stroke-width: 1; 
         vector-effect: non-scaling-stroke;
@@ -35,7 +35,7 @@ style.
         stroke-location: inside;
     }
 
-    .miniItemIncomplete {
+    .perfItemIncomplete {
         fill: yellow;
         stroke-width: 1; 
         vector-effect: non-scaling-stroke;
@@ -84,8 +84,14 @@ style.
     .laneText {
         fill:  white;
     }   
+    
+    .zoom {
+      cursor: move;
+      fill: none;
+      pointer-events: all;
+    }
 
-#perfLogViewer   
+#perfLogViewer 
  
 script.    
     var PerfIDs = undefined;
@@ -144,300 +150,252 @@ script.
             }
         });
     }
+
+
+
+
+
+
+    var drawPerfLogView = function(data) {  
+        var fullWidth = $('#perfLogViewer').width();    
     
-    
-    var fullHeight;
-    
-    function drawPerfLogView (data) {   
-        var fullWidth = $('#perfLogViewer').width(); 
         var lanes = data.lanes
         var items = data.items
         var laneLength = data.lanes.length;
+        var focusHeight = laneLength * 25 + 50;
+        var fullHeight = focusHeight + 100;
+        $('#perfLogViewer').height(fullHeight);
         
         var timeBegin = GetSmallestTimerValue(items);
         var timeEnd = GetLargestTimerValue(items); 
-         
-        var m = [20, 15, 20, 225]; //top right bottom left
-        var width = fullWidth - m[1] - m[3];
-        var miniHeight = laneLength * 12 + 50;
-        var mainHeight = laneLength * 25 + 50;
-        fullHeight = mainHeight + miniHeight;
-        $('#perfLogViewer').height(fullHeight);
-        fullHeight = fullHeight + m[0] + m[2];
         
-        //scales
-        var xMini = d3.scale.linear()
-                .domain([timeBegin, timeEnd])
-                .range([0, width]).nice();
-        var xMain = d3.scale.linear()
-                .range([0, width]).nice();
-        var yMain = d3.scale.linear()
-                .domain([0, laneLength])
-                .range([0, mainHeight]);
-        var yMini = d3.scale.linear()
-                .domain([0, laneLength])
-                .range([0, miniHeight]);
-
-        var chartHeight = fullHeight - 55;
-        var chart = d3.select('#perfLogViewer')
+        var svg = d3.select('#perfLogViewer')
                     .append("svg")
                     .attr("viewBox", "0 0 " + fullWidth + " " + fullHeight)
                     .attr("perserveAspectRatio", 'xMidYMid meet')
                     .attr("class", "chart")
                     .attr("height", fullHeight)
                     .attr("width", fullWidth);
-                    
-        chart.append("defs").append("clipPath")
+        
+        var margin = {top: 20, right: 20, bottom: 110, left: 225};
+        var margin2 = {top: focusHeight+20, right: 20, bottom: 30, left: 225};
+        var width = fullWidth - margin.right;
+        var height = fullHeight - margin.top - margin.bottom;
+        var height2 = fullHeight - margin2.top - margin2.bottom;
+        
+        var lineWidth = width - margin.left - margin.right;
+            
+        var xFocus = d3.scaleLinear().range([0, lineWidth]);
+        var xContext = d3.scaleLinear().range([0, lineWidth]);
+        var yFocus = d3.scaleLinear().range([height, 0]);
+        var yContext = d3.scaleLinear().range([height2, 0]);
+            
+        var xFocusAxis = d3.axisBottom(xFocus).tickSize(6, 0, 0);
+        var xContextAxis = d3.axisBottom(xContext).tickSize(6, 0, 0);
+        
+        var brush = d3.brushX()
+            .extent([[0, 0], [lineWidth, height2]])
+            .on("brush end", brushed);
+        
+        var zoom = d3.zoom()
+            .scaleExtent([1, Infinity])
+            .translateExtent([[0, 0], [width, height]])
+            .extent([[0, 0], [width, height]])
+            .on("zoom", zoomed);
+        
+        svg.append("defs").append("clipPath")
             .attr("id", "clip")
             .append("rect")
             .attr("width", width)
-            .attr("height", mainHeight);
-
-        var main = chart.append("g")
-                    .attr("transform", "translate(" + m[3] + "," + m[0] + ")")
-                    .attr("width", width)
-                    .attr("height", mainHeight)
-                    .attr("class", "main");
-
-        var mini = chart.append("g")
-                    .attr("transform", "translate(" + m[3] + "," + (mainHeight + m[0]) + ")")
-                    .attr("width", width)
-                    .attr("height", miniHeight)
-                    .attr("class", "mini");
-    
-        //main lanes and texts
-        main.append("g").selectAll(".laneLines")
-            .data(items)
-            .enter().append("line")
-            .attr("x1", 0)
-            .attr("y1", function(d) {return yMain(d.lane);})
-            .attr("x2", width)
-            .attr("y2", function(d) {return yMain(d.lane);})
-            .attr("stroke", "lightgray")
-            .attr("class", "laneLines");
-
-        main.append("g").selectAll(".laneText")
-            .data(lanes)
-            .enter().append("text")
-            .text(function(d) {return d;})
-            .attr("x", -m[1])
-            .attr("y", function(d, i) {return yMain(i + .5);})
-            .attr("dy", ".5ex")
-            .attr("text-anchor", "end")
-            .attr("class", "laneText");
+            .attr("height", height);
+            
+        var focus = svg.append("g")
+            .attr("class", "focus")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
         
-        //mini lanes and texts
-        mini.append("g").selectAll(".laneLines")
+        var context = svg.append("g")
+            .attr("class", "context")
+            .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
+            
+            
+        xFocus.domain([timeBegin, timeEnd]);
+        yFocus.domain([0, laneLength]);
+        xContext.domain(xFocus.domain());
+        yContext.domain(yFocus.domain());
+
+        focus.append("g").selectAll(".laneLines")
             .data(items)
             .enter().append("line")
             .attr("x1", 0)
-            .attr("y1", function(d) {return yMini(d.lane);})
-            .attr("x2", width)
-            .attr("y2", function(d) {return yMini(d.lane);})
+            .attr("y1", function(d) {return yFocus(d.lane);})
+            .attr("x2", lineWidth)
+            .attr("y2", function(d) {return yFocus(d.lane);})
             .attr("stroke", "lightgray")
             .attr("class", "laneLines");
 
-        mini.append("g").selectAll(".laneText")
+        focus.append("g").selectAll(".laneText")
             .data(lanes)
             .enter().append("text")
             .text(function(d) {return d;})
-            .attr("x", -m[1])
-            .attr("y", function(d, i) {return yMini(i + .5);})
+            .attr("x", -margin.right)
+            .attr("y", function(d, i) {return yFocus(i + .5);})
             .attr("dy", ".5ex")
             .attr("text-anchor", "end")
             .attr("class", "laneText");
-
-        var itemRects = main.append("g")
+            
+        var itemRects = focus.append("g")
                             .attr("clip-path", "url(#clip)");
-        
-        //mini item rects
-        mini.append('g')
-            .attr('class', 'miniItems')
-            .selectAll('miniItems')
+
+        focus.append('g')
+            .attr('class', 'perfItems')
+            .selectAll('perfItems')
             .data(items)
             .enter().append("rect")
             .attr("class", function(d) {
                 if(d.spurious == true) {
-                    return "miniItemError";
+                    return "perfItemError";
                 } else if(d.incomplete == true) {
-                    return "miniItemIncomplete";
+                    return "perfItemIncomplete";
                 } else {
-                    return "miniItem";
+                    return "perfItem";
                 }
              })
-            .attr("x", function(d) {return xMini(d.start);})
-            .attr("y", function(d) {return yMini(d.lane + .5) - 5;})
-            .attr("width", function(d) {return xMini(d.end) - xMini(d.start);})
+            .attr("x", function(d) {return xFocus(d.start);})
+            .attr("y", function(d) {return yFocus(d.lane + .5) - 5;})
+            .attr("width", function(d) {return xFocus(d.end) - xFocus(d.start);})
             .attr("height", 10);
-            
-        //mini labels
-        //mini.append("g").selectAll(".miniLabels")
-        //    .data(items)
-        //    .enter().append("text")
-        //    .text(function(d) {return "";})
-        //    .attr("x", function(d) {return xMini(d.start);})
-        //    .attr("y", function(d) {return yMini(d.lane + .5);})
-        //    .attr("dy", ".5ex");
 
-        //brush
-        var brush = d3.svg.brush()
-                            .x(xMini)
-                            .on("brush", display);
-                            
-        var tip = d3.tip()
-            .attr('class', 'd3-tip')
-            .offset([0, 0])
-            .direction('s')
-            .html(function(d) {
-                var duration = d.end - d.start;
-                if(d.spurious == true) {
-                    if(d.missing_event == 'start') {
-                        return "<span style='color:red'>Spurious</span><br>PerfID: " + d.perf_id + "<br>Start: ---<br>Stop: " + d.end.toFixed(6) + " (" + d.stop_index + ")<br>Duration: " + duration.toFixed(6);
-                    } else {
-                        return "<span style='color:red'>Spurious</span><br>PerfID: " + d.perf_id + "<br>Start: " + d.start.toFixed(6)+ " (" + d.start_index + ")<br>Stop: ---<br>Duration: " + duration.toFixed(6);
-                    }
-                } else if(d.incomplete == true) {
-                    if(d.missing_event == 'start') {
-                        return "<span style='color:yellow'>Incomplete</span><br>PerfID: " + d.perf_id + "<br>Start: ---<br>Stop: " + d.end.toFixed(6)+ " (" + d.stop_index + ")<br>Duration: " + duration.toFixed(6);
-                    } else {
-                        return "<span style='color:yellow'>Incomplete</span><br>PerfID: " + d.perf_id + "<br>Start: " + d.start.toFixed(6)+ " (" + d.start_index + ")<br>Stop: ---<br>Duration: " + duration.toFixed(6);
-                    }
-                } else {
-                    return "PerfID: " + d.perf_id + "<br>Start: " + d.start.toFixed(6)+ " (" + d.start_index + ")<br>Stop: " + d.end.toFixed(6)+ " (" + d.stop_index + ")<br>Duration: " + duration.toFixed(6);
-                }
-            })
-        
-        chart.call(tip);
-        
-        // draw the x axis
-        var xMainAxis = d3.svg.axis()
-            .scale(xMain)
-            .orient('top')
-            .tickSize(6, 0, 0);
 
-        main.append("g")
-            .attr("class", "axis")
-            .attr('transform', 'translate(0, -0.5)')
-            .call(xMainAxis);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         
-        var xMiniAxis = d3.svg.axis()
-            .scale(xMini)
-            .orient('bottom')
-            .tickSize(6, 0, 0);
+        focus.append("g")
+            .attr("class", "axis axis--x")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xFocusAxis);
         
-        mini.append("g")
-            .attr("class", "x brush")
+        context.append("g")
+            .attr("class", "axis axis--x")
+            .attr("transform", "translate(0," + height2 + ")")
+            .call(xContextAxis);
+        
+        context.append("g")
+            .attr("class", "brush")
             .call(brush)
-            .selectAll("rect")
-            .attr("y", 1)
-            .attr("height", miniHeight - 1);
-
-        mini.append("g")
-            .attr("class", "axis")
-            .attr('transform', 'translate(0,' + miniHeight + ')')
-            .call(xMiniAxis);
+            .call(brush.move, xFocus.range());
+        
+        svg.append("rect")
+            .attr("class", "zoom")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+            .call(zoom);
             
-        display();
         
-        $(document).on('commander-layout-changed', function(e){
-            if(typeof PerfLogData !== 'undefined') {
-                var fullWidth = $('#perfLogViewer').width();
-                var width = fullWidth - m[1] - m[3];
-                
-                xMini.range([0, width]);
-                xMain.range([0, width]);
-        
-                chart = d3.select('#perfLogViewer svg')
-                    .attr('viewBox', '0 0 ' + fullWidth + ' ' + fullHeight)
-                    .attr('height', fullHeight)
-                    .attr('width', fullWidth);    
-                    
-                main.attr('width', width);
-                mini.attr('width', width);
-                
-                main.selectAll('g .laneLines').attr('x2', width);
-                mini.selectAll('g .laneLines').attr('x2', width);
-                
-                mini.selectAll('g .miniItems rect')
-                    .attr('x', function(d) {return xMini(d.start);})
-                    .attr('width', function(d) {return xMini(d.end) - xMini(d.start);})
-                    
-                chart.selectAll('defs clipPath rect').attr('width', width);
-                
-                main.select('.axis').call(xMainAxis);
-                mini.select('.axis').call(xMiniAxis);
-                
-                display();
+        function brushed() {
+            if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") {
+                return; // ignore brush-by-zoom
             }
-        });
-        
-        function display() {
-            var rects;
-            var minExtent = brush.extent()[0];
-            var maxExtent = brush.extent()[1];
+            
+            var s = d3.event.selection || xContext.range();
+            xFocus.domain(s.map(xContext.invert, xContext));
+            //focus.select(".area").attr("d", area);
+            focus.select(".axis--x").call(xFocusAxis);
+            svg.select(".zoom").call(zoom.transform, d3.zoomIdentity
+                .scale(width / (s[1] - s[0]))
+                .translate(-s[0], 0));
+                
+            var extent = d3.event.selection;
+            
+            var minExtent = extent[0];
+            var maxExtent = extent[1];
             var visItems = items.filter(function(d) {
                 return d.start < maxExtent && d.end > minExtent;
             });
-        
-            mini.select(".brush")
-                .call(brush.extent([minExtent, maxExtent]));
-        
-            xMain.domain([minExtent, maxExtent]);
-            
-            main.select('.axis').call(xMainAxis);
-        
+                        
             //update main item rects                
             rects = itemRects.selectAll("rect")
                       .data(visItems, function(d) { return d.id; })
-                      .attr("x", function(d) {return xMain(d.start);})
-                      .attr("width", function(d) {return xMain(d.end) - xMain(d.start);});
+                      .attr("x", function(d) {return xFocus(d.start);})
+                      .attr("width", function(d) {return xFocus(d.end) - xFocus(d.start);});
             
-            rects.enter().append("rect")
-                .attr("class", function(d) {
-                    if(d.spurious == true) {
-                        return "miniItemError";
-                    } else if(d.incomplete == true) {
-                        return "miniItemIncomplete";
-                    } else {
-                        return "miniItem";
-                    }
-                })
-                .attr("x", function(d) {return xMain(d.start);})
-                .attr("y", function(d) {return yMain(d.lane) + 2;})
-                .attr("width", function(d) {return xMain(d.end) - xMain(d.start);})
-                .attr("height", function(d) {return .8 * yMain(1);})
-                .attr("vector-effect", "non-scaling-stroke")
-                .attr("stroke", "black")
-                .attr("stroke-width", "1") 
-                .on('mouseover', tip.show)
-                .on('mouseout', tip.hide)       
-                .on('click', function(d){
-                    if(d3.select(this).style('opacity') == 1.0) {
-                        d3.select(this).style('opacity', 0.1);
-                    } else {
-                        d3.select(this).style('opacity', 1.0);
-                    }
-                })      
-                .on('dblclick', function(d){
-                    d3.select(this).remove();
-                })
+            //rects.enter().append("rect")
+            //    .attr("class", function(d) {
+            //        if(d.spurious == true) {
+            //            return "perfItemError";
+            //        } else if(d.incomplete == true) {
+            //            return "perfItemIncomplete";
+            //        } else {
+            //            return "perfItem";
+            //        }
+            //    })
+            //    .attr("x", function(d) {return xFocus(d.start);})
+            //    .attr("y", function(d) {return yFocus(d.lane) + 2;})
+            //    .attr("width", function(d) {return xFocus(d.end) - xFocus(d.start);})
+            //    .attr("height", function(d) {return .8 * yFocus(1);})
+            //    .attr("vector-effect", "non-scaling-stroke")
+            //    .attr("stroke", "black")
+            //    .attr("stroke-width", "1") 
+            //    //.on('mouseover', tip.show)
+            //    //.on('mouseout', tip.hide)       
+            //    .on('click', function(d){
+            //        if(d3.select(this).style('opacity') == 1.0) {
+            //            d3.select(this).style('opacity', 0.1);
+            //        } else {
+            //            d3.select(this).style('opacity', 1.0);
+            //        }
+            //    })      
+            //    .on('dblclick', function(d){
+            //        d3.select(this).remove();
+            //    })
         
-            rects.exit().remove();
-            
-            //update the item labels
-            //labels = itemRects.selectAll("text")
-            //    .data(visItems, function (d) { return d.id; })
-            //    .attr("x", function(d) {return xMain(Math.max(d.start, minExtent) + 2);});
-            //
-            //labels.enter().append("text")
-            //    .text(function(d) {return d.id;})
-            //    .attr("x", function(d) {return xMain(Math.max(d.start, minExtent));})
-            //    .attr("y", function(d) {return yMain(d.lane + .5);})
-            //    .attr("text-anchor", "start");
+            //rects.exit().remove();
+        }
+    
+        function zoomed() {
+            //if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush") {
+            //    return; // ignore zoom-by-brush
+            //}
         
-            //labels.exit().remove();
-        }       
+            //var t = d3.event.transform;
+            //xFocus.domain(t.rescaleX(xContext).domain());
+            //focus.select(".area").attr("d", area);
+            //focus.select(".axis--x").call(xFocusAxis);
+            //context.select(".brush").call(brush.move, xFocus.range().map(t.invertX, t));
+        }
+    };
+    
+        
+        
+    
+    function type(d) {
+        d.date = parseDate(d.date);
+        d.price = +d.price;
+        return d;
     }
+    
+    
+    
+    
+    
+    
+    
     
     
     function GetLargestTimerValue(A) {
@@ -615,7 +573,8 @@ script.
         
         return newName;
     }
-
+    
+    
     var createData = function(perfLog) {        
         TicksPerSecond = perfLog.Metadata.SecHdr.TimerTicksPerSecond;
         TimerLow32Rollover = perfLog.Metadata.SecHdr.TimerLow32Rollover;
