@@ -38,7 +38,7 @@
 **  \par Limits
 **       Must be 2 or more and less than 65536
 */
-#define SCH_TOTAL_SLOTS         250    /* SCH wake-up rate (Hz) */
+#define SCH_TOTAL_SLOTS         8    /* SCH wake-up rate (Hz) */
 
 
 /**
@@ -155,7 +155,7 @@
 **  \par Limits
 **       Must be less than the normal slot period
 */
-#define SCH_SYNC_SLOT_DRIFT_WINDOW   500
+#define SCH_SYNC_SLOT_DRIFT_WINDOW   62500 /* half a minor frame at 8Hz rate */
 
 
 /**

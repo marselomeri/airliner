@@ -15,7 +15,7 @@
                     "SCH_DiagPacket_t": {"airliner_mid": "0x09e7" }
                 },
                 "config": {
-                  "SCH_TOTAL_SLOTS": 250,
+                  "SCH_TOTAL_SLOTS": 8,
                   "SCH_ENTRIES_PER_SLOT": 15
                 }
             }
