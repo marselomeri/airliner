@@ -66,6 +66,20 @@ extern "C" {
  ** Local Defines
  *************************************************************************/
 
+/** \brief Pipe depth for the data pipe
+**
+**  \par Limits:
+**       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
+*/
+#define MAC_DATA_PIPE_DEPTH            (11)
+
+/** \brief Pipe name for the Scheduler pipe
+**
+**  \par Limits:
+**       Note, this name must fit in OS_MAX_API_NAME.
+*/
+#define MAC_DATA_PIPE_NAME             ("MAC_DATA_PIPE")
+
 /************************************************************************
  ** Local Structure Definitions
  *************************************************************************/
@@ -306,6 +320,19 @@ public:
      **
      *************************************************************************/
     int32 RcvSchPipeMsg(int32 iBlocking);
+
+    /************************************************************************/
+    /** \brief PWM Motor Controller Task incoming data processing
+     **
+     **  \par Description
+     **       This function processes incoming data subscribed
+     **       by MAC application
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
+    osalbool ProcessIncomingData(void);
 
     /************************************************************************/
     /** \brief PWM Motor Controller Task incoming command processing

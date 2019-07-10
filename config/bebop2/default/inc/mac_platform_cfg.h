@@ -80,20 +80,6 @@ extern "C" {
 */
 #define MAC_CMD_PIPE_NAME              ("MAC_CMD_PIPE")
 
-/** \brief Pipe depth for the data pipe 
-**
-**  \par Limits:
-**       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
-*/
-#define MAC_DATA_PIPE_DEPTH            (4)
-
-/** \brief Pipe name for the Scheduler pipe 
-**
-**  \par Limits:
-**       Note, this name must fit in OS_MAX_API_NAME.
-*/
-#define MAC_DATA_PIPE_NAME             ("MAC_DATA_PIPE")
-
 /** \brief The config table default filename
 **
 **  \par Limits:
