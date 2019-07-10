@@ -446,8 +446,9 @@ void Test_MAC_AppMain_ProcessNewData_InvalidMsgID(void)
     oMAC.AppMain();
 
     /* Verify results */
-    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
-    //UtAssert_EventSent(MAC_MSGID_ERR_EID, CFE_EVS_ERROR, "", "Error Event Sent");
+    printf("Ut_CFE_EVS_GetEventQueueDepth() = %u\n", Ut_CFE_EVS_GetEventQueueDepth());
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 1");
+    UtAssert_EventSent(MAC_MSGID_ERR_EID, CFE_EVS_ERROR, "Recvd invalid DATA msgId (0x0000)", "Error Event Sent");
 }
 
 
