@@ -147,6 +147,18 @@ int32 AMC::InitPipes(void)
 
     }
 
+    /* Init data pipe and subscribe to data messages from the other
+     * applications. */
+    iStatus = InitDataPipe();
+    if (iStatus != CFE_SUCCESS)
+    {
+        /* We failed to create the DATA pipe for data messages.
+         * An event was already raised.  Just abort the function.
+         */
+        goto AMC_InitPipe_Exit_Tag;
+
+    }
+
     /* Init param pipe and subscribe to param messages */
     iStatus = InitParamPipe();
     if (iStatus != CFE_SUCCESS)
@@ -221,38 +233,6 @@ int32 AMC::InitSchPipe(void)
         goto AMC_InitPipe_Exit_Tag;
     }
 
-    /* Subscribe to the PX4_ACTUATOR_ARMED_MID message. */
-    iStatus = CFE_SB_SubscribeEx(PX4_ACTUATOR_ARMED_MID, SchPipeId,
-            CFE_SB_Default_Qos, 1);
-    if (iStatus != CFE_SUCCESS)
-    {
-        /* The subscribe failed.  Raise an event and immediately jump
-         * to the end of the function to abort initialization.
-         */
-        CFE_EVS_SendEvent(AMC_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                "SCH Pipe failed to subscribe to PX4_ACTUATOR_ARMED_MID. \
-                (0x%08X)",
-                (unsigned int)iStatus);
-
-        goto AMC_InitPipe_Exit_Tag;
-    }
-
-    /* Subscribe to the PX4_ACTUATOR_CONTROLS_0_MID message. */
-    iStatus = CFE_SB_SubscribeEx(PX4_ACTUATOR_CONTROLS_0_MID, SchPipeId,
-            CFE_SB_Default_Qos, 1);
-    if (iStatus != CFE_SUCCESS)
-    {
-        /* The subscribe failed.  Raise an event and immediately jump
-         * to the end of the function to abort initialization.
-         */
-        CFE_EVS_SendEvent(AMC_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                "SCH Pipe failed to subscribe to \
-                PX4_ACTUATOR_CONTROLS_0_MID. (0x%08X)",
-                (unsigned int)iStatus);
-
-        goto AMC_InitPipe_Exit_Tag;
-    }
-
 AMC_InitPipe_Exit_Tag:
     return iStatus;
 }
@@ -304,6 +284,71 @@ int32 AMC::InitCmdPipe(void)
 AMC_InitPipe_Exit_Tag:
     return iStatus;
 }
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Initialize Message Pipes                                        */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+int32 AMC::InitDataPipe(void)
+{
+    int32 iStatus=CFE_SUCCESS;
+
+    /* Init command pipe and subscribe to command messages */
+    iStatus = CFE_SB_CreatePipe(&DataPipeId,
+            AMC_DATA_PIPE_DEPTH,
+            AMC_DATA_PIPE_NAME);
+    if (iStatus != CFE_SUCCESS)
+    {
+        /* We failed to create the pipe for command messages.  Raise an
+         * event and immediately jump to the end of the function to abort
+         * initialization.
+         */
+        CFE_EVS_SendEvent(AMC_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
+                "Failed to create DATA pipe (0x%08X)",
+                (unsigned int)iStatus);
+
+        goto AMC_InitPipe_Exit_Tag;
+    }
+
+    /* Subscribe to the PX4_ACTUATOR_ARMED_MID message. */
+    iStatus = CFE_SB_SubscribeEx(PX4_ACTUATOR_ARMED_MID, DataPipeId,
+            CFE_SB_Default_Qos, 1);
+    if (iStatus != CFE_SUCCESS)
+    {
+        /* The subscribe failed.  Raise an event and immediately jump
+         * to the end of the function to abort initialization.
+         */
+        CFE_EVS_SendEvent(AMC_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                "DATA Pipe failed to subscribe to PX4_ACTUATOR_ARMED_MID. \
+                (0x%08X)",
+                (unsigned int)iStatus);
+
+        goto AMC_InitPipe_Exit_Tag;
+    }
+
+    /* Subscribe to the PX4_ACTUATOR_CONTROLS_0_MID message. */
+    iStatus = CFE_SB_SubscribeEx(PX4_ACTUATOR_CONTROLS_0_MID, DataPipeId,
+            CFE_SB_Default_Qos, 1);
+    if (iStatus != CFE_SUCCESS)
+    {
+        /* The subscribe failed.  Raise an event and immediately jump
+         * to the end of the function to abort initialization.
+         */
+        CFE_EVS_SendEvent(AMC_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                "DATA Pipe failed to subscribe to \
+                PX4_ACTUATOR_CONTROLS_0_MID. (0x%08X)",
+                (unsigned int)iStatus);
+
+        goto AMC_InitPipe_Exit_Tag;
+    }
+
+AMC_InitPipe_Exit_Tag:
+    return iStatus;
+}
+
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -505,6 +550,7 @@ int32 AMC::RcvSchPipeMsg(int32 iBlocking)
         switch (MsgId)
         {
             case AMC_UPDATE_MOTORS_MID:
+                ProcessDataPipe();
                 break;
 
             case AMC_SEND_HK_MID:
@@ -512,18 +558,6 @@ int32 AMC::RcvSchPipeMsg(int32 iBlocking)
                 // TODO: Move these somewhere more appropriate later
                 ProcessParamPipe();
                 ProcessCmdPipe();
-                break;
-
-            case PX4_ACTUATOR_ARMED_MID:
-                memcpy(&CVT.ActuatorArmed, MsgPtr, sizeof(CVT.ActuatorArmed));
-                //DisplayInputs();
-                UpdateMotors();
-                break;
-
-            case PX4_ACTUATOR_CONTROLS_0_MID:
-                memcpy(&CVT.ActuatorControls0, MsgPtr,
-                        sizeof(CVT.ActuatorControls0));
-                UpdateMotors();
                 break;
 
             default:
@@ -603,6 +637,68 @@ void AMC::ProcessCmdPipe(void)
             contProcessing = false;
         }
     }
+}
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Process Incoming Data Messages                                  */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+void AMC::ProcessDataPipe(void)
+{
+    int32 iStatus = CFE_SUCCESS;
+    CFE_SB_Msg_t* MsgPtr=NULL;
+    CFE_SB_MsgId_t MsgId;
+    bool contProcessing = true;
+
+    /* Process command messages until the pipe is empty */
+    while (contProcessing)
+    {
+        iStatus = CFE_SB_RcvMsg(&MsgPtr, DataPipeId, CFE_SB_POLL);
+        if(iStatus == CFE_SUCCESS)
+        {
+            /* We did receive a message.  Process it. */
+            MsgId = CFE_SB_GetMsgId(MsgPtr);
+            switch (MsgId)
+            {
+                case PX4_ACTUATOR_ARMED_MID:
+                    memcpy(&CVT.ActuatorArmed, MsgPtr, sizeof(CVT.ActuatorArmed));
+                    UpdateMotors();
+                    break;
+
+                case PX4_ACTUATOR_CONTROLS_0_MID:
+                    memcpy(&CVT.ActuatorControls0, MsgPtr,
+                        sizeof(CVT.ActuatorControls0));
+                    break;
+
+                default:
+                    /* Bump the command error counter for an unknown command.
+                     * (This should only occur if it was subscribed to with
+                     * this pipe, but not handled in this switch-case.) */
+                    HkTlm.usCmdErrCnt++;
+                    CFE_EVS_SendEvent(AMC_MSGID_ERR_EID, CFE_EVS_ERROR,
+                            "Recvd invalid DATA msgId (0x%04X)",
+                            (unsigned short)MsgId);
+                    break;
+            }
+        }
+        else if (iStatus == CFE_SB_NO_MESSAGE)
+        {
+            /* The command pipe is empty.  Break the function and continue
+             * on. */
+            contProcessing = false;
+        }
+        else
+        {
+            /* Something failed.  Quit the loop. */
+            CFE_EVS_SendEvent(AMC_RCVMSG_ERR_EID, CFE_EVS_ERROR,
+                    "DATA pipe read error (0x%08X)", (unsigned int)iStatus);
+            contProcessing = false;
+        }
+    }
+
+    UpdateMotors();
 }
 
 
