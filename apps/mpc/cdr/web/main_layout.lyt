@@ -44,7 +44,7 @@
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "width": 25.396339779298977,
+     "width": 24.711291779148688,
      "content": [
       {
        "type": "stack",
@@ -57,12 +57,12 @@
        "height": 25,
        "content": [
         {
-         "title": "Command and Data Handling",
+         "title": "HK",
          "type": "component",
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "flight/apps/mpc/cdh"
+          "link": "flight/apps/mpc/hk"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -120,7 +120,7 @@
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "width": 29.176678997204853,
+     "width": 28.389659065523432,
      "content": [
       {
        "type": "stack",
@@ -169,89 +169,69 @@
      ]
     },
     {
-     "type": "column",
+     "type": "stack",
+     "header": {},
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "width": 45.42698122349616,
+     "activeItemIndex": 0,
+     "width": 46.899049155327866,
+     "height": 100,
      "content": [
       {
-       "type": "stack",
-       "header": {},
+       "title": "Events",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "flight/core/evs/efltr?appName=MPC"
+       },
        "isClosable": true,
-       "reorderEnabled": true,
-       "title": "",
-       "activeItemIndex": 2,
-       "width": 51.529535864978904,
-       "height": 50,
-       "content": [
-        {
-         "title": "App Ctrl",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "flight/core/es/appctrl?appName=MPC"
-         },
-         "isClosable": true,
-         "reorderEnabled": true
-        },
-        {
-         "title": "Event Filter",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "flight/core/evs/efltr?appName=MPC"
-         },
-         "isClosable": true,
-         "reorderEnabled": true
-        },
-        {
-         "title": "Tbl Ctrl",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "flight/core/tbl/tc?appName=MPC"
-         },
-         "isClosable": true,
-         "reorderEnabled": true
-        }
-       ]
+       "reorderEnabled": true
       },
       {
-       "type": "stack",
-       "header": {},
+       "title": "Telemetry",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "flight/apps/to/tlm_app?appName=MPC"
+       },
        "isClosable": true,
-       "reorderEnabled": true,
-       "title": "",
-       "activeItemIndex": 1,
-       "height": 50,
-       "content": [
-        {
-         "title": "SCH Ctrl",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "flight/apps/sch/app_sch?appName=MPC"
-         },
-         "isClosable": true,
-         "reorderEnabled": true
-        },
-        {
-         "title": "Tlm Ctrl",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "flight/apps/to/tlm_app?appName=MPC"
-         },
-         "isClosable": true,
-         "reorderEnabled": true
-        }
-       ]
+       "reorderEnabled": true
+      },
+      {
+       "title": "App Ctrl",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "flight/core/es/appctrl?appName=MPC"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "Scheduling",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "flight/apps/sch/app_sch?appName=MPC"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "Table",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "flight/core/tbl/tbl_ctl?appName=MPC"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
       }
      ]
     }
