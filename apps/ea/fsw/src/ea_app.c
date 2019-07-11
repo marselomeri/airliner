@@ -524,8 +524,8 @@ int32 EA_StartApp(CFE_SB_Msg_t* MsgPtr)
                 /*
                 ** Update ChildData with validated data
                 */
-                (void) strcpy(EA_AppData.ChildData.Cmd, CmdPtr->Cmd);
-                (void) strcpy(EA_AppData.ChildData.Args, CmdPtr->Args);
+                (void) strncpy(EA_AppData.ChildData.Cmd, CmdPtr->Cmd, EA_MAX_PATH_LEN);
+                (void) strncpy(EA_AppData.ChildData.Args, CmdPtr->Args, EA_MAX_PATH_LEN);
 
                 Status = CFE_ES_CreateChildTask(&ChildAppTaskID,
                                                 EA_START_APP_TASK_NAME,
