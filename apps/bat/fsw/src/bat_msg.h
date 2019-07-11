@@ -163,6 +163,9 @@ typedef struct
 	int32              CellCount;
 	boolean            Connected;
 	PX4_BatteryWarningSeverity_t Warning;
+	uint32             WakeupCount;
+	uint32             ActuatorControls0MsgCount;
+	uint32             ActuatorArmedMsgCount;
 } BAT_HkTlm_t;
 
 

@@ -53,6 +53,18 @@ table.table.table-condensed
       th Warning
       td
         span(data-cdr={tlm: [{name:'/BAT/BAT_HkTlm_t/Warning'}]}) ---
+    tr
+      th Wakeup Count
+      td
+        span(data-cdr={tlm: [{name:'/BAT/BAT_HkTlm_t/WakeupCount'}]}) ---
+    tr
+      th Actuator Controls Msg Count
+      td
+        span(data-cdr={tlm: [{name:'/BAT/BAT_HkTlm_t/ActuatorControls0MsgCount'}]}) ---
+    tr
+      th Actuator Armed Msg Count
+      td
+        span(data-cdr={tlm: [{name:'/BAT/BAT_HkTlm_t/ActuatorArmedMsgCount'}]}) ---
         
 footer.btn-group(role="group")      
   button.btn.cdr-primary(data-cdr={cmd:{name:'/BAT/Noop'}}) No-Op    

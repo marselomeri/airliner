@@ -58,6 +58,20 @@ extern "C" {
 /************************************************************************
  ** Local Defines
  *************************************************************************/
+/** \brief Pipe depth for the data pipe
+**
+**  \par Limits:
+**       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
+*/
+#define BAT_DATA_PIPE_DEPTH            (2)
+
+/** \brief Pipe name for the Scheduler pipe
+**
+**  \par Limits:
+**       Note, this name must fit in OS_MAX_API_NAME.
+*/
+#define BAT_DATA_PIPE_NAME             ("BAT_DATA_PIPE")
+
 
 /************************************************************************
  ** Local Structure Definitions
@@ -90,6 +104,9 @@ public:
 
     /** \brief Command Pipe ID */
     CFE_SB_PipeId_t CmdPipeId;
+
+    /** \brief Data Pipe ID */
+    CFE_SB_PipeId_t DataPipeId;
 
     /* Task-related */
 
@@ -253,6 +270,19 @@ public:
      **
      *************************************************************************/
     void ProcessCmdPipe(void);
+
+    /************************************************************************/
+    /** \brief Battery Monitor Task incoming data processing
+     **
+     **  \par Description
+     **       This function processes incoming data subscribed
+     **       by BAT application
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
+    void ProcessDataPipe(void);
 
     /************************************************************************/
     /** \brief Battery Monitor Task application commands
