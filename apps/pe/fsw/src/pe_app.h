@@ -100,45 +100,6 @@ extern "C" {
 /************************************************************************
  ** Local Structure Definitions
  *************************************************************************/
-
-typedef struct
-{
-    float  VXY_PUB_THRESH;
-    float  Z_PUB_THRESH;
-    float  ACCEL_XY_STDDEV;
-    float  ACCEL_Z_STDDEV;
-    boolean BARO_FUSE;
-    float  BARO_STDDEV;
-    boolean GPS_FUSE;
-    float  GPS_DELAY;
-    float  GPS_XY_STDDEV;
-    float  GPS_Z_STDDEV;
-    float  GPS_VXY_STDDEV;
-    float  GPS_VZ_STDDEV;
-    float  GPS_EPH_MAX;
-    float  GPS_EPV_MAX;
-    boolean LAND_FUSE;
-    float  LAND_Z_STDDEV;
-    float  LAND_VXY_STDDEV;
-    float  PN_P_NOISE_DENSITY;
-    float  PN_V_NOISE_DENSITY;
-    float  PN_B_NOISE_DENSITY;
-    float  PN_T_NOISE_DENSITY;
-    float  T_MAX_GRADE;
-    int32  FAKE_ORIGIN;
-    float  INIT_ORIGIN_LAT;
-    float  INIT_ORIGIN_LON;
-    boolean DIST_FUSE;
-    float  DIST_STDDEV;
-    float  DIST_OFF_Z;
-    boolean FLOW_FUSE;
-    float FLOW_SCALE;
-    float FLOW_R;
-    float FLOW_RR;
-    uint8 FLOW_QUALITY_MIN;
-    float FLOW_MIN_AGL;
-} PE_Params_t;
-
 enum {
     X_x  = 0,
     X_y  = 1,
@@ -218,6 +179,8 @@ public:
     const float  LAND_RATE = 10.0f;
     const float  DIST_RATE = 125.0f;
     const float  LOW_PASS_CUTOFF = 5.0f;
+    const float  EPH_THRESH = 3.0f;
+    const float  EPV_THRESH = 3.0f;
     const float  BETA_TABLE[PE_BETA_TABLE_SIZE] = {0.0f,
                                                    8.82050518214f, 
                                                    12.094592431f, 
@@ -271,9 +234,9 @@ public:
     uint16 m_LandCount;
 
     /* Validity */
-    boolean m_XyEstValid;
-    boolean m_ZEstValid;
-    boolean m_TzEstValid;
+    osalbool m_XyEstValid;
+    osalbool m_ZEstValid;
+    osalbool m_TzEstValid;
 
     /* Map */
     struct map_projection_reference_s m_MapRef;
@@ -301,18 +264,25 @@ public:
     uint64 m_TimeLastFlow;
 
     /* Timeouts */
-    boolean   m_BaroTimeout;
-    boolean   m_GpsTimeout;
-    boolean   m_LandTimeout;
-    boolean   m_DistTimeout;
-    boolean   m_FlowTimeout;
+    osalbool   m_BaroTimeout;
+    osalbool   m_GpsTimeout;
+    osalbool   m_LandTimeout;
+    osalbool   m_DistTimeout;
+    osalbool   m_FlowTimeout;
 
     /* Faults */
-    boolean   m_BaroFault;
-    boolean   m_GpsFault;
-    boolean   m_LandFault;
-    boolean   m_DistFault;
-    boolean   m_FlowFault;
+    osalbool   m_BaroFault;
+    osalbool   m_GpsFault;
+    osalbool   m_LandFault;
+    osalbool   m_DistFault;
+    osalbool   m_FlowFault;
+
+    /* Fuse Flags */
+    osalbool   m_BaroFuse;
+    osalbool   m_GpsFuse;
+    osalbool   m_LandFuse;
+    osalbool   m_DistFuse;
+    osalbool   m_FlowFuse;
 
     /* Reference altitudes */
     float m_AltOrigin;
@@ -321,17 +291,17 @@ public:
     float m_DistAltOrigin;
 
     /* Status */
-    boolean m_ReceivedGps;
-    boolean m_LastArmedState;
-    boolean m_EstimatorLocalInitialized;
-    boolean m_EstimatorGlobalInitialized;
-    boolean m_BaroInitialized;
-    boolean m_GpsInitialized;
-    boolean m_LandInitialized;
-    boolean m_DistInitialized;
-    boolean m_FlowInitialized;
-    boolean m_AltOriginInitialized;
-    boolean m_ParamsUpdated;
+    osalbool m_ReceivedGps;
+    osalbool m_LastArmedState;
+    osalbool m_EstimatorLocalInitialized;
+    osalbool m_EstimatorGlobalInitialized;
+    osalbool m_BaroInitialized;
+    osalbool m_GpsInitialized;
+    osalbool m_LandInitialized;
+    osalbool m_DistInitialized;
+    osalbool m_FlowInitialized;
+    osalbool m_AltOriginInitialized;
+    osalbool m_ParamsUpdated;
 
     /* State space */
     math::Vector10F     m_StateVec; // state vector
@@ -443,8 +413,6 @@ public:
         float bz;
         math::Matrix10F10 dP;
     } m_Predict;
-
-    PE_Params_t m_Params;
 
     /** \brief Housekeeping Telemetry for downlink */
     PE_HkTlm_t HkTlm;
@@ -648,7 +616,7 @@ public:
      **  \endreturns
      **
      *************************************************************************/
-    boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
+    osalbool VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
 
     /************************************************************************/
     /** \brief Validate PE configuration table
@@ -931,7 +899,7 @@ public:
     **       None
     **
     *************************************************************************/
-    boolean landed(void);
+    osalbool landed(void);
 
     /************************************************************************/
     /** \brief Dist Measure
@@ -1143,7 +1111,7 @@ public:
     **  \endreturns
     **
     *************************************************************************/
-    boolean Initialized(void);
+    osalbool Initialized(void);
 
 };
 

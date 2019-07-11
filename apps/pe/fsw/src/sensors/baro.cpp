@@ -94,7 +94,7 @@ void PE::baroCorrect()
     /* measured altitude, negative down dir */
     m_Baro.C[Y_baro_z][X_z] = -1.0f;
 
-    m_Baro.R[0][0] = m_Params.BARO_STDDEV * m_Params.BARO_STDDEV;
+    m_Baro.R[0][0] = ConfigTblPtr->BARO_STDDEV * ConfigTblPtr->BARO_STDDEV;
 
     /* residual */
     /* ((1x10 * 10x10) * 10x1) + 1x1) */
@@ -137,7 +137,7 @@ void PE::baroCorrect()
     /* kalman filter correction */
 
 	/* 10x10 * 10x1 * 1x1 */
-	m_Baro.K = m_StateCov * m_Baro.C.Transpose() * m_Baro.S_I;
+	m_Baro.K = (m_StateCov * m_Baro.C.Transpose()) * m_Baro.S_I;
 
 	/* 10x1 * 1x1 */
 	m_Baro.temp = m_Baro.K * m_Baro.r;

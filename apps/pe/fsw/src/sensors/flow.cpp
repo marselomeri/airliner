@@ -86,7 +86,7 @@ int32 PE::flowMeasure(math::Vector2F &y)
 	}
 
 	/* Check for AGL height */
-	if (m_AglLowPass.m_State < m_Params.FLOW_MIN_AGL) {
+	if (m_AglLowPass.m_State < ConfigTblPtr->FLOW_MIN_AGL) {
 		Status = -1;
 		goto flowMeasure_Exit_Tag;
 	}
@@ -98,7 +98,7 @@ int32 PE::flowMeasure(math::Vector2F &y)
 	}
 
 	/* Check reported quality */
-	if (m_OpticalFlowMsg.Quality < m_Params.FLOW_QUALITY_MIN) {
+	if (m_OpticalFlowMsg.Quality < ConfigTblPtr->FLOW_QUALITY_MIN) {
 		Status = -1;
 		goto flowMeasure_Exit_Tag;
 	}
@@ -108,8 +108,8 @@ int32 PE::flowMeasure(math::Vector2F &y)
 
 	/* Optical flow in x, y axis */
 	/* Note: Consider making flow scale a state of the kalman filter */
-	flow_x_rad = m_OpticalFlowMsg.PixelFlowXIntegral * m_Params.FLOW_SCALE;
-	flow_y_rad = m_OpticalFlowMsg.PixelFlowYIntegral * m_Params.FLOW_SCALE;
+	flow_x_rad = m_OpticalFlowMsg.PixelFlowXIntegral * ConfigTblPtr->FLOW_SCALE;
+	flow_y_rad = m_OpticalFlowMsg.PixelFlowYIntegral * ConfigTblPtr->FLOW_SCALE;
 	dt_flow = m_OpticalFlowMsg.IntegrationTimespan / 1.0e6f;
 
 	if (dt_flow > 0.5f || dt_flow < 1.0e-6f) {
@@ -198,8 +198,8 @@ void PE::flowCorrect()
 	rot_sq = m_Euler[0] * m_Euler[0] + m_Euler[1] * m_Euler[1];
 
 	m_Flow.R[Y_flow_vx][Y_flow_vx] = flow_vxy_stddev * flow_vxy_stddev +
-			m_Params.FLOW_R * m_Params.FLOW_R * rot_sq +
-			m_Params.FLOW_RR * m_Params.FLOW_RR * rotrate_sq;
+			ConfigTblPtr->FLOW_R * ConfigTblPtr->FLOW_R * rot_sq +
+			ConfigTblPtr->FLOW_RR * ConfigTblPtr->FLOW_RR * rotrate_sq;
 	m_Flow.R[Y_flow_vy][Y_flow_vy] = m_Flow.R[Y_flow_vx][Y_flow_vx];
 
     /* Vector2F -  (2x10 * Vector10F) */
@@ -242,7 +242,7 @@ void PE::flowCorrect()
     if (!m_FlowFault)
     {
 		/* 10x10 * 10x2 * 2x2 */
-		m_Flow.K = m_StateCov * m_Flow.C.Transpose() * m_Flow.S_I;
+		m_Flow.K = (m_StateCov * m_Flow.C.Transpose()) * m_Flow.S_I;
 
 		/* 10x2 * 2x2 */
 		m_Flow.dx = m_Flow.K * m_Flow.r;

@@ -51,6 +51,7 @@ extern "C" {
 /************************************************************************
 ** Local Defines
 *************************************************************************/
+#define PE_PARAM_NAME_MAX_LEN     (32)
 #define VXY_PUB_THRESH_MIN        (0.01f)
 #define VXY_PUB_THRESH_MAX        (1.0f)
 #define Z_PUB_THRESH_MIN          (0.3f)

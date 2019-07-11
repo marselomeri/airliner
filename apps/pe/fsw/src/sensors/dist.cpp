@@ -92,7 +92,7 @@ int32 PE::distMeasure(math::Vector1F &y)
 	/* Measure */
 	y.Zero();
 	m_DistStats.update(d);
-	y[0] = (d + m_Params.DIST_OFF_Z) * cosf(m_Euler[0]) * cosf(m_Euler[1]);
+	y[0] = (d + ConfigTblPtr->DIST_OFF_Z) * cosf(m_Euler[0]) * cosf(m_Euler[1]);
 	m_TimeLastDist = m_DistanceSensor.Timestamp;
 
 distMeasure_Exit_Tag:
@@ -120,7 +120,7 @@ void PE::distCorrect()
     cov = m_DistanceSensor.Covariance;
     if (cov < 1.0e-3f)
     {
-    	m_Dist.R[0][0] = m_Params.DIST_STDDEV * m_Params.DIST_STDDEV;
+    	m_Dist.R[0][0] = ConfigTblPtr->DIST_STDDEV * ConfigTblPtr->DIST_STDDEV;
     }
     else
     {
@@ -168,7 +168,7 @@ void PE::distCorrect()
     /* kalman filter correction */
 
 	/* 10x10 * 10x1 * 1x1 */
-	m_Dist.K = m_StateCov * m_Dist.C.Transpose() * m_Dist.S_I;
+	m_Dist.K = (m_StateCov * m_Dist.C.Transpose()) * m_Dist.S_I;
 
 	/* 10x1 * 1x1 */
 	m_Dist.temp = m_Dist.K * m_Dist.r;

@@ -95,9 +95,9 @@ void PE::landCorrect()
 	m_Land.C[Y_land_agl][X_tz] = 1.0f; // measured altitude, negative down dir.
 
 	/* use parameter covariance */
-	m_Land.R[Y_land_vx][Y_land_vx] = m_Params.LAND_VXY_STDDEV * m_Params.LAND_VXY_STDDEV;
-	m_Land.R[Y_land_vy][Y_land_vy] = m_Params.LAND_VXY_STDDEV * m_Params.LAND_VXY_STDDEV;
-	m_Land.R[Y_land_agl][Y_land_agl] = m_Params.LAND_Z_STDDEV * m_Params.LAND_Z_STDDEV;
+	m_Land.R[Y_land_vx][Y_land_vx] = ConfigTblPtr->LAND_VXY_STDDEV * ConfigTblPtr->LAND_VXY_STDDEV;
+	m_Land.R[Y_land_vy][Y_land_vy] = ConfigTblPtr->LAND_VXY_STDDEV * ConfigTblPtr->LAND_VXY_STDDEV;
+	m_Land.R[Y_land_agl][Y_land_agl] = ConfigTblPtr->LAND_Z_STDDEV * ConfigTblPtr->LAND_Z_STDDEV;
 
 	/* residual */
 	m_Land.S_I = (m_Land.C * (m_StateCov * m_Land.C.Transpose())) + m_Land.R;
@@ -135,7 +135,7 @@ void PE::landCorrect()
 	}
 
 	/* kalman filter correction always for land detector */
-	m_Land.K = m_StateCov * m_Land.C.Transpose() * m_Land.S_I;
+	m_Land.K = (m_StateCov * m_Land.C.Transpose()) * m_Land.S_I;
 	m_Land.dx = m_Land.K * m_Land.r;
 	m_StateVec = m_StateVec + m_Land.dx;
 	m_StateCov = m_StateCov - m_Land.K * m_Land.C * m_StateCov;
