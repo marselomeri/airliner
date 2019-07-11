@@ -86,185 +86,6 @@ int32 VM::InitPipe() {
                     (unsigned int) iStatus);
             goto VM_InitPipe_Exit_Tag;
         }
-        iStatus = CFE_SB_SubscribeEx(PX4_SENSOR_MAG_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS) {
-            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_SENSOR_MAG_MID. (0x%08lX)",
-                    iStatus);
-            goto VM_InitPipe_Exit_Tag;
-        }
-        iStatus = CFE_SB_SubscribeEx(PX4_SENSOR_GYRO_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS) {
-            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_SENSOR_GYRO_MID. (0x%08lX)",
-                    iStatus);
-            goto VM_InitPipe_Exit_Tag;
-        }
-
-        iStatus = CFE_SB_SubscribeEx(PX4_BATTERY_STATUS_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS) {
-            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_TELEMETRY_STATUS_MID. (0x%08lX)",
-                    iStatus);
-            goto VM_InitPipe_Exit_Tag;
-        }
-
-        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_COMMAND_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS) {
-            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_VEHICLE_COMMAND_MID. (0x%08lX)",
-                    iStatus);
-            goto VM_InitPipe_Exit_Tag;
-        }
-        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_CONTROL_MODE_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS) {
-            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_VEHICLE_COMMAND_MID. (0x%08lX)",
-                    iStatus);
-            goto VM_InitPipe_Exit_Tag;
-        }
-
-        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_GLOBAL_POSITION_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS) {
-            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_SUBSYSTEM_INFO_MID. (0x%08lX)",
-                    iStatus);
-            goto VM_InitPipe_Exit_Tag;
-        }
-        iStatus = CFE_SB_SubscribeEx(PX4_TELEMETRY_STATUS_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS) {
-            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_TELEMETRY_STATUS_MID. (0x%08lX)",
-                    iStatus);
-            goto VM_InitPipe_Exit_Tag;
-        }
-        iStatus = CFE_SB_SubscribeEx(PX4_SUBSYSTEM_INFO_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS) {
-            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_SUBSYSTEM_INFO_MID. (0x%08lX)",
-                    iStatus);
-            goto VM_InitPipe_Exit_Tag;
-        }
-        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_GPS_POSITION_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS) {
-            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_VEHICLE_GPS_POSITION_MID. (0x%08lX)",
-                    iStatus);
-            goto VM_InitPipe_Exit_Tag;
-        }
-        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_ATTITUDE_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS) {
-            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_VEHICLE_ATTITUDE_MID. (0x%08lX)",
-                    iStatus);
-            goto VM_InitPipe_Exit_Tag;
-        }
-        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_LOCAL_POSITION_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS) {
-            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_VEHICLE_LOCAL_POSITION_MID. (0x%08lX)",
-                    iStatus);
-            goto VM_InitPipe_Exit_Tag;
-        }
-        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_LAND_DETECTED_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS) {
-            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_VEHICLE_LAND_DETECTED_MID. (0x%08lX)",
-                    iStatus);
-            goto VM_InitPipe_Exit_Tag;
-        }
-        iStatus = CFE_SB_SubscribeEx(PX4_GEOFENCE_RESULT_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS) {
-            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_GEOFENCE_RESULT_MID. (0x%08lX)",
-                    iStatus);
-            goto VM_InitPipe_Exit_Tag;
-        }
-        iStatus = CFE_SB_SubscribeEx(PX4_MISSION_RESULT_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS) {
-            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_MISSION_RESULT_MID. (0x%08lX)",
-                    iStatus);
-            goto VM_InitPipe_Exit_Tag;
-        }
-        iStatus = CFE_SB_SubscribeEx(PX4_MANUAL_CONTROL_SETPOINT_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS) {
-            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_MANUAL_CONTROL_SETPOINT_MID. (0x%08lX)",
-                    iStatus);
-            goto VM_InitPipe_Exit_Tag;
-        }
-        iStatus = CFE_SB_SubscribeEx(PX4_POSITION_SETPOINT_TRIPLET_MID,
-                SchPipeId, CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS) {
-            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_POSITION_SETPOINT_TRIPLET_MID. (0x%08lX)",
-                    iStatus);
-            goto VM_InitPipe_Exit_Tag;
-        }
-        iStatus = CFE_SB_SubscribeEx(PX4_OFFBOARD_CONTROL_MODE_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS) {
-            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_OFFBOARD_CONTROL_MODE_MID. (0x%08lX)",
-                    iStatus);
-            goto VM_InitPipe_Exit_Tag;
-        }
-        iStatus = CFE_SB_SubscribeEx(PX4_SENSOR_ACCEL_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS) {
-            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_SENSOR_ACCEL_MID. (0x%08lX)",
-                    iStatus);
-            goto VM_InitPipe_Exit_Tag;
-        }
-        iStatus = CFE_SB_SubscribeEx(PX4_SAFETY_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS) {
-            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_SAFETY_MID. (0x%08lX)",
-                    iStatus);
-            goto VM_InitPipe_Exit_Tag;
-        }
-        iStatus = CFE_SB_SubscribeEx(PX4_SENSOR_CORRECTION_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS) {
-            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_SENSOR_CORRECTION_MID. (0x%08lX)",
-                    iStatus);
-            goto VM_InitPipe_Exit_Tag;
-        }
-        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_STATUS_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS) {
-            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_VEHICLE_STATUS_MID. (0x%08lX)",
-                    iStatus);
-            goto VM_InitPipe_Exit_Tag;
-        }
-        iStatus = CFE_SB_SubscribeEx(PX4_SENSOR_COMBINED_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS) {
-            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_SENSOR_COMBINED_MID. (0x%08lX)",
-                    iStatus);
-            goto VM_InitPipe_Exit_Tag;
-        }
     } else {
         (void) CFE_EVS_SendEvent(VM_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
                 "Failed to create SCH pipe (0x%08lX)", iStatus);
@@ -288,6 +109,303 @@ int32 VM::InitPipe() {
     } else {
         (void) CFE_EVS_SendEvent(VM_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
                 "Failed to create CMD pipe (0x%08lX)", iStatus);
+        goto VM_InitPipe_Exit_Tag;
+    }
+
+    /* Init command pipe and subscribe to command messages */
+    iStatus = CFE_SB_CreatePipe(&DataPipeId,
+                                 VM_DATA_PIPE_DEPTH,
+                                 VM_DATA_PIPE_NAME);
+    if (iStatus == CFE_SUCCESS)
+    {
+        iStatus = CFE_SB_SubscribeEx(
+        		    PX4_SENSOR_MAG_MID,
+					DataPipeId,
+                    CFE_SB_Default_Qos,
+					1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                    "DATA Pipe failed to subscribe to PX4_SENSOR_MAG_MID. (0x%08lX)",
+                    iStatus);
+            goto VM_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(
+        		    PX4_SENSOR_GYRO_MID,
+					DataPipeId,
+                    CFE_SB_Default_Qos,
+					1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                    "DATA Pipe failed to subscribe to PX4_SENSOR_GYRO_MID. (0x%08lX)",
+                    iStatus);
+            goto VM_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(
+        		    PX4_BATTERY_STATUS_MID,
+				    DataPipeId,
+                    CFE_SB_Default_Qos,
+					1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                    "DATA Pipe failed to subscribe to PX4_TELEMETRY_STATUS_MID. (0x%08lX)",
+                    iStatus);
+            goto VM_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(
+        		    PX4_VEHICLE_COMMAND_MID,
+					DataPipeId,
+                    CFE_SB_Default_Qos,
+					1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                    "DATA Pipe failed to subscribe to PX4_VEHICLE_COMMAND_MID. (0x%08lX)",
+                    iStatus);
+            goto VM_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(
+        		    PX4_VEHICLE_CONTROL_MODE_MID,
+					DataPipeId,
+                    CFE_SB_Default_Qos,
+					1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                    "DATA Pipe failed to subscribe to PX4_VEHICLE_COMMAND_MID. (0x%08lX)",
+                    iStatus);
+            goto VM_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(
+        		    PX4_VEHICLE_GLOBAL_POSITION_MID,
+					DataPipeId,
+                    CFE_SB_Default_Qos,
+					1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                    "DATA Pipe failed to subscribe to PX4_SUBSYSTEM_INFO_MID. (0x%08lX)",
+                    iStatus);
+            goto VM_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(
+        		    PX4_TELEMETRY_STATUS_MID,
+					DataPipeId,
+                    CFE_SB_Default_Qos,
+					1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                    "DATA Pipe failed to subscribe to PX4_TELEMETRY_STATUS_MID. (0x%08lX)",
+                    iStatus);
+            goto VM_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(
+        		    PX4_SUBSYSTEM_INFO_MID,
+					DataPipeId,
+                    CFE_SB_Default_Qos,
+					1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                    "DATA Pipe failed to subscribe to PX4_SUBSYSTEM_INFO_MID. (0x%08lX)",
+                    iStatus);
+            goto VM_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(
+        		    PX4_VEHICLE_GPS_POSITION_MID,
+					DataPipeId,
+                    CFE_SB_Default_Qos,
+					1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                    "DATA Pipe failed to subscribe to PX4_VEHICLE_GPS_POSITION_MID. (0x%08lX)",
+                    iStatus);
+            goto VM_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(
+        		    PX4_VEHICLE_ATTITUDE_MID,
+					DataPipeId,
+                    CFE_SB_Default_Qos,
+					1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                    "DATA Pipe failed to subscribe to PX4_VEHICLE_ATTITUDE_MID. (0x%08lX)",
+                    iStatus);
+            goto VM_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(
+        		    PX4_VEHICLE_LOCAL_POSITION_MID,
+					DataPipeId,
+                    CFE_SB_Default_Qos,
+					1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                    "DATA Pipe failed to subscribe to PX4_VEHICLE_LOCAL_POSITION_MID. (0x%08lX)",
+                    iStatus);
+            goto VM_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(
+        		    PX4_VEHICLE_LAND_DETECTED_MID,
+					DataPipeId,
+                    CFE_SB_Default_Qos,
+					1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                    "DATA Pipe failed to subscribe to PX4_VEHICLE_LAND_DETECTED_MID. (0x%08lX)",
+                    iStatus);
+            goto VM_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(
+        		    PX4_GEOFENCE_RESULT_MID,
+					DataPipeId,
+                    CFE_SB_Default_Qos,
+					1);
+        if (iStatus != CFE_SUCCESS) {
+            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                    "DATA Pipe failed to subscribe to PX4_GEOFENCE_RESULT_MID. (0x%08lX)",
+                    iStatus);
+            goto VM_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(
+        		    PX4_MISSION_RESULT_MID,
+					DataPipeId,
+                    CFE_SB_Default_Qos,
+					1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                    "DATA Pipe failed to subscribe to PX4_MISSION_RESULT_MID. (0x%08lX)",
+                    iStatus);
+            goto VM_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(
+        		    PX4_MANUAL_CONTROL_SETPOINT_MID,
+					DataPipeId,
+                    CFE_SB_Default_Qos,
+					1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                    "DATA Pipe failed to subscribe to PX4_MANUAL_CONTROL_SETPOINT_MID. (0x%08lX)",
+                    iStatus);
+            goto VM_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(
+        		    PX4_POSITION_SETPOINT_TRIPLET_MID,
+                    DataPipeId,
+					CFE_SB_Default_Qos,
+					1);
+        if (iStatus != CFE_SUCCESS) {
+            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                    "DATA Pipe failed to subscribe to PX4_POSITION_SETPOINT_TRIPLET_MID. (0x%08lX)",
+                    iStatus);
+            goto VM_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(
+        		    PX4_OFFBOARD_CONTROL_MODE_MID,
+					DataPipeId,
+                    CFE_SB_Default_Qos,
+					1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                    "DATA Pipe failed to subscribe to PX4_OFFBOARD_CONTROL_MODE_MID. (0x%08lX)",
+                    iStatus);
+            goto VM_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(
+        		    PX4_SENSOR_ACCEL_MID,
+					DataPipeId,
+                    CFE_SB_Default_Qos,
+					1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                    "DATA Pipe failed to subscribe to PX4_SENSOR_ACCEL_MID. (0x%08lX)",
+                    iStatus);
+            goto VM_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(
+        		    PX4_SAFETY_MID,
+				    DataPipeId,
+                    CFE_SB_Default_Qos,
+				    1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                    "DATA Pipe failed to subscribe to PX4_SAFETY_MID. (0x%08lX)",
+                    iStatus);
+            goto VM_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(
+        		    PX4_SENSOR_CORRECTION_MID,
+				    DataPipeId,
+                    CFE_SB_Default_Qos,
+				    1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                    "DATA Pipe failed to subscribe to PX4_SENSOR_CORRECTION_MID. (0x%08lX)",
+                    iStatus);
+            goto VM_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(
+        		    PX4_VEHICLE_STATUS_MID,
+					DataPipeId,
+                    CFE_SB_Default_Qos,
+					1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                    "DATA Pipe failed to subscribe to PX4_VEHICLE_STATUS_MID. (0x%08lX)",
+                    iStatus);
+            goto VM_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(
+        		     PX4_SENSOR_COMBINED_MID,
+        		     DataPipeId,
+                     CFE_SB_Default_Qos,
+					 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                    "DATA Pipe failed to subscribe to PX4_SENSOR_COMBINED_MID. (0x%08lX)",
+                    iStatus);
+            goto VM_InitPipe_Exit_Tag;
+        }
+    }
+    else
+    {
+        (void) CFE_EVS_SendEvent(VM_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
+                "Failed to create DATA pipe (0x%08lX)", iStatus);
         goto VM_InitPipe_Exit_Tag;
     }
 
@@ -390,9 +508,10 @@ int32 VM::InitApp() {
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-int32 VM::RcvSchPipeMsg(int32 iBlocking) {
-    int32 iStatus = CFE_SUCCESS;
-    CFE_SB_Msg_t* MsgPtr = NULL;
+int32 VM::RcvSchPipeMsg(int32 iBlocking)
+{
+    int32          iStatus = CFE_SUCCESS;
+    CFE_SB_Msg_t*  MsgPtr = 0;
     CFE_SB_MsgId_t MsgId;
 
     /* Stop Performance Log entry */
@@ -404,39 +523,44 @@ int32 VM::RcvSchPipeMsg(int32 iBlocking) {
     /* Start Performance Log entry */
     CFE_ES_PerfLogEntry(VM_MAIN_TASK_PERF_ID);
 
-    if (iStatus == CFE_SUCCESS) {
+    if (iStatus == CFE_SUCCESS)
+    {
         MsgId = CFE_SB_GetMsgId(MsgPtr);
-        switch (MsgId) {
+        switch (MsgId)
+        {
         case VM_WAKEUP_MID: {
+        	HkTlm.WakeupCount++;
+        	if(ProcessDataPipe())
+        	{
+				/* Update status in caution and warning */
+				m_caws.SetStatus(&VehicleStatusMsg);
 
-            /* Update status in caution and warning */
-            m_caws.SetStatus(&VehicleStatusMsg);
+				/* Initialize home position and local variables */
+				if (NotInitialized) {
+					Initialization();
+					SetHomePosition();
+					NotInitialized = false;
+				}
 
-            /* Initialize home position and local variables */
-            if (NotInitialized) {
-                Initialization();
-                SetHomePosition();
-                NotInitialized = false;
-            }
+				/* Cyclic maintainance loop */
+				Execute();
 
-            /* Cyclic maintainance loop */
-            Execute();
+				/* Get a common timestamp. */
+				uint64 timestamp;
+				timestamp = PX4LIB_GetPX4TimeUs();
+				ActuatorArmedMsg.Timestamp = timestamp;
+				VehicleStatusMsg.Timestamp = timestamp;
+				VehicleManagerStateMsg.Timestamp = timestamp;
+				VehicleControlModeMsg.Timestamp = timestamp;
 
-            /* Get a common timestamp. */
-            uint64 timestamp;
-            timestamp = PX4LIB_GetPX4TimeUs();
-            ActuatorArmedMsg.Timestamp = timestamp;
-            VehicleStatusMsg.Timestamp = timestamp;
-            VehicleManagerStateMsg.Timestamp = timestamp;
-            VehicleControlModeMsg.Timestamp = timestamp;
+				/* Execute all stateful behavior. */
+				ArmingSM.DoAction();
+				NavigationSM.DoAction();
 
-            /* Execute all stateful behavior. */
-            ArmingSM.DoAction();
-            NavigationSM.DoAction();
-
-            /* Publish the messages. */
-            SendVehicleManagerStateMsg();
-            SendVehicleControlModeMsg();
+				/* Publish the messages. */
+				SendVehicleManagerStateMsg();
+				SendVehicleControlModeMsg();
+        	}
             break;
         }
 
@@ -445,95 +569,7 @@ int32 VM::RcvSchPipeMsg(int32 iBlocking) {
             ReportHousekeeping();
             break;
 
-        case PX4_SENSOR_MAG_MID:
-            memcpy(&SensorMagMsg, MsgPtr, sizeof(SensorMagMsg));
-            break;
 
-        case PX4_SENSOR_GYRO_MID:
-            memcpy(&SensorGyroMsg, MsgPtr, sizeof(SensorGyroMsg));
-            break;
-
-        case PX4_BATTERY_STATUS_MID:
-            memcpy(&BatteryStatusMsg, MsgPtr, sizeof(BatteryStatusMsg));
-            break;
-
-        case PX4_VEHICLE_GLOBAL_POSITION_MID:
-            memcpy(&VehicleGlobalPositionMsg, MsgPtr,
-                    sizeof(VehicleGlobalPositionMsg));
-            break;
-
-        case PX4_TELEMETRY_STATUS_MID:
-            memcpy(&TelemetryStatusMsg, MsgPtr, sizeof(TelemetryStatusMsg));
-            break;
-
-        case PX4_SUBSYSTEM_INFO_MID:
-            memcpy(&SubsystemInfoMsg, MsgPtr, sizeof(SubsystemInfoMsg));
-            break;
-
-        case PX4_VEHICLE_GPS_POSITION_MID:
-            memcpy(&VehicleGpsPositionMsg, MsgPtr,
-                    sizeof(VehicleGpsPositionMsg));
-            break;
-
-        case PX4_VEHICLE_ATTITUDE_MID:
-            memcpy(&VehicleAttitudeMsg, MsgPtr, sizeof(VehicleAttitudeMsg));
-            break;
-
-        case PX4_VEHICLE_LOCAL_POSITION_MID:
-            memcpy(&VehicleLocalPositionMsg, MsgPtr,
-                    sizeof(VehicleLocalPositionMsg));
-            break;
-
-        case PX4_VEHICLE_LAND_DETECTED_MID:
-            memcpy(&VehicleLandDetectedMsg, MsgPtr,
-                    sizeof(VehicleLandDetectedMsg));
-            break;
-
-//            case PX4_GEOFENCE_RESULT_MID:
-//                memcpy(&GeofenceResultMsg, MsgPtr, sizeof(GeofenceResultMsg));
-//                break;
-
-        case PX4_MISSION_RESULT_MID:
-            memcpy(&MissionResultMsg, MsgPtr, sizeof(MissionResultMsg));
-            break;
-
-        case PX4_MANUAL_CONTROL_SETPOINT_MID:
-            memcpy(&ManualControlSetpointMsg, MsgPtr,
-                    sizeof(ManualControlSetpointMsg));
-            break;
-
-        case PX4_POSITION_SETPOINT_TRIPLET_MID:
-            memcpy(&PositionSetpointTripletMsg, MsgPtr,
-                    sizeof(PositionSetpointTripletMsg));
-            break;
-
-//            case PX4_OFFBOARD_CONTROL_MODE_MID:
-//                memcpy(&OffboardControlModeMsg, MsgPtr, sizeof(OffboardControlModeMsg));
-//                break;
-
-        case PX4_SENSOR_ACCEL_MID:
-            memcpy(&SensorAccelMsg, MsgPtr, sizeof(SensorAccelMsg));
-            break;
-
-        case PX4_SAFETY_MID:
-            memcpy(&SafetyMsg, MsgPtr, sizeof(SafetyMsg));
-            break;
-
-        case PX4_SENSOR_CORRECTION_MID:
-            memcpy(&SensorCorrectionMsg, MsgPtr, sizeof(SensorCorrectionMsg));
-            break;
-
-        case PX4_VEHICLE_STATUS_MID:
-            memcpy(&VehicleStatusMsg, MsgPtr, sizeof(VehicleStatusMsg));
-            break;
-        case PX4_VEHICLE_CONTROL_MODE_MID:
-            memcpy(&VehicleControlModeMsg, MsgPtr,
-                    sizeof(VehicleControlModeMsg));
-            break;
-
-        case PX4_SENSOR_COMBINED_MID:
-            memcpy(&SensorCombinedMsg, MsgPtr, sizeof(SensorCombinedMsg));
-            break;
 
         default:
             (void) CFE_EVS_SendEvent(VM_MSGID_ERR_EID, CFE_EVS_ERROR,
@@ -558,6 +594,157 @@ int32 VM::RcvSchPipeMsg(int32 iBlocking) {
     return iStatus;
 }
 
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Process Incoming Data                                       */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+osalbool VM::ProcessDataPipe()
+{
+    int32 iStatus = CFE_SUCCESS;
+    CFE_SB_Msg_t* MsgPtr = NULL;
+    CFE_SB_MsgId_t MsgId;
+
+    /* Process command messages until the pipe is empty */
+    while (1)
+    {
+        iStatus = CFE_SB_RcvMsg(&MsgPtr, DataPipeId, CFE_SB_POLL);
+        if (iStatus == CFE_SUCCESS)
+        {
+            MsgId = CFE_SB_GetMsgId(MsgPtr);
+            switch (MsgId)
+            {
+				case PX4_SENSOR_MAG_MID:
+		        	HkTlm.SensorMagMsgCount;
+					CFE_PSP_MemCpy(&SensorMagMsg, MsgPtr, sizeof(SensorMagMsg));
+					break;
+
+				case PX4_SENSOR_GYRO_MID:
+		        	HkTlm.SensorGyroMsgCount++;
+					CFE_PSP_MemCpy(&SensorGyroMsg, MsgPtr, sizeof(SensorGyroMsg));
+					break;
+
+				case PX4_BATTERY_STATUS_MID:
+		        	HkTlm.BatteryStatusMsgCount++;
+					CFE_PSP_MemCpy(&BatteryStatusMsg, MsgPtr, sizeof(BatteryStatusMsg));
+					break;
+
+				case PX4_VEHICLE_GLOBAL_POSITION_MID:
+		        	HkTlm.VehicleGlobalPositionMsgCount++;
+					CFE_PSP_MemCpy(&VehicleGlobalPositionMsg, MsgPtr, sizeof(VehicleGlobalPositionMsg));
+					break;
+
+				case PX4_TELEMETRY_STATUS_MID:
+		        	HkTlm.TelemetryStatusMsgCount++;
+					CFE_PSP_MemCpy(&TelemetryStatusMsg, MsgPtr, sizeof(TelemetryStatusMsg));
+					break;
+
+				case PX4_SUBSYSTEM_INFO_MID:
+		        	HkTlm.SubsystemInfoMsgCount++;
+					CFE_PSP_MemCpy(&SubsystemInfoMsg, MsgPtr, sizeof(SubsystemInfoMsg));
+					break;
+
+				case PX4_VEHICLE_GPS_POSITION_MID:
+		        	HkTlm.VehicleGpsPositionMsgCount++;
+					CFE_PSP_MemCpy(&VehicleGpsPositionMsg, MsgPtr, sizeof(VehicleGpsPositionMsg));
+					break;
+
+				case PX4_VEHICLE_ATTITUDE_MID:
+		        	HkTlm.VehicleAttitudeMsgCount++;
+					CFE_PSP_MemCpy(&VehicleAttitudeMsg, MsgPtr, sizeof(VehicleAttitudeMsg));
+					break;
+
+				case PX4_VEHICLE_LOCAL_POSITION_MID:
+		        	HkTlm.VehicleLocalPositionMsgCount++;
+					CFE_PSP_MemCpy(&VehicleLocalPositionMsg, MsgPtr, sizeof(VehicleLocalPositionMsg));
+					break;
+
+				case PX4_VEHICLE_LAND_DETECTED_MID:
+		        	HkTlm.VehicleLandDetectedMsgCount++;
+					CFE_PSP_MemCpy(&VehicleLandDetectedMsg, MsgPtr,	sizeof(VehicleLandDetectedMsg));
+					break;
+
+		//            case PX4_GEOFENCE_RESULT_MID:
+		//                memcpy(&GeofenceResultMsg, MsgPtr, sizeof(GeofenceResultMsg));
+		//                break;
+
+				case PX4_MISSION_RESULT_MID:
+		        	HkTlm.MissionResultMsgCount++;
+					CFE_PSP_MemCpy(&MissionResultMsg, MsgPtr, sizeof(MissionResultMsg));
+					break;
+
+				case PX4_MANUAL_CONTROL_SETPOINT_MID:
+		        	HkTlm.ManualControlSetpointMsgCount++;
+					CFE_PSP_MemCpy(&ManualControlSetpointMsg, MsgPtr, sizeof(ManualControlSetpointMsg));
+					break;
+
+				case PX4_POSITION_SETPOINT_TRIPLET_MID:
+		        	HkTlm.PositionSetpointTripletMsgCount++;
+					CFE_PSP_MemCpy(&PositionSetpointTripletMsg, MsgPtr,	sizeof(PositionSetpointTripletMsg));
+					break;
+
+		//		case PX4_OFFBOARD_CONTROL_MODE_MID:
+		//        	HkTlm.OffboardControlModeMsgCount++;
+		//			CFE_PSP_MemCpy(&OffboardControlModeMsg, MsgPtr,	sizeof(OffboardControlModeMsg));
+		//			break;
+
+				case PX4_SENSOR_ACCEL_MID:
+		        	HkTlm.SensorAccelMsgCount++;
+					CFE_PSP_MemCpy(&SensorAccelMsg, MsgPtr, sizeof(SensorAccelMsg));
+					break;
+
+				case PX4_SAFETY_MID:
+		        	HkTlm.SafetyMsgCount++;
+					CFE_PSP_MemCpy(&SafetyMsg, MsgPtr, sizeof(SafetyMsg));
+					break;
+
+				case PX4_SENSOR_CORRECTION_MID:
+		        	HkTlm.SensorCorrectionMsgCount++;
+					CFE_PSP_MemCpy(&SensorCorrectionMsg, MsgPtr, sizeof(SensorCorrectionMsg));
+					break;
+
+				case PX4_VEHICLE_STATUS_MID:
+		        	HkTlm.VehicleStatusMsgCount++;
+					CFE_PSP_MemCpy(&VehicleStatusMsg, MsgPtr, sizeof(VehicleStatusMsg));
+					break;
+
+				case PX4_VEHICLE_CONTROL_MODE_MID:
+		        	HkTlm.VehicleControlModeMsgCount++;
+					CFE_PSP_MemCpy(&VehicleControlModeMsg, MsgPtr, sizeof(VehicleControlModeMsg));
+					break;
+
+				case PX4_SENSOR_COMBINED_MID:
+					HkTlm.SensorCombinedMsgCount++;
+					CFE_PSP_MemCpy(&SensorCombinedMsg, MsgPtr, sizeof(SensorCombinedMsg));
+					break;
+
+                default:
+                    (void) CFE_EVS_SendEvent(VM_MSGID_ERR_EID, CFE_EVS_ERROR,
+                        "Recvd invalid DATA msgId (0x%04X)",
+                        (unsigned short) MsgId);
+                    break;
+            }
+        }
+        else if (iStatus == CFE_SB_NO_MESSAGE)
+        {
+            break;
+        }
+        else
+        {
+            (void) CFE_EVS_SendEvent(VM_RCVMSG_ERR_EID, CFE_EVS_ERROR,
+                    "DATA pipe read error (0x%08lX)", iStatus);
+            break;
+        }
+    }
+
+    return TRUE;
+}
+
+
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Process Incoming Commands                                       */
@@ -572,26 +759,32 @@ void VM::ProcessCmdPipe() {
     /* Process command messages until the pipe is empty */
     while (1) {
         iStatus = CFE_SB_RcvMsg(&CmdMsgPtr, CmdPipeId, CFE_SB_POLL);
-        if (iStatus == CFE_SUCCESS) {
+        if (iStatus == CFE_SUCCESS)
+        {
             CmdMsgId = CFE_SB_GetMsgId(CmdMsgPtr);
-            switch (CmdMsgId) {
-            case VM_CMD_MID:
-                ProcessAppCmds(CmdMsgPtr);
-                break;
+            switch (CmdMsgId)
+            {
+                case VM_CMD_MID:
+                    ProcessAppCmds(CmdMsgPtr);
+                    break;
 
-            default:
-                /* Bump the command error counter for an unknown command.
-                 * (This should only occur if it was subscribed to with this
-                 *  pipe, but not handled in this switch-case.) */
-                HkTlm.usCmdErrCnt++;
-                (void) CFE_EVS_SendEvent(VM_MSGID_ERR_EID, CFE_EVS_ERROR,
+                default:
+                    /* Bump the command error counter for an unknown command.
+                     * (This should only occur if it was subscribed to with this
+                     *  pipe, but not handled in this switch-case.) */
+                    HkTlm.usCmdErrCnt++;
+                    (void) CFE_EVS_SendEvent(VM_MSGID_ERR_EID, CFE_EVS_ERROR,
                         "Recvd invalid CMD msgId (0x%04X)",
                         (unsigned short) CmdMsgId);
-                break;
+                    break;
             }
-        } else if (iStatus == CFE_SB_NO_MESSAGE) {
+        }
+        else if (iStatus == CFE_SB_NO_MESSAGE)
+        {
             break;
-        } else {
+        }
+        else
+        {
             (void) CFE_EVS_SendEvent(VM_RCVMSG_ERR_EID, CFE_EVS_ERROR,
                     "CMD pipe read error (0x%08lX)", iStatus);
             break;
@@ -625,6 +818,26 @@ void VM::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr) {
         case VM_RESET_CC:
             HkTlm.usCmdCnt = 0;
             HkTlm.usCmdErrCnt = 0;
+            HkTlm.WakeupCount = 0;
+            HkTlm.SensorMagMsgCount = 0;
+            HkTlm.SensorGyroMsgCount = 0;
+            HkTlm.BatteryStatusMsgCount = 0;
+            HkTlm.TelemetryStatusMsgCount = 0;
+            HkTlm.SubsystemInfoMsgCount = 0;
+            HkTlm.VehicleAttitudeMsgCount = 0;
+            HkTlm.VehicleLocalPositionMsgCount = 0;
+            HkTlm.VehicleLandDetectedMsgCount = 0;
+            HkTlm.MissionResultMsgCount = 0;
+            HkTlm.ManualControlSetpointMsgCount = 0;
+            HkTlm.PositionSetpointTripletMsgCount = 0;
+            HkTlm.SensorAccelMsgCount = 0;
+            HkTlm.SafetyMsgCount = 0;
+            HkTlm.SensorCorrectionMsgCount = 0;
+            HkTlm.SensorCombinedMsgCount = 0;
+            HkTlm.VehicleCommandMsgCount = 0;
+            HkTlm.VehicleGlobalPositionMsgCount = 0;
+            HkTlm.VehicleGpsPositionMsgCount;
+
             break;
 
         case VM_VEHICLE_ARM_CC:

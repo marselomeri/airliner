@@ -621,6 +621,28 @@ typedef struct
      \brief Current navigation state */
     uint32 NavState;
 
+    uint32 WakeupCount;
+    uint32 SensorMagMsgCount;
+    uint32 SensorGyroMsgCount;
+    uint32 BatteryStatusMsgCount;
+    uint32 TelemetryStatusMsgCount;
+    uint32 SubsystemInfoMsgCount;
+    uint32 VehicleAttitudeMsgCount;
+    uint32 VehicleLocalPositionMsgCount;
+    uint32 VehicleLandDetectedMsgCount;
+    uint32 MissionResultMsgCount;
+    uint32 ManualControlSetpointMsgCount;
+    uint32 PositionSetpointTripletMsgCount;
+    uint32 SensorAccelMsgCount;
+    uint32 SafetyMsgCount;
+    uint32 SensorCorrectionMsgCount;
+    uint32 SensorCombinedMsgCount;
+    uint32 VehicleCommandMsgCount;
+    uint32 VehicleGlobalPositionMsgCount;
+    uint32 VehicleGpsPositionMsgCount;
+    uint32 VehicleStatusMsgCount;
+    uint32 VehicleControlModeMsgCount;
+
 }VM_HkTlm_t;
 
 #ifdef __cplusplus

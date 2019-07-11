@@ -17,6 +17,15 @@ body {
   overflow: hidden;
 }
 
+div {
+  scrollbar-color: #8a8a8a #222222;
+  scrollbar-width: auto;
+}
+
+div:hover {
+  scrollbar-width: auto;
+}
+
 h2 {
   font: 14px Arial, sans-serif;
   color: var(--h2-color);

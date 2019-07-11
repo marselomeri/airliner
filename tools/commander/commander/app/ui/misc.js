@@ -250,49 +250,7 @@ function InitToolTips() {
   }
   $( '[data-tooltip="true"]' ).tooltip( options );
 }
-/**
- * Adds scrollbar to general elements with no special requirements
- * @constructor
- */
-function InitScrollBar() {
-  var applyScrollTo = [
-    '.lm_content',
-    '#cdr-app-menu',
-  ]
 
-  var options = {
-    autoUpdate: true,
-    autoUpdateInterval: 5,
-    overflowBehavior: {
-      x: "scroll",
-      y: "scroll"
-    },
-    scrollbars: {
-      visibility: "visible",
-      autoHide: "never",
-      autoHideDelay: 800,
-      dragScrolling: true,
-      clickScrolling: false,
-      touchSupport: true
-    }
-  }
-  /* os-theme-dark class should be added to every pug file in the top element */
-  //setTimeout( function() {
-  //  $( applyScrollTo.join( ',' ) ).overlayScrollbars( options );
-  //}, 10 );
-  //setTimeout( function() {
-  //  $( applyScrollTo.join( ',' ) ).overlayScrollbars( options );
-  //}, 100 );
-  setTimeout( function() {
-    $( applyScrollTo.join( ',' ) ).overlayScrollbars( options );
-  }, 250 );
-  setTimeout( function() {
-    $( applyScrollTo.join( ',' ) ).overlayScrollbars( options );
-  }, 500 );
-  setTimeout( function() {
-    $( applyScrollTo.join( ',' ) ).overlayScrollbars( options );
-  }, 1000 );
-}
 /**
  * Resize events can be handled here
  * @constructor
