@@ -70,13 +70,6 @@ LD_ConfigTbl_t LD_ConfigTbl =
 	     */
 	    1.4,
 
-	    /** \brief Multicopter sub-hover throttle scaling.
-	     *
-	     *  \par Limits:
-	     *  	Min > Max (incr.) 0.05 > 0.5 , default 0.1.
-	     */
-	    0.5,
-
 	    /** \brief Multicopter free-fall trigger time.
 	     *
 	     *  \par Limits:
@@ -90,27 +83,6 @@ LD_ConfigTbl_t LD_ConfigTbl =
 	     *  	default 0.15.
 	     */
 	    0.15,
-
-	    /** \brief Multicopter Flight stick up threshold for take off.
-	     *
-	     *  \par Limits:
-	     *  	default 0.65.
-	     */
-	    0.65,
-
-	    /** \brief Total flight time in ms, higher 32 bits of the value.
-	     *
-	     *  \par Limits:
-	     *  	default 0.
-	     */
-	    0,
-
-	    /** \brief Total flight time in ms, lower 32 bits of the value.
-	     *
-	     *  \par Limits:
-	     *  	default 60299599.
-	     */
-		60299599,
 
 	    /** \brief Multicopter maximum altitude.
 	     *
