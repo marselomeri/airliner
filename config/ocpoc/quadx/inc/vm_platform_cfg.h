@@ -109,6 +109,21 @@ extern "C" {
 */
 #define VM_STARTUP_TIMEOUT_MSEC    (1000)
 
+/** \brief The timeout value, in microseconds, to wait until VM starts checking battery
+**         voltage.
+**
+**  \par Limits:
+**       None
+*/
+#define VM_BATTERY_VOLTAGE_CHECK_DELAY (6000000)
+
+/** \brief The minimum battery voltage to be considered valid.
+**
+**  \par Limits:
+**       Must be greater than or equal to FLT_EPSILON.
+*/
+#define VM_MINIMUM_VALID_BATTERY_VOLTAGE (2.0f)
+
 
 #ifdef __cplusplus
 }

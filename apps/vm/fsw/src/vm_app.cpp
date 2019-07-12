@@ -1,11 +1,43 @@
+/****************************************************************************
+ *
+ *   Copyright (c) 2017 Windhover Labs, L.L.C. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in
+ *    the documentation and/or other materials provided with the
+ *    distribution.
+ * 3. Neither the name Windhover Labs nor the names of its
+ *    contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+ * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ *****************************************************************************/
+
 /************************************************************************
  ** Includes
  *************************************************************************/
 #include <string.h>
 #include <float.h>
-#include "cfe.h"
 #include <math.h>
-
+#include "cfe.h"
 #include "vm_app.h"
 #include "vm_msg.h"
 #include "vm_version.h"
@@ -185,14 +217,6 @@ int32 VM::InitPipe() {
                     iStatus);
             goto VM_InitPipe_Exit_Tag;
         }
-        iStatus = CFE_SB_SubscribeEx(PX4_GEOFENCE_RESULT_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS) {
-            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_GEOFENCE_RESULT_MID. (0x%08lX)",
-                    iStatus);
-            goto VM_InitPipe_Exit_Tag;
-        }
         iStatus = CFE_SB_SubscribeEx(PX4_MISSION_RESULT_MID, SchPipeId,
                 CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS) {
@@ -214,14 +238,6 @@ int32 VM::InitPipe() {
         if (iStatus != CFE_SUCCESS) {
             (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
                     "CMD Pipe failed to subscribe to PX4_POSITION_SETPOINT_TRIPLET_MID. (0x%08lX)",
-                    iStatus);
-            goto VM_InitPipe_Exit_Tag;
-        }
-        iStatus = CFE_SB_SubscribeEx(PX4_OFFBOARD_CONTROL_MODE_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS) {
-            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_OFFBOARD_CONTROL_MODE_MID. (0x%08lX)",
                     iStatus);
             goto VM_InitPipe_Exit_Tag;
         }
@@ -407,8 +423,8 @@ int32 VM::RcvSchPipeMsg(int32 iBlocking) {
     if (iStatus == CFE_SUCCESS) {
         MsgId = CFE_SB_GetMsgId(MsgPtr);
         switch (MsgId) {
-        case VM_WAKEUP_MID: {
-
+        case VM_WAKEUP_MID:
+        {
             /* Update status in caution and warning */
             m_caws.SetStatus(&VehicleStatusMsg);
 
@@ -441,103 +457,139 @@ int32 VM::RcvSchPipeMsg(int32 iBlocking) {
         }
 
         case VM_SEND_HK_MID:
+        {
             ProcessCmdPipe();
             ReportHousekeeping();
             break;
+        }
 
         case PX4_SENSOR_MAG_MID:
+        {
             memcpy(&SensorMagMsg, MsgPtr, sizeof(SensorMagMsg));
             break;
+        }
 
         case PX4_SENSOR_GYRO_MID:
+        {
             memcpy(&SensorGyroMsg, MsgPtr, sizeof(SensorGyroMsg));
             break;
+        }
 
         case PX4_BATTERY_STATUS_MID:
+        {
             memcpy(&BatteryStatusMsg, MsgPtr, sizeof(BatteryStatusMsg));
             break;
+        }
 
         case PX4_VEHICLE_GLOBAL_POSITION_MID:
+        {
             memcpy(&VehicleGlobalPositionMsg, MsgPtr,
                     sizeof(VehicleGlobalPositionMsg));
             break;
+        }
 
         case PX4_TELEMETRY_STATUS_MID:
+        {
             memcpy(&TelemetryStatusMsg, MsgPtr, sizeof(TelemetryStatusMsg));
             break;
+        }
 
         case PX4_SUBSYSTEM_INFO_MID:
+        {
             memcpy(&SubsystemInfoMsg, MsgPtr, sizeof(SubsystemInfoMsg));
             break;
+        }
 
         case PX4_VEHICLE_GPS_POSITION_MID:
+        {
             memcpy(&VehicleGpsPositionMsg, MsgPtr,
                     sizeof(VehicleGpsPositionMsg));
             break;
+        }
 
         case PX4_VEHICLE_ATTITUDE_MID:
+        {
             memcpy(&VehicleAttitudeMsg, MsgPtr, sizeof(VehicleAttitudeMsg));
             break;
+        }
 
         case PX4_VEHICLE_LOCAL_POSITION_MID:
+        {
             memcpy(&VehicleLocalPositionMsg, MsgPtr,
                     sizeof(VehicleLocalPositionMsg));
             break;
+        }
 
         case PX4_VEHICLE_LAND_DETECTED_MID:
+        {
             memcpy(&VehicleLandDetectedMsg, MsgPtr,
                     sizeof(VehicleLandDetectedMsg));
             break;
-
-//            case PX4_GEOFENCE_RESULT_MID:
-//                memcpy(&GeofenceResultMsg, MsgPtr, sizeof(GeofenceResultMsg));
-//                break;
+        }
 
         case PX4_MISSION_RESULT_MID:
+        {
             memcpy(&MissionResultMsg, MsgPtr, sizeof(MissionResultMsg));
             break;
+        }
 
         case PX4_MANUAL_CONTROL_SETPOINT_MID:
+        {
             memcpy(&ManualControlSetpointMsg, MsgPtr,
                     sizeof(ManualControlSetpointMsg));
             break;
+        }
 
         case PX4_POSITION_SETPOINT_TRIPLET_MID:
+        {
             memcpy(&PositionSetpointTripletMsg, MsgPtr,
                     sizeof(PositionSetpointTripletMsg));
             break;
-
-//            case PX4_OFFBOARD_CONTROL_MODE_MID:
-//                memcpy(&OffboardControlModeMsg, MsgPtr, sizeof(OffboardControlModeMsg));
-//                break;
+        }
 
         case PX4_SENSOR_ACCEL_MID:
+        {
             memcpy(&SensorAccelMsg, MsgPtr, sizeof(SensorAccelMsg));
             break;
+        }
 
         case PX4_SAFETY_MID:
+        {
             memcpy(&SafetyMsg, MsgPtr, sizeof(SafetyMsg));
             break;
+        }
 
         case PX4_SENSOR_CORRECTION_MID:
+        {
             memcpy(&SensorCorrectionMsg, MsgPtr, sizeof(SensorCorrectionMsg));
             break;
+        }
 
         case PX4_VEHICLE_STATUS_MID:
+        {
             memcpy(&VehicleStatusMsg, MsgPtr, sizeof(VehicleStatusMsg));
             break;
+        }
+
         case PX4_VEHICLE_CONTROL_MODE_MID:
+        {
             memcpy(&VehicleControlModeMsg, MsgPtr,
                     sizeof(VehicleControlModeMsg));
             break;
+        }
 
         case PX4_SENSOR_COMBINED_MID:
+        {
             memcpy(&SensorCombinedMsg, MsgPtr, sizeof(SensorCombinedMsg));
             break;
+        }
 
         default:
+        {
             (void) CFE_EVS_SendEvent(VM_MSGID_ERR_EID, CFE_EVS_ERROR,
                     "Recvd invalid SCH msgId (0x%04X)", MsgId);
+            break;
+        }
         }
     } else if (iStatus == CFE_SB_NO_MESSAGE) {
         /* TODO: If there's no incoming message, you can do something here, or 
@@ -565,36 +617,48 @@ int32 VM::RcvSchPipeMsg(int32 iBlocking) {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 void VM::ProcessCmdPipe() {
-    int32 iStatus = CFE_SUCCESS;
-    CFE_SB_Msg_t* CmdMsgPtr = NULL;
+    int32          iStatus = CFE_SUCCESS;
+    CFE_SB_Msg_t   *CmdMsgPtr = NULL;
     CFE_SB_MsgId_t CmdMsgId;
+    osalbool       continueLoop = TRUE;
 
     /* Process command messages until the pipe is empty */
-    while (1) {
+    while (continueLoop)
+    {
         iStatus = CFE_SB_RcvMsg(&CmdMsgPtr, CmdPipeId, CFE_SB_POLL);
-        if (iStatus == CFE_SUCCESS) {
+        if (iStatus == CFE_SUCCESS)
+        {
             CmdMsgId = CFE_SB_GetMsgId(CmdMsgPtr);
-            switch (CmdMsgId) {
-            case VM_CMD_MID:
-                ProcessAppCmds(CmdMsgPtr);
-                break;
+            switch (CmdMsgId)
+            {
+            	case VM_CMD_MID:
+                {
+            		ProcessAppCmds(CmdMsgPtr);
+            		break;
+                }
 
-            default:
-                /* Bump the command error counter for an unknown command.
-                 * (This should only occur if it was subscribed to with this
-                 *  pipe, but not handled in this switch-case.) */
-                HkTlm.usCmdErrCnt++;
-                (void) CFE_EVS_SendEvent(VM_MSGID_ERR_EID, CFE_EVS_ERROR,
-                        "Recvd invalid CMD msgId (0x%04X)",
-                        (unsigned short) CmdMsgId);
-                break;
+            	default:
+                {
+            		/* Bump the command error counter for an unknown command.
+            		 * (This should only occur if it was subscribed to with this
+            		 *  pipe, but not handled in this switch-case.) */
+            		HkTlm.usCmdErrCnt++;
+            		(void) CFE_EVS_SendEvent(VM_MSGID_ERR_EID, CFE_EVS_ERROR,
+            				"Recvd invalid CMD msgId (0x%04X)",
+							(unsigned short) CmdMsgId);
+            		break;
+                }
             }
-        } else if (iStatus == CFE_SB_NO_MESSAGE) {
-            break;
-        } else {
+        }
+        else if (iStatus == CFE_SB_NO_MESSAGE)
+        {
+        	continueLoop = FALSE;
+        }
+        else
+        {
             (void) CFE_EVS_SendEvent(VM_RCVMSG_ERR_EID, CFE_EVS_ERROR,
                     "CMD pipe read error (0x%08lX)", iStatus);
-            break;
+        	continueLoop = FALSE;
         }
     }
 }
@@ -613,6 +677,7 @@ void VM::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr) {
 
         switch (uiCmdCode) {
         case VM_NOOP_CC:
+        {
             HkTlm.usCmdCnt++;
             (void) CFE_EVS_SendEvent(VM_CMD_NOOP_EID, CFE_EVS_INFORMATION,
                     "Recvd NOOP. Version %d.%d.%d.%d",
@@ -621,13 +686,17 @@ void VM::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr) {
                     VM_REVISION,
                     VM_MISSION_REV);
             break;
+        }
 
         case VM_RESET_CC:
+        {
             HkTlm.usCmdCnt = 0;
             HkTlm.usCmdErrCnt = 0;
             break;
+        }
 
         case VM_VEHICLE_ARM_CC:
+        {
             try {
                 ArmingSM.FSM.Arm();
                 HkTlm.usCmdCnt++;
@@ -639,8 +708,10 @@ void VM::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr) {
                         "ARM");
             }
             break;
+        }
 
         case VM_VEHICLE_DISARM_CC:
+        {
             try {
                 ArmingSM.FSM.Disarm();
                 HkTlm.usCmdCnt++;
@@ -652,8 +723,10 @@ void VM::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr) {
                         "DISARM");
             }
             break;
+        }
 
         case VM_SET_NAV_MANUAL_CC:
+        {
             try {
                 NavigationSM.FSM.trManual();
                 HkTlm.usCmdCnt++;
@@ -666,8 +739,10 @@ void VM::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr) {
                         GetNavStateAsString(PrevState), "MANUAL");
             }
             break;
+        }
 
         case VM_SET_NAV_ALTCTL_CC:
+        {
             try {
                 NavigationSM.FSM.trAltitudeControl();
                 HkTlm.usCmdCnt++;
@@ -680,8 +755,10 @@ void VM::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr) {
                         GetNavStateAsString(PrevState), "ALTCTL");
             }
             break;
+        }
 
         case VM_SET_NAV_POSCTL_CC:
+        {
             try {
                 NavigationSM.FSM.trPositionControl();
                 HkTlm.usCmdCnt++;
@@ -694,8 +771,10 @@ void VM::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr) {
                         GetNavStateAsString(PrevState), "POSCTL");
             }
             break;
+        }
 
         case VM_SET_NAV_AUTO_LOITER_CC:
+        {
             try {
                 NavigationSM.FSM.trAutoLoiter();
                 HkTlm.usCmdCnt++;
@@ -708,8 +787,10 @@ void VM::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr) {
                         GetNavStateAsString(PrevState), "AUTORTL");
             }
             break;
+        }
 
         case VM_SET_NAV_AUTO_RTL_CC:
+        {
             try {
                 NavigationSM.FSM.trAutoReturnToLaunch();
                 HkTlm.usCmdCnt++;
@@ -722,8 +803,10 @@ void VM::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr) {
                         GetNavStateAsString(PrevState), "AUTOLTR");
             }
             break;
+        }
 
         case VM_SET_NAV_ACRO_CC:
+        {
             try {
                 NavigationSM.FSM.trAcrobatic();
                 HkTlm.usCmdCnt++;
@@ -736,8 +819,10 @@ void VM::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr) {
                         GetNavStateAsString(PrevState), "ACRO");
             }
             break;
+        }
 
         case VM_SET_NAV_STABILIZE_CC:
+        {
             try {
                 NavigationSM.FSM.trStabilize();
                 HkTlm.usCmdCnt++;
@@ -750,8 +835,10 @@ void VM::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr) {
                         GetNavStateAsString(PrevState), "STAB");
             }
             break;
+        }
 
         case VM_SET_NAV_RATTITUDE_CC:
+        {
             try {
                 NavigationSM.FSM.trRattitude();
                 HkTlm.usCmdCnt++;
@@ -764,8 +851,10 @@ void VM::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr) {
                         GetNavStateAsString(PrevState), "RATT");
             }
             break;
+        }
 
         case VM_SET_NAV_AUTO_TAKEOFF_CC:
+        {
             try {
                 NavigationSM.FSM.trAutoTakeoff();
                 HkTlm.usCmdCnt++;
@@ -778,8 +867,10 @@ void VM::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr) {
                         GetNavStateAsString(PrevState), "AUTOTAKOF");
             }
             break;
+        }
 
         case VM_SET_NAV_AUTO_LAND_CC:
+        {
             try {
                 NavigationSM.FSM.trAutoLand();
                 HkTlm.usCmdCnt++;
@@ -792,13 +883,33 @@ void VM::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr) {
                         GetNavStateAsString(PrevState), "AUTOLND");
             }
             break;
+        }
+
+        case VM_SET_BATTERY_FAILSAFE_MODE_CC:
+        {
+            VM_SetBatteryFailsafeModeCmd_t *cmd = (VM_SetBatteryFailsafeModeCmd_t*)MsgPtr;
+            if(SetBatteryFailsafeMode(cmd->mode))
+            {
+                HkTlm.usCmdCnt++;
+                (void) CFE_EVS_SendEvent(VM_CONFIG_CHANGE_EID, CFE_EVS_INFORMATION,
+                        "Set config parameter BATTERY_FAILSAFE_MODE to %u", cmd->mode);
+
+            }
+            else
+            {
+                HkTlm.usCmdErrCnt++;
+            }
+            break;
+        }
 
         default:
+        {
             HkTlm.usCmdErrCnt++;
             (void) CFE_EVS_SendEvent(VM_CC_ERR_EID, CFE_EVS_ERROR,
                     "Recvd invalid command code (%u)",
                     (unsigned int) uiCmdCode);
             break;
+        }
         }
     }
 }
@@ -1013,8 +1124,6 @@ void VM::SetHomePosition() {
 }
 
 void VM::Initialization() {
-
-    /* TODO: check LED and Buzzer device initialization and report */
     /* Initialize status flags */
     status_flags.condition_system_sensors_initialized = true;
 
@@ -1136,8 +1245,8 @@ void VM::Execute() {
 
     /* Battery status handle */
     /* Only consider battery voltage if system has been running 6s (usb most likely detected) and battery voltage is valid */
-    if(TimeNow() > VmBootTimestamp + 6000000 && BatteryStatusMsg.VoltageFiltered > 2.0f * FLT_EPSILON) {
-
+    if((TimeNow() > VmBootTimestamp + VM_BATTERY_VOLTAGE_CHECK_DELAY) && (BatteryStatusMsg.VoltageFiltered > (VM_MINIMUM_VALID_BATTERY_VOLTAGE * FLT_EPSILON)))
+    {
         /* If battery voltage is getting lower, warn using buzzer, etc. */
         if(BatteryStatusMsg.Warning == PX4_BATTERY_WARNING_LOW && !low_battery_voltage_actions_done) {
 
@@ -1161,7 +1270,10 @@ void VM::Execute() {
             }
             else {
 
-                if(vm_params.low_bat_act == 1 || vm_params.low_bat_act == 3) {
+                if(
+                		vm_params.low_bat_act == VM_BATTERY_FAILSAFE_MODE_RETURN ||
+                		vm_params.low_bat_act == VM_BATTERY_FAILSAFE_MODE_RETURN_IF_CRIT_LOW_LAND_IF_DANGER_LOW)
+                {
 
                     try {
                         (void) CFE_EVS_SendEvent(VM_CRITICAL_BAT_INFO_EID, CFE_EVS_INFORMATION,
@@ -1177,8 +1289,10 @@ void VM::Execute() {
                     }
 
                 }
-                else if(vm_params.low_bat_act ==2) {
-                    try {
+                else if(vm_params.low_bat_act == VM_BATTERY_FAILSAFE_MODE_LAND)
+                {
+                    try
+                    {
                         (void) CFE_EVS_SendEvent(VM_CRITICAL_BAT_INFO_EID, CFE_EVS_INFORMATION,
                                 "Critical battery, landing at current position");
                         NavigationSM.FSM.trAutoLand();
@@ -1195,25 +1309,31 @@ void VM::Execute() {
                     }
 
                 }
-                else {
+                else
+                {
                     (void) CFE_EVS_SendEvent(VM_CRITICAL_BAT_INFO_EID, CFE_EVS_INFORMATION,
                             "Critical battery, return to launch advised");
                 }
 
             }
         }
-        else if(!status_flags.usb_connected && BatteryStatusMsg.Warning == PX4_BATTERY_WARNING_EMERGENCY && !emergency_battery_voltage_actions_done) {
+        else if(!status_flags.usb_connected && BatteryStatusMsg.Warning == PX4_BATTERY_WARNING_EMERGENCY && !emergency_battery_voltage_actions_done)
+        {
             emergency_battery_voltage_actions_done = true;
 
-            if (!ActuatorArmedMsg.Armed) {
+            if (!ActuatorArmedMsg.Armed)
+            {
                 (void) CFE_EVS_SendEvent(VM_DANGER_BAT_LEVEL_INFO_EID, CFE_EVS_INFORMATION,
                         "Dangerously low battery, shutdown system");
             }
             else {
+                if(
+                		vm_params.low_bat_act == VM_BATTERY_FAILSAFE_MODE_LAND ||
+						vm_params.low_bat_act == VM_BATTERY_FAILSAFE_MODE_RETURN_IF_CRIT_LOW_LAND_IF_DANGER_LOW)
+                {
 
-                if(vm_params.low_bat_act == 2 || vm_params.low_bat_act == 3) {
-
-                    try {
+                    try
+                    {
                         (void) CFE_EVS_SendEvent(VM_DANGER_BAT_LEVEL_INFO_EID, CFE_EVS_INFORMATION,
                                 "Dangerously low battery, landing immediately");
                         NavigationSM.FSM.trAutoLand();
@@ -1230,7 +1350,8 @@ void VM::Execute() {
                     }
 
                 }
-                else {
+                else
+                {
                     (void) CFE_EVS_SendEvent(VM_DANGER_BAT_LEVEL_INFO_EID, CFE_EVS_INFORMATION,
                             "Dangerously low battery, landing advised");
                 }
@@ -1547,43 +1668,77 @@ void VM::FlightSessionInit() {
 }
 
 const char* VM::GetNavStateAsString(uint32 id) {
-
     const char * State_ptr;
-    switch (id) {
-    case 0:
-        State_ptr = "MANUAL";
-        break;
-    case 1:
-        State_ptr = "ALTCTL";
-        break;
-    case 2:
-        State_ptr = "POSCTL";
-        break;
-    case 3:
-        State_ptr = "AUTORTL";
-        break;
-    case 4:
-        State_ptr = "AUTOLTR";
-        break;
-    case 5:
-        State_ptr = "ACRO";
-        break;
-    case 6:
-        State_ptr = "STAB";
-        break;
-    case 7:
-        State_ptr = "RATT";
-        break;
-    case 8:
-        State_ptr = "AUTOTAKOF";
-        break;
-    case 9:
-        State_ptr = "AUTOLND";
-        break;
-    default:
-        State_ptr = "UNKNOWN";
-        break;
+
+    switch (id)
+    {
+		case 0:
+		{
+			State_ptr = "MANUAL";
+			break;
+		}
+
+		case 1:
+		{
+			State_ptr = "ALTCTL";
+			break;
+		}
+
+		case 2:
+		{
+			State_ptr = "POSCTL";
+			break;
+		}
+
+		case 3:
+		{
+			State_ptr = "AUTORTL";
+			break;
+		}
+
+		case 4:
+		{
+			State_ptr = "AUTOLTR";
+			break;
+		}
+
+		case 5:
+		{
+			State_ptr = "ACRO";
+			break;
+		}
+
+		case 6:
+		{
+			State_ptr = "STAB";
+			break;
+		}
+
+		case 7:
+		{
+			State_ptr = "RATT";
+			break;
+		}
+
+		case 8:
+		{
+			State_ptr = "AUTOTAKOF";
+			break;
+		}
+
+		case 9:
+		{
+			State_ptr = "AUTOLND";
+			break;
+		}
+
+		default:
+		{
+			State_ptr = "UNKNOWN";
+			break;
+		}
     }
+
     return State_ptr;
 }
 
@@ -1641,7 +1796,36 @@ void VM::UpdateParamsFromTable() {
         vm_params.posctl_navl = ConfigTblPtr->COM_POSCTL_NAVL;
         vm_params.home_pos_alt_padding = ConfigTblPtr->HOME_POS_ALT_PADDING;
     }
+}
 
+
+
+osalbool VM::SetBatteryFailsafeMode(VM_BatteryFailsafeMode_t mode)
+{
+	osalbool success = FALSE;
+
+	if(
+			mode < VM_BATTERY_FAILSAFE_MODE_WARNING ||
+			mode > VM_BATTERY_FAILSAFE_MODE_RETURN_IF_CRIT_LOW_LAND_IF_DANGER_LOW)
+	{
+        CFE_EVS_SendEvent(VM_CONFIG_PARAMETER_OUT_OF_BOUNDS_EID,
+        CFE_EVS_ERROR,
+                "Configuration parameter 'BATTERY_FAILSAFE_MODE' = %u' out of bounds.",
+				mode);
+        success = FALSE;
+	}
+	else
+	{
+		if(ConfigTblPtr != 0)
+		{
+			ConfigTblPtr->COM_LOW_BAT_ACT = mode;
+			CFE_TBL_Modified(ConfigTblHdl);
+		}
+
+        success = TRUE;
+	}
+
+	return success;
 }
 
 /************************/

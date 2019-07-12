@@ -543,6 +543,7 @@ extern "C" {
  **        #VM_SET_NAV_AUTO_LAND_CC            \n
  */
 #define VM_SET_NAV_AUTO_TAKEOFF_CC         (56)
+
 /** \vmcmd Auto Land
  **
  **  \par Description
@@ -578,9 +579,46 @@ extern "C" {
  */
 #define VM_SET_NAV_AUTO_LAND_CC            (57)
 
+/** \vmcmd Set Battery Failsafe Mode
+ **
+ **  \par Description
+ **
+ **  \par Command Verification
+ **       Successful execution of this command may be verified with
+ **       the following telemetry:
+ **       - \b \c \VM_BATFSMODE - failsafe mode will reflected commanded value
+ **       - \b \c \VM_CMDACPTCNT - command counter will increment
+ **       - The #VM_CMD_INF_EID informational event message will be
+ **         generated when the command is received
+ **
+ **  \par Error Conditions
+ **       This command may fail for the following reason(s):
+ **       - Command packet length not as expected
+ **       - Commanded mode is invalid.
+ **
+ **  \par Evidence of failure may be found in the following telemetry:
+ **       - \b \c \VM_CMDRJCTCNT - command error counter will increment
+ **       - Error specific event message #VM_MSGID_ERR_EID
+ **
+ **  \par Criticality
+ **       Effects Vehicle Operation
+ **
+ **  \sa   #VM_BatteryFailsafeMode_t           \n
+ */
+#define VM_SET_BATTERY_FAILSAFE_MODE_CC    (58)
+
 /************************************************************************
  ** Local Structure Declarations
  *************************************************************************/
+
+
+typedef enum
+{
+	VM_BATTERY_FAILSAFE_MODE_WARNING                               = 0,
+	VM_BATTERY_FAILSAFE_MODE_RETURN                                = 1,
+	VM_BATTERY_FAILSAFE_MODE_LAND                                  = 2,
+	VM_BATTERY_FAILSAFE_MODE_RETURN_IF_CRIT_LOW_LAND_IF_DANGER_LOW = 3,
+} VM_BatteryFailsafeMode_t;
 
 /**
  **  \brief No Arguments Command
@@ -590,7 +628,17 @@ extern "C" {
 typedef struct
 {
     uint8 ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
-}VM_NoArgCmd_t;
+} VM_NoArgCmd_t;
+
+/**
+ **  \brief Battery failsafe mode
+ **  For command details see #VM_SET_BATTERY_FAILSAFE_MODE_CC
+ */
+typedef struct
+{
+    uint8                    ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
+    VM_BatteryFailsafeMode_t mode;
+} VM_SetBatteryFailsafeModeCmd_t;
 
 /** \vmtlm Housekeeping data
  **
@@ -621,7 +669,11 @@ typedef struct
      \brief Current navigation state */
     uint32 NavState;
 
-}VM_HkTlm_t;
+    /** \vmtlmmnemonic \VM_BATFSMODE
+     \brief Battery fail safe mode */
+    VM_BatteryFailsafeMode_t BatteryFailsafeMode;
+
+} VM_HkTlm_t;
 
 #ifdef __cplusplus
 }

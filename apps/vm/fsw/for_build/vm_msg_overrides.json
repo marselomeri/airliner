@@ -3,23 +3,24 @@
         "apps": {
             "VM": {
               "operations": {
-                  "Noop":           { "airliner_cc":  0, "macro": "VM_CMD_MID", "airliner_msg": "" },
-                  "Reset":          { "airliner_cc":  1, "macro": "VM_CMD_MID", "airliner_msg": "" },
-                  "Arm":            { "airliner_cc":  2, "macro": "VM_CMD_MID", "airliner_msg": "" },
-                  "Disarm":         { "airliner_cc":  3, "macro": "VM_CMD_MID", "airliner_msg": "" },
-                  "Manual":         { "airliner_cc": 40, "macro": "VM_CMD_MID", "airliner_msg": "" },
-                  "AltCtl":         { "airliner_cc": 41, "macro": "VM_CMD_MID", "airliner_msg": "" },
-                  "PosCtl":         { "airliner_cc": 42, "macro": "VM_CMD_MID", "airliner_msg": "" },
-                  "AutoLoiter":     { "airliner_cc": 44, "macro": "VM_CMD_MID", "airliner_msg": "" },
-                  "AutoRtl":        { "airliner_cc": 45, "macro": "VM_CMD_MID", "airliner_msg": "" },
-                  "AutoTakeOff":    { "airliner_cc": 56, "macro": "VM_CMD_MID", "airliner_msg": "" },
-                  "AutoLand":       { "airliner_cc": 57, "macro": "VM_CMD_MID", "airliner_msg": "" },
-                  "Acrobatic":      { "airliner_cc": 50, "macro": "VM_CMD_MID", "airliner_msg": "" },
-                  "Rattitude":      { "airliner_cc": 55, "macro": "VM_CMD_MID", "airliner_msg": "" },
-                  "Stabilized":     { "airliner_cc": 54, "macro": "VM_CMD_MID", "airliner_msg": "" },
-                  "VM_HkTlm_t":     { "airliner_cc": -1, "macro": "VM_HK_TLM_MID", "airliner_msg": "VM_HkTlm_t" },
-                  "Wakeup":         { "airliner_cc":  0, "macro": "VM_WAKEUP_MID", "airliner_msg": "" },
-                  "SendHk":         { "airliner_cc":  0, "macro": "VM_SEND_HK_MID", "airliner_msg": "" }
+                  "Noop":                { "airliner_cc":  0, "macro": "VM_CMD_MID", "airliner_msg": "" },
+                  "Reset":               { "airliner_cc":  1, "macro": "VM_CMD_MID", "airliner_msg": "" },
+                  "Arm":                 { "airliner_cc":  2, "macro": "VM_CMD_MID", "airliner_msg": "" },
+                  "Disarm":              { "airliner_cc":  3, "macro": "VM_CMD_MID", "airliner_msg": "" },
+                  "Manual":              { "airliner_cc": 40, "macro": "VM_CMD_MID", "airliner_msg": "" },
+                  "AltCtl":              { "airliner_cc": 41, "macro": "VM_CMD_MID", "airliner_msg": "" },
+                  "PosCtl":              { "airliner_cc": 42, "macro": "VM_CMD_MID", "airliner_msg": "" },
+                  "AutoLoiter":          { "airliner_cc": 44, "macro": "VM_CMD_MID", "airliner_msg": "" },
+                  "AutoRtl":             { "airliner_cc": 45, "macro": "VM_CMD_MID", "airliner_msg": "" },
+                  "AutoTakeOff":         { "airliner_cc": 56, "macro": "VM_CMD_MID", "airliner_msg": "" },
+                  "AutoLand":            { "airliner_cc": 57, "macro": "VM_CMD_MID", "airliner_msg": "" },
+                  "Acrobatic":           { "airliner_cc": 50, "macro": "VM_CMD_MID", "airliner_msg": "" },
+                  "Rattitude":           { "airliner_cc": 55, "macro": "VM_CMD_MID", "airliner_msg": "" },
+                  "Stabilized":          { "airliner_cc": 54, "macro": "VM_CMD_MID", "airliner_msg": "" },
+                  "VM_HkTlm_t":          { "airliner_cc": -1, "macro": "VM_HK_TLM_MID", "airliner_msg": "VM_HkTlm_t" },
+                  "Wakeup":              { "airliner_cc":  0, "macro": "VM_WAKEUP_MID", "airliner_msg": "" },
+                  "SendHk":              { "airliner_cc":  0, "macro": "VM_SEND_HK_MID", "airliner_msg": "" },
+                  "BatteryFailsafeMode": { "airliner_cc": 58, "macro": "VM_CMD_MID", "airliner_msg": "VM_SetBatteryFailsafeModeCmd_t" }
               },
               "scheduler": {
                   "activities": [

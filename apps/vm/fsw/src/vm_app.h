@@ -51,7 +51,6 @@ extern "C" {
 #include "cfe.h"
 
 #include "vm_platform_cfg.h"
-#include "vm_mission_cfg.h"
 #include "vm_perfids.h"
 #include "vm_msgids.h"
 #include "vm_msg.h"
@@ -789,6 +788,25 @@ private:
      **
      *************************************************************************/
     int32 AcquireConfigPointers(void);
+
+    /************************************************************************/
+    /** \brief Set the battery failsafe mode.
+     **
+     **  \par Description
+     **       This function sets the battery failsafe mode parameter in the
+     **       configuration table.  An error event will be issued if the
+     **       parameter is out of bounds.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \returns
+     **   TRUE if the parameter is valid and the command succeeded.  FALSE if
+     **   the parameter is out of bounds.
+     **  \endreturns
+     **
+     *************************************************************************/
+    osalbool SetBatteryFailsafeMode(VM_BatteryFailsafeMode_t mode);
 
 public:
     /************************************************************************/

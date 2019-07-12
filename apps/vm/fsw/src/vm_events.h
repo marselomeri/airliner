@@ -781,6 +781,7 @@ typedef enum {
      **
      */
     VM_REQ_ACRO_ERR_EID,
+
     /** \brief <tt> 'WARN!!! position estimation not initialized' </tt>
      **  \event <tt> 'WARN!!! position estimation not initialized' </tt>
      **
@@ -793,6 +794,32 @@ typedef enum {
      **
      */
     VM_NOPE_ERR_EID,
+
+    /** \brief <tt> 'Set config parameter %s to %u' </tt>
+     **  \event <tt> 'Set config parameter COM_LOW_BAT_ACT to %u' </tt>
+     **
+     **  \par Type: ERROR
+     **
+     **  \par Cause:
+     **
+     **  This event message is issued when a configuration parameter is set by
+     **  command.
+     **
+     */
+	VM_CONFIG_CHANGE_EID,
+
+    /** \brief <tt> 'Configuration parameter '%s = %u' out of bounds.' </tt>
+     **  \event <tt> 'Configuration parameter 'COM_LOW_BAT_ACT' = %u' out of bounds.' </tt>
+     **
+     **  \par Type: ERROR
+     **
+     **  \par Cause:
+     **
+     **  This event message is issued when a configuration parameter is set by
+     **  command.
+     **
+     */
+	VM_CONFIG_PARAMETER_OUT_OF_BOUNDS_EID,
 
     /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
     VM_EVT_CNT

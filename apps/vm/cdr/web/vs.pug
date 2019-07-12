@@ -25,6 +25,16 @@ table.table.table-condensed
             { value: 8, name:'AUTO-TAKEOFF'},
             { value: 9, name:'AUTO-LAND'}
             ]}}]}) ---
+    tr
+      th Battery Failsafe Mode
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_HkTlm_t/BatteryFailsafeMode', calibration:{ type:'enumeration',
+          enumerations:[
+            { value: 0, name:'WARN'},
+            { value: 1, name:'RTL'},
+            { value: 2, name:'LAND'},
+            { value: 3, name:'RTL/LAND'}
+            ]}}]}) ---
 footer.btn-group(role="group")      
   button.btn.cdr-primary(data-cdr={cmd:{name:'/VM/Arm'}}) Arm
   button.btn.cdr-primary(data-cdr={cmd:{name:'/VM/Disarm'}}) Disarm
@@ -41,3 +51,5 @@ footer.btn-group(role="group")
   button.btn.cdr-primary(data-cdr={cmd:{name:'/VM/Acrobatic'}}) Acrobatic    
   button.btn.cdr-primary(data-cdr={cmd:{name:'/VM/Rattitude'}}) Rattitude
   button.btn.cdr-primary(data-cdr={cmd:{name:'/VM/Stabilized'}}) Stabilized
+footer.btn-group(role="group")    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/VM/SetBatteryFailsafeMode'}}) Set Battery Failsafe Mode
