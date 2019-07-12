@@ -152,7 +152,14 @@ LD_ConfigTbl_t LD_ConfigTbl =
          *  \par Limits:
          *      default 0.5.
          */
-        0.5f
+        0.5f,
+        
+        /** \brief Min Thust No Altitude Lock Land Timout.
+         *
+         *  \par Limits:
+         *      default 8000000.
+         */
+        8000000
 };
 
 /*

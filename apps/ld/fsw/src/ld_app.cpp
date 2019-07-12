@@ -823,7 +823,7 @@ boolean LD::DetectLandedState()
         if (!AltitudeLock())
         {
             if ((min_thrust_start > 0)
-                    && ((PX4LIB_GetPX4TimeUs() - min_thrust_start) > 8000000))
+                    && ((PX4LIB_GetPX4TimeUs() - min_thrust_start) > ConfigTblPtr->LD_MIN_THR_NO_ALT_TIMEOUT))
             {
                 isLandDetected = TRUE;
                 //return TRUE;

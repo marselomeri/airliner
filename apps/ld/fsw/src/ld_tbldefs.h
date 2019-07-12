@@ -204,6 +204,16 @@ typedef struct
      *      default 0.5f.
      */
     float LD_LANDSPEED;
+    
+    /** \ldcfg LD_MIN_THR_NO_ALT_TIMEOUT
+     *
+     *  \brief Timeout for detecting land when using min thrust with no altitude lock.
+     *
+     *  \par Limits:
+     *      default 8000000.
+     */
+    uint64 LD_MIN_THR_NO_ALT_TIMEOUT;
+    
 }LD_ConfigTbl_t;
 
 #ifdef __cplusplus
