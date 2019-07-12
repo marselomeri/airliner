@@ -51,6 +51,27 @@ extern "C" {
 /************************************************************************
  ** Local Defines
  *************************************************************************/
+#define LD_PARAM_NAME_MAX_LEN     (32)
+#define LD_FFALL_THR_MIN                 (0.1f)
+#define LD_FFALL_THR_MAX                 (10.0f)
+#define LD_FFALL_TTRI_MIN                (0.02f)
+#define LD_FFALL_TTRI_MAX                (5.0f)
+#define LD_MAN_DWNTHR_MIN                (0.0f)
+#define LD_MAN_DWNTHR_MAX                (1.0f)
+#define LD_ALT_MAX_MIN                   (-1.0f)
+#define LD_ALT_MAX_MAX                   (10000)
+#define LD_LOW_T_THR_MIN                 (0.1f)
+#define LD_LOW_T_THR_MAX                 (0.9f)
+#define LD_MAN_MIN_THR_MIN               (0.0f)
+#define LD_MAN_MIN_THR_MAX               (1.0f)
+#define LD_POS_STK_UP_THRES_MIN          (0.5f)
+#define LD_POS_STK_UP_THRES_MAX          (1.0f)
+#define LD_POS_STK_DW_THRES_MIN          (0.0f)
+#define LD_POS_STK_DW_THRES_MAX          (0.5f)
+#define LD_LANDSPEED_MIN                 (0.0f)
+#define LD_LANDSPEED_MAX                 (10.0f)
+#define LD_MIN_THR_NO_ALT_TIMEOUT_MIN    (0000001)
+#define LD_MIN_THR_NO_ALT_TIMEOUT_MAX    (9000000)
 
 /**
  * \brief Defines the table identification name used for the
@@ -97,15 +118,6 @@ typedef struct
      */
     float LD_FFALL_THR;
 
-    /** \ldcfg LD_THR_RANGE
-     *
-     *  \brief Multicopter sub-hover throttle scaling.
-     *
-     *  \par Limits:
-     *      Min > Max (incr.) 0.05 > 0.5 , default 0.1.
-     */
-    float LD_THR_RANGE;
-
     /** \ldcfg LD_FFALL_TTRI
      *
      *  \brief Multicopter free-fall trigger time.
@@ -123,33 +135,6 @@ typedef struct
      *      default 0.15.
      */
     float LD_MAN_DWNTHR;
-
-    /** \ldcfg LD_POS_UPTHR
-     *
-     *  \brief Multicopter Flight stick up threshold for take off.
-     *
-     *  \par Limits:
-     *      default 0.65.
-     */
-    float LD_POS_UPTHR;
-
-    /** \ldcfg LD_FLT_TME_HI
-     *
-     *  \brief Total flight time in ms, higher 32 bits of the value.
-     *
-     *  \par Limits:
-     *      default 0.
-     */
-    float LD_FLT_TME_HI;
-
-    /** \ldcfg LD_FLT_TME_LO
-     *
-     *  \brief Total flight time in ms, lower 32 bits of the value.
-     *
-     *  \par Limits:
-     *      default 60299599.
-     */
-    float LD_FLT_TME_LO;
 
     /** \ldcfg LD_ALT_MAX
      *

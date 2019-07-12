@@ -61,6 +61,11 @@ extern "C" {
  ** Local Defines
  *************************************************************************/
 #define LD_MAX_EVENT_FILTERS (64)
+#define LD_ARMING_THRESH_FACTOR (2.5f)
+#define LD_25_PERCENT (0.25f)
+#define LD_50_PERCENT (0.5f)
+#define LD_75_PERCENT (0.75f)
+#define LD_LOCAL_POSITION_TIMEOUT (500000)
 
 /************************************************************************
  ** Local Structure Definitions
@@ -413,7 +418,7 @@ public:
      **  \endreturns
      **
      *************************************************************************/
-    boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
+    osalbool VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
 
 private:
     /************************************************************************/
@@ -467,7 +472,7 @@ private:
      **  \endreturns
      **
      *************************************************************************/
-    boolean DetectFreeFall(void);
+    osalbool DetectFreeFall(void);
     /************************************************************************/
     /** \brief Detect if vehicle is in free fall state.
      **
@@ -484,7 +489,7 @@ private:
      **  \endreturns
      **
      *************************************************************************/
-    boolean DetectGroundContactState(void);
+    osalbool DetectGroundContactState(void);
     /************************************************************************/
     /** \brief Detect if vehicle is in free fall state.
      **
@@ -501,7 +506,7 @@ private:
      **  \endreturns
      **
      *************************************************************************/
-    boolean DetectLandedState(void);
+    osalbool DetectLandedState(void);
     /************************************************************************/
     /** \brief Detect if vehicle is in free fall state.
      **
@@ -553,7 +558,7 @@ private:
      **  \endreturns
      **
      *************************************************************************/
-    boolean AltitudeLock(void);
+    osalbool AltitudeLock(void);
     /************************************************************************/
     /** \brief Detect if vehicle is in free fall state.
      **
@@ -570,7 +575,7 @@ private:
      **  \endreturns
      **
      *************************************************************************/
-    boolean PositionLock(void);
+    osalbool PositionLock(void);
     /************************************************************************/
     /** \brief Detect if vehicle is in free fall state.
      **
@@ -587,7 +592,7 @@ private:
      **  \endreturns
      **
      *************************************************************************/
-    boolean ManualControlPresent(void);
+    osalbool ManualControlPresent(void);
     /************************************************************************/
     /** \brief Detect if vehicle is in free fall state.
      **
@@ -604,7 +609,7 @@ private:
      **  \endreturns
      **
      *************************************************************************/
-    boolean MinimalThrust(void);
+    osalbool MinimalThrust(void);
     /************************************************************************/
     /** \brief Detect if vehicle is in free fall state.
      **

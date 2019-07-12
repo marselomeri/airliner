@@ -45,18 +45,66 @@ LD::~LD()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 LD::InitEvent()
 {
-    int32  iStatus=CFE_SUCCESS;
+    int32  iStatus = CFE_SUCCESS;
     int32  ind = 0;
 
     CFE_EVS_BinFilter_t   EventTbl[LD_MAX_EVENT_FILTERS];
 
     /* Initialize the event filter table.
      * Note: 0 is the CFE_EVS_NO_FILTER mask and event 0 is reserved (not used) */
-    memset(EventTbl, 0x00, sizeof(EventTbl));
+    CFE_PSP_MemSet(EventTbl, 0x00, sizeof(EventTbl));
     
     EventTbl[  ind].EventID = LD_RESERVED_EID;
     EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
 
+    EventTbl[  ind].EventID = LD_INIT_INF_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+
+    EventTbl[  ind].EventID = LD_CMD_NOOP_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    EventTbl[  ind].EventID = LD_SUBSCRIBE_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    EventTbl[  ind].EventID = LD_PIPE_INIT_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    EventTbl[  ind].EventID = LD_CFGTBL_MANAGE_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    EventTbl[  ind].EventID = LD_CFGTBL_GETADDR_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    EventTbl[  ind].EventID = LD_RCVMSG_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    EventTbl[  ind].EventID = LD_MSGID_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    EventTbl[  ind].EventID = LD_CC_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    EventTbl[  ind].EventID = LD_MSGLEN_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    EventTbl[  ind].EventID = LD_CFGTBL_REG_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    EventTbl[  ind].EventID = LD_CFGTBL_LOAD_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    EventTbl[  ind].EventID = LD_FREEFALL_DETECTED_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    EventTbl[  ind].EventID = LD_GROUNDCONTACT_DETECTED_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    EventTbl[  ind].EventID = LD_LAND_DETECTED_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    EventTbl[  ind].EventID = LD_FLIGHT_DETECTED_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_FIRST_ONE_STOP;
+    
     /* Register the table with CFE */
     iStatus = CFE_EVS_Register(EventTbl, ind, CFE_EVS_BINARY_FILTER);
     if (iStatus != CFE_SUCCESS) 
@@ -65,7 +113,7 @@ int32 LD::InitEvent()
                 "LD - Failed to register with EVS (0x%08lX)\n", iStatus);
     }
 
-    return iStatus;
+    return (iStatus);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -82,8 +130,10 @@ int32 LD::InitPipe()
     if (iStatus == CFE_SUCCESS)
     {
         /* Subscribe to wakeup */
-        iStatus = CFE_SB_SubscribeEx(LD_WAKEUP_MID, SchPipeId,
-                CFE_SB_Default_Qos, LD_WAKEUP_MID_MAX_MSG_COUNT);
+        iStatus = CFE_SB_SubscribeEx(LD_WAKEUP_MID, 
+                                     SchPipeId,
+                                     CFE_SB_Default_Qos, 
+                                     LD_WAKEUP_MID_MAX_MSG_COUNT);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(LD_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
@@ -93,111 +143,131 @@ int32 LD::InitPipe()
         }
 
         /* Subscribe to send HK */
-        iStatus = CFE_SB_SubscribeEx(LD_SEND_HK_MID, SchPipeId,
-                CFE_SB_Default_Qos, LD_SEND_HK_MID_MAX_MSG_COUNT);
+        iStatus = CFE_SB_SubscribeEx(LD_SEND_HK_MID, 
+                                     SchPipeId,
+                                     CFE_SB_Default_Qos, 
+                                     LD_SEND_HK_MID_MAX_MSG_COUNT);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(LD_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to LD_SEND_HK_MID. (0x%08X)",
+                    "Sch Pipe failed to subscribe to LD_SEND_HK_MID. (0x%08X)",
                     (unsigned int) iStatus);
             goto LD_InitPipe_Exit_Tag;
         }
 
         /* Subscribe to actuator armed */
-        iStatus = CFE_SB_SubscribeEx(PX4_ACTUATOR_ARMED_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
+        iStatus = CFE_SB_SubscribeEx(PX4_ACTUATOR_ARMED_MID, 
+                                     SchPipeId,
+                                     CFE_SB_Default_Qos, 
+                                     1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(LD_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_ACTUATOR_ARMED_MID. (0x%08lX)",
+                    "Sch Pipe failed to subscribe to PX4_ACTUATOR_ARMED_MID. (0x%08lX)",
                     iStatus);
             goto LD_InitPipe_Exit_Tag;
         }
 
         /* Subscribe to airspeeed */
-        iStatus = CFE_SB_SubscribeEx(PX4_AIRSPEED_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
+        iStatus = CFE_SB_SubscribeEx(PX4_AIRSPEED_MID, 
+                                     SchPipeId,
+                                     CFE_SB_Default_Qos,
+                                     1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(LD_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_AIRSPEED_MID. (0x%08lX)",
+                    "Sch Pipe failed to subscribe to PX4_AIRSPEED_MID. (0x%08lX)",
                     iStatus);
             goto LD_InitPipe_Exit_Tag;
         }
 
         /* Subscribe to actuator controls */
-        iStatus = CFE_SB_SubscribeEx(PX4_ACTUATOR_CONTROLS_0_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
+        iStatus = CFE_SB_SubscribeEx(PX4_ACTUATOR_CONTROLS_0_MID,
+                                     SchPipeId,
+                                     CFE_SB_Default_Qos,
+                                     1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(LD_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_ACTUATOR_CONTROLS_0_MID. (0x%08lX)",
+                    "Sch Pipe failed to subscribe to PX4_ACTUATOR_CONTROLS_0_MID. (0x%08lX)",
                     iStatus);
             goto LD_InitPipe_Exit_Tag;
         }
 
         /* Subscribe to control state */
-        iStatus = CFE_SB_SubscribeEx(PX4_CONTROL_STATE_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
+        iStatus = CFE_SB_SubscribeEx(PX4_CONTROL_STATE_MID,
+                                     SchPipeId,
+                                     CFE_SB_Default_Qos, 
+                                     1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(LD_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_CONTROL_STATE_MID. (0x%08lX)",
+                    "Sch Pipe failed to subscribe to PX4_CONTROL_STATE_MID. (0x%08lX)",
                     iStatus);
             goto LD_InitPipe_Exit_Tag;
         }
 
         /* Subscribe to battery status */
-        iStatus = CFE_SB_SubscribeEx(PX4_BATTERY_STATUS_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
+        iStatus = CFE_SB_SubscribeEx(PX4_BATTERY_STATUS_MID,
+                                     SchPipeId,
+                                     CFE_SB_Default_Qos,
+                                     1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(LD_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_BATTERY_STATUS_MID. (0x%08lX)",
+                    "Sch Pipe failed to subscribe to PX4_BATTERY_STATUS_MID. (0x%08lX)",
                     iStatus);
             goto LD_InitPipe_Exit_Tag;
         }
 
         /* Subscribe to vehicle attitude */
-        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_ATTITUDE_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
+        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_ATTITUDE_MID,
+                                     SchPipeId,
+                                     CFE_SB_Default_Qos,
+                                     1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(LD_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_VEHICLE_ATTITUDE_MID. (0x%08lX)",
+                    "Sch Pipe failed to subscribe to PX4_VEHICLE_ATTITUDE_MID. (0x%08lX)",
                     iStatus);
             goto LD_InitPipe_Exit_Tag;
         }
 
         /* Subscribe to manual control setpoint */
-        iStatus = CFE_SB_SubscribeEx(PX4_MANUAL_CONTROL_SETPOINT_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
+        iStatus = CFE_SB_SubscribeEx(PX4_MANUAL_CONTROL_SETPOINT_MID,
+                                     SchPipeId,
+                                     CFE_SB_Default_Qos,
+                                     1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(LD_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_MANUAL_CONTROL_SETPOINT_MID. (0x%08lX)",
+                    "Sch Pipe failed to subscribe to PX4_MANUAL_CONTROL_SETPOINT_MID. (0x%08lX)",
                     iStatus);
             goto LD_InitPipe_Exit_Tag;
         }
 
         /* Subscribe to vehicle local position */
-        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_LOCAL_POSITION_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
+        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_LOCAL_POSITION_MID,
+                                     SchPipeId,
+                                     CFE_SB_Default_Qos,
+                                     1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(LD_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_VEHICLE_LOCAL_POSITION_MID. (0x%08lX)",
+                    "Sch Pipe failed to subscribe to PX4_VEHICLE_LOCAL_POSITION_MID. (0x%08lX)",
                     iStatus);
             goto LD_InitPipe_Exit_Tag;
         }
 
         /* Subscribe to vehicle control mode */
-        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_CONTROL_MODE_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
+        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_CONTROL_MODE_MID,
+                                     SchPipeId,
+                                     CFE_SB_Default_Qos,
+                                     1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(LD_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_VEHICLE_CONTROL_MODE_MID. (0x%08lX)",
+                    "Sch Pipe failed to subscribe to PX4_VEHICLE_CONTROL_MODE_MID. (0x%08lX)",
                     iStatus);
             goto LD_InitPipe_Exit_Tag;
         }
@@ -232,7 +302,7 @@ int32 LD::InitPipe()
     }
 
 LD_InitPipe_Exit_Tag:
-    return iStatus;
+    return (iStatus);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -247,7 +317,7 @@ void LD::InitData()
 
     /* Init output message */
     CFE_SB_InitMsg(&VehicleLandDetectedMsg, PX4_VEHICLE_LAND_DETECTED_MID,
-            sizeof(PX4_VehicleLandDetectedMsg_t), TRUE);
+                   sizeof(PX4_VehicleLandDetectedMsg_t), TRUE);
 
     /* Init diagnostic message */
     CFE_SB_InitMsg(&DiagTlm, LD_DIAG_TLM_MID, sizeof(DiagTlm), TRUE);
@@ -267,7 +337,7 @@ int32 LD::InitApp()
     if (iStatus != CFE_SUCCESS)
     {
         (void) CFE_ES_WriteToSysLog("LD - Failed to init events (0x%08lX)\n",
-                iStatus);
+                                    iStatus);
         goto LD_InitApp_Exit_Tag;
     }
     else
@@ -289,30 +359,30 @@ int32 LD::InitApp()
         goto LD_InitApp_Exit_Tag;
     }
 
-    /* Updating application params from platform-nav-config-table */
+    /* Updating application params from platform-nav-config-table */ // TODO remove
     UpdateParamsFromTable();
 
 LD_InitApp_Exit_Tag:
-
     if (iStatus == CFE_SUCCESS)
     {
-        (void) CFE_EVS_SendEvent(LD_INIT_INF_EID, CFE_EVS_INFORMATION,
-                "Initialized.  Version %d.%d.%d.%d",
-                LD_MAJOR_VERSION,
-                LD_MINOR_VERSION,
-                LD_REVISION,
-                LD_MISSION_REV);
+        (void) CFE_EVS_SendEvent(LD_INIT_INF_EID, 
+                                 CFE_EVS_INFORMATION,
+                                 "Initialized.  Version %d.%d.%d.%d",
+                                 LD_MAJOR_VERSION,
+                                 LD_MINOR_VERSION,
+                                 LD_REVISION,
+                                 LD_MISSION_REV);
     }
     else
     {
-        if (hasEvents == 1)
+        if (hasEvents == 0)
         {
             (void) CFE_ES_WriteToSysLog(
                     "LD - Application failed to initialize\n");
         }
     }
 
-    return iStatus;
+    return (iStatus);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -353,78 +423,72 @@ int32 LD::RcvSchPipeMsg(int32 iBlocking)
             }
             case PX4_ACTUATOR_ARMED_MID:
             {
-                memcpy(&CVT.ActuatorArmedMsg, MsgPtr, 
-                        sizeof(CVT.ActuatorArmedMsg));
+                CFE_PSP_MemCpy(&CVT.ActuatorArmedMsg, MsgPtr, 
+                               sizeof(CVT.ActuatorArmedMsg));
                 break;
             }
             case PX4_AIRSPEED_MID:
             {
-                memcpy(&CVT.AirspeedMsg, MsgPtr, 
-                        sizeof(CVT.AirspeedMsg));
+                CFE_PSP_MemCpy(&CVT.AirspeedMsg, MsgPtr, 
+                               sizeof(CVT.AirspeedMsg));
                 break;
             }
             case PX4_ACTUATOR_CONTROLS_0_MID:
             {
-                memcpy(&CVT.ActuatorControls0Msg, MsgPtr,
-                        sizeof(CVT.ActuatorControls0Msg));
+                CFE_PSP_MemCpy(&CVT.ActuatorControls0Msg, MsgPtr,
+                               sizeof(CVT.ActuatorControls0Msg));
                 break;
             }
             case PX4_CONTROL_STATE_MID:
             {
-                memcpy(&CVT.ControlStateMsg, MsgPtr, 
-                        sizeof(CVT.ControlStateMsg));
+                CFE_PSP_MemCpy(&CVT.ControlStateMsg, MsgPtr, 
+                               sizeof(CVT.ControlStateMsg));
                 break;
             }
             case PX4_BATTERY_STATUS_MID:
             {
-                memcpy(&CVT.BatteryStatusMsg, MsgPtr, 
-                        sizeof(CVT.BatteryStatusMsg));
+                CFE_PSP_MemCpy(&CVT.BatteryStatusMsg, MsgPtr, 
+                               sizeof(CVT.BatteryStatusMsg));
                 break;
             }
             case PX4_VEHICLE_ATTITUDE_MID:
             {
-                memcpy(&CVT.VehicleAttitudeMsg, MsgPtr,
-                        sizeof(CVT.VehicleAttitudeMsg));
+                CFE_PSP_MemCpy(&CVT.VehicleAttitudeMsg, MsgPtr,
+                               sizeof(CVT.VehicleAttitudeMsg));
                 break;
             }
             case PX4_MANUAL_CONTROL_SETPOINT_MID:
             {
-                memcpy(&CVT.ManualControlSetpointMsg, MsgPtr,
-                        sizeof(CVT.ManualControlSetpointMsg));
+                CFE_PSP_MemCpy(&CVT.ManualControlSetpointMsg, MsgPtr,
+                               sizeof(CVT.ManualControlSetpointMsg));
                 break;
             }
             case PX4_VEHICLE_LOCAL_POSITION_MID:
             {
-                memcpy(&CVT.VehicleLocalPositionMsg, MsgPtr,
-                        sizeof(CVT.VehicleLocalPositionMsg));
+                CFE_PSP_MemCpy(&CVT.VehicleLocalPositionMsg, MsgPtr,
+                               sizeof(CVT.VehicleLocalPositionMsg));
                 break;
             }
             case PX4_VEHICLE_CONTROL_MODE_MID:
             {
-                memcpy(&CVT.VehicleControlModeMsg, MsgPtr,
-                        sizeof(CVT.VehicleControlModeMsg));
+                CFE_PSP_MemCpy(&CVT.VehicleControlModeMsg, MsgPtr,
+                               sizeof(CVT.VehicleControlModeMsg));
                 break;
             }
             default:
             {
                 (void) CFE_EVS_SendEvent(LD_MSGID_ERR_EID, CFE_EVS_ERROR,
                         "Recvd invalid SCH msgId (0x%04X)", MsgId);
+                break;
             }
         }
     }
     else if (iStatus == CFE_SB_NO_MESSAGE)
     {
-        /* TODO: If there's no incoming message, you can do something here, or 
-         * nothing.  Note, this section is dead code only if the iBlocking arg
-         * is CFE_SB_PEND_FOREVER. */
         iStatus = CFE_SUCCESS;
     }
     else if (iStatus == CFE_SB_TIME_OUT)
     {
-        /* TODO: If there's no incoming message within a specified time (via the
-         * iBlocking arg, you can do something here, or nothing.  
-         * Note, this section is dead code only if the iBlocking arg
-         * is CFE_SB_PEND_FOREVER. */
         iStatus = CFE_SUCCESS;
     }
     else
@@ -433,7 +497,7 @@ int32 LD::RcvSchPipeMsg(int32 iBlocking)
                 "SCH pipe read error (0x%08lX).", iStatus);
     }
 
-    return iStatus;
+    return (iStatus);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -469,8 +533,8 @@ void LD::ProcessCmdPipe()
                      *  pipe, but not handled in this switch-case.) */
                     HkTlm.usCmdErrCnt++;
                     (void) CFE_EVS_SendEvent(LD_MSGID_ERR_EID, CFE_EVS_ERROR,
-                            "Recvd invalid CMD msgId (0x%04X)",
-                            (unsigned short) CmdMsgId);
+                                             "Recvd invalid CMD msgId (0x%04X)",
+                                             (unsigned short) CmdMsgId);
                     break;
                 }
             }
@@ -505,12 +569,13 @@ void LD::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
             case LD_NOOP_CC:
             {
                 HkTlm.usCmdCnt++;
-                (void) CFE_EVS_SendEvent(LD_CMD_NOOP_EID, CFE_EVS_INFORMATION,
-                        "Recvd NOOP. Version %d.%d.%d.%d",
-                        LD_MAJOR_VERSION,
-                        LD_MINOR_VERSION,
-                        LD_REVISION,
-                        LD_MISSION_REV);
+                (void) CFE_EVS_SendEvent(LD_CMD_NOOP_EID, 
+                                         CFE_EVS_INFORMATION,
+                                         "Recvd NOOP. Version %d.%d.%d.%d",
+                                         LD_MAJOR_VERSION,
+                                         LD_MINOR_VERSION,
+                                         LD_REVISION,
+                                         LD_MISSION_REV);
                 break;
             }
             case LD_RESET_CC:
@@ -569,9 +634,9 @@ void LD::SendDiag()
 /* Verify Command Length                                           */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-boolean LD::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen)
+osalbool LD::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen)
 {
-    boolean bResult = TRUE;
+    osalbool bResult = TRUE;
     uint16 usMsgLen = 0;
 
     if (MsgPtr != NULL)
@@ -592,7 +657,7 @@ boolean LD::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen)
         }
     }
 
-    return bResult;
+    return (bResult);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -668,15 +733,16 @@ void LD::AppMain()
 /* Detect if vehicle in free fall.                                 */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-boolean LD::DetectFreeFall()
+osalbool LD::DetectFreeFall()
 {
-    boolean inFreefall = FALSE;
-    if (!(ld_params.lndmc_ffall_thr < 0.1f || ld_params.lndmc_ffall_thr > 10.0f)
-            && !(CVT.ControlStateMsg.Timestamp == 0))
+    osalbool inFreefall = FALSE;
+    
+    if (!CVT.ControlStateMsg.Timestamp == 0)
     {
         float net_acc = CVT.ControlStateMsg.AccX * CVT.ControlStateMsg.AccX
-                + CVT.ControlStateMsg.AccY * CVT.ControlStateMsg.AccY
-                + CVT.ControlStateMsg.AccZ * CVT.ControlStateMsg.AccZ;
+                      + CVT.ControlStateMsg.AccY * CVT.ControlStateMsg.AccY
+                      + CVT.ControlStateMsg.AccZ * CVT.ControlStateMsg.AccZ;
+        
         net_acc = sqrtf(net_acc);
         if (net_acc < ld_params.lndmc_ffall_thr)
         {
@@ -685,7 +751,7 @@ boolean LD::DetectFreeFall()
         }
     }
 
-    return inFreefall;
+    return (inFreefall);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -693,19 +759,17 @@ boolean LD::DetectFreeFall()
 /* Get ground contact state.                                       */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-boolean LD::DetectGroundContactState()
+osalbool LD::DetectGroundContactState()
 {
     const uint64 now = PX4LIB_GetPX4TimeUs();
-    float armingThreshFactor = 1.0f;
-
-    boolean inGroundContact     = FALSE;
-    boolean minimal_thrust      = FALSE;
-    boolean altitude_lock       = FALSE;
-    boolean position_lock       = FALSE;
-    boolean in_descent          = FALSE;
-    boolean hit_ground          = FALSE;
-    boolean horizontal_movement = FALSE;
-    boolean vertical_movement   = FALSE;
+    osalbool inGroundContact     = FALSE;
+    osalbool minimal_thrust      = FALSE;
+    osalbool altitude_lock       = FALSE;
+    osalbool position_lock       = FALSE;
+    osalbool in_descent          = FALSE;
+    osalbool hit_ground          = FALSE;
+    osalbool horizontal_movement = FALSE;
+    osalbool vertical_movement   = FALSE;
 
     /* If vehicle is disarmed, ground contact is always true */
     if (!CVT.ActuatorArmedMsg.Armed)
@@ -715,7 +779,7 @@ boolean LD::DetectGroundContactState()
     }
     else if (arming_time == 0)
     {
-        arming_time = PX4LIB_GetPX4TimeUs();
+        arming_time = now;
     }
 
     if (!inGroundContact)
@@ -723,16 +787,16 @@ boolean LD::DetectGroundContactState()
         /* Land speed threshold */
         const float land_speed_threshold = 0.9f * ld_params.landing_speed;
 
-        const boolean manual_control_idling = (ManualControlPresent() && CVT.ManualControlSetpointMsg.Z  < ld_params.manual_stick_down_threshold);
+        const osalbool manual_control_idling = (ManualControlPresent() && CVT.ManualControlSetpointMsg.Z  < ld_params.manual_stick_down_threshold);
 
-        const boolean manual_control_idling_or_automatic = manual_control_idling || 
-                !CVT.VehicleControlModeMsg.ControlManualEnabled;
+        const osalbool manual_control_idling_or_automatic = 
+                            manual_control_idling || 
+                            !CVT.VehicleControlModeMsg.ControlManualEnabled;
 
         /* Vertical movement */
-        if ((PX4LIB_GetPX4TimeUs() - arming_time) < LAND_DETECTOR_ARM_PHASE_TIME_US)
+        if ((now - arming_time) < LAND_DETECTOR_ARM_PHASE_TIME_US)
         {
-            armingThreshFactor = 2.5f;
-            vertical_movement = fabsf(CVT.VehicleLocalPositionMsg.VZ) > (ld_params.lndmc_z_vel_max * armingThreshFactor);
+            vertical_movement = fabsf(CVT.VehicleLocalPositionMsg.VZ) > (ld_params.lndmc_z_vel_max * LD_ARMING_THRESH_FACTOR);
         }
         else
         {
@@ -758,8 +822,10 @@ boolean LD::DetectGroundContactState()
         DiagTlm.GC_VertMovement = vertical_movement;
         DiagTlm.GC_ManualControlIdlingOrAutomatic = manual_control_idling_or_automatic;
         
-        if ((minimal_thrust || hit_ground) && (!horizontal_movement || !position_lock) && (!vertical_movement || !altitude_lock) 
-            && manual_control_idling_or_automatic)
+        if ((minimal_thrust || hit_ground) && 
+            (!horizontal_movement || !position_lock) && 
+            (!vertical_movement || !altitude_lock) && 
+            manual_control_idling_or_automatic)
         {
             inGroundContact = TRUE;
         }
@@ -771,7 +837,7 @@ boolean LD::DetectGroundContactState()
         DiagTlm.GroundContact = inGroundContact;
     }
 
-    return inGroundContact;
+    return (inGroundContact);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -779,33 +845,32 @@ boolean LD::DetectGroundContactState()
 /* Get landed state.                                               */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-boolean LD::DetectLandedState()
+osalbool LD::DetectLandedState()
 {
-    boolean isLandDetected = FALSE;
+    osalbool isLandDetected = FALSE;
     const uint64 now = PX4LIB_GetPX4TimeUs();
     float armingThreshFactor = 1.0f;
 
     if (!CVT.ActuatorArmedMsg.Armed)
     {
         isLandDetected = TRUE;
-        //return TRUE;
     }
 
-    if (!isLandDetected && state == LandDetectionState::LANDED
-            && ManualControlPresent())
+    if (!isLandDetected && 
+        state == LandDetectionState::LANDED && 
+        ManualControlPresent())
     {
         if (CVT.ManualControlSetpointMsg.Z < TakeoffThrottle())
         {
             isLandDetected = TRUE;
-            //return TRUE;
         }
         else
         {
             ground_contact_history.setState(FALSE);
             isLandDetected = FALSE;
-            //return FALSE;
         }
     }
+    
     if (!isLandDetected)
     {
         if (MinimalThrust())
@@ -823,32 +888,32 @@ boolean LD::DetectLandedState()
         if (!AltitudeLock())
         {
             if ((min_thrust_start > 0)
-                    && ((PX4LIB_GetPX4TimeUs() - min_thrust_start) > ConfigTblPtr->LD_MIN_THR_NO_ALT_TIMEOUT))
+                    && ((now - min_thrust_start) > ConfigTblPtr->LD_MIN_THR_NO_ALT_TIMEOUT))
             {
                 isLandDetected = TRUE;
-                //return TRUE;
-            } else {
+            }
+            else 
+            {
                 isLandDetected = FALSE;
-                //return FALSE;
             }
         }
 
-        if (!isLandDetected && (PX4LIB_GetPX4TimeUs() - now)
-                        < LAND_DETECTOR_ARM_PHASE_TIME_US)
+        if (!isLandDetected && 
+            (PX4LIB_GetPX4TimeUs() - now) < LAND_DETECTOR_ARM_PHASE_TIME_US) //TODO is this valid?
         {
-            armingThreshFactor = 2.5f;
+            armingThreshFactor = LD_ARMING_THRESH_FACTOR;
         }
 
-        boolean horizontal_movement = sqrtf(
+        osalbool horizontal_movement = sqrtf(
                 CVT.VehicleLocalPositionMsg.VX * CVT.VehicleLocalPositionMsg.VX
                 + CVT.VehicleLocalPositionMsg.VY * CVT.VehicleLocalPositionMsg.VY)
                 > ld_params.lndmc_xy_vel_max;
 
-        float max_rotation_scaled = ld_params.lndmc_rot_max * armingThreshFactor;
+        const float max_rotation_scaled = ld_params.lndmc_rot_max * armingThreshFactor;
 
-        boolean rotation = (fabsf(CVT.VehicleAttitudeMsg.RollSpeed) > max_rotation_scaled)
-                || (fabsf(CVT.VehicleAttitudeMsg.PitchSpeed) > max_rotation_scaled)
-                || (fabsf(CVT.VehicleAttitudeMsg.YawSpeed) > max_rotation_scaled);
+        const osalbool rotation = (fabsf(CVT.VehicleAttitudeMsg.RollSpeed) > max_rotation_scaled) ||
+                            (fabsf(CVT.VehicleAttitudeMsg.PitchSpeed) > max_rotation_scaled) ||
+                            (fabsf(CVT.VehicleAttitudeMsg.YawSpeed) > max_rotation_scaled);
 
         DiagTlm.LD_GC_history_state = ground_contact_history.getState();
         DiagTlm.LD_MinThrust = MinimalThrust();
@@ -856,18 +921,18 @@ boolean LD::DetectLandedState()
         DiagTlm.LD_HorMovement = horizontal_movement;
         DiagTlm.LD_PositionLock = PositionLock();
 
-        if (ground_contact_history.getState() && MinimalThrust() && !rotation
-                && (!horizontal_movement || !PositionLock()))
+        if (ground_contact_history.getState() && 
+            MinimalThrust() &&
+            !rotation && 
+            (!horizontal_movement || !PositionLock()))
         {
             isLandDetected = TRUE;
-            //return TRUE;
         }
 
         DiagTlm.Landed = isLandDetected;
-
     }
-    return isLandDetected;
-
+    
+    return (isLandDetected);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -878,15 +943,20 @@ boolean LD::DetectLandedState()
 float LD::TakeoffThrottle()
 {
     float toThrottle = 0.0f;
-    if (CVT.VehicleControlModeMsg.ControlManualEnabled
-            && CVT.VehicleControlModeMsg.ControlAltitudeEnabled)
+    
+    if (CVT.VehicleControlModeMsg.ControlManualEnabled &&
+        CVT.VehicleControlModeMsg.ControlAltitudeEnabled)
     {
         toThrottle = ld_params.manual_stick_up_position_takeoff_threshold;
     }
-    if (CVT.VehicleControlModeMsg.ControlManualEnabled
-            && CVT.VehicleControlModeMsg.ControlAttitudeEnabled)
+    else if (CVT.VehicleControlModeMsg.ControlManualEnabled &&
+        CVT.VehicleControlModeMsg.ControlAttitudeEnabled)
     {
         toThrottle = 0.15f;
+    }
+    else
+    {
+        toThrottle = 0.0f;
     }
 
     return toThrottle;
@@ -901,19 +971,21 @@ float LD::MaxAltitude()
 {
     float max_alt = ld_params.lndmc_alt_max;
 
-    if (CVT.BatteryStatusMsg.Warning == 1)
+    if (CVT.BatteryStatusMsg.Warning == PX4_BATTERY_WARNING_LOW)
     {
-        max_alt = ld_params.lndmc_alt_max * 0.75f;
+        max_alt = ld_params.lndmc_alt_max * LD_75_PERCENT;
     }
-
-    if (CVT.BatteryStatusMsg.Warning == 2)
+    else if (CVT.BatteryStatusMsg.Warning == PX4_BATTERY_WARNING_CRITICAL)
     {
-        max_alt = ld_params.lndmc_alt_max * 0.5f;
+        max_alt = ld_params.lndmc_alt_max * LD_50_PERCENT;
     }
-
-    if (CVT.BatteryStatusMsg.Warning == 3)
+    else if (CVT.BatteryStatusMsg.Warning == PX4_BATTERY_WARNING_EMERGENCY)
     {
-        max_alt = ld_params.lndmc_alt_max * 0.25f;
+        max_alt = ld_params.lndmc_alt_max * LD_25_PERCENT;
+    }
+    else
+    {
+        max_alt = ld_params.lndmc_alt_max;
     }
 
     return max_alt;
@@ -925,11 +997,16 @@ float LD::MaxAltitude()
 /* Check altitude lock presence.                                   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-boolean LD::AltitudeLock()
+osalbool LD::AltitudeLock()
 {
-    return CVT.VehicleLocalPositionMsg.Timestamp != 0
-            && (PX4LIB_GetPX4TimeUs() - CVT.VehicleLocalPositionMsg.Timestamp)
-            < 500000 && CVT.VehicleLocalPositionMsg.Z_Valid;
+    osalbool result = FALSE;
+    uint64 dt = PX4LIB_GetPX4TimeUs() - CVT.VehicleLocalPositionMsg.Timestamp;
+    
+    result = CVT.VehicleLocalPositionMsg.Timestamp != 0 &&
+             dt < LD_LOCAL_POSITION_TIMEOUT && 
+             CVT.VehicleLocalPositionMsg.Z_Valid;
+    
+    return (result);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -937,9 +1014,9 @@ boolean LD::AltitudeLock()
 /* Check position lock presence.                                   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-boolean LD::PositionLock()
+osalbool LD::PositionLock()
 {
-    return AltitudeLock() && CVT.VehicleLocalPositionMsg.XY_Valid;
+    return (AltitudeLock() && CVT.VehicleLocalPositionMsg.XY_Valid);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -947,10 +1024,10 @@ boolean LD::PositionLock()
 /*  Check manual control presence.                                 */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-boolean LD::ManualControlPresent()
+osalbool LD::ManualControlPresent()
 {
-    return CVT.VehicleControlModeMsg.ControlManualEnabled
-            && CVT.ManualControlSetpointMsg.Timestamp > 0;
+    return CVT.VehicleControlModeMsg.ControlManualEnabled &&
+           CVT.ManualControlSetpointMsg.Timestamp > 0;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -958,7 +1035,7 @@ boolean LD::ManualControlPresent()
 /* Check for minimum thrust.                                       */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-boolean LD::MinimalThrust() 
+osalbool LD::MinimalThrust() 
 {
     float min_throttle = ld_params.lowThrottleThreshold;
 
@@ -1022,40 +1099,20 @@ void LD::Execute()
     float prev_altitude_max = altitude_max;
     altitude_max = MaxAltitude();
 
-    boolean ffd = (state == LandDetectionState::FREEFALL);
-    boolean ld = (state == LandDetectionState::LANDED);
-    boolean gcd = (state == LandDetectionState::GROUND_CONTACT);
+    const osalbool Freefall = (state == LandDetectionState::FREEFALL);
+    const osalbool Land = (state == LandDetectionState::LANDED);
+    const osalbool Ground = (state == LandDetectionState::GROUND_CONTACT);
 
-    if ((VehicleLandDetectedMsg.Freefall != ffd)
-            || (VehicleLandDetectedMsg.Landed != ld)
-            || (VehicleLandDetectedMsg.GroundContact != gcd)
-            || (fabsf(VehicleLandDetectedMsg.AltMax - prev_altitude_max)
-            > FLT_EPSILON))
+    if ((VehicleLandDetectedMsg.Freefall != Freefall) ||
+        (VehicleLandDetectedMsg.Landed != Land) ||
+        (VehicleLandDetectedMsg.GroundContact != Ground) ||
+        (fabsf(VehicleLandDetectedMsg.AltMax - prev_altitude_max) > FLT_EPSILON))
     {
-        /*if((!gcd && !ld) && ffd){
-         ffd=FALSE;
-         }*/
-        if (!ld && VehicleLandDetectedMsg.Landed)
-        {
-            takeoff_time = now;
-        }
-        else if (takeoff_time != 0 && ld && !VehicleLandDetectedMsg.Landed)
-        {
-            total_flight_time += now - takeoff_time;
-            takeoff_time = 0;
-
-            uint32 flight_time = (total_flight_time >> 32) & 0xffffffff;
-            ld_params.lnd_flight_t_hi = flight_time;
-            flight_time = total_flight_time & 0xffffffff;
-            ld_params.lnd_flight_t_lo = flight_time;
-        }
         VehicleLandDetectedMsg.Timestamp = PX4LIB_GetPX4TimeUs();
         VehicleLandDetectedMsg.AltMax = altitude_max;
-        VehicleLandDetectedMsg.Freefall =
-                (state == LandDetectionState::FREEFALL);
-        VehicleLandDetectedMsg.Landed = (state == LandDetectionState::LANDED);
-        VehicleLandDetectedMsg.GroundContact = (state
-                == LandDetectionState::GROUND_CONTACT);
+        VehicleLandDetectedMsg.Freefall = Freefall;
+        VehicleLandDetectedMsg.Landed = Land;
+        VehicleLandDetectedMsg.GroundContact = Ground;
         HkTlm.state = state;
     }
 
@@ -1064,10 +1121,13 @@ void LD::Execute()
     SendDiag();
 }
 
-
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Detect State Change                                             */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void LD::DetectStateChange()
 {
-    /* When there is a change in state this function will return true flag */
     PX4_VehicleLandDetectedMsg_t CurrentLandDetectedMsg = VehicleLandDetectedMsg;
 
     if (&PreviousLandDetectedMsg == nullptr)
@@ -1084,26 +1144,29 @@ void LD::DetectStateChange()
     {
         if (CurrentLandDetectedMsg.Landed)
         {
-            (void) CFE_EVS_SendEvent(LD_LAND_DETECTED_EID, CFE_EVS_INFORMATION,
-                    "Land detected");
+            (void) CFE_EVS_SendEvent(LD_LAND_DETECTED_EID, 
+                                     CFE_EVS_INFORMATION,
+                                     "Land detected");
         }
         else if (CurrentLandDetectedMsg.Freefall)
         {
             (void) CFE_EVS_SendEvent(LD_GROUNDCONTACT_DETECTED_EID,
-            CFE_EVS_INFORMATION, "Freefall detected");
+                                     CFE_EVS_INFORMATION,
+                                     "Freefall detected");
         }
         else if (CurrentLandDetectedMsg.GroundContact)
         {
             (void) CFE_EVS_SendEvent(LD_FREEFALL_DETECTED_EID,
-            CFE_EVS_INFORMATION, "Ground contact detected");
+                                     CFE_EVS_INFORMATION,
+                                     "Ground contact detected");
         }
-        /*
         else
         {
             (void) CFE_EVS_SendEvent(LD_FLIGHT_DETECTED_EID, 
-                   CFE_EVS_INFORMATION,"Vehicle in flight");
+                                     CFE_EVS_INFORMATION,
+                                     "Vehicle in flight");
         }
-        */
+        
         PreviousLandDetectedMsg = CurrentLandDetectedMsg;
     }
 }
@@ -1121,12 +1184,8 @@ void LD::UpdateParamsFromTable()
         ld_params.lndmc_xy_vel_max = ConfigTblPtr->LD_XY_VEL_MAX;
         ld_params.lndmc_rot_max = ConfigTblPtr->LD_ROT_MAX;
         ld_params.lndmc_ffall_thr = ConfigTblPtr->LD_FFALL_THR;
-        ld_params.lndmc_thr_range = ConfigTblPtr->LD_THR_RANGE;
         ld_params.lndmc_ffall_ttri = ConfigTblPtr->LD_FFALL_TTRI;
         ld_params.lndmc_man_dwnthr = ConfigTblPtr->LD_MAN_DWNTHR;
-        ld_params.lndmc_pos_upthr = ConfigTblPtr->LD_POS_UPTHR;
-        ld_params.lnd_flight_t_hi = ConfigTblPtr->LD_FLT_TME_HI;
-        ld_params.lnd_flight_t_lo = ConfigTblPtr->LD_FLT_TME_LO;
         ld_params.lndmc_alt_max = ConfigTblPtr->LD_ALT_MAX;
         ld_params.lowThrottleThreshold = ConfigTblPtr->LD_LOW_T_THR;
         ld_params.minManThrottle = ConfigTblPtr->LD_MAN_MIN_THR;
