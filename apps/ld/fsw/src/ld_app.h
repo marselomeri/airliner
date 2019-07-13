@@ -77,62 +77,32 @@ typedef struct
 {
     /** \brief The actuator armed message */
     PX4_ActuatorArmedMsg_t ActuatorArmedMsg;
+
     /** \brief The air speed message */
     PX4_AirspeedMsg_t AirspeedMsg;
+
     /** \brief The actuator control message */
     PX4_ActuatorControlsMsg_t ActuatorControls0Msg;
+
     /** \brief The control state message */
     PX4_ControlStateMsg_t ControlStateMsg;
+
     /** \brief The battery status message */
     PX4_BatteryStatusMsg_t BatteryStatusMsg;
+
     /** \brief The vehicle attitude message */
     PX4_VehicleAttitudeMsg_t VehicleAttitudeMsg;
+
     /** \brief The manual control message */
     PX4_ManualControlSetpointMsg_t ManualControlSetpointMsg;
+
     /** \brief The vehicle local position message */
     PX4_VehicleLocalPositionMsg_t VehicleLocalPositionMsg;
+
     /** \brief The vehicle control mode message */
     PX4_VehicleControlModeMsg_t VehicleControlModeMsg;
-} LD_CurrentValueTable_t;
 
-/**
- * \brief parameter table
- */
-typedef struct
-{
-    /**\brief Multicopter max climb rate (m/s) */
-    float lndmc_z_vel_max;                                             //= 0.5f;
-    /**\brief  Multicopter max horizontal velocity (m/s) */
-    float lndmc_xy_vel_max;                                           //= 1.50f;
-    /**\brief  Multicopter max rotation (degrees/s) */
-    float lndmc_rot_max;                                              //= 20.0f;
-    /**\brief  Multicopter specific force threshold (m/s^2) */
-    float lndmc_ffall_thr;                                             //= 2.0f;
-    /**\brief  Multicopter sub-hover throttle scaling */
-    float lndmc_thr_range;                                             //= 0.1f;
-    /**\brief  Multicopter free-fall trigger time */
-    float lndmc_ffall_ttri;                                             //= 0.3;
-    /**\brief  Multicopter Flight stick down threshold for landing */
-    float lndmc_man_dwnthr;                                           //= 0.15f;
-    /**\brief  Multicopter Flight stick up threshold for take off */
-    float lndmc_pos_upthr;                                            //= 0.65f;
-    /**\brief  Total flight time in ms, higher 32 bits of the value */
-    uint32 lnd_flight_t_hi;                                           //= 0;
-    /**\brief  Total flight time in ms, lower 32 bits of the value */
-    uint32 lnd_flight_t_lo;                                           //= 60299599;
-    /**\brief  Multicopter maximum altitude (m) */
-    float lndmc_alt_max;                                              //= 10000.0f;
-    /**\brief  Multicopter low throttle threshold */
-    float lowThrottleThreshold;                                       //= 0.3f;
-    /**\brief  Multicopter minimum throttle in manual mode */
-    float minManThrottle;                                             //= 0.08f;
-    /**\brief  Multicopter takeoff stick up threshold in position control mode */
-    float manual_stick_up_position_takeoff_threshold;                 //= 0.65f;
-    /**\brief  Multicopter takeoff stick down threshold in position control mode */
-    float manual_stick_down_threshold;                                //= 0.15f;
-    /**\brief  Landing descend rate. */
-    float landing_speed;
-} LD_Params_t;
+} LD_CurrentValueTable_t;
 
 /**
  * \brief Land detection states
@@ -141,10 +111,13 @@ enum LandDetectionState
 {
     /**! Vehicle is in flying state */
     FLYING = 0,
+
     /**! Vehicle is in flying landed state */
     LANDED = 1,
+
     /**! Vehicle is in flying free fall state */
     FREEFALL = 2,
+
     /**! Vehicle is in flying ground contact state */
     GROUND_CONTACT = 3
 };
@@ -171,6 +144,7 @@ public:
     /* Config table-related */
     /** \brief Config Table Handle */
     CFE_TBL_Handle_t ConfigTblHdl;
+
     /** \brief Config Table Pointer */
     LD_ConfigTbl_t* ConfigTblPtr;
 
@@ -181,42 +155,55 @@ public:
     /* Application data */
     /** \brief Housekeeping Telemetry for downlink */
     LD_HkTlm_t HkTlm;
+
     /** \brief Current Value Table */
     LD_CurrentValueTable_t CVT = {};
 
-    /** \brief The parameter table variable */
-    LD_Params_t ld_params;
     /** \brief The land detection state variable */
     LandDetectionState state = {};
+
     /** \brief The previous land detection message */
     PX4_VehicleLandDetectedMsg_t PreviousLandDetectedMsg;
+
     /** \brief The free fall state history variable */
     StateHistory freefall_history = {FALSE};
+
     /** \brief The landed state history variable */
     StateHistory landed_history = {TRUE};
+
     /** \brief The ground contact state history variable */
     StateHistory ground_contact_history = {TRUE};
+
     /** \brief The arming time variable */
     uint64 arming_time = 0;
+
     /** \brief The minimum thrust on start variable */
     uint64 min_thrust_start = 0;
+
     /** \brief The message publish counter variable (acts like a flag for one time event) */
     int publish_counter = 0;
+
     /** \brief The maximum altitude value variable */
     float altitude_max;
+
     /** \brief The total flight time variable */
     uint64 total_flight_time = 0;
+
     /** \brief The take off time variable */
     uint64 takeoff_time = 0;
+
     /** \brief Run main land detector loop at this rate in Hz. */
     static constexpr uint32 LAND_DETECTOR_UPDATE_RATE_HZ = 50;
+
     /** \brief Time in us that landing conditions have to hold before triggering a land. */
     static constexpr uint64 LAND_DETECTOR_TRIGGER_TIME_US = 300000;
+
     /** \brief Time in us that ground contact condition have to hold before triggering contact ground */
     static constexpr uint64 GROUND_CONTACT_TRIGGER_TIME_US = 350000;
+
     /** \brief Time interval in us in which wider acceptance thresholds are used after arming. */
     static constexpr uint64 LAND_DETECTOR_ARM_PHASE_TIME_US = 2000000;
-    
+
     LD_Diag_t DiagTlm;
 
     /************************************************************************/
@@ -440,6 +427,7 @@ private:
      **
      *************************************************************************/
     int32 InitConfigTbl(void);
+    
     /************************************************************************/
     /** \brief Obtain LD configuration tables data pointers.
      **
@@ -456,6 +444,7 @@ private:
      **
      *************************************************************************/
     int32 AcquireConfigPointers(void);
+    
     /************************************************************************/
     /** \brief Detect if vehicle is in free fall state.
      **
@@ -473,6 +462,7 @@ private:
      **
      *************************************************************************/
     osalbool DetectFreeFall(void);
+    
     /************************************************************************/
     /** \brief Detect if vehicle is in free fall state.
      **
@@ -490,6 +480,7 @@ private:
      **
      *************************************************************************/
     osalbool DetectGroundContactState(void);
+    
     /************************************************************************/
     /** \brief Detect if vehicle is in free fall state.
      **
@@ -507,6 +498,7 @@ private:
      **
      *************************************************************************/
     osalbool DetectLandedState(void);
+    
     /************************************************************************/
     /** \brief Detect if vehicle is in free fall state.
      **
@@ -524,6 +516,7 @@ private:
      **
      *************************************************************************/
     float TakeoffThrottle(void);
+    
     /************************************************************************/
     /** \brief Detect if vehicle is in free fall state.
      **
@@ -559,6 +552,7 @@ private:
      **
      *************************************************************************/
     osalbool AltitudeLock(void);
+    
     /************************************************************************/
     /** \brief Detect if vehicle is in free fall state.
      **
@@ -576,6 +570,7 @@ private:
      **
      *************************************************************************/
     osalbool PositionLock(void);
+    
     /************************************************************************/
     /** \brief Detect if vehicle is in free fall state.
      **
@@ -593,6 +588,7 @@ private:
      **
      *************************************************************************/
     osalbool ManualControlPresent(void);
+    
     /************************************************************************/
     /** \brief Detect if vehicle is in free fall state.
      **
@@ -610,6 +606,7 @@ private:
      **
      *************************************************************************/
     osalbool MinimalThrust(void);
+    
     /************************************************************************/
     /** \brief Detect if vehicle is in free fall state.
      **
@@ -627,6 +624,7 @@ private:
      **
      *************************************************************************/
     void UpdateState(void);
+    
     /************************************************************************/
     /** \brief Land Detector Task
      **
@@ -640,6 +638,7 @@ private:
      **
      *************************************************************************/
     void Execute(void);
+    
     /************************************************************************/
     /** \brief Detect Change In State.
      **
@@ -652,14 +651,6 @@ private:
      **
      *************************************************************************/
     void DetectStateChange(void);
-    /************************************************************************/
-    /** \brief Updates application params from param table
-     **
-     **  \par Assumptions, External Events, and Notes:
-     **       None
-     **
-     *************************************************************************/
-    void UpdateParamsFromTable(void);
 
 public:
     /************************************************************************/

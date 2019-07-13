@@ -312,6 +312,10 @@ LD_InitPipe_Exit_Tag:
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void LD::InitData()
 {
+    /* Use Trigger time when transitioning from in-air (false) to landed (true) / ground contact (true) */
+    landed_history.setTimeSince(FALSE, LAND_DETECTOR_TRIGGER_TIME_US);
+    ground_contact_history.setTimeSince(FALSE, GROUND_CONTACT_TRIGGER_TIME_US);
+
     /* Init housekeeping message */
     CFE_SB_InitMsg(&HkTlm, LD_HK_TLM_MID, sizeof(HkTlm), TRUE);
 
@@ -358,9 +362,6 @@ int32 LD::InitApp()
     {
         goto LD_InitApp_Exit_Tag;
     }
-
-    /* Updating application params from platform-nav-config-table */ // TODO remove
-    UpdateParamsFromTable();
 
 LD_InitApp_Exit_Tag:
     if (iStatus == CFE_SUCCESS)
@@ -744,7 +745,7 @@ osalbool LD::DetectFreeFall()
                       + CVT.ControlStateMsg.AccZ * CVT.ControlStateMsg.AccZ;
         
         net_acc = sqrtf(net_acc);
-        if (net_acc < ld_params.lndmc_ffall_thr)
+        if (net_acc < ConfigTblPtr->LD_FFALL_THR)
         {
             /* Free fall event */
             inFreefall = TRUE;
@@ -785,9 +786,9 @@ osalbool LD::DetectGroundContactState()
     if (!inGroundContact)
     {
         /* Land speed threshold */
-        const float land_speed_threshold = 0.9f * ld_params.landing_speed;
+        const float land_speed_threshold = 0.9f * ConfigTblPtr->LD_LANDSPEED;
 
-        const osalbool manual_control_idling = (ManualControlPresent() && CVT.ManualControlSetpointMsg.Z  < ld_params.manual_stick_down_threshold);
+        const osalbool manual_control_idling = (ManualControlPresent() && CVT.ManualControlSetpointMsg.Z  < ConfigTblPtr->LD_POS_STK_DW_THRES);
 
         const osalbool manual_control_idling_or_automatic = 
                             manual_control_idling || 
@@ -796,16 +797,16 @@ osalbool LD::DetectGroundContactState()
         /* Vertical movement */
         if ((now - arming_time) < LAND_DETECTOR_ARM_PHASE_TIME_US)
         {
-            vertical_movement = fabsf(CVT.VehicleLocalPositionMsg.VZ) > (ld_params.lndmc_z_vel_max * LD_ARMING_THRESH_FACTOR);
+            vertical_movement = fabsf(CVT.VehicleLocalPositionMsg.VZ) > (ConfigTblPtr->LD_Z_VEL_MAX * LD_ARMING_THRESH_FACTOR);
         }
         else
         {
-            const float max_climb_rate = (land_speed_threshold * 0.5f) < ld_params.lndmc_z_vel_max ? (0.5f * land_speed_threshold) : ld_params.lndmc_z_vel_max;
+            const float max_climb_rate = (land_speed_threshold * 0.5f) < ConfigTblPtr->LD_Z_VEL_MAX ? (0.5f * land_speed_threshold) : ConfigTblPtr->LD_Z_VEL_MAX;
             vertical_movement = fabsf(CVT.VehicleLocalPositionMsg.VZ) > max_climb_rate;
         }
 
         /* Horizontal movement */
-        horizontal_movement = sqrtf(CVT.VehicleLocalPositionMsg.VX * CVT.VehicleLocalPositionMsg.VX + CVT.VehicleLocalPositionMsg.VY * CVT.VehicleLocalPositionMsg.VY) > ld_params.lndmc_xy_vel_max;
+        horizontal_movement = sqrtf(CVT.VehicleLocalPositionMsg.VX * CVT.VehicleLocalPositionMsg.VX + CVT.VehicleLocalPositionMsg.VY * CVT.VehicleLocalPositionMsg.VY) > ConfigTblPtr->LD_XY_VEL_MAX;
 
         minimal_thrust = MinimalThrust();
         altitude_lock = AltitudeLock();
@@ -907,9 +908,9 @@ osalbool LD::DetectLandedState()
         osalbool horizontal_movement = sqrtf(
                 CVT.VehicleLocalPositionMsg.VX * CVT.VehicleLocalPositionMsg.VX
                 + CVT.VehicleLocalPositionMsg.VY * CVT.VehicleLocalPositionMsg.VY)
-                > ld_params.lndmc_xy_vel_max;
+                > ConfigTblPtr->LD_XY_VEL_MAX;
 
-        const float max_rotation_scaled = ld_params.lndmc_rot_max * armingThreshFactor;
+        const float max_rotation_scaled = ConfigTblPtr->LD_ROT_MAX * armingThreshFactor;
 
         const osalbool rotation = (fabsf(CVT.VehicleAttitudeMsg.RollSpeed) > max_rotation_scaled) ||
                             (fabsf(CVT.VehicleAttitudeMsg.PitchSpeed) > max_rotation_scaled) ||
@@ -947,7 +948,7 @@ float LD::TakeoffThrottle()
     if (CVT.VehicleControlModeMsg.ControlManualEnabled &&
         CVT.VehicleControlModeMsg.ControlAltitudeEnabled)
     {
-        toThrottle = ld_params.manual_stick_up_position_takeoff_threshold;
+        toThrottle = ConfigTblPtr->LD_POS_STK_UP_THRES;
     }
     else if (CVT.VehicleControlModeMsg.ControlManualEnabled &&
         CVT.VehicleControlModeMsg.ControlAttitudeEnabled)
@@ -969,23 +970,23 @@ float LD::TakeoffThrottle()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 float LD::MaxAltitude()
 {
-    float max_alt = ld_params.lndmc_alt_max;
+    float max_alt = ConfigTblPtr->LD_ALT_MAX;
 
     if (CVT.BatteryStatusMsg.Warning == PX4_BATTERY_WARNING_LOW)
     {
-        max_alt = ld_params.lndmc_alt_max * LD_75_PERCENT;
+        max_alt = ConfigTblPtr->LD_ALT_MAX * LD_75_PERCENT;
     }
     else if (CVT.BatteryStatusMsg.Warning == PX4_BATTERY_WARNING_CRITICAL)
     {
-        max_alt = ld_params.lndmc_alt_max * LD_50_PERCENT;
+        max_alt = ConfigTblPtr->LD_ALT_MAX * LD_50_PERCENT;
     }
     else if (CVT.BatteryStatusMsg.Warning == PX4_BATTERY_WARNING_EMERGENCY)
     {
-        max_alt = ld_params.lndmc_alt_max * LD_25_PERCENT;
+        max_alt = ConfigTblPtr->LD_ALT_MAX * LD_25_PERCENT;
     }
     else
     {
-        max_alt = ld_params.lndmc_alt_max;
+        max_alt = ConfigTblPtr->LD_ALT_MAX;
     }
 
     return max_alt;
@@ -1037,11 +1038,11 @@ osalbool LD::ManualControlPresent()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 osalbool LD::MinimalThrust() 
 {
-    float min_throttle = ld_params.lowThrottleThreshold;
+    float min_throttle = ConfigTblPtr->LD_LOW_T_THR;
 
     if (!CVT.VehicleControlModeMsg.ControlAltitudeEnabled)
     {
-        min_throttle = (ld_params.minManThrottle + 0.01f);
+        min_throttle = (ConfigTblPtr->LD_MAN_MIN_THR + 0.01f);
     }
 
     return CVT.ActuatorControls0Msg.Control[3] <= min_throttle;
@@ -1169,33 +1170,6 @@ void LD::DetectStateChange()
         
         PreviousLandDetectedMsg = CurrentLandDetectedMsg;
     }
-}
-
-void LD::UpdateParamsFromTable()
-{
-    /* Use Trigger time when transitioning from in-air (false) to landed (true) / ground contact (true) */
-    landed_history.setTimeSince(FALSE, LAND_DETECTOR_TRIGGER_TIME_US);
-    ground_contact_history.setTimeSince(FALSE, GROUND_CONTACT_TRIGGER_TIME_US);
-
-    /* Initialize Params */
-    if (ConfigTblPtr != nullptr)
-    {
-        ld_params.lndmc_z_vel_max = ConfigTblPtr->LD_Z_VEL_MAX;
-        ld_params.lndmc_xy_vel_max = ConfigTblPtr->LD_XY_VEL_MAX;
-        ld_params.lndmc_rot_max = ConfigTblPtr->LD_ROT_MAX;
-        ld_params.lndmc_ffall_thr = ConfigTblPtr->LD_FFALL_THR;
-        ld_params.lndmc_ffall_ttri = ConfigTblPtr->LD_FFALL_TTRI;
-        ld_params.lndmc_man_dwnthr = ConfigTblPtr->LD_MAN_DWNTHR;
-        ld_params.lndmc_alt_max = ConfigTblPtr->LD_ALT_MAX;
-        ld_params.lowThrottleThreshold = ConfigTblPtr->LD_LOW_T_THR;
-        ld_params.minManThrottle = ConfigTblPtr->LD_MAN_MIN_THR;
-        ld_params.manual_stick_up_position_takeoff_threshold =
-                ConfigTblPtr->LD_POS_STK_UP_THRES;
-        ld_params.manual_stick_down_threshold =
-                ConfigTblPtr->LD_POS_STK_DW_THRES;
-        ld_params.landing_speed = ConfigTblPtr->LD_LANDSPEED;
-    }
-
 }
 
 /************************/
