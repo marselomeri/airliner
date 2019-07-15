@@ -38,39 +38,18 @@
 /************************************************************************
 ** Includes
 *************************************************************************/
-#include <string.h>
-#include <errno.h>
-#include <float.h>
-
 #include "cfe.h"
-
 #include "mac_app.hpp"
 #include "mac_msg.h"
 #include "mac_version.h"
-#include <math.h>
 #include "cfs_utils.h"
-
-#include <math/Quaternion.hpp>
-#include <px4lib.h>
 #include "px4lib_msgids.h"
-
-
-#define TPA_RATE_LOWER_LIMIT  0.05f
-#define MIN_TAKEOFF_THRUST    0.2f
-#define ATTITUDE_TC_DEFAULT   0.2f
-#define MANUAL_THROTTLE_MAX_MULTICOPTER	0.9f
-
-#define MAX_GYRO_COUNT 3
-
-
-typedef enum
-{
-	AXIS_INDEX_ROLL = 0,
-	AXIS_INDEX_PITCH,
-	AXIS_INDEX_YAW,
-	AXIS_COUNT
-} AXIS_Index_t;
-
+#include <px4lib.h>
+#include <math/Quaternion.hpp>
+#include <string.h>
+#include <errno.h>
+#include <float.h>
+#include <math.h>
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -78,7 +57,6 @@ typedef enum
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 MAC oMAC;
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -89,7 +67,6 @@ MAC::MAC()
 {
 
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -108,16 +85,13 @@ MAC::~MAC()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 MAC::InitEvent()
 {
-    int32  iStatus=CFE_SUCCESS;
+    int32  iStatus = CFE_SUCCESS;
     uint32  ind = 0;
 
     /* Initialize the event filter table.
      * Note: 0 is the CFE_EVS_NO_FILTER mask and event 0 is reserved (not used) */
-    memset((void*)EventTbl, 0x00, sizeof(EventTbl));
+    CFE_PSP_MemSet((void*)EventTbl, 0x00, sizeof(EventTbl));
 
-    /* TODO: Choose the events you want to filter.  CFE_EVS_MAX_EVENT_FILTERS
-     * limits the number of filters per app.  An explicit CFE_EVS_NO_FILTER 
-     * (the default) has been provided as an example. */
     EventTbl[  ind].EventID = MAC_RESERVED_EID;
     EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
 
@@ -125,9 +99,6 @@ int32 MAC::InitEvent()
     EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
 
     EventTbl[  ind].EventID = MAC_CONFIG_TABLE_ERR_EID;
-    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
-
-    EventTbl[  ind].EventID = MAC_CDS_ERR_EID;
     EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
 
     EventTbl[  ind].EventID = MAC_PIPE_ERR_EID;
@@ -139,9 +110,26 @@ int32 MAC::InitEvent()
     EventTbl[  ind].EventID = MAC_MSGLEN_ERR_EID;
     EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
 
+    EventTbl[  ind].EventID = MAC_CMD_INF_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    EventTbl[  ind].EventID = MAC_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    EventTbl[  ind].EventID = MAC_INIT_INF_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    EventTbl[  ind].EventID = MAC_CONFIG_TABLE_INF_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    EventTbl[  ind].EventID = MAC_INIT_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    EventTbl[  ind].EventID = MAC_CMD_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
     /* Register the table with CFE */
-    iStatus = CFE_EVS_Register(EventTbl,
-                               MAC_EVT_CNT, CFE_EVS_BINARY_FILTER);
+    iStatus = CFE_EVS_Register(EventTbl, MAC_EVT_CNT, CFE_EVS_BINARY_FILTER);
     if (iStatus != CFE_SUCCESS)
     {
         (void) CFE_ES_WriteToSysLog("MAC - Failed to register with EVS (0x%08X)\n", (unsigned int)iStatus);
@@ -149,7 +137,6 @@ int32 MAC::InitEvent()
 
     return (iStatus);
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -340,7 +327,6 @@ MAC_InitPipe_Exit_Tag:
     return (iStatus);
 }
     
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Initialize Global Variables                                     */
@@ -409,7 +395,6 @@ int32 MAC::InitData()
 
     return (iStatus);
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -484,7 +469,6 @@ MAC_InitApp_Exit_Tag:
     return (iStatus);
 }
 
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Receive and Process Messages                                    */
@@ -521,27 +505,27 @@ int32 MAC::RcvSchPipeMsg(int32 iBlocking)
                 break;
 
             case PX4_ACTUATOR_ARMED_MID:
-                memcpy(&CVT.Armed, MsgPtr, sizeof(CVT.Armed));
+                CFE_PSP_MemCpy(&CVT.Armed, MsgPtr, sizeof(CVT.Armed));
                 break;
 
             case PX4_BATTERY_STATUS_MID:
-                memcpy(&CVT.BatteryStatus, MsgPtr, sizeof(CVT.BatteryStatus));
+                CFE_PSP_MemCpy(&CVT.BatteryStatus, MsgPtr, sizeof(CVT.BatteryStatus));
                 break;
 
             case PX4_CONTROL_STATE_MID:
-                memcpy(&CVT.ControlState, MsgPtr, sizeof(CVT.ControlState));
+                CFE_PSP_MemCpy(&CVT.ControlState, MsgPtr, sizeof(CVT.ControlState));
                 break;
 
             case PX4_MANUAL_CONTROL_SETPOINT_MID:
-                memcpy(&CVT.ManualControlSp, MsgPtr, sizeof(CVT.ManualControlSp));
+                CFE_PSP_MemCpy(&CVT.ManualControlSp, MsgPtr, sizeof(CVT.ManualControlSp));
                 break;
 
             case PX4_MULTIROTOR_MOTOR_LIMITS_MID:
-                memcpy(&CVT.MotorLimits, MsgPtr, sizeof(CVT.MotorLimits));
+                CFE_PSP_MemCpy(&CVT.MotorLimits, MsgPtr, sizeof(CVT.MotorLimits));
                 break;
 
             case PX4_SENSOR_CORRECTION_MID:
-                memcpy(&CVT.SensorCorrection, MsgPtr, sizeof(CVT.SensorCorrection));
+                CFE_PSP_MemCpy(&CVT.SensorCorrection, MsgPtr, sizeof(CVT.SensorCorrection));
             	if (CVT.SensorCorrection.selected_gyro_instance < MAX_GYRO_COUNT)
             	{
             		m_SelectedGyro = CVT.SensorCorrection.selected_gyro_instance;
@@ -549,23 +533,23 @@ int32 MAC::RcvSchPipeMsg(int32 iBlocking)
                 break;
 
             case PX4_SENSOR_GYRO_MID:
-                memcpy(&CVT.SensorGyro, MsgPtr, sizeof(CVT.SensorGyro));
+                CFE_PSP_MemCpy(&CVT.SensorGyro, MsgPtr, sizeof(CVT.SensorGyro));
                 break;
 
             case PX4_VEHICLE_ATTITUDE_SETPOINT_MID:
-                memcpy(&CVT.VAttSp, MsgPtr, sizeof(CVT.VAttSp));
+                CFE_PSP_MemCpy(&CVT.VAttSp, MsgPtr, sizeof(CVT.VAttSp));
                 break;
 
             case PX4_VEHICLE_CONTROL_MODE_MID:
-                memcpy(&CVT.VControlMode, MsgPtr, sizeof(CVT.VControlMode));
+                CFE_PSP_MemCpy(&CVT.VControlMode, MsgPtr, sizeof(CVT.VControlMode));
                 break;
 
             case PX4_VEHICLE_RATES_SETPOINT_MID:
-                memcpy(&CVT.VRatesSp, MsgPtr, sizeof(CVT.VRatesSp));
+                CFE_PSP_MemCpy(&CVT.VRatesSp, MsgPtr, sizeof(CVT.VRatesSp));
                 break;
 
             case PX4_VEHICLE_STATUS_MID:
-                memcpy(&CVT.VehicleStatus, MsgPtr, sizeof(CVT.VehicleStatus));
+                CFE_PSP_MemCpy(&CVT.VehicleStatus, MsgPtr, sizeof(CVT.VehicleStatus));
                 break;
 
             default:
@@ -601,13 +585,11 @@ int32 MAC::RcvSchPipeMsg(int32 iBlocking)
     return (iStatus);
 }
 
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Process Incoming Commands                                       */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void MAC::ProcessNewCmds()
 {
     int iStatus = CFE_SUCCESS;
@@ -651,13 +633,11 @@ void MAC::ProcessNewCmds()
     }
 }
 
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Process MAC Commands                                            */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void MAC::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 {
     uint32  uiCmdCode=0;
@@ -701,7 +681,6 @@ void MAC::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 /* Send MAC Housekeeping                                           */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void MAC::ReportHousekeeping()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&HkTlm);
@@ -714,13 +693,11 @@ void MAC::ReportHousekeeping()
 /* Publish Output Data                                             */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void MAC::SendActuatorControls()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&m_ActuatorControls0);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&m_ActuatorControls0);
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -1017,7 +994,6 @@ void MAC::RunController(void)
 	}
 }
 
-
 void MAC::ControlAttitude(float dt)
 {
 //	vehicle_attitude_setpoint_poll();
@@ -1124,7 +1100,6 @@ void MAC::ControlAttitude(float dt)
 	}
 }
 
-
 void MAC::ControlAttitudeRates(float dt)
 {
 	math::Matrix3F3	boardRotation;	/**< rotation matrix for the orientation that the board is mounted */
@@ -1200,19 +1175,19 @@ void MAC::ControlAttitudeRates(float dt)
 	/* update integral only if motors are providing enough thrust to be effective */
 	if (m_ThrustSp > MIN_TAKEOFF_THRUST)
 	{
-		for (int i = AXIS_INDEX_ROLL; i < AXIS_COUNT; i++)
+		for (int i = MAC_AXIS_INDEX_ROLL; i < MAC_AXIS_COUNT; i++)
 		{
 			// Check for positive control saturation
 			bool positive_saturation =
-				((i == AXIS_INDEX_ROLL) && CVT.MotorLimits.SaturationStatus.Flags.RollPos) ||
-				((i == AXIS_INDEX_PITCH) && CVT.MotorLimits.SaturationStatus.Flags.PitchPos) ||
-				((i == AXIS_INDEX_YAW) && CVT.MotorLimits.SaturationStatus.Flags.YawPos);
+				((i == MAC_AXIS_INDEX_ROLL) && CVT.MotorLimits.SaturationStatus.Flags.RollPos) ||
+				((i == MAC_AXIS_INDEX_PITCH) && CVT.MotorLimits.SaturationStatus.Flags.PitchPos) ||
+				((i == MAC_AXIS_INDEX_YAW) && CVT.MotorLimits.SaturationStatus.Flags.YawPos);
 
 			// Check for negative control saturation
 			bool negative_saturation =
-				((i == AXIS_INDEX_ROLL) && CVT.MotorLimits.SaturationStatus.Flags.RollNeg) ||
-				((i == AXIS_INDEX_PITCH) && CVT.MotorLimits.SaturationStatus.Flags.PitchNeg) ||
-				((i == AXIS_INDEX_YAW) && CVT.MotorLimits.SaturationStatus.Flags.YawNeg);
+				((i == MAC_AXIS_INDEX_ROLL) && CVT.MotorLimits.SaturationStatus.Flags.RollNeg) ||
+				((i == MAC_AXIS_INDEX_PITCH) && CVT.MotorLimits.SaturationStatus.Flags.PitchNeg) ||
+				((i == MAC_AXIS_INDEX_YAW) && CVT.MotorLimits.SaturationStatus.Flags.YawNeg);
 
 			// prevent further positive control saturation
 			if (positive_saturation)
@@ -1236,12 +1211,11 @@ void MAC::ControlAttitudeRates(float dt)
 	}
 
 	/* explicitly limit the integrator state */
-	for (int i = AXIS_INDEX_ROLL; i < AXIS_COUNT; i++)
+	for (int i = MAC_AXIS_INDEX_ROLL; i < MAC_AXIS_COUNT; i++)
 	{
 		m_AngularRatesIntegralError.Constrain(i, -m_Params.rate_int_lim[i], m_Params.rate_int_lim[i]);
 	}
 }
-
 
 math::Vector3F MAC::PidAttenuations(float tpa_breakpoint, float tpa_rate)
 {
@@ -1250,13 +1224,12 @@ math::Vector3F MAC::PidAttenuations(float tpa_breakpoint, float tpa_rate)
 	tpa = fmaxf(TPA_RATE_LOWER_LIMIT, fminf(1.0f, tpa));
 
 	math::Vector3F pidAttenuationPerAxis;
-	pidAttenuationPerAxis[AXIS_INDEX_ROLL] = tpa;
-	pidAttenuationPerAxis[AXIS_INDEX_PITCH] = tpa;
-	pidAttenuationPerAxis[AXIS_INDEX_YAW] = 1.0;
+	pidAttenuationPerAxis[MAC_AXIS_INDEX_ROLL] = tpa;
+	pidAttenuationPerAxis[MAC_AXIS_INDEX_PITCH] = tpa;
+	pidAttenuationPerAxis[MAC_AXIS_INDEX_YAW] = 1.0;
 
 	return pidAttenuationPerAxis;
 }
-
 
 void MAC::UpdateParams(void)
 {
@@ -1330,7 +1303,6 @@ void MAC::UpdateParams(void)
 	m_Params.board_offset[1] = ParamTblPtr->board_offset[1];
 	m_Params.board_offset[2] = ParamTblPtr->board_offset[2];
 }
-
 
 void MAC::DisplayInputs(void)
 {
@@ -1495,8 +1467,6 @@ void MAC::DisplayInputs(void)
     OS_printf("  VehicleStatus.EngineFailureCmd:             %u\n", CVT.VehicleStatus.EngineFailureCmd);
     OS_printf("  VehicleStatus.MissionFailure:               %u\n", CVT.VehicleStatus.MissionFailure);
 }
-
-
 
 void MAC::DisplayOutputs(void)
 {
