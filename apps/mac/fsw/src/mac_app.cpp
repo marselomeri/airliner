@@ -145,7 +145,7 @@ int32 MAC::InitEvent()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 MAC::InitPipe()
 {
-    int32  iStatus=CFE_SUCCESS;
+    int32  iStatus = CFE_SUCCESS;
 
     /* Init schedule pipe and subscribe to wakeup messages */
     iStatus = CFE_SB_CreatePipe(&SchPipeId,
@@ -309,11 +309,7 @@ int32 MAC::InitPipe()
                                  MAC_DATA_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
-        /* TODO:  Add CFE_SB_Subscribe() calls for other apps' output data here.
-        **
-        ** Examples:
-        **     CFE_SB_Subscribe(GNCEXEC_OUT_DATA_MID, DataPipeId);
-        */
+        /* TODO: Intentionally leaving this here for rate monotonic updates later  */
     }
     else
     {
@@ -334,7 +330,7 @@ MAC_InitPipe_Exit_Tag:
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 MAC::InitData()
 {
-    int32  iStatus=CFE_SUCCESS;
+    int32  iStatus = CFE_SUCCESS;
 
     CFE_SB_InitMsg(&CVT.Armed, PX4_ACTUATOR_ARMED_MID, sizeof(CVT.Armed), TRUE);
     CFE_SB_InitMsg(&CVT.BatteryStatus, PX4_BATTERY_STATUS_MID, sizeof(CVT.BatteryStatus), TRUE);
@@ -344,7 +340,7 @@ int32 MAC::InitData()
     CFE_SB_InitMsg(&CVT.SensorCorrection, PX4_SENSOR_CORRECTION_MID, sizeof(CVT.SensorCorrection), TRUE);
     CFE_SB_InitMsg(&CVT.SensorGyro, PX4_SENSOR_GYRO_MID, sizeof(CVT.SensorGyro), TRUE);
     CFE_SB_InitMsg(&CVT.VAttSp, PX4_VEHICLE_ATTITUDE_SETPOINT_MID, sizeof(CVT.VAttSp), TRUE);
-    //CFE_SB_InitMsg(&CVT.VControlMode, PX4_VEHICLE_CONTROL_MODE_MID, sizeof(CVT.VControlMode), TRUE);
+    //CFE_SB_InitMsg(&CVT.VControlMode, PX4_VEHICLE_CONTROL_MODE_MID, sizeof(CVT.VControlMode), TRUE); // TODO: Why commented out?
     CFE_SB_InitMsg(&CVT.VRatesSp, PX4_VEHICLE_RATES_SETPOINT_MID, sizeof(CVT.VRatesSp), TRUE);
     CFE_SB_InitMsg(&CVT.VehicleStatus, PX4_VEHICLE_STATUS_MID, sizeof(CVT.VehicleStatus), TRUE);
 
@@ -352,8 +348,7 @@ int32 MAC::InitData()
     CFE_SB_InitMsg(&m_ActuatorControls0,
             PX4_ACTUATOR_CONTROLS_0_MID, sizeof(m_ActuatorControls0), TRUE);
     /* Init housekeeping message. */
-    CFE_SB_InitMsg(&HkTlm,
-                   MAC_HK_TLM_MID, sizeof(HkTlm), TRUE);
+    CFE_SB_InitMsg(&HkTlm, MAC_HK_TLM_MID, sizeof(HkTlm), TRUE);
 
     m_AngularRatesPrevious.Zero();
     m_AngularRatesSetpointPrevious.Zero();
@@ -361,9 +356,9 @@ int32 MAC::InitData()
     m_AngularRatesIntegralError.Zero();
     m_AttControl.Zero();
 
-    for (uint32 i = 0; i < 3; i++)
+    for (uint32 i = 0; i < MAX_GYRO_COUNT; ++i)
     {
-        // used scale factors to unity
+        /* Used scale factors to unity */
         CVT.SensorCorrection.gyro_scale_0[i] = 1.0f;
         CVT.SensorCorrection.gyro_scale_1[i] = 1.0f;
         CVT.SensorCorrection.gyro_scale_2[i] = 1.0f;
@@ -496,87 +491,107 @@ int32 MAC::RcvSchPipeMsg(int32 iBlocking)
         switch (MsgId)
         {
             case MAC_SEND_HK_MID:
+            {
                 ProcessNewCmds();
                 ReportHousekeeping();
                 break;
+            }
 
             case MAC_RUN_CONTROLLER_MID:
+            {
                 RunController();
                 break;
+            }
 
             case PX4_ACTUATOR_ARMED_MID:
+            {
                 CFE_PSP_MemCpy(&CVT.Armed, MsgPtr, sizeof(CVT.Armed));
                 break;
+            }
 
             case PX4_BATTERY_STATUS_MID:
+            {
                 CFE_PSP_MemCpy(&CVT.BatteryStatus, MsgPtr, sizeof(CVT.BatteryStatus));
                 break;
+            }
 
             case PX4_CONTROL_STATE_MID:
+            {
                 CFE_PSP_MemCpy(&CVT.ControlState, MsgPtr, sizeof(CVT.ControlState));
                 break;
+            }
 
             case PX4_MANUAL_CONTROL_SETPOINT_MID:
+            {
                 CFE_PSP_MemCpy(&CVT.ManualControlSp, MsgPtr, sizeof(CVT.ManualControlSp));
                 break;
+            }
 
             case PX4_MULTIROTOR_MOTOR_LIMITS_MID:
+            {
                 CFE_PSP_MemCpy(&CVT.MotorLimits, MsgPtr, sizeof(CVT.MotorLimits));
                 break;
+            }
 
             case PX4_SENSOR_CORRECTION_MID:
+            {
                 CFE_PSP_MemCpy(&CVT.SensorCorrection, MsgPtr, sizeof(CVT.SensorCorrection));
                 if (CVT.SensorCorrection.selected_gyro_instance < MAX_GYRO_COUNT)
                 {
                     m_SelectedGyro = CVT.SensorCorrection.selected_gyro_instance;
                 }
+                
                 break;
+            }
 
             case PX4_SENSOR_GYRO_MID:
+            {
                 CFE_PSP_MemCpy(&CVT.SensorGyro, MsgPtr, sizeof(CVT.SensorGyro));
                 break;
-
+            }
+                
             case PX4_VEHICLE_ATTITUDE_SETPOINT_MID:
+            {
                 CFE_PSP_MemCpy(&CVT.VAttSp, MsgPtr, sizeof(CVT.VAttSp));
                 break;
+            }
 
             case PX4_VEHICLE_CONTROL_MODE_MID:
+            {
                 CFE_PSP_MemCpy(&CVT.VControlMode, MsgPtr, sizeof(CVT.VControlMode));
                 break;
+            }
 
             case PX4_VEHICLE_RATES_SETPOINT_MID:
+            {
                 CFE_PSP_MemCpy(&CVT.VRatesSp, MsgPtr, sizeof(CVT.VRatesSp));
                 break;
+            }
 
             case PX4_VEHICLE_STATUS_MID:
+            {
                 CFE_PSP_MemCpy(&CVT.VehicleStatus, MsgPtr, sizeof(CVT.VehicleStatus));
                 break;
+            }
 
             default:
+            {
                 (void) CFE_EVS_SendEvent(MAC_MSGID_ERR_EID, CFE_EVS_ERROR,
                                   "Recvd invalid SCH msgId (0x%04X)", MsgId);
+                break;
+            }
         }
     }
     else if (iStatus == CFE_SB_NO_MESSAGE)
     {
-        /* TODO: If there's no incoming message, you can do something here, or 
-         * nothing.  Note, this section is dead code only if the iBlocking arg
-         * is CFE_SB_PEND_FOREVER. */
         iStatus = CFE_SUCCESS;
     }
     else if (iStatus == CFE_SB_TIME_OUT)
     {
-        /* TODO: If there's no incoming message within a specified time (via the
-         * iBlocking arg, you can do something here, or nothing.  
-         * Note, this section is dead code only if the iBlocking arg
-         * is CFE_SB_PEND_FOREVER. */
         iStatus = CFE_SUCCESS;
     }
     else
     {
-        /* TODO: This is an example of exiting on an error (either CFE_SB_BAD_ARGUMENT, or
-         * CFE_SB_PIPE_RD_ERROR).
-         */
         (void) CFE_EVS_SendEvent(MAC_PIPE_ERR_EID, CFE_EVS_ERROR,
               "SB pipe read error (0x%08X), app will exit", (unsigned int)iStatus);
         uiRunStatus= CFE_ES_APP_ERROR;
@@ -803,12 +818,13 @@ void MAC::AppMain()
 void MAC::RunController(void)
 {
     static uint64 last_run = 0;
-    float dt = (PX4LIB_GetPX4TimeUs() - last_run) / 1000000.0f;
-    last_run = PX4LIB_GetPX4TimeUs();
+    uint64 now = PX4LIB_GetPX4TimeUs();
+    float dt = (now - last_run) / MICRO_SEC_TO SEC_DIV;
+    last_run = now;
 
-    UpdateParams();
-
-    /* guard against too small (< 2ms) and too large (> 20ms) dt's */
+    UpdateParams(); // TODO remove
+    
+    /* Guard against too small (< 2ms) and too large (> 20ms) dt's */
     if (dt < 0.002f)
     {
         dt = 0.002f;
@@ -817,9 +833,6 @@ void MAC::RunController(void)
     {
         dt = 0.02f;
     }
-
-//    /* check for updates in other topics */
-//    parameter_update_poll();
 
     /* Check if we are in rattitude mode and the pilot is above the threshold on pitch
      * or roll (yaw can rotate 360 in normal att control).  If both are true don't
@@ -835,27 +848,9 @@ void MAC::RunController(void)
 
     if (CVT.VControlMode.ControlAttitudeEnabled)
     {
-//        if (_ts_opt_recovery == nullptr) {
-//            // the  tailsitter recovery instance has not been created, thus, the vehicle
-//            // is not a tailsitter, do normal attitude control
-            ControlAttitude(dt);
-//        }
-//        else
-//        {
-//            vehicle_attitude_setpoint_poll();
-//            _thrust_sp = _v_att_sp.thrust;
-//            math::Quaternion q(_ctrl_state.q[0], _ctrl_state.q[1], _ctrl_state.q[2], _ctrl_state.q[3]);
-//            math::Quaternion q_sp(&_v_att_sp.q_d[0]);
-//            _ts_opt_recovery->setAttGains(_params.att_p, _params.yaw_ff);
-//            _ts_opt_recovery->calcOptimalRates(q, q_sp, _v_att_sp.yaw_sp_move_rate, _rates_sp);
-//
-//            /* limit rates */
-//            for (int i = 0; i < 3; i++) {
-//                _rates_sp(i) = math::constrain(_rates_sp(i), -_params.mc_rate_max(i), _params.mc_rate_max(i));
-//            }
-//        }
+        ControlAttitude(dt);
 
-//        /* publish attitude rates setpoint */
+        /* Publish attitude rates setpoint */
         CVT.VRatesSp.Timestamp = PX4LIB_GetPX4TimeUs();
         CVT.VRatesSp.Roll = m_AngularRatesSetpoint[0];
         CVT.VRatesSp.Pitch = m_AngularRatesSetpoint[1];
@@ -868,15 +863,15 @@ void MAC::RunController(void)
     }
     else
     {
-        /* attitude controller disabled, poll rates setpoint topic */
+        /* Attitude controller disabled, poll rates setpoint topic */
         if (CVT.VControlMode.ControlManualEnabled)
         {
-            /* manual rates control - ACRO mode */
+            /* Manual rates control - ACRO mode */
             m_AngularRatesSetpoint = math::Vector3F(CVT.ManualControlSp.Y, -CVT.ManualControlSp.X,
                     CVT.ManualControlSp.R).EMult(m_Params.acro_rate_max);
             m_ThrustSp = fmin(CVT.ManualControlSp.Z, MANUAL_THROTTLE_MAX_MULTICOPTER);
 
-            /* publish attitude rates setpoint */
+            /* Publish attitude rates setpoint */
             CVT.VRatesSp.Timestamp = PX4LIB_GetPX4TimeUs();
             CVT.VRatesSp.Roll = m_AngularRatesSetpoint[0];
             CVT.VRatesSp.Pitch = m_AngularRatesSetpoint[1];
@@ -888,7 +883,7 @@ void MAC::RunController(void)
         }
         else
         {
-            /* attitude controller disabled, poll rates setpoint topic */
+            /* Attitude controller disabled, poll rates setpoint topic */
             m_AngularRatesSetpoint[0] = CVT.VRatesSp.Roll;
             m_AngularRatesSetpoint[1] = CVT.VRatesSp.Pitch;
             m_AngularRatesSetpoint[2] = CVT.VRatesSp.Yaw;
@@ -900,31 +895,25 @@ void MAC::RunController(void)
     {
         ControlAttitudeRates(dt);
 
-//        /* publish actuator controls */
+        /* Publish actuator controls */
         m_ActuatorControls0.Timestamp = PX4LIB_GetPX4TimeUs();
         m_ActuatorControls0.SampleTime = CVT.ControlState.Timestamp;
         m_ActuatorControls0.Control[0] = (isfinite(m_AttControl[0])) ? m_AttControl[0] : 0.0f;
         m_ActuatorControls0.Control[1] = (isfinite(m_AttControl[1])) ? m_AttControl[1] : 0.0f;
         m_ActuatorControls0.Control[2] = (isfinite(m_AttControl[2])) ? m_AttControl[2] : 0.0f;
         m_ActuatorControls0.Control[3] = (isfinite(m_ThrustSp)) ? m_ThrustSp : 0.0f;
-        m_ActuatorControls0.Control[7] = CVT.VAttSp.LandingGear;
-        m_ActuatorControls0.Timestamp = PX4LIB_GetPX4TimeUs();
-        m_ActuatorControls0.SampleTime = CVT.ControlState.Timestamp;
 
-        /* scale effort by battery status */
+        /* Scale effort by battery status */
         if (m_Params.bat_scale_en && CVT.BatteryStatus.Scale > 0.0f)
         {
             int32 i = 0;
-            for (i = 0; i < 4; i++)
+            for (i = 0; i < 4; ++i) // TODO: make this bat count a define somewhere
             {
                 m_ActuatorControls0.Control[i] *= CVT.BatteryStatus.Scale;
             }
         }
 
-        /* TODO:  Add _actuators_0_circuit_breaker_enabled functionality */
-        //if (!_actuators_0_circuit_breaker_enabled) {
-            SendActuatorControls();
-        //}
+        SendActuatorControls();
 
         PX4_McAttCtrlStatusMsg_t controllerStatus;
         CFE_SB_InitMsg(&controllerStatus,
@@ -933,64 +922,6 @@ void MAC::RunController(void)
         controllerStatus.PitchRateInteg = m_AngularRatesIntegralError[1];
         controllerStatus.YawRateInteg = m_AngularRatesIntegralError[2];
         controllerStatus.Timestamp = PX4LIB_GetPX4TimeUs();
-    }
-
-    if (CVT.VControlMode.ControlTerminationEnabled)
-    {
-        if (!CVT.VehicleStatus.IsVtol)
-        {
-//            _rates_sp.zero();
-//            _rates_int.zero();
-//            _thrust_sp = 0.0f;
-//            _att_control.zero();
-//
-//
-//            /* publish actuator controls */
-//            _actuators.control[0] = 0.0f;
-//            _actuators.control[1] = 0.0f;
-//            _actuators.control[2] = 0.0f;
-//            _actuators.control[3] = 0.0f;
-//            _actuators.timestamp = hrt_absolute_time();
-//            _actuators.timestamp_sample = _ctrl_state.timestamp;
-//
-//            if (!_actuators_0_circuit_breaker_enabled) {
-//                if (_actuators_0_pub != nullptr) {
-//
-//                    orb_publish(_actuators_id, _actuators_0_pub, &_actuators);
-//                    perf_end(_controller_latency_perf);
-//
-//                } else if (_actuators_id) {
-//                    _actuators_0_pub = orb_advertise(_actuators_id, &_actuators);
-//                }
-//            }
-//
-//            _controller_status.roll_rate_integ = _rates_int(0);
-//            _controller_status.pitch_rate_integ = _rates_int(1);
-//            _controller_status.yaw_rate_integ = _rates_int(2);
-//            _controller_status.timestamp = hrt_absolute_time();
-//
-//            /* publish controller status */
-//            if (_controller_status_pub != nullptr) {
-//                orb_publish(ORB_ID(mc_att_ctrl_status), _controller_status_pub, &_controller_status);
-//
-//            } else {
-//                _controller_status_pub = orb_advertise(ORB_ID(mc_att_ctrl_status), &_controller_status);
-//            }
-//
-//            /* publish attitude rates setpoint */
-//            _v_rates_sp.roll = _rates_sp(0);
-//            _v_rates_sp.pitch = _rates_sp(1);
-//            _v_rates_sp.yaw = _rates_sp(2);
-//            _v_rates_sp.thrust = _thrust_sp;
-//            _v_rates_sp.timestamp = hrt_absolute_time();
-//
-//            if (_v_rates_sp_pub != nullptr) {
-//                orb_publish(_rates_sp_id, _v_rates_sp_pub, &_v_rates_sp);
-//
-//            } else if (_rates_sp_id) {
-//                _v_rates_sp_pub = orb_advertise(_rates_sp_id, &_v_rates_sp);
-//            }
-        }
     }
 }
 

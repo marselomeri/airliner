@@ -69,7 +69,8 @@ extern "C" {
 #define MIN_TAKEOFF_THRUST    (0.2f)
 #define ATTITUDE_TC_DEFAULT   (0.2f)
 #define MANUAL_THROTTLE_MAX_MULTICOPTER    (0.9f)
-#define MAX_GYRO_COUNT 3
+#define MAX_GYRO_COUNT (3)
+#define MICRO_SEC_TO SEC_DIV (1000000.0f)
 
 /************************************************************************
  ** Local Structure Definitions
@@ -86,44 +87,43 @@ typedef struct
 {
     PX4_ActuatorArmedMsg_t                Armed;              /**< actuator arming status */
     PX4_BatteryStatusMsg_t                BatteryStatus;      /**< battery status */
-    PX4_ControlStateMsg_t                ControlState;
-    PX4_ManualControlSetpointMsg_t        ManualControlSp;  /**< manual control setpoint */
-    PX4_MultirotorMotorLimitsMsg_t        MotorLimits;      /**< motor limits */
-    PX4_SensorCorrectionMsg_t            SensorCorrection; /**< sensor thermal corrections */
-    PX4_SensorGyroMsg_t                    SensorGyro;          /**< gyro data before thermal correctons and ekf bias estimates are applied */
-    PX4_VehicleAttitudeSetpointMsg_t    VAttSp;              /**< vehicle attitude setpoint */
-    PX4_VehicleControlModeMsg_t            VControlMode;      /**< vehicle control mode */
-    PX4_VehicleRatesSetpointMsg_t        VRatesSp;          /**< vehicle rates setpoint */
+    PX4_ControlStateMsg_t                 ControlState;       /**< control state */
+    PX4_ManualControlSetpointMsg_t        ManualControlSp;    /**< manual control setpoint */
+    PX4_MultirotorMotorLimitsMsg_t        MotorLimits;        /**< motor limits */
+    PX4_SensorCorrectionMsg_t             SensorCorrection;   /**< sensor thermal corrections */
+    PX4_SensorGyroMsg_t                   SensorGyro;         /**< gyro data before thermal correctons and ekf bias estimates are applied */
+    PX4_VehicleAttitudeSetpointMsg_t      VAttSp;             /**< vehicle attitude setpoint */
+    PX4_VehicleControlModeMsg_t           VControlMode;       /**< vehicle control mode */
+    PX4_VehicleRatesSetpointMsg_t         VRatesSp;           /**< vehicle rates setpoint */
     PX4_VehicleStatusMsg_t                VehicleStatus;      /**< vehicle status */
 } MAC_CurrentValueTable_t;
-
 
 typedef struct
 {
     math::Vector3F att_p;               /**< P gain for angular error */
-    math::Vector3F rate_p;                /**< P gain for angular rate error */
-    math::Vector3F rate_i;                /**< I gain for angular rate error */
+    math::Vector3F rate_p;              /**< P gain for angular rate error */
+    math::Vector3F rate_i;              /**< I gain for angular rate error */
     math::Vector3F rate_int_lim;        /**< integrator state limit for rate loop */
-    math::Vector3F rate_d;                /**< D gain for angular rate error */
-    math::Vector3F rate_ff;                /**< Feedforward gain for desired rates */
-    float yaw_ff;                        /**< yaw control feed-forward */
+    math::Vector3F rate_d;              /**< D gain for angular rate error */
+    math::Vector3F rate_ff;             /**< Feedforward gain for desired rates */
+    float yaw_ff;                       /**< yaw control feed-forward */
 
-    float tpa_breakpoint_p;                /**< Throttle PID Attenuation breakpoint */
-    float tpa_breakpoint_i;                /**< Throttle PID Attenuation breakpoint */
-    float tpa_breakpoint_d;                /**< Throttle PID Attenuation breakpoint */
-    float tpa_rate_p;                    /**< Throttle PID Attenuation slope */
-    float tpa_rate_i;                    /**< Throttle PID Attenuation slope */
-    float tpa_rate_d;                    /**< Throttle PID Attenuation slope */
+    float tpa_breakpoint_p;             /**< Throttle PID Attenuation breakpoint */
+    float tpa_breakpoint_i;             /**< Throttle PID Attenuation breakpoint */
+    float tpa_breakpoint_d;             /**< Throttle PID Attenuation breakpoint */
+    float tpa_rate_p;                   /**< Throttle PID Attenuation slope */
+    float tpa_rate_i;                   /**< Throttle PID Attenuation slope */
+    float tpa_rate_d;                   /**< Throttle PID Attenuation slope */
 
     float roll_rate_max;
     float pitch_rate_max;
     float yaw_rate_max;
     float yaw_auto_max;
-    math::Vector3F mc_rate_max;            /**< attitude rate limits in stabilized modes */
-    math::Vector3F auto_rate_max;        /**< attitude rate limits in auto modes */
-    math::Vector3F acro_rate_max;        /**< max attitude rates in acro mode */
+    math::Vector3F mc_rate_max;         /**< attitude rate limits in stabilized modes */
+    math::Vector3F auto_rate_max;       /**< attitude rate limits in auto modes */
+    math::Vector3F acro_rate_max;       /**< max attitude rates in acro mode */
     float rattitude_thres;
-    MAC_VTOL_Type_t vtol_type;            /**< 0 = Tailsitter, 1 = Tiltrotor, 2 = Standard airframe */
+    MAC_VTOL_Type_t vtol_type;          /**< 0 = Tailsitter, 1 = Tiltrotor, 2 = Standard airframe */
     boolean vtol_opt_recovery_enabled;
     float vtol_wv_yaw_rate_scale;        /**< Scale value [0, 1] for yaw rate setpoint  */
 
@@ -132,6 +132,7 @@ typedef struct
     int board_rotation;
 
     float board_offset[3];
+    
 } MAC_Params_t;
 
 
@@ -196,7 +197,7 @@ public:
 
     MAC_Params_t m_Params;
 
-
+    uint64 m_LastRunTime;
 
     /************************************************************************/
     /** \brief CFS PWM Motor Controller Task (MAC) application entry point
