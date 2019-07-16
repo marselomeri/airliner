@@ -56,7 +56,7 @@ int32 MAC::InitConfigTbl()
                                MAC_PARAM_TABLENAME,
                                (sizeof(MAC_ParamTbl_t)),
                                CFE_TBL_OPT_DEFAULT,
-							   MAC::ValidateParamTbl);
+                               MAC::ValidateParamTbl);
     if (iStatus != CFE_SUCCESS)
     {
         /* Note, a critical table could return another nominal code.  If this table is
@@ -138,7 +138,7 @@ int32 MAC::AcquireConfigPointers(void)
     }
     else if(iStatus != CFE_SUCCESS)
     {
-    	ParamTblPtr = 0;
+        ParamTblPtr = 0;
         (void) CFE_EVS_SendEvent(MAC_CONFIG_TABLE_ERR_EID, CFE_EVS_ERROR,
                                  "Failed to get Param table's address (0x%08X)",
                                  (unsigned int)iStatus);
