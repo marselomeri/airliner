@@ -60,7 +60,7 @@ typedef enum {
 **
 **  \par Cause:
 **
-**  TODO fill this in
+**  Generic MAC info event
 **
 */
     MAC_INF_EID = 1,
@@ -196,10 +196,21 @@ typedef enum {
 */
     MAC_MSGLEN_ERR_EID = 11,
 
+/** \brief <tt> "Table validation failed for parameter (%s)" </tt>
+**  \event <tt> "Table validation failed for parameter (%s)" </tt>
+**  
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when MAC table validation fails
+**
+*/  
+    MAC_TBL_VALIDATE_ERR_EID = 12,
+
 /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
     MAC_EVT_CNT
 } MAC_EventIds_t;
-
 
 #ifdef __cplusplus
 }
