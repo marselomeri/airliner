@@ -49,7 +49,7 @@ extern "C" {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 MAC::InitConfigTbl()
 {
-    int32  iStatus=0;
+    int32  iStatus = 0;
 
     /* Register Param table */
     iStatus = CFE_TBL_Register(&ParamTblHdl,
@@ -95,7 +95,148 @@ MAC_InitConfigTbl_Exit_Tag:
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 MAC::ValidateParamTbl(void* ConfigTblPtr)
 {
-    return 0;
+    int32  iStatus = CFE_SUCCESS;
+    char Param[MAC_PARAM_NAME_MAX_LEN];
+    MAC_ParamTbl_t* MAC_ParamTblPtr = (MAC_ParamTbl_t*)(ConfigTblPtr);
+
+    if (MAC_ParamTblPtr-> < _MIN ||
+        MAC_ParamTblPtr-> > _MAX)
+    {
+        snprintf(Param, MAC_PARAM_NAME_MAX_LEN, "");
+        iStatus = -1;
+        goto MAC_ValidateConfigTbl_Exit_Tag;
+    }
+    
+    if (MAC_ParamTblPtr-> < _MIN ||
+        MAC_ParamTblPtr-> > _MAX)
+    {
+        snprintf(Param, MAC_PARAM_NAME_MAX_LEN, "");
+        iStatus = -1;
+        goto MAC_ValidateConfigTbl_Exit_Tag;
+    }
+    
+    if (MAC_ParamTblPtr-> < _MIN ||
+        MAC_ParamTblPtr-> > _MAX)
+    {
+        snprintf(Param, MAC_PARAM_NAME_MAX_LEN, "");
+        iStatus = -1;
+        goto MAC_ValidateConfigTbl_Exit_Tag;
+    }
+    
+    if (MAC_ParamTblPtr-> < _MIN ||
+        MAC_ParamTblPtr-> > _MAX)
+    {
+        snprintf(Param, MAC_PARAM_NAME_MAX_LEN, "");
+        iStatus = -1;
+        goto MAC_ValidateConfigTbl_Exit_Tag;
+    }
+    
+    if (MAC_ParamTblPtr-> < _MIN ||
+        MAC_ParamTblPtr-> > _MAX)
+    {
+        snprintf(Param, MAC_PARAM_NAME_MAX_LEN, "");
+        iStatus = -1;
+        goto MAC_ValidateConfigTbl_Exit_Tag;
+    }
+    
+    if (MAC_ParamTblPtr-> < _MIN ||
+        MAC_ParamTblPtr-> > _MAX)
+    {
+        snprintf(Param, MAC_PARAM_NAME_MAX_LEN, "");
+        iStatus = -1;
+        goto MAC_ValidateConfigTbl_Exit_Tag;
+    }
+    
+    if (MAC_ParamTblPtr-> < _MIN ||
+        MAC_ParamTblPtr-> > _MAX)
+    {
+        snprintf(Param, MAC_PARAM_NAME_MAX_LEN, "");
+        iStatus = -1;
+        goto MAC_ValidateConfigTbl_Exit_Tag;
+    }
+    
+    if (MAC_ParamTblPtr-> < _MIN ||
+        MAC_ParamTblPtr-> > _MAX)
+    {
+        snprintf(Param, MAC_PARAM_NAME_MAX_LEN, "");
+        iStatus = -1;
+        goto MAC_ValidateConfigTbl_Exit_Tag;
+    }
+    
+    if (MAC_ParamTblPtr-> < _MIN ||
+        MAC_ParamTblPtr-> > _MAX)
+    {
+        snprintf(Param, MAC_PARAM_NAME_MAX_LEN, "");
+        iStatus = -1;
+        goto MAC_ValidateConfigTbl_Exit_Tag;
+    }
+    
+    if (MAC_ParamTblPtr-> < _MIN ||
+        MAC_ParamTblPtr-> > _MAX)
+    {
+        snprintf(Param, MAC_PARAM_NAME_MAX_LEN, "");
+        iStatus = -1;
+        goto MAC_ValidateConfigTbl_Exit_Tag;
+    }
+    
+    if (MAC_ParamTblPtr-> < _MIN ||
+        MAC_ParamTblPtr-> > _MAX)
+    {
+        snprintf(Param, MAC_PARAM_NAME_MAX_LEN, "");
+        iStatus = -1;
+        goto MAC_ValidateConfigTbl_Exit_Tag;
+    }
+    
+    if (MAC_ParamTblPtr-> < _MIN ||
+        MAC_ParamTblPtr-> > _MAX)
+    {
+        snprintf(Param, MAC_PARAM_NAME_MAX_LEN, "");
+        iStatus = -1;
+        goto MAC_ValidateConfigTbl_Exit_Tag;
+    }
+    
+    if (MAC_ParamTblPtr-> < _MIN ||
+        MAC_ParamTblPtr-> > _MAX)
+    {
+        snprintf(Param, MAC_PARAM_NAME_MAX_LEN, "");
+        iStatus = -1;
+        goto MAC_ValidateConfigTbl_Exit_Tag;
+    }
+    
+    if (MAC_ParamTblPtr-> < _MIN ||
+        MAC_ParamTblPtr-> > _MAX)
+    {
+        snprintf(Param, MAC_PARAM_NAME_MAX_LEN, "");
+        iStatus = -1;
+        goto MAC_ValidateConfigTbl_Exit_Tag;
+    }
+    
+    if (MAC_ParamTblPtr-> < _MIN ||
+        MAC_ParamTblPtr-> > _MAX)
+    {
+        snprintf(Param, MAC_PARAM_NAME_MAX_LEN, "");
+        iStatus = -1;
+        goto MAC_ValidateConfigTbl_Exit_Tag;
+    }
+    
+    if (MAC_ParamTblPtr-> < _MIN ||
+        MAC_ParamTblPtr-> > _MAX)
+    {
+        snprintf(Param, MAC_PARAM_NAME_MAX_LEN, "");
+        iStatus = -1;
+        goto MAC_ValidateConfigTbl_Exit_Tag;
+    }
+
+MAC_ValidateConfigTbl_Exit_Tag:
+
+    if (iStatus != CFE_SUCCESS)
+    {
+        (void) CFE_EVS_SendEvent(MAC_TBL_VALIDATE_ERR_EID, CFE_EVS_ERROR,
+                                 "Table validation failed for parameter (%s)",
+                                 Param);
+    }
+    
+    return iStatus;  
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -110,9 +251,6 @@ int32 MAC::AcquireConfigPointers(void)
     /*
     ** Release the table
     */
-    /* TODO: This return value can indicate success, error, or that the info has been 
-     * updated.  We ignore this return value in favor of checking CFE_TBL_Manage(), but
-     * be sure this is the behavior you want. */
     (void) CFE_TBL_ReleaseAddress(ParamTblHdl);
 
     /*
@@ -134,6 +272,7 @@ int32 MAC::AcquireConfigPointers(void)
                                  ParamTblHdl);
     if (iStatus == CFE_TBL_INFO_UPDATED)
     {
+        UpdateParams();
         iStatus = CFE_SUCCESS;
     }
     else if(iStatus != CFE_SUCCESS)

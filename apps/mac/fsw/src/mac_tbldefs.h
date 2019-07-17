@@ -42,8 +42,6 @@
 ** Includes
 *************************************************************************/
 
-//#include "Vector3F.hpp"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -54,18 +52,90 @@ extern "C" {
 /************************************************************************
 ** Local Defines
 *************************************************************************/
+#define MAC_PARAM_NAME_MAX_LEN   (32)
+#define MC_ROLL_P_MIN            (0.0f)
+#define MC_ROLL_P_MAX            (12.0f)
+#define MC_ROLLRATE_P_MIN        (0.0f)
+#define MC_ROLLRATE_P_MAX        (0.5f)
+#define MC_ROLLRATE_I_MIN        (0.0f)
+#define MC_ROLLRATE_I_MAX        (1.0f) // Not explicitly defined max
+#define MC_ROLLRATE_D_MIN        (0.0f)
+#define MC_ROLLRATE_D_MAX        (0.01f)
+#define MC_RR_INT_LIM_MIN        (0.0f)
+#define MC_RR_INT_LIM_MAX        (1.0f) // Not explicitly defined max
+#define MC_ROLLRATE_FF_MIN       (0.0f)
+#define MC_ROLLRATE_FF_MAX       (10.0f) // Not explicitly defined max
+#define MC_PITCH_P_MIN           (0.0f)
+#define MC_PITCH_P_MAX           (12.0f)
+#define MC_PITCHRATE_P_MIN       (0.0f)
+#define MC_PITCHRATE_P_MAX       (0.6f)
+#define MC_PITCHRATE_I_MIN       (0.0f)
+#define MC_PITCHRATE_I_MAX       (1.0f) //
+#define MC_PR_INT_LIM_MIN        (0.0f)
+#define MC_PR_INT_LIM_MAX        (1.0f) //
+#define MC_PITCHRATE_D_MIN       (0.0f)
+#define MC_PITCHRATE_D_MAX       (0.1f) //
+#define MC_PITCHRATE_FF_MIN      (0.0f)
+#define MC_PITCHRATE_FF_MAX      (10.0f) //
+#define MC_TPA_BREAK_P_MIN       (0.0f)
+#define MC_TPA_BREAK_P_MAX       (1.0f)
+#define MC_TPA_BREAK_I_MIN       (0.0f)
+#define MC_TPA_BREAK_I_MAX       (1.0f)
+#define MC_TPA_BREAK_D_MIN       (0.0f)
+#define MC_TPA_BREAK_D_MAX       (1.0f)
+#define MC_TPA_RATE_P_MIN        (0.0f)
+#define MC_TPA_RATE_P_MAX        (1.0f)
+#define MC_TPA_RATE_I_MIN        (0.0f)
+#define MC_TPA_RATE_I_MAX        (1.0f)
+#define MC_TPA_RATE_D_MIN        (0.0f)
+#define MC_TPA_RATE_D_MAX        (1.0f)
+#define MC_YAW_P_MIN             (0.0f)
+#define MC_YAW_P_MAX             (5.0f)
+#define MC_YAWRATE_P_MIN         (0.0f)
+#define MC_YAWRATE_P_MAX         (0.6f)
+#define MC_YAWRATE_I_MIN         (0.0)
+#define MC_YAWRATE_I_MAX         (1.0f) //
+#define MC_YR_INT_LIM_MIN        (0.0f)
+#define MC_YR_INT_LIM_MAX        (1.0f) //
+#define MC_YAWRATE_D_MIN         (0.0f)
+#define MC_YAWRATE_D_MAX         (1.0f) //
+#define MC_YAWRATE_FF_MIN        (0.0f)
+#define MC_YAWRATE_FF_MAX        (1.0f) //
+#define MC_ROLLRATE_MAX_MIN      (0.0f)
+#define MC_ROLLRATE_MAX_MAX      (1800.0f)
+#define MC_PITCHRATE_MAX_MIN     (0.0f)
+#define MC_PITCHRATE_MAX_MAX     (1800.0f)
+#define MC_YAWRATE_MAX_MIN       (0.0f)
+#define MC_YAWRATE_MAX_MAX       (1800.0f)
+#define MC_YAWRAUTO_MAX_MIN      (0.0f)
+#define MC_YAWRAUTO_MAX_MAX      (360.0f)
+#define MC_ACRO_R_MAX_MIN        (0.0f)
+#define MC_ACRO_R_MAX_MAX        (1800.0f)
+#define MC_ACRO_P_MAX_MIN        (0.0f)
+#define MC_ACRO_P_MAX_MAX        (1800.0f)
+#define MC_ACRO_Y_MAX_MIN        (0.0f)
+#define MC_ACRO_Y_MAX_MAX        (1800.0f)
+#define MC_RATT_TH_MIN           (0.0f)
+#define MC_RATT_TH_MAX           (1.0f)
+#define MC_ROLL_TC_MIN           (0.15f)
+#define MC_ROLL_TC_MAX           (0.25f)
+#define MC_PITCH_TC_MIN          (0.15f)
+#define MC_PITCH_TC_MAX          (0.25f)
+#define MC_BAT_SCALE_EN_MIN      (0)
+#define MC_BAT_SCALE_EN_MAX      (1)
+#define SENS_BOARD_ROT_MIN       (0)
+#define SENS_BOARD_ROT_MAX       (34)
+#define SENS_BOARD_X_OFF_MIN     (0.0f)
+#define SENS_BOARD_X_OFF_MAX     (10.0f) //
+#define SENS_BOARD_Y_OFF_MIN     (0.0f)
+#define SENS_BOARD_Y_OFF_MAX     (10.0f) //
+#define SENS_BOARD_Z_OFF_MIN     (0.0f)
+#define SENS_BOARD_Z_OFF_MAX     (10.0f) //
 
 /**
  * \brief Defines the table identification name used for table registration.
  */
 #define MAC_PARAM_TABLENAME ("PARAM_TBL")
-
-typedef enum
-{
-    MAC_TAILSITTER    = 0,
-    MAC_TILTROTOR   = 1,
-    MAC_STANDARD    = 2
-} MAC_VTOL_Type_t;
 
 /************************************************************************
 ** Local Structure Declarations
@@ -107,24 +177,14 @@ typedef struct
     float acro_pitch_max;
     float acro_yaw_max;
     float rattitude_thres;
-    MAC_VTOL_Type_t vtol_type;
     float roll_tc;
     float pitch_tc;
-    int32 vtol_opt_recovery_enabled;
-    float vtol_wv_yaw_rate_scale;
     int32 bat_scale_en;
     int32 board_rotation;
-    float board_offset[3];
+    float board_offset_x;
+    float board_offset_y;
+    float board_offset_z;
 } MAC_ParamTbl_t;
-
-
-/** \brief Definition for Critical Data Storage (CDS) table entry */
-typedef struct
-{
-    int32  iParam;
-
-    /* TODO:  Add type declaration for CDS data here. */
-} MAC_CdsTbl_t;
 
 /************************************************************************
 ** External Global Variables
