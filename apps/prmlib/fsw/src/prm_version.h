@@ -28,8 +28,10 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef _PRMLIB_VERSION_H_
-#define _PRMLIB_VERSION_H_
+#ifndef PRM_VERSION_H
+#define PRM_VERSION_H
+
+#include "prm_platform_cfg.h"
 
 /*
 ** Pragmas
@@ -43,10 +45,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ** Local Defines
 */
 
-#define PRMLIB_MAJOR_VERSION    1
-#define PRMLIB_MINOR_VERSION    0
-#define PRMLIB_REVISION         0
-#define PRMLIB_MISSION_REV      0
+#define PRM_MAJOR_VERSION    1
+#define PRM_MINOR_VERSION    0
+#define PRM_REVISION         0
 
 /*
 ** Local Structure Declarations
@@ -68,5 +69,5 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ** Local Function Prototypes
 */
 
-#endif /* _PRMLIB_VERSION_H_ */
+#endif /* PRM_VERSION_H */
 
