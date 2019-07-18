@@ -53,30 +53,31 @@ extern "C" {
 ** Local Defines
 *************************************************************************/
 #define MAC_PARAM_NAME_MAX_LEN   (32)
+
 #define MC_ROLL_P_MIN            (0.0f)
 #define MC_ROLL_P_MAX            (12.0f)
 #define MC_ROLLRATE_P_MIN        (0.0f)
 #define MC_ROLLRATE_P_MAX        (0.5f)
 #define MC_ROLLRATE_I_MIN        (0.0f)
-#define MC_ROLLRATE_I_MAX        (1.0f) // Not explicitly defined max
+#define MC_ROLLRATE_I_MAX        (1.0f) // Note: Not explicitly defined max
 #define MC_ROLLRATE_D_MIN        (0.0f)
 #define MC_ROLLRATE_D_MAX        (0.01f)
 #define MC_RR_INT_LIM_MIN        (0.0f)
-#define MC_RR_INT_LIM_MAX        (1.0f) // Not explicitly defined max
+#define MC_RR_INT_LIM_MAX        (1.0f) // Note: Not explicitly defined max
 #define MC_ROLLRATE_FF_MIN       (0.0f)
-#define MC_ROLLRATE_FF_MAX       (10.0f) // Not explicitly defined max
+#define MC_ROLLRATE_FF_MAX       (10.0f) // Note: Not explicitly defined max
 #define MC_PITCH_P_MIN           (0.0f)
 #define MC_PITCH_P_MAX           (12.0f)
 #define MC_PITCHRATE_P_MIN       (0.0f)
 #define MC_PITCHRATE_P_MAX       (0.6f)
 #define MC_PITCHRATE_I_MIN       (0.0f)
-#define MC_PITCHRATE_I_MAX       (1.0f) //
+#define MC_PITCHRATE_I_MAX       (1.0f) // Note: Not explicitly defined max
 #define MC_PR_INT_LIM_MIN        (0.0f)
-#define MC_PR_INT_LIM_MAX        (1.0f) //
+#define MC_PR_INT_LIM_MAX        (1.0f) // Note: Not explicitly defined max
 #define MC_PITCHRATE_D_MIN       (0.0f)
-#define MC_PITCHRATE_D_MAX       (0.1f) //
+#define MC_PITCHRATE_D_MAX       (0.1f) // Note: Not explicitly defined max
 #define MC_PITCHRATE_FF_MIN      (0.0f)
-#define MC_PITCHRATE_FF_MAX      (10.0f) //
+#define MC_PITCHRATE_FF_MAX      (10.0f) // Note: Not explicitly defined max
 #define MC_TPA_BREAK_P_MIN       (0.0f)
 #define MC_TPA_BREAK_P_MAX       (1.0f)
 #define MC_TPA_BREAK_I_MIN       (0.0f)
@@ -94,13 +95,13 @@ extern "C" {
 #define MC_YAWRATE_P_MIN         (0.0f)
 #define MC_YAWRATE_P_MAX         (0.6f)
 #define MC_YAWRATE_I_MIN         (0.0)
-#define MC_YAWRATE_I_MAX         (1.0f) //
+#define MC_YAWRATE_I_MAX         (1.0f) // Note: Not explicitly defined max
 #define MC_YR_INT_LIM_MIN        (0.0f)
-#define MC_YR_INT_LIM_MAX        (1.0f) //
+#define MC_YR_INT_LIM_MAX        (1.0f) // Note: Not explicitly defined max
 #define MC_YAWRATE_D_MIN         (0.0f)
-#define MC_YAWRATE_D_MAX         (1.0f) //
+#define MC_YAWRATE_D_MAX         (1.0f) // Note: Not explicitly defined max
 #define MC_YAWRATE_FF_MIN        (0.0f)
-#define MC_YAWRATE_FF_MAX        (1.0f) //
+#define MC_YAWRATE_FF_MAX        (1.0f) // Note: Not explicitly defined max
 #define MC_ROLLRATE_MAX_MIN      (0.0f)
 #define MC_ROLLRATE_MAX_MAX      (1800.0f)
 #define MC_PITCHRATE_MAX_MIN     (0.0f)
@@ -126,11 +127,11 @@ extern "C" {
 #define SENS_BOARD_ROT_MIN       (0)
 #define SENS_BOARD_ROT_MAX       (34)
 #define SENS_BOARD_X_OFF_MIN     (0.0f)
-#define SENS_BOARD_X_OFF_MAX     (10.0f) //
+#define SENS_BOARD_X_OFF_MAX     (10.0f) // Note: Not explicitly defined max
 #define SENS_BOARD_Y_OFF_MIN     (0.0f)
-#define SENS_BOARD_Y_OFF_MAX     (10.0f) //
+#define SENS_BOARD_Y_OFF_MAX     (10.0f) // Note: Not explicitly defined max
 #define SENS_BOARD_Z_OFF_MIN     (0.0f)
-#define SENS_BOARD_Z_OFF_MAX     (10.0f) //
+#define SENS_BOARD_Z_OFF_MAX     (10.0f) // Note: Not explicitly defined max
 
 /**
  * \brief Defines the table identification name used for table registration.
