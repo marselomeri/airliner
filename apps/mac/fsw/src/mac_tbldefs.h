@@ -145,45 +145,318 @@ extern "C" {
 /** \brief Definition for a single config table entry */
 typedef struct
 {
+    /** \maccfg 
+     *
+     *  \brief Roll P gain
+     *
+     *  \note Default: 6.5
+     */
     float MC_ROLL_P;
+    
+    /** \maccfg 
+     *
+     *  \brief Roll rate P gain
+     *
+     *  \note Default: 0.15
+     */
     float MC_ROLLRATE_P;
+    
+    /** \maccfg 
+     *
+     *  \brief Roll rate I gain
+     *
+     *  \note Default: 0.05
+     */
     float MC_ROLLRATE_I;
+    
+    /** \maccfg 
+     *
+     *  \brief Roll rate integrator limit
+     *
+     *  \note Default: 0.30
+     */
     float MC_RR_INT_LIM;
+    
+    /** \maccfg 
+     *
+     *  \brief Roll rate D gain
+     *
+     *  \note Default: 0.003
+     */
     float MC_ROLLRATE_D;
+    
+    /** \maccfg 
+     *
+     *  \brief Roll rate feedforward
+     *
+     *  \note Default: 0.0
+     */
     float MC_ROLLRATE_FF;
+    
+    /** \maccfg 
+     *
+     *  \brief Pitch P gain
+     *
+     *  \note Default: 6.5
+     */
     float MC_PITCH_P;
+    
+    /** \maccfg 
+     *
+     *  \brief Pitch rate P gain
+     *
+     *  \note Default: 0.15
+     */
     float MC_PITCHRATE_P;
+    
+    /** \maccfg 
+     *
+     *  \brief Pitch rate I gain
+     *
+     *  \note Default: 0.05
+     */
     float MC_PITCHRATE_I;
+    
+    /** \maccfg 
+     *
+     *  \brief Pitch rate integrator limit
+     *
+     *  \note Default: 0.30
+     */
     float MC_PR_INT_LIM;
+    
+    /** \maccfg 
+     *
+     *  \brief Pitch rate D gain
+     *
+     *  \note Default: 0.003
+     */
     float MC_PITCHRATE_D;
+    
+    /** \maccfg 
+     *
+     *  \brief Pitch rate feedforward
+     *
+     *  \note Default: 0.0
+     */
     float MC_PITCHRATE_FF;
+    
+    /** \maccfg 
+     *
+     *  \brief TPA P Breakpoint
+     *
+     *  \note Default: 1.0
+     */
     float MC_TPA_BREAK_P;
+   
+    /** \maccfg 
+     *
+     *  \brief TPA I Breakpoint
+     *
+     *  \note Default: 1.0
+     */
     float MC_TPA_BREAK_I;
+    
+    /** \maccfg 
+     *
+     *  \brief TPA D Breakpoint
+     *
+     *  \note Default: 1.0
+     */
     float MC_TPA_BREAK_D;
+    
+    /** \maccfg 
+     *
+     *  \brief TPA Rate P
+     *
+     *  \note Default: 0.0
+     */
     float MC_TPA_RATE_P;
+    
+    /** \maccfg 
+     *
+     *  \brief TPA Rate I
+     *
+     *  \note Default: 0.0
+     */
     float MC_TPA_RATE_I;
+    
+    /** \maccfg 
+     *
+     *  \brief TPA Rate D
+     *
+     *  \note Default: 0.0
+     */
     float MC_TPA_RATE_D;
+
+    /** \maccfg 
+     *
+     *  \brief Yaw P gain
+     *
+     *  \note Default: 2.8
+     */
     float MC_YAW_P;
+    
+    /** \maccfg 
+     *
+     *  \brief Yaw rate P gain
+     *
+     *  \note Default: 0.2
+     */
     float MC_YAWRATE_P;
+    
+    /** \maccfg 
+     *
+     *  \brief Yaw rate I gain
+     *
+     *  \note Default: 0.1
+     */
     float MC_YAWRATE_I;
+    
+    /** \maccfg 
+     *
+     *  \brief Yaw rate integrator limit
+     *
+     *  \note Default: 0.30
+     */
     float MC_YR_INT_LIM;
+    
+    /** \maccfg 
+     *
+     *  \brief Yaw rate D gain
+     *
+     *  \note Default: 0.0
+     */
     float MC_YAWRATE_D;
+    
+    /** \maccfg 
+     *
+     *  \brief Yaw rate feedforward
+     *
+     *  \note Default: 0.0
+     */
     float MC_YAWRATE_FF;
+    
+    /** \maccfg 
+     *
+     *  \brief Max roll rate
+     *
+     *  \note Default: 220.0
+     */
     float MC_ROLLRATE_MAX;
+    
+    /** \maccfg 
+     *
+     *  \brief Max pitch rate
+     *
+     *  \note Default: 220.0
+     */
     float MC_PITCHRATE_MAX;
+    
+    /** \maccfg 
+     *
+     *  \brief Max yaw rate
+     *
+     *  \note Default: 200.0	
+     */
     float MC_YAWRATE_MAX;
+    
+    /** \maccfg 
+     *
+     *  \brief Max yaw rate in auto mode
+     *
+     *  \note Default: 45.0
+     */
     float MC_YAWRAUTO_MAX;
+    
+    /** \maccfg 
+     *
+     *  \brief Max acro roll rate
+     *
+     *  \note Default: 720.0
+     */
     float MC_ACRO_R_MAX;
+    
+    /** \maccfg 
+     *
+     *  \brief Max acro pitch rate
+     *
+     *  \note Default: 720.0
+     */
     float MC_ACRO_P_MAX;
+    
+    /** \maccfg 
+     *
+     *  \brief Max acro yaw rate
+     *
+     *  \note Default: 540.0
+     */
     float MC_ACRO_Y_MAX;
+    
+    /** \maccfg 
+     *
+     *  \brief Threshold for Rattitude mode
+     *
+     *  \note Default: 0.8
+     */
     float MC_RATT_TH;
+    
+    /** \maccfg 
+     *
+     *  \brief Attitude Roll Time Constant
+     *
+     *  \note Default: 0.2
+     */
     float MC_ROLL_TC;
+    
+    /** \maccfg 
+     *
+     *  \brief Attitude pitch time constant
+     *
+     *  \note Default: 0.2
+     */
     float MC_PITCH_TC;
+    
+    /** \maccfg 
+     *
+     *  \brief Battery power level scaler
+     *
+     *  \note Default: 0
+     */
     int32 MC_BAT_SCALE_EN;
+    
+    /** \maccfg 
+     *
+     *  \brief Board rotation
+     *
+     *  \note Default: 0
+     */
     int32 SENS_BOARD_ROT;
+    
+    /** \maccfg 
+     *
+     *  \brief Board rotation X (Roll) offset
+     *
+     *  \note Default: 0.0
+     */
     float SENS_BOARD_X_OFF;
+    
+    /** \maccfg 
+     *
+     *  \brief Board rotation Y (Pitch) offset
+     *
+     *  \note Default: 0.0
+     */
     float SENS_BOARD_Y_OFF;
+    
+    /** \maccfg 
+     *
+     *  \brief Board rotation Z (YAW) offset
+     *
+     *  \note Default: 0.0
+     */
     float SENS_BOARD_Z_OFF;
+    
 } MAC_ParamTbl_t;
 
 /************************************************************************

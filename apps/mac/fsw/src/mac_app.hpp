@@ -48,8 +48,6 @@ extern "C" {
 #include "cfe.h"
 #include "mac_platform_cfg.h"
 #include "mac_mission_cfg.h"
-#include "mac_private_ids.h"
-#include "mac_private_types.h"
 #include "mac_perfids.h"
 #include "mac_msgids.h"
 #include "mac_msg.h"

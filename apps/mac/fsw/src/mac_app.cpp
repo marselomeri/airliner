@@ -309,7 +309,7 @@ int32 MAC::InitPipe()
                                  MAC_DATA_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
-        /* TODO: Intentionally leaving this here for rate monotonic updates later  */
+        /* Note: Intentionally leaving this here for rate monotonic updates later  */
     }
     else
     {
@@ -340,7 +340,7 @@ int32 MAC::InitData()
     CFE_SB_InitMsg(&CVT.SensorCorrection, PX4_SENSOR_CORRECTION_MID, sizeof(CVT.SensorCorrection), TRUE);
     CFE_SB_InitMsg(&CVT.SensorGyro, PX4_SENSOR_GYRO_MID, sizeof(CVT.SensorGyro), TRUE);
     CFE_SB_InitMsg(&CVT.VAttSp, PX4_VEHICLE_ATTITUDE_SETPOINT_MID, sizeof(CVT.VAttSp), TRUE);
-    //CFE_SB_InitMsg(&CVT.VControlMode, PX4_VEHICLE_CONTROL_MODE_MID, sizeof(CVT.VControlMode), TRUE); // TODO: Why commented out?
+    CFE_SB_InitMsg(&CVT.VControlMode, PX4_VEHICLE_CONTROL_MODE_MID, sizeof(CVT.VControlMode), TRUE);
     CFE_SB_InitMsg(&CVT.VRatesSp, PX4_VEHICLE_RATES_SETPOINT_MID, sizeof(CVT.VRatesSp), TRUE);
     CFE_SB_InitMsg(&CVT.VehicleStatus, PX4_VEHICLE_STATUS_MID, sizeof(CVT.VehicleStatus), TRUE);
 
@@ -658,8 +658,6 @@ void MAC::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
                 (void) CFE_EVS_SendEvent(MAC_CMD_INF_EID, CFE_EVS_INFORMATION,
                                   "Recvd RESET cmd (%u)", (unsigned int)uiCmdCode);
                 break;
-
-            /* TODO:  Add code to process the rest of the MAC commands here */
 
             default:
                 HkTlm.usCmdErrCnt++;
