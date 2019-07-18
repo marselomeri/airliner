@@ -400,20 +400,20 @@ int32 MAC::InitApp()
         goto MAC_InitApp_Exit_Tag;
     }
 
-    iStatus = InitData();
-    if (iStatus != CFE_SUCCESS)
-    {
-        (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
-                                 "Failed to init data (0x%08X)",
-                                 (unsigned int)iStatus);
-        goto MAC_InitApp_Exit_Tag;
-    }
-
     iStatus = InitConfigTbl();
     if (iStatus != CFE_SUCCESS)
     {
         (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
                                  "Failed to init config tables (0x%08X)",
+                                 (unsigned int)iStatus);
+        goto MAC_InitApp_Exit_Tag;
+    }
+    
+    iStatus = InitData();
+    if (iStatus != CFE_SUCCESS)
+    {
+        (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                 "Failed to init data (0x%08X)",
                                  (unsigned int)iStatus);
         goto MAC_InitApp_Exit_Tag;
     }
@@ -1002,7 +1002,7 @@ void MAC::ControlAttitude(float dt)
     }
 
     /* Feed forward yaw setpoint rate */
-    m_AngularRatesSetpoint[2] += CVT.VAttSp.YawSpMoveRate * yaw_w; // * m_Params.yaw_ff; Note: PX4 removed this param
+    m_AngularRatesSetpoint[2] += CVT.VAttSp.YawSpMoveRate * yaw_w;
 }
 
 void MAC::ControlAttitudeRates(float dt)
@@ -1018,13 +1018,13 @@ void MAC::ControlAttitudeRates(float dt)
     }
 
     /* Get transformation matrix from sensor/board to body frame */
-    boardRotation = boardRotation.RotationMatrix((math::Matrix3F3::Rotation_t)ParamTblPtr->board_rotation);
+    boardRotation = boardRotation.RotationMatrix((math::Matrix3F3::Rotation_t)ParamTblPtr->SENS_BOARD_ROT);
 
     /* Fine tune the rotation */
     math::Matrix3F3 boardRotationOffset;
-    boardRotationOffset = math::Matrix3F3::FromEuler(M_DEG_TO_RAD_F * ParamTblPtr->board_offset_x,
-                     M_DEG_TO_RAD_F * ParamTblPtr->board_offset_y,
-                     M_DEG_TO_RAD_F * ParamTblPtr->board_offset_z);
+    boardRotationOffset = math::Matrix3F3::FromEuler(M_DEG_TO_RAD_F * ParamTblPtr->SENS_BOARD_X_OFF,
+                     M_DEG_TO_RAD_F * ParamTblPtr->SENS_BOARD_Y_OFF,
+                     M_DEG_TO_RAD_F * ParamTblPtr->SENS_BOARD_Z_OFF);
     boardRotation = boardRotationOffset * boardRotation;
 
     /* Get the raw gyro data and correct for thermal errors */
@@ -1145,61 +1145,60 @@ math::Vector3F MAC::PidAttenuations(float tpa_breakpoint, float tpa_rate)
 void MAC::UpdateParams(void)
 {
     /* Roll gains */
-    m_Params.att_p[0] = ParamTblPtr->roll_p * (ATTITUDE_TC_DEFAULT / ParamTblPtr->roll_tc);
-    m_Params.rate_p[0] = ParamTblPtr->roll_rate_p * (ATTITUDE_TC_DEFAULT / ParamTblPtr->roll_tc);
-    m_Params.rate_i[0] = ParamTblPtr->roll_rate_i;
-    m_Params.rate_int_lim[0] = ParamTblPtr->roll_rate_integ_lim;
-    m_Params.rate_d[0] = ParamTblPtr->roll_rate_d * (ATTITUDE_TC_DEFAULT / ParamTblPtr->roll_tc);
-    m_Params.rate_ff[0] = ParamTblPtr->roll_rate_ff;
+    m_Params.att_p[0] = ParamTblPtr->MC_ROLL_P * (ATTITUDE_TC_DEFAULT / ParamTblPtr->MC_ROLL_TC);
+    m_Params.rate_p[0] = ParamTblPtr->MC_ROLLRATE_P * (ATTITUDE_TC_DEFAULT / ParamTblPtr->MC_ROLL_TC);
+    m_Params.rate_i[0] = ParamTblPtr->MC_ROLLRATE_I;
+    m_Params.rate_int_lim[0] = ParamTblPtr->MC_RR_INT_LIM;
+    m_Params.rate_d[0] = ParamTblPtr->MC_ROLLRATE_D * (ATTITUDE_TC_DEFAULT / ParamTblPtr->MC_ROLL_TC);
+    m_Params.rate_ff[0] = ParamTblPtr->MC_ROLLRATE_FF;
 
     /* Pitch gains */
-    m_Params.att_p[1] = ParamTblPtr->pitch_p * (ATTITUDE_TC_DEFAULT / ParamTblPtr->pitch_tc);
-    m_Params.rate_p[1] = ParamTblPtr->pitch_rate_p * (ATTITUDE_TC_DEFAULT / ParamTblPtr->pitch_tc);
-    m_Params.rate_i[1] = ParamTblPtr->pitch_rate_i;
-    m_Params.rate_int_lim[1] = ParamTblPtr->pitch_rate_integ_lim;
-    m_Params.rate_d[1] = ParamTblPtr->pitch_rate_d * (ATTITUDE_TC_DEFAULT / ParamTblPtr->pitch_tc);
-    m_Params.rate_ff[1] = ParamTblPtr->pitch_rate_ff;
+    m_Params.att_p[1] = ParamTblPtr->MC_PITCH_P * (ATTITUDE_TC_DEFAULT / ParamTblPtr->MC_PITCH_TC);
+    m_Params.rate_p[1] = ParamTblPtr->MC_PITCHRATE_P * (ATTITUDE_TC_DEFAULT / ParamTblPtr->MC_PITCH_TC);
+    m_Params.rate_i[1] = ParamTblPtr->MC_PITCHRATE_I;
+    m_Params.rate_int_lim[1] = ParamTblPtr->MC_PR_INT_LIM;
+    m_Params.rate_d[1] = ParamTblPtr->MC_PITCHRATE_D * (ATTITUDE_TC_DEFAULT / ParamTblPtr->MC_PITCH_TC);
+    m_Params.rate_ff[1] = ParamTblPtr->MC_PITCHRATE_FF;
 
     /* Throttle pid attenuation */
-    m_Params.tpa_breakpoint_p = ParamTblPtr->tpa_breakpoint_p;
-    m_Params.tpa_breakpoint_i = ParamTblPtr->tpa_breakpoint_i;
-    m_Params.tpa_breakpoint_d = ParamTblPtr->tpa_breakpoint_d;
-    m_Params.tpa_rate_p = ParamTblPtr->tpa_rate_p;
-    m_Params.tpa_rate_i = ParamTblPtr->tpa_rate_i;
-    m_Params.tpa_rate_d = ParamTblPtr->tpa_rate_d;
+    m_Params.tpa_breakpoint_p = ParamTblPtr->MC_TPA_BREAK_P;
+    m_Params.tpa_breakpoint_i = ParamTblPtr->MC_TPA_BREAK_I;
+    m_Params.tpa_breakpoint_d = ParamTblPtr->MC_TPA_BREAK_D;
+    m_Params.tpa_rate_p = ParamTblPtr->MC_TPA_RATE_P;
+    m_Params.tpa_rate_i = ParamTblPtr->MC_TPA_RATE_I;
+    m_Params.tpa_rate_d = ParamTblPtr->MC_TPA_RATE_D;
 
     /* Yaw gains */
-    m_Params.att_p[2] = ParamTblPtr->yaw_p;
-    m_Params.rate_p[2] = ParamTblPtr->yaw_rate_p;
-    m_Params.rate_i[2] = ParamTblPtr->yaw_rate_i;
-    m_Params.rate_int_lim[2] = ParamTblPtr->yaw_rate_integ_lim;
-    m_Params.rate_d[2] = ParamTblPtr->yaw_rate_d;
-    m_Params.rate_ff[2] = ParamTblPtr->yaw_rate_ff;
-    m_Params.yaw_ff = ParamTblPtr->yaw_ff;
+    m_Params.att_p[2] = ParamTblPtr->MC_YAW_P;
+    m_Params.rate_p[2] = ParamTblPtr->MC_YAWRATE_P;
+    m_Params.rate_i[2] = ParamTblPtr->MC_YAWRATE_I;
+    m_Params.rate_int_lim[2] = ParamTblPtr->MC_YR_INT_LIM;
+    m_Params.rate_d[2] = ParamTblPtr->MC_YAWRATE_D;
+    m_Params.rate_ff[2] = ParamTblPtr->MC_YAWRATE_FF;
 
     /* Angular rate limits */
-    m_Params.mc_rate_max[0] = (ParamTblPtr->roll_rate_max / 180.0f) * M_PI;
-    m_Params.mc_rate_max[1] = (ParamTblPtr->pitch_rate_max / 180.0f) * M_PI;
-    m_Params.mc_rate_max[2] = (ParamTblPtr->yaw_rate_max / 180.0f) * M_PI;
+    m_Params.mc_rate_max[0] = (ParamTblPtr->MC_ROLLRATE_MAX / 180.0f) * M_PI;
+    m_Params.mc_rate_max[1] = (ParamTblPtr->MC_PITCHRATE_MAX / 180.0f) * M_PI;
+    m_Params.mc_rate_max[2] = (ParamTblPtr->MC_YAWRATE_MAX / 180.0f) * M_PI;
 
     /* Auto angular rate limits */
-    m_Params.auto_rate_max[0] = (ParamTblPtr->roll_rate_max / 180.0f) * M_PI;
-    m_Params.auto_rate_max[1] = (ParamTblPtr->pitch_rate_max / 180.0f) * M_PI;
-    m_Params.auto_rate_max[2] = (ParamTblPtr->yaw_auto_max / 180.0f) * M_PI;
+    m_Params.auto_rate_max[0] = (ParamTblPtr->MC_ROLLRATE_MAX / 180.0f) * M_PI;
+    m_Params.auto_rate_max[1] = (ParamTblPtr->MC_PITCHRATE_MAX / 180.0f) * M_PI;
+    m_Params.auto_rate_max[2] = (ParamTblPtr->MC_YAWRAUTO_MAX / 180.0f) * M_PI;
 
     /* Manual rate control scale and auto mode roll/pitch rate limits */
-    m_Params.acro_rate_max[0] = (ParamTblPtr->acro_roll_max / 180.0f) * M_PI;
-    m_Params.acro_rate_max[1] = (ParamTblPtr->acro_pitch_max / 180.0f) * M_PI;
-    m_Params.acro_rate_max[2] = (ParamTblPtr->acro_yaw_max / 180.0f) * M_PI;
+    m_Params.acro_rate_max[0] = (ParamTblPtr->MC_ACRO_R_MAX / 180.0f) * M_PI;
+    m_Params.acro_rate_max[1] = (ParamTblPtr->MC_ACRO_P_MAX / 180.0f) * M_PI;
+    m_Params.acro_rate_max[2] = (ParamTblPtr->MC_ACRO_Y_MAX / 180.0f) * M_PI;
 
     /* Stick deflection needed in rattitude mode to control rates not angles */
-    m_Params.rattitude_thres = ParamTblPtr->rattitude_thres;
+    m_Params.rattitude_thres = ParamTblPtr->MC_RATT_TH;
 
     /* Battery power scaling of control */
-    m_Params.bat_scale_en = ParamTblPtr->bat_scale_en;
+    m_Params.bat_scale_en = ParamTblPtr->MC_BAT_SCALE_EN;
 
     /* Rotation of the autopilot relative to the body */
-    m_Params.board_rotation = ParamTblPtr->board_rotation;
+    m_Params.board_rotation = ParamTblPtr->SENS_BOARD_ROT;
 }
 
 /************************/
