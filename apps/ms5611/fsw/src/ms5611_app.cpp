@@ -32,22 +32,17 @@
 *****************************************************************************/
 
 /************************************************************************
-** Pragmas
-*************************************************************************/
-
-/************************************************************************
 ** Includes
 *************************************************************************/
-#include <string.h>
 #include "cfe.h"
 #include "ms5611_custom.h"
 #include "ms5611_app.h"
 #include "ms5611_msg.h"
 #include "ms5611_version.h"
-#include <math.h>
 #include "px4lib.h"
 #include "px4lib_msgids.h"
-
+#include <math.h>
+#include <string.h>
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -55,7 +50,6 @@
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 MS5611 oMS5611;
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -67,7 +61,6 @@ MS5611::MS5611()
 
 }
 
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Destructor constructor.                                         */
@@ -77,7 +70,6 @@ MS5611::~MS5611()
 {
 
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -94,7 +86,7 @@ int32 MS5611::InitEvent()
 
     /* Initialize the event filter table.
      * Note: 0 is the CFE_EVS_NO_FILTER mask and event 0 is reserved (not used) */
-    memset(EventTbl, 0x00, sizeof(EventTbl));
+    CFE_PSP_MemSet(EventTbl, 0x00, sizeof(EventTbl));
 
     /* CFE_EVS_MAX_EVENT_FILTERS limits the number of filters per app. */
     /* Add platform independent events to filter */
@@ -102,11 +94,47 @@ int32 MS5611::InitEvent()
     EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
     EventTbl[  ind].EventID = MS5611_READ_ERR_EID;
     EventTbl[ind++].Mask    = CFE_EVS_FIRST_16_STOP;
+    EventTbl[  ind].EventID = MS5611_INIT_INF_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = MS5611_CMD_NOOP_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = MS5611_SUBSCRIBE_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = MS5611_PIPE_INIT_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = MS5611_CFGTBL_MANAGE_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = MS5611_CFGTBL_REG_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = MS5611_CFGTBL_GETADDR_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = MS5611_RCVMSG_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = MS5611_MSGID_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = MS5611_CC_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = MS5611_MSGLEN_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = MPU9250_CFGTBL_REG_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = MS5611_CMD_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = MS5611_UNINIT_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = MS5611_CFGTBL_LOAD_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = MS5611_INIT_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = MS5611_READ_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = MS5611_CFGTBL_VALIDATION_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
 
     /* Add custom events to the filter table */
     customEventCount = MS5611_Custom_Init_EventFilters(ind, EventTbl);
     
-    if(-1 == customEventCount)
+    if(-1 == customEventCount) // todo make custom code return MS5611_ERROR instead of -1
     {
         iStatus = CFE_EVS_APP_FILTER_OVERLOAD;
         (void) CFE_ES_WriteToSysLog("Failed to init custom event filters (0x%08X)\n", (unsigned int)iStatus);
@@ -124,7 +152,6 @@ end_of_function:
 
     return (iStatus);
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -198,7 +225,6 @@ MS5611_InitPipe_Exit_Tag:
     return (iStatus);
 }
     
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Initialize Global Variables                                     */
@@ -207,20 +233,19 @@ MS5611_InitPipe_Exit_Tag:
 void MS5611::InitData()
 {
     /* Init housekeeping message. */
-    CFE_SB_InitMsg(&HkTlm,
-            MS5611_HK_TLM_MID, sizeof(HkTlm), TRUE);
+    CFE_SB_InitMsg(&HkTlm, MS5611_HK_TLM_MID, sizeof(HkTlm), TRUE);
+    
     /* Init output messages */
-    CFE_SB_InitMsg(&SensorBaro,
-            PX4_SENSOR_BARO_MID, sizeof(PX4_SensorBaroMsg_t), TRUE);
+    CFE_SB_InitMsg(&SensorBaro, PX4_SENSOR_BARO_MID, sizeof(PX4_SensorBaroMsg_t), TRUE);
+    
     /* Init diagnostic message */
-    CFE_SB_InitMsg(&Diag,
-            MS5611_DIAG_TLM_MID, sizeof(MS5611_DiagPacket_t), TRUE);
+    CFE_SB_InitMsg(&Diag, MS5611_DIAG_TLM_MID, sizeof(MS5611_DiagPacket_t), TRUE);
+    
     /* Init custom data */
     MS5611_Custom_InitData();
-    /* Update params from the configuration table */
-    UpdateParamsFromTable();
+    
+    D2 = 0
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -263,7 +288,7 @@ int32 MS5611::InitApp()
     returnBool = MS5611_Custom_Init();
     if (FALSE == returnBool)
     {
-        iStatus = -1;
+        iStatus = MS5611_ERROR;
         goto MS5611_InitApp_Exit_Tag;
     }
 
@@ -275,9 +300,9 @@ int32 MS5611::InitApp()
         Diag.Coefficients[i] = MS5611_Coefficients[i];
         if (FALSE == returnBool)
         {
-            iStatus = -1;
+            iStatus = MS5611_ERROR;
             (void) CFE_EVS_SendEvent(MS5611_INIT_ERR_EID, CFE_EVS_ERROR,
-                "MS5611 failed read from device PROM");
+                "Failed read from device PROM");
             goto MS5611_InitApp_Exit_Tag; 
         }
     }
@@ -287,8 +312,8 @@ int32 MS5611::InitApp()
     if (FALSE == returnBool)
     {
         (void) CFE_EVS_SendEvent(MS5611_INIT_ERR_EID, CFE_EVS_ERROR,
-                "MS5611 failed CRC check");
-        iStatus = -1;
+                "Failed CRC check");
+        iStatus = MS5611_ERROR;
         goto MS5611_InitApp_Exit_Tag;
     }
 
@@ -325,7 +350,6 @@ MS5611_InitApp_Exit_Tag:
 
     return (iStatus);
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -367,6 +391,7 @@ int32 MS5611::RcvSchPipeMsg(int32 iBlocking)
             {
                 (void) CFE_EVS_SendEvent(MS5611_MSGID_ERR_EID, CFE_EVS_ERROR,
                         "Recvd invalid SCH msgId (0x%04X)", MsgId);
+                break;
             }
         }
     }
@@ -394,7 +419,6 @@ int32 MS5611::RcvSchPipeMsg(int32 iBlocking)
     return (iStatus);
 }
 
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Process Incoming Commands                                       */
@@ -416,10 +440,13 @@ void MS5611::ProcessCmdPipe()
             switch (CmdMsgId)
             {
                 case MS5611_CMD_MID:
+                {
                     ProcessAppCmds(CmdMsgPtr);
                     break;
+                }
 
                 default:
+                {
                     /* Bump the command error counter for an unknown command.
                      * (This should only occur if it was subscribed to with this
                      *  pipe, but not handled in this switch-case.) */
@@ -427,6 +454,7 @@ void MS5611::ProcessCmdPipe()
                     (void) CFE_EVS_SendEvent(MS5611_MSGID_ERR_EID, CFE_EVS_ERROR,
                                 "Recvd invalid CMD msgId (0x%04X)", (unsigned short)CmdMsgId);
                     break;
+                }
             }
         }
         else if (iStatus == CFE_SB_NO_MESSAGE)
@@ -442,7 +470,6 @@ void MS5611::ProcessCmdPipe()
     }
     return;
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -510,7 +537,6 @@ void MS5611::ReportHousekeeping()
     return;
 }
 
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Send MS5611 Diagnostic                                          */
@@ -522,7 +548,6 @@ void MS5611::ReportDiagnostic()
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&Diag);
     return;
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -556,7 +581,6 @@ boolean MS5611::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
     return (bResult);
 }
 
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* MS5611 Application C style main entry point.                    */
@@ -566,7 +590,6 @@ extern "C" void MS5611_AppMain()
 {
     oMS5611.AppMain();
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -636,9 +659,6 @@ boolean MS5611::GetMeasurement(int32 *Pressure, int32 *Temperature)
 {
     /* ADC value of the pressure conversion */
     uint32 D1           = 0;
-    /* ADC value of the temperature conversion
-     * static to keep temperature measurements between calls */
-    static uint32 D2    = 0;
     /* difference between actual and measured temp */
     int32 dT            = 0;
     /* offset at actual temperature */
@@ -657,7 +677,7 @@ boolean MS5611::GetMeasurement(int32 *Pressure, int32 *Temperature)
     if (FALSE == returnBool)
     {
         (void) CFE_EVS_SendEvent(MS5611_READ_ERR_EID, CFE_EVS_ERROR,
-                "MS5611 get measurement D1 conversion failed");
+                "Get measurement D1 conversion failed");
         returnBool = FALSE;
         goto end_of_function;
     }
@@ -666,7 +686,7 @@ boolean MS5611::GetMeasurement(int32 *Pressure, int32 *Temperature)
     if (FALSE == returnBool)
     {
         (void) CFE_EVS_SendEvent(MS5611_READ_ERR_EID, CFE_EVS_ERROR,
-                "MS5611 read ADC result D1 failed");
+                "Read ADC result D1 failed");
         returnBool = FALSE;
         goto end_of_function;
     }
@@ -678,7 +698,7 @@ boolean MS5611::GetMeasurement(int32 *Pressure, int32 *Temperature)
         if (FALSE == returnBool)
         {
             (void) CFE_EVS_SendEvent(MS5611_READ_ERR_EID, CFE_EVS_ERROR,
-                    "MS5611 get measurement D2 conversion failed");
+                    "Get measurement D2 conversion failed");
             returnBool = FALSE;
             goto end_of_function;
         }
@@ -687,7 +707,7 @@ boolean MS5611::GetMeasurement(int32 *Pressure, int32 *Temperature)
         if (FALSE == returnBool)
         {
             (void) CFE_EVS_SendEvent(MS5611_READ_ERR_EID, CFE_EVS_ERROR,
-                    "MS5611 read ADC result D2 failed");
+                    "Read ADC result D2 failed");
             returnBool = FALSE;
             goto end_of_function;
         }
@@ -700,6 +720,12 @@ boolean MS5611::GetMeasurement(int32 *Pressure, int32 *Temperature)
     }
     /* Increment the measure count */
     Diag.MeasureCount++;
+
+    /* 
+     * The following equations are from the MS5611-01BA03 spec sheet which can 
+     * be found on the architecture page of this app on Hangar at:
+     * https://hangar.windhoverlabs.com/wiki/x/EwCaB    
+     */
 
     /* D2 - C5 * 2^8 */
     dT    = (int32)D2 - ((int32)MS5611_Coefficients[5] << 8);
@@ -722,7 +748,7 @@ boolean MS5611::GetMeasurement(int32 *Pressure, int32 *Temperature)
     else
     {
         (void) CFE_EVS_SendEvent(MS5611_READ_ERR_EID, CFE_EVS_ERROR,
-                "MS5611 temperature out of range value = %ld", TempValidate);
+                "Temperature out of range value = %ld", TempValidate);
         returnBool = FALSE;
         goto end_of_function;
     }
@@ -756,7 +782,7 @@ boolean MS5611::GetMeasurement(int32 *Pressure, int32 *Temperature)
     else
     {
         (void) CFE_EVS_SendEvent(MS5611_READ_ERR_EID, CFE_EVS_ERROR,
-                "MS5611 pressure out of range value = %ld", PressValidate);
+                "Pressure out of range value = %ld", PressValidate);
         returnBool = FALSE;
         goto end_of_function;
     }
@@ -784,7 +810,7 @@ void MS5611::ReadDevice(void)
     if (FALSE == returnBool)
     {
         (void) CFE_EVS_SendEvent(MS5611_READ_ERR_EID, CFE_EVS_ERROR,
-                "MS5611 read failure, altitude not updated");
+                "Read failure, altitude not updated");
         goto end_of_function;
     }
     else
@@ -811,6 +837,11 @@ void MS5611::ReadDevice(void)
         /* current pressure at MSL in kPa double p1 = 101325 / 1000.0 */
 
         /*
+         * This equation is from the Derivation Relating Altitude to Air 
+         * Pressure paper (Figure 8) which can be found at:
+         *
+         * https://hangar.windhoverlabs.com/wiki/x/EwCaB  
+         *
          * Solve:
          *
          *     /        -(aR / g)     \
@@ -818,8 +849,11 @@ void MS5611::ReadDevice(void)
          *     \                      /
          * h = -------------------------------  + h1
          *                   a
+         *
+         * Note: h1 is the base height of an atmospheric region or layer and
+         *       is not needed at low altitudes.
          */
-        SensorBaro.Altitude = (((pow((p / m_Params.p1), (-(a * R) / g))) * T1) - T1) / a;
+        SensorBaro.Altitude = (((pow((p / ConfigTblPtr->p1), (-(a * R) / g))) * T1) - T1) / a;
     
         /* Update diagnostic message */
         Diag.Pressure = SensorBaro.Pressure;
@@ -842,7 +876,7 @@ end_of_function:
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 uint8 MS5611::CRC4(uint16 n_prom[])
 {
-    int cnt         = 0; 
+    uint32 cnt      = 0; 
     /* crc remainder */
     uint16 n_rem    = 0; 
     /* original crc value */
@@ -854,7 +888,7 @@ uint8 MS5611::CRC4(uint16 n_prom[])
     /* replace the crc byte with 0 */
     n_prom[7]       = (0xFF00 & (n_prom[7])); 
     /* operation is performed on bytes */
-    for (cnt = 0; cnt < 16; cnt++) 
+    for (cnt = 0; cnt < 16; ++cnt) 
     {
         /* choose LSB or MSB */
         if (cnt%2 == 1) 
@@ -909,28 +943,11 @@ boolean MS5611::ValidateCRC(void)
     else
     {
         (void) CFE_EVS_SendEvent(MS5611_INIT_ERR_EID, CFE_EVS_ERROR,
-                "MS5611 CRC check failed PROM = %u: CRC = %u",
+                "CRC check failed PROM = %u: CRC = %u",
                 (unsigned int)promCRC, (unsigned int) returnedCRC);
     }
     return (returnBool);
 }
-
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/*                                                                 */
-/* Update params from the config table                             */
-/*                                                                 */
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void MS5611::UpdateParamsFromTable(void)
-{
-    if(0 != ConfigTblPtr)
-    {
-        /* MSL Pressure */
-        m_Params.p1 = ConfigTblPtr->p1;
-    }
-    return;
-}
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -958,7 +975,6 @@ void MS5611_CleanupCallback(void)
     MS5611_Critical_Cleanup();
     return;
 }
-
 
 /************************/
 /*  End of File Comment */
