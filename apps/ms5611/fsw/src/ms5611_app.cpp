@@ -82,7 +82,7 @@ int32 MS5611::InitEvent()
     int32  ind             = 0;
     int32 customEventCount = 0;
     
-    CFE_EVS_BinFilter_t   EventTbl[CFE_EVS_MAX_EVENT_FILTERS];
+    CFE_EVS_BinFilter_t   EventTbl[MS5611_MAX_EVENT_FILTERS];
 
     /* Initialize the event filter table.
      * Note: 0 is the CFE_EVS_NO_FILTER mask and event 0 is reserved (not used) */
@@ -244,7 +244,8 @@ void MS5611::InitData()
     /* Init custom data */
     MS5611_Custom_InitData();
     
-    D2 = 0
+    /* Set initial raw temp value to zero */
+    D2 = 0;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

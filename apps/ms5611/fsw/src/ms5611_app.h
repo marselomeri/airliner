@@ -58,8 +58,12 @@ extern "C" {
 /************************************************************************
  ** Local Defines
  *************************************************************************/
-#define MS5611_ERROR    (-1)
 
+/** \brief Size used for event registration table */
+#define MS5611_MAX_EVENT_FILTERS (32)
+
+/** \brief Error code for MS5611 specific functions */
+#define MS5611_ERROR    (-1)
 
 /** \brief Minimum raw temperature measurement for error checking.
 **  
