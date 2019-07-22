@@ -142,11 +142,6 @@ int32 QAE::ValidateConfigTbl(void* ConfigTblPtr)
         valid_bool = FALSE;
     }
 
-    if(!(QAE_ConfigTblPtr->FW_ARSP_MODE >= 0 && QAE_ConfigTblPtr->FW_ARSP_MODE <= 2))
-    {
-        valid_bool = FALSE;
-    }
-
 QAE_ValidateConfigTbl_Exit_Tag:
     if(FALSE == valid_bool)
     {

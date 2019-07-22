@@ -103,12 +103,6 @@ typedef struct
      *       Min > Max (incr.) 0 > 2, default 0.05.
      */
     float    ATT_BIAS_MAX;
-    /** \brief Airspeed mode.
-     * 
-     *  \par Limits:
-     *       Min > Max (incr.) ?, default 0.
-     */
-    int32    FW_ARSP_MODE;
 } QAE_ConfigTbl_t;
 
 
