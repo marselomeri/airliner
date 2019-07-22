@@ -536,11 +536,11 @@
 #define SENS_WAKEUP_MID                             0x1c57
 #define SENS_CMD_MID                                0x1c58
 
-/* AE                                                   */
-#define AE_HK_TLM_MID                               0x0c59
-#define AE_SEND_HK_MID                              0x1c5a
-#define AE_WAKEUP_MID                               0x1c5b
-#define AE_CMD_MID                                  0x1c5c
+/* QAE                                                  */
+#define QAE_HK_TLM_MID                              0x0c59
+#define QAE_SEND_HK_MID                             0x1c5a
+#define QAE_WAKEUP_MID                              0x1c5b
+#define QAE_CMD_MID                                 0x1c5c
 
 /* LD                                                   */
 #define LD_HK_TLM_MID                               0x0c5d
