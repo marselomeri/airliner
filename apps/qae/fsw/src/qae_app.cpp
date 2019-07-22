@@ -46,14 +46,12 @@
 #include <px4lib.h>
 #include "px4lib_msgids.h"
 
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Instantiate the application object.                             */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 QAE oQAE;
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -65,7 +63,6 @@ QAE::QAE()
 
 }
 
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Destructor constructor.                                         */
@@ -75,7 +72,6 @@ QAE::~QAE()
 {
 
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -87,14 +83,38 @@ int32 QAE::InitEvent()
     int32  iStatus = CFE_SUCCESS;
     int32  ind     = 0;
 
-    CFE_EVS_BinFilter_t   EventTbl[CFE_EVS_MAX_EVENT_FILTERS];
+    CFE_EVS_BinFilter_t   EventTbl[QAE_MAX_EVENT_FILTERS];
     
     /* Initialize the event filter table.
      * Note: 0 is the CFE_EVS_NO_FILTER mask and event 0 is reserved (not used) */
-    memset(EventTbl, 0x00, sizeof(EventTbl));
+    CFE_PSP_MemSet(EventTbl, 0x00, sizeof(EventTbl));
     
     /* CFE_EVS_MAX_EVENT_FILTERS limits the number of filters per app. */
     EventTbl[  ind].EventID = QAE_RESERVED_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = QAE_INIT_INF_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = QAE_CMD_NOOP_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = QAE_SUBSCRIBE_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = QAE_PIPE_INIT_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = QAE_CFGTBL_MANAGE_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = QAE_CFGTBL_GETADDR_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = QAE_RCVMSG_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = QAE_MSGID_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = QAE_CC_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = QAE_MSGLEN_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = QAE_CFGTBL_REG_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = QAE_CFGTBL_LOAD_ERR_EID;
     EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
     EventTbl[  ind].EventID = QAE_DEGENERATE_ACC_ERR_EID;
     EventTbl[ind++].Mask    = CFE_EVS_FIRST_16_STOP;
@@ -102,6 +122,8 @@ int32 QAE::InitEvent()
     EventTbl[ind++].Mask    = CFE_EVS_FIRST_16_STOP;
     EventTbl[  ind].EventID = QAE_UPDATE_EST_ERR_EID;
     EventTbl[ind++].Mask    = CFE_EVS_FIRST_16_STOP;
+    EventTbl[  ind].EventID = QAE_CFGTBL_VALIDATION_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
     
     /* Register the table with CFE */
     iStatus = CFE_EVS_Register(EventTbl, ind, CFE_EVS_BINARY_FILTER);
@@ -112,7 +134,6 @@ int32 QAE::InitEvent()
 
     return (iStatus);
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -125,11 +146,11 @@ int32 QAE::InitPipe()
 
     /* Init schedule pipe and subscribe to wakeup messages */
     iStatus = CFE_SB_CreatePipe(&SchPipeId,
-            QAE_SCH_PIPE_DEPTH,
-            QAE_SCH_PIPE_NAME);
+                                QAE_SCH_PIPE_DEPTH,
+                                QAE_SCH_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
-        iStatus = CFE_SB_SubscribeEx(AE_WAKEUP_MID, SchPipeId, CFE_SB_Default_Qos, QAE_WAKEUP_MID_MAX_MSG_COUNT);
+        iStatus = CFE_SB_SubscribeEx(QAE_WAKEUP_MID, SchPipeId, CFE_SB_Default_Qos, QAE_WAKEUP_MID_MAX_MSG_COUNT);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(QAE_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
@@ -138,7 +159,7 @@ int32 QAE::InitPipe()
             goto QAE_InitPipe_Exit_Tag;
         }
 
-        iStatus = CFE_SB_SubscribeEx(AE_SEND_HK_MID, SchPipeId, CFE_SB_Default_Qos, QAE_SEND_HK_MID_MAX_MSG_COUNT);
+        iStatus = CFE_SB_SubscribeEx(QAE_SEND_HK_MID, SchPipeId, CFE_SB_Default_Qos, QAE_SEND_HK_MID_MAX_MSG_COUNT);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(QAE_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
@@ -173,12 +194,12 @@ int32 QAE::InitPipe()
 
     /* Init command pipe and subscribe to command messages */
     iStatus = CFE_SB_CreatePipe(&CmdPipeId,
-            QAE_CMD_PIPE_DEPTH,
-            QAE_CMD_PIPE_NAME);
+                                QAE_CMD_PIPE_DEPTH,
+                                QAE_CMD_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
         /* Subscribe to command messages */
-        iStatus = CFE_SB_Subscribe(AE_CMD_MID, CmdPipeId);
+        iStatus = CFE_SB_Subscribe(QAE_CMD_MID, CmdPipeId);
 
         if (iStatus != CFE_SUCCESS)
         {
@@ -200,7 +221,6 @@ QAE_InitPipe_Exit_Tag:
     return (iStatus);
 }
     
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Initialize Global Variables                                     */
@@ -209,19 +229,19 @@ QAE_InitPipe_Exit_Tag:
 void QAE::InitData()
 {
     /* Init housekeeping message. */
-    CFE_SB_InitMsg(&HkTlm, AE_HK_TLM_MID, sizeof(HkTlm), TRUE);
+    CFE_SB_InitMsg(&HkTlm, QAE_HK_TLM_MID, sizeof(HkTlm), TRUE);
+    
     /* Init output messages */
     CFE_SB_InitMsg(&VehicleAttitudeMsg,
             PX4_VEHICLE_ATTITUDE_MID, sizeof(PX4_VehicleAttitudeMsg_t), TRUE);
+            
     /* Init output messages */
     CFE_SB_InitMsg(&ControlStateMsg,
             PX4_CONTROL_STATE_MID, sizeof(PX4_ControlStateMsg_t), TRUE);
+            
     /* Init current value table to zero */
-    memset(&CVT, 0, sizeof(CVT));
-    /* Init params table to zero */
-    memset(&m_Params, 0, sizeof(m_Params));
-    /* Set params default values */
-    UpdateParamsFromTable();
+    CFE_PSP_MemSet(&CVT, 0, sizeof(CVT));
+    
     /* Init members */
     m_Quaternion.Zero();
     m_Gyro.Zero();
@@ -234,7 +254,6 @@ void QAE::InitData()
     m_GyroBias.Zero();
     m_Rates.Zero();
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -286,7 +305,7 @@ QAE_InitApp_Exit_Tag:
     }
     else
     {
-        if (hasEvents == 1)
+        if (hasEvents != 1)
         {
             (void) CFE_ES_WriteToSysLog("QAE - Application failed to initialize\n");
         }
@@ -294,7 +313,6 @@ QAE_InitApp_Exit_Tag:
 
     return (iStatus);
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -321,38 +339,38 @@ int32 QAE::RcvSchPipeMsg(int32 iBlocking)
         MsgId = CFE_SB_GetMsgId(MsgPtr);
         switch (MsgId)
         {
-            case AE_WAKEUP_MID:
+            case QAE_WAKEUP_MID:
             {
-                /* TODO:  Do something here. */
-                //EstimateAttitude();
+                /* Note: This MID is in the SCH table at 250hz */
                 break;
             }
-            case AE_SEND_HK_MID:
+            case QAE_SEND_HK_MID:
             {
                 ProcessCmdPipe();
                 /* Copy the current vehicle attitude message */
-                memcpy(&HkTlm.VehicleAttitudeMsg, &VehicleAttitudeMsg, sizeof(VehicleAttitudeMsg));
+                CFE_PSP_MemCpy(&HkTlm.VehicleAttitudeMsg, &VehicleAttitudeMsg, sizeof(VehicleAttitudeMsg));
                 /* Copy the current control state message */
-                memcpy(&HkTlm.ControlStateMsg, &ControlStateMsg, sizeof(ControlStateMsg));
+                CFE_PSP_MemCpy(&HkTlm.ControlStateMsg, &ControlStateMsg, sizeof(ControlStateMsg));
                 ReportHousekeeping();
                 break;
             }
             case PX4_SENSOR_COMBINED_MID:
             {
-                memcpy(&CVT.SensorCombinedMsg, MsgPtr, sizeof(CVT.SensorCombinedMsg));
-                /* TODO currently event driven */
+                /* Note: Currently event driven */
+                CFE_PSP_MemCpy(&CVT.SensorCombinedMsg, MsgPtr, sizeof(CVT.SensorCombinedMsg));
                 EstimateAttitude();
                 break;
             }
             case PX4_VEHICLE_GLOBAL_POSITION_MID:
             {
-                memcpy(&CVT.VehicleGlobalPositionMsg, MsgPtr, sizeof(CVT.VehicleGlobalPositionMsg));
+                CFE_PSP_MemCpy(&CVT.VehicleGlobalPositionMsg, MsgPtr, sizeof(CVT.VehicleGlobalPositionMsg));
                 break;
             }
             default:
             {
-                (void) CFE_EVS_SendEvent(QAE_MSGID_ERR_EID, CFE_EVS_ERROR,
+                 (void) CFE_EVS_SendEvent(QAE_MSGID_ERR_EID, CFE_EVS_ERROR,
                      "Recvd invalid SCH msgId (0x%04X)", MsgId);
+                 break;
             }
         }
     }
@@ -380,7 +398,6 @@ int32 QAE::RcvSchPipeMsg(int32 iBlocking)
     return (iStatus);
 }
 
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Process Incoming Commands                                       */
@@ -401,7 +418,7 @@ void QAE::ProcessCmdPipe()
             CmdMsgId = CFE_SB_GetMsgId(CmdMsgPtr);
             switch (CmdMsgId)
             {
-                case AE_CMD_MID:
+                case QAE_CMD_MID:
                 {
                     ProcessAppCmds(CmdMsgPtr);
                     break;
@@ -432,7 +449,6 @@ void QAE::ProcessCmdPipe()
     return;
 }
 
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Process QAE Commands                                            */
@@ -440,7 +456,7 @@ void QAE::ProcessCmdPipe()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void QAE::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 {
-    uint32  uiCmdCode=0;
+    uint32  uiCmdCode = 0;
 
     if (MsgPtr != NULL)
     {
@@ -488,7 +504,6 @@ void QAE::ReportHousekeeping()
     return;
 }
 
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Publish Output Data                                             */
@@ -507,7 +522,6 @@ void QAE::SendControlStateMsg()
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&ControlStateMsg);
     return;
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -541,7 +555,6 @@ boolean QAE::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
     return (bResult);
 }
 
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* QAE Application C style main entry point.                       */
@@ -551,7 +564,6 @@ extern "C" void QAE_AppMain()
 {
     oQAE.AppMain();
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -610,7 +622,6 @@ void QAE::AppMain()
     CFE_ES_ExitApp(uiRunStatus);
 }
 
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* QAE Update Magnetic Declination                                 */
@@ -619,22 +630,21 @@ void QAE::AppMain()
 void QAE::UpdateMagDeclination(const float new_declination)
 {
     if (HkTlm.EstimatorState == QAE_EST_UNINITIALIZED || 
-        fabsf(new_declination - m_Params.mag_declination) < 0.0001f) 
+        fabsf(new_declination - ConfigTblPtr->ATT_MAG_DECL) < 0.0001f) 
     {
         /* Apply initial declination or trivial rotations without changing estimation */
-        m_Params.mag_declination = new_declination;
+        ConfigTblPtr->ATT_MAG_DECL = new_declination;
     }
     else 
     {
         /* Immediately rotate current estimation to avoid gyro bias growth */
         math::Quaternion decl_rotation (0.0f, 0.0f, 0.0f, 0.0f);
-        decl_rotation.FromYaw(new_declination - m_Params.mag_declination);
+        decl_rotation.FromYaw(new_declination - ConfigTblPtr->ATT_MAG_DECL);
         m_Quaternion = decl_rotation * m_Quaternion;
-        m_Params.mag_declination = new_declination;
+        ConfigTblPtr->ATT_MAG_DECL = new_declination;
     }
     return;
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -643,7 +653,6 @@ void QAE::UpdateMagDeclination(const float new_declination)
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void QAE::EstimateAttitude(void)
 {
-    math::Vector3F euler(0.0f, 0.0f, 0.0f);
     math::Vector3F vel(0.0f, 0.0f, 0.0f);
     float length_check          = 0.0f;
     float delta_time_velocity   = 0.0f;
@@ -655,16 +664,11 @@ void QAE::EstimateAttitude(void)
     /* If there is a new sensor combined message */
     if(CVT.SensorCombinedMsg.Timestamp > CVT.LastSensorCombinedTime)
     {
-        /* TODO is this state possible? */
-        if(CVT.SensorCombinedMsg.Timestamp > 0)
-        {
-            /* No lowpass filter here, filtering is in the driver */
-            m_Gyro[0] = CVT.SensorCombinedMsg.GyroRad[0];
-            m_Gyro[1] = CVT.SensorCombinedMsg.GyroRad[1];
-            m_Gyro[2] = CVT.SensorCombinedMsg.GyroRad[2];
-        }
-        
-        //if(CVT.SensorCombinedMsg.AccRelTimeInvalid != FALSE)
+        /* No lowpass filter here, filtering is in the driver */
+        m_Gyro[0] = CVT.SensorCombinedMsg.GyroRad[0];
+        m_Gyro[1] = CVT.SensorCombinedMsg.GyroRad[1];
+        m_Gyro[2] = CVT.SensorCombinedMsg.GyroRad[2];
+
         if(CVT.SensorCombinedMsg.AccTimestampRelative != PX4_RELATIVE_TIMESTAMP_INVALID)
         {
             /* No lowpass filter here, filtering is in the driver */
@@ -682,7 +686,6 @@ void QAE::EstimateAttitude(void)
             }
         }
         
-        //if(CVT.SensorCombinedMsg.MagRelTimeInvalid != FALSE)
         if(CVT.SensorCombinedMsg.MagTimestampRelative != PX4_RELATIVE_TIMESTAMP_INVALID)
         {
             /* No lowpass filter here, filtering is in the driver */
@@ -701,6 +704,7 @@ void QAE::EstimateAttitude(void)
         }
         /* Update the application state */
         HkTlm.State = QAE_SENSOR_DATA_RCVD;
+        
         /* Update last timestamp */
         CVT.LastSensorCombinedTime = CVT.SensorCombinedMsg.Timestamp;
     }
@@ -715,31 +719,31 @@ void QAE::EstimateAttitude(void)
     {
         /* Calculate time difference between now and gpos timestamp */
         delta_time_gps = PX4LIB_GetPX4TimeUs() - CVT.VehicleGlobalPositionMsg.Timestamp;
-        if(m_Params.mag_declination_auto == TRUE && 
-           CVT.VehicleGlobalPositionMsg.EpH < 20.0f &&
-           delta_time_gps < 1000000)
+        if(ConfigTblPtr->ATT_MAG_DECL_A == TRUE && 
+           CVT.VehicleGlobalPositionMsg.EpH < QAE_GPS_EPH_MAX &&
+           delta_time_gps < QAE_GPS_DT_MAX)
         {
-            /* set magnetic declination automatically */
+            /* Set magnetic declination automatically */
             UpdateMagDeclination(math::radians(get_mag_declination(CVT.VehicleGlobalPositionMsg.Lat, CVT.VehicleGlobalPositionMsg.Lon)));
         }
         
-        if(m_Params.acc_compensation == TRUE &&
+        if(ConfigTblPtr->ATT_ACC_COMP == TRUE &&
            CVT.VehicleGlobalPositionMsg.Timestamp != 0 &&
-           PX4LIB_GetPX4TimeUs() < CVT.VehicleGlobalPositionMsg.Timestamp + 20000 &&
-           CVT.VehicleGlobalPositionMsg.EpH < 5.0f &&
+           PX4LIB_GetPX4TimeUs() < CVT.VehicleGlobalPositionMsg.Timestamp + QAE_GPS_DT_THRES &&
+           CVT.VehicleGlobalPositionMsg.EpH < QAE_GPS_EPH_THRES &&
            HkTlm.EstimatorState == QAE_EST_INITIALIZED)
         {
-            /* position data is actual */
+            /* Position data is actual */
             vel[0] = CVT.VehicleGlobalPositionMsg.VelN;
             vel[1] = CVT.VehicleGlobalPositionMsg.VelE;
             vel[2] = CVT.VehicleGlobalPositionMsg.VelD;
 
-            /* velocity updated */
+            /* Velocity updated */
             if(m_LastVelocityTime != 0 &&
                CVT.VehicleGlobalPositionMsg.Timestamp != m_LastVelocityTime)
             {
-                delta_time_velocity = (CVT.VehicleGlobalPositionMsg.Timestamp - m_LastVelocityTime) / 1000000.0f;
-                /* calculate acceleration in body frame */
+                delta_time_velocity = (CVT.VehicleGlobalPositionMsg.Timestamp - m_LastVelocityTime) / USEC_IN_SEC_F;
+                /* Calculate acceleration in body frame */
                 m_PositionAcc = m_Quaternion.ConjugateInversed((vel - m_LastVelocity) / delta_time_velocity);
             }
             m_LastVelocityTime = CVT.VehicleGlobalPositionMsg.Timestamp;
@@ -747,7 +751,7 @@ void QAE::EstimateAttitude(void)
         }
         else
         {
-            /* position data is outdate, reset acceleration */
+            /* Position data is outdate, reset acceleration */
             m_PositionAcc.Zero();
             m_LastVelocity.Zero();
             m_LastVelocityTime = 0;
@@ -756,9 +760,9 @@ void QAE::EstimateAttitude(void)
         CVT.LastGlobalPositionTime = CVT.VehicleGlobalPositionMsg.Timestamp;
     }
 
-    /* time from previous iteration */
+    /* Time from previous iteration */
     time_now = PX4LIB_GetPX4TimeUs();
-    delta_time = (m_TimeLast > 0) ? ((time_now - m_TimeLast) / 1000000.0f) : 0.00001f;
+    delta_time = (m_TimeLast > 0) ? ((time_now - m_TimeLast) / USEC_IN_SEC_F) : 0.00001f;
     m_TimeLast  = time_now;
     
     if(delta_time > QAE_DELTA_TIME_MAX)
@@ -774,8 +778,6 @@ void QAE::EstimateAttitude(void)
         goto end_of_function;
     }
     
-    //math::Vector3F euler = m_Quaternion.ToEuler();
-    euler = m_Quaternion.ToEuler();
     /* Populate vehicle attitude message */
     VehicleAttitudeMsg.Timestamp    = CVT.SensorCombinedMsg.Timestamp;
     VehicleAttitudeMsg.RollSpeed    = m_Rates[0];
@@ -791,52 +793,29 @@ void QAE::EstimateAttitude(void)
     
     /* Populate control state message */
     ControlStateMsg.Timestamp       = CVT.SensorCombinedMsg.Timestamp;
-    /* attitude quaternions for control state */
+    
+    /* Attitude quaternions for control state */
     ControlStateMsg.Q[0]            = m_Quaternion[0];
     ControlStateMsg.Q[1]            = m_Quaternion[1];
     ControlStateMsg.Q[2]            = m_Quaternion[2];
     ControlStateMsg.Q[3]            = m_Quaternion[3];
 
+    /* Acceleration for control state */
     ControlStateMsg.AccX            = m_Accel[0];
     ControlStateMsg.AccY            = m_Accel[1];
     ControlStateMsg.AccZ            = m_Accel[2];
-    /* attitude rates for control state */
+    
+    /* Attitude rates for control state */
     ControlStateMsg.RollRate        = m_Rates[0];
     ControlStateMsg.PitchRate       = m_Rates[1];
     ControlStateMsg.YawRate         = m_Rates[2];
 
-    /* TODO get bias estimates from estimator */
-    ControlStateMsg.RollRateBias    = 0.0f;
-    ControlStateMsg.PitchRateBias   = 0.0f;
-    ControlStateMsg.YawRateBias     = 0.0f;
-    
-    ControlStateMsg.AirspeedValid = FALSE;
-    /* TODO params reference for this is incorrect */
-    if(m_Params.airspeed_mode == PX4_AIRSPEED_MODE_EST)
-    {
-        if (PX4LIB_GetPX4TimeUs() - CVT.VehicleGlobalPositionMsg.Timestamp < 1e6) 
-        {
-            /* use estimated body velocity as airspeed estimate */
-            ControlStateMsg.Airspeed = sqrtf(
-                    CVT.VehicleGlobalPositionMsg.VelN * CVT.VehicleGlobalPositionMsg.VelN + 
-                    CVT.VehicleGlobalPositionMsg.VelE * CVT.VehicleGlobalPositionMsg.VelE + 
-                    CVT.VehicleGlobalPositionMsg.VelD * CVT.VehicleGlobalPositionMsg.VelD
-            );
-            ControlStateMsg.AirspeedValid = TRUE;
-        }
-    }
-    //else if (m_Params.airspeed_mode == PX4_AIRSPEED_MODE_DISABLED)
-    //{
-        // do nothing, airspeed has been declared as non-valid above, controllers
-        // will handle this assuming always trim airspeed
-    //}
     /* Send the control state message */
     SendControlStateMsg();
     
 end_of_function:
     return;
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -850,19 +829,15 @@ boolean QAE::InitEstimateAttitude(void)
     math::Vector3F j(0.0f, 0.0f, 0.0f);
     boolean return_bool = FALSE;
 
-    /* rotation matrix can be easily constructed from acceleration
+    /* Rotation matrix can be easily constructed from acceleration
      * and mag field vectors. 'k' is Earth Z axis (Down) unit vector
-     * in body frame 
-     */
+     * in body frame */
     k = -m_Accel;
-
     k.Normalize();
 
     /* 'i' is Earth X axis (North) unit vector in body frame, 
-     * orthogonal with 'k' 
-     */
+     * orthogonal with 'k' */
     i = (m_Mag - k * (m_Mag * k));
-
     i.Normalize();
 
     /* 'j' is Earth Y axis (East) unit vector in body frame, orthogonal
@@ -877,10 +852,9 @@ boolean QAE::InitEstimateAttitude(void)
 
     /* Compensate for magnetic declination */
     math::Quaternion decl_rotation(0.0f, 0.0f, 0.0f, 0.0f);
-    decl_rotation.FromYaw(m_Params.mag_declination);
+    decl_rotation.FromYaw(ConfigTblPtr->ATT_MAG_DECL);
 
     m_Quaternion = decl_rotation * m_Quaternion;
-
     m_Quaternion.Normalize();
 
     if(isfinite(m_Quaternion[0]) && isfinite(m_Quaternion[1]) &&
@@ -898,7 +872,6 @@ boolean QAE::InitEstimateAttitude(void)
     return (return_bool);
 }
 
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* QAE Update the Attitude Estimate                                */
@@ -911,18 +884,25 @@ boolean QAE::UpdateEstimateAttitude(float dt)
     /* Angular rate of correction */
     math::Vector3F corr(0.0f, 0.0f, 0.0f);
     math::Vector3F mag_earth(0.0f, 0.0f, 0.0f);
-    float spinRate = 0.0f;
-    float magErr   = 0.0f;
-    float gainMult = 1.0f;
-    uint8 i        = 0;
+    math::Vector3F k(0.0f, 0.0f, 0.0f);
+    math::Vector3F magErrV3F(0.0f, 0.0f, 0.0f);
+    math::Vector3F diff(0.0f, 0.0f, 0.0f);
+    float spinRate  = 0.0f;
+    float magErr    = 0.0f;
+    float gainMult  = 1.0f;
+    uint8 i         = 0;
+    osalbool status = FALSE;
 
     if (HkTlm.EstimatorState != QAE_EST_INITIALIZED)
     {
         if(HkTlm.State != QAE_SENSOR_DATA_RCVD)
         {
-            return FALSE;
+            status = FALSE;
+            goto UpdateEstimateAttitude_Exit_Tag;
         }
-        return InitEstimateAttitude();
+        
+        status = InitEstimateAttitude();
+        goto UpdateEstimateAttitude_Exit_Tag;
     }
     
     q_last = m_Quaternion;
@@ -933,46 +913,41 @@ boolean QAE::UpdateEstimateAttitude(float dt)
      * and extract XY component */
     mag_earth = m_Quaternion.Conjugate(m_Mag);
 
-    magErr = _wrap_pi(atan2f(mag_earth[1], mag_earth[0]) - m_Params.mag_declination);
+    magErr = _wrap_pi(atan2f(mag_earth[1], mag_earth[0]) - ConfigTblPtr->ATT_MAG_DECL);
 
     if(spinRate > QAE_FIFTY_DPS)
     {
         gainMult = math::min(spinRate / QAE_FIFTY_DPS, 10.0f);
     }
     /* Project magnetometer correction to body frame */
-    math::Vector3F magErrV3F(0.0f, 0.0f, -magErr);
+    magErrV3F[2] = -magErr;
 
-    corr = corr + m_Quaternion.ConjugateInversed(magErrV3F) * m_Params.mag_weight * gainMult;
+    corr = corr + m_Quaternion.ConjugateInversed(magErrV3F) * ConfigTblPtr->ATT_W_MAG * gainMult;
 
     m_Quaternion.Normalize();
 
     /* Accelerometer correction
      * Project 'k' unit vector of earth frame to body frame
      * Vector<3> k = _q.conjugate_inversed(Vector<3>(0.0f, 0.0f, 1.0f));
-     * Optimized version with dropped zeros
-     */
-    math::Vector3F k(
-            2.0f * (m_Quaternion[1] * m_Quaternion[3] - m_Quaternion[0] * m_Quaternion[2]),
-            2.0f * (m_Quaternion[2] * m_Quaternion[3] + m_Quaternion[0] * m_Quaternion[1]),
-            (m_Quaternion[0] * m_Quaternion[0] - m_Quaternion[1] * 
-             m_Quaternion[1] - m_Quaternion[2] * m_Quaternion[2] + 
-             m_Quaternion[3] * m_Quaternion[3])
-    );
+     * Optimized version with dropped zeros */
+    k[0] = 2.0f * (m_Quaternion[1] * m_Quaternion[3] - m_Quaternion[0] * m_Quaternion[2]);
+    k[1] = 2.0f * (m_Quaternion[2] * m_Quaternion[3] + m_Quaternion[0] * m_Quaternion[1]);
+    k[2] = m_Quaternion[0] * m_Quaternion[0] - m_Quaternion[1] * 
+           m_Quaternion[1] - m_Quaternion[2] * m_Quaternion[2] + 
+           m_Quaternion[3] * m_Quaternion[3];
 
-    math::Vector3F diff(0.0f, 0.0f, 0.0f);
     diff = m_Accel - m_PositionAcc;
-
     diff.Normalize();
 
-    corr = corr + (k % diff) * m_Params.acc_weight;
+    corr = corr + (k % diff) * ConfigTblPtr-> ATT_W_ACC;
 
     /* Gyro bias estimation */
     if(spinRate < 0.175f)
     {
-        m_GyroBias = m_GyroBias + corr * (m_Params.gyro_weight * dt);
-        for(i = 0; i < 3; i++)
+        m_GyroBias = m_GyroBias + corr * (ConfigTblPtr->ATT_W_GYRO_BIAS * dt);
+        for(i = 0; i < 3; ++i)
         {
-            m_GyroBias[i] = math::constrain(m_GyroBias[i], -m_Params.gyro_bias_max, m_Params.gyro_bias_max);
+            m_GyroBias[i] = math::constrain(m_GyroBias[i], -ConfigTblPtr->ATT_BIAS_MAX, ConfigTblPtr->ATT_BIAS_MAX);
         }
     }
     
@@ -992,7 +967,7 @@ boolean QAE::UpdateEstimateAttitude(float dt)
     if (isfinite(m_Quaternion[0]) && isfinite(m_Quaternion[1]) &&
         isfinite(m_Quaternion[2]) && isfinite(m_Quaternion[3]) )
     {
-        return TRUE;
+        status = TRUE;
     }
     else
     {
@@ -1000,30 +975,11 @@ boolean QAE::UpdateEstimateAttitude(float dt)
         m_Quaternion = q_last;
         m_Rates.Zero();
         m_GyroBias.Zero();
-        return FALSE;
+        status = FALSE;
     }
-}
-
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/*                                                                 */
-/* QAE Update Params from the Config Table                         */
-/*                                                                 */
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void QAE::UpdateParamsFromTable(void)
-{
-    if(0 != ConfigTblPtr)
-    {
-        m_Params.acc_weight           = ConfigTblPtr-> ATT_W_ACC;
-        m_Params.mag_weight           = ConfigTblPtr->ATT_W_MAG;
-        m_Params.gyro_weight          = ConfigTblPtr->ATT_W_GYRO_BIAS;
-        m_Params.mag_declination      = ConfigTblPtr->ATT_MAG_DECL;
-        m_Params.mag_declination_auto = ConfigTblPtr->ATT_MAG_DECL_A;
-        m_Params.acc_compensation     = ConfigTblPtr->ATT_ACC_COMP;
-        m_Params.gyro_bias_max        = ConfigTblPtr->ATT_BIAS_MAX;
-        m_Params.airspeed_mode        = ConfigTblPtr->FW_ARSP_MODE;
-    }
-    return;
+    
+UpdateEstimateAttitude_Exit_Tag:
+    return status;
 }
 
 /************************/
