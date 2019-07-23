@@ -1,0 +1,21 @@
+{
+    "Airliner": {
+        "apps": {
+            "MFAA": {
+                "operations": {
+                    "Noop":             {"airliner_mid": "0x1cec" },
+                    "Reset":            {"airliner_mid": "0x1cec" },
+                    "SetGain":          {"airliner_mid": "0x1cec" },
+                    "SetOffset":        {"airliner_mid": "0x1cec" },
+                    "CalculateResult":  {"airliner_mid": "0x1cec" },
+                    "SendConfig":       {"airliner_mid": "0x1cec" },
+                    "MFAA_HkTlm_t":     {"airliner_mid": "0x0cf0" },
+                    "SendHk":           {"airliner_mid": "0x1ced" },
+                    "Wakeup":           {"airliner_mid": "0x1cee" }
+                },
+                "config": {
+                }
+            }
+        }
+    }
+}

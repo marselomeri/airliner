@@ -1,0 +1,19 @@
+{
+    "Airliner": {
+        "apps": {
+            "MFAB": {
+                "operations": {
+                    "Noop":               {"airliner_mid": "0x1000" },
+                    "Reset":              {"airliner_mid": "0x1000" },
+                    "SetRawValue":        {"airliner_mid": "0x1000" },
+                    "MFAB_HkTlm_t":       {"airliner_mid": "0x0000" },
+                    "MFAB_RawValueMsg_t": {"airliner_mid": "0x0000" },
+                    "SendHk":             {"airliner_mid": "0x1000" },
+                    "Wakeup":             {"airliner_mid": "0x1000" }
+                },
+                "config": {
+                }
+            }
+        }
+    }
+}

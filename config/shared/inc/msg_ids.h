@@ -662,13 +662,27 @@
 #define FLOW_WAKEUP_MID                             0x1ce3
 #define FLOW_CMD_MID                                0x1ce4
 #define FLOW_FRAME_MID                              0x0ce5
-#define FLOW_DIAG_TLM_MID                         	0x0ce6
+#define FLOW_DIAG_TLM_MID                           0x0ce6
 
 /* MPC                                                   */
 #define MPC_DIAG_TLM_MID                            0x0cea
 
 /* LD                                                   */
 #define LD_DIAG_TLM_MID                             0x0ceb
+
+/* MFAA                                                 */
+#define MFAA_CMD_MID                                0x1cec
+#define MFAA_SEND_HK_MID                            0x1ced
+#define MFAA_WAKEUP_MID                             0x1cee
+#define MFAA_OUT_DATA_MID                           0x1cef
+#define MFAA_HK_TLM_MID                             0x0cf0
+
+/* MFAB                                                 */
+#define MFAB_CMD_MID                                0x1cf1
+#define MFAB_SEND_HK_MID                            0x1cf2
+#define MFAB_WAKEUP_MID                             0x1cf3
+#define MFAB_RAW_VALUE_MID                          0x0cf4
+#define MFAB_HK_TLM_MID                             0x0cf5
 
 #define SCH_ACTIVITY_DONE_MID                       0x0f00
 

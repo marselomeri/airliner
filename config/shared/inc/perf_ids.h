@@ -83,7 +83,9 @@
 #define SONAR_MAIN_TASK_PERF_ID     111
 #define LGC_MAIN_TASK_PERF_ID       112
 #define FLOW_MAIN_TASK_PERF_ID      113
-#define FLOW_COMPUTE_PERF_ID      	114
+#define FLOW_COMPUTE_PERF_ID        114
+#define MFAA_MAIN_TASK_PERF_ID      115
+#define MFAB_MAIN_TASK_PERF_ID      115
 
 #endif
 
