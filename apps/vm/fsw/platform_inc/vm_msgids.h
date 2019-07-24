@@ -50,6 +50,7 @@ extern "C" {
  ** \name VM Telemetery Message ID */
 /** \{ */
 #define VM_HK_TLM_MID                       (0x0c6d)      /**< \brief Msg ID of the VM housekeeping message. */
+#define VM_CONFIG_TLM_MID                   (0x0000)      /**< \brief Msg ID of the VM configuration message. */
 /** \} */
 
 #ifdef __cplusplus

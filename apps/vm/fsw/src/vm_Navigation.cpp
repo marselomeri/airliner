@@ -288,20 +288,20 @@ FSM.getState().getId())
 
 }
 
-boolean VM_Navigation::IsAllMessagesReady() {
+osalbool VM_Navigation::IsAllMessagesReady() {
 
-boolean validity = false;
+osalbool validity = false;
 
-boolean SensorMagMsgReady = (App.SensorMagMsg.Timestamp > 0);
-boolean SensorGyroMsgReady = (App.SensorGyroMsg.Timestamp > 0);
-boolean SensorAccelMsgReady = (App.SensorAccelMsg.Timestamp > 0);
-boolean SensorCombinedMsgReady = (App.SensorCombinedMsg.Timestamp > 0);
-boolean VehicleAttitudeMsgReady = (App.VehicleAttitudeMsg.Timestamp > 0);
-boolean VehicleLocalPositionMsg = (App.VehicleLocalPositionMsg.Timestamp > 0);
-boolean VehicleLandDetectedMsgReady = (App.VehicleLandDetectedMsg.Timestamp > 0);
-boolean VehicleGlobalPositionMsgReady = (App.VehicleGlobalPositionMsg.Timestamp
+osalbool SensorMagMsgReady = (App.SensorMagMsg.Timestamp > 0);
+osalbool SensorGyroMsgReady = (App.SensorGyroMsg.Timestamp > 0);
+osalbool SensorAccelMsgReady = (App.SensorAccelMsg.Timestamp > 0);
+osalbool SensorCombinedMsgReady = (App.SensorCombinedMsg.Timestamp > 0);
+osalbool VehicleAttitudeMsgReady = (App.VehicleAttitudeMsg.Timestamp > 0);
+osalbool VehicleLocalPositionMsg = (App.VehicleLocalPositionMsg.Timestamp > 0);
+osalbool VehicleLandDetectedMsgReady = (App.VehicleLandDetectedMsg.Timestamp > 0);
+osalbool VehicleGlobalPositionMsgReady = (App.VehicleGlobalPositionMsg.Timestamp
         > 0);
-boolean VehicleGpsPositionMsgReady = (App.VehicleGpsPositionMsg.Timestamp > 0);
+osalbool VehicleGpsPositionMsgReady = (App.VehicleGpsPositionMsg.Timestamp > 0);
 
 if (SensorMagMsgReady && SensorGyroMsgReady && SensorAccelMsgReady
         && SensorCombinedMsgReady && VehicleAttitudeMsgReady
@@ -322,14 +322,14 @@ return validity;
 
 }
 
-boolean VM_Navigation::IsStabilizationRequired(void) {
+osalbool VM_Navigation::IsStabilizationRequired(void) {
 /* Being a rotary wing qualifies for stabilization */
 return true;
 }
 
-boolean VM_Navigation::IsTransitionAltCtlValid(void) {
+osalbool VM_Navigation::IsTransitionAltCtlValid(void) {
 
-boolean validity = false;
+osalbool validity = false;
 PX4_NavigationState_t Current_NavState = App.VehicleStatusMsg.NavState;
 
 /* Altitude Hold Requirement Validation */
@@ -348,9 +348,9 @@ if (!validity) {
 return validity;
 }
 
-boolean VM_Navigation::IsTransitionPosCtlValid(void) {
+osalbool VM_Navigation::IsTransitionPosCtlValid(void) {
 
-boolean validity = false;
+osalbool validity = false;
 PX4_NavigationState_t Current_NavState = App.VehicleStatusMsg.NavState;
 
 /* Position Hold Requirement Validation */
@@ -371,9 +371,9 @@ if (!validity) {
 return validity;
 }
 
-boolean VM_Navigation::IsTransitionAcrobaticValid(void) {
+osalbool VM_Navigation::IsTransitionAcrobaticValid(void) {
 
-boolean validity = false;
+osalbool validity = false;
 PX4_NavigationState_t Current_NavState = App.VehicleStatusMsg.NavState;
 
 /* Altitude Hold Requirement Validation */
@@ -394,41 +394,41 @@ if (!validity) {
 return validity;
 }
 
-boolean VM_Navigation::IsTransitionAutoLoiterValid(void) {
-boolean validity = IsAllMessagesReady();
+osalbool VM_Navigation::IsTransitionAutoLoiterValid(void) {
+osalbool validity = IsAllMessagesReady();
 return validity;
 
 }
 
-boolean VM_Navigation::IsTransitionRtlValid(void) {
-boolean validity = IsAllMessagesReady();
+osalbool VM_Navigation::IsTransitionRtlValid(void) {
+osalbool validity = IsAllMessagesReady();
 return validity;
 }
 
-boolean VM_Navigation::IsTransitionStabilizeValid(void) {
-boolean validity = IsAllMessagesReady();
+osalbool VM_Navigation::IsTransitionStabilizeValid(void) {
+osalbool validity = IsAllMessagesReady();
 return validity;
 }
 
-boolean VM_Navigation::IsTransitionRattitudeValid(void) {
-boolean validity = IsAllMessagesReady();
+osalbool VM_Navigation::IsTransitionRattitudeValid(void) {
+osalbool validity = IsAllMessagesReady();
 return validity;
 }
 
-boolean VM_Navigation::IsTransitionAutoTakeoffValid(void) {
-boolean validity = IsAllMessagesReady();
+osalbool VM_Navigation::IsTransitionAutoTakeoffValid(void) {
+osalbool validity = IsAllMessagesReady();
 return validity;
 }
 
-boolean VM_Navigation::IsTransitionAutoLandValid(void) {
-boolean validity = IsAllMessagesReady();
+osalbool VM_Navigation::IsTransitionAutoLandValid(void) {
+osalbool validity = IsAllMessagesReady();
 return validity;
 }
 
-boolean VM_Navigation::IsConditionLocalPositionValid() {
+osalbool VM_Navigation::IsConditionLocalPositionValid() {
 return App.ConditionLocalPositionValid;
 }
 
-boolean VM_Navigation::IsVehicleArmed() {
+osalbool VM_Navigation::IsVehicleArmed() {
 return App.IsVehicleArmed();
 }

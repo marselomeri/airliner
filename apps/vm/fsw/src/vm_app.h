@@ -36,6 +36,8 @@
 
 #include "vm_Arming.h"
 #include "vm_Navigation.h"
+#include "prm_lib.h"
+#include "cpp_lib.hpp"
 
 #ifdef __cplusplus
 extern "C" {
@@ -86,19 +88,19 @@ extern "C" {
 typedef struct {
 
     /** \brief Indicates if all sensors are initialized */
-    boolean condition_system_sensors_initialized;
+    osalbool condition_system_sensors_initialized;
     /** \brief System in rtl state */
-    boolean condition_system_returned_to_home;
+    osalbool condition_system_returned_to_home;
     /** \brief Indicates a valid home position (a valid home position is not always a valid launch) */
-    boolean condition_home_position_valid;
+    osalbool condition_home_position_valid;
     /** \brief Satus of the USB power supply */
-    boolean usb_connected;
+    osalbool usb_connected;
     /** \brief True if RC signal found atleast once */
-    boolean rc_signal_found_once;
+    osalbool rc_signal_found_once;
     /** \brief True if RC lost mode is commanded */
-    boolean rc_signal_lost_cmd;
+    osalbool rc_signal_lost_cmd;
     /** \brief Set if RC input should be ignored temporarily */
-    boolean rc_input_blocked;
+    osalbool rc_input_blocked;
 
 }VM_StatusFlags;
 
@@ -217,24 +219,24 @@ typedef struct
 typedef struct {
 
     /** \brief Position control is selected */
-    boolean inPosCtl;
+    osalbool inPosCtl;
     /** \brief Return to launch is selected  */
-    boolean inRtl;
+    osalbool inRtl;
     /** \brief Auto loiter is selected  */
-    boolean inLoiter;
+    osalbool inLoiter;
     /** \brief Manual is selected  */
-    boolean inManual;
+    osalbool inManual;
     /** \brief Takeoff is selected  */
-    boolean intakeoff;
+    osalbool intakeoff;
     /** \brief Altitude control is selected  */
-    boolean inAltCtl;
+    osalbool inAltCtl;
 
 }VM_Modes;
 
 /**
  **  \brief VM Application Class
  */
-class VM
+class VM : CPPApp
 {
 public:
     VM();
@@ -316,25 +318,26 @@ public:
     VM_Arming ArmingSM;
     /** \brief Navigation state machine handle */
     VM_Navigation NavigationSM;
-    /** \brief param variable */
-    VM_Params_t vm_params;
 
     /** \brief Housekeeping Telemetry for downlink */
     VM_HkTlm_t HkTlm;
 
+    /** \brief Configuration Telemetry for downlink */
+    VM_ConfigTlm_t ConfigTlm;
+
     /** \brief True if home position is not set and local variables are not initialization */
-    boolean NotInitialized = true;
+    osalbool NotInitialized = true;
 
     /** \brief Timestamps vm at boot */
     uint64 VmBootTimestamp = 0;
     /** \brief status flag variable */
     VM_StatusFlags status_flags = {};
     /** \brief True if local position is valid */
-    boolean ConditionLocalPositionValid;
+    osalbool ConditionLocalPositionValid;
     /** \brief True if previously landed */
-    boolean vh_prev_landed = true;
+    osalbool vh_prev_landed = true;
     /** \brief True if previously in flight */
-    boolean vh_prev_in_flight = false;
+    osalbool vh_prev_in_flight = false;
     /** \brief Records a count when vehicle is disarmed with stick  */
     unsigned stick_off_counter = 0;
     /** \brief Records a count when vehicle is armed with stick */
@@ -342,15 +345,15 @@ public:
     /** \brief Arming switch in manual control setpoint message  */
     unsigned last_sp_man_arm_switch = 0;
     /** \brief True when vehicle's battery is low and a contingency action is implemented */
-    boolean low_battery_voltage_actions_done = false;
+    osalbool low_battery_voltage_actions_done = false;
     /** \brief True when vehicle's battery is critical and a contingency action is implemented */
-    boolean critical_battery_voltage_actions_done = false;
+    osalbool critical_battery_voltage_actions_done = false;
     /** \brief True when vehicle's battery is dangerously low and a contingency action is implemented */
-    boolean emergency_battery_voltage_actions_done = false;
+    osalbool emergency_battery_voltage_actions_done = false;
     /** \brief Timestamps the moment rc signal is lost */
     uint64 rc_signal_lost_timestamp;
     /** \brief True when arming status changes with the vehicle */
-    boolean arming_state_changed = false;
+    osalbool arming_state_changed = false;
     /** \brief An instance rc navigation mode  */
     VM_Modes previous_modes {0};
 
@@ -394,6 +397,9 @@ public:
      **
      *************************************************************************/
     int32 InitApp(void);
+
+
+    int32 InitParams(void);
 
     /************************************************************************/
     /** \brief Initialize Event Services and Event tables
@@ -448,42 +454,6 @@ public:
     int32 InitPipe(void);
 
     /************************************************************************/
-    /** \brief Receive and process messages from the scheduler pipe.
-     **
-     **  \par Description
-     **       This function receives and processes messages
-     **       for the VM application from the SCH pipe.  This function
-     **       will pend for the type defined by iBlocking, allowing
-     **       it to wait for messages, i.e. wakeup messages from scheduler.
-     **
-     **  \par Assumptions, External Events, and Notes:
-     **       None
-     **
-     **  \param [in]   iBlocking    A #CFE_SB_PEND_FOREVER, #CFE_SB_POLL or
-     **                             millisecond timeout
-     **
-     **  \returns
-     **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS \endcode
-     **  \retstmt Return codes from #CFE_SB_RcvMsg            \endcode
-     **  \endreturns
-     **
-     *************************************************************************/
-    int32 RcvSchPipeMsg(int32 iBlocking);
-
-    /************************************************************************/
-    /** \brief Vehicle Manager Task incoming command processing
-     **
-     **  \par Description
-     **       This function processes incoming commands subscribed
-     **       by VM application
-     **
-     **  \par Assumptions, External Events, and Notes:
-     **       None
-     **
-     *************************************************************************/
-    void ProcessCmdPipe(void);
-
-    /************************************************************************/
     /** \brief Vehicle Manager Task application commands
      **
      **  \par Description
@@ -510,6 +480,7 @@ public:
      **
      *************************************************************************/
     void ReportHousekeeping(void);
+
     /************************************************************************/
     /** \brief Sends the ActuatorArmedMsg message.
      **
@@ -522,6 +493,7 @@ public:
      **
      *************************************************************************/
     void SendActuatorArmedMsg(void);
+
     /************************************************************************/
     /** \brief Sends the HomePositionMsg message.
      **
@@ -534,6 +506,7 @@ public:
      **
      *************************************************************************/
     void SendHomePositionMsg(void);
+
     /************************************************************************/
     /** \brief Sends the VehicleManagerStateMsg message.
      **
@@ -546,6 +519,7 @@ public:
      **
      *************************************************************************/
     void SendVehicleManagerStateMsg(void);
+
     /************************************************************************/
     /** \brief Sends the MissionMsg message.
      **
@@ -558,6 +532,7 @@ public:
      **
      *************************************************************************/
     void SendMissionMsg(void);
+
     /************************************************************************/
     /** \brief Sends the LedControlMsg message.
      **
@@ -570,6 +545,7 @@ public:
      **
      *************************************************************************/
     void SendLedControlMsg(void);
+
     /************************************************************************/
     /** \brief Sends the VehicleStatusMsg message.
      **
@@ -595,6 +571,7 @@ public:
      **
      *************************************************************************/
     void SendVehicleControlModeMsg(void);
+
     /************************************************************************/
     /** \brief Sends the VehicleCommandMsg message.
      **
@@ -608,25 +585,6 @@ public:
      *************************************************************************/
     void SendVehicleCommandMsg(void);
 
-    /************************************************************************/
-    /** \brief Verify Command Length
-     **
-     **  \par Description
-     **       This function verifies the command message length.
-     **
-     **  \par Assumptions, External Events, and Notes:
-     **       None
-     **
-     **  \param [in]   MsgPtr        A #CFE_SB_Msg_t pointer that
-     **                              references the software bus message
-     **  \param [in]   usExpectedLen The expected length of the message
-     **
-     **  \returns
-     **  TRUE if the message length matches expectations, FALSE if it does not.
-     **  \endreturns
-     **
-     *************************************************************************/
-    boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
     /************************************************************************/
     /** \brief Time Elapsed
      **
@@ -644,6 +602,7 @@ public:
      **
      *************************************************************************/
     uint64 TimeElapsed(uint64 * TimePtr);
+
     /************************************************************************/
     /** \brief Time
      **
@@ -658,6 +617,7 @@ public:
      **
      *************************************************************************/
     uint64 TimeNow(void);
+
     /************************************************************************/
     /** \brief Vehicle Armed
      **
@@ -671,7 +631,8 @@ public:
      **  \endreturns
      **
      *************************************************************************/
-    boolean IsVehicleArmed(void);
+    osalbool IsVehicleArmed(void);
+
     /************************************************************************/
     /** \brief Set Home Position
      **
@@ -683,6 +644,7 @@ public:
      **
      *************************************************************************/
     void FlightSessionInit(void);
+
     /************************************************************************/
     /** \brief Set Home Position
      **
@@ -694,6 +656,7 @@ public:
      **
      *************************************************************************/
     void SetHomePosition(void);
+
     /************************************************************************/
     /** \brief RC Control Navigation Modes
      **
@@ -707,6 +670,7 @@ public:
      **
      *************************************************************************/
     void RcModes(void);
+
     /************************************************************************/
     /** \brief Vehicle Manager Initialization Task
      **
@@ -718,6 +682,7 @@ public:
      **
      *************************************************************************/
     void Initialization(void);
+
     /************************************************************************/
     /** \brief Vehicle Manager Maintenance Task
      **
@@ -730,6 +695,7 @@ public:
      **
      *************************************************************************/
     void Execute(void);
+
     /************************************************************************/
     /** \brief TODO
      **
@@ -742,14 +708,6 @@ public:
      **
      *************************************************************************/
     const char* GetNavStateAsString(uint32);
-    /************************************************************************/
-    /** \brief Updates application params from param table
-     **
-     **  \par Assumptions, External Events, and Notes:
-     **       None
-     **
-     *************************************************************************/
-    void UpdateParamsFromTable(void);
 
 private:
     /************************************************************************/
@@ -790,23 +748,56 @@ private:
     int32 AcquireConfigPointers(void);
 
     /************************************************************************/
-    /** \brief Set the battery failsafe mode.
+    /** \brief Send the configuration message.
      **
      **  \par Description
-     **       This function sets the battery failsafe mode parameter in the
-     **       configuration table.  An error event will be issued if the
-     **       parameter is out of bounds.
+     **       This function publishes a message containing the current
+     **       configuration.
      **
      **  \par Assumptions, External Events, and Notes:
      **       None
      **
      **  \returns
-     **   TRUE if the parameter is valid and the command succeeded.  FALSE if
-     **   the parameter is out of bounds.
+     **   None
      **  \endreturns
      **
      *************************************************************************/
-    osalbool SetBatteryFailsafeMode(VM_BatteryFailsafeMode_t mode);
+    void ReportConfiguration(void);
+
+    /************************************************************************/
+    /** \brief Process the parameter pipe.
+     **
+     **  \par Description
+     **       This function will process all incoming named parameter
+     **       commands.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \returns
+     **   None
+     **  \endreturns
+     **
+     *************************************************************************/
+    void ProcessParamPipe(void);
+
+    /************************************************************************/
+    /** \brief Process parameter updates.
+     **
+     **  \par Description
+     **       This function is called to update named parameters.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \returns
+     **   CFE_SUCCESS if successful.  -1 if unsuccessful.
+     **  \endreturns
+     **
+     *************************************************************************/
+    int32 ProcessUpdatedParam(PRMLIB_UpdatedParamMsg_t* MsgPtr);
+
+    virtual void onParamsChange(PRMLIB_ParamRegistration_t *ParamsData, uint32 ParamsCount);
 
 public:
     /************************************************************************/
@@ -826,6 +817,14 @@ public:
      **
      *************************************************************************/
     static int32 ValidateConfigTbl(void*);
+
+    virtual void onReceivedUnexpectedMessageID(const char *ErrorText, CFE_SB_MsgId_t MsgId);
+    virtual void onReceivedTelemetryWithIncorrectLength(const char *ErrorText, CFE_SB_MsgId_t MsgId, uint32 Length, uint32 ActualLength);
+    virtual void onReceivedCommandWithIncorrectLength(const char *ErrorText, CFE_SB_MsgId_t MsgId, uint16 CmdCode, uint32 Length, uint32 ActualLength);
+    virtual void onReceivedUnexpectedCommand(const char *ErrorText, CFE_SB_MsgId_t MsgId, uint16 CmdCode);
+    virtual void onReceivedCommand(CFE_SB_MsgId_t MsgID, uint16 CmdCode, CFE_SB_MsgPtr_t MsgPtr);
+    virtual void onReceivedTelemetry(CFE_SB_MsgId_t MsgId, CFE_SB_MsgPtr_t MsgPtr);
+    virtual void onPendPipeTimeout(void);
 };
 
 #ifdef __cplusplus

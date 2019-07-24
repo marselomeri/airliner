@@ -131,10 +131,10 @@ CFE_EVS_SendEvent(VM_IN_UNKNOWN_STATE_ERR_EID, CFE_EVS_ERROR,
 
 }
 
-boolean VM_Arming::PreFlightCheckCleared() {
-boolean battery_ok = true;
-boolean safety_off = true;
-boolean sensors_ok = true;
+osalbool VM_Arming::PreFlightCheckCleared() {
+osalbool battery_ok = true;
+osalbool safety_off = true;
+osalbool sensors_ok = true;
 
 
 /* Warn about global position */
@@ -166,7 +166,7 @@ CFE_EVS_SendEvent(VM_PRE_ARM_SENSORS_CHECK_INFO_EID, CFE_EVS_ERROR,
 sensors_ok = false;
 }
 
-boolean flight_ok = (battery_ok && safety_off && sensors_ok);
+osalbool flight_ok = (battery_ok && safety_off && sensors_ok);
 
 return flight_ok;
 }

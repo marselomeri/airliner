@@ -62,7 +62,7 @@ public:
 
     uint32 GetCurrentStateID(void);
 
-    boolean PreFlightCheckCleared(void);
+    osalbool PreFlightCheckCleared(void);
     VM_ArmingContext FSM;
     VM &App;
 };

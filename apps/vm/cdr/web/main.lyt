@@ -46,7 +46,7 @@
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "width": 30.769230769230763,
+     "width": 25.365853658536587,
      "content": [
       {
        "type": "stack",
@@ -96,90 +96,79 @@
      ]
     },
     {
-     "type": "row",
+     "type": "stack",
+     "header": {},
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "height": 100,
-     "width": 69.23076923076921,
+     "activeItemIndex": 0,
+     "width": 74.63414634146342,
      "content": [
       {
-       "type": "stack",
-       "header": {},
+       "title": "Event Filter",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "flight/core/evs/efltr?appName=VM"
+       },
        "isClosable": true,
-       "reorderEnabled": true,
-       "title": "",
-       "activeItemIndex": 1,
-       "height": 100,
-       "width": 46.00100785766877,
-       "content": [
-        {
-         "title": "SCH Ctrl",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "flight/apps/sch/app_sch?appName=VM"
-         },
-         "isClosable": true,
-         "reorderEnabled": true
-        },
-        {
-         "title": "Tlm Ctrl",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "flight/apps/to/tlm_app?appName=VM"
-         },
-         "isClosable": true,
-         "reorderEnabled": true
-        }
-       ]
+       "reorderEnabled": true
       },
       {
-       "type": "stack",
-       "header": {},
+       "title": "App Ctrl",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "flight/core/es/appctrl?appName=VM"
+       },
        "isClosable": true,
-       "reorderEnabled": true,
-       "title": "",
-       "activeItemIndex": 2,
-       "width": 53.998992142331225,
-       "content": [
-        {
-         "title": "Event Filter",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "flight/core/evs/efltr?appName=VM"
-         },
-         "isClosable": true,
-         "reorderEnabled": true
-        },
-        {
-         "title": "Tbl Ctrl",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "flight/core/tbl/tc?appName=VM"
-         },
-         "isClosable": true,
-         "reorderEnabled": true
-        },
-        {
-         "title": "App Ctrl",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "flight/core/es/appctrl?appName=VM"
-         },
-         "isClosable": true,
-         "reorderEnabled": true
-        }
-       ]
+       "reorderEnabled": true
+      },
+      {
+       "title": "SCH Ctrl",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "flight/apps/sch/app_sch?appName=VM"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "Tlm Ctrl",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "flight/apps/to/tlm_app?appName=VM"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "Tbl Ctrl",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "flight/core/tbl/tc?appName=VM"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "Config",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "/flight/apps/vm/config"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
       }
      ]
     }

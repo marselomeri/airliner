@@ -32,6 +32,12 @@ module.exports = class CfeCdrFlightAppsPlugin extends CdrFlightAppsPlugin {
                         shortDescription: 'Vehicle State',
                         longDescription: 'Arming and Navigation States',
                         filePath: 'vs.pug'
+                    },
+                    config: {
+                        type: CdrFlightAppsPlugin.ContentType.PANEL,
+                        shortDescription: 'Config',
+                        longDescription: 'Config',
+                        filePath: 'config.pug'
                     }
                 }
             }

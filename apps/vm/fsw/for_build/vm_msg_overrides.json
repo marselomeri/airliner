@@ -18,9 +18,10 @@
                   "Rattitude":           { "airliner_cc": 55, "macro": "VM_CMD_MID", "airliner_msg": "" },
                   "Stabilized":          { "airliner_cc": 54, "macro": "VM_CMD_MID", "airliner_msg": "" },
                   "VM_HkTlm_t":          { "airliner_cc": -1, "macro": "VM_HK_TLM_MID", "airliner_msg": "VM_HkTlm_t" },
+                  "VM_ConfigTlm_t":      { "airliner_cc": -1, "macro": "VM_CONFIG_TLM_MID", "airliner_msg": "VM_ConfigTlm_t" },
                   "Wakeup":              { "airliner_cc":  0, "macro": "VM_WAKEUP_MID", "airliner_msg": "" },
                   "SendHk":              { "airliner_cc":  0, "macro": "VM_SEND_HK_MID", "airliner_msg": "" },
-                  "BatteryFailsafeMode": { "airliner_cc": 58, "macro": "VM_CMD_MID", "airliner_msg": "VM_SetBatteryFailsafeModeCmd_t" }
+                  "SendConfig":          { "airliner_cc": 58, "macro": "VM_CMD_MID", "airliner_msg": "" }
               },
               "scheduler": {
                   "activities": [

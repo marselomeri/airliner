@@ -61,21 +61,21 @@ public:
     uint32 GetCurrentStateID(void);
 
     void DoAction(void);
-    boolean IsTransitionAltCtlValid(void);
-    boolean IsTransitionPosCtlValid(void);
-    boolean IsTransitionAcrobaticValid(void);
+    osalbool IsTransitionAltCtlValid(void);
+    osalbool IsTransitionPosCtlValid(void);
+    osalbool IsTransitionAcrobaticValid(void);
 
-    boolean IsTransitionAutoLoiterValid(void);
-    boolean IsTransitionRtlValid(void);
-    boolean IsTransitionStabilizeValid(void);
-    boolean IsTransitionRattitudeValid(void);
-    boolean IsTransitionAutoTakeoffValid(void);
-    boolean IsTransitionAutoLandValid(void);
+    osalbool IsTransitionAutoLoiterValid(void);
+    osalbool IsTransitionRtlValid(void);
+    osalbool IsTransitionStabilizeValid(void);
+    osalbool IsTransitionRattitudeValid(void);
+    osalbool IsTransitionAutoTakeoffValid(void);
+    osalbool IsTransitionAutoLandValid(void);
 
-    boolean IsAllMessagesReady(void);
-    boolean IsStabilizationRequired(void);
-    boolean IsConditionLocalPositionValid(void);
-    boolean IsVehicleArmed(void);
+    osalbool IsAllMessagesReady(void);
+    osalbool IsStabilizationRequired(void);
+    osalbool IsConditionLocalPositionValid(void);
+    osalbool IsVehicleArmed(void);
 
     VM_NavigationContext FSM;
     VM &App;

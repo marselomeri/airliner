@@ -94,6 +94,20 @@ extern "C" {
 */
 #define VM_DATA_PIPE_NAME             ("VM_DATA_PIPE")
 
+/** \brief Pipe depth for the parameters pipe
+**
+**  \par Limits:
+**       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
+*/
+#define VM_PARAM_PIPE_DEPTH             (4)
+
+/** \brief Pipe name for the parameters pipe
+**
+**  \par Limits:
+**       Note, this name must fit in OS_MAX_API_NAME.
+*/
+#define VM_PARAM_PIPE_NAME              ("VM_PARAM_PIPE")
+
 /** \brief The config table default filename
 **
 **  \par Limits:

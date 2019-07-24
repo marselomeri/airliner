@@ -34,6 +34,8 @@
 #ifndef VM_MSG_H
 #define VM_MSG_H
 
+#include "vm_tbldefs.h"
+
 /************************************************************************
  ** Pragmas
  *************************************************************************/
@@ -579,14 +581,13 @@ extern "C" {
  */
 #define VM_SET_NAV_AUTO_LAND_CC            (57)
 
-/** \vmcmd Set Battery Failsafe Mode
+/** \vmcmd Send Configuration
  **
  **  \par Description
  **
  **  \par Command Verification
  **       Successful execution of this command may be verified with
  **       the following telemetry:
- **       - \b \c \VM_BATFSMODE - failsafe mode will reflected commanded value
  **       - \b \c \VM_CMDACPTCNT - command counter will increment
  **       - The #VM_CMD_INF_EID informational event message will be
  **         generated when the command is received
@@ -594,7 +595,6 @@ extern "C" {
  **  \par Error Conditions
  **       This command may fail for the following reason(s):
  **       - Command packet length not as expected
- **       - Commanded mode is invalid.
  **
  **  \par Evidence of failure may be found in the following telemetry:
  **       - \b \c \VM_CMDRJCTCNT - command error counter will increment
@@ -605,7 +605,7 @@ extern "C" {
  **
  **  \sa   #VM_BatteryFailsafeMode_t           \n
  */
-#define VM_SET_BATTERY_FAILSAFE_MODE_CC    (58)
+#define VM_SEND_CONFIGURATION_CC    (58)
 
 /************************************************************************
  ** Local Structure Declarations
@@ -631,14 +631,14 @@ typedef struct
 } VM_NoArgCmd_t;
 
 /**
- **  \brief Battery failsafe mode
- **  For command details see #VM_SET_BATTERY_FAILSAFE_MODE_CC
+ **  \brief VM Configuration
+ **  For command details see #VM_SEND_CONFIGURATION_CC
  */
 typedef struct
 {
-    uint8                    ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
-    VM_BatteryFailsafeMode_t mode;
-} VM_SetBatteryFailsafeModeCmd_t;
+    uint8                    ucHeader[CFE_SB_TLM_HDR_SIZE];
+    VM_ConfigTbl_t           ConfigTbl;
+} VM_ConfigTlm_t;
 
 /** \vmtlm Housekeeping data
  **
@@ -668,10 +668,6 @@ typedef struct
     /** \vmtlmmnemonic \VM_NAVSTATE
      \brief Current navigation state */
     uint32 NavState;
-
-    /** \vmtlmmnemonic \VM_BATFSMODE
-     \brief Battery fail safe mode */
-    VM_BatteryFailsafeMode_t BatteryFailsafeMode;
 
 } VM_HkTlm_t;
 
