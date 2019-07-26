@@ -87,17 +87,17 @@ typedef struct
     /*! Gyro Z-axis calibration param offset. */
     float GyroZOffset;
     /*! Mag X-axis calibration param scale. */
-    //float MagXScale;
+    float MagXScale;
     /*! Mag Y-axis calibration param scale. */
-    //float MagYScale;
+    float MagYScale;
     /*! Mag Z-axis calibration param scale. */
-    //float MagZScale;
+    float MagZScale;
     /*! Mag X-axis calibration param offset. */
-    //float MagXOffset;
+    float MagXOffset;
     /*! Mag Y-axis calibration param offset. */
-    //float MagYOffset;
+    float MagYOffset;
     /*! Mag Z-axis calibration param offset. */
-    //float MagZOffset;
+    float MagZOffset;
 } MPU9250_ConfigTbl_t;
 
 

@@ -66,13 +66,19 @@ MPU9250_ConfigTbl_t MPU9250_ConfigTbl =
         /* GyroYOffset */
         0.0f,
         /* GyroZOffset */
-        0.0f
+        0.0f,
         /* MagXScale */
+        1.0f,
         /* MagYScale */
+        1.0f,
         /* MagZScale */
+        1.0f,
         /* MagXOffset */
+        0.0f,
         /* MagYOffset */
+        0.0f,
         /* MagZOffset */
+        0.0f
 };
 
 /*

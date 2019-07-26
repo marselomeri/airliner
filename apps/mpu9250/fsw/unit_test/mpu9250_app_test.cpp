@@ -535,45 +535,6 @@ void Test_MPU9250_ReadDevice_Nominal(void)
 
 
 /**
- * Test MPU9250_ValidateDevice(), Nominal
- */
-void Test_MPU9250_ValidateDevice_Nominal(void)
-{
-    boolean returnBool = FALSE;
-    boolean expected = TRUE;
-    
-    MPU9250_Custom_Returns.MPU9250_WhoAmI_Return = TRUE;
-    MPU9250_Custom_Returns.MPU9250_WhoAmI_Value = MPU9250_DEVICE_ID;
-
-    MPU9250 oMPU9250;
-    
-    oMPU9250.InitApp();
-    
-    returnBool = oMPU9250.ValidateDevice();
-
-    UtAssert_True(returnBool == expected, "result != expected");
-}
-
-
-/**
- * Test MPU9250_ValidateDevice(), Fail
- */
-void Test_MPU9250_ValidateDevice_Fail(void)
-{
-    boolean returnBool = TRUE;
-    boolean expected = FALSE;
-
-    MPU9250 oMPU9250;
-    
-    oMPU9250.InitApp();
-    
-    returnBool = oMPU9250.ValidateDevice();
-
-    UtAssert_True(returnBool == expected, "result != expected");
-}
-
-
-/**
  * Test MPU9250_CleanupCallback(), Nominal
  * No way to fail cleanupcallback
  */
@@ -659,10 +620,6 @@ void MPU9250_App_Test_AddTestCases(void)
               
     UtTest_Add(Test_MPU9250_ReadDevice_Nominal, MPU9250_Test_Setup, MPU9250_Test_TearDown,
                "Test_MPU9250_ReadDevice_Nominal");
-    UtTest_Add(Test_MPU9250_ValidateDevice_Nominal, MPU9250_Test_Setup, MPU9250_Test_TearDown,
-               "Test_MPU9250_ValidateDevice_Nominal");
-    UtTest_Add(Test_MPU9250_ValidateDevice_Fail, MPU9250_Test_Setup, MPU9250_Test_TearDown,
-               "Test_MPU9250_ValidateDevice_Fail");
     UtTest_Add(Test_MPU9250_CleanupCallback_Nominal, MPU9250_Test_Setup, MPU9250_Test_TearDown,
                "Test_MPU9250_CleanupCallback_Nominal");
     UtTest_Add(Test_MPU9250_UpdateParamsFromTable_Nominal, MPU9250_Test_Setup, MPU9250_Test_TearDown,

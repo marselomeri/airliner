@@ -32,6 +32,7 @@
 *****************************************************************************/
 
 #include "mpu9250_custom_stubs.h"
+#include "mpu9250_custom.h"
 
 MPU9250_Custom_Returns_t MPU9250_Custom_Returns;
 
@@ -149,3 +150,22 @@ void MPU9250_Get_Rotation(uint8 *Rotation)
 {
     
 }
+
+
+void MPU9250_Get_Mag_Rotation(uint8 *Rotation)
+{
+ 
+}
+
+
+boolean MPU9250_Apply_Mag_Platform_Rotation(float *X, float *Y, float *Z)
+{
+    return TRUE;
+}
+
+
+boolean MPU9250_Measure(MPU9250_SampleQueue_t *SampleQueue)
+{
+    return TRUE;
+}
+

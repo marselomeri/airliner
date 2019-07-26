@@ -64,7 +64,7 @@ extern "C" {
 **       Must be defined as a numeric value that is greater than
 **       or equal to zero.
 */
-#define MPU9250_MINOR_VERSION    (0)
+#define MPU9250_MINOR_VERSION    (1)
 
 /** \brief Revision version number for MPU9250 application
 **  
