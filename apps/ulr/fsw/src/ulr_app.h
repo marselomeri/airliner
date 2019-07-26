@@ -60,8 +60,16 @@ extern "C" {
 /************************************************************************
  ** Local Defines
  *************************************************************************/
+#define ULR_MAX_EVENT_FILTERS 	(32)
+#define ULR_LISTENER_TASK_NAME  		"ULR_LISTENER"
+#define ULR_LISTENER_TASK_STACK_SIZE	16000
+#define ULR_LISTENER_TASK_PRIORITY		64
+#define ULR_MUTEX_NAME 					"ULR_MUTEX"
 #define ULR_BUF_LEN 	(6)
-
+#define ULR_MIN_DISTANCE		(0.36f)
+#define ULR_MAX_DISTANCE		(30.0f)
+#define ULR_INVALID_DISTANCE    (-1.0f)
+#define ULR_SENSOR_ID           (0)
 
 /************************************************************************
  ** Local Structure Definitions
@@ -86,14 +94,7 @@ typedef struct
     uint8  Checksum;
 } ULR_UartMessage_t;
 
-
-#define ULR_LISTENER_TASK_NAME  		"ULR_LISTENER"
-#define ULR_LISTENER_TASK_STACK_SIZE	16000
-#define ULR_LISTENER_TASK_PRIORITY		64
-#define ULR_MUTEX_NAME 					"ULR_MUTEX"
-
 extern "C" void ULR_ListenerTaskMain();
-
 
 /**
  **  \brief ULR Application Class
