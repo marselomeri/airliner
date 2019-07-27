@@ -37,7 +37,6 @@
 #include "vm_Arming.h"
 #include "vm_Navigation.h"
 #include "prm_lib.h"
-#include "cpp_lib.hpp"
 
 #ifdef __cplusplus
 extern "C" {
@@ -236,7 +235,7 @@ typedef struct {
 /**
  **  \brief VM Application Class
  */
-class VM : CPPApp
+class VM : ParamsConsumer
 {
 public:
     VM();
@@ -454,6 +453,42 @@ public:
     int32 InitPipe(void);
 
     /************************************************************************/
+    /** \brief Receive and process messages from the scheduler pipe.
+     **
+     **  \par Description
+     **       This function receives and processes messages
+     **       for the VM application from the SCH pipe.  This function
+     **       will pend for the type defined by iBlocking, allowing
+     **       it to wait for messages, i.e. wakeup messages from scheduler.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \param [in]   iBlocking    A #CFE_SB_PEND_FOREVER, #CFE_SB_POLL or
+     **                             millisecond timeout
+     **
+     **  \returns
+     **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS \endcode
+     **  \retstmt Return codes from #CFE_SB_RcvMsg            \endcode
+     **  \endreturns
+     **
+     *************************************************************************/
+    int32 RcvSchPipeMsg(int32 iBlocking);
+
+    /************************************************************************/
+    /** \brief Vehicle Manager Task incoming command processing
+     **
+     **  \par Description
+     **       This function processes incoming commands subscribed
+     **       by VM application
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
+    void ProcessCmdPipe(void);
+
+    /************************************************************************/
     /** \brief Vehicle Manager Task application commands
      **
      **  \par Description
@@ -586,6 +621,25 @@ public:
     void SendVehicleCommandMsg(void);
 
     /************************************************************************/
+    /** \brief Verify Command Length
+     **
+     **  \par Description
+     **       This function verifies the command message length.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \param [in]   MsgPtr        A #CFE_SB_Msg_t pointer that
+     **                              references the software bus message
+     **  \param [in]   usExpectedLen The expected length of the message
+     **
+     **  \returns
+     **  TRUE if the message length matches expectations, FALSE if it does not.
+     **  \endreturns
+     **
+     *************************************************************************/
+    boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
+    /************************************************************************/
     /** \brief Time Elapsed
      **
      **  \par Description
@@ -708,6 +762,14 @@ public:
      **
      *************************************************************************/
     const char* GetNavStateAsString(uint32);
+    /************************************************************************/
+    /** \brief Updates application params from param table
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
+    void UpdateParamsFromTable(void);
 
 private:
     /************************************************************************/
@@ -817,14 +879,6 @@ public:
      **
      *************************************************************************/
     static int32 ValidateConfigTbl(void*);
-
-    virtual void onReceivedUnexpectedMessageID(const char *ErrorText, CFE_SB_MsgId_t MsgId);
-    virtual void onReceivedTelemetryWithIncorrectLength(const char *ErrorText, CFE_SB_MsgId_t MsgId, uint32 Length, uint32 ActualLength);
-    virtual void onReceivedCommandWithIncorrectLength(const char *ErrorText, CFE_SB_MsgId_t MsgId, uint16 CmdCode, uint32 Length, uint32 ActualLength);
-    virtual void onReceivedUnexpectedCommand(const char *ErrorText, CFE_SB_MsgId_t MsgId, uint16 CmdCode);
-    virtual void onReceivedCommand(CFE_SB_MsgId_t MsgID, uint16 CmdCode, CFE_SB_MsgPtr_t MsgPtr);
-    virtual void onReceivedTelemetry(CFE_SB_MsgId_t MsgId, CFE_SB_MsgPtr_t MsgPtr);
-    virtual void onPendPipeTimeout(void);
 };
 
 #ifdef __cplusplus

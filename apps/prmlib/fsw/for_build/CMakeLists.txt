@@ -36,8 +36,10 @@ add_airliner_app_def(prmlib
     NANOPB
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/prm_lib.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/ParamsConsumer.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/prm_version.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../public_inc/prm_lib.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../public_inc/ParamsConsumer.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../public_inc/prm_ids.h
 
     INCLUDES

@@ -330,6 +330,10 @@ void PRMLIB_InitDefaultParameters(void);
 }
 #endif
 
+#ifdef __cplusplus
+#include "ParamsConsumer.hpp"
+#endif
+
 /************************/
 /*  End of File Comment */
 /************************/

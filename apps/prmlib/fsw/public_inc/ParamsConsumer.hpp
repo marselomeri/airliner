@@ -31,17 +31,51 @@
  *
  *****************************************************************************/
 
-#ifndef CPP_LIB_VERSION_H
-#define CPP_LIB_VERSION_H
+#ifndef CPP_LIB_H
+#define CPP_LIB_H
+
+#include "cfe.h"
+#include "prm_lib.h"
 
 
-#define CPP_LIB_MAJOR_VERSION    1
-#define CPP_LIB_MINOR_VERSION    0
-#define CPP_LIB_REVISION         0
-#define CPP_LIB_MISSION_REV      0
+#define PRMLIB_MAX_REGISTRATIONS     (50)
 
-      
-#endif /* CPP_LIB_VERSION_H */
+typedef struct
+{
+	char         	   Name[PRMLIB_MSG_PARAM_NAME_LEN];
+    void*              Value;
+    PRMLIB_ParamType_t Type;
+} PRMLIB_ParamRegistration_t;
+
+typedef struct
+{
+	const char                 PipeName[OS_MAX_API_NAME];
+	uint32                     PipeDepth;
+	PRMLIB_ParamRegistration_t Registrations[PRMLIB_MAX_REGISTRATIONS];
+} PRMLIB_ParamRegistrations_t;
+
+
+
+class ParamsConsumer
+{
+    public:
+	    ParamsConsumer();
+	    ~ParamsConsumer();
+
+        PRMLIB_ParamRegistration_t* GetParamRegistration(const char *Name);
+	    int32 InitParams(PRMLIB_ParamRegistrations_t &Params);
+	    int32 CheckParams(void);
+        virtual void onParamsChange(PRMLIB_ParamRegistration_t *ParamsData, uint32 ParamsCount);
+
+    private:
+        /** \brief Param Pipe ID */
+        CFE_SB_PipeId_t            ParamPipeId;
+        PRMLIB_ParamRegistration_t ParamRegistration[PRMLIB_MAX_REGISTRATIONS];
+};
+
+
+
+#endif /* CPP_LIB_H */
 
 /************************/
 /*  End of File Comment */

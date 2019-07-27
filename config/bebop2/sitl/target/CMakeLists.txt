@@ -56,11 +56,6 @@ add_airliner_app(
 )
 
 add_airliner_app(
-    cpp_lib
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/cpp_lib/fsw/for_build
-)
-
-add_airliner_app(
     sim
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/sim/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/sim
