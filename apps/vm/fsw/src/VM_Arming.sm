@@ -44,7 +44,7 @@ Init
                   {
                       Init();
                   }
-    Reset		  Init 
+    Reset         Init 
                   {
                       Init();
                   }
@@ -54,15 +54,15 @@ Init
 Standby
     Entry
     {
-	    EnteredStandby();
-	}
+        EnteredStandby();
+    }
 {
     Arm           [
-    			  		ctxt.PreFlightCheckCleared() == true
-    			  ]
-    			  Armed {}
+                      ctxt.PreFlightCheckCleared() == true
+                  ]
+                  Armed {}
     Error         StandbyError {}
-    Reset		  Init {}
+    Reset         Init {}
 }
 
 
@@ -78,7 +78,7 @@ Armed
 {
     Disarm        Standby {}
     Error         ArmedError {}
-    Reset		  Init {}
+    Reset         Init {}
 }
 
 

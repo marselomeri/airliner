@@ -568,11 +568,11 @@ void PRMLIB_PrintParam(PRMLIB_ParamData_t param)
 			break;
 		case TYPE_UINT32:
 			memcpy(&val_uint32, &param.value, sizeof(uint32));
-			OS_printf("value: %u \n", val_uint32);
+			OS_printf("value: %u \n", (unsigned int)val_uint32);
 			break;
 		case TYPE_INT32:
 			memcpy(&val_int32, param.value, sizeof(int32));
-			OS_printf("value: %i \n", val_int32);
+			OS_printf("value: %i \n", (int)val_int32);
 			break;
 		case TYPE_REAL32:
 			memcpy(&val_float, param.value, sizeof(float));

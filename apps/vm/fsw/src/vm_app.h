@@ -66,7 +66,6 @@ extern "C" {
 #include "math/Dcm.hpp"
 #include "math/Matrix3F3.hpp"
 #include "math/Vector3F.hpp"
-
 #include "CautionWarningHelper.hpp"
 
 
@@ -77,6 +76,20 @@ extern "C" {
 #define COMMANDER_MONITORING_LOOPSPERMSEC (1/(COMMANDER_MONITORING_INTERVAL/1000.0f))
 #define STICK_ON_OFF_LIMIT (0.9f)
 
+#define COM_RC_IN_MODE_MAX  (2)
+#define COM_RC_ARM_HYST_MIN (100)
+#define COM_RC_ARM_HYST_MAX (1500)
+#define MAV_SYS_ID_MIN      (1)
+#define MAV_SYS_ID_MAX      (250)
+#define MAV_COMP_ID_MIN     (1)
+#define MAV_COMP_ID_MAX     (250)
+#define COM_RC_LOSS_T_MAX   (35.0f)
+#define COM_LOW_BAT_ACT_MAX (3)
+#define COM_HOME_H_T_MIN    (2.0)
+#define COM_HOME_H_T_MAX    (15.0)
+#define COM_HOME_V_T_MIN    (5.0)
+#define COM_HOME_V_T_MAX    (25.0)
+
 /************************************************************************
  ** Local Structure Definitions
  *************************************************************************/
@@ -84,133 +97,30 @@ extern "C" {
 /**
  * \brief Vehicle manager status flags
  */
-typedef struct {
-
+typedef struct
+{
     /** \brief Indicates if all sensors are initialized */
     osalbool condition_system_sensors_initialized;
+
     /** \brief System in rtl state */
     osalbool condition_system_returned_to_home;
+
     /** \brief Indicates a valid home position (a valid home position is not always a valid launch) */
     osalbool condition_home_position_valid;
+
     /** \brief Satus of the USB power supply */
     osalbool usb_connected;
+
     /** \brief True if RC signal found atleast once */
     osalbool rc_signal_found_once;
+
     /** \brief True if RC lost mode is commanded */
     osalbool rc_signal_lost_cmd;
+
     /** \brief Set if RC input should be ignored temporarily */
     osalbool rc_input_blocked;
 
-}VM_StatusFlags;
-
-/**
- * \brief Parameter table
- */
-typedef struct
-{
-
-    /** \brief Auto-start script index */
-    int autostart_id;                                                // 6001
-    /** \brief RC control input mode */
-    int rc_in_off;                                                      // 2
-    /** \brief Arm switch is only a button */
-    int arm_switch_is_button;                                           // 0
-    /** \brief Allow arming without GPS */
-    int arm_without_gps;                                                // 1
-    /** \brief Require valid mission to arm */
-    int arm_mission_required;                                           // 0
-    /** \brief RC input arm/disarm command duration */
-    int rc_arm_hyst;                                                 // 1000
-    /** \brief Airframe type */
-    int mav_type;                                                      // 13
-    /** \brief System ID */
-    int system_id;                                                      // 1
-    /** \brief Component ID */
-    int component_id;                                                   // 1
-    /** \brief Circuit breaker for power supply check */
-    int cbrk_supply_chk;                                                // 0
-    /** \brief Circuit breaker for USB link check */
-    int cbrk_usb_chk;                                                   // 0
-    /** \brief Circuit breaker for airspeed sensor */
-    int cbrk_airspd_chk;                                                // 0
-    /** \brief Circuit breaker for engine failure detection */
-    int cbrk_enginefail_chk;                                       // 284953
-    /** \brief Circuit breaker for GPS failure detection */
-    int cbrk_gpsdail_chk;                                               // 0
-    /** \brief Circuit breaker for flight termination */
-    int cbrk_flightterm_chk;                                       // 121212
-    /** \brief Circuit breaker for position error check */
-    int cbrk_velposerr_chk;                                             // 0
-    /** \brief Set data link loss failsafe mode */
-    int nav_dll_act;                                                    // 2
-    /** \brief Set RC loss failsafe mode */
-    int nav_rcl_act;                                                    // 2
-    /** \brief Datalink loss time threshold */
-    int dl_loss_t;                                                     // 10
-    /** \brief RC loss time threshold */
-    float rc_loss_t;                                                  // 0.5
-    /** \brief RC stick override threshold */
-    float rc_stick_ovrde;                                            // 12.0
-    /** \brief Enable RC stick override of auto modes */
-    int rc_ovrde;                                                       // 0
-    /** \brief Datalink regain time threshold */
-    int dl_reg_t;                                                       // 0
-    /** \brief Engine Failure Throttle Threshold */
-    float ef_throt;                                                   // 0.5
-    /** \brief Engine Failure Current/Throttle Threshold */
-    float ef_c2t;                                                     // 0.5
-    /** \brief Engine Failure Time Threshold */
-    float ef_time;                                                   // 10.0
-    /** \brief Geofence violation action */
-    int gf_action;                                                      // 1
-    /** \brief Time-out for auto disarm after landing */
-    int disarm_land;                                                    // 3
-    /** \brief Battery failsafe mode */
-    int low_bat_act;                                                    // 1
-    /** \brief Time-out to wait when offboard connection is lost before triggering offboard lost action */
-    float of_loss_t;                                                  // 0.0
-    /** \brief Set offboard loss failsafe mode */
-    int obl_act;                                                        // 0
-    /** \brief Set offboard loss failsafe mode when RC is available */
-    int obl_rcl_act;                                                    // 0
-    /** \brief Home set horizontal threshold */
-    float home_h_t;                                                   // 5.0
-    /** \brief Home set vertical threshold */
-    float home_v_t;                                                  // 10.0
-    /** \brief First flightmode slot (1000-1160) */
-    int flt_mode_1;                                                    // -1
-    /** \brief Second flightmode slot (1160-1320) */
-    int flt_mode_2;                                                    // -1
-    /** \brief Third flightmode slot (1320-1480) */
-    int flt_mode_3;                                                    // -1
-    /** \brief Fourth flightmode slot (1480-1640) */
-    int flt_mode_4;                                                    // -1
-    /** \brief Fifth flightmode slot (1640-1800) */
-    int flt_mode_5;                                                    // -1
-    /** \brief Sixth flightmode slot (1800-2000) */
-    int flt_mode_6;                                                    // -1
-    /** \brief Maximum EKF position innovation test ratio that will allow arming */
-    float arm_ekf_pos;                                               // 0.5;
-    /** \brief Maximum EKF velocity innovation test ratio that will allow arming */
-    float arm_ekf_vel;                                                // 0.5
-    /** \brief Maximum EKF height innovation test ratio that will allow arming */
-    float arm_ekf_hgt;                                                // 1.0
-    /** \brief Maximum EKF yaw innovation test ratio that will allow arming */
-    float arm_ekf_yaw;                                                // 0.5
-    /** \brief Maximum value of EKF accelerometer delta velocity bias estimate that will allow arming */
-    float arm_ekf_ab;                                              // 0.0050
-    /** \brief Maximum value of EKF gyro delta angle bias estimate that will allow arming */
-    float arm_ekf_gb;                                              // 0.0009
-    /** \brief Maximum accelerometer inconsistency between IMU units that will allow arming */
-    float arm_imu_acc;                                                // 0.7
-    /** \brief Maximum rate gyro inconsistency between IMU units that will allow arming */
-    float arm_imu_gyr;                                                // 0.2
-    /** \brief Position control navigation loss response */
-    int posctl_navl;                                                    // 0
-    /** \brief Padding for home position altitude message, to avoid hover above ground.     */
-    float home_pos_alt_padding;                                         // 0.2
-
-}VM_Params_t;
+} VM_StatusFlags;
 
 /**
  * \brief RC navigation mode switched
@@ -230,7 +140,7 @@ typedef struct {
     /** \brief Altitude control is selected  */
     osalbool inAltCtl;
 
-}VM_Modes;
+} VM_Modes;
 
 /**
  **  \brief VM Application Class
@@ -238,7 +148,9 @@ typedef struct {
 class VM : ParamsConsumer
 {
 public:
+    /**\brief Default constructor. */
     VM();
+    /**\brief Destructor */
     ~VM();
 
     /**\brief Scheduling Pipe ID */
@@ -879,6 +791,207 @@ public:
      **
      *************************************************************************/
     static int32 ValidateConfigTbl(void*);
+
+    /************************************************************************/
+    /** \brief Validate the COM_RC_IN_MODE parameter
+     **
+     **  \par Description
+     **       Validate the RC control input mode (COM_RC_IN_MODE) parameter.
+     **
+     **  \par Limits:
+     **       Min > Max (incr.) 0 > 2, default 0.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       #VM_INVALID_CONFIG_TABLE_ERR_EID
+     **
+     **  \param [in]   param    Value of the parameter.
+     **
+     **  \returns
+     **  \retcode false  \retdesc \copydoc false  \endcode
+     **  \retcode true  \retdesc \copydoc true  \endcode
+     **  \endreturns
+     **
+     *************************************************************************/
+    static osalbool Validate_COM_RC_IN_MODE(uint32 param);
+
+    /************************************************************************/
+    /** \brief Validate the COM_ARM_SWISBTN parameter
+     **
+     **  \par Description
+     **       Validate the Arm switch is only a button (COM_ARM_SWISBTN) parameter.
+     **
+     **  \par Limits:
+     **       Min > Max (incr.) 0 > 1, default 0.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       #VM_INVALID_CONFIG_TABLE_ERR_EID
+     **
+     **  \param [in]   param    Value of the parameter.
+     **
+     **  \returns
+     **  \retcode false  \retdesc \copydoc false  \endcode
+     **  \retcode true  \retdesc \copydoc true  \endcode
+     **  \endreturns
+     **
+     *************************************************************************/
+    static osalbool Validate_COM_ARM_SWISBTN(uint32 param);
+
+    /************************************************************************/
+    /** \brief Validate the COM_RC_ARM_HYST parameter
+     **
+     **  \par Description
+     **       Validate the RC input arm/disarm command duration (COM_RC_ARM_HYST) parameter.
+     **
+     **  \par Limits:
+     **       Min > Max (incr.) 100 > 1500, default 1000.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       #VM_INVALID_CONFIG_TABLE_ERR_EID
+     **
+     **  \param [in]   param    Value of the parameter.
+     **
+     **  \returns
+     **  \retcode false  \retdesc \copydoc false  \endcode
+     **  \retcode true  \retdesc \copydoc true  \endcode
+     **  \endreturns
+     **
+     *************************************************************************/
+    static osalbool Validate_COM_RC_ARM_HYST(uint32 param);
+
+    /************************************************************************/
+    /** \brief Validate the MAV_SYS_ID parameter
+     **
+     **  \par Description
+     **       Validate the System ID (MAV_SYS_ID) parameter.
+     **
+     **  \par Limits:
+     **       Min > Max (incr.) 1 > 250, default 1.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       #VM_INVALID_CONFIG_TABLE_ERR_EID
+     **
+     **  \param [in]   param    Value of the parameter.
+     **
+     **  \returns
+     **  \retcode false  \retdesc \copydoc false  \endcode
+     **  \retcode true  \retdesc \copydoc true  \endcode
+     **  \endreturns
+     **
+     *************************************************************************/
+    static osalbool Validate_MAV_SYS_ID(uint32 param);
+
+    /************************************************************************/
+    /** \brief Validate the MAV_COMP_ID parameter
+     **
+     **  \par Description
+     **       Validate the Component ID (MAV_COMP_ID) parameter.
+     **
+     **  \par Limits:
+     **       Min > Max (incr.) 1 > 250, default 1.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       #VM_INVALID_CONFIG_TABLE_ERR_EID
+     **
+     **  \param [in]   param    Value of the parameter.
+     **
+     **  \returns
+     **  \retcode false  \retdesc \copydoc false  \endcode
+     **  \retcode true  \retdesc \copydoc true  \endcode
+     **  \endreturns
+     **
+     *************************************************************************/
+    static osalbool Validate_MAV_COMP_ID(uint32 param);
+
+    /************************************************************************/
+    /** \brief Validate the COM_RC_LOSS_T parameter
+     **
+     **  \par Description
+     **       Validate the RC loss time threshold (COM_RC_LOSS_T) parameter.
+     **
+     **  \par Limits:
+     **       Min > Max (incr.) 0.0 > 35.0, default 0.5.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       #VM_INVALID_CONFIG_TABLE_ERR_EID
+     **
+     **  \param [in]   param    Value of the parameter.
+     **
+     **  \returns
+     **  \retcode false  \retdesc \copydoc false  \endcode
+     **  \retcode true  \retdesc \copydoc true  \endcode
+     **  \endreturns
+     **
+     *************************************************************************/
+    static osalbool Validate_COM_RC_LOSS_T(float param);
+
+    /************************************************************************/
+    /** \brief Validate the COM_LOW_BAT_ACT parameter
+     **
+     **  \par Description
+     **       Validate the Battery failsafe mode (COM_LOW_BAT_ACT) parameter.
+     **
+     **  \par Limits:
+     **       Min > Max (incr.) 0 > 3, default 0.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       #VM_INVALID_CONFIG_TABLE_ERR_EID
+     **
+     **  \param [in]   param    Value of the parameter.
+     **
+     **  \returns
+     **  \retcode false  \retdesc \copydoc false  \endcode
+     **  \retcode true  \retdesc \copydoc true  \endcode
+     **  \endreturns
+     **
+     *************************************************************************/
+    static osalbool Validate_COM_LOW_BAT_ACT(uint32 param);
+
+    /************************************************************************/
+    /** \brief Validate the COM_HOME_H_T parameter
+     **
+     **  \par Description
+     **       Validate the Home set horizontal threshold (COM_HOME_H_T) parameter.
+     **
+     **  \par Limits:
+     **       Min > Max (incr.) 2.0 > 15.0, default 5.0.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       #VM_INVALID_CONFIG_TABLE_ERR_EID
+     **
+     **  \param [in]   param    Value of the parameter.
+     **
+     **  \returns
+     **  \retcode false  \retdesc \copydoc false  \endcode
+     **  \retcode true  \retdesc \copydoc true  \endcode
+     **  \endreturns
+     **
+     *************************************************************************/
+    static osalbool Validate_COM_HOME_H_T(float param);
+
+    /************************************************************************/
+    /** \brief Validate the COM_HOME_V_T parameter
+     **
+     **  \par Description
+     **       Validate the Home set vertical threshold (COM_HOME_V_T) parameter.
+     **
+     **  \par Limits:
+     **       Min > Max (incr.) 5.0 > 25.0, default 10.0.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       #VM_INVALID_CONFIG_TABLE_ERR_EID
+     **
+     **  \param [in]   param    Value of the parameter.
+     **
+     **  \returns
+     **  \retcode false  \retdesc \copydoc false  \endcode
+     **  \retcode true  \retdesc \copydoc true  \endcode
+     **  \endreturns
+     **
+     *************************************************************************/
+    static osalbool Validate_COM_HOME_V_T(float param);
+
+    osalbool onParamValidate(void* Address, uint32 Value);
+    osalbool onParamValidate(void* Address, float Value);
 };
 
 #ifdef __cplusplus

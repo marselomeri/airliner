@@ -140,7 +140,7 @@ typedef enum {
      **  update one of its named parameters.
      **
      */
-	VM_PARAM_UPDATE_ERR_EID,
+    VM_PARAM_UPDATE_ERR_EID,
 
     /** \brief <tt> 'Failed to manage Config table (0x\%08X)' </tt>
      **  \event <tt> 'Failed to manage Config table (0x\%08X)' </tt>
@@ -819,7 +819,7 @@ typedef enum {
      **  command.
      **
      */
-	VM_CONFIG_CHANGE_EID,
+    VM_CONFIG_CHANGE_EID,
 
     /** \brief <tt> 'Configuration parameter '%s = %u' out of bounds.' </tt>
      **  \event <tt> 'Configuration parameter 'COM_LOW_BAT_ACT' = %u' out of bounds.' </tt>
@@ -832,7 +832,7 @@ typedef enum {
      **  command.
      **
      */
-	VM_CONFIG_PARAMETER_OUT_OF_BOUNDS_EID,
+    VM_CONFIG_PARAMETER_OUT_OF_BOUNDS_EID,
 
     /** \brief <tt> 'Failed to initialize parameter: %s' </tt>
      **  \event <tt> 'Failed to initialize parameter: %s' </tt>
@@ -845,9 +845,33 @@ typedef enum {
      **  register all the named parameters.
      **
      */
-	VM_PARAM_INIT_ERR_EID,
+    VM_PARAM_INIT_ERR_EID,
 
-	VM_PEND_TIMEOUT_ERR_EID,
+    /** \brief <tt> 'Invalid Config Table: %s' </tt>
+     **  \event <tt> 'Invalid Config Table.  COM_RC_IN_MODE.  Exp:<0,1,2>  Act: %u' </tt>
+     **  \event <tt> 'Invalid Config Table.  COM_ARM_SWISBTN.  Exp:<0,1>  Act: %u' </tt>
+     **  \event <tt> '' </tt>
+     **  \event <tt> '' </tt>
+     **  \event <tt> '' </tt>
+     **  \event <tt> '' </tt>
+     **  \event <tt> '' </tt>
+     **  \event <tt> '' </tt>
+     **  \event <tt> '' </tt>
+     **  \event <tt> '' </tt>
+     **  \event <tt> '' </tt>
+     **  \event <tt> '' </tt>
+     **  \event <tt> '' </tt>
+     **  \event <tt> '' </tt>
+     **
+     **  \par Type: ERROR
+     **
+     **  \par Cause:
+     **
+     **  This event message is issued when the application fails to
+     **  validate the table
+     **
+     */
+    VM_INVALID_CONFIG_TABLE_ERR_EID,
 
     /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
     VM_EVT_CNT

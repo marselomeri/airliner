@@ -123,6 +123,104 @@ void ParamsConsumer::onParamsChange(PRMLIB_ParamRegistration_t *ParamsData, uint
 
 
 
+osalbool ParamsConsumer::onParamValidate(char Name[PRMLIB_MSG_PARAM_NAME_LEN], uint8 Value)
+{
+	return true;
+}
+
+
+
+osalbool ParamsConsumer::onParamValidate(char Name[PRMLIB_MSG_PARAM_NAME_LEN], int8 Value)
+{
+	return true;
+}
+
+
+
+osalbool ParamsConsumer::onParamValidate(char Name[PRMLIB_MSG_PARAM_NAME_LEN], uint16 Value)
+{
+	return true;
+}
+
+
+
+osalbool ParamsConsumer::onParamValidate(char Name[PRMLIB_MSG_PARAM_NAME_LEN], int16 Value)
+{
+	return true;
+}
+
+
+
+osalbool ParamsConsumer::onParamValidate(char Name[PRMLIB_MSG_PARAM_NAME_LEN], uint32 Value)
+{
+	return true;
+}
+
+
+
+osalbool ParamsConsumer::onParamValidate(char Name[PRMLIB_MSG_PARAM_NAME_LEN], int32 Value)
+{
+	return true;
+}
+
+
+
+osalbool ParamsConsumer::onParamValidate(char Name[PRMLIB_MSG_PARAM_NAME_LEN], float Value)
+{
+	return true;
+}
+
+
+
+osalbool ParamsConsumer::onParamValidate(void* Address, uint8 Value)
+{
+	return true;
+}
+
+
+
+osalbool ParamsConsumer::onParamValidate(void* Address, int8 Value)
+{
+	return true;
+}
+
+
+
+osalbool ParamsConsumer::onParamValidate(void* Address, uint16 Value)
+{
+	return true;
+}
+
+
+
+osalbool ParamsConsumer::onParamValidate(void* Address, int16 Value)
+{
+	return true;
+}
+
+
+
+osalbool ParamsConsumer::onParamValidate(void* Address, uint32 Value)
+{
+	return true;
+}
+
+
+
+osalbool ParamsConsumer::onParamValidate(void* Address, int32 Value)
+{
+	return true;
+}
+
+
+
+osalbool ParamsConsumer::onParamValidate(void* Address, float Value)
+{
+	return true;
+}
+
+
+
 int32 ParamsConsumer::CheckParams(void)
 {
     int32 iStatus = CFE_SUCCESS;
@@ -150,22 +248,125 @@ int32 ParamsConsumer::CheckParams(void)
                 	PRMLIB_ParamRegistration_t *paramRegistration = GetParamRegistration(paramMsg->name);
                 	if(paramRegistration != 0)
                 	{
+                        osalbool isValid;
+                		uint8 newValue[8];
+                		int8 val_int8 		= 0;
+                		uint16 val_uint16 	= 0;
+                		int16 val_int16		= 0;
+                		uint32 val_uint32	= 0;
+                		int32 val_int32 	= 0;
+                		float val_float		= 0.0;
+
                 		//OS_printf("Was %u\n", *((uint32*)paramRegistration->Value));
-                        iStatus = PRMLIB_GetParamValueById(paramMsg->name, (cpuaddr*)paramRegistration->Value);
-
-                        //CFE_PSP_MemSet(ParamRegistration[i].Value, 1, sizeof(ParamRegistration[i].Type));
-
-                		//OS_printf("Is %u\n", *((uint32*)paramRegistration->Value));
+                        iStatus = PRMLIB_GetParamValueById(paramMsg->name, (cpuaddr*)newValue);
                         if(iStatus != CFE_SUCCESS)
                         {
                         	contProcessing = FALSE;
                         }
 
-                    	OS_printf("%s %u\n", __FUNCTION__, __LINE__);
-                    	//CFE_PSP_MemCpy(paramData->Value, &paramData->Value, paramData->Type);
-                    	CFE_PSP_MemCpy(&paramDataOut[paramsOut], paramRegistration, sizeof(paramDataOut[paramsOut]));
-                    	paramsOut++;
-                	}
+                        switch(paramRegistration->Type)
+                        {
+                            case TYPE_UINT8:
+                            {
+                        		uint8 typedValue = 0;
+                                CFE_PSP_MemCpy(&typedValue, newValue, sizeof(typedValue));
+                                isValid = onParamValidate(paramMsg->name, typedValue);
+                                if(isValid == true)
+                                {
+                                    isValid = onParamValidate(paramRegistration->Value, typedValue);
+                                }
+                                break;
+                            }
+
+                            case TYPE_INT8:
+                            {
+                        		int8 typedValue = 0;
+                                CFE_PSP_MemCpy(&typedValue, newValue, sizeof(typedValue));
+                                isValid = onParamValidate(paramMsg->name, typedValue);
+                                if(isValid == true)
+                                {
+                                    isValid = onParamValidate(paramRegistration->Value, typedValue);
+                                }
+                                break;
+                            }
+
+                            case TYPE_UINT16:
+                            {
+                        		uint16 typedValue = 0;
+                                CFE_PSP_MemCpy(&typedValue, newValue, sizeof(typedValue));
+                                isValid = onParamValidate(paramMsg->name, typedValue);
+                                if(isValid == true)
+                                {
+                                    isValid = onParamValidate(paramRegistration->Value, typedValue);
+                                }
+                                break;
+                            }
+
+                            case TYPE_INT16:
+                            {
+                        		int16 typedValue = 0;
+                                CFE_PSP_MemCpy(&typedValue, newValue, sizeof(typedValue));
+                                isValid = onParamValidate(paramMsg->name, typedValue);
+                                if(isValid == true)
+                                {
+                                    isValid = onParamValidate(paramRegistration->Value, typedValue);
+                                }
+                                break;
+                            }
+
+                            case TYPE_UINT32:
+                            {
+                        		uint32 typedValue = 0;
+                                CFE_PSP_MemCpy(&typedValue, newValue, sizeof(typedValue));
+                                isValid = onParamValidate(paramMsg->name, typedValue);
+                                if(isValid == true)
+                                {
+                                    isValid = onParamValidate(paramRegistration->Value, typedValue);
+                                }
+                                break;
+                            }
+
+                            case TYPE_INT32:
+                            {
+                        		int32 typedValue = 0;
+                                CFE_PSP_MemCpy(&typedValue, newValue, sizeof(typedValue));
+                                isValid = onParamValidate(paramMsg->name, typedValue);
+                                if(isValid == true)
+                                {
+                                    isValid = onParamValidate(paramRegistration->Value, typedValue);
+                                }
+                                break;
+                            }
+
+                            case TYPE_REAL32:
+                            {
+                        		float typedValue = 0;
+                                CFE_PSP_MemCpy(&typedValue, newValue, sizeof(typedValue));
+                                isValid = onParamValidate(paramMsg->name, typedValue);
+                                if(isValid == true)
+                                {
+                                    isValid = onParamValidate(paramRegistration->Value, typedValue);
+                                }
+                                break;
+                            }
+
+                            default:
+                            {
+                        		isValid = false;
+                                break;
+                            }
+                        }
+
+                        if(isValid == true)
+                        {
+                            //CFE_PSP_MemSet(ParamRegistration[i].Value, 1, sizeof(ParamRegistration[i].Type));
+                            //OS_printf("Is %u\n", *((uint32*)paramRegistration->Value));
+                            OS_printf("%s %u\n", __FUNCTION__, __LINE__);
+                            //CFE_PSP_MemCpy(paramData->Value, &paramData->Value, paramData->Type);
+                            CFE_PSP_MemCpy(&paramDataOut[paramsOut], paramRegistration, sizeof(paramDataOut[paramsOut]));
+                            paramsOut++;
+                        }
+                    }
                     break;
                 }
 

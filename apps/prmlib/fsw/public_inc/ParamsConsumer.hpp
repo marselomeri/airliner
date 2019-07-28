@@ -66,6 +66,20 @@ class ParamsConsumer
 	    int32 InitParams(PRMLIB_ParamRegistrations_t &Params);
 	    int32 CheckParams(void);
         virtual void onParamsChange(PRMLIB_ParamRegistration_t *ParamsData, uint32 ParamsCount);
+        virtual osalbool onParamValidate(char Name[PRMLIB_MSG_PARAM_NAME_LEN], uint8 Value);
+        virtual osalbool onParamValidate(char Name[PRMLIB_MSG_PARAM_NAME_LEN], int8 Value);
+        virtual osalbool onParamValidate(char Name[PRMLIB_MSG_PARAM_NAME_LEN], uint16 Value);
+        virtual osalbool onParamValidate(char Name[PRMLIB_MSG_PARAM_NAME_LEN], int16 Value);
+        virtual osalbool onParamValidate(char Name[PRMLIB_MSG_PARAM_NAME_LEN], uint32 Value);
+        virtual osalbool onParamValidate(char Name[PRMLIB_MSG_PARAM_NAME_LEN], int32 Value);
+        virtual osalbool onParamValidate(char Name[PRMLIB_MSG_PARAM_NAME_LEN], float Value);
+        virtual osalbool onParamValidate(void* Address, uint8 Value);
+        virtual osalbool onParamValidate(void* Address, int8 Value);
+        virtual osalbool onParamValidate(void* Address, uint16 Value);
+        virtual osalbool onParamValidate(void* Address, int16 Value);
+        virtual osalbool onParamValidate(void* Address, uint32 Value);
+        virtual osalbool onParamValidate(void* Address, int32 Value);
+        virtual osalbool onParamValidate(void* Address, float Value);
 
     private:
         /** \brief Param Pipe ID */

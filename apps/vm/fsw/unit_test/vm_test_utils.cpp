@@ -53,7 +53,7 @@
  */
 VM_ConfigTbl_t ConfigTbl = {
         /* TODO:  Define table */
-		0
+        0
 };
 
 /*

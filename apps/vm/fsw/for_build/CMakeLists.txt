@@ -30,6 +30,7 @@ add_airliner_app_def(vm
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/vm_config_utils.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/vm_events.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/vm_msg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/vm_params.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/vm_tbldefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/vm_version.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/vm_Arming.cpp
@@ -42,6 +43,8 @@ add_airliner_app_def(vm
         ${CMAKE_CURRENT_BINARY_DIR}/sm_src/VM_NavigationContext.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/CautionWarningHelper.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/CautionWarningHelper.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/VM_Arming.sm
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/VM_Navigation.sm
 
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/

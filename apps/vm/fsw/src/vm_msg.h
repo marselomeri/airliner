@@ -614,10 +614,10 @@ extern "C" {
 
 typedef enum
 {
-	VM_BATTERY_FAILSAFE_MODE_WARNING                               = 0,
-	VM_BATTERY_FAILSAFE_MODE_RETURN                                = 1,
-	VM_BATTERY_FAILSAFE_MODE_LAND                                  = 2,
-	VM_BATTERY_FAILSAFE_MODE_RETURN_IF_CRIT_LOW_LAND_IF_DANGER_LOW = 3,
+    VM_BATTERY_FAILSAFE_MODE_WARNING                               = 0,
+    VM_BATTERY_FAILSAFE_MODE_RETURN                                = 1,
+    VM_BATTERY_FAILSAFE_MODE_LAND                                  = 2,
+    VM_BATTERY_FAILSAFE_MODE_RETURN_IF_CRIT_LOW_LAND_IF_DANGER_LOW = 3,
 } VM_BatteryFailsafeMode_t;
 
 /**

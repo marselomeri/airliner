@@ -146,7 +146,7 @@ CAWS_States_t CautionWarningHelper::GetState(void)
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 osalbool CautionWarningHelper::SetState(CAWS_States_t state)
 {
-	osalbool returnBool = TRUE;
+    osalbool returnBool = TRUE;
 
     switch(state)
     {
@@ -154,57 +154,79 @@ osalbool CautionWarningHelper::SetState(CAWS_States_t state)
         {
             RGBLedSetColorAndMode(LED_COLOR_GREEN, LED_MODE_BLINK_FAST, 0, 0);
             m_State = state;
+            break;
         }
+
         case CAWS_MISSION_OK: 
         {
             RGBLedSetColorAndMode(LED_COLOR_GREEN, LED_MODE_BLINK_FAST, 0, 0);
             m_State = state;
+            break;
         }
+
         case CAWS_MISSION_FAIL:
         {
             RGBLedSetColorAndMode(LED_COLOR_GREEN, LED_MODE_BLINK_FAST, 0, 0);
             m_State = state;
+            break;
         }
+
         case CAWS_POSITIVE:
         {
             RGBLedSetColorAndMode(LED_COLOR_GREEN, LED_MODE_BLINK_FAST, 0, 0);
             m_State = state;
+            break;
         }
+
         case CAWS_NEUTRAL:
         {
             RGBLedSetColorAndMode(LED_COLOR_WHITE, LED_MODE_BLINK_FAST, 0, 0);
             m_State = state;
+            break;
         }
+
         case CAWS_NEGATIVE:
         {
             RGBLedSetColorAndMode(LED_COLOR_RED, LED_MODE_BLINK_FAST, 0, 0);
             m_State = state;
+            break;
         }
+
         case CAWS_FAILSAFE:
         {
             RGBLedSetColorAndMode(LED_COLOR_PURPLE, LED_MODE_BLINK_FAST, 0, 0);
             m_State = state;
+            break;
         }
+
         case CAWS_ALTCTL:
         {
             RGBLedSetColorAndMode(LED_COLOR_YELLOW, LED_MODE_BLINK_FAST, 0, 0);
             m_State = state;
+            break;
         }
+
         case CAWS_POSCTL:
         {
             RGBLedSetColorAndMode(LED_COLOR_AMBER, LED_MODE_BLINK_FAST, 0, 0);
             m_State = state;
+            break;
         }
+
         case CAWS_AUTO:
         {
             RGBLedSetColorAndMode(LED_COLOR_BLUE, LED_MODE_BLINK_FAST, 0, 0);
             m_State = state;
+            break;
         }
+
         default:
         {
             returnBool = FALSE;
+            break;
         }
     }
+
     return returnBool;
 } /* End CautionWarningHelper::SetState() */
 
@@ -218,7 +240,7 @@ osalbool CautionWarningHelper::SetState(CAWS_States_t state)
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 osalbool CautionWarningHelper::SetStatus(const PX4_VehicleStatusMsg_t *status)
 {
-	osalbool returnBool = TRUE;
+    osalbool returnBool = TRUE;
     osalbool decodeNavState = TRUE;
     /* Initialize final state to the current state */
     CAWS_States_t finalState = m_State;
@@ -307,111 +329,111 @@ osalbool CautionWarningHelper::SetStatus(const PX4_VehicleStatusMsg_t *status)
     
     if(TRUE == decodeNavState)
     {
-		/* Next decode navigation state */
-		switch(status->NavState)
-		{
-			case PX4_NAVIGATION_STATE_MANUAL:
-			{
-				/* Do nothing for state manual */
-				break;
-			}
+        /* Next decode navigation state */
+        switch(status->NavState)
+        {
+            case PX4_NAVIGATION_STATE_MANUAL:
+            {
+                /* Do nothing for state manual */
+                break;
+            }
 
-			case PX4_NAVIGATION_STATE_ALTCTL:
-			{
-				finalState = CAWS_ALTCTL;
-				break;
-			}
+            case PX4_NAVIGATION_STATE_ALTCTL:
+            {
+                finalState = CAWS_ALTCTL;
+                break;
+            }
 
-			case PX4_NAVIGATION_STATE_POSCTL:
-			{
-				finalState = CAWS_POSCTL;
-				break;
-			}
+            case PX4_NAVIGATION_STATE_POSCTL:
+            {
+                finalState = CAWS_POSCTL;
+                break;
+            }
 
-			case PX4_NAVIGATION_STATE_AUTO_MISSION:
-			{
-				finalState = CAWS_AUTO;
-				break;
-			}
+            case PX4_NAVIGATION_STATE_AUTO_MISSION:
+            {
+                finalState = CAWS_AUTO;
+                break;
+            }
 
-			case PX4_NAVIGATION_STATE_AUTO_LOITER:
-			{
-				finalState = CAWS_AUTO;
-				break;
-			}
+            case PX4_NAVIGATION_STATE_AUTO_LOITER:
+            {
+                finalState = CAWS_AUTO;
+                break;
+            }
 
-			case PX4_NAVIGATION_STATE_AUTO_RTL:
-			{
-				finalState = CAWS_FAILSAFE;
-				break;
-			}
+            case PX4_NAVIGATION_STATE_AUTO_RTL:
+            {
+                finalState = CAWS_FAILSAFE;
+                break;
+            }
 
-			case PX4_NAVIGATION_STATE_AUTO_RCRECOVER:
-			{
-				finalState = CAWS_AUTO;
-				break;
-			}
+            case PX4_NAVIGATION_STATE_AUTO_RCRECOVER:
+            {
+                finalState = CAWS_AUTO;
+                break;
+            }
 
-			case PX4_NAVIGATION_STATE_AUTO_RTGS:
-			{
-				finalState = CAWS_AUTO;
-				break;
-			}
+            case PX4_NAVIGATION_STATE_AUTO_RTGS:
+            {
+                finalState = CAWS_AUTO;
+                break;
+            }
 
-			case PX4_NAVIGATION_STATE_AUTO_LANDENGFAIL:
-			{
-				finalState = CAWS_AUTO;
-				break;
-			}
+            case PX4_NAVIGATION_STATE_AUTO_LANDENGFAIL:
+            {
+                finalState = CAWS_AUTO;
+                break;
+            }
 
-			case PX4_NAVIGATION_STATE_AUTO_LANDGPSFAIL:
-			{
-				finalState = CAWS_AUTO;
-				break;
-			}
+            case PX4_NAVIGATION_STATE_AUTO_LANDGPSFAIL:
+            {
+                finalState = CAWS_AUTO;
+                break;
+            }
 
-			case PX4_NAVIGATION_STATE_ACRO:
-			case PX4_NAVIGATION_STATE_UNUSED:
-			case PX4_NAVIGATION_STATE_DESCEND:
-			case PX4_NAVIGATION_STATE_TERMINATION:
-			case PX4_NAVIGATION_STATE_OFFBOARD:
-			case PX4_NAVIGATION_STATE_STAB:
-			case PX4_NAVIGATION_STATE_RATTITUDE:
-			/* Fallthru */
-			{
-				break;
-			}
+            case PX4_NAVIGATION_STATE_ACRO:
+            case PX4_NAVIGATION_STATE_UNUSED:
+            case PX4_NAVIGATION_STATE_DESCEND:
+            case PX4_NAVIGATION_STATE_TERMINATION:
+            case PX4_NAVIGATION_STATE_OFFBOARD:
+            case PX4_NAVIGATION_STATE_STAB:
+            case PX4_NAVIGATION_STATE_RATTITUDE:
+            /* Fallthru */
+            {
+                break;
+            }
 
-			case PX4_NAVIGATION_STATE_AUTO_TAKEOFF:
-			{
-				finalState = CAWS_AUTO;
-				break;
-			}
+            case PX4_NAVIGATION_STATE_AUTO_TAKEOFF:
+            {
+                finalState = CAWS_AUTO;
+                break;
+            }
 
-			case PX4_NAVIGATION_STATE_AUTO_LAND:
-			{
-				finalState = CAWS_AUTO;
-				break;
-			}
+            case PX4_NAVIGATION_STATE_AUTO_LAND:
+            {
+                finalState = CAWS_AUTO;
+                break;
+            }
 
-			case PX4_NAVIGATION_STATE_AUTO_FOLLOW_TARGET:
-			{
-				finalState = CAWS_AUTO;
-				break;
-			}
+            case PX4_NAVIGATION_STATE_AUTO_FOLLOW_TARGET:
+            {
+                finalState = CAWS_AUTO;
+                break;
+            }
 
-			case PX4_NAVIGATION_STATE_AUTO_PRECLAND:
-			{
-				finalState = CAWS_AUTO;
-				break;
-			}
+            case PX4_NAVIGATION_STATE_AUTO_PRECLAND:
+            {
+                finalState = CAWS_AUTO;
+                break;
+            }
 
-			default:
-			{
-				returnBool = FALSE;
-				break;
-			}
-		}
+            default:
+            {
+                returnBool = FALSE;
+                break;
+            }
+        }
     }
 
 end_of_function:

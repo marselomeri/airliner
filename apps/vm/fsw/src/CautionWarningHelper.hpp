@@ -105,163 +105,163 @@ typedef enum
 class CautionWarningHelper
 {
 private:
-	/************************************************************************/
-	/** \brief Caution and Warning System current state.
-	 **
-	 **  \par Description
-	 **       This contains the current state of the Caution and Warning
-	 **       System (CAWS).
-	 **
-	 **  \par Assumptions, External Events, and Notes:
-	 **        None
-	 **
-	 *************************************************************************/
-	CAWS_States_t  m_State;
+    /************************************************************************/
+    /** \brief Caution and Warning System current state.
+     **
+     **  \par Description
+     **       This contains the current state of the Caution and Warning
+     **       System (CAWS).
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **        None
+     **
+     *************************************************************************/
+    CAWS_States_t  m_State;
 
-	/************************************************************************/
-	/** \brief LED Control Message.
-	 **
-	 **  \par Description
-	 **       This is the message that will be sent to the RGBLED application
-	 **       if/when state changes.
-	 **
-	 **  \par Assumptions, External Events, and Notes:
-	 **        None
-	 **
-	 *************************************************************************/
+    /************************************************************************/
+    /** \brief LED Control Message.
+     **
+     **  \par Description
+     **       This is the message that will be sent to the RGBLED application
+     **       if/when state changes.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **        None
+     **
+     *************************************************************************/
     PX4_LedControlMsg_t m_LedControlMsg;
 
-	/************************************************************************/
-	/** \brief Set RGB LED color and mode.
-	 **
-	 **  \par Description
-	 **       This is function is used internally to send the command to
-	 **       the RGB LED application to actually set the color and mode.
-	 **
-	 **  \par Assumptions, External Events, and Notes:
-	 **        None
-	 **
-	 *************************************************************************/
+    /************************************************************************/
+    /** \brief Set RGB LED color and mode.
+     **
+     **  \par Description
+     **       This is function is used internally to send the command to
+     **       the RGB LED application to actually set the color and mode.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **        None
+     **
+     *************************************************************************/
     void RGBLedSetColorAndMode(LED_Colors_t color, LED_Modes_t mode, uint8 blinks, uint8 prio);
 
-	/************************************************************************/
-	/** \brief Initialize the CAWS RGBLED component.
-	 **
-	 **  \par Description
-	 **       This is function is called internally to initialize internal
-	 **       variables required by the Caution and Warning System.
-	 **
-	 **  \par Assumptions, External Events, and Notes:
-	 **        None
-	 **
-	 *************************************************************************/
+    /************************************************************************/
+    /** \brief Initialize the CAWS RGBLED component.
+     **
+     **  \par Description
+     **       This is function is called internally to initialize internal
+     **       variables required by the Caution and Warning System.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **        None
+     **
+     *************************************************************************/
     void InitRGBLED(void);
 
-	/************************************************************************/
-	/** \brief De-initialize the CAWS RGBLED component.
-	 **
-	 **  \par Description
-	 **       This is function is called internally to deinitialize internal
-	 **       variables required by the Caution and Warning System.
-	 **
-	 **  \par Assumptions, External Events, and Notes:
-	 **        None
-	 **
-	 *************************************************************************/
+    /************************************************************************/
+    /** \brief De-initialize the CAWS RGBLED component.
+     **
+     **  \par Description
+     **       This is function is called internally to deinitialize internal
+     **       variables required by the Caution and Warning System.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **        None
+     **
+     *************************************************************************/
     void DeInitRGBLED(void);
 
-	/************************************************************************/
-	/** \brief Set the current state of the Caution and Warning System.
-	 **
-	 **  \par Description
-	 **       This is function is called internally to set the state of the
-	 **       Caution and Warning System.
-	 **
-	 **  \par Assumptions, External Events, and Notes:
-	 **        None
-	 **
-	 *************************************************************************/
+    /************************************************************************/
+    /** \brief Set the current state of the Caution and Warning System.
+     **
+     **  \par Description
+     **       This is function is called internally to set the state of the
+     **       Caution and Warning System.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **        None
+     **
+     *************************************************************************/
     osalbool SetState(CAWS_States_t state);
 
 public:
 
-	/************************************************************************/
-	/** \brief CautionWarningHelper default constructor.
-	 **
-	 **  \par Description
-	 **       This is the default constructor of the CautionWarningHelper
-	 **       class.
-	 **
-	 **  \par Assumptions, External Events, and Notes:
-	 **        None
-	 **
-	 *************************************************************************/
+    /************************************************************************/
+    /** \brief CautionWarningHelper default constructor.
+     **
+     **  \par Description
+     **       This is the default constructor of the CautionWarningHelper
+     **       class.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **        None
+     **
+     *************************************************************************/
     CautionWarningHelper();
 
-	/************************************************************************/
-	/** \brief CautionWarningHelper destructor.
-	 **
-	 **  \par Description
-	 **       This is the destructor for the CautionWarningHelper
-	 **       class.
-	 **
-	 **  \par Assumptions, External Events, and Notes:
-	 **        None
-	 **
-	 *************************************************************************/
+    /************************************************************************/
+    /** \brief CautionWarningHelper destructor.
+     **
+     **  \par Description
+     **       This is the destructor for the CautionWarningHelper
+     **       class.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **        None
+     **
+     *************************************************************************/
     ~CautionWarningHelper();
 
-	/************************************************************************/
-	/** \brief Initialize the Caution and Warning System.
-	 **
-	 **  \par Description
-	 **       This function should be called after object creation, to
-	 **       initialize the Caution and Warning System.
-	 **
-	 **  \par Assumptions, External Events, and Notes:
-	 **        None
-	 **
-	 *************************************************************************/
+    /************************************************************************/
+    /** \brief Initialize the Caution and Warning System.
+     **
+     **  \par Description
+     **       This function should be called after object creation, to
+     **       initialize the Caution and Warning System.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **        None
+     **
+     *************************************************************************/
     void InitCAWS(void);
 
-	/************************************************************************/
-	/** \brief Deinitialize the Caution and Warning System.
-	 **
-	 **  \par Description
-	 **       This is an optional function that can be called before the
-	 **       object is detroyed.
-	 **
-	 **  \par Assumptions, External Events, and Notes:
-	 **        None
-	 **
-	 *************************************************************************/
+    /************************************************************************/
+    /** \brief Deinitialize the Caution and Warning System.
+     **
+     **  \par Description
+     **       This is an optional function that can be called before the
+     **       object is detroyed.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **        None
+     **
+     *************************************************************************/
     void DeInitCAWS(void);
 
-	/************************************************************************/
-	/** \brief Get Caution and Warning System State
-	 **
-	 **  \par Description
-	 **       This function returns the current state of the Caution and
-	 **       Warning System.
-	 **
-	 **  \par Assumptions, External Events, and Notes:
-	 **        InitCAWS has been called.
-	 **
-	 *************************************************************************/
+    /************************************************************************/
+    /** \brief Get Caution and Warning System State
+     **
+     **  \par Description
+     **       This function returns the current state of the Caution and
+     **       Warning System.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **        InitCAWS has been called.
+     **
+     *************************************************************************/
     CAWS_States_t GetState(void);
 
-	/************************************************************************/
-	/** \brief Set Caution and Warning System Status
-	 **
-	 **  \par Description
-	 **       This function sets the Caution and Warning System status from
-	 **       the PX4_VehicleStatusMsg message.  Call this when a new
-	 **       PX4_VehicleStatusMsg is received.
-	 **
-	 **  \par Assumptions, External Events, and Notes:
-	 **        InitCAWS has been called.
-	 **
-	 *************************************************************************/
+    /************************************************************************/
+    /** \brief Set Caution and Warning System Status
+     **
+     **  \par Description
+     **       This function sets the Caution and Warning System status from
+     **       the PX4_VehicleStatusMsg message.  Call this when a new
+     **       PX4_VehicleStatusMsg is received.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **        InitCAWS has been called.
+     **
+     *************************************************************************/
     osalbool SetStatus(const PX4_VehicleStatusMsg_t *status);
 
 };

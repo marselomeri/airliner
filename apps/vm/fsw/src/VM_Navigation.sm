@@ -89,7 +89,7 @@ Manual
                              ctxt.IsVehicleArmed() == true
                          ]
                          AutoLand           { }
-    Reset		  		 Init 				{ }
+    Reset                Init               { }
 }
 
 AltitudeControl
@@ -142,7 +142,7 @@ AltitudeControl
                              ctxt.IsVehicleArmed() == true
                          ]
                          AutoLand           { }
-    Reset		  		 Init 				{ }
+    Reset                Init               { }
     
 }
 
@@ -196,7 +196,7 @@ PositionControl
                              ctxt.IsVehicleArmed() == true
                          ]
                          AutoLand           { }
-    Reset		  		 Init 				{ }
+    Reset                Init               { }
 }
 
 AutoLoiter
@@ -249,7 +249,7 @@ AutoLoiter
                              ctxt.IsVehicleArmed() == true
                          ]
                          AutoLand           { }
-    Reset		  		 Init 				{ }
+    Reset                Init               { }
 }
 
 AutoReturnToLaunch
@@ -302,7 +302,7 @@ AutoReturnToLaunch
                              ctxt.IsVehicleArmed() == true
                          ]
                          AutoLand           { }
-    Reset		  		 Init 				{ }
+    Reset                Init               { }
 }
 
 Acrobatic
@@ -355,7 +355,7 @@ Acrobatic
                              ctxt.IsVehicleArmed() == true
                          ]
                          AutoLand           { }
-    Reset		  		 Init 				{ }
+    Reset                Init               { }
 }
 
 Stabilize
@@ -408,7 +408,7 @@ Stabilize
                              ctxt.IsVehicleArmed() == true
                          ]
                          AutoLand           { }
-    Reset		  		 Init 				{ }
+    Reset                Init               { }
 }
 
 Rattitude
@@ -461,7 +461,7 @@ Rattitude
                              ctxt.IsVehicleArmed() == true
                          ]
                          AutoLand           { }
-    Reset		  		 Init 				{ }
+    Reset                Init               { }
 }
 
 AutoTakeoff
@@ -514,7 +514,7 @@ AutoTakeoff
                              ctxt.IsVehicleArmed() == true
                          ]
                          AutoLand           { }
-    Reset		  		 Init 				{ }
+    Reset                Init               { }
 }
 
 AutoLand
@@ -567,14 +567,13 @@ AutoLand
                              ctxt.IsVehicleArmed() == true
                          ]
                          AutoTakeoff        { }
-    Reset		  		 Init 				{ }
+    Reset                Init               { }
 }
 
 Init
 {
     trInitComplete       Manual             { }
-    Reset		         Init               { }
-		                 
+    Reset                Init               { }
 }
     
 
