@@ -129,11 +129,11 @@ int32 VC_InitPipe()
 
     if (iStatus == CFE_SUCCESS)
     {
-        iStatus = CFE_SB_SubscribeEx(VC_WAKEUP_MID, VC_AppData.SchPipeId, CFE_SB_Default_Qos, VC_SCH_PIPE_WAKEUP_RESERVED);
+        iStatus = CFE_SB_SubscribeEx(VC_PROCESS_CMDS_MID, VC_AppData.SchPipeId, CFE_SB_Default_Qos, VC_SCH_PIPE_WAKEUP_RESERVED);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,
-                                     "Sch Pipe failed to subscribe to VC_WAKEUP_MID. (0x%08X)",
+                                     "Sch Pipe failed to subscribe to VC_PROCESS_CMDS_MID. (0x%08X)",
                                      (unsigned int)iStatus);
             goto VC_InitPipe_Exit_Tag;
         }
@@ -389,7 +389,7 @@ int32 VC_RcvMsg(int32 iBlocking)
         MsgId = CFE_SB_GetMsgId(MsgPtr);
         switch (MsgId)
     {
-            case VC_WAKEUP_MID:
+            case VC_PROCESS_CMDS_MID:
             {
                 VC_ProcessNewCmds();
                 break;
