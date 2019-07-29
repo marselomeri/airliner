@@ -724,12 +724,75 @@ typedef struct
     uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
 
     /** \vmtlmmnemonic \VM_CMDACPTCNT
-     \brief Count of accepted commands */
+     \brief Count of accepted commands.  Cleared by Reset Command. */
     uint8 usCmdCnt;
 
     /** \vmtlmmnemonic \VM_CMDRJCTCNT
-     \brief Count of failed commands */
+     \brief Count of failed commands.  Cleared by Reset Command.  */
     uint8 usCmdErrCnt;
+
+    /** \brief Count of wakeups.  Cleared by Reset Command.  */
+    uint32 WakeupCount;
+
+    /** \brief Count of wakeups.  Cleared by Reset Command.  */
+    uint32 SensorMagMsgCount;
+
+    /** \brief Count of Sensor Gyro messages received.  Cleared by Reset Command.  */
+    uint32 SensorGyroMsgCount;
+
+    /** \brief Count of Battery Status messages received.  Cleared by Reset Command.  */
+    uint32 BatteryStatusMsgCount;
+
+    /** \brief Count of Telemetry Status messages received.  Cleared by Reset Command.  */
+    uint32 TelemetryStatusMsgCount;
+
+    /** \brief Count of Substem Info messages received.  Cleared by Reset Command.  */
+    uint32 SubsystemInfoMsgCount;
+
+    /** \brief Count of Vehicle Attitude messages received.  Cleared by Reset Command.  */
+    uint32 VehicleAttitudeMsgCount;
+
+    /** \brief Count of Vehicle Local Position messages received.  Cleared by Reset Command.  */
+    uint32 VehicleLocalPositionMsgCount;
+
+    /** \brief Count of Vehicle Land Detected messages received.  Cleared by Reset Command.  */
+    uint32 VehicleLandDetectedMsgCount;
+
+    /** \brief Count of Mission Result messages received.  Cleared by Reset Command.  */
+    uint32 MissionResultMsgCount;
+
+    /** \brief Count of Manual Control Setpoint messages received.  Cleared by Reset Command.  */
+    uint32 ManualControlSetpointMsgCount;
+
+    /** \brief Count of Position Setpoint Triplet messages received.  Cleared by Reset Command.  */
+    uint32 PositionSetpointTripletMsgCount;
+
+    /** \brief Count of Sensor Accel messages received.  Cleared by Reset Command.  */
+    uint32 SensorAccelMsgCount;
+
+    /** \brief Count of Safety messages received.  Cleared by Reset Command.  */
+    uint32 SafetyMsgCount;
+
+    /** \brief Count of Sensor Correction messages received.  Cleared by Reset Command.  */
+    uint32 SensorCorrectionMsgCount;
+
+    /** \brief Count of Vehicle Status messages received.  Cleared by Reset Command.  */
+    uint32 VehicleStatusMsgCount;
+
+    /** \brief Count of Vehicle Control Mode messages received.  Cleared by Reset Command.  */
+    uint32 VehicleControlModeMsgCount;
+
+    /** \brief Count of Sensor Combined messages received.  Cleared by Reset Command.  */
+    uint32 SensorCombinedMsgCount;
+
+    /** \brief Count of Vehicle Command messages received.  Cleared by Reset Command.  */
+    uint32 VehicleCommandMsgCount;
+
+    /** \brief Count of Vehicle Global Position messages received.  Cleared by Reset Command.  */
+    uint32 VehicleGlobalPositionMsgCount;
+
+    /** \brief Count of Vehicle GPS Position messages received.  Cleared by Reset Command.  */
+    uint32 VehicleGpsPositionMsgCount;
 
     /** \vmtlmmnemonic \VM_ARMSTATE
      \brief Current arm state */

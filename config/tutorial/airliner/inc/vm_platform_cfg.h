@@ -85,7 +85,7 @@ extern "C" {
 **  \par Limits:
 **       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
 */
-#define VM_DATA_PIPE_DEPTH            (4)
+#define VM_DATA_PIPE_DEPTH            (18)
 
 /** \brief Pipe name for the Scheduler pipe 
 **

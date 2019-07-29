@@ -274,6 +274,10 @@ int32 ParamsConsumer::CheckParams(void)
                                 if(isValid == true)
                                 {
                                     isValid = onParamValidate(paramRegistration->Value, typedValue);
+                                    if(isValid == true)
+                                    {
+                                        CFE_PSP_MemCpy(paramRegistration->Value, &typedValue, sizeof(typedValue));
+                                    }
                                 }
                                 break;
                             }
@@ -286,6 +290,10 @@ int32 ParamsConsumer::CheckParams(void)
                                 if(isValid == true)
                                 {
                                     isValid = onParamValidate(paramRegistration->Value, typedValue);
+                                    if(isValid == true)
+                                    {
+                                        CFE_PSP_MemCpy(paramRegistration->Value, &typedValue, sizeof(typedValue));
+                                    }
                                 }
                                 break;
                             }
@@ -298,6 +306,10 @@ int32 ParamsConsumer::CheckParams(void)
                                 if(isValid == true)
                                 {
                                     isValid = onParamValidate(paramRegistration->Value, typedValue);
+                                    if(isValid == true)
+                                    {
+                                        CFE_PSP_MemCpy(paramRegistration->Value, &typedValue, sizeof(typedValue));
+                                    }
                                 }
                                 break;
                             }
@@ -310,6 +322,10 @@ int32 ParamsConsumer::CheckParams(void)
                                 if(isValid == true)
                                 {
                                     isValid = onParamValidate(paramRegistration->Value, typedValue);
+                                    if(isValid == true)
+                                    {
+                                        CFE_PSP_MemCpy(paramRegistration->Value, &typedValue, sizeof(typedValue));
+                                    }
                                 }
                                 break;
                             }
@@ -322,6 +338,10 @@ int32 ParamsConsumer::CheckParams(void)
                                 if(isValid == true)
                                 {
                                     isValid = onParamValidate(paramRegistration->Value, typedValue);
+                                    if(isValid == true)
+                                    {
+                                        CFE_PSP_MemCpy(paramRegistration->Value, &typedValue, sizeof(typedValue));
+                                    }
                                 }
                                 break;
                             }
@@ -334,6 +354,10 @@ int32 ParamsConsumer::CheckParams(void)
                                 if(isValid == true)
                                 {
                                     isValid = onParamValidate(paramRegistration->Value, typedValue);
+                                    if(isValid == true)
+                                    {
+                                        CFE_PSP_MemCpy(paramRegistration->Value, &typedValue, sizeof(typedValue));
+                                    }
                                 }
                                 break;
                             }
@@ -346,6 +370,10 @@ int32 ParamsConsumer::CheckParams(void)
                                 if(isValid == true)
                                 {
                                     isValid = onParamValidate(paramRegistration->Value, typedValue);
+                                    if(isValid == true)
+                                    {
+                                        CFE_PSP_MemCpy(paramRegistration->Value, &typedValue, sizeof(typedValue));
+                                    }
                                 }
                                 break;
                             }

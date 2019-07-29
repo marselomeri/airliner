@@ -3,13 +3,13 @@
         "apps": {
             "PRM": {
                 "operations": {
-                    "Noop":             { "airliner_cc":  0, "macro": "PRM_CMD_MID", "airliner_msg": "PRM_NoArgCmd_t" },
-                    "Reset":            { "airliner_cc":  1, "macro": "PRM_CMD_MID", "airliner_msg": "PRM_NoArgCmd_t" },
+                    "Noop":                  { "airliner_cc":  0, "macro": "PRM_CMD_MID", "airliner_msg": "PRM_NoArgCmd_t" },
+                    "Reset":                 { "airliner_cc":  1, "macro": "PRM_CMD_MID", "airliner_msg": "PRM_NoArgCmd_t" },
                     "PRM_SetParameterCmd_t": { "airliner_cc":  2, "macro": "PRM_CMD_MID", "airliner_msg": "PRM_SetParameterCmd_t" },
                     "PRM_GetParameterCmd_t": { "airliner_cc":  3, "macro": "PRM_CMD_MID", "airliner_msg": "PRM_GetParameterCmd_t" },
-                    "PRM_HkTlm_t":      {                    "macro": "PRM_HK_TLM_MID", "airliner_msg": "PRM_HkTlm_t" },
-                    "SendHk":           { "airliner_cc":  0, "macro": "PRM_SEND_HK_MID", "airliner_msg": "PRM_NoArgCmd_t"},
-                    "Wakeup":           { "airliner_cc":  0, "macro": "PRM_WAKEUP_MID", "airliner_msg": "PRM_NoArgCmd_t"}
+                    "PRM_HkTlm_t":           {                    "macro": "PRM_HK_TLM_MID", "airliner_msg": "PRM_HkTlm_t" },
+                    "SendHk":                { "airliner_cc":  0, "macro": "PRM_SEND_HK_MID", "airliner_msg": "PRM_NoArgCmd_t"},
+                    "Wakeup":                { "airliner_cc":  0, "macro": "PRM_WAKEUP_MID", "airliner_msg": "PRM_NoArgCmd_t"}
                 },    
                 "scheduler": {
                     "activities": [

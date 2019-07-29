@@ -112,6 +112,9 @@ public:
     /** \brief Command Pipe ID */
     CFE_SB_PipeId_t CmdPipeId;
 
+    /** \brief Data Pipe ID */
+    CFE_SB_PipeId_t DataPipeId;
+
     /* Task-related */
     /** \brief Task Run Status */
     uint32 uiRunStatus;
@@ -322,6 +325,19 @@ public:
      **
      *************************************************************************/
     int32 RcvSchPipeMsg(int32 iBlocking);
+
+    /************************************************************************/
+    /** \brief Vehicle Manager Task incoming data message processing
+     **
+     **  \par Description
+     **       This function processes incoming data messages subscribed
+     **       by VM application
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
+    void ProcessDataPipe(void);
 
     /************************************************************************/
     /** \brief Vehicle Manager Task incoming command processing
