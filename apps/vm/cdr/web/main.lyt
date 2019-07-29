@@ -81,12 +81,12 @@
        "height": 50,
        "content": [
         {
-         "title": "Command and Data Handling",
+         "title": "Housekeeping",
          "type": "component",
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "flight/apps/vm/cdh"
+          "link": "flight/apps/vm/hk"
          },
          "isClosable": true,
          "reorderEnabled": true

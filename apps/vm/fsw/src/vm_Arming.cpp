@@ -244,11 +244,10 @@ osalbool VM_Arming::PreFlightCheckCleared()
     }
 
     /* Sensors check */
-    if (!App.status_flags.condition_system_sensors_initialized)
+    if (!App.HkTlm.StatusFlags.SensorsInitialized)
     {
         CFE_EVS_SendEvent(VM_PRE_ARM_SENSORS_CHECK_INFO_EID, CFE_EVS_ERROR, "Sensors not setup correctly");
         cleared = false;
-        goto end_of_function;
     }
 
 end_of_function:

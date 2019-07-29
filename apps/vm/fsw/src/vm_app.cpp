@@ -118,8 +118,7 @@ int32 VM::InitPipe()
             VM_SCH_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
-        iStatus = CFE_SB_SubscribeEx(VM_WAKEUP_MID, SchPipeId,
-                CFE_SB_Default_Qos, VM_WAKEUP_MID_MAX_MSG_COUNT);
+        iStatus = CFE_SB_SubscribeEx(VM_WAKEUP_MID, SchPipeId, CFE_SB_Default_Qos, VM_WAKEUP_MID_MAX_MSG_COUNT);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
@@ -128,8 +127,7 @@ int32 VM::InitPipe()
             goto VM_InitPipe_Exit_Tag;
         }
 
-        iStatus = CFE_SB_SubscribeEx(VM_SEND_HK_MID, SchPipeId,
-                CFE_SB_Default_Qos, VM_SEND_HK_MID_MAX_MSG_COUNT);
+        iStatus = CFE_SB_SubscribeEx(VM_SEND_HK_MID, SchPipeId, CFE_SB_Default_Qos, VM_SEND_HK_MID_MAX_MSG_COUNT);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
@@ -137,8 +135,8 @@ int32 VM::InitPipe()
                     (unsigned int) iStatus);
             goto VM_InitPipe_Exit_Tag;
         }
-        iStatus = CFE_SB_SubscribeEx(PX4_SENSOR_MAG_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
+
+        iStatus = CFE_SB_SubscribeEx(PX4_SENSOR_MAG_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
@@ -146,8 +144,8 @@ int32 VM::InitPipe()
                     iStatus);
             goto VM_InitPipe_Exit_Tag;
         }
-        iStatus = CFE_SB_SubscribeEx(PX4_SENSOR_GYRO_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
+
+        iStatus = CFE_SB_SubscribeEx(PX4_SENSOR_GYRO_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
@@ -156,8 +154,7 @@ int32 VM::InitPipe()
             goto VM_InitPipe_Exit_Tag;
         }
 
-        iStatus = CFE_SB_SubscribeEx(PX4_BATTERY_STATUS_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
+        iStatus = CFE_SB_SubscribeEx(PX4_BATTERY_STATUS_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
@@ -166,17 +163,7 @@ int32 VM::InitPipe()
             goto VM_InitPipe_Exit_Tag;
         }
 
-        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_COMMAND_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS)
-        {
-            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                    "CMD Pipe failed to subscribe to PX4_VEHICLE_COMMAND_MID. (0x%08lX)",
-                    iStatus);
-            goto VM_InitPipe_Exit_Tag;
-        }
-        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_CONTROL_MODE_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
+        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_COMMAND_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
@@ -185,8 +172,16 @@ int32 VM::InitPipe()
             goto VM_InitPipe_Exit_Tag;
         }
 
-        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_GLOBAL_POSITION_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
+        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_CONTROL_MODE_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                    "CMD Pipe failed to subscribe to PX4_VEHICLE_COMMAND_MID. (0x%08lX)",
+                    iStatus);
+            goto VM_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_GLOBAL_POSITION_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
@@ -194,8 +189,8 @@ int32 VM::InitPipe()
                     iStatus);
             goto VM_InitPipe_Exit_Tag;
         }
-        iStatus = CFE_SB_SubscribeEx(PX4_TELEMETRY_STATUS_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
+
+        iStatus = CFE_SB_SubscribeEx(PX4_TELEMETRY_STATUS_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
@@ -203,8 +198,8 @@ int32 VM::InitPipe()
                     iStatus);
             goto VM_InitPipe_Exit_Tag;
         }
-        iStatus = CFE_SB_SubscribeEx(PX4_SUBSYSTEM_INFO_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
+
+        iStatus = CFE_SB_SubscribeEx(PX4_SUBSYSTEM_INFO_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
@@ -212,8 +207,8 @@ int32 VM::InitPipe()
                     iStatus);
             goto VM_InitPipe_Exit_Tag;
         }
-        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_GPS_POSITION_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
+
+        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_GPS_POSITION_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
@@ -221,8 +216,8 @@ int32 VM::InitPipe()
                     iStatus);
             goto VM_InitPipe_Exit_Tag;
         }
-        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_ATTITUDE_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
+
+        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_ATTITUDE_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
@@ -230,8 +225,8 @@ int32 VM::InitPipe()
                     iStatus);
             goto VM_InitPipe_Exit_Tag;
         }
-        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_LOCAL_POSITION_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
+
+        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_LOCAL_POSITION_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
@@ -239,8 +234,8 @@ int32 VM::InitPipe()
                     iStatus);
             goto VM_InitPipe_Exit_Tag;
         }
-        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_LAND_DETECTED_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
+
+        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_LAND_DETECTED_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
@@ -248,8 +243,8 @@ int32 VM::InitPipe()
                     iStatus);
             goto VM_InitPipe_Exit_Tag;
         }
-        iStatus = CFE_SB_SubscribeEx(PX4_GEOFENCE_RESULT_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
+
+        iStatus = CFE_SB_SubscribeEx(PX4_GEOFENCE_RESULT_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
@@ -257,8 +252,8 @@ int32 VM::InitPipe()
                     iStatus);
             goto VM_InitPipe_Exit_Tag;
         }
-        iStatus = CFE_SB_SubscribeEx(PX4_MISSION_RESULT_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
+
+        iStatus = CFE_SB_SubscribeEx(PX4_MISSION_RESULT_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
@@ -266,8 +261,8 @@ int32 VM::InitPipe()
                     iStatus);
             goto VM_InitPipe_Exit_Tag;
         }
-        iStatus = CFE_SB_SubscribeEx(PX4_MANUAL_CONTROL_SETPOINT_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
+
+        iStatus = CFE_SB_SubscribeEx(PX4_MANUAL_CONTROL_SETPOINT_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
@@ -275,8 +270,8 @@ int32 VM::InitPipe()
                     iStatus);
             goto VM_InitPipe_Exit_Tag;
         }
-        iStatus = CFE_SB_SubscribeEx(PX4_POSITION_SETPOINT_TRIPLET_MID,
-                SchPipeId, CFE_SB_Default_Qos, 1);
+
+        iStatus = CFE_SB_SubscribeEx(PX4_POSITION_SETPOINT_TRIPLET_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
@@ -284,8 +279,8 @@ int32 VM::InitPipe()
                     iStatus);
             goto VM_InitPipe_Exit_Tag;
         }
-        iStatus = CFE_SB_SubscribeEx(PX4_OFFBOARD_CONTROL_MODE_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
+
+        iStatus = CFE_SB_SubscribeEx(PX4_OFFBOARD_CONTROL_MODE_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
@@ -293,8 +288,8 @@ int32 VM::InitPipe()
                     iStatus);
             goto VM_InitPipe_Exit_Tag;
         }
-        iStatus = CFE_SB_SubscribeEx(PX4_SENSOR_ACCEL_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
+
+        iStatus = CFE_SB_SubscribeEx(PX4_SENSOR_ACCEL_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
@@ -302,8 +297,8 @@ int32 VM::InitPipe()
                     iStatus);
             goto VM_InitPipe_Exit_Tag;
         }
-        iStatus = CFE_SB_SubscribeEx(PX4_SAFETY_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
+
+        iStatus = CFE_SB_SubscribeEx(PX4_SAFETY_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
@@ -311,8 +306,8 @@ int32 VM::InitPipe()
                     iStatus);
             goto VM_InitPipe_Exit_Tag;
         }
-        iStatus = CFE_SB_SubscribeEx(PX4_SENSOR_CORRECTION_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
+
+        iStatus = CFE_SB_SubscribeEx(PX4_SENSOR_CORRECTION_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
@@ -320,8 +315,8 @@ int32 VM::InitPipe()
                     iStatus);
             goto VM_InitPipe_Exit_Tag;
         }
-        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_STATUS_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
+
+        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_STATUS_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
@@ -329,8 +324,8 @@ int32 VM::InitPipe()
                     iStatus);
             goto VM_InitPipe_Exit_Tag;
         }
-        iStatus = CFE_SB_SubscribeEx(PX4_SENSOR_COMBINED_MID, SchPipeId,
-                CFE_SB_Default_Qos, 1);
+
+        iStatus = CFE_SB_SubscribeEx(PX4_SENSOR_COMBINED_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(VM_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
@@ -347,9 +342,7 @@ int32 VM::InitPipe()
     }
 
     /* Init command pipe and subscribe to command messages */
-    iStatus = CFE_SB_CreatePipe(&CmdPipeId,
-            VM_CMD_PIPE_DEPTH,
-            VM_CMD_PIPE_NAME);
+    iStatus = CFE_SB_CreatePipe(&CmdPipeId, VM_CMD_PIPE_DEPTH, VM_CMD_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
         /* Subscribe to command messages */
@@ -370,7 +363,8 @@ int32 VM::InitPipe()
         goto VM_InitPipe_Exit_Tag;
     }
 
-    VM_InitPipe_Exit_Tag: return iStatus;
+VM_InitPipe_Exit_Tag:
+	return iStatus;
 }
 
 
@@ -412,7 +406,6 @@ void VM::InitData()
 
     CFE_SB_InitMsg(&VehicleCommandMsg, PX4_VEHICLE_COMMAND_MID,
             sizeof(PX4_VehicleCommandMsg_t), TRUE);
-
 }
 
 
@@ -463,7 +456,8 @@ int32 VM::InitApp()
     /* Initialize the caution and warning helper */
     m_caws.InitCAWS();
 
-    VM_InitApp_Exit_Tag: if (iStatus == CFE_SUCCESS)
+VM_InitApp_Exit_Tag:
+    if (iStatus == CFE_SUCCESS)
     {
         (void) CFE_EVS_SendEvent(VM_INIT_INF_EID, CFE_EVS_INFORMATION,
                 "Initialized.  Version %d.%d.%d.%d",
@@ -474,7 +468,7 @@ int32 VM::InitApp()
     }
     else
     {
-        if (hasEvents == 1)
+        if (hasEvents != 1)
         {
             (void) CFE_ES_WriteToSysLog(
                     "VM - Application failed to initialize\n");
@@ -511,139 +505,167 @@ int32 VM::RcvSchPipeMsg(int32 iBlocking)
         MsgId = CFE_SB_GetMsgId(MsgPtr);
         switch (MsgId)
         {
-        case VM_WAKEUP_MID:
-        {
-
-            /* Update status in caution and warning */
-            m_caws.SetStatus(&VehicleStatusMsg);
-
-            /* Initialize home position and local variables */
-            if (NotInitialized)
+            case VM_WAKEUP_MID:
             {
-                Initialization();
-                SetHomePosition();
-                NotInitialized = false;
+                /* Update status in caution and warning */
+                m_caws.SetStatus(&VehicleStatusMsg);
+
+                /* Initialize home position and local variables */
+                if (HkTlm.NotInitialized)
+                {
+                    Initialization();
+                    SetHomePosition();
+                    HkTlm.NotInitialized = false;
+                }
+
+                /* Cyclic maintainance loop */
+                Execute();
+
+                /* Get a common timestamp. */
+                uint64 timestamp;
+                timestamp = PX4LIB_GetPX4TimeUs();
+                ActuatorArmedMsg.Timestamp = timestamp;
+                VehicleStatusMsg.Timestamp = timestamp;
+                VehicleManagerStateMsg.Timestamp = timestamp;
+                VehicleControlModeMsg.Timestamp = timestamp;
+
+                /* Execute all stateful behavior. */
+                ArmingSM.DoAction();
+                NavigationSM.DoAction();
+
+                /* Publish the messages. */
+                SendVehicleManagerStateMsg();
+                SendVehicleControlModeMsg();
+                break;
             }
 
-            /* Cyclic maintainance loop */
-            Execute();
+            case VM_SEND_HK_MID:
+            {
+                ProcessCmdPipe();
+                ReportHousekeeping();
+                break;
+            }
 
-            /* Get a common timestamp. */
-            uint64 timestamp;
-            timestamp = PX4LIB_GetPX4TimeUs();
-            ActuatorArmedMsg.Timestamp = timestamp;
-            VehicleStatusMsg.Timestamp = timestamp;
-            VehicleManagerStateMsg.Timestamp = timestamp;
-            VehicleControlModeMsg.Timestamp = timestamp;
+            case PX4_SENSOR_MAG_MID:
+            {
+                CFE_PSP_MemCpy(&SensorMagMsg, MsgPtr, sizeof(SensorMagMsg));
+                break;
+            }
 
-            /* Execute all stateful behavior. */
-            ArmingSM.DoAction();
-            NavigationSM.DoAction();
+            case PX4_SENSOR_GYRO_MID:
+            {
+                CFE_PSP_MemCpy(&SensorGyroMsg, MsgPtr, sizeof(SensorGyroMsg));
+                break;
+            }
 
-            /* Publish the messages. */
-            SendVehicleManagerStateMsg();
-            SendVehicleControlModeMsg();
-            break;
-        }
+            case PX4_BATTERY_STATUS_MID:
+            {
+                CFE_PSP_MemCpy(&BatteryStatusMsg, MsgPtr, sizeof(BatteryStatusMsg));
+                break;
+            }
 
-        case VM_SEND_HK_MID:
-            ProcessCmdPipe();
-            ReportHousekeeping();
-            break;
+            case PX4_VEHICLE_GLOBAL_POSITION_MID:
+            {
+                CFE_PSP_MemCpy(&VehicleGlobalPositionMsg, MsgPtr,
+                sizeof(VehicleGlobalPositionMsg));
+                break;
+            }
 
-        case PX4_SENSOR_MAG_MID:
-            memcpy(&SensorMagMsg, MsgPtr, sizeof(SensorMagMsg));
-            break;
+            case PX4_TELEMETRY_STATUS_MID:
+            {
+                CFE_PSP_MemCpy(&TelemetryStatusMsg, MsgPtr, sizeof(TelemetryStatusMsg));
+                break;
+            }
 
-        case PX4_SENSOR_GYRO_MID:
-            memcpy(&SensorGyroMsg, MsgPtr, sizeof(SensorGyroMsg));
-            break;
+            case PX4_SUBSYSTEM_INFO_MID:
+            {
+                CFE_PSP_MemCpy(&SubsystemInfoMsg, MsgPtr, sizeof(SubsystemInfoMsg));
+                break;
+            }
 
-        case PX4_BATTERY_STATUS_MID:
-            memcpy(&BatteryStatusMsg, MsgPtr, sizeof(BatteryStatusMsg));
-            break;
+            case PX4_VEHICLE_GPS_POSITION_MID:
+            {
+                CFE_PSP_MemCpy(&VehicleGpsPositionMsg, MsgPtr, sizeof(VehicleGpsPositionMsg));
+                break;
+            }
 
-        case PX4_VEHICLE_GLOBAL_POSITION_MID:
-            memcpy(&VehicleGlobalPositionMsg, MsgPtr,
-                    sizeof(VehicleGlobalPositionMsg));
-            break;
+            case PX4_VEHICLE_ATTITUDE_MID:
+            {
+                CFE_PSP_MemCpy(&VehicleAttitudeMsg, MsgPtr, sizeof(VehicleAttitudeMsg));
+                break;
+            }
 
-        case PX4_TELEMETRY_STATUS_MID:
-            memcpy(&TelemetryStatusMsg, MsgPtr, sizeof(TelemetryStatusMsg));
-            break;
+            case PX4_VEHICLE_LOCAL_POSITION_MID:
+            {
+                CFE_PSP_MemCpy(&VehicleLocalPositionMsg, MsgPtr, sizeof(VehicleLocalPositionMsg));
+                break;
+            }
 
-        case PX4_SUBSYSTEM_INFO_MID:
-            memcpy(&SubsystemInfoMsg, MsgPtr, sizeof(SubsystemInfoMsg));
-            break;
+            case PX4_VEHICLE_LAND_DETECTED_MID:
+            {
+                CFE_PSP_MemCpy(&VehicleLandDetectedMsg, MsgPtr, sizeof(VehicleLandDetectedMsg));
+                break;
+            }
 
-        case PX4_VEHICLE_GPS_POSITION_MID:
-            memcpy(&VehicleGpsPositionMsg, MsgPtr,
-                    sizeof(VehicleGpsPositionMsg));
-            break;
+            case PX4_MISSION_RESULT_MID:
+            {
+                CFE_PSP_MemCpy(&MissionResultMsg, MsgPtr, sizeof(MissionResultMsg));
+                break;
+            }
 
-        case PX4_VEHICLE_ATTITUDE_MID:
-            memcpy(&VehicleAttitudeMsg, MsgPtr, sizeof(VehicleAttitudeMsg));
-            break;
+            case PX4_MANUAL_CONTROL_SETPOINT_MID:
+            {
+                CFE_PSP_MemCpy(&ManualControlSetpointMsg, MsgPtr, sizeof(ManualControlSetpointMsg));
+                break;
+            }
 
-        case PX4_VEHICLE_LOCAL_POSITION_MID:
-            memcpy(&VehicleLocalPositionMsg, MsgPtr,
-                    sizeof(VehicleLocalPositionMsg));
-            break;
+            case PX4_POSITION_SETPOINT_TRIPLET_MID:
+            {
+                CFE_PSP_MemCpy(&PositionSetpointTripletMsg, MsgPtr, sizeof(PositionSetpointTripletMsg));
+                break;
+            }
 
-        case PX4_VEHICLE_LAND_DETECTED_MID:
-            memcpy(&VehicleLandDetectedMsg, MsgPtr,
-                    sizeof(VehicleLandDetectedMsg));
-            break;
+            case PX4_SENSOR_ACCEL_MID:
+            {
+                CFE_PSP_MemCpy(&SensorAccelMsg, MsgPtr, sizeof(SensorAccelMsg));
+                break;
+            }
 
-            //            case PX4_GEOFENCE_RESULT_MID:
-            //                memcpy(&GeofenceResultMsg, MsgPtr, sizeof(GeofenceResultMsg));
-            //                break;
+            case PX4_SAFETY_MID:
+            {
+                CFE_PSP_MemCpy(&SafetyMsg, MsgPtr, sizeof(SafetyMsg));
+                break;
+            }
 
-        case PX4_MISSION_RESULT_MID:
-            memcpy(&MissionResultMsg, MsgPtr, sizeof(MissionResultMsg));
-            break;
+            case PX4_SENSOR_CORRECTION_MID:
+            {
+                CFE_PSP_MemCpy(&SensorCorrectionMsg, MsgPtr, sizeof(SensorCorrectionMsg));
+                break;
+            }
 
-        case PX4_MANUAL_CONTROL_SETPOINT_MID:
-            memcpy(&ManualControlSetpointMsg, MsgPtr,
-                    sizeof(ManualControlSetpointMsg));
-            break;
+            case PX4_VEHICLE_STATUS_MID:
+            {
+                CFE_PSP_MemCpy(&VehicleStatusMsg, MsgPtr, sizeof(VehicleStatusMsg));
+                break;
+            }
 
-        case PX4_POSITION_SETPOINT_TRIPLET_MID:
-            memcpy(&PositionSetpointTripletMsg, MsgPtr,
-                    sizeof(PositionSetpointTripletMsg));
-            break;
+            case PX4_VEHICLE_CONTROL_MODE_MID:
+            {
+                CFE_PSP_MemCpy(&VehicleControlModeMsg, MsgPtr, sizeof(VehicleControlModeMsg));
+                break;
+            }
 
-            //            case PX4_OFFBOARD_CONTROL_MODE_MID:
-            //                memcpy(&OffboardControlModeMsg, MsgPtr, sizeof(OffboardControlModeMsg));
-            //                break;
+            case PX4_SENSOR_COMBINED_MID:
+            {
+                CFE_PSP_MemCpy(&SensorCombinedMsg, MsgPtr, sizeof(SensorCombinedMsg));
+                break;
+            }
 
-        case PX4_SENSOR_ACCEL_MID:
-            memcpy(&SensorAccelMsg, MsgPtr, sizeof(SensorAccelMsg));
-            break;
-
-        case PX4_SAFETY_MID:
-            memcpy(&SafetyMsg, MsgPtr, sizeof(SafetyMsg));
-            break;
-
-        case PX4_SENSOR_CORRECTION_MID:
-            memcpy(&SensorCorrectionMsg, MsgPtr, sizeof(SensorCorrectionMsg));
-            break;
-
-        case PX4_VEHICLE_STATUS_MID:
-            memcpy(&VehicleStatusMsg, MsgPtr, sizeof(VehicleStatusMsg));
-            break;
-        case PX4_VEHICLE_CONTROL_MODE_MID:
-            memcpy(&VehicleControlModeMsg, MsgPtr,
-                    sizeof(VehicleControlModeMsg));
-            break;
-
-        case PX4_SENSOR_COMBINED_MID:
-            memcpy(&SensorCombinedMsg, MsgPtr, sizeof(SensorCombinedMsg));
-            break;
-
-        default:
-            (void) CFE_EVS_SendEvent(VM_MSGID_ERR_EID, CFE_EVS_ERROR,
+            default:
+            {
+                (void) CFE_EVS_SendEvent(VM_MSGID_ERR_EID, CFE_EVS_ERROR,
                     "Recvd invalid SCH msgId (0x%04X)", MsgId);
+            }
         }
     }
     else if (iStatus == CFE_SB_NO_MESSAGE)
@@ -692,19 +714,23 @@ void VM::ProcessCmdPipe()
             CmdMsgId = CFE_SB_GetMsgId(CmdMsgPtr);
             switch (CmdMsgId)
             {
-            case VM_CMD_MID:
-                ProcessAppCmds(CmdMsgPtr);
-                break;
+                case VM_CMD_MID:
+                {
+                    ProcessAppCmds(CmdMsgPtr);
+                    break;
+                }
 
-            default:
-                /* Bump the command error counter for an unknown command.
-                 * (This should only occur if it was subscribed to with this
-                 *  pipe, but not handled in this switch-case.) */
-                HkTlm.usCmdErrCnt++;
-                (void) CFE_EVS_SendEvent(VM_MSGID_ERR_EID, CFE_EVS_ERROR,
+                default:
+                {
+                    /* Bump the command error counter for an unknown command.
+                     * (This should only occur if it was subscribed to with this
+                     *  pipe, but not handled in this switch-case.) */
+                    HkTlm.usCmdErrCnt++;
+                    (void) CFE_EVS_SendEvent(VM_MSGID_ERR_EID, CFE_EVS_ERROR,
                         "Recvd invalid CMD msgId (0x%04X)",
                         (unsigned short) CmdMsgId);
-                break;
+                    break;
+                }
             }
         }
         else if (iStatus == CFE_SB_NO_MESSAGE)
@@ -737,217 +763,258 @@ void VM::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 
         switch (uiCmdCode)
         {
-        case VM_NOOP_CC:
-            HkTlm.usCmdCnt++;
-            (void) CFE_EVS_SendEvent(VM_CMD_NOOP_EID, CFE_EVS_INFORMATION,
+            case VM_NOOP_CC:
+            {
+                HkTlm.usCmdCnt++;
+                (void) CFE_EVS_SendEvent(VM_CMD_NOOP_EID, CFE_EVS_INFORMATION,
                     "Recvd NOOP. Version %d.%d.%d.%d",
                     VM_MAJOR_VERSION,
                     VM_MINOR_VERSION,
                     VM_REVISION,
                     VM_MISSION_REV);
-            break;
-
-        case VM_RESET_CC:
-            HkTlm.usCmdCnt = 0;
-            HkTlm.usCmdErrCnt = 0;
-            break;
-
-        case VM_VEHICLE_ARM_CC:
-            try
-            {
-                ArmingSM.FSM.Arm();
-                HkTlm.usCmdCnt++;
-            } catch (statemap::TransitionUndefinedException e)
-            {
-                HkTlm.usCmdErrCnt++;
-                CFE_EVS_SendEvent(VM_ARMING_ILLEGAL_TRANSITION_ERR_EID,
-                        CFE_EVS_INFORMATION,
-                        "Illegal Arming transition. [%s] Command rejected.",
-                        "ARM");
+                break;
             }
-            break;
 
-        case VM_VEHICLE_DISARM_CC:
-            try
+            case VM_RESET_CC:
             {
-                ArmingSM.FSM.Disarm();
-                HkTlm.usCmdCnt++;
-            } catch (statemap::TransitionUndefinedException e)
+                HkTlm.usCmdCnt = 0;
+                HkTlm.usCmdErrCnt = 0;
+                break;
+            }
+
+            case VM_VEHICLE_ARM_CC:
             {
-                HkTlm.usCmdErrCnt++;
-                CFE_EVS_SendEvent(VM_ARMING_ILLEGAL_TRANSITION_ERR_EID,
+                try
+                {
+                    ArmingSM.FSM.Arm();
+                    HkTlm.usCmdCnt++;
+                }
+                catch (statemap::TransitionUndefinedException e)
+                {
+                    HkTlm.usCmdErrCnt++;
+                    CFE_EVS_SendEvent(VM_ARMING_ILLEGAL_TRANSITION_ERR_EID,
+                        CFE_EVS_INFORMATION,
+                        "Illegal Arming transition. ARM Command rejected.");
+                }
+                break;
+            }
+
+            case VM_VEHICLE_DISARM_CC:
+            {
+                try
+                {
+                    ArmingSM.FSM.Disarm();
+                    HkTlm.usCmdCnt++;
+                }
+                catch (statemap::TransitionUndefinedException e)
+                {
+                    HkTlm.usCmdErrCnt++;
+                    CFE_EVS_SendEvent(VM_ARMING_ILLEGAL_TRANSITION_ERR_EID,
                         CFE_EVS_INFORMATION,
                         "Illegal Arming transition. [%s] Command rejected.",
                         "DISARM");
+                }
+                break;
             }
-            break;
 
-        case VM_SET_NAV_MANUAL_CC:
-            try
+            case VM_SET_NAV_MANUAL_CC:
             {
-                NavigationSM.FSM.trManual();
-                HkTlm.usCmdCnt++;
-            } catch (statemap::TransitionUndefinedException e)
-            {
-                HkTlm.usCmdErrCnt++;
-                uint32 PrevState = NavigationSM.GetCurrentStateID();
-                CFE_EVS_SendEvent(VM_NAV_ILLEGAL_TRANSITION_ERR_EID,
-                        CFE_EVS_INFORMATION,
+                try
+                {
+                    NavigationSM.FSM.trManual();
+                    HkTlm.usCmdCnt++;
+                }
+                catch (statemap::TransitionUndefinedException e)
+                {
+                    HkTlm.usCmdErrCnt++;
+                    uint32 PrevState = NavigationSM.GetCurrentStateID();
+                    CFE_EVS_SendEvent(VM_NAV_ILLEGAL_TRANSITION_ERR_EID,
+                        CFE_EVS_ERROR,
                         "Illegal Nav transition [%s -> %s].  Command rejected.",
                         GetNavStateAsString(PrevState), "MANUAL");
+                }
+                break;
             }
-            break;
 
-        case VM_SET_NAV_ALTCTL_CC:
-            try
+            case VM_SET_NAV_ALTCTL_CC:
             {
-                NavigationSM.FSM.trAltitudeControl();
-                HkTlm.usCmdCnt++;
-            } catch (statemap::TransitionUndefinedException e)
-            {
-                HkTlm.usCmdErrCnt++;
-                uint32 PrevState = NavigationSM.GetCurrentStateID();
-                CFE_EVS_SendEvent(VM_NAV_ILLEGAL_TRANSITION_ERR_EID,
-                        CFE_EVS_INFORMATION,
+                try
+                {
+                    NavigationSM.FSM.trAltitudeControl();
+                    HkTlm.usCmdCnt++;
+                }
+                catch (statemap::TransitionUndefinedException e)
+                {
+                    HkTlm.usCmdErrCnt++;
+                    uint32 PrevState = NavigationSM.GetCurrentStateID();
+                    CFE_EVS_SendEvent(VM_NAV_ILLEGAL_TRANSITION_ERR_EID,
+                        CFE_EVS_ERROR,
                         "Illegal Nav transition [%s -> %s].  Command rejected.",
                         GetNavStateAsString(PrevState), "ALTCTL");
+                }
+                break;
             }
-            break;
 
-        case VM_SET_NAV_POSCTL_CC:
-            try
+            case VM_SET_NAV_POSCTL_CC:
             {
-                NavigationSM.FSM.trPositionControl();
-                HkTlm.usCmdCnt++;
-            } catch (statemap::TransitionUndefinedException e)
-            {
-                HkTlm.usCmdErrCnt++;
-                uint32 PrevState = NavigationSM.GetCurrentStateID();
-                CFE_EVS_SendEvent(VM_NAV_ILLEGAL_TRANSITION_ERR_EID,
-                        CFE_EVS_INFORMATION,
+                try
+                {
+                    NavigationSM.FSM.trPositionControl();
+                    HkTlm.usCmdCnt++;
+                }
+                catch (statemap::TransitionUndefinedException e)
+                {
+                    HkTlm.usCmdErrCnt++;
+                    uint32 PrevState = NavigationSM.GetCurrentStateID();
+                    CFE_EVS_SendEvent(VM_NAV_ILLEGAL_TRANSITION_ERR_EID,
+                        CFE_EVS_ERROR,
                         "Illegal Nav transition [%s -> %s].  Command rejected.",
                         GetNavStateAsString(PrevState), "POSCTL");
+                }
+                break;
             }
-            break;
 
-        case VM_SET_NAV_AUTO_LOITER_CC:
-            try
+            case VM_SET_NAV_AUTO_LOITER_CC:
             {
-                NavigationSM.FSM.trAutoLoiter();
-                HkTlm.usCmdCnt++;
-            } catch (statemap::TransitionUndefinedException e)
-            {
-                HkTlm.usCmdErrCnt++;
-                uint32 PrevState = NavigationSM.GetCurrentStateID();
-                CFE_EVS_SendEvent(VM_NAV_ILLEGAL_TRANSITION_ERR_EID,
-                        CFE_EVS_INFORMATION,
+                try
+                {
+                    NavigationSM.FSM.trAutoLoiter();
+                    HkTlm.usCmdCnt++;
+                }
+                catch (statemap::TransitionUndefinedException e)
+                {
+                    HkTlm.usCmdErrCnt++;
+                    uint32 PrevState = NavigationSM.GetCurrentStateID();
+                    CFE_EVS_SendEvent(VM_NAV_ILLEGAL_TRANSITION_ERR_EID,
+                        CFE_EVS_ERROR,
                         "Illegal Nav transition [%s -> %s].  Command rejected.",
                         GetNavStateAsString(PrevState), "AUTORTL");
+                }
+                break;
             }
-            break;
 
-        case VM_SET_NAV_AUTO_RTL_CC:
-            try
+            case VM_SET_NAV_AUTO_RTL_CC:
             {
-                NavigationSM.FSM.trAutoReturnToLaunch();
-                HkTlm.usCmdCnt++;
-            } catch (statemap::TransitionUndefinedException e)
-            {
-                HkTlm.usCmdErrCnt++;
-                uint32 PrevState = NavigationSM.GetCurrentStateID();
-                CFE_EVS_SendEvent(VM_NAV_ILLEGAL_TRANSITION_ERR_EID,
-                        CFE_EVS_INFORMATION,
+                try
+                {
+                    NavigationSM.FSM.trAutoReturnToLaunch();
+                    HkTlm.usCmdCnt++;
+                }
+                catch (statemap::TransitionUndefinedException e)
+                {
+                    HkTlm.usCmdErrCnt++;
+                    uint32 PrevState = NavigationSM.GetCurrentStateID();
+                    CFE_EVS_SendEvent(VM_NAV_ILLEGAL_TRANSITION_ERR_EID,
+                        CFE_EVS_ERROR,
                         "Illegal Nav transition [%s -> %s].  Command rejected.",
                         GetNavStateAsString(PrevState), "AUTOLTR");
+                }
+                break;
             }
-            break;
 
-        case VM_SET_NAV_ACRO_CC:
-            try
+            case VM_SET_NAV_ACRO_CC:
             {
-                NavigationSM.FSM.trAcrobatic();
-                HkTlm.usCmdCnt++;
-            } catch (statemap::TransitionUndefinedException e)
-            {
-                HkTlm.usCmdErrCnt++;
-                uint32 PrevState = NavigationSM.GetCurrentStateID();
-                CFE_EVS_SendEvent(VM_NAV_ILLEGAL_TRANSITION_ERR_EID,
-                        CFE_EVS_INFORMATION,
+                try
+                {
+                    NavigationSM.FSM.trAcrobatic();
+                    HkTlm.usCmdCnt++;
+                }
+                catch (statemap::TransitionUndefinedException e)
+                {
+                    HkTlm.usCmdErrCnt++;
+                    uint32 PrevState = NavigationSM.GetCurrentStateID();
+                    CFE_EVS_SendEvent(VM_NAV_ILLEGAL_TRANSITION_ERR_EID,
+                        CFE_EVS_ERROR,
                         "Illegal Nav transition [%s -> %s].  Command rejected.",
                         GetNavStateAsString(PrevState), "ACRO");
+                }
+                break;
             }
-            break;
 
-        case VM_SET_NAV_STABILIZE_CC:
-            try
+            case VM_SET_NAV_STABILIZE_CC:
             {
-                NavigationSM.FSM.trStabilize();
-                HkTlm.usCmdCnt++;
-            } catch (statemap::TransitionUndefinedException e)
-            {
-                HkTlm.usCmdErrCnt++;
-                uint32 PrevState = NavigationSM.GetCurrentStateID();
-                CFE_EVS_SendEvent(VM_NAV_ILLEGAL_TRANSITION_ERR_EID,
-                        CFE_EVS_INFORMATION,
+                try
+                {
+                    NavigationSM.FSM.trStabilize();
+                    HkTlm.usCmdCnt++;
+                }
+                catch (statemap::TransitionUndefinedException e)
+                {
+                    HkTlm.usCmdErrCnt++;
+                    uint32 PrevState = NavigationSM.GetCurrentStateID();
+                    CFE_EVS_SendEvent(VM_NAV_ILLEGAL_TRANSITION_ERR_EID,
+                        CFE_EVS_ERROR,
                         "Illegal Nav transition [%s -> %s].  Command rejected.",
                         GetNavStateAsString(PrevState), "STAB");
+                }
+                break;
             }
-            break;
 
-        case VM_SET_NAV_RATTITUDE_CC:
-            try
+            case VM_SET_NAV_RATTITUDE_CC:
             {
-                NavigationSM.FSM.trRattitude();
-                HkTlm.usCmdCnt++;
-            } catch (statemap::TransitionUndefinedException e)
-            {
-                HkTlm.usCmdErrCnt++;
-                uint32 PrevState = NavigationSM.GetCurrentStateID();
-                CFE_EVS_SendEvent(VM_NAV_ILLEGAL_TRANSITION_ERR_EID,
-                        CFE_EVS_INFORMATION,
+                try
+                {
+                    NavigationSM.FSM.trRattitude();
+                    HkTlm.usCmdCnt++;
+                }
+                catch (statemap::TransitionUndefinedException e)
+                {
+                    HkTlm.usCmdErrCnt++;
+                    uint32 PrevState = NavigationSM.GetCurrentStateID();
+                    CFE_EVS_SendEvent(VM_NAV_ILLEGAL_TRANSITION_ERR_EID,
+                        CFE_EVS_ERROR,
                         "Illegal Nav transition [%s -> %s].  Command rejected.",
                         GetNavStateAsString(PrevState), "RATT");
+                }
+                break;
             }
-            break;
 
-        case VM_SET_NAV_AUTO_TAKEOFF_CC:
-            try
+            case VM_SET_NAV_AUTO_TAKEOFF_CC:
             {
-                NavigationSM.FSM.trAutoTakeoff();
-                HkTlm.usCmdCnt++;
-            } catch (statemap::TransitionUndefinedException e)
-            {
-                HkTlm.usCmdErrCnt++;
-                uint32 PrevState = NavigationSM.GetCurrentStateID();
-                CFE_EVS_SendEvent(VM_NAV_ILLEGAL_TRANSITION_ERR_EID,
-                        CFE_EVS_INFORMATION,
+                try
+                {
+                    NavigationSM.FSM.trAutoTakeoff();
+                    HkTlm.usCmdCnt++;
+                }
+                catch (statemap::TransitionUndefinedException e)
+                {
+                    HkTlm.usCmdErrCnt++;
+                    uint32 PrevState = NavigationSM.GetCurrentStateID();
+                    CFE_EVS_SendEvent(VM_NAV_ILLEGAL_TRANSITION_ERR_EID,
+                        CFE_EVS_ERROR,
                         "Illegal Nav transition [%s -> %s].  Command rejected.",
                         GetNavStateAsString(PrevState), "AUTOTAKOF");
+                }
+                break;
             }
-            break;
 
-        case VM_SET_NAV_AUTO_LAND_CC:
-            try
+            case VM_SET_NAV_AUTO_LAND_CC:
             {
-                NavigationSM.FSM.trAutoLand();
-                HkTlm.usCmdCnt++;
-            } catch (statemap::TransitionUndefinedException e)
-            {
-                HkTlm.usCmdErrCnt++;
-                uint32 PrevState = NavigationSM.GetCurrentStateID();
-                CFE_EVS_SendEvent(VM_NAV_ILLEGAL_TRANSITION_ERR_EID,
-                        CFE_EVS_INFORMATION,
+                try
+                {
+                    NavigationSM.FSM.trAutoLand();
+                    HkTlm.usCmdCnt++;
+                }
+                catch (statemap::TransitionUndefinedException e)
+                {
+                    HkTlm.usCmdErrCnt++;
+                    uint32 PrevState = NavigationSM.GetCurrentStateID();
+                    CFE_EVS_SendEvent(VM_NAV_ILLEGAL_TRANSITION_ERR_EID,
+                        CFE_EVS_ERROR,
                         "Illegal Nav transition [%s -> %s].  Command rejected.",
                         GetNavStateAsString(PrevState), "AUTOLND");
+                }
+                break;
             }
-            break;
 
-        default:
-            HkTlm.usCmdErrCnt++;
-            (void) CFE_EVS_SendEvent(VM_CC_ERR_EID, CFE_EVS_ERROR,
+            default:
+            {
+                HkTlm.usCmdErrCnt++;
+                (void) CFE_EVS_SendEvent(VM_CC_ERR_EID, CFE_EVS_ERROR,
                     "Recvd invalid command code (%u)",
                     (unsigned int) uiCmdCode);
-            break;
+                break;
+            }
         }
     }
 }
@@ -1206,6 +1273,7 @@ uint64 VM::TimeElapsed(uint64 *TimePtr)
 {
     uint64 now = PX4LIB_GetPX4TimeUs();
     uint64 delta = now - *TimePtr;
+
     return delta;
 }
 
@@ -1219,6 +1287,7 @@ uint64 VM::TimeElapsed(uint64 *TimePtr)
 uint64 VM::TimeNow()
 {
     uint64 now = PX4LIB_GetPX4TimeUs();
+
     return now;
 }
 
@@ -1231,8 +1300,8 @@ uint64 VM::TimeNow()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void VM::SetHomePosition()
 {
-    if (!(VehicleGlobalPositionMsg.EpH > ConfigTblPtr->COM_HOME_H_T
-            || VehicleGlobalPositionMsg.EpV > ConfigTblPtr->COM_HOME_V_T))
+    if (!(VehicleGlobalPositionMsg.EpH > ConfigTblPtr->COM_HOME_H_T ||
+          VehicleGlobalPositionMsg.EpV > ConfigTblPtr->COM_HOME_V_T))
     {
         /* Set the HomePosition message */
         float DistBottom = 0;
@@ -1246,8 +1315,7 @@ void VM::SetHomePosition()
         HomePositionMsg.Timestamp = TimeNow();
         HomePositionMsg.Lat = VehicleGlobalPositionMsg.Lat;
         HomePositionMsg.Lon = VehicleGlobalPositionMsg.Lon;
-        HomePositionMsg.Alt = VehicleGlobalPositionMsg.Alt - DistBottom
-                - ConfigTblPtr->HOME_POS_ALT_PADDING;
+        HomePositionMsg.Alt = VehicleGlobalPositionMsg.Alt - DistBottom - ConfigTblPtr->HOME_POS_ALT_PADDING;
         HomePositionMsg.X = VehicleLocalPositionMsg.X;
         HomePositionMsg.Y = VehicleLocalPositionMsg.Y;
         HomePositionMsg.Z = VehicleLocalPositionMsg.Z;
@@ -1267,7 +1335,7 @@ void VM::SetHomePosition()
     }
     else
     {
-        (void) CFE_EVS_SendEvent(VM_HOMESET_INFO_EID, CFE_EVS_INFORMATION,
+        (void) CFE_EVS_SendEvent(VM_HOMESET_INFO_EID, CFE_EVS_ERROR,
                 "Home position cannot be set.");
     }
 }
@@ -1282,13 +1350,13 @@ void VM::SetHomePosition()
 void VM::Initialization()
 {
     /* Initialize status flags */
-    status_flags.condition_system_sensors_initialized = true;
+	HkTlm.StatusFlags.SensorsInitialized = true;
 
     /* Always accept RC input as default */
-    status_flags.rc_input_blocked = false;
-    status_flags.rc_signal_found_once = false;
+	HkTlm.StatusFlags.RcInputIsTemporarilyBlocked = false;
+	HkTlm.StatusFlags.RcSignalFoundOnce = false;
 
-    status_flags.usb_connected = false;
+	HkTlm.StatusFlags.UsbPowerConnected = false;
 
     /* Vehicle status defaults */
     VehicleStatusMsg.OnboardControlSensorsPresent = 0;
@@ -1329,7 +1397,7 @@ void VM::Initialization()
     // user adjustable duration required to assert arm/disarm via throttle/rudder stick
     ConfigTblPtr->COM_RC_ARM_HYST *= COMMANDER_MONITORING_LOOPSPERMSEC;
 
-    VmBootTimestamp = TimeNow();
+    HkTlm.BootTimestamp = TimeNow();
 
     /* update parameters */
     if (!ActuatorArmedMsg.Armed)
@@ -1352,27 +1420,26 @@ void VM::Initialization()
 void VM::Execute()
 {
     /* Set home position at launch */
-    if (VehicleLandDetectedMsg.Landed && !VehicleLandDetectedMsg.Freefall
-            && !VehicleLandDetectedMsg.GroundContact)
+    if (VehicleLandDetectedMsg.Landed && !VehicleLandDetectedMsg.Freefall &&
+        !VehicleLandDetectedMsg.GroundContact)
     {
         /* Vehicle has landed */
-        if (!vh_prev_landed)
+        if (!HkTlm.PrevLanded)
         {
             /* Rest arm and nav states */
             FlightSessionInit();
             /* Forget previous modes */
-            previous_modes =
-            {    0};
+            HkTlm.PreviousModes = {0};
         }
-        vh_prev_landed = true;
-        vh_prev_in_flight = false;
+        HkTlm.PrevLanded = true;
+        HkTlm.PrevInFlight = false;
     }
-    else if(!VehicleLandDetectedMsg.Landed && !VehicleLandDetectedMsg.Freefall && !VehicleLandDetectedMsg.GroundContact && vh_prev_landed && !vh_prev_in_flight )
+    else if(!VehicleLandDetectedMsg.Landed && !VehicleLandDetectedMsg.Freefall && !VehicleLandDetectedMsg.GroundContact && HkTlm.PrevLanded && !HkTlm.PrevInFlight )
     {
         /* Vehicle is launched */
         SetHomePosition();
-        vh_prev_landed = false;
-        vh_prev_in_flight = true;
+        HkTlm.PrevLanded = false;
+        HkTlm.PrevInFlight = true;
     }
 
     /* Vehicle status message handle */
@@ -1389,16 +1456,15 @@ void VM::Execute()
                     "Vehicle [DISARM] by safety message");
             ArmingSM.FSM.Disarm();
             HkTlm.usCmdCnt++;
-            arming_state_changed = true;
+            HkTlm.ArmingStateChanged = true;
 
         }
         catch(statemap::TransitionUndefinedException e)
         {
             HkTlm.usCmdErrCnt++;
-            CFE_EVS_SendEvent(VM_ARMING_ILLEGAL_TRANSITION_ERR_EID, CFE_EVS_INFORMATION,
+            CFE_EVS_SendEvent(VM_ARMING_ILLEGAL_TRANSITION_ERR_EID, CFE_EVS_ERROR,
                     "Illegal Arming transition. [%s] Command rejected.","DISARM");
         }
-
     }
 
     /* Notify the user if the status of the safety switch changes*/
@@ -1418,12 +1484,12 @@ void VM::Execute()
 
     /* Battery status handle */
     /* Only consider battery voltage if system has been running 6s (usb most likely detected) and battery voltage is valid */
-    if((TimeNow() > VmBootTimestamp + VM_BATTERY_VOLTAGE_CHECK_DELAY) && (BatteryStatusMsg.VoltageFiltered > (VM_MINIMUM_VALID_BATTERY_VOLTAGE * FLT_EPSILON)))
+    if((TimeNow() > HkTlm.BootTimestamp + VM_BATTERY_VOLTAGE_CHECK_DELAY) && (BatteryStatusMsg.VoltageFiltered > (VM_MINIMUM_VALID_BATTERY_VOLTAGE * FLT_EPSILON)))
     {
         /* If battery voltage is getting lower, warn using buzzer, etc. */
-        if(BatteryStatusMsg.Warning == PX4_BATTERY_WARNING_LOW && !low_battery_voltage_actions_done)
+        if(BatteryStatusMsg.Warning == PX4_BATTERY_WARNING_LOW && !HkTlm.LowBatteryVoltageActionsDone)
         {
-            low_battery_voltage_actions_done = true;
+        	HkTlm.LowBatteryVoltageActionsDone = true;
 
             if (ActuatorArmedMsg.Armed)
             {
@@ -1436,9 +1502,9 @@ void VM::Execute()
                         "Low battery, takeoff discouraged");
             }
         }
-        else if (!status_flags.usb_connected && BatteryStatusMsg.Warning == PX4_BATTERY_WARNING_CRITICAL && !critical_battery_voltage_actions_done)
+        else if (!HkTlm.StatusFlags.UsbPowerConnected && BatteryStatusMsg.Warning == PX4_BATTERY_WARNING_CRITICAL && !HkTlm.CriticalBatteryVoltageActionsDone)
         {
-            critical_battery_voltage_actions_done = true;
+        	HkTlm.CriticalBatteryVoltageActionsDone = true;
 
             if (!ActuatorArmedMsg.Armed)
             {
@@ -1492,9 +1558,9 @@ void VM::Execute()
                 }
             }
         }
-        else if(!status_flags.usb_connected && BatteryStatusMsg.Warning == PX4_BATTERY_WARNING_EMERGENCY && !emergency_battery_voltage_actions_done)
+        else if(!HkTlm.StatusFlags.UsbPowerConnected && BatteryStatusMsg.Warning == PX4_BATTERY_WARNING_EMERGENCY && !HkTlm.EmergencyBatteryVoltageActionsDone)
         {
-            emergency_battery_voltage_actions_done = true;
+        	HkTlm.EmergencyBatteryVoltageActionsDone = true;
 
             if (!ActuatorArmedMsg.Armed)
             {
@@ -1563,11 +1629,22 @@ void VM::Execute()
     }
 
     /* RC input handle */
-    if(!status_flags.rc_input_blocked && ManualControlSetpointMsg.Timestamp!=0 && (TimeNow() < ManualControlSetpointMsg.Timestamp + uint64(ConfigTblPtr->COM_RC_LOSS_T * 1e6f)))
+    if(!HkTlm.StatusFlags.RcInputIsTemporarilyBlocked && ManualControlSetpointMsg.Timestamp!=0 && (TimeNow() < ManualControlSetpointMsg.Timestamp + uint64(ConfigTblPtr->COM_RC_LOSS_T * 1e6f)))
     {
-        if(!status_flags.rc_signal_found_once)
+        const osalbool in_armed_state = (VehicleStatusMsg.ArmingState == PX4_ARMING_STATE_ARMED || VehicleStatusMsg.ArmingState == PX4_ARMING_STATE_ARMED_ERROR);
+        const osalbool arm_button_pressed = (ConfigTblPtr->COM_ARM_SWISBTN == 1 && ManualControlSetpointMsg.ArmSwitch == PX4_SWITCH_POS_ON);
+
+        /* DISARM */
+        const osalbool stick_in_lower_left = false; //((ManualControlSetpointMsg.R < -STICK_ON_OFF_LIMIT) && (ManualControlSetpointMsg.Z <0.1f));
+        const osalbool arm_switch_to_disarm_transition = ((ConfigTblPtr->COM_ARM_SWISBTN == 0) && (HkTlm.LastSpManArmSwitch == PX4_SWITCH_POS_ON) && (ManualControlSetpointMsg.ArmSwitch == PX4_SWITCH_POS_OFF) );
+
+        /* ARM */
+        const osalbool stick_in_lower_right = false; // (ManualControlSetpointMsg.R > STICK_ON_OFF_LIMIT  && ManualControlSetpointMsg.Z <0.1f);
+        const osalbool arm_switch_to_arm_transition = ((ConfigTblPtr->COM_ARM_SWISBTN == 0) && (HkTlm.LastSpManArmSwitch ==PX4_SWITCH_POS_OFF) && (ManualControlSetpointMsg.ArmSwitch == PX4_SWITCH_POS_ON) );
+
+        if(!HkTlm.StatusFlags.RcSignalFoundOnce)
         {
-            status_flags.rc_signal_found_once = true;
+        	HkTlm.StatusFlags.RcSignalFoundOnce = true;
         }
         else
         {
@@ -1575,17 +1652,11 @@ void VM::Execute()
             {
                 uint64 Now = TimeNow();
                 (void) CFE_EVS_SendEvent(VM_RC_SIGN_REGAINED_INFO_EID, CFE_EVS_INFORMATION,
-                        "Manual control regained after (%llu)ums",(Now - rc_signal_lost_timestamp));
+                        "Manual control regained after (%llu)ums",(Now - HkTlm.RCSignalLostTimestamp));
             }
         }
 
         VehicleStatusMsg.RcSignalLost = false;
-        const osalbool in_armed_state = (VehicleStatusMsg.ArmingState == PX4_ARMING_STATE_ARMED || VehicleStatusMsg.ArmingState == PX4_ARMING_STATE_ARMED_ERROR);
-        const osalbool arm_button_pressed = (ConfigTblPtr->COM_ARM_SWISBTN == 1 && ManualControlSetpointMsg.ArmSwitch == PX4_SWITCH_POS_ON);
-
-        /* DISARM */
-        const osalbool stick_in_lower_left = false; //((ManualControlSetpointMsg.R < -STICK_ON_OFF_LIMIT) && (ManualControlSetpointMsg.Z <0.1f));
-        const osalbool arm_switch_to_disarm_transition = ((ConfigTblPtr->COM_ARM_SWISBTN == 0) && (last_sp_man_arm_switch ==PX4_SWITCH_POS_ON) && (ManualControlSetpointMsg.ArmSwitch == PX4_SWITCH_POS_OFF) );
 
         if(in_armed_state && VehicleStatusMsg.RcInputMode != PX4_RC_IN_MODE_OFF && (stick_in_lower_left || arm_button_pressed || arm_switch_to_disarm_transition))
         {
@@ -1599,14 +1670,14 @@ void VM::Execute()
                 (void) CFE_EVS_SendEvent(VM_RC_STK_DISARM_REJ_INFO_EID, CFE_EVS_INFORMATION,
                         "Stick disarm rejected, vehicle in flight");
             }
-            else if ((stick_off_counter == ConfigTblPtr->COM_RC_ARM_HYST && stick_on_counter < ConfigTblPtr->COM_RC_ARM_HYST) || arm_switch_to_disarm_transition)
+            else if ((HkTlm.StickOffCounter == ConfigTblPtr->COM_RC_ARM_HYST && HkTlm.StickOnCounter < ConfigTblPtr->COM_RC_ARM_HYST) || arm_switch_to_disarm_transition)
             {
                 try
                 {
                     (void) CFE_EVS_SendEvent(VM_RC_DISARM_INFO_EID, CFE_EVS_INFORMATION,
                             "Disarm engaged by rc");
                     ArmingSM.FSM.Disarm();
-                    arming_state_changed = true;
+                    HkTlm.ArmingStateChanged = true;
                     HkTlm.usCmdCnt++;
                 }
                 catch(statemap::TransitionUndefinedException e)
@@ -1616,21 +1687,17 @@ void VM::Execute()
                             "Illegal Arming transition. [%s] Command rejected.","DISARM");
                 }
             }
-            stick_off_counter++;
+            HkTlm.StickOffCounter++;
         }
         /* do not reset the counter when holding the arm button longer than needed */
         else if (!(ConfigTblPtr->COM_ARM_SWISBTN ==1 && ManualControlSetpointMsg.ArmSwitch == PX4_SWITCH_POS_ON))
         {
-            stick_off_counter = 0;
+        	HkTlm.StickOffCounter = 0;
         }
-
-        /* ARM */
-        const osalbool stick_in_lower_right = false; // (ManualControlSetpointMsg.R > STICK_ON_OFF_LIMIT  && ManualControlSetpointMsg.Z <0.1f);
-        const osalbool arm_switch_to_arm_transition = ((ConfigTblPtr->COM_ARM_SWISBTN == 0) && (last_sp_man_arm_switch ==PX4_SWITCH_POS_OFF) && (ManualControlSetpointMsg.ArmSwitch == PX4_SWITCH_POS_ON) );
 
         if(!in_armed_state && VehicleStatusMsg.RcInputMode != PX4_RC_IN_MODE_OFF && (stick_in_lower_right || arm_button_pressed || arm_switch_to_arm_transition))
         {
-            if((stick_on_counter == ConfigTblPtr->COM_RC_ARM_HYST && stick_off_counter < ConfigTblPtr->COM_RC_ARM_HYST) || arm_switch_to_arm_transition)
+            if((HkTlm.StickOnCounter == ConfigTblPtr->COM_RC_ARM_HYST && HkTlm.StickOffCounter < ConfigTblPtr->COM_RC_ARM_HYST) || arm_switch_to_arm_transition)
             {
                 if((VehicleStatusMsg.NavState != PX4_NAVIGATION_STATE_MANUAL) &&
                         (VehicleStatusMsg.NavState != PX4_NAVIGATION_STATE_ACRO) &&
@@ -1658,18 +1725,18 @@ void VM::Execute()
                                 "Illegal Nav transition.  Command rejected.");
                     }
 
-                    arming_state_changed = true;
+                    HkTlm.ArmingStateChanged = true;
                 }
             }
-            stick_on_counter++;
+            HkTlm.StickOnCounter++;
         }
         /* do not reset the counter when holding the arm button longer than needed */
         else if (!(ConfigTblPtr->COM_ARM_SWISBTN ==1 && ManualControlSetpointMsg.ArmSwitch == PX4_SWITCH_POS_ON))
         {
-            stick_on_counter = 0;
+        	HkTlm.StickOnCounter = 0;
         }
 
-        last_sp_man_arm_switch = ManualControlSetpointMsg.ArmSwitch;
+        HkTlm.LastSpManArmSwitch = ManualControlSetpointMsg.ArmSwitch;
 
         /* KILLSWITCH */
         if(ManualControlSetpointMsg.KillSwitch == PX4_SWITCH_POS_ON)
@@ -1696,7 +1763,7 @@ void VM::Execute()
         /* Mode change routine */
         RcModes();
     }
-    else if(!status_flags.rc_input_blocked && !VehicleStatusMsg.RcSignalLost )
+    else if(!HkTlm.StatusFlags.RcInputIsTemporarilyBlocked && !VehicleStatusMsg.RcSignalLost )
     {
         uint64 Now = TimeNow();
         (void) CFE_EVS_SendEvent(VM_RC_SIGN_LOST_INFO_EID, CFE_EVS_INFORMATION,
@@ -1727,7 +1794,7 @@ void VM::Execute()
         }
 
         VehicleStatusMsg.RcSignalLost = true;
-        rc_signal_lost_timestamp = ManualControlSetpointMsg.Timestamp;
+        HkTlm.RCSignalLostTimestamp = ManualControlSetpointMsg.Timestamp;
     }
 }
 
@@ -1740,21 +1807,18 @@ void VM::Execute()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void VM::RcModes()
 {
-    osalbool posctl = (ManualControlSetpointMsg.PosctlSwitch
-            == PX4_SWITCH_POS_ON);
-    osalbool altctl = (ManualControlSetpointMsg.AltctlSwitch
-            == PX4_SWITCH_POS_ON);
+    osalbool posctl = (ManualControlSetpointMsg.PosctlSwitch == PX4_SWITCH_POS_ON);
+    osalbool altctl = (ManualControlSetpointMsg.AltctlSwitch == PX4_SWITCH_POS_ON);
     osalbool rtl = (ManualControlSetpointMsg.ReturnSwitch == PX4_SWITCH_POS_ON);
-    osalbool loiter = (ManualControlSetpointMsg.LoiterSwitch
-            == PX4_SWITCH_POS_ON);
-    osalbool takeoff = (ManualControlSetpointMsg.TransitionSwitch
-            == PX4_SWITCH_POS_ON);
+    osalbool loiter = (ManualControlSetpointMsg.LoiterSwitch == PX4_SWITCH_POS_ON);
+    osalbool takeoff = (ManualControlSetpointMsg.TransitionSwitch == PX4_SWITCH_POS_ON);
     osalbool manual = (!posctl && !rtl && !loiter && !takeoff);
-    osalbool mode_changed = !(posctl == previous_modes.inPosCtl
-            && rtl == previous_modes.inRtl && loiter == previous_modes.inLoiter
-            && manual == previous_modes.inManual
-            && takeoff == previous_modes.intakeoff
-            && altctl == previous_modes.inAltCtl);
+    osalbool mode_changed = !(posctl == HkTlm.PreviousModes.inPosCtl &&
+                              rtl == HkTlm.PreviousModes.inRtl &&
+                              loiter == HkTlm.PreviousModes.inLoiter &&
+                              manual == HkTlm.PreviousModes.inManual &&
+                              takeoff == HkTlm.PreviousModes.inTakeoff &&
+                              altctl == HkTlm.PreviousModes.inAltCtl);
 
     if (posctl && !altctl && !rtl && !loiter && !takeoff && mode_changed)
     {
@@ -1764,7 +1828,8 @@ void VM::RcModes()
             HkTlm.usCmdCnt++;
             (void) CFE_EVS_SendEvent(VM_RC_POSCTL_INFO_EID, CFE_EVS_INFORMATION,
                     "Mode switched to position control by rc");
-        } catch (statemap::TransitionUndefinedException e)
+        }
+        catch (statemap::TransitionUndefinedException e)
         {
             HkTlm.usCmdErrCnt++;
             uint32 PrevState = NavigationSM.GetCurrentStateID();
@@ -1783,7 +1848,8 @@ void VM::RcModes()
             HkTlm.usCmdCnt++;
             (void) CFE_EVS_SendEvent(VM_RC_RTL_INFO_EID, CFE_EVS_INFORMATION,
                     "Mode switched to auto rtl by rc ");
-        } catch (statemap::TransitionUndefinedException e)
+        }
+        catch (statemap::TransitionUndefinedException e)
         {
             HkTlm.usCmdErrCnt++;
             uint32 PrevState = NavigationSM.GetCurrentStateID();
@@ -1802,7 +1868,8 @@ void VM::RcModes()
             HkTlm.usCmdCnt++;
             (void) CFE_EVS_SendEvent(VM_RC_LTR_INFO_EID, CFE_EVS_INFORMATION,
                     "Mode switched to auto loiter by rc");
-        } catch (statemap::TransitionUndefinedException e)
+        }
+        catch (statemap::TransitionUndefinedException e)
         {
             HkTlm.usCmdErrCnt++;
             uint32 PrevState = NavigationSM.GetCurrentStateID();
@@ -1820,7 +1887,8 @@ void VM::RcModes()
             HkTlm.usCmdCnt++;
             (void) CFE_EVS_SendEvent(VM_RC_TAKE_OFF_INFO_EID,
                     CFE_EVS_INFORMATION, "Mode switched to auto takeoff by rc");
-        } catch (statemap::TransitionUndefinedException e)
+        }
+        catch (statemap::TransitionUndefinedException e)
         {
             HkTlm.usCmdErrCnt++;
             uint32 PrevState = NavigationSM.GetCurrentStateID();
@@ -1838,7 +1906,8 @@ void VM::RcModes()
             HkTlm.usCmdCnt++;
             (void) CFE_EVS_SendEvent(VM_RC_TAKE_OFF_INFO_EID,
                     CFE_EVS_INFORMATION, "Mode switched to altitude control by rc");
-        } catch (statemap::TransitionUndefinedException e)
+        }
+        catch (statemap::TransitionUndefinedException e)
         {
             HkTlm.usCmdErrCnt++;
             uint32 PrevState = NavigationSM.GetCurrentStateID();
@@ -1856,7 +1925,8 @@ void VM::RcModes()
             HkTlm.usCmdCnt++;
             (void) CFE_EVS_SendEvent(VM_RC_MAN_INFO_EID, CFE_EVS_INFORMATION,
                     "Mode switched to Manual by rc");
-        } catch (statemap::TransitionUndefinedException e)
+        }
+        catch (statemap::TransitionUndefinedException e)
         {
             HkTlm.usCmdErrCnt++;
             uint32 PrevState = NavigationSM.GetCurrentStateID();
@@ -1866,13 +1936,17 @@ void VM::RcModes()
                     GetNavStateAsString(PrevState), "MANUAL");
         }
     }
+    else
+    {
+        /* Do nothing. */
+    }
 
-    previous_modes.inPosCtl = posctl;
-    previous_modes.inAltCtl = altctl;
-    previous_modes.inRtl = rtl;
-    previous_modes.inLoiter = loiter;
-    previous_modes.inManual = manual;
-    previous_modes.intakeoff = takeoff;
+    HkTlm.PreviousModes.inPosCtl = posctl;
+    HkTlm.PreviousModes.inAltCtl = altctl;
+    HkTlm.PreviousModes.inRtl = rtl;
+    HkTlm.PreviousModes.inLoiter = loiter;
+    HkTlm.PreviousModes.inManual = manual;
+    HkTlm.PreviousModes.inTakeoff = takeoff;
 }
 
 
@@ -2005,6 +2079,10 @@ int32 VM::InitParams(void)
 {
     int32 iStatus = -1;
 
+    /* The include below is intended to allow us to eventually
+     * autogenerate parameter definitions, but there's still a lot of work
+     * to do before that is fully complete.
+     */
 #include "vm_params.hpp"
 
     iStatus = ParamsConsumer::InitParams(ParamRegistrations);

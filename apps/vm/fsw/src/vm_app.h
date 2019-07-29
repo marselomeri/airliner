@@ -94,53 +94,6 @@ extern "C" {
  ** Local Structure Definitions
  *************************************************************************/
 
-/**
- * \brief Vehicle manager status flags
- */
-typedef struct
-{
-    /** \brief Indicates if all sensors are initialized */
-    osalbool condition_system_sensors_initialized;
-
-    /** \brief System in rtl state */
-    osalbool condition_system_returned_to_home;
-
-    /** \brief Indicates a valid home position (a valid home position is not always a valid launch) */
-    osalbool condition_home_position_valid;
-
-    /** \brief Satus of the USB power supply */
-    osalbool usb_connected;
-
-    /** \brief True if RC signal found atleast once */
-    osalbool rc_signal_found_once;
-
-    /** \brief True if RC lost mode is commanded */
-    osalbool rc_signal_lost_cmd;
-
-    /** \brief Set if RC input should be ignored temporarily */
-    osalbool rc_input_blocked;
-
-} VM_StatusFlags;
-
-/**
- * \brief RC navigation mode switched
- */
-typedef struct {
-
-    /** \brief Position control is selected */
-    osalbool inPosCtl;
-    /** \brief Return to launch is selected  */
-    osalbool inRtl;
-    /** \brief Auto loiter is selected  */
-    osalbool inLoiter;
-    /** \brief Manual is selected  */
-    osalbool inManual;
-    /** \brief Takeoff is selected  */
-    osalbool intakeoff;
-    /** \brief Altitude control is selected  */
-    osalbool inAltCtl;
-
-} VM_Modes;
 
 /**
  **  \brief VM Application Class
@@ -236,38 +189,6 @@ public:
     /** \brief Configuration Telemetry for downlink */
     VM_ConfigTlm_t ConfigTlm;
 
-    /** \brief True if home position is not set and local variables are not initialization */
-    osalbool NotInitialized = true;
-
-    /** \brief Timestamps vm at boot */
-    uint64 VmBootTimestamp = 0;
-    /** \brief status flag variable */
-    VM_StatusFlags status_flags = {};
-    /** \brief True if local position is valid */
-    osalbool ConditionLocalPositionValid;
-    /** \brief True if previously landed */
-    osalbool vh_prev_landed = true;
-    /** \brief True if previously in flight */
-    osalbool vh_prev_in_flight = false;
-    /** \brief Records a count when vehicle is disarmed with stick  */
-    unsigned stick_off_counter = 0;
-    /** \brief Records a count when vehicle is armed with stick */
-    unsigned stick_on_counter = 0;
-    /** \brief Arming switch in manual control setpoint message  */
-    unsigned last_sp_man_arm_switch = 0;
-    /** \brief True when vehicle's battery is low and a contingency action is implemented */
-    osalbool low_battery_voltage_actions_done = false;
-    /** \brief True when vehicle's battery is critical and a contingency action is implemented */
-    osalbool critical_battery_voltage_actions_done = false;
-    /** \brief True when vehicle's battery is dangerously low and a contingency action is implemented */
-    osalbool emergency_battery_voltage_actions_done = false;
-    /** \brief Timestamps the moment rc signal is lost */
-    uint64 rc_signal_lost_timestamp;
-    /** \brief True when arming status changes with the vehicle */
-    osalbool arming_state_changed = false;
-    /** \brief An instance rc navigation mode  */
-    VM_Modes previous_modes {0};
-
     /************************************************************************/
     /** \brief Vehicle Manager (VM) application entry point
      **
@@ -309,7 +230,22 @@ public:
      *************************************************************************/
     int32 InitApp(void);
 
-
+    /************************************************************************/
+    /** \brief Initialize named parameters
+     **
+     **  \par Description
+     **       This function registers named parameters and prepares the object
+     **       to respond to updates in named parameters.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \returns
+     **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS \endcode
+     **  \retstmt Return codes from #ParamsConsumer::InitParams  \endcode
+     **  \endreturns
+     **
+     *************************************************************************/
     int32 InitParams(void);
 
     /************************************************************************/
@@ -771,6 +707,21 @@ private:
      *************************************************************************/
     int32 ProcessUpdatedParam(PRMLIB_UpdatedParamMsg_t* MsgPtr);
 
+    /************************************************************************/
+    /** \brief Respond to changes in parameters
+     **
+     **  \par Description
+     **       This function is called by the #ParamsConsumer base class
+     **       when a registered named parameter has changed.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \returns
+     **   CFE_SUCCESS if successful.  -1 if unsuccessful.
+     **  \endreturns
+     **
+     *************************************************************************/
     virtual void onParamsChange(PRMLIB_ParamRegistration_t *ParamsData, uint32 ParamsCount);
 
 public:
@@ -990,7 +941,56 @@ public:
      *************************************************************************/
     static osalbool Validate_COM_HOME_V_T(float param);
 
+    /************************************************************************/
+    /** \brief Validate a #uint32 named parameter
+     **
+     **  \par Description
+     **       This function is called by the #ParamsConsumer base class
+     **       when before a named parameter is changed by address.  The address
+     **       passed is the address of the parameter passed in the
+     **       #ParamsConsumer::InitParams function.  Return #true if the
+     **       parameter is valid, and #false if invalid.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \returns
+     **   #true if valid.  #false if invalid
+     **  \retstmt Return codes from:
+     **           #VM::Validate_COM_RC_IN_MODE,
+     **           #VM::Validate_COM_ARM_SWISBTN,
+     **           #VM::Validate_COM_RC_ARM_HYST,
+     **           #VM::Validate_MAV_SYS_ID,
+     **           #VM::Validate_MAV_COMP_ID,
+     **           #VM::Validate_COM_LOW_BAT_ACT
+     **  \endreturns
+     **
+     *************************************************************************/
     osalbool onParamValidate(void* Address, uint32 Value);
+
+    /************************************************************************/
+    /** \brief Validate a #float named parameter
+     **
+     **  \par Description
+     **       This function is called by the #ParamsConsumer base class
+     **       when before a named parameter is changed by address.  The address
+     **       passed is the address of the parameter passed in the
+     **       #ParamsConsumer::InitParams function.  Return #true if the
+     **       parameter is valid, and #false if invalid.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \returns
+     **   #true if valid.  #false if invalid
+     **  \retstmt Return codes from:
+     **           #VM::Validate_COM_RC_LOSS_T,
+     **           #VM::Validate_COM_HOME_H_T,
+     **           #VM::Validate_COM_HOME_V_T,
+     **           #VM::Validate_HOME_POS_ALT_PADDING
+     **  \endreturns
+     **
+     *************************************************************************/
     osalbool onParamValidate(void* Address, float Value);
 };
 

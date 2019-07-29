@@ -66,7 +66,7 @@ typedef struct
      *  \brief RC control input mode
      *
      *  \par Limits:
-     *       Min > Max (incr.) 0 > 2, default 0.
+     *       Min > Max (incr.) 0 > #COM_RC_IN_MODE_MAX.
      */
     uint32 COM_RC_IN_MODE;
 
@@ -84,7 +84,7 @@ typedef struct
      *  \brief RC input arm/disarm command duration
      *
      *  \par Limits:
-     *       Min > Max (incr.) 100 > 1500, default 1000.
+     *       Min > Max (incr.) #COM_RC_ARM_HYST_MIN > #COM_RC_ARM_HYST_MAX.
      */
     uint32 COM_RC_ARM_HYST;
 
@@ -93,7 +93,7 @@ typedef struct
      *  \brief System ID
      *
      *  \par Limits:
-     *       Min > Max (incr.) 1 > 250, default 1.
+     *       Min > Max (incr.) #MAV_SYS_ID_MIN > #MAV_SYS_ID_MAX.
      */
     uint32 MAV_SYS_ID;
 
@@ -102,7 +102,7 @@ typedef struct
      *  \brief Component ID
      *
      *  \par Limits:
-     *       Min > Max (incr.) 1 > 250, default 1.
+     *       Min > Max (incr.) #MAV_COMP_ID_MIN > #MAV_COMP_ID_MAX.
      */
     uint32 MAV_COMP_ID;
 
@@ -111,7 +111,7 @@ typedef struct
      *  \brief RC loss time threshold
      *
      *  \par Limits:
-     *       Min > Max (incr.) 0 > 35, default 0.5.
+     *       Min > Max (incr.) 0.0 > #COM_RC_LOSS_T_MAX.
      */
     float COM_RC_LOSS_T;
 
@@ -120,7 +120,7 @@ typedef struct
      *  \brief Battery failsafe mode
      *
      *  \par Limits:
-     *       default 0.
+     *       Min > Max (incr.) 0 > #COM_LOW_BAT_ACT
      */
     uint32 COM_LOW_BAT_ACT;
 
@@ -129,7 +129,7 @@ typedef struct
      *  \brief Home set horizontal threshold
      *
      *  \par Limits:
-     *       Min > Max (incr.) 2 > 15, default 5.0.
+     *       Min > Max (incr.) #COM_HOME_H_T_MIN > #COM_HOME_H_T_MAX
      */
     float COM_HOME_H_T;
 
@@ -138,7 +138,7 @@ typedef struct
      *  \brief Home set vertical threshold
      *
      *  \par Limits:
-     *       Min > Max (incr.) 5 > 25, default 10.0.
+     *       Min > Max (incr.) #COM_HOME_V_T_MIN > #COM_HOME_V_T_MAX
      */
     float COM_HOME_V_T;
 
@@ -147,7 +147,7 @@ typedef struct
      *  \brief Padding for home position altitude message, to avoid hover above ground.
      *
      *  \par Limits:
-     *       default 1.
+     *       None.
      */
     float HOME_POS_ALT_PADDING;
 

@@ -121,6 +121,7 @@ extern "C" {
  **  \sa   #VM_NOOP_CC
  */
 #define VM_RESET_CC                (1)
+
 /** \vmcmd Arm
  **
  **  \par Description
@@ -153,6 +154,7 @@ extern "C" {
  **  \sa   #VM_VEHICLE_DISARM_CC
  */
 #define VM_VEHICLE_ARM_CC          (2)
+
 /** \vmcmd Disarm
  **
  **  \par Description
@@ -185,6 +187,7 @@ extern "C" {
  **  \sa   #VM_VEHICLE_ARM_CC
  */
 #define VM_VEHICLE_DISARM_CC       (3)
+
 /** \vmcmd Manual
  **
  **  \par Description
@@ -225,6 +228,7 @@ extern "C" {
  **        #VM_SET_NAV_AUTO_LAND_CC            \n
  */
 #define VM_SET_NAV_MANUAL_CC               (40)
+
 /** \vmcmd Altitude Control
  **
  **  \par Description
@@ -265,6 +269,7 @@ extern "C" {
  **        #VM_SET_NAV_AUTO_LAND_CC            \n
  */
 #define VM_SET_NAV_ALTCTL_CC               (41)
+
 /** \vmcmd Position Control
  **
  **  \par Description
@@ -305,6 +310,7 @@ extern "C" {
  **        #VM_SET_NAV_AUTO_LAND_CC            \n
  */
 #define VM_SET_NAV_POSCTL_CC               (42)
+
 /** \vmcmd Auto Loiter
  **
  **  \par Description
@@ -345,6 +351,7 @@ extern "C" {
  **        #VM_SET_NAV_AUTO_LAND_CC            \n
  */
 #define VM_SET_NAV_AUTO_LOITER_CC          (44)
+
 /** \vmcmd Auto RTL
  **
  **  \par Description
@@ -385,6 +392,7 @@ extern "C" {
  **        #VM_SET_NAV_AUTO_LAND_CC            \n
  */
 #define VM_SET_NAV_AUTO_RTL_CC             (45)
+
 /** \vmcmd Acrobatic
  **
  **  \par Description
@@ -425,6 +433,7 @@ extern "C" {
  **        #VM_SET_NAV_AUTO_LAND_CC            \n
  */
 #define VM_SET_NAV_ACRO_CC                 (50)
+
 /** \vmcmd Stabilize
  **
  **  \par Description
@@ -465,6 +474,7 @@ extern "C" {
  **        #VM_SET_NAV_AUTO_LAND_CC            \n
  */
 #define VM_SET_NAV_STABILIZE_CC            (54)
+
 /** \vmcmd Rattitude
  **
  **  \par Description
@@ -505,6 +515,7 @@ extern "C" {
  **        #VM_SET_NAV_AUTO_LAND_CC            \n
  */
 #define VM_SET_NAV_RATTITUDE_CC            (55)
+
 /** \vmcmd Auto Takeoff
  **
  **  \par Description
@@ -612,13 +623,72 @@ extern "C" {
  *************************************************************************/
 
 
+/**
+ * \brief Vehicle manager status flags
+ */
+typedef struct
+{
+    /** \brief Indicates if all sensors are initialized */
+    osalbool SensorsInitialized;
+
+    /** \brief System in rtl state */
+    osalbool ReturnToHomeSet;
+
+    /** \brief Indicates a valid home position (a valid home position is not always a valid launch) */
+    osalbool HomePositionValid;
+
+    /** \brief Satus of the USB power supply */
+    osalbool UsbPowerConnected;
+
+    /** \brief True if RC signal found atleast once */
+    osalbool RcSignalFoundOnce;
+
+    /** \brief True if RC lost mode is commanded */
+    osalbool RcSignalLostModeIsCmded;
+
+    /** \brief Set if RC input should be ignored temporarily */
+    osalbool RcInputIsTemporarilyBlocked;
+
+} VM_StatusFlags;
+
+
+/**
+ * \brief RC navigation mode switched
+ */
+typedef struct {
+
+    /** \brief Position control is selected */
+    osalbool inPosCtl;
+    /** \brief Return to launch is selected  */
+    osalbool inRtl;
+    /** \brief Auto loiter is selected  */
+    osalbool inLoiter;
+    /** \brief Manual is selected  */
+    osalbool inManual;
+    /** \brief Takeoff is selected  */
+    osalbool inTakeoff;
+    /** \brief Altitude control is selected  */
+    osalbool inAltCtl;
+
+} VM_Modes;
+
+
+/**
+ **  \brief Battery failsafe modes.
+ **  These define how VM reacts to battery low or failure.
+ */
 typedef enum
 {
+    /** \brief Publish a warning event. */
     VM_BATTERY_FAILSAFE_MODE_WARNING                               = 0,
+    /** \brief Return to Launch. */
     VM_BATTERY_FAILSAFE_MODE_RETURN                                = 1,
+    /** \brief Land immediately. */
     VM_BATTERY_FAILSAFE_MODE_LAND                                  = 2,
+    /** \brief Return to Launch if low, but land immediately if even lower. */
     VM_BATTERY_FAILSAFE_MODE_RETURN_IF_CRIT_LOW_LAND_IF_DANGER_LOW = 3,
 } VM_BatteryFailsafeMode_t;
+
 
 /**
  **  \brief No Arguments Command
@@ -669,7 +739,53 @@ typedef struct
      \brief Current navigation state */
     uint32 NavState;
 
+    /** \brief True if home position is not set and local variables are not initialization */
+    osalbool NotInitialized;
+
+    /** \brief Timestamps vm at boot */
+    uint64 BootTimestamp;
+
+    /** \brief status flag variable */
+    VM_StatusFlags StatusFlags;
+
+    /** \brief True if local position is valid */
+    osalbool LocalPositionIsValid;
+
+    /** \brief True if previously landed */
+    osalbool PrevLanded;
+
+    /** \brief True if previously in flight */
+    osalbool PrevInFlight;
+
+    /** \brief Records a count when vehicle is disarmed with stick  */
+    uint32 StickOffCounter;
+
+    /** \brief Records a count when vehicle is armed with stick */
+    uint32 StickOnCounter;
+
+    /** \brief Arming switch in manual control setpoint message  */
+    uint32 LastSpManArmSwitch;
+
+    /** \brief True when vehicle's battery is low and a contingency action is implemented */
+    osalbool LowBatteryVoltageActionsDone;
+
+    /** \brief True when vehicle's battery is critical and a contingency action is implemented */
+    osalbool CriticalBatteryVoltageActionsDone;
+
+    /** \brief True when vehicle's battery is dangerously low and a contingency action is implemented */
+    osalbool EmergencyBatteryVoltageActionsDone;
+
+    /** \brief Timestamps the moment rc signal is lost */
+    uint64 RCSignalLostTimestamp;
+
+    /** \brief True when arming status changes with the vehicle */
+    osalbool ArmingStateChanged;
+
+    /** \brief An instance rc navigation mode  */
+    VM_Modes PreviousModes;
+
 } VM_HkTlm_t;
+
 
 #ifdef __cplusplus
 }

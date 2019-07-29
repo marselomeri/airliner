@@ -133,7 +133,7 @@ AltitudeControl
                          ]
                          Rattitude          { }
     trAutoTakeoff        [ 
-                             ctxt.IsConditionLocalPositionValid() == true && 
+                             ctxt.IsLocalPositionIsValid() == true && 
                              ctxt.IsVehicleArmed() == true
                          ]
                          AutoTakeoff        { }
@@ -187,7 +187,7 @@ PositionControl
                          ]
                          Rattitude          { }
     trAutoTakeoff        [ 
-                             ctxt.IsConditionLocalPositionValid() == true && 
+                             ctxt.IsLocalPositionIsValid() == true && 
                              ctxt.IsVehicleArmed() == true
                          ]
                          AutoTakeoff        { }
@@ -240,7 +240,7 @@ AutoLoiter
                          ]
                          Rattitude          { }
     trAutoTakeoff        [ 
-                             ctxt.IsConditionLocalPositionValid() == true && 
+                             ctxt.IsLocalPositionIsValid() == true && 
                              ctxt.IsVehicleArmed() == true
                          ]
                          AutoTakeoff        { }
@@ -293,7 +293,7 @@ AutoReturnToLaunch
                          ]
                          Rattitude          { }
     trAutoTakeoff        [ 
-                             ctxt.IsConditionLocalPositionValid() == true && 
+                             ctxt.IsLocalPositionIsValid() == true && 
                              ctxt.IsVehicleArmed() == true
                          ]
                          AutoTakeoff        { }
@@ -346,7 +346,7 @@ Acrobatic
                          ]
                          Rattitude          { }
     trAutoTakeoff        [ 
-                             ctxt.IsConditionLocalPositionValid() == true && 
+                             ctxt.IsLocalPositionIsValid() == true && 
                              ctxt.IsVehicleArmed() == true
                          ]
                          AutoTakeoff        { }
@@ -399,7 +399,7 @@ Stabilize
                          ]
                          Rattitude          { }
     trAutoTakeoff        [ 
-                             ctxt.IsConditionLocalPositionValid() == true && 
+                             ctxt.IsLocalPositionIsValid() == true && 
                              ctxt.IsVehicleArmed() == true
                          ]
                          AutoTakeoff        { }
@@ -452,7 +452,7 @@ Rattitude
                          ]
                          Stabilize          { }
     trAutoTakeoff        [ 
-                             ctxt.IsConditionLocalPositionValid() == true && 
+                             ctxt.IsLocalPositionIsValid() == true && 
                              ctxt.IsVehicleArmed() == true
                          ]
                          AutoTakeoff        { }
@@ -563,7 +563,7 @@ AutoLand
                          ]
                          Rattitude          { }
     trAutoTakeoff        [ 
-                             ctxt.IsConditionLocalPositionValid() == true && 
+                             ctxt.IsLocalPositionIsValid() == true && 
                              ctxt.IsVehicleArmed() == true
                          ]
                          AutoTakeoff        { }

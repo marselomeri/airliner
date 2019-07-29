@@ -1,0 +1,106 @@
+table.table.table-condensed
+  tbody
+    tr
+      th Cmd Count
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_HkTlm_t/usCmdCnt'}]}) ---
+    tr
+      th Error Count
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_HkTlm_t/usCmdErrCnt'}]}) ---
+    tr
+      th Arming State
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_HkTlm_t/ArmingState'}]}) ---
+    tr
+      th Nav State 
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_HkTlm_t/NavState'}]}) ---
+    tr
+      th Not Initialized
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_HkTlm_t/NotInitialized'}]}) ---
+    tr
+      th Boot Timestamp
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_HkTlm_t/BootTimestamp'}]}) ---
+    tr
+      th Sensors Initialized
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_HkTlm_t/StatusFlags.SensorsInitialized'}]}) ---
+    tr
+      th Return To Home Set
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_HkTlm_t/StatusFlags.ReturnToHomeSet'}]}) ---
+    tr
+      th Home Position Is Valid
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_HkTlm_t/StatusFlags.HomePositionValid'}]}) ---
+    tr
+      th USB Power Conencted
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_HkTlm_t/StatusFlags.UsbPowerConnected'}]}) ---
+    tr
+      th RC Signal Found Once
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_HkTlm_t/StatusFlags.RcSignalFoundOnce'}]}) ---
+    tr
+      th RC Signal Lost Mode Is Commanded
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_HkTlm_t/StatusFlags.RcSignalLostModeIsCmded'}]}) ---
+    tr
+      th RC Input Is Temporarily Blocked
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_HkTlm_t/StatusFlags.RcInputIsTemporarilyBlocked'}]}) ---
+    tr
+      th Local Position Is Valid
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_HkTlm_t/StatusFlags.LocalPositionIsValid'}]}) ---
+    tr
+      th Previously Landed
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_HkTlm_t/PrevLanded'}]}) ---
+    tr
+      th Previously In Flight
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_HkTlm_t/PrevInFlight'}]}) ---
+    tr
+      th Stick Off Counter
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_HkTlm_t/StickOffCounter'}]}) ---
+    tr
+      th Stick On Counter
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_HkTlm_t/StickOnCounter'}]}) ---
+    tr
+      th Last Setpoint with Manual Ctrl Arm Switch
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_HkTlm_t/LastSpManArmSwitch'}]}) ---
+    tr
+      th Low Battery Voltage Actions Done
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_HkTlm_t/LowBatteryVoltageActionsDone'}]}) ---
+    tr
+      th Critical Battery Voltage Actions Done
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_HkTlm_t/CriticalBatteryVoltageActionsDone'}]}) ---
+    tr
+      th Emergency Battery Voltage Actions Done
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_HkTlm_t/EmergencyBatteryVoltageActionsDone'}]}) ---
+    tr
+      th RC Signal Lost Timestamp
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_HkTlm_t/RCSignalLostTimestamp'}]}) ---
+    tr
+      th Arming State Changed
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_HkTlm_t/ArmingStateChanged'}]}) ---
+    tr
+      th Previous Modes
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_HkTlm_t/PreviousModes'}]}) ---
+    tr
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/VM/Noop'}}) No-Op    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/VM/Reset'}}) Reset
