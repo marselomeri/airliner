@@ -196,6 +196,7 @@ int32 VC_InitData()
     /* Setup app state */
     CFE_PSP_MemSet((void*)&VC_AppData, 0x00, sizeof(VC_AppData));
     VC_AppData.AppState = VC_UNINITIALIZED;
+    VC_AppData.uiRunStatus = CFE_ES_APP_RUN;
     
     /* Init housekeeping packet */
     CFE_SB_InitMsg(&VC_AppData.HkTlm,
