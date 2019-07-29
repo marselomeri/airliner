@@ -125,7 +125,6 @@ void VC_ResetCmd(CFE_SB_Msg_t* MsgPtr)
 void VC_ReportHousekeeping(CFE_SB_Msg_t* MsgPtr)
 {
     uint16 ExpectedLength = sizeof(VC_NoArgCmd_t); 
-    uint16 i;
     
     /* Verify command packet length */
     if (VC_VerifyCmdLength(MsgPtr, ExpectedLength))
@@ -134,12 +133,7 @@ void VC_ReportHousekeeping(CFE_SB_Msg_t* MsgPtr)
         
         /* Send housekeeping telemetry packet */
         CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&VC_AppData.HkTlm);
-        int32 iStatus = CFE_SB_SendMsg((CFE_SB_Msg_t*)&VC_AppData.HkTlm);
-        if (iStatus != CFE_SUCCESS)
-        {
-        /* TODO: Decide what to do if the send message fails. */
-        }
-        /* This command does not affect the command execution counter */
+        CFE_SB_SendMsg((CFE_SB_Msg_t*)&VC_AppData.HkTlm);
     }
 
     return;
@@ -181,6 +175,3 @@ boolean VC_VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
 
 /************************/
 /*  End of File Comment */
-/************************/
-
-

@@ -31,11 +31,6 @@
 *
 *****************************************************************************/
 
-
-/************************************************************************
-** Pragmas
-*************************************************************************/
-
 /************************************************************************
 ** Includes
 *************************************************************************/
@@ -46,25 +41,9 @@
 #include <string.h>
 
 /************************************************************************
-** Local Defines
-*************************************************************************/
-
-/************************************************************************
-** Local Structure Declarations
-*************************************************************************/
-
-/************************************************************************
-** External Global Variables
-*************************************************************************/
-
-/************************************************************************
 ** Global Variables
 *************************************************************************/
 VC_AppData_t VC_AppData;
-
-/************************************************************************
-** Local Variables
-*************************************************************************/
 
 /************************************************************************
 ** Local Function Definitions
@@ -77,30 +56,50 @@ VC_AppData_t VC_AppData;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 VC_InitEvent()
 {
-    int32  iStatus         = CFE_SUCCESS;
-    int32  ind             = 0;
+    int32 iStatus          = CFE_SUCCESS;
+    int32 ind              = 0;
     int32 customEventCount = 0;
 
-    CFE_EVS_BinFilter_t   EventTbl[CFE_EVS_MAX_EVENT_FILTERS];
+    CFE_EVS_BinFilter_t   EventTbl[VC_MAX_EVENT_FILTERS];
 
     /* Initialize the event filter table.
      * Note: 0 is the CFE_EVS_NO_FILTER mask and event 0 is reserved (not used) */
-    memset(EventTbl, 0x00, sizeof(EventTbl));
+    CFE_PSP_MemSet(EventTbl, 0x00, sizeof(EventTbl));
 
-    /* TODO: Choose the events you want to filter.  CFE_EVS_MAX_EVENT_FILTERS
-     * limits the number of filters per app.  An explicit CFE_EVS_NO_FILTER 
-     * (the default) has been provided as an example. */
     EventTbl[  ind].EventID = VC_RESERVED_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = VC_INIT_INF_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = VC_NOOP_INF_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = VC_RESET_INF_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = VC_CMD_INF_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = VC_DEV_INF_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = VC_CHA_INF_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = VC_INIT_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = VC_UNINIT_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = VC_CMD_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = VC_PIPE_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = VC_MSGID_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = VC_MSGLEN_ERR_EID;
     EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
     
     /* Add custom events to the filter table */
     customEventCount = VC_Custom_Init_EventFilters(ind, EventTbl);
-    
-    if(-1 == customEventCount)
+    if(VC_CUSTOM_ERROR_CODE == customEventCount)
     {
         iStatus = CFE_EVS_APP_FILTER_OVERLOAD;
         (void) CFE_ES_WriteToSysLog("VC - Failed to init custom event filters (0x%08X)\n", (unsigned int)iStatus);
-        goto end_of_function;
+        goto VC_InitEvent_Exit_Tag;
     }
     
     /* Register the table with CFE */
@@ -110,8 +109,7 @@ int32 VC_InitEvent()
         (void) CFE_ES_WriteToSysLog("VC - Failed to register with EVS (0x%08X)\n", (unsigned int)iStatus);
     }
 
-end_of_function:
-
+VC_InitEvent_Exit_Tag:
     return (iStatus);
 }
 
@@ -132,7 +130,6 @@ int32 VC_InitPipe()
     if (iStatus == CFE_SUCCESS)
     {
         iStatus = CFE_SB_SubscribeEx(VC_WAKEUP_MID, VC_AppData.SchPipeId, CFE_SB_Default_Qos, VC_SCH_PIPE_WAKEUP_RESERVED);
-
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,
@@ -142,7 +139,6 @@ int32 VC_InitPipe()
         }
 
         iStatus = CFE_SB_SubscribeEx(VC_SEND_HK_MID, VC_AppData.SchPipeId, CFE_SB_Default_Qos, VC_SCH_PIPE_SEND_HK_RESERVED);
-
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,
@@ -168,7 +164,6 @@ int32 VC_InitPipe()
     {
         /* Subscribe to command messages */
         iStatus = CFE_SB_Subscribe(VC_CMD_MID, VC_AppData.CmdPipeId);
-
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,
@@ -198,11 +193,11 @@ int32 VC_InitData()
 {
     int32  iStatus = CFE_SUCCESS;
 
-    /* Setup app state enum */
+    /* Setup app state */
+    CFE_PSP_MemSet((void*)&VC_AppData, 0x00, sizeof(VC_AppData));
     VC_AppData.AppState = VC_UNINITIALIZED;
     
     /* Init housekeeping packet */
-    memset((void*)&VC_AppData.HkTlm, 0x00, sizeof(VC_AppData.HkTlm));
     CFE_SB_InitMsg(&VC_AppData.HkTlm,
                    VC_HK_TLM_MID, sizeof(VC_AppData.HkTlm), TRUE);
                    
@@ -210,21 +205,19 @@ int32 VC_InitData()
     iStatus = VC_Devices_InitData();
     if (iStatus != CFE_SUCCESS)
     {
-        goto end_of_function;
+        goto VC_InitData_Exit_Tag;
     }
 
     /* Initialize custom transmit data */
     iStatus = VC_Transmit_InitData();
     if (iStatus != CFE_SUCCESS)
     {
-        goto end_of_function;
+        goto VC_InitData_Exit_Tag;
     }
     
-end_of_function:
-
+VC_InitData_Exit_Tag:
     return (iStatus);
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -237,7 +230,6 @@ void VC_CleanupCallback()
     VC_Transmit_Critical_Cleanup();
     return;
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -262,7 +254,6 @@ void VC_CleanupExit(void)
     }
     return;
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -373,7 +364,6 @@ VC_InitApp_Exit_Tag:
     return (iStatus);
 } /* End of VC_AppInit() */
 
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Receive and Process Messages                                    */
@@ -413,6 +403,7 @@ int32 VC_RcvMsg(int32 iBlocking)
             {
                 (void) CFE_EVS_SendEvent(VC_MSGID_ERR_EID, CFE_EVS_ERROR,
                                   "Recvd invalid SCH msgId (0x%04X)", (unsigned short)MsgId);
+                break;
             }
         }
     }
@@ -433,9 +424,6 @@ int32 VC_RcvMsg(int32 iBlocking)
     }
     else
     {
-        /* TODO: This is an example of exiting on an error (either CFE_SB_BAD_ARGUMENT, or
-         * CFE_SB_PIPE_RD_ERROR).
-         */
         (void) CFE_EVS_SendEvent(VC_PIPE_ERR_EID, CFE_EVS_ERROR,
             "SB pipe read error (0x%08X), app will exit", (unsigned int)iStatus);
         VC_AppData.uiRunStatus= CFE_ES_APP_ERROR;
@@ -529,7 +517,6 @@ void VC_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr)
     }
 } /* end VC_ProcessNewAppCmds() */
 
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* VC application entry point and main process loop                */
@@ -595,8 +582,3 @@ void VC_AppMain(void)
 /************************/
 /*  End of File Comment */
 /************************/
-
-
-
-
-
