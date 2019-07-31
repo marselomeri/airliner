@@ -180,7 +180,7 @@ typedef struct
     int32              CellCount;
     
     /** \brief Flag for connection to battery */
-    boolean            Connected;
+    osalbool           Connected;
     
     /** \brief Warning flag enumeration */
     PX4_BatteryWarningSeverity_t Warning;

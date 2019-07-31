@@ -471,9 +471,9 @@ void BAT::ReportHousekeeping()
 /* Verify Command Length                                           */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-boolean BAT::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen)
+osalbool BAT::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen)
 {
-    boolean bResult  = TRUE;
+    osalbool bResult  = TRUE;
     uint16  usMsgLen = 0;
 
     if (MsgPtr != NULL)
@@ -579,9 +579,9 @@ void BAT::PublishBatteryStatus(void)
     OS_MutSemGive(BatteryMutex);
 }
 
-boolean  BAT::ChildContinueExec(void)
+osalbool BAT::ChildContinueExec(void)
 {
-    boolean result;
+    osalbool result;
 
     OS_MutSemTake(BatteryMutex);
     result = m_ChildContinueFlag;
@@ -779,7 +779,7 @@ float BAT::GetDischarged(float Current)
 }
 
 
-float BAT::GetRemaining(float Voltage, float Current, float ThrottleNormalized, boolean Armed)
+float BAT::GetRemaining(float Voltage, float Current, float ThrottleNormalized, osalbool Armed)
 {
     float remaining = 0.0f;
     float batVEmptyDynamic = 0.0f;

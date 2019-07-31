@@ -111,6 +111,8 @@ extern "C" {
 */
 #define BAT_STARTUP_TIMEOUT_MSEC    (1000)
 
+/** \brief BAT Child task stack size */
+#define BAT_LISTENER_TASK_STACK_SIZE    (16000)
 
 #ifdef __cplusplus
 }

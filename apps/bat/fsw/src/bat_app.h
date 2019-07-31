@@ -63,10 +63,9 @@ extern "C" {
  ** Local Structure Definitions
  *************************************************************************/
 
-#define BAT_LISTENER_TASK_NAME          "BAT_LISTENER"
-#define BAT_LISTENER_TASK_STACK_SIZE    16000
-#define BAT_LISTENER_TASK_PRIORITY      103
-#define BAT_MUTEX_NAME                  "BAT_MUTEX"
+#define BAT_LISTENER_TASK_NAME          ("BAT_LISTENER")
+#define BAT_LISTENER_TASK_PRIORITY      (103)
+#define BAT_MUTEX_NAME                  ("BAT_MUTEX")
 #define BAT_CURRENT_FILTER_INIT_VALUE   (-1.0f)
 #define BAT_VOLTAGE_FILTER_INIT_VALUE   (-1.0f)
 #define BAT_THROTTLE_FILTER_INIT_VALUE  (-1.0f)
@@ -123,7 +122,7 @@ public:
     uint32 BatteryMutex;
 
     /** \brief Flag for continueing listener thread execution */
-    boolean m_ChildContinueFlag;
+    osalbool m_ChildContinueFlag;
 
     /** \brief CFE time for comparision */
     CFE_TIME_SysTime_t m_SampleTime;
@@ -318,7 +317,7 @@ public:
      **  \endreturns
      **
      *************************************************************************/
-    boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
+    osalbool VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
 
 private:
     /************************************************************************/
@@ -372,7 +371,7 @@ private:
     **  \endreturns
     **
     *************************************************************************/
-    boolean  ChildContinueExec(void);
+    osalbool  ChildContinueExec(void);
     
     /************************************************************************/
     /** \brief Stop Child Task Execution
@@ -487,14 +486,14 @@ private:
     **  \param [in]   Voltage                   #float of current voltage
     **  \param [in]   Current                   #float of current value
     **  \param [in]   ThrottleNormalized        #float of current filtered throttle
-    **  \param [in]   Armed                     #boolean of current voltage
+    **  \param [in]   Armed                     #osalbool of current voltage
     **
     **  \returns
     **  Percentage of battery remaining
     **  \endreturns
     **
     *************************************************************************/
-    float GetRemaining(float Voltage, float Current, float ThrottleNormalized, boolean Armed);
+    float GetRemaining(float Voltage, float Current, float ThrottleNormalized, osalbool Armed);
     
     /************************************************************************/
     /** \brief Get Warning Severity
