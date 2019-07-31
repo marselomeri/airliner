@@ -1,4 +1,4 @@
-﻿{
+{
  "settings": {
   "hasHeaders": true,
   "constrainDragToContainer": false,
@@ -40,68 +40,164 @@
    "title": "",
    "content": [
     {
-     "type": "stack",
-     "header": {},
+     "type": "column",
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "activeItemIndex": 0,
-     "width": 50,
+     "width": 39.052629942991665,
      "content": [
       {
-       "title": "CI Housekeeping",
-       "type": "component",
-       "componentName": "Blank",
-       "componentState": {
-        "text": "text",
-        "link": "flight/apps/ci/hk"
-       },
+       "type": "stack",
+       "header": {},
        "isClosable": true,
-       "reorderEnabled": true
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "width": 39.052629942991665,
+       "height": 40.37122969837587,
+       "content": [
+        {
+         "title": "CI Housekeeping",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "flight/apps/ci/hk"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
       },
       {
-       "title": "Command and Data Handling",
-       "type": "component",
-       "componentName": "Blank",
-       "componentState": {
-        "text": "text",
-        "link": "flight/apps/ci/cdh"
-       },
+       "type": "stack",
+       "header": {},
        "isClosable": true,
-       "reorderEnabled": true
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "height": 59.62877030162412,
+       "content": [
+        {
+         "title": "Tables",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/core/tbl/tbl_ctl?appName=CI"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
       }
      ]
     },
     {
-     "type": "stack",
-     "header": {},
+     "type": "column",
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "activeItemIndex": 0,
-     "width": 50,
+     "width": 32.52230606179604,
      "content": [
       {
-       "title": "Event Filter",
-       "type": "component",
-       "componentName": "Blank",
-       "componentState": {
-        "text": "text",
-        "link": "/cfe/evs/efltr?appName=CI"
-       },
+       "type": "stack",
+       "header": {},
        "isClosable": true,
-       "reorderEnabled": true
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "width": 32.52230606179604,
+       "height": 50.696055684454755,
+       "content": [
+        {
+         "title": "Event Filter",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/core/evs/efltr?appName=CI"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
       },
       {
-       "title": "Schedule Control",
-       "type": "component",
-       "componentName": "Blank",
-       "componentState": {
-        "text": "text",
-        "link": "/sch/app_sch?appName=CI"
-       },
+       "type": "stack",
+       "header": {},
        "isClosable": true,
-       "reorderEnabled": true
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "height": 49.303944315545245,
+       "content": [
+        {
+         "title": "App Ctrl",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/core/es/appctrl?appName=CI"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "column",
+     "isClosable": true,
+     "reorderEnabled": true,
+     "title": "",
+     "width": 28.425063995212298,
+     "content": [
+      {
+       "type": "stack",
+       "header": {},
+       "isClosable": true,
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "width": 25,
+       "height": 46.403712296983755,
+       "content": [
+        {
+         "title": "Scheduling",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/apps/sch/app_sch?appName=CI"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
+      },
+      {
+       "type": "stack",
+       "header": {},
+       "isClosable": true,
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "height": 53.596287703016245,
+       "content": [
+        {
+         "title": "Telemetry",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/apps/to/tlm_app?appName=CI"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
       }
      ]
     }

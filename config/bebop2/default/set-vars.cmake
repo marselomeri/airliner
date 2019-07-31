@@ -31,10 +31,10 @@
 #
 #############################################################################
  
-set(TARGET_PSP ${PROJECT_SOURCE_DIR}/core/psp/bebop2)
-set(TARGET_OSAL ${PROJECT_SOURCE_DIR}/core/osal/posix-fast)
-set(HOST_PSP ${PROJECT_SOURCE_DIR}/core/psp/pc-linux)
-set(HOST_OSAL ${PROJECT_SOURCE_DIR}/core/osal/posix-fast)
+set(TARGET_PSP ${PSP_TARGET_DIR}/bebop2)
+set(TARGET_OSAL ${OSAL_TARGET_DIR}/posix-fast)
+set(HOST_PSP ${PSP_TARGET_DIR}/pc-linux-wh)
+set(HOST_OSAL ${OSAL_TARGET_DIR}/posix-fast)
 
 
 

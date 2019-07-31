@@ -112,10 +112,22 @@ class VariableServer extends CdrGroundPlugin {
 
                 var msgRoot = message.content;
 
-                for ( var itemID in vars ) {
+                for ( var itemID in vars ) {  
                     var variable = vars[ itemID ];
                     var varOpName = self.getVariableOpsName( itemID );
-                    var valueObj = jp.query( msgRoot, '$.' + varOpName );
+                    var valueObj;
+                    
+                    if(itemID === message.opsPath) {
+                        /* The subscriber requested the entire message, not 
+                         * individual parameters.
+                         */
+                        valueObj = [msgRoot];
+                    } else {
+                        /* The subscriber requested an individual parameter.
+                         * Query the message for the parameter.
+                         */
+                        valueObj = jp.query( msgRoot, '$.' + varOpName );
+                    }
 
                     if ( self.isEmpty( valueObj ) == true ) {
                         self.logError('OpName ' + itemID + ' not found.' );
@@ -321,7 +333,8 @@ class VariableServer extends CdrGroundPlugin {
     getVariableOpsName( path ) {
         if ( typeof path === 'string' ) {
             var splitName = path.split( '/' );
-            return splitName[ 3 ];
+            var index = splitName.length - 1;
+            return splitName[index];
         }
         return undefined;
     }
@@ -564,6 +577,7 @@ class VariableServer extends CdrGroundPlugin {
     instanceEmit( streamID, msg, cb ) {
         this.namespace.send( streamID, msg, cb );
     }
+    
     
     
     initTelemetry() {

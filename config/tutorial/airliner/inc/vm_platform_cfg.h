@@ -83,7 +83,7 @@ extern "C" {
 /** \brief Pipe depth for the data pipe 
 **
 **  \par Limits:
-**       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
+**       minimum of 18, max of CFE_SB_MAX_PIPE_DEPTH.
 */
 #define VM_DATA_PIPE_DEPTH            (18)
 

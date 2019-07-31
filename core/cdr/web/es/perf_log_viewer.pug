@@ -1,0 +1,883 @@
+   
+style.  
+    .nav-tabs > li .close {
+      margin: -2px 0 0 10px;
+      font-size: 18px;
+    }
+    
+    .chart {
+        shape-rendering: crispEdges;
+    }
+
+    .mini text {
+        font: 9px sans-serif;   
+        fill: white;
+    }
+
+    .main text {
+        font: 12px sans-serif;   
+        fill: white; 
+    }
+
+    .perfItem {
+        fill: green;
+        stroke-width: 1; 
+        vector-effect: non-scaling-stroke;
+        stroke: darkgreen;
+        stroke-location: inside;
+    }
+
+    .perfItemError {
+        fill: red;
+        stroke-width: 1; 
+        vector-effect: non-scaling-stroke;
+        stroke: darkred;
+        stroke-location: inside;
+    }
+
+    .perfItemIncomplete {
+        fill: yellow;
+        stroke-width: 1; 
+        vector-effect: non-scaling-stroke;
+        stroke: darkyellow;
+        stroke-location: inside;
+    }
+
+    .brush .extent {
+        stroke: gray;
+        fill: dodgerblue;
+        fill-opacity: .365;
+    }
+  
+   .d3-tip {
+        background: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        border-radius: 2px;
+    }
+        
+    /* Creates a small triangle extender for the tooltip */
+   .d3-tip:after {
+        box-sizing: border-box;
+        display: inline;
+        font-size: 10px;
+        width: 100%;
+        line-height: 1;
+        color: rgba(0, 0, 0, 0.8);
+        content: "\25BC";
+        position: absolute;
+        text-align: center;
+    }
+        
+    /* Style northward tooltips differently */
+   .d3-tip.n:after {
+        margin: -1px 0 0 0;
+        top: 100%;
+        left: 0;
+    }
+    
+    .axis line, .axis path {
+        stroke: white;
+        color:  white;
+        fill:  white;
+    }
+    
+    .laneText {
+        fill:  white;
+    }   
+    
+    .zoom {
+      cursor: move;
+      fill: none;
+      pointer-events: all;
+    }
+
+#perfLogViewer 
+ 
+script.    
+    var PerfIDs = undefined;
+    var PerfLogDisplayed = false;
+    var PerfLogData = undefined;
+    
+    var temp1;
+    var temp2;
+    
+    session.sendCommand({ops_path:'/config-database/cmdGetPerfIDs'}, function(err, response) {
+        if(err != null) {
+            /* TODO */
+            console.log('PerfLogViewer::sendCommand(\'/config-database/cmdGetPerfIDs\') returned an error.  ' + err);
+        } else {
+            PerfIDs = response;
+            if(PerfLogDisplayed == true) {
+                /* A log was displayed before we could get the perf IDs from the server.  This
+                 * means that just the perf ID value is currently being displayed.  Go ahead and
+                 * parse through the display and replace the ID values with macro names. */
+                console.log('TODO:  Update the DOM of the Perf Log View to have the macros rather than just ID values.');
+            }
+        }
+    });
+
+
+    var updatePerfLogViewer = function(logInfo) {        
+        var getLowestTime = function(data) {
+            var lowestTime = 0;
+            
+            var time = (data.DataBuffer[0].TimerLower32) + 0;
+            lowestTime = time;
+            
+            for(var i = 0; i < data.DataBuffer.length; ++i) {
+                var time = (data.DataBuffer[i].TimerLower32) + 0;
+                
+                if(time < lowestTime) {
+                    lowestTime = time;
+                }
+            }
+            
+            return lowestTime;
+        }        
+        
+        $.ajax({
+            url: '/plugin/core/es/perfLogFile/' + logInfo.jsonFile,
+            method: 'GET',
+            dataType: 'json',
+            error: function() {
+                console.log('PerfLogViewer:: ajax error');
+            },
+            success: function(data) {
+                d3.select('#perfLogViewer svg').remove();
+                PerfLogData = createData(data);
+                drawPerfLogView(PerfLogData);
+                PerfLogDisplayed = true;
+            }
+        });
+    }
+
+
+
+
+
+
+    var drawPerfLogView = function(data) {  
+        var fullWidth = $('#perfLogViewer').width();    
+    
+        var lanes = data.lanes
+        var items = data.items
+        var laneLength = data.lanes.length;
+        var focusHeight = laneLength * 25 + 50;
+        var fullHeight = focusHeight + 100;
+        $('#perfLogViewer').height(fullHeight);
+        
+        var timeBegin = GetSmallestTimerValue(items);
+        var timeEnd = GetLargestTimerValue(items); 
+        
+        var svg = d3.select('#perfLogViewer')
+                    .append("svg")
+                    .attr("viewBox", "0 0 " + fullWidth + " " + fullHeight)
+                    .attr("perserveAspectRatio", 'xMidYMid meet')
+                    .attr("class", "chart")
+                    .attr("height", fullHeight)
+                    .attr("width", fullWidth);
+        
+        var margin = {top: 20, right: 20, bottom: 110, left: 225};
+        var margin2 = {top: focusHeight+20, right: 20, bottom: 30, left: 225};
+        var width = fullWidth - margin.right;
+        var height = fullHeight - margin.top - margin.bottom;
+        var height2 = fullHeight - margin2.top - margin2.bottom;
+        
+        var lineWidth = width - margin.left - margin.right;
+            
+        var xFocus = d3.scaleLinear().range([0, lineWidth]);
+        var xContext = d3.scaleLinear().range([0, lineWidth]);
+        var yFocus = d3.scaleLinear().range([height, 0]);
+        var yContext = d3.scaleLinear().range([height2, 0]);
+            
+        var xFocusAxis = d3.axisBottom(xFocus).tickSize(6, 0, 0);
+        var xContextAxis = d3.axisBottom(xContext).tickSize(6, 0, 0);
+        
+        var brush = d3.brushX()
+            .extent([[0, 0], [lineWidth, height2]])
+            .on("brush end", brushed);
+        
+        var zoom = d3.zoom()
+            .scaleExtent([1, Infinity])
+            .translateExtent([[0, 0], [width, height]])
+            .extent([[0, 0], [width, height]])
+            .on("zoom", zoomed);
+        
+        svg.append("defs").append("clipPath")
+            .attr("id", "clip")
+            .append("rect")
+            .attr("width", width)
+            .attr("height", height);
+            
+        var focus = svg.append("g")
+            .attr("class", "focus")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        
+        var context = svg.append("g")
+            .attr("class", "context")
+            .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
+            
+            
+        xFocus.domain([timeBegin, timeEnd]);
+        yFocus.domain([0, laneLength]);
+        xContext.domain(xFocus.domain());
+        yContext.domain(yFocus.domain());
+
+        focus.append("g").selectAll(".laneLines")
+            .data(items)
+            .enter().append("line")
+            .attr("x1", 0)
+            .attr("y1", function(d) {return yFocus(d.lane);})
+            .attr("x2", lineWidth)
+            .attr("y2", function(d) {return yFocus(d.lane);})
+            .attr("stroke", "lightgray")
+            .attr("class", "laneLines");
+
+        focus.append("g").selectAll(".laneText")
+            .data(lanes)
+            .enter().append("text")
+            .text(function(d) {return d;})
+            .attr("x", -margin.right)
+            .attr("y", function(d, i) {return yFocus(i + .5);})
+            .attr("dy", ".5ex")
+            .attr("text-anchor", "end")
+            .attr("class", "laneText");
+            
+        var itemRects = focus.append("g")
+                            .attr("clip-path", "url(#clip)");
+
+        focus.append('g')
+            .attr('class', 'perfItems')
+            .selectAll('perfItems')
+            .data(items)
+            .enter().append("rect")
+            .attr("class", function(d) {
+                if(d.spurious == true) {
+                    return "perfItemError";
+                } else if(d.incomplete == true) {
+                    return "perfItemIncomplete";
+                } else {
+                    return "perfItem";
+                }
+             })
+            .attr("x", function(d) {return xFocus(d.start);})
+            .attr("y", function(d) {return yFocus(d.lane + .5) - 5;})
+            .attr("width", function(d) {return xFocus(d.end) - xFocus(d.start);})
+            .attr("height", 10);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        focus.append("g")
+            .attr("class", "axis axis--x")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xFocusAxis);
+        
+        context.append("g")
+            .attr("class", "axis axis--x")
+            .attr("transform", "translate(0," + height2 + ")")
+            .call(xContextAxis);
+        
+        context.append("g")
+            .attr("class", "brush")
+            .call(brush)
+            .call(brush.move, xFocus.range());
+        
+        svg.append("rect")
+            .attr("class", "zoom")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+            .call(zoom);
+            
+        
+        function brushed() {
+            if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") {
+                return; // ignore brush-by-zoom
+            }
+            
+            var s = d3.event.selection || xContext.range();
+            xFocus.domain(s.map(xContext.invert, xContext));
+            //focus.select(".area").attr("d", area);
+            focus.select(".axis--x").call(xFocusAxis);
+            svg.select(".zoom").call(zoom.transform, d3.zoomIdentity
+                .scale(width / (s[1] - s[0]))
+                .translate(-s[0], 0));
+                
+            var extent = d3.event.selection;
+            
+            var minExtent = extent[0];
+            var maxExtent = extent[1];
+            var visItems = items.filter(function(d) {
+                return d.start < maxExtent && d.end > minExtent;
+            });
+                        
+            //update main item rects                
+            rects = itemRects.selectAll("rect")
+                      .data(visItems, function(d) { return d.id; })
+                      .attr("x", function(d) {return xFocus(d.start);})
+                      .attr("width", function(d) {return xFocus(d.end) - xFocus(d.start);});
+            
+            //rects.enter().append("rect")
+            //    .attr("class", function(d) {
+            //        if(d.spurious == true) {
+            //            return "perfItemError";
+            //        } else if(d.incomplete == true) {
+            //            return "perfItemIncomplete";
+            //        } else {
+            //            return "perfItem";
+            //        }
+            //    })
+            //    .attr("x", function(d) {return xFocus(d.start);})
+            //    .attr("y", function(d) {return yFocus(d.lane) + 2;})
+            //    .attr("width", function(d) {return xFocus(d.end) - xFocus(d.start);})
+            //    .attr("height", function(d) {return .8 * yFocus(1);})
+            //    .attr("vector-effect", "non-scaling-stroke")
+            //    .attr("stroke", "black")
+            //    .attr("stroke-width", "1") 
+            //    //.on('mouseover', tip.show)
+            //    //.on('mouseout', tip.hide)       
+            //    .on('click', function(d){
+            //        if(d3.select(this).style('opacity') == 1.0) {
+            //            d3.select(this).style('opacity', 0.1);
+            //        } else {
+            //            d3.select(this).style('opacity', 1.0);
+            //        }
+            //    })      
+            //    .on('dblclick', function(d){
+            //        d3.select(this).remove();
+            //    })
+        
+            //rects.exit().remove();
+        }
+    
+        function zoomed() {
+            //if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush") {
+            //    return; // ignore zoom-by-brush
+            //}
+        
+            //var t = d3.event.transform;
+            //xFocus.domain(t.rescaleX(xContext).domain());
+            //focus.select(".area").attr("d", area);
+            //focus.select(".axis--x").call(xFocusAxis);
+            //context.select(".brush").call(brush.move, xFocus.range().map(t.invertX, t));
+        }
+    };
+    
+        
+        
+    
+    function type(d) {
+        d.date = parseDate(d.date);
+        d.price = +d.price;
+        return d;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    function GetLargestTimerValue(A) {
+        var value = 0;
+        
+        for(var i=0; i < A.length; i++) {
+            if(A[i].start > value) {
+                value = A[i].start;
+            }
+            
+            if(A[i].end > value) {
+                value = A[i].end;
+            }
+        }
+        
+        return value;
+    }
+    
+    
+    function GetSmallestTimerValue(A) {
+        var value = 0;
+        
+        for(var i=0; i < A.length; i++) {
+            if(i==0) {
+                value = A[i].start;
+            }
+            
+            if(A[i].start < value) {
+                value = A[i].start;
+            }
+            
+            if(A[i].end < value) {
+                value = A[i].end;
+            }
+        }
+        
+        return value;
+    }
+    
+
+
+    var GetSmallestUpperAndLower32 = function(DataBuffer) {
+        var result = {Upper32: 0, Lower32: 0};
+        
+        for(var i=0; i < DataBuffer.length; i++) {
+            if(i==0) {
+                result.Upper32 = DataBuffer[i].TimerUpper32;
+                result.Lower32 = DataBuffer[i].TimerLower32;
+            }
+            
+            if(DataBuffer[i].TimerUpper32 == result.Upper32) {
+                if(DataBuffer[i].TimerLower32 < result.Lower32) {
+                    result.Lower32 = DataBuffer[i].TimerLower32;
+                }
+            } else if(DataBuffer[i].TimerUpper32 < result.Upper32) {
+                result.Upper32 = DataBuffer[i].TimerUpper32;
+                result.Lower32 = DataBuffer[i].TimerLower32;
+            }
+        }
+        
+        return result;
+    }
+    
+    
+    var GetLargestUpperAndLower32 = function(DataBuffer) {
+        var result = {Upper32: 0, Lower32: 0};
+        
+        for(var i=0; i < DataBuffer.length; i++) {
+            if(i==0) {
+                result.Upper32 = DataBuffer[i].TimerUpper32;
+                result.Lower32 = DataBuffer[i].TimerLower32;
+            }
+            
+            if(DataBuffer[i].TimerUpper32 == result.Upper32) {
+                if(DataBuffer[i].TimerLower32 > result.Lower32) {
+                    result.Lower32 = DataBuffer[i].TimerLower32;
+                }
+            } else if(DataBuffer[i].TimerUpper32 > result.Upper32) {
+                result.Upper32 = DataBuffer[i].TimerUpper32;
+                result.Lower32 = DataBuffer[i].TimerLower32;
+            }
+        }
+        
+        return result;
+    }
+    
+    
+    var GetSmallestUpper32 = function(A) {
+        var value = 0;
+        for(var i=0; i < A.length; i++) {
+            if(i==0) {
+                value = A[i].start.Upper32;
+            }
+            
+            if(A[i].start.Upper32 < value) {
+                value = A[i].start.Upper32;
+            }
+            
+            if(A[i].stop.Upper32 < value) {
+                value = A[i].stop.Upper32;
+            }
+        }
+        
+        return value;
+    }
+    
+
+
+    var IsTimerEqualTo = function(A, B) {
+        if(A.Upper32 == B.Upper32) {
+            if(A.Lower32 == B.Lower32) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    
+    
+    var IsTimerNotEqualTo = function(A, B) {
+        if(A.Upper32 != B.Upper32) {
+            if(A.Lower32 != B.Lower32) {
+                return true;
+            } else {
+                return false;
+            }
+        } else  {
+            return false;
+        }
+    }
+    
+    
+    
+    var IsTimerLessThan = function(A, B) {
+        if(A.Upper32 < B.Upper32) {
+            return true;
+        } else if(A.Upper32 == B.Upper32) {
+            if(A.Lower32 < B.Lower32) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }   
+
+
+    var IsTimerGreaterThan = function(A, B) {
+        if(A.Upper32 > B.Upper32) {
+            return true;
+        } else if(A.Upper32 == B.Upper32) {
+            if(A.Lower32 > B.Lower32) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }   
+    
+    
+    var GetPerfIDName = function(perfID) {
+        var newName = 'Unknown-' + perfID;
+        
+        for(var perfName in PerfIDs) {
+            if(PerfIDs[perfName].perf_id == perfID) {
+                newName = perfName;
+            }
+        }
+        
+        return newName;
+    }
+    
+    
+    var createData = function(perfLog) {        
+        TicksPerSecond = perfLog.Metadata.SecHdr.TimerTicksPerSecond;
+        TimerLow32Rollover = perfLog.Metadata.SecHdr.TimerLow32Rollover;
+        DataStart = perfLog.Metadata.SecHdr.DataStart;
+        DataEnd = perfLog.Metadata.SecHdr.DataEnd;
+                
+        var unsortedDataBuffer = perfLog.DataBuffer;
+        var data = {lanes:[], items:[]};
+        var perfCurrentData = {};   
+        
+        /* First, resort the data so its in chronological order.  The log
+         * is recorded in a ring buffer that eats its tail, so we need to
+         * unwrap the ring. */
+        var dataBuffer = new Array(unsortedDataBuffer.length);
+        var iNewDataIndex = 0;
+        for(var iData = DataStart; iData < unsortedDataBuffer.length; iData++) {
+            dataBuffer[iNewDataIndex] = {
+                Data: unsortedDataBuffer[iData].Data,
+                TimerLower32: unsortedDataBuffer[iData].TimerLower32,
+                TimerUpper32: unsortedDataBuffer[iData].TimerUpper32,
+                index: iNewDataIndex
+            }
+            iNewDataIndex++;
+        }
+        for(var iData = 0; iData < DataEnd; iData++) {
+            dataBuffer[iNewDataIndex] = {
+                Data: unsortedDataBuffer[iData].Data,
+                TimerLower32: unsortedDataBuffer[iData].TimerLower32,
+                TimerUpper32: unsortedDataBuffer[iData].TimerUpper32,
+                index: iNewDataIndex
+            }
+            iNewDataIndex++;
+        }
+        
+        /* Next, get the highest and smallest timer values.  We will use
+         * those to fill in for the initial entries that have a stop with
+         * no start, and final entries with starts but no stop. */
+        var smallestValue = GetSmallestUpperAndLower32(dataBuffer);
+        var largestValue  = GetLargestUpperAndLower32(dataBuffer);  
+        
+        for(var iData = 0; iData < dataBuffer.length; iData++) {
+            /* Extract the perf IDs for the lanes array. */
+            var laneExists = false;
+            var iLaneIndex = 0;
+            var perfID = dataBuffer[iData].Data & 0x7fffffff;
+            
+            /* Protect against zero entries. */
+            if(perfID == 0) {
+                continue;
+            }
+            
+            for(iLaneIndex = 0; iLaneIndex < data.lanes.length; iLaneIndex++) {
+                if( perfID == data.lanes[iLaneIndex].id ) {
+                    laneExists = true;
+                    break;
+                }
+            }
+            
+            if(laneExists == false) {
+                /* This is the first occurance of this ID.  Give it a name. */
+                var newName = GetPerfIDName(perfID);
+                data.lanes.push({id:perfID, label:newName, offset:data.lanes.length});
+                
+                /* Create an object in the perfCurrentData array so we can track the 
+                 * starts and stops.  "-2" signifies the value has never been set, and
+                 * will be treated a bit differently in the end.  
+                 */
+                perfCurrentData[perfID] = {id: perfID, start: {Upper32: -2, Lower32: -2, Index: -1}, stop: {Upper32: -2, Lower32: -2, Index: -1}};
+                
+                /* Update the iLaneIndex so the remaining code can just assume the 
+                 * lane already existed so iLaneIndex can be used on the perfCurrentData
+                 * array.
+                 */
+                iLaneIndex = data.lanes.length - 1;
+            }
+                
+            /*  Determine if this is a start or a stop.  A stop has the left most bit set.
+             */ 
+            if(dataBuffer[iData].Data < 0x80000000) {                
+                /* This is a start entry.  Now check to see if the previous entry was
+                 * also a start entry. 
+                 */
+                if((IsTimerEqualTo(perfCurrentData[perfID].start, {Upper32:-1, Lower32:-1})) ||
+                   (IsTimerEqualTo(perfCurrentData[perfID].start, {Upper32:-2, Lower32:-2}))) {
+                    /* This is a nominal start.  We can't push the data item until we get the 
+                     * corresponding stop.  Just store the start time in the perfCurrentData and
+                     * and update the stop time to indicate we're waiting for a stop time.
+                     */
+                    perfCurrentData[perfID].start.Upper32 = dataBuffer[iData].TimerUpper32;
+                    perfCurrentData[perfID].start.Lower32 = dataBuffer[iData].TimerLower32;
+                    perfCurrentData[perfID].start.Index = dataBuffer[iData].index;
+                    perfCurrentData[perfID].stop.Upper32 = -1;
+                    perfCurrentData[perfID].stop.Lower32 = -1;
+                    perfCurrentData[perfID].stop.Index = -1;
+                } else {                    
+                    /* The previous entry was a start entry.  Flag this as a spurious 
+                     * event, close the previous event by giving it a stop time and 
+                     * then immediately create a new one.  This should appear as a 
+                     * single bar with a break at the time the second start occured. 
+                     * Push a data item with the previous start but the stop set to 
+                     * new start value.  This will let us denote where the spurious 
+                     * interrupt occurred.
+                     */
+                    var startTickCount = perfCurrentData[perfID].start;
+                    var tempObj = {
+                        start: {
+                            Upper32: perfCurrentData[perfID].start.Upper32, 
+                            Lower32: perfCurrentData[perfID].start.Lower32
+                        }, 
+                        stop: {
+                            Upper32: dataBuffer[iData].TimerUpper32,
+                            Lower32: dataBuffer[iData].TimerLower32
+                        },
+                        lane: iLaneIndex, 
+                        id: '',
+                        spurious: true, 
+                        incomplete: false,
+                        missing_event: 'stop',
+                        start_index: perfCurrentData[perfID].start.Index,
+                        perf_id: perfID
+                    };
+                    data.items.push(tempObj);
+
+                    /* Now update perfCurrentData with the start time and set the stop
+                     * time to reflect that its waiting for a stop entry. */
+                    perfCurrentData[perfID].start.Upper32 = dataBuffer[iData].TimerUpper32;
+                    perfCurrentData[perfID].start.Lower32 = dataBuffer[iData].TimerLower32;
+                    perfCurrentData[perfID].start.Index = dataBuffer[iData].index;
+                    perfCurrentData[perfID].stop.Upper32 = -1;
+                    perfCurrentData[perfID].stop.Lower32 = -1;
+                    perfCurrentData[perfID].stop.Index = -1;
+                }
+            } else {
+                /* This is a stop entry.  Now check to see if the previous entry was
+                 * also a stop entry. */
+                if(IsTimerEqualTo(perfCurrentData[perfID].stop, {Upper32: -2, Lower32: -2})) {
+                    /* This is the first entry found for this lane, and it was a stop.  The
+                     * recording must have started immediately after this particular
+                     * performance section was started.  Push a new event onto the stack with
+                     * the start time set to the smallest start time found in the data set, so
+                     * the scale is rendered correctly, but set the "incomplete" flag so we can
+                     * give it an indication that we don't really know when the start occured.
+                     */
+                    var tempObj = {
+                        start: {
+                            Upper32: smallestValue.Upper32, 
+                            Lower32: smallestValue.Lower32
+                        }, 
+                        stop: {
+                            Upper32: dataBuffer[iData].TimerUpper32,
+                            Lower32: dataBuffer[iData].TimerLower32
+                        },
+                        lane: iLaneIndex, 
+                        id: '',
+                        spurious: false,
+                        incomplete: true,
+                        missing_event: 'start',
+                        stop_index: dataBuffer[iData].index,
+                        perf_id: perfID
+                    };
+                    data.items.push(tempObj);
+                                             
+                    /* Now update perfCurrentData to reflect that its waiting for a start entry. */
+                    perfCurrentData[perfID].start.Upper32 = -1;
+                    perfCurrentData[perfID].start.Lower32 = -1;
+                    perfCurrentData[perfID].start.Index = -1;
+                    perfCurrentData[perfID].stop.Upper32 = dataBuffer[iData].TimerUpper32;
+                    perfCurrentData[perfID].stop.Lower32 = dataBuffer[iData].TimerLower32;
+                    perfCurrentData[perfID].stop.Index = dataBuffer[iData].index;
+                } else if(IsTimerEqualTo(perfCurrentData[perfID].stop, {Upper32: -1, Lower32: -1})) {
+                    /* This is a nominal stop.  Go ahead and close the item out by pushing it to the
+                     * data array with spurious and incomplete both set to false. 
+                     */
+                    var tempObj = {
+                        start: {
+                            Upper32: perfCurrentData[perfID].start.Upper32, 
+                            Lower32: perfCurrentData[perfID].start.Lower32 
+                        }, 
+                        stop: {
+                            Upper32: dataBuffer[iData].TimerUpper32,
+                            Lower32: dataBuffer[iData].TimerLower32
+                        },
+                        lane: iLaneIndex, 
+                        id: '',
+                        spurious:   false,
+                        incomplete: false,
+                        missing_event: 'none',
+                        start_index: perfCurrentData[perfID].start.Index,
+                        stop_index: dataBuffer[iData].index,
+                        perf_id: perfID
+                    };
+                    data.items.push(tempObj);
+                    
+                    /* Now update perfCurrentData to reflect that its waiting for a start entry. */
+                    perfCurrentData[perfID].start.Upper32 = -1;
+                    perfCurrentData[perfID].start.Lower32 = -1;
+                    perfCurrentData[perfID].start.Index = -1;
+                    perfCurrentData[perfID].stop.Upper32 = dataBuffer[iData].TimerUpper32;
+                    perfCurrentData[perfID].stop.Lower32 = dataBuffer[iData].TimerLower32;
+                    perfCurrentData[perfID].stop.Index = dataBuffer[iData].index;
+                } else {
+                    /* The previous entry was a stop entry.  Flag this as a spurious 
+                     * event, open a new event by giving it a start and stop time.  This 
+                     * should appear as a single bar with a break at the time the second 
+                     * start occured. Push a data item with the previous start but the 
+                     * stop set to new start value.  This will let us denote where the 
+                     * spurious interrupt occurred.
+                     */
+                    var tempObj = {
+                        start: {
+                            Upper32: perfCurrentData[perfID].stop.Upper32, 
+                            Lower32: perfCurrentData[perfID].stop.Lower32
+                        }, 
+                        stop: {
+                            Upper32: dataBuffer[iData].TimerUpper32,
+                            Lower32: dataBuffer[iData].TimerLower32
+                        },
+                        lane: iLaneIndex, 
+                        id: '',
+                        spurious:   true,
+                        incomplete: false,
+                        missing_event: 'start',
+                        stop_index: dataBuffer[iData].index,
+                        perf_id: perfID
+                    };
+                    data.items.push(tempObj);
+                                             
+                    /* Now update perfCurrentData to reflect a new stop time. */
+                    perfCurrentData[perfID].start.Upper32 = -1;
+                    perfCurrentData[perfID].start.Lower32 = -1;
+                    perfCurrentData[perfID].start.Index = -1;
+                    perfCurrentData[perfID].stop.Upper32 = dataBuffer[iData].TimerUpper32;
+                    perfCurrentData[perfID].stop.Lower32 = dataBuffer[iData].TimerLower32;
+                    perfCurrentData[perfID].stop.Index = dataBuffer[iData].index;
+                }
+            }    
+        }
+        
+        /* Now look for items that are still open.  In other words, items at the very end with 
+         * start times but no stop times.  Go ahead and set the stop times to the largest 
+         * value and set the incomplete flag to tell the user we don't really know what the 
+         * stop time is.
+         */
+        for(var perfID in perfCurrentData) {
+            if(IsTimerEqualTo(perfCurrentData[perfID].stop, {Upper32: -1, Lower32: -1})) {
+                /* Here's one that has a start time but no stop time. */
+                var tempObj = {
+                    start: {
+                        Upper32: perfCurrentData[perfID].start.Upper32, 
+                        Lower32: perfCurrentData[perfID].start.Lower32
+                    }, 
+                    stop: {
+                        Upper32: largestValue.Upper32,
+                        Lower32: largestValue.Lower32
+                    },
+                    lane: iLaneIndex, 
+                    id: '',
+                    spurious: false,
+                    incomplete: true,
+                    missing_event: 'stop',
+                    start_index: perfCurrentData[perfID].start.Index,
+                    perf_id: perfID
+                };
+                data.items.push(tempObj);
+            }
+        }
+        
+        /* The next step is to convert these counts to actual time.  We're just going to create
+         * a new array of structures.
+         */
+        var timeData = {lanes:[], items:[]};
+        for(var i = 0; i < data.lanes.length; i++) {
+            timeData.lanes.push(data.lanes[i].label);
+        }
+        
+        for(var i = 0; i < data.items.length; i++) {
+            var newStartTime = data.items[i].start.Upper32 * (TicksPerSecond / TimerLow32Rollover);
+            newStartTime += (data.items[i].start.Lower32 / TicksPerSecond);
+            
+            var newStopTime = data.items[i].stop.Upper32 * (TicksPerSecond / TimerLow32Rollover);
+            newStopTime += (data.items[i].stop.Lower32 / TicksPerSecond);
+            
+            timeData.items.push({
+                start: newStartTime, 
+                end:   newStopTime, 
+                id: 'i' + i, 
+                lane: data.items[i].lane, 
+                spurious: data.items[i].spurious, 
+                incomplete: data.items[i].incomplete,
+                missing_event: data.items[i].missing_event,
+                start_index: data.items[i].start_index,
+                stop_index: data.items[i].stop_index,
+                perf_id: data.items[i].perf_id
+            });
+        }
+        
+        /* Finally, lets normalize this data so the start is at 0 seconds. */
+        var smallestTime = GetSmallestTimerValue(timeData.items);
+        
+        for(var i = 0; i < timeData.items.length; i++) {
+            timeData.items[i].start = timeData.items[i].start - smallestTime;
+            timeData.items[i].end = timeData.items[i].end - smallestTime;
+        }
+                     
+        return timeData;
+    }
