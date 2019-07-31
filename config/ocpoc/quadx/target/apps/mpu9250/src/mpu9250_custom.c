@@ -149,57 +149,6 @@ void MPU9250_Custom_InitData(void)
 }
 
 
-boolean MPU9250_I2C_Master_Reset(void)
-{
-    boolean returnBool = FALSE;
-    uint8 buf = 0;
-
-    /* Get current bits. */
-    returnBool = MPU9250_ReadReg(MPU9250_REG_USER_CTRL, &buf);
-    if(FALSE == returnBool)
-    {
-        goto end_of_function;
-    }
-
-    /* Set master reset flag. */
-    buf = MPU9250_USER_CTRL_I2C_MST_RST | buf;
-
-    /* Reset. */
-    returnBool = MPU9250_WriteReg(MPU9250_REG_USER_CTRL, buf);
-    if(FALSE == returnBool)
-    {
-        goto end_of_function;
-    }
-
-    usleep(1000);
-
-    /* Clear master reset flag. */
-    buf &= ~(MPU9250_USER_CTRL_I2C_MST_RST);
-
-    /* Set master enable flag. */
-    buf = MPU9250_USER_CTRL_I2C_MST_EN | buf;
-
-    returnBool = MPU9250_WriteReg(MPU9250_REG_USER_CTRL, buf);
-    if(FALSE == returnBool)
-    {
-        goto end_of_function;
-    }
-
-    usleep(1000);
-
-    returnBool = MPU9250_WriteReg(MPU9250_REG_I2C_MST_CTRL, MPU9250_I2C_MST_CLOCK_400HZ);
-    if(FALSE == returnBool)
-    {
-        goto end_of_function;
-    }
-
-    usleep(1000);
-
-end_of_function:
-    return returnBool;
-}
-
-
 boolean MPU9250_Clear_Interrupt(void)
 {
     boolean returnBool = FALSE;
@@ -239,6 +188,9 @@ boolean MPU9250_Fifo_Reset(void)
 
     /* Set fifo enable flag. */
     buf = MPU9250_USER_CTRL_FIFO_EN | buf;
+    
+    /* Clear the fifo reset flag. */
+    buf &= ~(MPU9250_USER_CTRL_FIFO_RST);
 
     returnBool = MPU9250_WriteReg(MPU9250_REG_USER_CTRL, buf);
     if(FALSE == returnBool)
@@ -251,6 +203,7 @@ boolean MPU9250_Fifo_Reset(void)
 end_of_function:
     return returnBool;
 }
+
 
 boolean MPU9250_Custom_MagInit(void)
 {
@@ -301,7 +254,6 @@ boolean MPU9250_Custom_MagInit(void)
     {
         goto end_of_function;
     }
-    //usleep(1000);
 
     /* I2C slave 0 register address from where to begin data transfer */
     returnBool = MPU9250_WriteReg(MPU9250_REG_I2C_SLV0_REG, 
@@ -310,7 +262,6 @@ boolean MPU9250_Custom_MagInit(void)
     {
         goto end_of_function;
     }
-    //usleep(1000);
 
     returnBool = MPU9250_WriteReg(MPU9250_REG_I2C_SLV0_CTRL, 
             MPU9250_SLAVE_EN | MPU9250_SLAVE_READ_8BYTES);
@@ -440,6 +391,7 @@ boolean MPU9250_Custom_Init(void)
     }
 
     /* TODO Add Gyroscope Self-Test */
+    
     /* TODO Add Accelerometer Self-Test */
 
     /* Array of registers and values to initialize. */
@@ -925,11 +877,11 @@ boolean MPU9250_SetAccScale(uint8 Scale, float *AccDivider)
             goto end_of_function;
     }
 
-    //returnBool = MPU9250_WriteReg(MPU9250_REG_ACCEL_CONFIG, value);
-    //if (FALSE == returnBool)
-    //{
-        //goto end_of_function;
-    //}
+    returnBool = MPU9250_WriteReg(MPU9250_REG_ACCEL_CONFIG, value);
+    if (FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
 
 end_of_function:
     return returnBool;
@@ -977,11 +929,11 @@ boolean MPU9250_SetGyroScale(uint32 Scale, float *GyroDivider)
             goto end_of_function;
     }
 
-    //returnBool = MPU9250_WriteReg(MPU9250_REG_GYRO_CONFIG, value);
-    //if (FALSE == returnBool)
-    //{
-        //goto end_of_function;
-    //}
+    returnBool = MPU9250_WriteReg(MPU9250_REG_GYRO_CONFIG, value);
+    if (FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
 
 end_of_function:
     return returnBool;
@@ -1142,7 +1094,7 @@ int32 MPU9250_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl)
     if(TRUE == MPU9250_Custom_Max_Events_Not_Reached(customEventCount))
     {
         EventTbl[  customEventCount].EventID = MPU9250_DEVICE_ERR_EID;
-        EventTbl[customEventCount++].Mask    = CFE_EVS_FIRST_16_STOP;
+        EventTbl[customEventCount++].Mask    = CFE_EVS_NO_FILTER;
     }
     else
     {
@@ -1207,6 +1159,7 @@ boolean MPU9250_Apply_Platform_Rotation(float *X, float *Y, float *Z)
         returnBool = FALSE;
         goto end_of_function;
     }
+
     /* ROTATION_ROLL_180_YAW_90 */
     temp = *X; 
     *X = *Y; 
@@ -1329,15 +1282,16 @@ boolean MPU9250_Measure(MPU9250_SampleQueue_t *SampleQueue)
         SampleQueue->Samples[index].GX   = bswap16(MPU9250_AppCustomData.samples[index].gyro_x);
         SampleQueue->Samples[index].GY   = bswap16(MPU9250_AppCustomData.samples[index].gyro_y);
         SampleQueue->Samples[index].GZ   = bswap16(MPU9250_AppCustomData.samples[index].gyro_z);
-        SampleQueue->Samples[index].MX   = bswap16(MPU9250_AppCustomData.samples[index].mag_x);
-        SampleQueue->Samples[index].MY   = bswap16(MPU9250_AppCustomData.samples[index].mag_y);
-        SampleQueue->Samples[index].MZ   = bswap16(MPU9250_AppCustomData.samples[index].mag_z);
+        /* Mag is little endian. */
+        SampleQueue->Samples[index].MX   = MPU9250_AppCustomData.samples[index].mag_x;
+        SampleQueue->Samples[index].MY   = MPU9250_AppCustomData.samples[index].mag_y;
+        SampleQueue->Samples[index].MZ   = MPU9250_AppCustomData.samples[index].mag_z;
 
-        //returnBool = MPU9250_sampleChecks(&SampleQueue->Samples[index]);
-        //if(FALSE == returnBool)
-        //{
-            //goto end_of_function;
-        //}
+        returnBool = MPU9250_sampleChecks(&SampleQueue->Samples[index]);
+        if(FALSE == returnBool)
+        {
+            goto end_of_function;
+        }
 
         /* Check for fresh data. */
         if(SampleQueue->Samples[index].MX != lastMagX || 
@@ -1459,7 +1413,6 @@ boolean MPU9250_sampleChecks(MPU9250_Measurement_t *sample)
         if(TempC > -40.0f && TempC < 85.0f)
         {
             MPU9250_AppCustomData.TempInitialized = TRUE;
-            MPU9250_AppCustomData.FifoLastTemp = TempC;
         }
     }
     else
@@ -1467,7 +1420,7 @@ boolean MPU9250_sampleChecks(MPU9250_Measurement_t *sample)
         if (fabsf(TempC - MPU9250_AppCustomData.FifoLastTemp) > 2.0f)
         {
             CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                    "Fifo corruption detected. Reset queue.");
+                    "Fifo corruption detected. FIFO queue reset.");
             MPU9250_AppCustomData.TempInitialized = FALSE;
             MPU9250_Fifo_Reset();
             returnBool = FALSE;

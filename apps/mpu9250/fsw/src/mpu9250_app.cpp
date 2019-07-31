@@ -149,7 +149,9 @@ int32 MPU9250::InitPipe()
             MPU9250_SCH_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
-        iStatus = CFE_SB_SubscribeEx(MPU9250_MEASURE_MID, SchPipeId, CFE_SB_Default_Qos, MPU9250_MEASURE_MID_MAX_MSG_COUNT);
+        iStatus = CFE_SB_SubscribeEx(MPU9250_MEASURE_MID, 
+                SchPipeId, CFE_SB_Default_Qos, 
+                MPU9250_MEASURE_MID_MAX_MSG_COUNT);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(MPU9250_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
@@ -158,7 +160,9 @@ int32 MPU9250::InitPipe()
             goto MPU9250_InitPipe_Exit_Tag;
         }
 
-        iStatus = CFE_SB_SubscribeEx(MPU9250_SEND_HK_MID, SchPipeId, CFE_SB_Default_Qos, MPU9250_SEND_HK_MID_MAX_MSG_COUNT);
+        iStatus = CFE_SB_SubscribeEx(MPU9250_SEND_HK_MID, 
+                SchPipeId, CFE_SB_Default_Qos, 
+                MPU9250_SEND_HK_MID_MAX_MSG_COUNT);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(MPU9250_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
@@ -350,6 +354,7 @@ int32 MPU9250::InitApp()
                 "Set gyroscope scale failed");
         goto MPU9250_InitApp_Exit_Tag;
     }
+
     /*  Get the factory magnetometer sensitivity adjustment values */
     returnBool = ReadSensitivityAdjustment();
     if(FALSE == returnBool)
@@ -411,7 +416,6 @@ MPU9250_InitApp_Exit_Tag:
 /* Receive and Process Messages                                    */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 int32 MPU9250::RcvSchPipeMsg(int32 iBlocking)
 {
     int32           iStatus = CFE_SUCCESS;
@@ -483,7 +487,6 @@ int32 MPU9250::RcvSchPipeMsg(int32 iBlocking)
 /* Process Incoming Commands                                       */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void MPU9250::ProcessCmdPipe()
 {
     int32 iStatus             = CFE_SUCCESS;
@@ -533,10 +536,9 @@ void MPU9250::ProcessCmdPipe()
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* Process MPU9250 Commands                                            */
+/* Process MPU9250 Commands                                        */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void MPU9250::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 {
     uint32  uiCmdCode = 0;
@@ -597,6 +599,7 @@ void MPU9250::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
     return;
 }
 
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Send MPU9250 Housekeeping                                           */
@@ -613,7 +616,7 @@ void MPU9250::ReportHousekeeping()
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* Publish Output Data                                             */
+/* Publish Accel Output Data                                       */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPU9250::SendSensorAccel()
@@ -624,6 +627,11 @@ void MPU9250::SendSensorAccel()
 }
 
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Publish Mag Output Data                                         */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPU9250::SendSensorMag()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&SensorMag);
@@ -632,6 +640,11 @@ void MPU9250::SendSensorMag()
 }
 
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Publish Gyro Output Data                                        */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPU9250::SendSensorGyro()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&SensorGyro);
@@ -640,6 +653,11 @@ void MPU9250::SendSensorGyro()
 }
 
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Publish Diagnostic Message                                      */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPU9250::SendDiag()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&Diag);
@@ -747,6 +765,7 @@ void MPU9250::AppMain()
     /* Exit the application */
     CFE_ES_ExitApp(uiRunStatus);
 }
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -923,7 +942,7 @@ boolean MPU9250::ReadDevice(void)
             SensorMag.Range = -1.0f;
         
             /* Timestamp */
-            SensorMag.Timestamp   = timeStamp;
+            SensorMag.Timestamp = timeStamp;
             /* TODO for now this is event driven. */
             SendSensorMag();
         }

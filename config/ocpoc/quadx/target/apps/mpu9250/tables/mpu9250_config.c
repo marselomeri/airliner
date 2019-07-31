@@ -68,17 +68,17 @@ MPU9250_ConfigTbl_t MPU9250_ConfigTbl =
         /* GyroZOffset */
         -0.008248925209045410f,
         /* MagXScale */
-        1.0f,
+        1.017565011978149414f,
         /* MagYScale */
-        1.0f,
+        0.988033533096313477f,
         /* MagZScale */
-        1.0f,
+        0.992965519428253174f,
         /* MagXOffset */
-        0.0f,
+        0.334766179323196411f,
         /* MagYOffset */
-        0.0f,
+        -0.041989434510469437f,
         /* MagZOffset */
-        0.0f
+        -0.153700098395347595f
 };
 
 /*
