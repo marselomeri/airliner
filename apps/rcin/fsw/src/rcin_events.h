@@ -51,7 +51,7 @@ extern "C" {
 typedef enum {
 
 /** \brief <tt> Value of zero is reserved, and should not be used. </tt> */
-    RCIN_RESERVED_EID = 0,  /* Do not use this event ID */
+    RCIN_RESERVED_EID                            = 0,  /* Do not use this event ID */
 
 /** \brief <tt> 'Initialized. Version \%d.\%d.\%d.\%d' </tt>
 **  \event <tt> 'Initialized. Version \%d.\%d.\%d.\%d' </tt>
@@ -72,7 +72,7 @@ typedef enum {
 **  The fourth \c %d field contains the application revision number defined
 **      in #RCIN_MISSION_REV.
 */
-    RCIN_INIT_INF_EID = 1,
+    RCIN_INIT_INF_EID                            = 1,
 
 /** \brief <tt> 'Recvd NOOP. Version \%d.\%d.\%d.\%d' </tt>
 **  \event <tt> 'Recvd NOOP. Version \%d.\%d.\%d.\%d' </tt>
@@ -95,7 +95,7 @@ typedef enum {
 **  The fourth \c %d field contains the application revision number defined
 **      in #RCIN_MISSION_REV.
 */
-    RCIN_CMD_NOOP_EID = 2,
+    RCIN_CMD_NOOP_EID                            = 2,
 
     /** \brief <tt> '\%s Pipe failed to subscribe to \%s. (0x\%08X)' </tt>
     **  \event <tt> '\%s Pipe failed to subscribe to \%s. (0x\%08X)' </tt>
@@ -112,7 +112,7 @@ typedef enum {
 **  The 32 bit hexadecimal number is the error code returned by CFE.
 **
 */
-    RCIN_SUBSCRIBE_ERR_EID = 3,
+    RCIN_SUBSCRIBE_ERR_EID                       = 3,
 
 /** \brief <tt> 'Failed to create \%s pipe (0x\%08X)' </tt>
 **  \event <tt> 'Failed to create \%s pipe (0x\%08X' </tt>
@@ -128,7 +128,33 @@ typedef enum {
 **  The 32 bit hexadecimal number is the error code returned by CFE.
 **
 */
-    RCIN_PIPE_INIT_ERR_EID = 4,
+    RCIN_PIPE_INIT_ERR_EID                       = 4,
+
+/** \brief <tt> 'Failed to manage Config table (0x\%08X)' </tt>
+**  \event <tt> 'Failed to manage Config table (0x\%08X)' </tt>
+**
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  The 32 bit hexadecimal number is the error code returned by CFE
+**  #CFE_TBL_Manage function.
+**
+*/
+    RCIN_CFGTBL_MANAGE_ERR_EID                   = 5,
+
+/** \brief <tt> 'Failed to get Config table's address (0x\%08X)' </tt>
+**  \event <tt> 'Failed to get Config table's address (0x\%08X)' </tt>
+**  
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  The 32 bit hexadecimal number is the error code returned by CFE
+**  #CFE_TBL_GetAddress function.
+**
+*/
+    RCIN_CFGTBL_GETADDR_ERR_EID                  = 6,
 
 /** \brief <tt> '\%s pipe read error (0x\%08X).' </tt>
 **  \event <tt> '\%s pipe read error (0x\%08X).' </tt>
@@ -144,7 +170,7 @@ typedef enum {
 **  The 32 bit hexadecimal number is the error code returned by CFE.
 **
 */
-    RCIN_RCVMSG_ERR_EID = 5,
+    RCIN_RCVMSG_ERR_EID                          = 7,
 
 /** \brief <tt> 'Recvd invalid \%s msgId (0x\%04X)' </tt>
 **  \event <tt> 'Recvd invalid \%s msgId (0x\%04X)' </tt>
@@ -159,7 +185,7 @@ typedef enum {
 **  The \c %s field contains the name of the pipe.
 **  The 16 bit hexadecimal number is the actual message ID received.
 */
-    RCIN_MSGID_ERR_EID = 6,
+    RCIN_MSGID_ERR_EID                           = 8,
 
 /** \brief <tt> 'Recvd invalid command code (\%u)' </tt>
 **  \event <tt> 'Recvd invalid command code (\%u)' </tt>
@@ -173,7 +199,7 @@ typedef enum {
 **
 **  The %u field contains the actual command code received.
 */
-    RCIN_CC_ERR_EID = 7,
+    RCIN_CC_ERR_EID                              = 9,
 
 /** \brief <tt> 'Rcvd invalid msgLen: msgId=0x\%08X, cmdCode=\%d, msgLen=\%d, expectedLen=\%d" </tt>
 **  \event <tt> 'Rcvd invalid msgLen: msgId=0x\%08X, cmdCode=\%d, msgLen=\%d, expectedLen=\%d" </tt>
@@ -190,7 +216,7 @@ typedef enum {
 **  The third \c %d field contains the actual length.
 **  The fourth \c %d field contains the expected length.
 */
-    RCIN_MSGLEN_ERR_EID = 8,
+    RCIN_MSGLEN_ERR_EID                          = 10,
 
 /** \brief <tt> 'RCIN - Failed to init register cleanup callback (0x%08X)' </tt>
 **  \event <tt> 'RCIN - Failed to init register cleanup callback (0x%08X)' </tt>
@@ -203,7 +229,7 @@ typedef enum {
 **  had an error in initialization.
 **
 */
-    RCIN_INIT_ERR_EID = 9,
+    RCIN_INIT_ERR_EID                            = 11,
 
 /** \brief <tt> 'RCIN is publishing fresh data' </tt>
 **  \event <tt> 'RCIN is publishing fresh data' </tt>
@@ -216,7 +242,7 @@ typedef enum {
 **  previously not publishing fresh data.
 **
 */
-    RCIN_PUBLISHING_INF_EID = 10,
+    RCIN_PUBLISHING_INF_EID                      = 12,
 
 /** \brief <tt> 'RCIN is NOT publishing fresh data' </tt>
 **  \event <tt> 'RCIN is NOT publishing fresh data' </tt>
@@ -228,7 +254,7 @@ typedef enum {
 **  This event message is issued when RCIN is not publishing fresh data.
 **
 */
-    RCIN_NOT_PUBLISHING_ERR_EID = 11,
+    RCIN_NOT_PUBLISHING_ERR_EID                  = 13,
 
 /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
     RCIN_EVT_CNT

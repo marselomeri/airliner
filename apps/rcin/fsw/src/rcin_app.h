@@ -79,6 +79,7 @@ typedef enum
     RCIN_PUBLISHING    = 3
 } RCIN_Status_t;
 
+
 /**
  **  \brief RCIN Application Class
  */

@@ -52,6 +52,8 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 RCIN oRCIN;
 
+
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Default constructor.                                            */
@@ -61,6 +63,7 @@ RCIN::RCIN()
 {
 
 }
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -135,6 +138,7 @@ end_of_function:
     return (iStatus);
 }
 
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Initialize Message Pipes                                        */
@@ -202,6 +206,7 @@ RCIN_InitPipe_Exit_Tag:
     return (iStatus);
 }
     
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Initialize Global Variables                                     */
@@ -221,6 +226,7 @@ void RCIN::InitData()
     
     return;
 }
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -292,6 +298,7 @@ RCIN_InitApp_Exit_Tag:
     return (iStatus);
 }
 
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Receive and Process Messages                                    */
@@ -361,6 +368,7 @@ int32 RCIN::RcvSchPipeMsg(int32 iBlocking)
     return (iStatus);
 }
 
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Process Incoming Commands                                       */
@@ -411,6 +419,7 @@ void RCIN::ProcessCmdPipe()
     }
     return;
 }
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -467,6 +476,7 @@ void RCIN::ReportHousekeeping()
     return;
 }
 
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Publish Output Data                                             */
@@ -478,6 +488,7 @@ void RCIN::SendInputRcMsg()
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&InputRcMsg);
     return;
 }
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -510,6 +521,7 @@ boolean RCIN::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
 
     return (bResult);
 }
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -558,6 +570,7 @@ void RCIN::ReadDevice(void)
     return;
 }
 
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* RCIN Application C style main entry point.                       */
@@ -567,6 +580,7 @@ extern "C" void RCIN_AppMain()
 {
     oRCIN.AppMain();
 }
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -617,6 +631,7 @@ void RCIN::AppMain()
     /* Exit the application */
     CFE_ES_ExitApp(uiRunStatus);
 }
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
