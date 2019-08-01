@@ -160,6 +160,8 @@ extern "C" {
 #define MPU9250_ROOM_TEMP_OFFSET            (0.0f)
 /** \brief Temperature sensitivity */
 #define MPU9250_TEMP_SENS                   (361.0f)
+/** \brief Send internal mag message. */
+#define MPU9250_SEND_INTERNAL_MAG
 
 
 #ifdef __cplusplus

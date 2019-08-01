@@ -943,8 +943,10 @@ boolean MPU9250::ReadDevice(void)
         
             /* Timestamp */
             SensorMag.Timestamp = timeStamp;
+#ifdef MPU9250_SEND_INTERNAL_MAG
             /* TODO for now this is event driven. */
             SendSensorMag();
+#endif
         }
 
         /* Temperature */
