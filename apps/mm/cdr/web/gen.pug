@@ -25,31 +25,15 @@ table.table.table-condensed
       td
         div(data-cdr={tlm:[{name:'/MM/MM_HkPacket_t/FileName'}]}) ---
 
-footer.btn-group(role="group")      
-  .btn-group.dropright
-    button.btn.cdr-primary.dropdown-toggle(type='button', data-toggle='dropdown')
-      | Commands
-      span.caret
-    ul#ResetAppCounters.dropdown-menu(role='menu')
-      li.cdr-dropdown-list-item
-        a(data-cdr={cmd:{name:'/MM/Peek'}, indicator:'cmd'}) Peek
-      li.cdr-dropdown-list-item
-        a(data-cdr={cmd:{name:'/MM/Poke'}, indicator:'cmd'}) Poke
-      li.cdr-dropdown-list-item
-        a(data-cdr={cmd:{name:'/MM/LoadMemWid'}, indicator:'cmd'}) Load Memory Wid
-      li.cdr-dropdown-list-item
-        a(data-cdr={cmd:{name:'/MM/LoadMemFromFile'}, indicator:'cmd'}) Load Memory From File
-      li.cdr-dropdown-list-item
-        a(data-cdr={cmd:{name:'/MM/DumpMemToFile'}, indicator:'cmd'}) Dump Memory To File
-      li.cdr-dropdown-list-item
-        a(data-cdr={cmd:{name:'/MM/DumpInEvt'}, indicator:'cmd'}) Dump In Event
-      li.cdr-dropdown-list-item
-        a(data-cdr={cmd:{name:'/MM/FillMem'}, indicator:'cmd'}) Fill Memory
-      li.cdr-dropdown-list-item
-        a(data-cdr={cmd:{name:'/MM/LookupSym'}, indicator:'cmd'}) Lookup Symbol
-      li.cdr-dropdown-list-item
-        a(data-cdr={cmd:{name:'/MM/SymTblToFile'}, indicator:'cmd'}) Symbol Table To File
-      li.cdr-dropdown-list-item
-        a(data-cdr={cmd:{name:'/MM/EnableEEPROMWrite'}, indicator:'cmd'}) Enable EEPROM Write
-      li.cdr-dropdown-list-item
-        a(data-cdr={cmd:{name:'/MM/DisableEEPROMWrite'}, indicator:'cmd'}) Disable EEPROM Write
+footer
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MM/Peek'}}) Peek
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MM/Poke'}}) Poke
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MM/LoadMemWid'}}) Load Memory Wid
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MM/LoadMemFromFile'}}) Load Memory From File
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MM/DumpMemToFile'}}) Dump Memory To File
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MM/DumpInEvt'}}) Dump In Event 
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MM/FillMem'}}) Fill Memory
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MM/LookupSym'}}) Lookup Symbol
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MM/SymTblToFile'}}) Symbol Table To File
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MM/EnableEEPROMWrite'}}) Enable EEPROM Write 
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MM/DisableEEPROMWrite'}}) Disable EEPROM Write

@@ -1,0 +1,89 @@
+- var pluginName = query.pluginName;
+    
+table.table.table-condensed#perfLogTable
+  thead
+    tr
+      th(style="width: 40px;")  Vehicle ID 
+      th(style="width: 150px;") Vehicle Time
+      th                        Binary File
+      th(style="width: 130px;") JSON File 
+      th(style="width: 150px;") Ground Time
+  tbody
+      
+script.      
+    'use strict';
+    
+        var isInitialized = false;
+        var logCount = 0;      
+        var perfLogTableUpdated = false;
+        
+        var pluginName = '#{perfLogTable}';
+                
+        var initPerfLogTable = function() {  
+            var ajaxPath = 'plugin/core/es/perfLogList';  
+            
+            var processLogMessage = function (tlmObj) {
+                var inLogMsg = tlmObj[0].sample[0].value;
+                var logObj = {
+                    binFile:     inLogMsg.binFile,
+                    jsonFile:    inLogMsg.jsonFile,
+                    vehicleID:   inLogMsg.vehicleID,
+                    vehicleTime: inLogMsg.vehicleTime,
+                    groundTime:  inLogMsg.groundTime
+                };
+                
+                perfLogTable.push(logObj);
+                perfLogTableUpdated = true;
+            };
+
+            var perfLogTable = $('#perfLogTable').DataTable({          
+                processing: false,
+                serverSide: true,
+                ajax: {
+                    url: ajaxPath,
+                    dataSrc: 'perfLogList'
+                },
+                ordering:   false,
+                searching:  false,       
+                paging:     true,
+                info:       false,
+                lengthMenu: [[100, 500, 2000, -1], [100, 500, 2000, "All"]],
+                pageLength: 100,
+                columns: [ 
+                    { data : 'vehicleID' },
+                    { data : 'vehicleTime' },
+                    { data : 'binFile' },
+                    { data : 'jsonFile' },
+                    { data : 'groundTime' }
+                ]
+            });
+            
+            $('#perfLogTable').on('click', 'tr', function () {
+                var data = perfLogTable.row( this ).data();
+                
+                if(typeof updatePerfLogViewer === 'function') {
+                    updatePerfLogViewer(data);
+                }
+            } );
+
+            function trimNull(a) {
+                var c = a.indexOf('\0');
+                if (c>-1) {
+                    return a.substr(0, c);
+                }
+                return a;
+            }
+            
+            session.subscribe([{name:'/core/PerfLogNotify'}], processLogMessage );
+        
+            setInterval(function() {
+                if(perfLogTableUpdated == true) {
+                    perfLogTableUpdated = false;
+                    var currentPage = perfLogTable.page();
+                    perfLogTable.draw('page');
+                    perfLogTable.page(currentPage);
+                };
+            }, 1000);
+        }
+        
+        initPerfLogTable();
