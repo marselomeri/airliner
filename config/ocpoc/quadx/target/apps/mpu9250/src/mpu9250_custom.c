@@ -420,14 +420,14 @@ boolean MPU9250_Custom_Init(void)
          MPU9250_FIFO_EN_GYRO_ZOUT |
          MPU9250_FIFO_EN_ACCEL_OUT |
          MPU9250_FIFO_EN_SLV0_OUT, MPU9250_REG_FIFO_EN},
-         /* Set DLPF 184Hz sampling, FIFO overwrite */
-        {MPU9250_BITS_DLPF_CFG_184HZ |
+         /* Set DLPF 92Hz, FIFO overwrite */
+        {MPU9250_BITS_DLPF_CFG_92HZ |
          MPU9250_CONFIG_FIFO_MODE_OVERWRITE, MPU9250_REG_CONFIG},
          /* +-2000dps */
         {MPU9250_BITS_FS_2000DPS, MPU9250_REG_GYRO_CONFIG},
-         /* +-4G */
+         /* +-16G */
         {MPU9250_BITS_FS_16G, MPU9250_REG_ACCEL_CONFIG},
-        /* Accel config 2, Enable Acc LPF , Bandwidth 184Hz */
+        /* Accel config 2, Enable Acc LPF , Bandwidth 41Hz */
         {MPU9250_ACCEL_CONFIG2_BW_41HZ, MPU9250_REG_ACCEL_CONFIG2},
         /* I2C 400KHz */
         {MPU9250_I2C_MST_CLOCK_400HZ, MPU9250_REG_I2C_MST_CTRL}
@@ -1271,7 +1271,7 @@ boolean MPU9250_Measure(MPU9250_SampleQueue_t *SampleQueue)
     /* Calculate the number of samples in the fifo queue. */
     SampleQueue->SampleCount = fifoByteCount / sizeof(Fifo_Sample_t);
     /* Calculate the sampling interval in micro seconds. */
-    SampleQueue->SampleIntervalUs = round(1000 / MPU9250_AppCustomData.FifoSamplesPerCycle);
+    SampleQueue->SampleIntervalUs = round(MPU9250_MEASURE_INTERVAL_HZ / MPU9250_AppCustomData.FifoSamplesPerCycle);
 
     for(index = 0; index < SampleQueue->SampleCount; ++index)
     {
