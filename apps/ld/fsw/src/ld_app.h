@@ -66,6 +66,7 @@ extern "C" {
 #define LD_50_PERCENT (0.5f)
 #define LD_75_PERCENT (0.75f)
 #define LD_LOCAL_POSITION_TIMEOUT (500000)
+#define ONE_PERCENT_THRUST (0.01f)
 
 /************************************************************************
  ** Local Structure Definitions

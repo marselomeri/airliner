@@ -325,6 +325,8 @@ void LD::InitData()
 
     /* Init diagnostic message */
     CFE_SB_InitMsg(&DiagTlm, LD_DIAG_TLM_MID, sizeof(DiagTlm), TRUE);
+    
+    CFE_PSP_MemSet(&CVT, 0, sizeof(CVT));
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -376,7 +378,7 @@ LD_InitApp_Exit_Tag:
     }
     else
     {
-        if (hasEvents == 0)
+        if (0 == hasEvents)
         {
             (void) CFE_ES_WriteToSysLog(
                     "LD - Application failed to initialize\n");
@@ -738,7 +740,7 @@ osalbool LD::DetectFreeFall()
 {
     osalbool inFreefall = FALSE;
     
-    if (!CVT.ControlStateMsg.Timestamp == 0)
+    if (CVT.ControlStateMsg.Timestamp != 0)
     {
         float net_acc = CVT.ControlStateMsg.AccX * CVT.ControlStateMsg.AccX
                       + CVT.ControlStateMsg.AccY * CVT.ControlStateMsg.AccY
@@ -771,6 +773,7 @@ osalbool LD::DetectGroundContactState()
     osalbool hit_ground          = FALSE;
     osalbool horizontal_movement = FALSE;
     osalbool vertical_movement   = FALSE;
+    float horizontal_velocity    = 0.0f;
 
     /* If vehicle is disarmed, ground contact is always true */
     if (!CVT.ActuatorArmedMsg.Armed)
@@ -778,7 +781,7 @@ osalbool LD::DetectGroundContactState()
         arming_time = 0;
         inGroundContact = TRUE;
     }
-    else if (arming_time == 0)
+    else if (0 == arming_time)
     {
         arming_time = now;
     }
@@ -806,7 +809,17 @@ osalbool LD::DetectGroundContactState()
         }
 
         /* Horizontal movement */
-        horizontal_movement = sqrtf(CVT.VehicleLocalPositionMsg.VX * CVT.VehicleLocalPositionMsg.VX + CVT.VehicleLocalPositionMsg.VY * CVT.VehicleLocalPositionMsg.VY) > ConfigTblPtr->LD_XY_VEL_MAX;
+        horizontal_velocity = sqrtf((CVT.VehicleLocalPositionMsg.VX * CVT.VehicleLocalPositionMsg.VX) + 
+                                    (CVT.VehicleLocalPositionMsg.VY * CVT.VehicleLocalPositionMsg.VY));
+        
+        if (horizontal_velocity > ConfigTblPtr->LD_XY_VEL_MAX)
+        {
+            horizontal_movement = TRUE;
+        }
+        else
+        {
+            horizontal_movement = FALSE;
+        }
 
         minimal_thrust = MinimalThrust();
         altitude_lock = AltitudeLock();
@@ -876,7 +889,7 @@ osalbool LD::DetectLandedState()
     {
         if (MinimalThrust())
         {
-            if (min_thrust_start == 0)
+            if (0 == min_thrust_start)
             {
                 min_thrust_start = now;
             }
@@ -953,7 +966,7 @@ float LD::TakeoffThrottle()
     else if (CVT.VehicleControlModeMsg.ControlManualEnabled &&
         CVT.VehicleControlModeMsg.ControlAttitudeEnabled)
     {
-        toThrottle = 0.15f;
+        toThrottle = ConfigTblPtr->LD_LOW_T_THR;
     }
     else
     {
@@ -971,16 +984,21 @@ float LD::TakeoffThrottle()
 float LD::MaxAltitude()
 {
     float max_alt = ConfigTblPtr->LD_ALT_MAX;
-
-    if (CVT.BatteryStatusMsg.Warning == PX4_BATTERY_WARNING_LOW)
+    
+    /* If we haven't received this message just use default max */
+    if(0 == CVT.BatteryStatusMsg.Timestamp)
+    {
+        max_alt = ConfigTblPtr->LD_ALT_MAX;
+    }
+    else if (PX4_BATTERY_WARNING_LOW == CVT.BatteryStatusMsg.Warning)
     {
         max_alt = ConfigTblPtr->LD_ALT_MAX * LD_75_PERCENT;
     }
-    else if (CVT.BatteryStatusMsg.Warning == PX4_BATTERY_WARNING_CRITICAL)
+    else if (PX4_BATTERY_WARNING_CRITICAL == CVT.BatteryStatusMsg.Warning)
     {
         max_alt = ConfigTblPtr->LD_ALT_MAX * LD_50_PERCENT;
     }
-    else if (CVT.BatteryStatusMsg.Warning == PX4_BATTERY_WARNING_EMERGENCY)
+    else if (PX4_BATTERY_WARNING_EMERGENCY == CVT.BatteryStatusMsg.Warning)
     {
         max_alt = ConfigTblPtr->LD_ALT_MAX * LD_25_PERCENT;
     }
@@ -1039,13 +1057,15 @@ osalbool LD::ManualControlPresent()
 osalbool LD::MinimalThrust() 
 {
     float min_throttle = ConfigTblPtr->LD_LOW_T_THR;
+    osalbool result = FALSE;
 
     if (!CVT.VehicleControlModeMsg.ControlAltitudeEnabled)
     {
-        min_throttle = (ConfigTblPtr->LD_MAN_MIN_THR + 0.01f);
+        min_throttle = (ConfigTblPtr->LD_MAN_MIN_THR + ONE_PERCENT_THRUST);
     }
 
-    return CVT.ActuatorControls0Msg.Control[3] <= min_throttle;
+    result = CVT.ActuatorControls0Msg.Control[3] <= min_throttle;
+    return result;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -1085,7 +1105,7 @@ void LD::UpdateState()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void LD::Execute()
 {
-    if (publish_counter == 0)
+    if (0 == publish_counter)
     {
         VehicleLandDetectedMsg.Freefall = FALSE;
         VehicleLandDetectedMsg.Landed = FALSE;
