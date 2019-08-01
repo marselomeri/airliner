@@ -63,9 +63,12 @@ extern "C"
 /************************************************************************
  ** Local Defines
  *************************************************************************/
-#define NAV_EPSILON_POSITION    0.001f
-#define M_PI_2_F    1.57079632f
-#define DELAY_SIGMA 0.01f
+#define NAV_EPSILON_POSITION    (0.001f)
+#define M_PI_2_F                (1.57079632f)
+#define DELAY_SIGMA             (0.01f)
+#define NAV_LAT_SHORT_FORM      (1000)
+#define NAV_LON_SHORT_FORM      (1000)
+#define CONVERT_DECIMAL_DEGREES (1e7f)
 
 /************************************************************************
  ** Local Structure Definitions
@@ -92,35 +95,6 @@ typedef struct
     /** \brief The vehicle command message */
     PX4_VehicleCommandMsg_t VehicleCommandMsg;
 }NAV_CurrentValueTable_t;
-
-/**
- * \brief parameter table
- */
-typedef struct
-{
-    /** \brief The accepted radius */
-    float NavAccRad;                                                // = 2.0f;
-    /** \brief The altitude accepted radius for multi-copters */
-    float NavAltRad;                                                // = 0.8f;
-    /** \brief The loiter radius */
-    float NavLoiterRad;                                            // = 50.0f;
-    /** \brief The minimum altitude the vehicle will take off to */
-    float NavMisTakeoffAlt;                                        // = 2.5f;
-    /** \brief The Max yaw error in degrees needed for waypoint heading acceptance */
-    float NavMisYawErr;                                           // = 12.0f;
-    /** \brief The time in seconds we wait on reaching target heading at a waypoint if it is forced */
-    float NavMisYawTmt;                                           // = -1.0f;
-    /** \brief The minimum loiter altitude */
-    float NavMisLtrMinAlt;                                        // = 1.20f;
-    /** \brief The altitude to fly back in RTL in meters */
-    float NavRtlReturnAlt;                                        // = 30.0f;
-    /** \brief The RTL loiter altitude */
-    float NavRtlDescendAlt;                                       // = 10.0f;
-    /** \brief The RTL delay */
-    float NavRtlLandDelay;                                        // = 0.0f;
-    /** \brief The minimum distance to trigger rising to a safe altitude */
-    float NavRtlMinDist;                                           // = 5.0f;
-}NAV_Params_t;
 
 /**
  * \brief mission planning structure
@@ -157,24 +131,20 @@ typedef struct
     uint16 DoJumpRepeatCount;
     /** \brief The count how many times the jump has been done */
     uint16 DoJumpCurrentCount;
-
-    struct
-    {
-        /** \brief The mission frame */
-        uint16 Frame : 4;
-        /** \brief How the mission item was generated */
-        uint16 Origin : 3;
-        /** \brief The exit xtrack location: 0 for center of loiter wp, 1 for exit location */
-        uint16 LoiterExitXTrack : 1;
-        /** \brief The heading needs to be reached */
-        uint16 ForceHeading : 1;
-        /** \brief True if altitude is relative from start point */
-        uint16 AltitudeIsRelative : 1;
-        /** \brief True if next waypoint should follow after this one */
-        uint16 AutoContinue : 1;
-        /** \brief Disables multi-copter yaw with this flag */
-        uint16 DisableMcYaw : 1;
-    };
+    /** \brief The mission frame */
+    uint16 Frame;
+    /** \brief How the mission item was generated */
+    uint16 Origin;
+    /** \brief The exit xtrack location: 0 for center of loiter wp, 1 for exit location */
+    uint16 LoiterExitXTrack;
+    /** \brief The heading needs to be reached */
+    uint16 ForceHeading;
+    /** \brief True if altitude is relative from start point */
+    uint16 AltitudeIsRelative;
+    /** \brief True if next waypoint should follow after this one */
+    uint16 AutoContinue;
+    /** \brief Disables multi-copter yaw with this flag */
+    uint16 DisableMcYaw;
 }NAV_MissionItem_t;
 
 /**
@@ -185,7 +155,7 @@ typedef enum
     /**! Mavlink originated mission item */
     ORIGIN_MAVLINK = 0,
     /*! Onboard originated mission item */
-    ORIGIN_ONBOARD =1
+    ORIGIN_ONBOARD = 1
 }NAV_Origin_t;
 
 /**
@@ -194,21 +164,21 @@ typedef enum
 typedef enum
 {
     /*! The vehicle is in idle state during RTL navigation */
-    RTL_STATE_NONE = 0,
+    RTL_STATE_NONE              = 0,
     /*! The vehicle is in climb state during RTL navigation */
-    RTL_STATE_CLIMB = 1,
+    RTL_STATE_CLIMB             = 1,
     /*! The vehicle is in Return to home latitude and longitude state during RTL navigation */
-    RTL_STATE_RETURN = 2,
+    RTL_STATE_RETURN            = 2,
     /*!  VTOL to MC transition state during RTL navigation */
-    RTL_STATE_TRANSITION_TO_MC = 3,
+    RTL_STATE_TRANSITION_TO_MC  = 3,
     /*! The vehicle is in descend state during RTL navigation */
-    RTL_STATE_DESCEND = 4,
+    RTL_STATE_DESCEND           = 4,
     /*! The vehicle is in loiter state during RTL navigation */
-    RTL_STATE_LOITER = 5,
+    RTL_STATE_LOITER            = 5,
     /*! The vehicle is in land state during RTL navigation */
-    RTL_STATE_LAND = 6,
+    RTL_STATE_LAND              = 6,
     /*! The vehicle is in landed state during RTL navigation */
-    RTL_STATE_LANDED = 7,
+    RTL_STATE_LANDED            = 7,
 }RTLState;
 
 /**
@@ -252,45 +222,43 @@ public:
     /** \brief Current Value Table */
     NAV_CurrentValueTable_t CVT = {};
 
-    /** \brief The parameter table variable */
-    NAV_Params_t NavParams;
     /** \brief The mission item variable */
     NAV_MissionItem_t MissionItem;
     /** \brief RTL state initialization */
-    RTLState RtlState = RTLState::RTL_STATE_NONE;
+    RTLState RtlState;
     /** \brief This variable stores previously encountered navigation state */
     PX4_VehicleStatusMsg_t PreviousState;
     /** \brief This variable stores previously encountered navigation command */
     PX4_VehicleCommandMsg_t PreviousCommand;
     /** \brief Flag is set to true if a previously unseen command is encountered */
-    boolean NewCommandArrived = false;
+    osalbool NewCommandArrived;
     /** \brief Will allow to loiter at setpoint */
-    boolean CanLoiterAtSetpoint {false};
+    osalbool CanLoiterAtSetpoint;
     /** \brief True if loiter position is set */
-    boolean LoiterPositionSet {false};
+    osalbool LoiterPositionSet;
     /** \brief True if waypoint position is reached */
-    boolean WaypointPositionReached {false};
+    osalbool WaypointPositionReached;
     /** \brief True if waypoint yaw is reached */
-    boolean WaypointYawReached {false};
+    osalbool WaypointYawReached;
     /** \brief Default time first time inside orbit in mission item */
-    uint64 TimeFirstInsideOrbit {0};
+    uint64 TimeFirstInsideOrbit;
     /** \brief Default action start in mission item */
-    uint64 ActionStart {0};
+    uint64 ActionStart;
     /** \brief Default time for waypoint reached in mission item */
-    uint64 TimeWpReached {0};
+    uint64 TimeWpReached;
     /** \brief Default mission cruising speed in mission item */
-    float MissionCruisingSpeed {-1.0f};
+    float MissionCruisingSpeed;
     /** \brief Default mission throttle in mission item */
-    float MissionThrottle {-1.0f};
+    float MissionThrottle;
     /** \brief True if vehicle status message is updated once by navigation states */
-    boolean VehicleStatusUpdateOnce {false};
+    osalbool VehicleStatusUpdateOnce;
     /** \brief True if mission result message is updated by navigation states */
-    boolean MissionResultUpdated {false};
+    osalbool MissionResultUpdated;
     /** \brief True if position setpoint triplet message is updated by navigation states */
-    boolean PositionSetpointTripletUpdated {false};
-    float ForceDescentTarget = 0;
-    boolean ForceDescentExecuting = false;
-    boolean ForceDescentCompleted = false;
+    osalbool PositionSetpointTripletUpdated;
+    float ForceDescentTarget;
+    osalbool ForceDescentExecuting;
+    osalbool ForceDescentCompleted;
 
     /************************************************************************/
     /** \brief Navigator (NAV) application entry point
@@ -493,7 +461,7 @@ public:
      **  \endreturns
      **
      *************************************************************************/
-    boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
+    osalbool VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
     
     /************************************************************************/
     /** \brief Navigation Task
@@ -676,7 +644,7 @@ public:
      **  \endreturns
      **
      *************************************************************************/
-    boolean StateChangeDetect(void);
+    osalbool StateChangeDetect(void);
     
     /************************************************************************/
     /** \brief Store Previous Commands
@@ -706,7 +674,7 @@ public:
      **  \endreturns
      **
      *************************************************************************/
-    boolean IsMissionItemReached(void);
+    osalbool IsMissionItemReached(void);
     
     /************************************************************************/
     /** \brief Marks Mission Result Message as Fail
@@ -785,7 +753,7 @@ public:
      **  \endreturns
      **
      *************************************************************************/
-    boolean HomePositionValid(void);
+    osalbool HomePositionValid(void);
     
     /************************************************************************/
     /** \brief Return Default Accepted Radius
@@ -849,15 +817,6 @@ public:
      **
      *************************************************************************/
     float GetCruisingSpeed(void);
-    
-    /************************************************************************/
-    /** \brief Updates application params from param table
-     **
-     **  \par Assumptions, External Events, and Notes:
-     **       None
-     **
-     *************************************************************************/
-    void UpdateParamsFromTable(void);
     
     /************************************************************************/
     /** \brief Returns Address of Mission Result Message
@@ -1046,7 +1005,7 @@ public:
      **  \endreturns
      **
      *************************************************************************/
-    boolean IsPlannedMission()
+    osalbool IsPlannedMission()
     {
         return false;
     }
@@ -1057,10 +1016,10 @@ public:
      **  \par Assumptions, External Events, and Notes:
      **       None
      **
-     **  \param [in]   can_loiter        A application specific boolean variable.
+     **  \param [in]   can_loiter        A application specific osalbool variable.
      **
      *************************************************************************/
-    void SetCanLoiterAtSetpoint(boolean can_loiter)
+    void SetCanLoiterAtSetpoint(osalbool can_loiter)
     {
         CanLoiterAtSetpoint = can_loiter;
     }

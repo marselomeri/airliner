@@ -191,9 +191,6 @@ int32 NAV::AcquireConfigPointers(void)
     /*
      ** Release the table
      */
-    /* TODO: This return value can indicate success, error, or that the info has been
-     * updated.  We ignore this return value in favor of checking CFE_TBL_Manage(), but
-     * be sure this is the behavior you want. */
     (void) CFE_TBL_ReleaseAddress(ConfigTblHdl);
 
     /*
@@ -214,7 +211,6 @@ int32 NAV::AcquireConfigPointers(void)
     iStatus = CFE_TBL_GetAddress((void**)&ConfigTblPtr, ConfigTblHdl);
     if (iStatus == CFE_TBL_INFO_UPDATED)
     {
-        UpdateParamsFromTable();
         iStatus = CFE_SUCCESS;
     }
     else if(iStatus != CFE_SUCCESS)
