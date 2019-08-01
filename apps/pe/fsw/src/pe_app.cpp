@@ -512,7 +512,10 @@ void PE::initStateCov()
 {
     m_StateCov.Zero();
 
-    /* Initialize to twice valid condition */
+    /* Initialize to twice valid condition. Note: We intialize with values from
+    ** the configuration table. If a table is reloaded, we intentionally do not
+    ** call this function again as this will reset the state covariance which 
+    ** is updated in flight. */
     m_StateCov[X_x][X_x] = 2 * EST_STDDEV_XY_VALID * EST_STDDEV_XY_VALID;
     m_StateCov[X_y][X_y] = 2 * EST_STDDEV_XY_VALID * EST_STDDEV_XY_VALID;
     m_StateCov[X_z][X_z] = 2 * EST_STDDEV_Z_VALID * EST_STDDEV_Z_VALID;
@@ -1178,8 +1181,8 @@ void PE::SendVehicleLocalPositionMsg()
     float vxy_stddev             = 0.0f;
     float epv                    = 0.0f;
     float eph                    = 0.0f;
-    float eph_thresh             = 3.0f;
-    float epv_thresh             = 3.0f;
+    float eph_thresh             = EPH_THRESH;
+    float epv_thresh             = EPV_THRESH;
     osalbool data_valid          = FALSE;
     osalbool dist_bottom_valid   = FALSE;
 
@@ -1440,13 +1443,14 @@ void PE::Update()
     osalbool ReinitStateCov = FALSE;
     osalbool ZStdDevValid = FALSE;
     osalbool VxyStdDevValid = FALSE;
-
-    /* Update timestamps */
     float dt = 0.0f;
+    float dt_hist = 0.0f;
     uint64 newTimestamp = PX4LIB_GetPX4TimeUs();
+    
+    /* Update timestamps */
     dt = (newTimestamp - m_Timestamp) / 1.0e6f;
     m_Timestamp = newTimestamp;
-    float dt_hist = 1.0e-6f * (m_Timestamp - m_Timestamp_Hist);
+    dt_hist = 1.0e-6f * (m_Timestamp - m_Timestamp_Hist);
     CheckTimeouts();
 
     /* Check if local initialized */

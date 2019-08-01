@@ -197,9 +197,9 @@ void PE::flowCorrect()
 
 	rot_sq = m_Euler[0] * m_Euler[0] + m_Euler[1] * m_Euler[1];
 
-	m_Flow.R[Y_flow_vx][Y_flow_vx] = flow_vxy_stddev * flow_vxy_stddev +
-			ConfigTblPtr->FLOW_R * ConfigTblPtr->FLOW_R * rot_sq +
-			ConfigTblPtr->FLOW_RR * ConfigTblPtr->FLOW_RR * rotrate_sq;
+	m_Flow.R[Y_flow_vx][Y_flow_vx] = (flow_vxy_stddev * flow_vxy_stddev) +
+			(ConfigTblPtr->FLOW_R * ConfigTblPtr->FLOW_R * rot_sq) +
+			(ConfigTblPtr->FLOW_RR * ConfigTblPtr->FLOW_RR * rotrate_sq);
 	m_Flow.R[Y_flow_vy][Y_flow_vy] = m_Flow.R[Y_flow_vx][Y_flow_vx];
 
     /* Vector2F -  (2x10 * Vector10F) */
