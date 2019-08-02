@@ -55,7 +55,7 @@ typedef struct
 {
     int32   Value;
     uint32  Count;
-    boolean ContinueReturnCodeAfterCountZero;
+    osalbool ContinueReturnCodeAfterCountZero;
 } Ut_BAT_Custom_ReturnCodeTable_t;
 
 void Ut_BAT_Custom_Reset(void);
