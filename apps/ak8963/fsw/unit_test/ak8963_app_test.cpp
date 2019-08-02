@@ -505,7 +505,7 @@ void Test_AK8963_ReadDevice_Nominal(void)
     //AK8963_Custom_Returns.AK8963_Read_Mag_Z_Value = expectedZ;
 
     oAK8963.ReadDevice();
-    
+    git
     /* Validate time */
     //UtAssert_True(AK8963_Custom_Returns.AK8963_Get_Time_Return == expectedTime, "result != expected");
     /* Validate Mag */
