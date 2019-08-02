@@ -63,21 +63,21 @@ extern "C" {
  ** Local Defines
  *************************************************************************/
  /** \brief Max delta time between iterations */
-#define QAE_DELTA_TIME_MAX (0.02f)
+#define QAE_DELTA_TIME_MAX              (0.02f)
  /** \brief 50 degrees per second (rad/s) */
-#define QAE_FIFTY_DPS      (0.873f)
+#define QAE_FIFTY_DPS                   (0.873f)
  /** \brief Max number of registered event filters */
-#define QAE_MAX_EVENT_FILTERS (32)
+#define QAE_MAX_EVENT_FILTERS           (32)
  /** \brief GPS max delta time of 1 second (in microseconds) */
-#define QAE_GPS_DT_MAX (1000000)
+#define QAE_GPS_DT_MAX                  (1000000)
  /** \brief GPS delta time of .02 seconds (in microseconds) */
-#define QAE_GPS_DT_THRES (20000)
+#define QAE_GPS_DT_THRES                (20000)
  /** \brief GPS EpH max allowed */
-#define QAE_GPS_EPH_MAX (20.0f)
+#define QAE_GPS_EPH_MAX                 (20.0f)
  /** \brief GPS EpH threshold for fusing data */
-#define QAE_GPS_EPH_THRES (5.0f)
+#define QAE_GPS_EPH_THRES               (5.0f)
  /** \brief Microseconds in second */
-#define USEC_IN_SEC_F (1000000.0f)
+#define USEC_IN_SEC_F                   (1000000.0f)
 
 /************************************************************************
  ** Local Structure Definitions
@@ -386,7 +386,7 @@ public:
      **  \endreturns
      **
      *************************************************************************/
-    boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
+    osalbool VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
     
     /************************************************************************/
     /** \brief The main attitude estimator task.
@@ -414,7 +414,7 @@ public:
      **  \endreturns
      **
      *************************************************************************/
-    boolean InitEstimateAttitude(void);
+    osalbool InitEstimateAttitude(void);
 
     /************************************************************************/
     /** \brief Update the attitude estimate.
@@ -433,7 +433,7 @@ public:
      **  \endreturns
      **
      *************************************************************************/
-    boolean UpdateEstimateAttitude(float dt);
+    osalbool UpdateEstimateAttitude(float dt);
 
     /************************************************************************/
     /** \brief Update magnetic declination.

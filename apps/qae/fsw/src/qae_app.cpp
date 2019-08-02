@@ -528,10 +528,10 @@ void QAE::SendControlStateMsg()
 /* Verify Command Length                                           */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-boolean QAE::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
+osalbool QAE::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
                            uint16 usExpectedLen)
 {
-    boolean bResult  = TRUE;
+    osalbool bResult  = TRUE;
     uint16  usMsgLen = 0;
 
     if (MsgPtr != NULL)
@@ -659,7 +659,7 @@ void QAE::EstimateAttitude(void)
     uint64 delta_time_gps       = 0;
     uint64 time_now             = 0;
     float delta_time            = 0;
-    boolean update_success      = FALSE;
+    osalbool update_success      = FALSE;
 
     /* If there is a new sensor combined message */
     if(CVT.SensorCombinedMsg.Timestamp > CVT.LastSensorCombinedTime)
@@ -727,11 +727,11 @@ void QAE::EstimateAttitude(void)
             UpdateMagDeclination(math::radians(get_mag_declination(CVT.VehicleGlobalPositionMsg.Lat, CVT.VehicleGlobalPositionMsg.Lon)));
         }
         
-        if(ConfigTblPtr->ATT_ACC_COMP == TRUE &&
-           CVT.VehicleGlobalPositionMsg.Timestamp != 0 &&
-           PX4LIB_GetPX4TimeUs() < CVT.VehicleGlobalPositionMsg.Timestamp + QAE_GPS_DT_THRES &&
-           CVT.VehicleGlobalPositionMsg.EpH < QAE_GPS_EPH_THRES &&
-           HkTlm.EstimatorState == QAE_EST_INITIALIZED)
+        if((ConfigTblPtr->ATT_ACC_COMP == TRUE) &&
+           (CVT.VehicleGlobalPositionMsg.Timestamp != 0) &&
+           (PX4LIB_GetPX4TimeUs() < (CVT.VehicleGlobalPositionMsg.Timestamp + QAE_GPS_DT_THRES)) &&
+           (CVT.VehicleGlobalPositionMsg.EpH < QAE_GPS_EPH_THRES) &&
+           (HkTlm.EstimatorState == QAE_EST_INITIALIZED))
         {
             /* Position data is actual */
             vel[0] = CVT.VehicleGlobalPositionMsg.VelN;
@@ -822,12 +822,12 @@ end_of_function:
 /* QAE Initialize the Attitude Estimation                          */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-boolean QAE::InitEstimateAttitude(void)
+osalbool QAE::InitEstimateAttitude(void)
 {
     math::Vector3F k(0.0f, 0.0f, 0.0f);
     math::Vector3F i(0.0f, 0.0f, 0.0f);
     math::Vector3F j(0.0f, 0.0f, 0.0f);
-    boolean return_bool = FALSE;
+    osalbool return_bool = FALSE;
 
     /* Rotation matrix can be easily constructed from acceleration
      * and mag field vectors. 'k' is Earth Z axis (Down) unit vector
@@ -877,7 +877,7 @@ boolean QAE::InitEstimateAttitude(void)
 /* QAE Update the Attitude Estimate                                */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-boolean QAE::UpdateEstimateAttitude(float dt)
+osalbool QAE::UpdateEstimateAttitude(float dt)
 {
     math::Quaternion q_last(0.0f, 0.0f, 0.0f, 0.0f);
     math::Quaternion q_derivative(0.0f, 0.0f, 0.0f, 0.0f);
