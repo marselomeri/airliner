@@ -55,13 +55,14 @@ void EA_StartAppCustom()
 		** Create child process to execute app
 		*/
 		pid_t pid = fork();
+		
 		/*
 		** Child process
 		*/
 		if (pid == 0)
 		{
-			char *argv[] = {EA_AppData.ChildData.AppInterpreter, EA_AppData.ChildData.AppScript, NULL};
-			if(execvp(EA_AppData.ChildData.AppInterpreter, argv) == -1)
+			char *argv[] = {EA_AppData.ChildData.Cmd, EA_AppData.ChildData.Args, NULL};
+			if(execvp(EA_AppData.ChildData.Cmd, argv) == -1)
 			{
 				CFE_EVS_SendEvent(EA_CMD_ERR_EID, CFE_EVS_ERROR,
 									"Error starting external application");
@@ -88,7 +89,7 @@ void EA_StartAppCustom()
 			EA_AppData.HkTlm.usCmdCnt++;
 			CFE_EVS_SendEvent(EA_INF_APP_START_EID, CFE_EVS_INFORMATION,
 								"External application started");
-			strncpy(EA_AppData.HkTlm.ActiveApp, EA_AppData.ChildData.AppScript, OS_MAX_PATH_LEN);
+			strncpy(EA_AppData.HkTlm.ActiveApp, EA_AppData.ChildData.Args, OS_MAX_PATH_LEN);
 			EA_AppData.HkTlm.ActiveAppPID = pid;
 			waitpid(pid, (int*)&EA_AppData.HkTlm.LastAppStatus, 0);
 			EA_AppData.HkTlm.LastAppStatus = EA_AppData.HkTlm.LastAppStatus;
@@ -96,15 +97,14 @@ void EA_StartAppCustom()
 			EA_AppData.HkTlm.ActiveAppUtil = 0;
 			strncpy(EA_AppData.HkTlm.LastAppRun, EA_AppData.HkTlm.ActiveApp, OS_MAX_PATH_LEN);
 			memset(EA_AppData.HkTlm.ActiveApp, '\0', OS_MAX_PATH_LEN);
-			memset(EA_AppData.ChildData.AppInterpreter, '\0', OS_MAX_PATH_LEN);
-			memset(EA_AppData.ChildData.AppScript, '\0', OS_MAX_PATH_LEN);
+			memset(EA_AppData.ChildData.Cmd, '\0', OS_MAX_PATH_LEN);
+			memset(EA_AppData.ChildData.Args, '\0', OS_MAX_PATH_LEN);
 
 		}
 	}/*end if register child task*/
     else
     {
-        /* Can't send event or write to syslog because this task isn't registered with the cFE. */
-        OS_printf("StartApp Child Task Registration failed!\n");
+        (void) CFE_ES_WriteToSysLog("EA - StartApp Child Task Registration failed!\n");
     }
 
 	EA_AppData.ChildAppTaskID = 0;
@@ -174,7 +174,6 @@ void EA_PerfmonCustom(int32 pid)
 EA_ProcData_t EA_ParsePidUtil(int32 pid)
 {
 	EA_ProcData_t procData;
-
 	unsigned long long int utime = 0;
 	unsigned long long int ntime = 0;
 	unsigned long long int stime = 0;
@@ -198,7 +197,9 @@ EA_ProcData_t EA_ParsePidUtil(int32 pid)
 	{
 		OS_printf("Unable to read stat");
 	}
+	
 	fclose(proc_stat);
+	
 	sscanf(buf, "cpu  %16llu %16llu %16llu %16llu %16llu %16llu %16llu %16llu %16llu %16llu",
 			&utime, &ntime, &stime, &itime, &io_wait, &irq, &soft_irq, &steal, &guest, &guest_nice);
 	utime = utime - guest;
@@ -227,7 +228,7 @@ EA_ProcData_t EA_ParsePidUtil(int32 pid)
 	int stime_ln = 14;
 	int count_ndx = 0;
 	char *tok;
-	for (*tok = strtok(data," "); tok != NULL; tok = strtok(NULL, " "))
+	for (tok = strtok(data," "); tok != NULL; tok = strtok(NULL, " "))
 	{
 		if (count_ndx == utime_ln)
 		{
@@ -239,19 +240,10 @@ EA_ProcData_t EA_ParsePidUtil(int32 pid)
 		}
 		count_ndx++;
 	}
+	
 	fclose(pid_stat);
 
 	procData.p_time = utime + stime;
 
 	return(procData);
 }
-
-
-
-
-
-
-
-
-
-

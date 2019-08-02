@@ -34,9 +34,6 @@
 #ifndef MAC_APP_H
 #define MAC_APP_H
 
-
-#include <math/Vector3F.hpp>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -49,22 +46,29 @@ extern "C" {
  ** Includes
  *************************************************************************/
 #include "cfe.h"
-
 #include "mac_platform_cfg.h"
 #include "mac_mission_cfg.h"
-#include "mac_private_ids.h"
-#include "mac_private_types.h"
 #include "mac_perfids.h"
 #include "mac_msgids.h"
 #include "mac_msg.h"
 #include "mac_events.h"
 #include "mac_tbldefs.h"
 #include "px4_msgs.h"
+#include <math/Vector3F.hpp>
 
 
 /************************************************************************
  ** Local Defines
  *************************************************************************/
+#define TPA_RATE_LOWER_LIMIT                (0.05f)
+#define MIN_TAKEOFF_THRUST                  (0.2f)
+#define ATTITUDE_TC_DEFAULT                 (0.2f)
+#define MANUAL_THROTTLE_MAX_MULTICOPTER     (0.9f)
+#define MAX_GYRO_COUNT                      (3)
+#define MICRO_SEC_TO_SEC_DIV                (1000000.0f)
+#define TWO_MILLISECONDS                    (0.002f)
+#define TWENTY_MILLISECONDS                 (0.02f)
+
 
 /** \brief Pipe depth for the data pipe
 **
@@ -83,57 +87,125 @@ extern "C" {
 /************************************************************************
  ** Local Structure Definitions
  *************************************************************************/
+typedef enum
+{
+    MAC_AXIS_INDEX_ROLL     = 0,
+    MAC_AXIS_INDEX_PITCH    = 1,
+    MAC_AXIS_INDEX_YAW      = 2,
+    MAC_AXIS_COUNT          = 3
+} MAC_AXIS_Index_t;
 
 typedef struct
 {
-	PX4_ActuatorArmedMsg_t				Armed;			  /**< actuator arming status */
-	PX4_BatteryStatusMsg_t				BatteryStatus;	  /**< battery status */
-	PX4_ControlStateMsg_t				ControlState;
-	PX4_ManualControlSetpointMsg_t		ManualControlSp;  /**< manual control setpoint */
-	PX4_MultirotorMotorLimitsMsg_t		MotorLimits;	  /**< motor limits */
-	PX4_SensorCorrectionMsg_t			SensorCorrection; /**< sensor thermal corrections */
-	PX4_SensorGyroMsg_t					SensorGyro;		  /**< gyro data before thermal correctons and ekf bias estimates are applied */
-	PX4_VehicleAttitudeSetpointMsg_t	VAttSp;			  /**< vehicle attitude setpoint */
-	PX4_VehicleControlModeMsg_t			VControlMode;	  /**< vehicle control mode */
-	PX4_VehicleRatesSetpointMsg_t		VRatesSp;		  /**< vehicle rates setpoint */
-	PX4_VehicleStatusMsg_t				VehicleStatus;	  /**< vehicle status */
+    /** \brief  Actuator arming status */
+    PX4_ActuatorArmedMsg_t                Armed;
+
+    /** \brief Battery status */
+    PX4_BatteryStatusMsg_t                BatteryStatus;
+
+    /** \brief Control State */
+    PX4_ControlStateMsg_t                 ControlState;
+
+    /** \brief Manual control setpoint */
+    PX4_ManualControlSetpointMsg_t        ManualControlSp;
+
+    /** \brief Motor limits */
+    PX4_MultirotorMotorLimitsMsg_t        MotorLimits;
+
+    /** \brief Sensor thermal corrections */
+    PX4_SensorCorrectionMsg_t             SensorCorrection;
+
+    /** \brief Sensor gyro */
+    PX4_SensorGyroMsg_t                   SensorGyro;
+
+    /** \brief Vehicle attitude setpont */
+    PX4_VehicleAttitudeSetpointMsg_t      VAttSp;
+
+    /** \brief Vehicle control mode */
+    PX4_VehicleControlModeMsg_t           VControlMode;
+
+    /** \brief Vehicle rates setpoint */
+    PX4_VehicleRatesSetpointMsg_t         VRatesSp;
+
+    /** \brief Vehicle Status */
+    PX4_VehicleStatusMsg_t                VehicleStatus;
+    
 } MAC_CurrentValueTable_t;
 
-
 typedef struct
 {
-	math::Vector3F att_p;               /**< P gain for angular error */
-	math::Vector3F rate_p;    			/**< P gain for angular rate error */
-	math::Vector3F rate_i;    			/**< I gain for angular rate error */
-	math::Vector3F rate_int_lim;    	/**< integrator state limit for rate loop */
-	math::Vector3F rate_d;    			/**< D gain for angular rate error */
-	math::Vector3F rate_ff;    			/**< Feedforward gain for desired rates */
-	float yaw_ff;						/**< yaw control feed-forward */
+    /** \brief P gain for angular error */
+    math::Vector3F att_p;
 
-	float tpa_breakpoint_p;				/**< Throttle PID Attenuation breakpoint */
-	float tpa_breakpoint_i;				/**< Throttle PID Attenuation breakpoint */
-	float tpa_breakpoint_d;				/**< Throttle PID Attenuation breakpoint */
-	float tpa_rate_p;					/**< Throttle PID Attenuation slope */
-	float tpa_rate_i;					/**< Throttle PID Attenuation slope */
-	float tpa_rate_d;					/**< Throttle PID Attenuation slope */
+    /** \brief P gain for angular rate error */
+    math::Vector3F rate_p;
 
-	float roll_rate_max;
-	float pitch_rate_max;
-	float yaw_rate_max;
-	float yaw_auto_max;
-	math::Vector3F mc_rate_max;    		/**< attitude rate limits in stabilized modes */
-	math::Vector3F auto_rate_max;    	/**< attitude rate limits in auto modes */
-	math::Vector3F acro_rate_max;    	/**< max attitude rates in acro mode */
-	float rattitude_thres;
-	MAC_VTOL_Type_t vtol_type;			/**< 0 = Tailsitter, 1 = Tiltrotor, 2 = Standard airframe */
-	boolean vtol_opt_recovery_enabled;
-	float vtol_wv_yaw_rate_scale;		/**< Scale value [0, 1] for yaw rate setpoint  */
+    /** \brief I gain for angular rate error */
+    math::Vector3F rate_i;
 
-	boolean bat_scale_en;
+    /** \brief Integrator state limit for rate loop */
+    math::Vector3F rate_int_lim;
 
-	int board_rotation;
+    /** \brief D gain for angular rate error */
+    math::Vector3F rate_d;
 
-	float board_offset[3];
+    /** \brief Feedforward gain for desired rates */
+    math::Vector3F rate_ff;
+
+    /** \brief Yaw control feed-forward */
+    float yaw_ff;
+
+    /** \brief Throttle PID Attenuation breakpoint P */
+    float tpa_breakpoint_p;
+
+    /** \brief Throttle PID Attenuation breakpoint I */
+    float tpa_breakpoint_i;
+
+    /** \brief Throttle PID Attenuation breakpoint D */
+    float tpa_breakpoint_d;
+
+    /** \brief Throttle PID Attenuation slope P */
+    float tpa_rate_p;
+
+    /** \brief Throttle PID Attenuation slope I */
+    float tpa_rate_i;
+
+    /** \brief Throttle PID Attenuation slope D */
+    float tpa_rate_d;
+
+    /** \brief Max roll rate in Degrees */
+    float roll_rate_max;
+
+    /** \brief Max pitch rate in Degrees */
+    float pitch_rate_max;
+
+    /** \brief Max yaw rate in Degrees */
+    float yaw_rate_max;
+
+    /** \brief Max auto yaw rate in Degrees */
+    float yaw_auto_max;
+
+    /** \brief Attitude rate limits in stabilized modes */
+    math::Vector3F mc_rate_max;
+
+    /** \brief Attitude rate limits in auto modes */
+    math::Vector3F auto_rate_max;
+
+    /** \brief Max attitude rates in acro mode */
+    math::Vector3F acro_rate_max;
+
+    /** \brief Threshold for Rattitude mode */
+    float rattitude_thres;
+
+    /** \brief Battery power level scaler */
+    boolean bat_scale_en;
+
+    /** \brief Board rotation */
+    int board_rotation;
+
+    /** \brief Physical board offset from center of vehicle */
+    float board_offset[3];
+    
 } MAC_Params_t;
 
 
@@ -177,28 +249,32 @@ public:
     /** \brief Housekeeping Telemetry for downlink */
     MAC_HkTlm_t HkTlm;
 
+    /** \brief Current value table */
     MAC_CurrentValueTable_t CVT;
 
+    /** \brief Previous cycle rates */
     math::Vector3F m_AngularRatesPrevious;
+
+    /** \brief Previous cycle rates setpoint */
     math::Vector3F m_AngularRatesSetpointPrevious;
-	math::Vector3F m_AngularRatesSetpoint;
-	math::Vector3F m_AngularRatesIntegralError;
-	math::Vector3F m_AttControl;
 
+    /** \brief Current cycle rates setpoint */
+    math::Vector3F m_AngularRatesSetpoint;
 
+    /** \brief Current cycle rates integral error */
+    math::Vector3F m_AngularRatesIntegralError;
 
+    /** \brief Current cycle calculated rates */
+    math::Vector3F m_AttControl;
 
-	uint32 m_GyroCount;
-	int32 m_SelectedGyro;
+    /** \brief Currently used gyro device */
+    int32 m_SelectedGyro;
 
-	//PX4_McVirtualRatesSetpointMsg_t m_RatesSetpoint;
+    /** \brief thrust setpoint */
+    float m_ThrustSp;
 
-	boolean m_Actuators0CircuitBreakerEnabled;
-
-
-	MAC_Params_t m_Params;
-
-
+    /** \brief Locally stored copy of params */
+    MAC_Params_t m_Params;
 
     /************************************************************************/
     /** \brief CFS PWM Motor Controller Task (MAC) application entry point
@@ -408,8 +484,6 @@ public:
      *************************************************************************/
     boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
 
-//private:
-
     /************************************************************************/
     /** \brief Initialize the MAC configuration tables.
     **
@@ -447,11 +521,6 @@ public:
     *************************************************************************/
     int32  AcquireConfigPointers(void);
 
-    void DisplayInputs(void);
-
-    void DisplayOutputs(void);
-
-public:
     /************************************************************************/
     /** \brief Validate MAC PWM configuration table
     **
@@ -470,27 +539,79 @@ public:
     *************************************************************************/
     static int32  ValidateParamTbl(void*);
 
-//private:
+    /************************************************************************/
+    /** \brief Run Attitude Controller
+    **
+    **  \par Description
+    **       This function cycles the attitude controller
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    *************************************************************************/
     void RunController(void);
+
+    /************************************************************************/
+    /** \brief Update Params 
+    **
+    **  \par Description
+    **       This function copies params from the table into local data
+    **       structures required for use 
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    *************************************************************************/
     void UpdateParams(void);
 
-	/**
-	 * Attitude controller.
-	 */
-	void ControlAttitude(float dt);
+    /************************************************************************/
+    /** \brief Control Attitude
+    **
+    **  \par Description
+    **       This function calculates the attitude setpoint
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \param [in]   dt    #float of time delta
+    **
+    *************************************************************************/
+    void ControlAttitude(float dt);
 
-	/**
-	 * Attitude rates controller.
-	 */
-	void ControlAttitudeRates(float dt);
+    /************************************************************************/
+    /** \brief 
+    **
+    **  \par Description
+    **       This function calculates the rates required to meet the attitude
+    **       setpoint
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \param [in]   dt    #float of time delta
+    **
+    *************************************************************************/
+    void ControlAttitudeRates(float dt);
 
-	math::Vector3F PidAttenuations(float tpa_breakpoint, float tpa_rate);
-
-//private:
-	float m_ThrustSp;		/**< thrust setpoint */
+    /************************************************************************/
+    /** \brief 
+    **
+    **  \par Description
+    **       This function adjusts the rates based on the current throttle value
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \param [in]   tpa_breakpoint    #float Parameter for breakpoint
+    **  \param [in]   tpa_rate          #float Parameter for rate
+    **
+    **  \returns
+    **  #math::Vector3F of adjusted rates
+    **  \endreturns
+    *************************************************************************/
+    math::Vector3F PidAttenuations(float tpa_breakpoint, float tpa_rate);
 
 };
-
 
 extern MAC oMAC;
 
