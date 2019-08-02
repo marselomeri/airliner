@@ -212,6 +212,9 @@ void Test_MAC_InitData(void)
     int32 result = -1;
     int32 expected = CFE_SUCCESS;
 
+    /* Initialize the table, so the pointer is set. */
+    oMAC.InitConfigTbl();
+
     /* Execute the function being tested */
     result = oMAC.InitData();
 
@@ -428,13 +431,13 @@ void Test_MAC_AppMain_Nominal_Wakeup(void)
  */
 void Test_MAC_AppMain_ProcessNewData_InvalidMsgID(void)
 {
-    MAC_InData_t  InMsg;
+	PX4_ActuatorArmedMsg_t  InMsg;
     int32 DataPipe;
 
     /* The following will emulate behavior of receiving a SCH message to WAKEUP,
        and gives it data to process. */
     DataPipe = Ut_CFE_SB_CreatePipe("MAC_DATA_PIPE");
-    CFE_SB_InitMsg (&InMsg, 0x0000, sizeof(MAC_InData_t), TRUE);
+    CFE_SB_InitMsg (&InMsg, 0x0000, sizeof(PX4_ActuatorArmedMsg_t), TRUE);
     Ut_CFE_SB_AddMsgToPipe(&InMsg, DataPipe);
 
     Ut_CFE_SB_SetReturnCode(UT_CFE_SB_RCVMSG_INDEX, CFE_SUCCESS, 1);
@@ -486,7 +489,7 @@ void Test_MAC_ControlAttitude(void)
     oMAC.m_Params.auto_rate_max[0] = 3.8397247791f;
     oMAC.m_Params.auto_rate_max[1] = 3.8397247791f;
     oMAC.m_Params.auto_rate_max[2] = 0.7853982449f;
-    oMAC.m_Params.vtol_wv_yaw_rate_scale = 0.1500000060f;
+//    oMAC.m_Params.vtol_wv_yaw_rate_scale = 0.1500000060f;
     oMAC.m_AngularRatesSetpoint[0] = 0.5145305991f;
     oMAC.m_AngularRatesSetpoint[1] = -0.0270411316f;
     oMAC.m_AngularRatesSetpoint[2] = 0.0020858147f;
@@ -522,10 +525,10 @@ void Test_MAC_ControlAttitudeRates(void)
     oMAC.m_Params.board_offset[1] = 0.0000000000f;
     oMAC.m_Params.board_offset[2] = 0.0000000000f;
 
-    oMAC.ParamTblPtr->board_rotation = 0;
-    oMAC.ParamTblPtr->board_offset[0] = 0.0000010000f;
-    oMAC.ParamTblPtr->board_offset[1] = 0.0000000000f;
-    oMAC.ParamTblPtr->board_offset[2] = 0.0000000000f;
+    oMAC.ParamTblPtr->SENS_BOARD_ROT = 0;
+    oMAC.ParamTblPtr->SENS_BOARD_X_OFF = 0.0000010000f;
+    oMAC.ParamTblPtr->SENS_BOARD_Y_OFF = 0.0000000000f;
+    oMAC.ParamTblPtr->SENS_BOARD_Z_OFF = 0.0000000000f;
 
     oMAC.CVT.SensorGyro.X = 4.8167719841f;
     oMAC.CVT.SensorGyro.Y = -0.0151427072f;
