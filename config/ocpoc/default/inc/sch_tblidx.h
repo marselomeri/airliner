@@ -48,7 +48,7 @@
 #define FLOW_WAKEUP_MIDX 			42
 #define FLOW_SEND_HK_MIDX 			43
 #define VC_SEND_HK_MIDX				45
-#define VC_WAKEUP_MIDX				46
+#define VC_PROCESS_CMDS_MIDX				46
 #define RGBLED_WAKEUP_MIDX			47
 #define RGBLED_SEND_HK_MIDX			48
 

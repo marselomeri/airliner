@@ -51,7 +51,7 @@ extern "C" {
 **       Must be defined as a numeric value that is greater than
 **       or equal to zero.
 */
-#define VC_MAJOR_VERSION    (0)
+#define VC_MAJOR_VERSION    (1)
 
 /** \brief Minor version number for VC application
 **  
