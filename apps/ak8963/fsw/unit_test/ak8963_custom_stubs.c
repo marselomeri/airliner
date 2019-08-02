@@ -75,7 +75,14 @@ boolean AK8963_Read_MagAdj(uint8 *X, uint8 *Y, uint8 *Z)
 
 boolean AK8963_Read_MagDeviceID(uint8 *Value)
 {
-    return TRUE;
+	if(Value != 0)
+	{
+		*Value = AK8963_Custom_Returns.AK8963_WhoAmI_Value;
+
+	    return AK8963_Custom_Returns.AK8963_WhoAmI_Return;
+	}
+
+    return FALSE;
 }
 
 
