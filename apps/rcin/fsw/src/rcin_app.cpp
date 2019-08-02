@@ -32,10 +32,6 @@
 *****************************************************************************/
 
 /************************************************************************
-** Pragmas
-*************************************************************************/
-
-/************************************************************************
 ** Includes
 *************************************************************************/
 #include <string.h>
@@ -45,6 +41,7 @@
 #include "rcin_msg.h"
 #include "rcin_version.h"
 #include <unistd.h>
+#include <limits.h>
 #include "px4lib.h"
 #include "px4lib_msgids.h"
 
@@ -89,20 +86,36 @@ int32 RCIN::InitEvent()
     int32  ind             = 0;
     int32 customEventCount = 0;
     
-    CFE_EVS_BinFilter_t   EventTbl[CFE_EVS_MAX_EVENT_FILTERS];
+    CFE_EVS_BinFilter_t   EventTbl[RCIN_MAX_EVENT_FILTERS];
 
     /* Initialize the event filter table.
      * Note: 0 is the CFE_EVS_NO_FILTER mask and event 0 is reserved (not used) */
-    memset(EventTbl, 0x00, sizeof(EventTbl));
+    CFE_PSP_MemSet(EventTbl, 0x00, sizeof(EventTbl));
     
-    /* TODO: Choose the events you want to filter.  CFE_EVS_MAX_EVENT_FILTERS
-     * limits the number of filters per app.  An explicit CFE_EVS_NO_FILTER 
-     * (the default) has been provided as an example. */
     EventTbl[  ind].EventID = RCIN_RESERVED_EID;
     EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
-    EventTbl[  ind].EventID = RCIN_READ_ERR_EID;
-    EventTbl[ind++].Mask    = CFE_EVS_FIRST_16_STOP;
-    
+    EventTbl[  ind].EventID = RCIN_INIT_INF_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = RCIN_CMD_NOOP_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = RCIN_SUBSCRIBE_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = RCIN_PIPE_INIT_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = RCIN_RCVMSG_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = RCIN_MSGID_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = RCIN_CC_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = RCIN_MSGLEN_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = RCIN_INIT_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = RCIN_PUBLISHING_INF_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = RCIN_NOT_PUBLISHING_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
     
     /* Add custom events to the filter table */
     customEventCount = RCIN_Custom_Init_EventFilters(ind, EventTbl);
@@ -122,7 +135,6 @@ int32 RCIN::InitEvent()
     }
 
 end_of_function:
-
     return (iStatus);
 }
 
@@ -204,11 +216,14 @@ void RCIN::InitData()
 {
     /* Init housekeeping message. */
     CFE_SB_InitMsg(&HkTlm, RCIN_HK_TLM_MID, sizeof(HkTlm), TRUE);
+    
     /* Init output messages */
     CFE_SB_InitMsg(&InputRcMsg, PX4_INPUT_RC_MID, 
         sizeof(PX4_InputRcMsg_t), TRUE);
+        
     /* Init custom data */
     RCIN_Custom_InitData();
+    
     return;
 }
 
@@ -246,7 +261,7 @@ int32 RCIN::InitApp()
     returnBool = RCIN_Custom_Init();
     if (FALSE == returnBool)
     {
-        iStatus = -1;
+        iStatus = RCIN_ERROR;
         goto RCIN_InitApp_Exit_Tag;
     }
 
@@ -274,7 +289,7 @@ RCIN_InitApp_Exit_Tag:
     }
     else
     {
-        if (hasEvents == 1)
+        if (hasEvents != 1)
         {
             (void) CFE_ES_WriteToSysLog("RCIN - Application failed to initialize\n");
         }
@@ -325,6 +340,7 @@ int32 RCIN::RcvSchPipeMsg(int32 iBlocking)
             {
                 (void) CFE_EVS_SendEvent(RCIN_MSGID_ERR_EID, CFE_EVS_ERROR,
                      "Recvd invalid SCH msgId (0x%04X)", MsgId);
+                break;
             }
         }
     }
@@ -514,21 +530,20 @@ boolean RCIN::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void RCIN::ReadDevice(void)
 {
-    boolean returnBool       = FALSE;
-    static uint8 strikeCount = 0;
+    boolean returnBool = FALSE;
 
     returnBool = RCIN_Custom_Measure(&InputRcMsg);
     if(FALSE == returnBool)
     {
         /* Rollover */
-        if(strikeCount == 255)
+        if(StrikeCount == UCHAR_MAX)
         {
-            strikeCount = 0;
+            StrikeCount = 0;
         }
         /* Increment strike count */
-        strikeCount++;
+        StrikeCount++;
         /* Measure is returning FALSE set state to not publishing */
-        if(strikeCount == 10)
+        if(StrikeCount == RCIN_STRIKE_COUNT_THRES)
         {
             if (HkTlm.State != RCIN_NOTPUBLISHING)
             {
@@ -540,7 +555,7 @@ void RCIN::ReadDevice(void)
     }
     else
     {
-        strikeCount = 0;
+        StrikeCount = 0;
         if (HkTlm.State != RCIN_PUBLISHING)
         {
             /* Measure is returning TRUE set state to publishing */
@@ -625,13 +640,7 @@ void RCIN::AppMain()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void RCIN_CleanupCallback(void)
 {
-    oRCIN.HkTlm.State = RCIN_UNINITIALIZED;
-    if(RCIN_Custom_Uninit() != TRUE)
-    {
-        CFE_EVS_SendEvent(RCIN_UNINIT_ERR_EID, CFE_EVS_ERROR,"RCIN_Uninit failed");
-        oRCIN.HkTlm.State = RCIN_INITIALIZED;
-    }
-    return;
+    RCIN_Custom_Uninit();
 }
 
 /************************/

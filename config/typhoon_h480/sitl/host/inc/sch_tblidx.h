@@ -46,7 +46,7 @@
 #define SC_SEND_HK_MIDX				41
 
 #define VC_SEND_HK_MIDX				45
-#define VC_WAKEUP_MIDX				46
+#define VC_PROCESS_CMDS_MIDX				46
 #define RGBLED_WAKEUP_MIDX			47
 #define RGBLED_SEND_HK_MIDX			48
 
