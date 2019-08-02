@@ -113,19 +113,10 @@ int32 MAC::InitEvent()
     EventTbl[  ind].EventID = MAC_CMD_INF_EID;
     EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
     
-    EventTbl[  ind].EventID = MAC_ERR_EID;
-    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
-    
     EventTbl[  ind].EventID = MAC_INIT_INF_EID;
     EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
     
-    EventTbl[  ind].EventID = MAC_CONFIG_TABLE_INF_EID;
-    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
-    
     EventTbl[  ind].EventID = MAC_INIT_ERR_EID;
-    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
-    
-    EventTbl[  ind].EventID = MAC_CMD_ERR_EID;
     EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
     
     /* Register the table with CFE */
@@ -801,13 +792,13 @@ void MAC::RunController(void)
     uint32 i = 0;
 
     /* Guard against too small (< 2ms) and too large (> 20ms) dt's */
-    if (dt < 0.002f)
+    if (dt < TWO_MILLISECONDS)
     {
-        dt = 0.002f;
+        dt = TWO_MILLISECONDS;
     }
-    else if (dt > 0.02f)
+    else if (dt > TWENTY_MILLISECONDS)
     {
-        dt = 0.02f;
+        dt = TWENTY_MILLISECONDS;
     }
 
     /* Check if we are in rattitude mode and the pilot is above the threshold on pitch

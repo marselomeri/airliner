@@ -60,22 +60,25 @@ extern "C" {
 /************************************************************************
  ** Local Defines
  *************************************************************************/
-#define TPA_RATE_LOWER_LIMIT  (0.05f)
-#define MIN_TAKEOFF_THRUST    (0.2f)
-#define ATTITUDE_TC_DEFAULT   (0.2f)
-#define MANUAL_THROTTLE_MAX_MULTICOPTER    (0.9f)
-#define MAX_GYRO_COUNT (3)
-#define MICRO_SEC_TO_SEC_DIV (1000000.0f)
+#define TPA_RATE_LOWER_LIMIT                (0.05f)
+#define MIN_TAKEOFF_THRUST                  (0.2f)
+#define ATTITUDE_TC_DEFAULT                 (0.2f)
+#define MANUAL_THROTTLE_MAX_MULTICOPTER     (0.9f)
+#define MAX_GYRO_COUNT                      (3)
+#define MICRO_SEC_TO_SEC_DIV                (1000000.0f)
+#define TWO_MILLISECONDS                    (0.002f)
+#define TWENTY_MILLISECONDS                 (0.02f)
+
 
 /************************************************************************
  ** Local Structure Definitions
  *************************************************************************/
 typedef enum
 {
-    MAC_AXIS_INDEX_ROLL = 0,
-    MAC_AXIS_INDEX_PITCH = 1,
-    MAC_AXIS_INDEX_YAW = 2,
-    MAC_AXIS_COUNT = 3
+    MAC_AXIS_INDEX_ROLL     = 0,
+    MAC_AXIS_INDEX_PITCH    = 1,
+    MAC_AXIS_INDEX_YAW      = 2,
+    MAC_AXIS_COUNT          = 3
 } MAC_AXIS_Index_t;
 
 typedef struct
