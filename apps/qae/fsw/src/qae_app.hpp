@@ -186,6 +186,8 @@ public:
     math::Vector3F m_Rates;
     /** \brief The last estimator update time */
     uint64 m_TimeLast;
+    /** \brief Magnetic declination */    
+    float m_MagDeclination;
 
     /************************************************************************/
     /** \brief Q Attitude Estimator (QAE) application entry point

@@ -253,6 +253,7 @@ void QAE::InitData()
     m_PositionAcc.Zero();
     m_GyroBias.Zero();
     m_Rates.Zero();
+    m_MagDeclination = ConfigTblPtr->ATT_MAG_DECL;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -630,18 +631,18 @@ void QAE::AppMain()
 void QAE::UpdateMagDeclination(const float new_declination)
 {
     if (HkTlm.EstimatorState == QAE_EST_UNINITIALIZED || 
-        fabsf(new_declination - ConfigTblPtr->ATT_MAG_DECL) < 0.0001f) 
+        fabsf(new_declination - m_MagDeclination) < 0.0001f) 
     {
         /* Apply initial declination or trivial rotations without changing estimation */
-        ConfigTblPtr->ATT_MAG_DECL = new_declination;
+        m_MagDeclination = new_declination;
     }
     else 
     {
         /* Immediately rotate current estimation to avoid gyro bias growth */
         math::Quaternion decl_rotation (0.0f, 0.0f, 0.0f, 0.0f);
-        decl_rotation.FromYaw(new_declination - ConfigTblPtr->ATT_MAG_DECL);
+        decl_rotation.FromYaw(new_declination - m_MagDeclination);
         m_Quaternion = decl_rotation * m_Quaternion;
-        ConfigTblPtr->ATT_MAG_DECL = new_declination;
+        m_MagDeclination = new_declination;
     }
     return;
 }
@@ -719,7 +720,7 @@ void QAE::EstimateAttitude(void)
     {
         /* Calculate time difference between now and gpos timestamp */
         delta_time_gps = PX4LIB_GetPX4TimeUs() - CVT.VehicleGlobalPositionMsg.Timestamp;
-        if(ConfigTblPtr->ATT_MAG_DECL_A == TRUE && 
+        if(m_MagDeclination_A == TRUE && 
            CVT.VehicleGlobalPositionMsg.EpH < QAE_GPS_EPH_MAX &&
            delta_time_gps < QAE_GPS_DT_MAX)
         {
@@ -852,7 +853,7 @@ osalbool QAE::InitEstimateAttitude(void)
 
     /* Compensate for magnetic declination */
     math::Quaternion decl_rotation(0.0f, 0.0f, 0.0f, 0.0f);
-    decl_rotation.FromYaw(ConfigTblPtr->ATT_MAG_DECL);
+    decl_rotation.FromYaw(m_MagDeclination);
 
     m_Quaternion = decl_rotation * m_Quaternion;
     m_Quaternion.Normalize();
@@ -913,7 +914,7 @@ osalbool QAE::UpdateEstimateAttitude(float dt)
      * and extract XY component */
     mag_earth = m_Quaternion.Conjugate(m_Mag);
 
-    magErr = _wrap_pi(atan2f(mag_earth[1], mag_earth[0]) - ConfigTblPtr->ATT_MAG_DECL);
+    magErr = _wrap_pi(atan2f(mag_earth[1], mag_earth[0]) - m_MagDeclination);
 
     if(spinRate > QAE_FIFTY_DPS)
     {

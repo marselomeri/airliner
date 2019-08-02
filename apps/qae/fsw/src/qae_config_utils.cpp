@@ -165,9 +165,6 @@ int32 QAE::AcquireConfigPointers(void)
     /*
     ** Release the table
     */
-    /* TODO: This return value can indicate success, error, or that the info has been 
-     * updated.  We ignore this return value in favor of checking CFE_TBL_Manage(), but
-     * be sure this is the behavior you want. */
     (void) CFE_TBL_ReleaseAddress(ConfigTblHdl);
 
     /*
@@ -189,6 +186,7 @@ int32 QAE::AcquireConfigPointers(void)
     if (iStatus == CFE_TBL_INFO_UPDATED)
     {
         iStatus = CFE_SUCCESS;
+        m_MagDeclination = ConfigTblPtr->ATT_MAG_DECL;
     }
     else if(iStatus != CFE_SUCCESS)
     {
