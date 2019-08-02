@@ -36,10 +36,6 @@
 #include "prm_lib.h"
 
 
-#define CPPLIB_UNEXPECTED_MSG_ID          (-10)
-#define CPPLIB_UNEXPECTED_COMMAND_CODE    (-11)
-
-
 
 ParamsConsumer::ParamsConsumer()
 {

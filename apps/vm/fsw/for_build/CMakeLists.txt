@@ -118,6 +118,9 @@ add_airliner_app_unit_test(vm-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../px4lib/fsw/src/math/Vector4F.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../px4lib/fsw/src/math/Matrix4F4.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../px4lib/fsw/src/math/Matrix1F3.cpp
+        
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../prmlib/fsw/src/ParamsConsumer.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../prmlib/fsw/src/prm_lib.c
 
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
