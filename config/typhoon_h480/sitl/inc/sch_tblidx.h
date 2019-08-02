@@ -95,8 +95,8 @@
 
 #define PX4BR_PROC_CMD_MIDX			100
 #define PX4BR_SEND_HK_MIDX			101
-#define AE_SEND_HK_MIDX			        102
-#define AE_WAKEUP_MIDX			        103
+#define QAE_SEND_HK_MIDX			        102
+#define QAE_WAKEUP_MIDX			        103
 #define LD_SEND_HK_MIDX			        104
 #define LD_WAKEUP_MIDX			        105
 #define MPC_SEND_HK_MIDX			106
