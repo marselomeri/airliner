@@ -720,7 +720,7 @@ void QAE::EstimateAttitude(void)
     {
         /* Calculate time difference between now and gpos timestamp */
         delta_time_gps = PX4LIB_GetPX4TimeUs() - CVT.VehicleGlobalPositionMsg.Timestamp;
-        if(m_MagDeclination_A == TRUE && 
+        if(ConfigTblPtr->ATT_MAG_DECL_A == TRUE &&
            CVT.VehicleGlobalPositionMsg.EpH < QAE_GPS_EPH_MAX &&
            delta_time_gps < QAE_GPS_DT_MAX)
         {
