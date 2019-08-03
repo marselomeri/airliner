@@ -442,6 +442,11 @@ CI_CmdData_t *CI_GetRegisterdCmd(CFE_SB_MsgId_t msgID, uint16 cmdCode, uint32* t
         goto CI_GetRegisterdCmd_Exit_Tag;
     }
 
+    if(tblIdx == 0)
+    {
+        goto CI_GetRegisterdCmd_Exit_Tag;
+    }
+
     /* Lock the mutex */
     OS_MutSemTake(CI_AppData.ConfigTblMutex);
 
@@ -458,6 +463,8 @@ CI_CmdData_t *CI_GetRegisterdCmd(CFE_SB_MsgId_t msgID, uint16 cmdCode, uint32* t
             }
         }
     }
+
+    *tblIdx = CI_INVALID_VALUE;
 
 CI_GetRegisterdCmd_Exit_Tag:
     /* Unlock the mutex */
@@ -711,7 +718,7 @@ void CI_CmdDeregister(const CFE_SB_Msg_t* MsgPtr)
         {
             /* Check if command is registered */
             CmdData = CI_GetRegisterdCmd(regDataPtr->msgID, regDataPtr->cmdCode, &i);
-            if (CmdData != NULL || i == CI_INVALID_VALUE)
+            if ((CmdData != NULL) && (i != CI_INVALID_VALUE))
             {
                 /* Lock the mutex */
                 OS_MutSemTake(CI_AppData.ConfigTblMutex);
@@ -775,7 +782,7 @@ void CI_UpdateCmdReg(const CFE_SB_Msg_t* MsgPtr)
         {
             /* Check if command is registered */
             CmdData = CI_GetRegisterdCmd(regDataPtr->msgID, regDataPtr->cmdCode, &i);
-            if (CmdData != NULL || i == CI_INVALID_VALUE)
+            if (CmdData != NULL || i != CI_INVALID_VALUE)
             {
                 if (CmdData->step == STEP_2)
                 {
