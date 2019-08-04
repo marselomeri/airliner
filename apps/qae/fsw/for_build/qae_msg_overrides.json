@@ -3,16 +3,16 @@
         "apps": {
             "QAE": {
                 "operations": {
-                    "Noop":        { "airliner_cc":  0, "macro": "AE_CMD_MID", "airliner_msg": "QAE_NoArgCmd_t" },
-                    "Reset":       { "airliner_cc":  1, "macro": "AE_CMD_MID", "airliner_msg": "QAE_NoArgCmd_t" },
-                    "QAE_HkTlm_t": {                    "macro": "AE_HK_TLM_MID", "airliner_msg": "QAE_HkTlm_t" },
-                    "Wakeup":      {                    "macro": "AE_WAKEUP_MID", "airliner_msg": "QAE_NoArgCmd_t"},
-                    "QAE_SendHk":  {                    "macro": "AE_SEND_HK_MID", "airliner_msg": "QAE_NoArgCmd_t"}
+                    "Noop":        { "airliner_cc":  0, "macro": "QAE_CMD_MID", "airliner_msg": "QAE_NoArgCmd_t" },
+                    "Reset":       { "airliner_cc":  1, "macro": "QAE_CMD_MID", "airliner_msg": "QAE_NoArgCmd_t" },
+                    "QAE_HkTlm_t": {                    "macro": "QAE_HK_TLM_MID", "airliner_msg": "QAE_HkTlm_t" },
+                    "Wakeup":      {                    "macro": "QAE_WAKEUP_MID", "airliner_msg": "QAE_NoArgCmd_t"},
+                    "QAE_SendHk":  {                    "macro": "QAE_SEND_HK_MID", "airliner_msg": "QAE_NoArgCmd_t"}
                 },    
                 "scheduler": {
                     "activities": [
-                        "AE_SEND_HK_MID",
-                        "AE_WAKEUP_MID"
+                        "QAE_SEND_HK_MID",
+                        "QAE_WAKEUP_MID"
                     ],
                     "groups": [
                         { "id": 1, "macro": "AE_SCH_GRP" }
@@ -40,7 +40,7 @@
                 "config": {
                 },
                 "tables": [
-                    {"id": "CONFIG_TBL",  "title": "PWM Configuration",  "isDumpTable": false}
+                    {"id": "CONFIG_TBL",  "title": "Config",  "isDumpTable": false}
                 ]
             }
         }
