@@ -82,7 +82,7 @@ int32 MS5611::InitEvent()
     int32  ind             = 0;
     int32 customEventCount = 0;
     
-    CFE_EVS_BinFilter_t   EventTbl[MS5611_MAX_EVENT_FILTERS];
+    CFE_EVS_BinFilter_t   EventTbl[CFE_EVS_MAX_EVENT_FILTERS];
 
     /* Initialize the event filter table.
      * Note: 0 is the CFE_EVS_NO_FILTER mask and event 0 is reserved (not used) */
@@ -118,8 +118,6 @@ int32 MS5611::InitEvent()
     EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
     EventTbl[  ind].EventID = MPU9250_CFGTBL_REG_ERR_EID;
     EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
-    EventTbl[  ind].EventID = MS5611_CMD_ERR_EID;
-    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
     EventTbl[  ind].EventID = MS5611_UNINIT_ERR_EID;
     EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
     EventTbl[  ind].EventID = MS5611_CFGTBL_LOAD_ERR_EID;
@@ -134,7 +132,7 @@ int32 MS5611::InitEvent()
     /* Add custom events to the filter table */
     customEventCount = MS5611_Custom_Init_EventFilters(ind, EventTbl);
     
-    if(-1 == customEventCount) // todo make custom code return MS5611_ERROR instead of -1
+    if(MS5611_ERROR == customEventCount)
     {
         iStatus = CFE_EVS_APP_FILTER_OVERLOAD;
         (void) CFE_ES_WriteToSysLog("Failed to init custom event filters (0x%08X)\n", (unsigned int)iStatus);
@@ -257,7 +255,7 @@ int32 MS5611::InitApp()
 {
     int32  iStatus      = CFE_SUCCESS;
     int8   hasEvents    = 0;
-    boolean returnBool  = TRUE;
+    osalbool returnBool  = TRUE;
     int32 i             = 0;
     
     iStatus = InitEvent();
@@ -555,10 +553,10 @@ void MS5611::ReportDiagnostic()
 /* Verify Command Length                                           */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-boolean MS5611::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
+osalbool MS5611::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
                            uint16 usExpectedLen)
 {
-    boolean bResult  = TRUE;
+    osalbool bResult  = TRUE;
     uint16  usMsgLen = 0;
 
     if (MsgPtr != NULL)
@@ -656,7 +654,7 @@ void MS5611::AppMain()
 /* Get a raw pressure and temperature measurement from the device  */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-boolean MS5611::GetMeasurement(int32 *Pressure, int32 *Temperature)
+osalbool MS5611::GetMeasurement(int32 *Pressure, int32 *Temperature)
 {
     /* ADC value of the pressure conversion */
     uint32 D1           = 0;
@@ -672,7 +670,7 @@ boolean MS5611::GetMeasurement(int32 *Pressure, int32 *Temperature)
     int64 TEMP          = 0;
     int32 TempValidate  = 0;
     int32 PressValidate = 0;
-    boolean returnBool  = TRUE;
+    osalbool returnBool  = TRUE;
 
     returnBool = MS5611_D1Conversion();
     if (FALSE == returnBool)
@@ -805,7 +803,7 @@ void MS5611::ReadDevice(void)
 {
     int32 pressure      = 0;
     int32 temperature   = 0;
-    boolean returnBool  = TRUE;
+    osalbool returnBool  = TRUE;
 
     returnBool = GetMeasurement(&pressure, &temperature);
     if (FALSE == returnBool)
@@ -924,9 +922,9 @@ uint8 MS5611::CRC4(uint16 n_prom[])
 /* Validate the CRC code in PROM                                   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-boolean MS5611::ValidateCRC(void)
+osalbool MS5611::ValidateCRC(void)
 {
-    boolean returnBool        = FALSE;
+    osalbool returnBool        = FALSE;
     unsigned char returnedCRC = 0;
     uint16 promCRC            = 0;
     /* CRC code is in the last 4-bits */

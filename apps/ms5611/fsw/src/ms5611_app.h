@@ -59,9 +59,6 @@ extern "C" {
  ** Local Defines
  *************************************************************************/
 
-/** \brief Size used for event registration table */
-#define MS5611_MAX_EVENT_FILTERS (32)
-
 /** \brief Error code for MS5611 specific functions */
 #define MS5611_ERROR    (-1)
 
@@ -355,7 +352,7 @@ public:
      **  \endreturns
      **
      *************************************************************************/
-    boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
+    osalbool VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
 
     /************************************************************************/
     /** \brief Get pressure and temperature from the MS5611.
@@ -376,7 +373,7 @@ public:
      **  \endreturns
      **
      *************************************************************************/
-    boolean GetMeasurement(int32 *Pressure, int32 *Temperature);
+    osalbool GetMeasurement(int32 *Pressure, int32 *Temperature);
 
     /************************************************************************/
     /** \brief Sends the SensorBaro message.
@@ -425,7 +422,7 @@ public:
      **  \returns TRUE for success, FALSE for failure.
      **
      *************************************************************************/
-    boolean ValidateCRC(void);
+    osalbool ValidateCRC(void);
 
 private:
     /************************************************************************/

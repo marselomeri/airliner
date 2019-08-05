@@ -99,7 +99,7 @@ MS5611_InitConfigTbl_Exit_Tag:
 int32 MS5611::ValidateConfigTbl(void* ConfigTblPtr)
 {
     int32  iStatus = 0;
-    boolean valid_bool = TRUE;
+    osalbool valid_bool = TRUE;
     MS5611_ConfigTbl_t* MS5611_ConfigTblPtr = (MS5611_ConfigTbl_t*)(ConfigTblPtr);
 
     if(!(MS5611_ConfigTblPtr->p1 > PRESSURE_KPA_MIN && MS5611_ConfigTblPtr->p1 < PRESSURE_KPA_MAX))
@@ -111,7 +111,7 @@ int32 MS5611::ValidateConfigTbl(void* ConfigTblPtr)
     {
         (void) CFE_EVS_SendEvent(MS5611_CFGTBL_VALIDATION_ERR_EID, CFE_EVS_ERROR,
             "Config params table validation error");
-        iStatus = -1;
+        iStatus = MS5611_ERROR;
     }
 
 MS5611_ValidateConfigTbl_Exit_Tag:
