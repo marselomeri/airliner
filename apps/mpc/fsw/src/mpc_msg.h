@@ -362,31 +362,31 @@ typedef struct
 	uint8   UserIntentionZ;
 
 	/** \brief  */
-	boolean            ModeAuto;
+	osalbool            ModeAuto;
 
 	/** \brief  */
-	boolean            PositionHoldEngaged;
+	osalbool            PositionHoldEngaged;
 
 	/** \brief  */
-	boolean            AltitudeHoldEngaged;
+	osalbool            AltitudeHoldEngaged;
 
 	/** \brief  */
-	boolean            RunPosControl;
+	osalbool            RunPosControl;
 
 	/** \brief  */
-	boolean            RunAltControl;
+	osalbool            RunAltControl;
 
 	/** \brief  */
-	boolean            InTakeoff;
+	osalbool            InTakeoff;
 
 	/** \brief  */
-	boolean            TripletLatLonFinite;
+	osalbool            TripletLatLonFinite;
 
 	/** \brief  */
-	boolean            WasLanded;
+	osalbool            WasLanded;
 
 	/** \brief  */
-	boolean            WasArmed;
+	osalbool            WasArmed;
 
 } MPC_HkTlm_t;
 

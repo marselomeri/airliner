@@ -65,12 +65,13 @@ extern "C" {
 /************************************************************************
  ** Local Defines
  *************************************************************************/
-enum ManualStickInput {
-	BRAKE = 0,
+enum ManualStickInput
+{
+	BRAKE            = 0,
 	DIRECTION_CHANGE = 1,
-	ACCELERATION = 2,
-	DECELERATION = 3,
-	NONE = 4
+	ACCELERATION     = 2,
+	DECELERATION     = 3,
+	NONE             = 4
 };
 
 
@@ -107,7 +108,6 @@ public:
     MPC_ConfigTbl_t* ConfigTblPtr;
 
     /* Output Messages */
-
     /** \brief Housekeeping Telemetry for downlink */
     MPC_HkTlm_t HkTlm;
 
@@ -115,18 +115,19 @@ public:
     MPC_DiagPacket_t DiagTlm;
 
     /** \brief Output Data published at the end of cycle */
-    PX4_VehicleAttitudeSetpointMsg_t m_VehicleAttitudeSetpointMsg;
+    PX4_VehicleAttitudeSetpointMsg_t      m_VehicleAttitudeSetpointMsg;
     PX4_VehicleLocalPositionSetpointMsg_t m_VehicleLocalPositionSetpointMsg;
 
     /* Input Messages */
-    PX4_ControlStateMsg_t m_ControlStateMsg;
-    PX4_ManualControlSetpointMsg_t m_ManualControlSetpointMsg;
-    PX4_HomePositionMsg_t m_HomePositionMsg;
-    PX4_VehicleControlModeMsg_t m_VehicleControlModeMsg;
+    /** \brief Input messages */
+    PX4_ControlStateMsg_t            m_ControlStateMsg;
+    PX4_ManualControlSetpointMsg_t   m_ManualControlSetpointMsg;
+    PX4_HomePositionMsg_t            m_HomePositionMsg;
+    PX4_VehicleControlModeMsg_t      m_VehicleControlModeMsg;
     PX4_PositionSetpointTripletMsg_t m_PositionSetpointTripletMsg;
-    PX4_VehicleStatusMsg_t m_VehicleStatusMsg;
-    PX4_VehicleLandDetectedMsg_t m_VehicleLandDetectedMsg;
-    PX4_VehicleLocalPositionMsg_t m_VehicleLocalPositionMsg;
+    PX4_VehicleStatusMsg_t           m_VehicleStatusMsg;
+    PX4_VehicleLandDetectedMsg_t     m_VehicleLandDetectedMsg;
+    PX4_VehicleLocalPositionMsg_t    m_VehicleLocalPositionMsg;
 
 	/* Reset counters */
 	uint8 m_ResetCounterZ;
@@ -151,30 +152,30 @@ public:
 	float m_ManYawOffset; /**< current yaw offset in manual mode */
 
 	/* State variables */
-	boolean m_ModeAuto;
-	boolean m_PositionHoldEngaged;
-	boolean m_AltitudeHoldEngaged;
-	boolean m_RunPosControl;
-	boolean m_RunAltControl;
-	boolean m_ResetPositionSetpoint;
-	boolean m_ResetAltitudeSetpoint;
-	boolean m_DoResetAltPos;
-	boolean m_WasArmed;
-	boolean m_WasLanded;
-	boolean m_ResetIntZ;
-	boolean m_ResetIntXY;
-	boolean m_ResetIntZManual;
-	boolean m_ResetYawSetpoint;
-	boolean m_HoldOffboardXY;
-	boolean m_HoldOffboardZ;
-	boolean m_InTakeoff;	      /**< flag for smooth velocity setpoint takeoff ramp */
-	boolean m_TripletLatLonFinite;
+	osalbool m_ModeAuto;
+	osalbool m_PositionHoldEngaged;
+	osalbool m_AltitudeHoldEngaged;
+	osalbool m_RunPosControl;
+	osalbool m_RunAltControl;
+	osalbool m_ResetPositionSetpoint;
+	osalbool m_ResetAltitudeSetpoint;
+	osalbool m_DoResetAltPos;
+	osalbool m_WasArmed;
+	osalbool m_WasLanded;
+	osalbool m_ResetIntZ;
+	osalbool m_ResetIntXY;
+	osalbool m_ResetIntZManual;
+	osalbool m_ResetYawSetpoint;
+	osalbool m_HoldOffboardXY;
+	osalbool m_HoldOffboardZ;
+	osalbool m_InTakeoff;	      /**< flag for smooth velocity setpoint takeoff ramp */
+	osalbool m_TripletLatLonFinite;
 
 	/* Reference point */
 	uint64 m_RefTimestamp;
 	struct map_projection_reference_s m_RefPos;
 	float m_RefAlt;
-	boolean m_RefAltIsGlobal; /** true when the reference altitude is defined in a global reference frame */
+	osalbool m_RefAltIsGlobal; /** true when the reference altitude is defined in a global reference frame */
 	float m_YawTakeoff;	      /**< home yaw angle present when vehicle was taking off (euler) */
 
 	/* Velocity controller PIDs */
@@ -415,7 +416,7 @@ public:
      **  \endreturns
      **
      *************************************************************************/
-    boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
+    osalbool VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
 
     /************************************************************************/
     /** \brief Initialize the MPC configuration tables.
@@ -492,10 +493,11 @@ public:
     void ProcessPositionSetpointTripletMsg(void);
 
     /************************************************************************/
-    /** \brief
+    /** \brief Main execute function.
     **
     **  \par Description
-    **       This function
+    **       This is the primary function that is called in the main cyclic
+    **       loop.
     **
     **  \par Assumptions, External Events, and Notes:
     **       None
@@ -693,7 +695,7 @@ public:
     **       None
     **
     *************************************************************************/
-    boolean CrossSphereLine(const math::Vector3F &sphere_c, const float sphere_r,
+    osalbool CrossSphereLine(const math::Vector3F &sphere_c, const float sphere_r,
 			const math::Vector3F &line_a, const math::Vector3F &line_b, math::Vector3F &res);
 
     /************************************************************************/
@@ -742,7 +744,7 @@ public:
     **       None
     **
     *************************************************************************/
-    boolean InAutoTakeoff(void);
+    osalbool InAutoTakeoff(void);
 
     /*
 	 * Limit vel horizontally when close to target
@@ -817,7 +819,7 @@ public:
     **       None
     **
     *************************************************************************/
-	boolean ManualWantsTakeoff(void);
+	osalbool ManualWantsTakeoff(void);
 
     /************************************************************************/
     /** \brief
