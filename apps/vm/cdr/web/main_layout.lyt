@@ -46,7 +46,7 @@
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "width": 51.86051799049275,
+     "width": 25.365853658536587,
      "content": [
       {
        "type": "stack",
@@ -81,12 +81,12 @@
        "height": 30.74245939675174,
        "content": [
         {
-         "title": "Vehicle State",
+         "title": "Housekeeping",
          "type": "component",
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "flight/apps/vm/vs"
+          "link": "flight/apps/vm/hk"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -102,10 +102,10 @@
      "reorderEnabled": true,
      "title": "",
      "activeItemIndex": 0,
-     "width": 48.13948200950725,
+     "width": 74.63414634146342,
      "content": [
       {
-       "title": "Events",
+       "title": "Event Filter",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
@@ -127,7 +127,7 @@
        "reorderEnabled": true
       },
       {
-       "title": "Scheduling",
+       "title": "SCH Ctrl",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
@@ -138,7 +138,7 @@
        "reorderEnabled": true
       },
       {
-       "title": "Telemetry",
+       "title": "Tlm Ctrl",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
@@ -149,12 +149,23 @@
        "reorderEnabled": true
       },
       {
-       "title": "Table",
+       "title": "Tbl Ctrl",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "flight/core/tbl/tbl_ctl?appName=VM"
+        "link": "flight/core/tbl/tc?appName=VM"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "Config",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "/flight/apps/vm/config"
        },
        "isClosable": true,
        "reorderEnabled": true

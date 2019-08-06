@@ -8,12 +8,12 @@
                   "StartStreaming": { "airliner_cc":  2, "macro": "VC_CMD_MID", "airliner_msg": "VC_StartStreamCmd_t" },
                   "StopStreaming":  { "airliner_cc":  3, "macro": "VC_CMD_MID", "airliner_msg": "" },
                   "VC_HkTlm_t":     { "airliner_cc": -1, "macro": "VC_HK_TLM_MID", "airliner_msg": "VC_HkTlm_t" },
-                  "Wakeup":         { "airliner_cc":  0, "macro": "VC_WAKEUP_MID", "airliner_msg": "" },
+                  "Wakeup":         { "airliner_cc":  0, "macro": "VC_PROCESS_CMDS_MID", "airliner_msg": "" },
                   "SendHk":         { "airliner_cc":  0, "macro": "VC_SEND_HK_MID", "airliner_msg": "" }
               },
               "scheduler": {
                   "activities": [
-                      "VC_WAKEUP_MID",
+                      "VC_PROCESS_CMDS_MID",
                       "VC_SEND_HK_MID"
                   ],
                   "groups": [

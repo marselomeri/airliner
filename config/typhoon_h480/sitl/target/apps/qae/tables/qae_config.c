@@ -83,13 +83,7 @@ QAE_ConfigTbl_t QAE_ConfigTbl =
      *  \par Limits:
      *       Min > Max (incr.) 0 > 2, default 0.05.
      */
-    0.05f,
-    /** \brief Airspeed mode.
-     * 
-     *  \par Limits:
-     *       Min > Max (incr.) ?, default 0.
-     */
-    0
+    0.05f
 };
 
 /*

@@ -1,38 +1,38 @@
 /****************************************************************************
-*
-*   Copyright (c) 2017 Windhover Labs, L.L.C. All rights reserved.
-*
-* Redistribution and use in source and binary forms, with or without
-* modification, are permitted provided that the following conditions
-* are met:
-*
-* 1. Redistributions of source code must retain the above copyright
-*    notice, this list of conditions and the following disclaimer.
-* 2. Redistributions in binary form must reproduce the above copyright
-*    notice, this list of conditions and the following disclaimer in
-*    the documentation and/or other materials provided with the
-*    distribution.
-* 3. Neither the name Windhover Labs nor the names of its 
-*    contributors may be used to endorse or promote products derived 
-*    from this software without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-* FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-* COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-* INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-* BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
-* OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
-* AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-* LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
-* ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-* POSSIBILITY OF SUCH DAMAGE.
-*
-*****************************************************************************/
+ *
+ *   Copyright (c) 2019 Windhover Labs, L.L.C. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in
+ *    the documentation and/or other materials provided with the
+ *    distribution.
+ * 3. Neither the name Windhover Labs nor the names of its
+ *    contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+ * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ *****************************************************************************/
 
-#ifndef EA_CDS_UTILS_H
-#define EA_CDS_UTILS_H
+#ifndef PRM_CDS_UTILS_H
+#define PRM_CDS_UTILS_H
 
 /************************************************************************
 ** Pragmas
@@ -41,7 +41,7 @@
 /************************************************************************
 ** Includes
 *************************************************************************/
-#include "ea_tbldefs.h"
+#include "prm_tbldefs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -72,10 +72,10 @@ extern "C" {
 *************************************************************************/
 
 /************************************************************************/
-/** \brief Init EA CDS tables
+/** \brief Init PRM CDS tables
 **
 **  \par Description
-**       This function initializes EA's CDS tables
+**       This function initializes PRM's CDS tables
 **
 **  \par Assumptions, External Events, and Notes:
 **       None
@@ -87,39 +87,40 @@ extern "C" {
 **  \endreturns
 **
 *************************************************************************/
-int32  EA_InitCdsTbl(void);
+int32  PRM_InitCdsTbl(void);
 
 /************************************************************************/
-/** \brief Update EA CDS tables
+/** \brief Update PRM CDS tables
 **
 **  \par Description
-**       This function updates EA's CDS tables
+**       This function updates PRM's CDS tables
 **
 **  \par Assumptions, External Events, and Notes:
 **       None
 **
 *************************************************************************/
-void   EA_UpdateCdsTbl(void);
+void   PRM_UpdateCdsTbl(void);
 
 /************************************************************************/
-/** \brief Save EA CDS tables
+/** \brief Save PRM CDS tables
 **
 **  \par Description
-**       This function saves EA's CDS tables
+**       This function saves PRM's CDS tables
 **
 **  \par Assumptions, External Events, and Notes:
 **       None
 **
 *************************************************************************/
-void   EA_SaveCdsTbl(void);
+void   PRM_SaveCdsTbl(void);
 
 
 #ifdef __cplusplus
 }
 #endif
  
-#endif /* EA_CDS_UTILS_H */
+#endif /* PRM_CDS_UTILS_H */
 
 /************************/
 /*  End of File Comment */
 /************************/
+    

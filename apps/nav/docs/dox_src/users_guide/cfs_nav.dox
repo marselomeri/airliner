@@ -102,7 +102,7 @@
     
   The NAV Application is responsible for safely navigating or moving the vehicle from one location to another.
     
-  VM Design Overview
+  NAV Design Overview
   ====
   1. Fuses position, vehicle status and land detection data to set position setpoint triplet.
   2. This message has enough information for a vehicle to move from one position to another.
@@ -115,7 +115,7 @@
 /**
     \page cfsnavopr NAV Application Operation
     
-    The following operations are carried out by the VM Application:
+    The following operations are carried out by the NAV Application:
   	1. Receive and act to vehicle command message
      ----
      a. When a command is passed, either takeoff, land or return to launch navigator reads the command.<BR>
