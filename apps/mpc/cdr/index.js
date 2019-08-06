@@ -19,13 +19,13 @@ module.exports = class CfeCdrFlightAppsPlugin extends CdrFlightAppsPlugin {
                         type: CdrFlightAppsPlugin.ContentType.LAYOUT,
                         shortDescription: 'Main',
                         longDescription: 'Main MPC.',
-                        filePath: '/main.lyt'
+                        filePath: '/main_layout.lyt'
                     },
-                    cdh: {
+                    hk: {
                         type: CdrFlightAppsPlugin.ContentType.PANEL,
-                        shortDescription: 'Command and Data Handling',
-                        longDescription: 'Command counters.',
-                        filePath: '/cdh.pug'
+                        shortDescription: 'HK',
+                        longDescription: 'MPC Housekeeping.',
+                        filePath: '/hk.pug'
                     },
                     cs: {
                         type: CdrFlightAppsPlugin.ContentType.PANEL,
