@@ -212,6 +212,9 @@ void Test_MAC_InitData(void)
     int32 result = -1;
     int32 expected = CFE_SUCCESS;
 
+    /* Initialize the table so the table pointer is set. */
+    oMAC.InitConfigTbl();
+
     /* Execute the function being tested */
     result = oMAC.InitData();
 
@@ -423,34 +426,6 @@ void Test_MAC_AppMain_Nominal_Wakeup(void)
 }
 
 
-/**
- * Test MAC_AppMain(), ProcessNewData - InvalidMsgID
- */
-void Test_MAC_AppMain_ProcessNewData_InvalidMsgID(void)
-{
-    MAC_InData_t  InMsg;
-    int32 DataPipe;
-
-    /* The following will emulate behavior of receiving a SCH message to WAKEUP,
-       and gives it data to process. */
-    DataPipe = Ut_CFE_SB_CreatePipe("MAC_DATA_PIPE");
-    CFE_SB_InitMsg (&InMsg, 0x0000, sizeof(MAC_InData_t), TRUE);
-    Ut_CFE_SB_AddMsgToPipe(&InMsg, DataPipe);
-
-    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_RCVMSG_INDEX, CFE_SUCCESS, 1);
-    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_GETMSGID_INDEX, MAC_RUN_CONTROLLER_MID, 1);
-
-    Ut_CFE_ES_SetReturnCode(UT_CFE_ES_RUNLOOP_INDEX, FALSE, 2);
-
-    /* Execute the function being tested */
-    oMAC.AppMain();
-
-    /* Verify results */
-    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
-    //UtAssert_EventSent(MAC_MSGID_ERR_EID, CFE_EVS_ERROR, "", "Error Event Sent");
-}
-
-
 
 void Test_MAC_RunController(void)
 {
@@ -485,7 +460,7 @@ void Test_MAC_ControlAttitude(void)
     oMAC.m_Params.auto_rate_max[0] = 3.8397247791f;
     oMAC.m_Params.auto_rate_max[1] = 3.8397247791f;
     oMAC.m_Params.auto_rate_max[2] = 0.7853982449f;
-    oMAC.m_Params.vtol_wv_yaw_rate_scale = 0.1500000060f;
+    //oMAC.m_Params.vtol_wv_yaw_rate_scale = 0.1500000060f;
     oMAC.m_AngularRatesSetpoint[0] = 0.5145305991f;
     oMAC.m_AngularRatesSetpoint[1] = -0.0270411316f;
     oMAC.m_AngularRatesSetpoint[2] = 0.0020858147f;
@@ -521,10 +496,10 @@ void Test_MAC_ControlAttitudeRates(void)
     oMAC.m_Params.board_offset[1] = 0.0000000000f;
     oMAC.m_Params.board_offset[2] = 0.0000000000f;
 
-    oMAC.ParamTblPtr->board_rotation = 0;
-    oMAC.ParamTblPtr->board_offset[0] = 0.0000010000f;
-    oMAC.ParamTblPtr->board_offset[1] = 0.0000000000f;
-    oMAC.ParamTblPtr->board_offset[2] = 0.0000000000f;
+    oMAC.ParamTblPtr->SENS_BOARD_ROT = 0;
+    oMAC.ParamTblPtr->SENS_BOARD_X_OFF = 0.0000010000f;
+    oMAC.ParamTblPtr->SENS_BOARD_Y_OFF = 0.0000000000f;
+    oMAC.ParamTblPtr->SENS_BOARD_Z_OFF = 0.0000000000f;
 
     oMAC.CVT.SensorGyro.X = 4.8167719841f;
     oMAC.CVT.SensorGyro.Y = -0.0151427072f;
@@ -681,8 +656,6 @@ void MAC_App_Test_AddTestCases(void)
                "Test_MAC_AppMain_Nominal_SendHK");
     UtTest_Add(Test_MAC_AppMain_Nominal_Wakeup, MAC_Test_Setup, MAC_Test_TearDown,
                "Test_MAC_AppMain_Nominal_Wakeup");
-    UtTest_Add(Test_MAC_AppMain_ProcessNewData_InvalidMsgID, MAC_Test_Setup, MAC_Test_TearDown,
-               "Test_MAC_AppMain_ProcessNewData_InvalidMsgID");
 
     UtTest_Add(Test_MAC_RunController, MAC_Test_Setup, MAC_Test_TearDown,
                "Test_MAC_RunController");

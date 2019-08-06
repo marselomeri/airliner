@@ -482,8 +482,8 @@ void EA_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr)
 
             default:
                 EA_AppData.HkTlm.usCmdErrCnt++;
-                (void) CFE_EVS_SendEvent(EA_MSGID_ERR_EID, CFE_EVS_ERROR,
-                                  "Recvd invalid cmdId (%u)", (unsigned int)uiCmdCode);
+                (void) CFE_EVS_SendEvent(EA_CC_ERR_EID, CFE_EVS_ERROR,
+                                  "Recvd invalid cmd code (%u)", (unsigned int)uiCmdCode);
                 break;
         }
     }

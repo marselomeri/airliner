@@ -53,9 +53,7 @@ extern MAC cpyMAC;
 /*
  * Config table for testing
  */
-MAC_ParamTbl_t MAC_paramtbl = {
-        1 /* iParam*/
-};
+extern MAC_ParamTbl_t MAC_ParamTbl;
 
 /*
  * Function Definitions
@@ -76,7 +74,7 @@ void MAC_Test_Setup(void)
     Ut_OSAPI_Reset();
     Ut_OSFILEAPI_Reset();
 
-    Ut_CFE_TBL_AddTable(MAC_PARAM_TABLE_FILENAME, (void *) &MAC_paramtbl);
+    Ut_CFE_TBL_AddTable(MAC_PARAM_TABLE_FILENAME, (void *) &MAC_ParamTbl);
 }
 
 void MAC_Test_TearDown(void)

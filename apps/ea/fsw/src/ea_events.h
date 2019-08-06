@@ -274,6 +274,18 @@ typedef enum {
 */
     EA_CMD_RESET_EID = 17,
 
+	/** \brief <tt> 'Recvd invalid cmd code (%u)' </tt>
+	**  \event <tt> 'Recvd invalid cmd code (%u)' </tt>
+	**
+	**  \par Type: ERROR
+	**
+	**  \par Cause:
+	**
+	**  A command with an invalid command code was received.
+	**
+	*/
+	EA_CC_ERR_EID = 18,
+
 /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
     EA_EVT_CNT
 } EA_EventIds_t;
