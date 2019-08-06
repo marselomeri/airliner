@@ -1,6 +1,6 @@
 /****************************************************************************
  *
- *   Copyright (c) 2017 Windhover Labs, L.L.C. All rights reserved.
+ *   Copyright (c) 2019 Windhover Labs, L.L.C. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -128,7 +128,7 @@ int32 PRM_ValidateConfigTbl(void* ConfigTblPtr)
     int32  iStatus=0;
     PRM_ConfigTbl_t* PRM_ConfigTblPtr = (PRM_ConfigTbl_t*)(ConfigTblPtr);
 
-    if (ConfigTblPtr == NULL)
+    if (ConfigTblPtr == 0)
     {
         iStatus = -1;
         goto PRM_ValidateConfigTbl_Exit_Tag;

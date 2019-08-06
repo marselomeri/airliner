@@ -1,6 +1,6 @@
 /****************************************************************************
  *
- *   Copyright (c) 2017 Windhover Labs, L.L.C. All rights reserved.
+ *   Copyright (c) 2019 Windhover Labs, L.L.C. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -39,9 +39,7 @@
 ** Includes
 *************************************************************************/
 #include <string.h>
-
 #include "cfe.h"
-
 #include "prm_app.h"
 #include "prm_msg.h"
 #include "prm_version.h"
@@ -130,7 +128,7 @@ int32 PRM_InitEvent()
 
 int32 PRM_InitPipe()
 {
-    int32  iStatus=CFE_SUCCESS;
+    int32  iStatus = CFE_SUCCESS;
 
     /* Init schedule pipe and subscribe to wakeup messages */
     iStatus = CFE_SB_CreatePipe(&PRM_AppData.SchPipeId,
@@ -337,7 +335,7 @@ PRM_InitApp_Exit_Tag:
 int32 PRM_RcvMsg(int32 iBlocking)
 {
     int32           iStatus=CFE_SUCCESS;
-    CFE_SB_Msg_t*   MsgPtr=NULL;
+    CFE_SB_Msg_t*   MsgPtr=0;
     CFE_SB_MsgId_t  MsgId;
 
     /* Stop Performance Log entry */
@@ -355,23 +353,27 @@ int32 PRM_RcvMsg(int32 iBlocking)
         switch (MsgId)
 	    {
             case PRM_WAKEUP_MID:
+            {
                 PRM_ProcessNewCmds();
                 PRM_ProcessNewData();
-
-                /* TODO:  Add more code here to handle other things when app wakes up */
 
                 /* The last thing to do at the end of this Wakeup cycle should be to
                  * automatically publish new output. */
                 PRM_SendOutData();
                 break;
+            }
 
             case PRM_SEND_HK_MID:
+            {
                 PRM_ReportHousekeeping();
                 break;
+            }
 
             default:
+            {
                 (void) CFE_EVS_SendEvent(PRM_MSGID_ERR_EID, CFE_EVS_ERROR,
                                   "Recvd invalid SCH msgId (0x%04X)", (unsigned short)MsgId);
+            }
         }
     }
     else if (iStatus == CFE_SB_NO_MESSAGE)
@@ -412,7 +414,7 @@ int32 PRM_RcvMsg(int32 iBlocking)
 void PRM_ProcessNewData()
 {
     int iStatus = CFE_SUCCESS;
-    CFE_SB_Msg_t*   DataMsgPtr=NULL;
+    CFE_SB_Msg_t*   DataMsgPtr=0;
     CFE_SB_MsgId_t  DataMsgId;
 
     /* Process telemetry messages till the pipe is empty */
@@ -462,7 +464,7 @@ void PRM_ProcessNewData()
 void PRM_ProcessNewCmds()
 {
     int iStatus = CFE_SUCCESS;
-    CFE_SB_Msg_t*   CmdMsgPtr=NULL;
+    CFE_SB_Msg_t*   CmdMsgPtr=0;
     CFE_SB_MsgId_t  CmdMsgId;
 
     /* Process command messages till the pipe is empty */
@@ -522,7 +524,7 @@ void PRM_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr)
 {
     uint32  uiCmdCode=0;
 
-    if (MsgPtr != NULL)
+    if (MsgPtr != 0)
     {
         uiCmdCode = CFE_SB_GetCmdCode(MsgPtr);
     	OS_printf("%s %u\n", __FUNCTION__, __LINE__);
@@ -570,26 +572,6 @@ void PRM_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr)
             		//TODO: verify expected
             		PRMLIB_AddParam(param_lib_data);
             	}
-
-//            	int32 iStatus;
-//            	PRMLIB_UpdatedParamMsg_t UpdatedMsg = {0};
-//            	PRM_SetParameterCmd_t *cmd = (PRM_SetParameterCmd_t*)MsgPtr;
-//                PRM_AppData.HkTlm.usCmdCnt++;
-//            	PRMLIB_ParamData_t  *param_data;
-//            	iStatus = PRMLIB_GetParamById(cmd->Name, param_data);
-//            	if(iStatus != CFE_SUCCESS)
-//            	{
-//            		OS_printf("%s %u\n", __FUNCTION__, __LINE__);
-//            		strcpy(param_data->name, cmd->Name);
-//            		param_data->type = cmd->Type;
-//            		PRMLIB_SetParamValue(param_data, &cmd->Value);
-//            	    PRMLIB_AddParam(*param_data);
-//            	}
-//            	else
-//            	{
-//            		OS_printf("%s %u\n", __FUNCTION__, __LINE__);
-//                    PRMLIB_SetParamValue(param_data, &cmd->Value);
-//            	}
 
             	/* Notify apps a param has changed */
             	CFE_SB_InitMsg((CFE_SB_Msg_t*)&UpdatedMsg, PRMLIB_PARAM_UPDATED_MID, sizeof(PRMLIB_UpdatedParamMsg_t), TRUE);
@@ -656,13 +638,13 @@ void PRM_SendOutData()
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-boolean PRM_VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
+osalbool PRM_VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
                            uint16 usExpectedLen)
 {
-    boolean bResult  = TRUE;
+	osalbool bResult = TRUE;
     uint16  usMsgLen = 0;
 
-    if (MsgPtr != NULL)
+    if (MsgPtr != 0)
     {
         usMsgLen = CFE_SB_GetTotalMsgLength(MsgPtr);
 
