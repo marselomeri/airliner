@@ -1224,6 +1224,18 @@ boolean MPU9250_Measure(MPU9250_SampleQueue_t *SampleQueue)
         goto end_of_function;
     }
 
+
+    /* Get the number of bytes in the FIFO queue. */
+    fifoByteCount = MPU9250_GetFifoCount();
+    if (fifoByteCount > sizeof(MPU9250_AppCustomData.samples))
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "MPU9250 FIFO larger than available buffer. Queue reset.");
+            MPU9250_Fifo_Reset();
+            returnBool = FALSE;
+            goto end_of_function;
+    }
+
     /* Check for overflow. */
     if(intStatus & MPU9250_INT_STATUS_FIFO_OVERFLOW)
     {
@@ -1234,14 +1246,11 @@ boolean MPU9250_Measure(MPU9250_SampleQueue_t *SampleQueue)
         if(MPU9250_AppCustomData.firstMeasureFlag != FALSE)
         {
             CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                    "MPU9250 FIFO overflow.");
+                    "MPU9250 FIFO overflow byte count %u.", fifoByteCount);
         }
         returnBool = FALSE;
         goto end_of_function;
     }
-
-    /* Get the number of bytes in the FIFO queue. */
-    fifoByteCount = MPU9250_GetFifoCount();
 
     if(fifoByteCount > 0)
     {

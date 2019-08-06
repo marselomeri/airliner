@@ -62,11 +62,9 @@
 /** \brief SPI device receive delay. */
 #define MPU9250_SPI_RX_DELAY                 (0)
 /** \brief SPI transfer maximum buffer size. */
-#define MPU9250_SPI_MAX_BUFFER               (512)
+#define MPU9250_SPI_MAX_BUFFER               512
 /** \brief Array initializer. */
 #define MPU9250_INITREGNUM                   (12)
-/** \brief Maximum FIFO samples per measurement. */
-#define MPU9250_MAX_FIFO_SAMPLES             (10)
 /** \brief Configured measurement interval. */
 #define MPU9250_MEASURE_INTERVAL_HZ          (1000)
 
@@ -138,7 +136,7 @@ typedef struct
     /** \brief Mag sensitivity adjustment value Z. */
     uint8                           MagAdjZ;
     /** \brief Current raw samples from the fifo queue. */
-    Fifo_Sample_t                   samples[MPU9250_MAX_FIFO_SAMPLES];
+    Fifo_Sample_t                   samples[MPU9250_MAX_FIFO_LENGTH];
     /** \brief Current SPI transfer buffer. */
     uint8                           BufSpi[MPU9250_SPI_MAX_BUFFER];
 } MPU9250_AppCustomData_t;
@@ -273,6 +271,22 @@ boolean MPU9250_Clear_Interrupt(void);
 *************************************************************************/
 int32 MPU9250_ResetDevice(void);
 
+/************************************************************************/
+/** \brief Custom function to initialize custom events. 
+**
+**  \par Description
+**       This function is called in init event before CFE_EVS_Register
+**       to add custom events to the event filter table.
+**
+**  \par Assumptions, External Events, and Notes:
+**       This function must be defined, but not all custom
+**       layers will do anything in this function.
+**
+**  \returns
+**       The number of events written to the filter table and -1 for 
+**       failure i.e. CFE_EVS_MAX_EVENT_FILTERS reached.
+**
+*************************************************************************/
 boolean MPU9250_Custom_Max_Events_Not_Reached(int32 ind);
 
 /************************************************************************/
@@ -292,6 +306,17 @@ boolean MPU9250_Custom_Max_Events_Not_Reached(int32 ind);
 *************************************************************************/
 boolean MPU9250_ReadBlock(uint8 Addr, void *Buf, size_t Len);
 
+/************************************************************************/
+/** \brief Initialize the mag (ak8963) internal to the mpu9250.
+**
+**  \par Description
+**       This initializes the mpu9250 internal mag. 
+**
+**  \returns
+**  TRUE for success, FALSE for failure.
+**  \endreturns
+**
+*************************************************************************/
 boolean MPU9250_Custom_MagInit(void);
 
 /************************************************************************/
@@ -309,7 +334,6 @@ boolean MPU9250_Custom_MagInit(void);
 **
 *************************************************************************/
 boolean MPU9250_MagWriteReg(uint8 Addr, uint8 Data);
-
 
 /************************************************************************/
 /** \brief Read a single 8-bit register of the mag.

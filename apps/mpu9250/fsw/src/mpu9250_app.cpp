@@ -72,7 +72,6 @@ MPU9250::MPU9250() :
     _accel_int(MPU9250_ACCEL_INT_PUB_RATE, TRUE),
     _gyro_int(MPU9250_GYRO_INT_PUB_RATE, TRUE)
 {
-
 }
 
 
@@ -83,8 +82,8 @@ MPU9250::MPU9250() :
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 MPU9250::~MPU9250()
 {
-
 }
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -373,8 +372,6 @@ int32 MPU9250::InitApp()
         //returnBool = FALSE;
         //goto MPU9250_InitApp_Exit_Tag;
     //}
-    
-    HkTlm.State = MPU9250_INITIALIZED;
 
     /* Register the cleanup callback */
     iStatus = OS_TaskInstallDeleteHandler(&MPU9250_CleanupCallback);
@@ -388,6 +385,8 @@ int32 MPU9250::InitApp()
 
     /* Get the rotation from custom for diag */
     MPU9250_Get_Rotation(&Diag.Calibration.Rotation);
+
+    HkTlm.State = MPU9250_INITIALIZED;
 
 MPU9250_InitApp_Exit_Tag:
     if (iStatus == CFE_SUCCESS)
@@ -419,8 +418,8 @@ MPU9250_InitApp_Exit_Tag:
 int32 MPU9250::RcvSchPipeMsg(int32 iBlocking)
 {
     int32           iStatus = CFE_SUCCESS;
-    CFE_SB_Msg_t*   MsgPtr  = NULL;
-    CFE_SB_MsgId_t  MsgId;
+    CFE_SB_Msg_t*   MsgPtr  = 0;
+    CFE_SB_MsgId_t  MsgId = 0;
 
     /* Stop Performance Log entry */
     CFE_ES_PerfLogExit(MPU9250_MAIN_TASK_PERF_ID);
@@ -490,8 +489,8 @@ int32 MPU9250::RcvSchPipeMsg(int32 iBlocking)
 void MPU9250::ProcessCmdPipe()
 {
     int32 iStatus             = CFE_SUCCESS;
-    CFE_SB_Msg_t*   CmdMsgPtr = NULL;
-    CFE_SB_MsgId_t  CmdMsgId;
+    CFE_SB_Msg_t*   CmdMsgPtr = 0;
+    CFE_SB_MsgId_t  CmdMsgId = 0;
 
     /* Process command messages until the pipe is empty */
     while (1)
@@ -822,6 +821,7 @@ boolean MPU9250::ReadDevice(void)
         SensorAccel.YRaw = MPU9250_SampleQueue.Samples[i].AY;
         SensorAccel.ZRaw = MPU9250_SampleQueue.Samples[i].AZ;
         rawTemp = MPU9250_SampleQueue.Samples[i].Temp;
+        calTemp = ((int16) rawTemp / Diag.Conversion.TempSensitivity) + 21.0 - Diag.Conversion.RoomTempOffset;
 
         rawX_f = SensorGyro.XRaw;
         rawY_f = SensorGyro.YRaw;
@@ -867,7 +867,6 @@ boolean MPU9250::ReadDevice(void)
         /* Gyro Scale, Range, DeviceID */
         SensorGyro.Scaling = (Diag.Conversion.GyroUnit / Diag.Conversion.GyroDivider);
         SensorGyro.Range   = (Diag.Conversion.AccScale * Diag.Conversion.GyroUnit);
-
 
         /* Accel */
         rawX_f = SensorAccel.XRaw;
@@ -940,22 +939,22 @@ boolean MPU9250::ReadDevice(void)
             /* Mag Scale, Range, DeviceID */
             SensorMag.Scaling = -1.0f;
             SensorMag.Range = -1.0f;
-        
+
+            /* Mag temperature */
+            SensorMag.Temperature = calTemp;
+
             /* Timestamp */
             SensorMag.Timestamp = timeStamp;
+
 #ifdef MPU9250_SEND_INTERNAL_MAG
             /* TODO for now this is event driven. */
             SendSensorMag();
 #endif
         }
 
-        /* Temperature */
+        /* Accel and Gyro Temperature */
         SensorGyro.TemperatureRaw = SensorAccel.TemperatureRaw = (int16) rawTemp;
-
-        calTemp = (SensorAccel.TemperatureRaw / Diag.Conversion.TempSensitivity) + 21.0 - Diag.Conversion.RoomTempOffset;
-        SensorMag.Temperature   = calTemp;
-        SensorGyro.Temperature  = calTemp;
-        SensorAccel.Temperature = calTemp;
+        SensorGyro.Temperature = SensorAccel.Temperature = calTemp;
     }
 
 end_of_function:
@@ -1013,7 +1012,6 @@ void MPU9250_CleanupCallback(void)
     oMPU9250.HkTlm.State = MPU9250_UNINITIALIZED;
     if(MPU9250_Custom_Uninit() != TRUE)
     {
-        CFE_EVS_SendEvent(MPU9250_UNINIT_ERR_EID, CFE_EVS_ERROR,"MPU9250_Uninit failed");
         oMPU9250.HkTlm.State = MPU9250_INITIALIZED;
     }
     return;
