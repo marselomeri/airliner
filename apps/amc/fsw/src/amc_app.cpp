@@ -976,10 +976,6 @@ int32 AMC::ControlCallback(
 int32 AMC::InitParams(void)
 {
     int32 iStatus = -1;
-    PRMLIB_ParamData_t param = {0};
-
-    /* Lock the mutex */
-    OS_MutSemTake(PwmConfigMutex);
 
     iStatus = PRMLIB_ParamRegister(PARAM_ID_PWM_DISARMED,
             &PwmConfigTblPtr->PwmDisarmed, TYPE_UINT32);
@@ -1003,8 +999,6 @@ int32 AMC::InitParams(void)
     }
 
 InitParams_Exit_Tag:
-    /* Unlock the mutex */
-    OS_MutSemGive(PwmConfigMutex);
 
     return iStatus;
 }

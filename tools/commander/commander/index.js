@@ -255,7 +255,7 @@ module.exports = class Commander extends EventEmitter {
             } );
         
             socket.on( 'sendCmd', function( cmdObj, cb ) {
-                self.sendCmd( cmdObj, cb);
+                self.sendCmd( cmdObj, cb);              
             } );
         
             socket.on( 'PING', function( startTime ) {
@@ -617,9 +617,9 @@ module.exports = class Commander extends EventEmitter {
      * @param  {String} cmdName command name
      * @param  {Object} args    argument object
      */
-    sendCmd( cmdName, args ) {
-        if ( cmdName.hasOwnProperty( 'ops_path' ) && cmdName.hasOwnProperty( 'args' ) ) {
-            this.defaultInstance.send( config.get( 'cmdSendStreamID' ), cmdName, args );
+    sendCmd( cmdName, cb ) {
+        if ( cmdName.hasOwnProperty( 'ops_path' ) ) {
+            this.defaultInstance.send( config.get( 'cmdSendStreamID' ), cmdName, cb );
         }
     }
 

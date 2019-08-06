@@ -52,6 +52,86 @@ extern "C" {
  ** Local Defines
  *************************************************************************/
 
+/* 
+ * These numbers are based on parameters located at the following link:
+ * https://dev.px4.io/v1.8.0/en/advanced/parameter_reference.html
+*/
+ 
+/* \brief Minimum specified precision for position acceptance radius */ 
+#define NAV_ACC_RAD_MIN          (0.05f)
+
+/* \brief Maximum specified precision for position acceptance radius */ 
+#define NAV_ACC_RAD_MAX          (200.0f)
+
+/* \brief Minimum specified precision for altitude acceptance radius */ 
+#define NAV_ALT_RAD_MIN          (0.05f)
+
+/* \brief Maximum specified precision for altitude acceptance radius */ 
+#define NAV_ALT_RAD_MAX          (200.0f)
+
+/* \brief Minimum radius for fixed wing loiter */ 
+#define NAV_LOITER_RAD_MIN       (25.0f)
+
+/* \brief Maximum radius for fixed wing loiter */ 
+#define NAV_LOITER_RAD_MAX       (1000.0f)
+
+/* \brief Minimun takeoff altitude */ 
+#define NAV_MIS_TAKEOFF_ALT_MIN  (0.0f)
+
+/* \brief Maximum takeoff altitude */ 
+#define NAV_MIS_TAKEOFF_ALT_MAX  (80.0f)
+
+/* \brief Minimum yaw error in mission mode for accepting waypoint heading */ 
+#define NAV_MIS_YAW_ERR_MIN      (0.0f)
+
+/* \brief Maximum yaw error in mission mode for accepting waypoint heading */ 
+#define NAV_MIS_YAW_ERR_MAX      (90.0f)
+
+/* \brief Minimum timout for waiting to reach target heading.
+**
+** \note A value less than zero means the timeout is disabled
+*/ 
+#define NAV_MIS_YAW_TMT_MIN      (-1.0f)
+
+/* \brief Maximum timout for waiting to reach target heading */ 
+#define NAV_MIS_YAW_TMT_MAX      (20.0f)
+
+/* \brief Minimum altitude allowed for loiter
+**
+** \note A value less than zero disables this check
+*/ 
+#define NAV_MIS_LTRMIN_ALT_MIN   (-1.0f)
+
+/* \brief Maximum altitude allowed for loiter */ 
+#define NAV_MIS_LTRMIN_ALT_MAX   (80.0f)
+
+/* \brief Minimun altitude for return stage of RTL */ 
+#define NAV_RTL_RETURN_ALT_MIN   (0.0f)
+
+/* \brief Maximun altitude for return stage of RTL */ 
+#define NAV_RTL_RETURN_ALT_MAX   (150.0f)
+
+/* \brief Minimun altitude for descend stage of RTL */ 
+#define NAV_RTL_DESCEND_ALT_MIN  (2.0f)
+
+/* \brief Maximun altitude for descend stage of RTL */ 
+#define NAV_RTL_DESCEND_ALT_MAX  (100.0f)
+
+/* \brief Minimum time delay between descend and land stages of RTL
+**
+** \note A value less than zero disables the delay
+*/ 
+#define NAV_RTL_LAND_DELAY_MIN   (-1.0f)
+
+/* \brief Maximum time delay between descend and land stages of RTL */ 
+#define NAV_RTL_LAND_DELAY_MAX   (300.0f)
+
+/* \brief Minimun value for minimum distance from home RTL climb stage */ 
+#define NAV_RTL_MIN_DIST_MIN     (0.5f)
+
+/* \brief Maximun value for minimum distance from home RTL climb stage */ 
+#define NAV_RTL_MIN_DIST_MAX     (20.0f)
+
 /**
  * \brief Defines the table identification name used for the
  * configuration table registration.

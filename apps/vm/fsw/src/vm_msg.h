@@ -34,6 +34,8 @@
 #ifndef VM_MSG_H
 #define VM_MSG_H
 
+#include "vm_tbldefs.h"
+
 /************************************************************************
  ** Pragmas
  *************************************************************************/
@@ -119,6 +121,7 @@ extern "C" {
  **  \sa   #VM_NOOP_CC
  */
 #define VM_RESET_CC                (1)
+
 /** \vmcmd Arm
  **
  **  \par Description
@@ -151,6 +154,7 @@ extern "C" {
  **  \sa   #VM_VEHICLE_DISARM_CC
  */
 #define VM_VEHICLE_ARM_CC          (2)
+
 /** \vmcmd Disarm
  **
  **  \par Description
@@ -183,6 +187,7 @@ extern "C" {
  **  \sa   #VM_VEHICLE_ARM_CC
  */
 #define VM_VEHICLE_DISARM_CC       (3)
+
 /** \vmcmd Manual
  **
  **  \par Description
@@ -223,6 +228,7 @@ extern "C" {
  **        #VM_SET_NAV_AUTO_LAND_CC            \n
  */
 #define VM_SET_NAV_MANUAL_CC               (40)
+
 /** \vmcmd Altitude Control
  **
  **  \par Description
@@ -263,6 +269,7 @@ extern "C" {
  **        #VM_SET_NAV_AUTO_LAND_CC            \n
  */
 #define VM_SET_NAV_ALTCTL_CC               (41)
+
 /** \vmcmd Position Control
  **
  **  \par Description
@@ -303,6 +310,7 @@ extern "C" {
  **        #VM_SET_NAV_AUTO_LAND_CC            \n
  */
 #define VM_SET_NAV_POSCTL_CC               (42)
+
 /** \vmcmd Auto Loiter
  **
  **  \par Description
@@ -343,6 +351,7 @@ extern "C" {
  **        #VM_SET_NAV_AUTO_LAND_CC            \n
  */
 #define VM_SET_NAV_AUTO_LOITER_CC          (44)
+
 /** \vmcmd Auto RTL
  **
  **  \par Description
@@ -383,6 +392,7 @@ extern "C" {
  **        #VM_SET_NAV_AUTO_LAND_CC            \n
  */
 #define VM_SET_NAV_AUTO_RTL_CC             (45)
+
 /** \vmcmd Acrobatic
  **
  **  \par Description
@@ -423,6 +433,7 @@ extern "C" {
  **        #VM_SET_NAV_AUTO_LAND_CC            \n
  */
 #define VM_SET_NAV_ACRO_CC                 (50)
+
 /** \vmcmd Stabilize
  **
  **  \par Description
@@ -463,6 +474,7 @@ extern "C" {
  **        #VM_SET_NAV_AUTO_LAND_CC            \n
  */
 #define VM_SET_NAV_STABILIZE_CC            (54)
+
 /** \vmcmd Rattitude
  **
  **  \par Description
@@ -503,6 +515,7 @@ extern "C" {
  **        #VM_SET_NAV_AUTO_LAND_CC            \n
  */
 #define VM_SET_NAV_RATTITUDE_CC            (55)
+
 /** \vmcmd Auto Takeoff
  **
  **  \par Description
@@ -543,6 +556,7 @@ extern "C" {
  **        #VM_SET_NAV_AUTO_LAND_CC            \n
  */
 #define VM_SET_NAV_AUTO_TAKEOFF_CC         (56)
+
 /** \vmcmd Auto Land
  **
  **  \par Description
@@ -578,9 +592,103 @@ extern "C" {
  */
 #define VM_SET_NAV_AUTO_LAND_CC            (57)
 
+/** \vmcmd Send Configuration
+ **
+ **  \par Description
+ **
+ **  \par Command Verification
+ **       Successful execution of this command may be verified with
+ **       the following telemetry:
+ **       - \b \c \VM_CMDACPTCNT - command counter will increment
+ **       - The #VM_CMD_INF_EID informational event message will be
+ **         generated when the command is received
+ **
+ **  \par Error Conditions
+ **       This command may fail for the following reason(s):
+ **       - Command packet length not as expected
+ **
+ **  \par Evidence of failure may be found in the following telemetry:
+ **       - \b \c \VM_CMDRJCTCNT - command error counter will increment
+ **       - Error specific event message #VM_MSGID_ERR_EID
+ **
+ **  \par Criticality
+ **       Effects Vehicle Operation
+ **
+ **  \sa   #VM_BatteryFailsafeMode_t           \n
+ */
+#define VM_SEND_CONFIGURATION_CC    (58)
+
 /************************************************************************
  ** Local Structure Declarations
  *************************************************************************/
+
+
+/**
+ * \brief Vehicle manager status flags
+ */
+typedef struct
+{
+    /** \brief Indicates if all sensors are initialized */
+    osalbool SensorsInitialized;
+
+    /** \brief System in rtl state */
+    osalbool ReturnToHomeSet;
+
+    /** \brief Indicates a valid home position (a valid home position is not always a valid launch) */
+    osalbool HomePositionValid;
+
+    /** \brief Satus of the USB power supply */
+    osalbool UsbPowerConnected;
+
+    /** \brief True if RC signal found atleast once */
+    osalbool RcSignalFoundOnce;
+
+    /** \brief True if RC lost mode is commanded */
+    osalbool RcSignalLostModeIsCmded;
+
+    /** \brief Set if RC input should be ignored temporarily */
+    osalbool RcInputIsTemporarilyBlocked;
+
+} VM_StatusFlags;
+
+
+/**
+ * \brief RC navigation mode switched
+ */
+typedef struct {
+
+    /** \brief Position control is selected */
+    osalbool inPosCtl;
+    /** \brief Return to launch is selected  */
+    osalbool inRtl;
+    /** \brief Auto loiter is selected  */
+    osalbool inLoiter;
+    /** \brief Manual is selected  */
+    osalbool inManual;
+    /** \brief Takeoff is selected  */
+    osalbool inTakeoff;
+    /** \brief Altitude control is selected  */
+    osalbool inAltCtl;
+
+} VM_Modes;
+
+
+/**
+ **  \brief Battery failsafe modes.
+ **  These define how VM reacts to battery low or failure.
+ */
+typedef enum
+{
+    /** \brief Publish a warning event. */
+    VM_BATTERY_FAILSAFE_MODE_WARNING                               = 0,
+    /** \brief Return to Launch. */
+    VM_BATTERY_FAILSAFE_MODE_RETURN                                = 1,
+    /** \brief Land immediately. */
+    VM_BATTERY_FAILSAFE_MODE_LAND                                  = 2,
+    /** \brief Return to Launch if low, but land immediately if even lower. */
+    VM_BATTERY_FAILSAFE_MODE_RETURN_IF_CRIT_LOW_LAND_IF_DANGER_LOW = 3,
+} VM_BatteryFailsafeMode_t;
+
 
 /**
  **  \brief No Arguments Command
@@ -590,7 +698,17 @@ extern "C" {
 typedef struct
 {
     uint8 ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
-}VM_NoArgCmd_t;
+} VM_NoArgCmd_t;
+
+/**
+ **  \brief VM Configuration
+ **  For command details see #VM_SEND_CONFIGURATION_CC
+ */
+typedef struct
+{
+    uint8                    ucHeader[CFE_SB_TLM_HDR_SIZE];
+    VM_ConfigTbl_t           ConfigTbl;
+} VM_ConfigTlm_t;
 
 /** \vmtlm Housekeeping data
  **
@@ -606,12 +724,75 @@ typedef struct
     uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
 
     /** \vmtlmmnemonic \VM_CMDACPTCNT
-     \brief Count of accepted commands */
+     \brief Count of accepted commands.  Cleared by Reset Command. */
     uint8 usCmdCnt;
 
     /** \vmtlmmnemonic \VM_CMDRJCTCNT
-     \brief Count of failed commands */
+     \brief Count of failed commands.  Cleared by Reset Command.  */
     uint8 usCmdErrCnt;
+
+    /** \brief Count of wakeups.  Cleared by Reset Command.  */
+    uint32 WakeupCount;
+
+    /** \brief Count of wakeups.  Cleared by Reset Command.  */
+    uint32 SensorMagMsgCount;
+
+    /** \brief Count of Sensor Gyro messages received.  Cleared by Reset Command.  */
+    uint32 SensorGyroMsgCount;
+
+    /** \brief Count of Battery Status messages received.  Cleared by Reset Command.  */
+    uint32 BatteryStatusMsgCount;
+
+    /** \brief Count of Telemetry Status messages received.  Cleared by Reset Command.  */
+    uint32 TelemetryStatusMsgCount;
+
+    /** \brief Count of Substem Info messages received.  Cleared by Reset Command.  */
+    uint32 SubsystemInfoMsgCount;
+
+    /** \brief Count of Vehicle Attitude messages received.  Cleared by Reset Command.  */
+    uint32 VehicleAttitudeMsgCount;
+
+    /** \brief Count of Vehicle Local Position messages received.  Cleared by Reset Command.  */
+    uint32 VehicleLocalPositionMsgCount;
+
+    /** \brief Count of Vehicle Land Detected messages received.  Cleared by Reset Command.  */
+    uint32 VehicleLandDetectedMsgCount;
+
+    /** \brief Count of Mission Result messages received.  Cleared by Reset Command.  */
+    uint32 MissionResultMsgCount;
+
+    /** \brief Count of Manual Control Setpoint messages received.  Cleared by Reset Command.  */
+    uint32 ManualControlSetpointMsgCount;
+
+    /** \brief Count of Position Setpoint Triplet messages received.  Cleared by Reset Command.  */
+    uint32 PositionSetpointTripletMsgCount;
+
+    /** \brief Count of Sensor Accel messages received.  Cleared by Reset Command.  */
+    uint32 SensorAccelMsgCount;
+
+    /** \brief Count of Safety messages received.  Cleared by Reset Command.  */
+    uint32 SafetyMsgCount;
+
+    /** \brief Count of Sensor Correction messages received.  Cleared by Reset Command.  */
+    uint32 SensorCorrectionMsgCount;
+
+    /** \brief Count of Vehicle Status messages received.  Cleared by Reset Command.  */
+    uint32 VehicleStatusMsgCount;
+
+    /** \brief Count of Vehicle Control Mode messages received.  Cleared by Reset Command.  */
+    uint32 VehicleControlModeMsgCount;
+
+    /** \brief Count of Sensor Combined messages received.  Cleared by Reset Command.  */
+    uint32 SensorCombinedMsgCount;
+
+    /** \brief Count of Vehicle Command messages received.  Cleared by Reset Command.  */
+    uint32 VehicleCommandMsgCount;
+
+    /** \brief Count of Vehicle Global Position messages received.  Cleared by Reset Command.  */
+    uint32 VehicleGlobalPositionMsgCount;
+
+    /** \brief Count of Vehicle GPS Position messages received.  Cleared by Reset Command.  */
+    uint32 VehicleGpsPositionMsgCount;
 
     /** \vmtlmmnemonic \VM_ARMSTATE
      \brief Current arm state */
@@ -621,7 +802,53 @@ typedef struct
      \brief Current navigation state */
     uint32 NavState;
 
-}VM_HkTlm_t;
+    /** \brief True if home position is not set and local variables are not initialization */
+    osalbool NotInitialized;
+
+    /** \brief Timestamps vm at boot */
+    uint64 BootTimestamp;
+
+    /** \brief status flag variable */
+    VM_StatusFlags StatusFlags;
+
+    /** \brief True if local position is valid */
+    osalbool LocalPositionIsValid;
+
+    /** \brief True if previously landed */
+    osalbool PrevLanded;
+
+    /** \brief True if previously in flight */
+    osalbool PrevInFlight;
+
+    /** \brief Records a count when vehicle is disarmed with stick  */
+    uint32 StickOffCounter;
+
+    /** \brief Records a count when vehicle is armed with stick */
+    uint32 StickOnCounter;
+
+    /** \brief Arming switch in manual control setpoint message  */
+    uint32 LastSpManArmSwitch;
+
+    /** \brief True when vehicle's battery is low and a contingency action is implemented */
+    osalbool LowBatteryVoltageActionsDone;
+
+    /** \brief True when vehicle's battery is critical and a contingency action is implemented */
+    osalbool CriticalBatteryVoltageActionsDone;
+
+    /** \brief True when vehicle's battery is dangerously low and a contingency action is implemented */
+    osalbool EmergencyBatteryVoltageActionsDone;
+
+    /** \brief Timestamps the moment rc signal is lost */
+    uint64 RCSignalLostTimestamp;
+
+    /** \brief True when arming status changes with the vehicle */
+    osalbool ArmingStateChanged;
+
+    /** \brief An instance rc navigation mode  */
+    VM_Modes PreviousModes;
+
+} VM_HkTlm_t;
+
 
 #ifdef __cplusplus
 }

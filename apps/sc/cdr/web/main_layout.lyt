@@ -1,0 +1,216 @@
+{
+ "settings": {
+  "hasHeaders": true,
+  "constrainDragToContainer": false,
+  "reorderEnabled": true,
+  "selectionEnabled": true,
+  "popoutWholeStack": false,
+  "blockedPopoutsThrowError": true,
+  "closePopoutsOnUnload": true,
+  "showPopoutIcon": false,
+  "showMaximiseIcon": true,
+  "showCloseIcon": true,
+  "responsiveMode": "onload",
+  "tabOverlapAllowance": 0,
+  "reorderOnTabMenuClick": true,
+  "tabControlOffset": 10
+ },
+ "dimensions": {
+  "borderWidth": 5,
+  "borderGrabWidth": 15,
+  "minItemHeight": 10,
+  "minItemWidth": 10,
+  "headerHeight": 20,
+  "dragProxyWidth": 300,
+  "dragProxyHeight": 200
+ },
+ "labels": {
+  "close": "close",
+  "maximise": "maximise",
+  "minimise": "minimise",
+  "popout": "open in new window",
+  "popin": "pop in",
+  "tabDropdown": "additional tabs"
+ },
+ "content": [
+  {
+   "type": "row",
+   "isClosable": true,
+   "reorderEnabled": true,
+   "title": "",
+   "content": [
+    {
+     "type": "column",
+     "isClosable": true,
+     "reorderEnabled": true,
+     "title": "",
+     "width": 57.91688584955287,
+     "content": [
+      {
+       "type": "stack",
+       "header": {},
+       "isClosable": true,
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "width": 50,
+       "height": 14.541389302456812,
+       "content": [
+        {
+         "title": "Command and Data Handling",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "flight/apps/sc/cdh"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
+      },
+      {
+       "type": "stack",
+       "header": {},
+       "isClosable": true,
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "height": 25.675249563016067,
+       "content": [
+        {
+         "title": "General",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "flight/apps/sc/gen"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
+      },
+      {
+       "type": "stack",
+       "header": {},
+       "isClosable": true,
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "height": 29.128238823895337,
+       "content": [
+        {
+         "title": "RTS",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "flight/apps/sc/rts"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
+      },
+      {
+       "type": "stack",
+       "header": {},
+       "isClosable": true,
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "height": 30.655122310631786,
+       "content": [
+        {
+         "title": "ATS",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "flight/apps/sc/ats"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "stack",
+     "header": {},
+     "isClosable": true,
+     "reorderEnabled": true,
+     "title": "",
+     "activeItemIndex": 0,
+     "height": 62.5,
+     "width": 42.08311415044713,
+     "content": [
+      {
+       "title": "Events",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "/flight/core/evs/efltr?appName=SC"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "Telemetry",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "flight/apps/to/tlm_app?appName=SC"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "App Ctrl",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "flight/core/es/appctrl?appName=SC"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "Scheduling",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "flight/apps/sch/app_sch?appName=SC"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "Tables",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "flight/core/tbl/tbl_ctl?appName=SC"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "isClosable": true,
+ "reorderEnabled": true,
+ "title": "",
+ "openPopouts": [],
+ "maximisedItemId": null,
+ "database": {}
+}

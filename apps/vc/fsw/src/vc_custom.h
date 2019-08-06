@@ -34,6 +34,7 @@
 #ifndef VC_CUSTOM_H
 #define VC_CUSTOM_H
 
+#define VC_CUSTOM_ERROR_CODE (-1)
 
 /************************************************************************/
 /** \brief Video Control Task custom application commands

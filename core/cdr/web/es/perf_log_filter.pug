@@ -1,0 +1,124 @@
+- var pluginName = query.pluginName;
+
+table.table.table-condensed#availablePerfIDs
+  thead
+    tr
+      th(style='width: 100%') Performance ID
+      th(style='width: 400px') 
+        .btn-group(role='group' style='float:right')      
+          button.btn.cdr-primary(onclick='perfLogFilterSet();') Set
+          button.btn.cdr-primary(onclick='perfLogFilterSync();') Sync
+          button.btn.cdr-primary(onclick='perfLogFilterClear();') Clear 
+          button.btn.cdr-primary(onclick='perfLogFilterSend();') Send
+      th(style='width: 50px') Actual
+  tbody#perfLogFilterTable
+        
+        
+script.
+    var perfLogFilterSend = function () {       
+        for(var iWord = 0; iWord < 4; ++iWord) {
+            var mask = 0;
+            for(var iBit = 0; iBit < 32; ++iBit) {
+                var perfID = (iWord * 32) + iBit;
+                var domID = 'PerfLogFilter_' + perfID;
+                if($('#' + domID + '_cmd').prop('checked') == true) {
+                    mask = mask + Math.pow(2, iBit);
+                }
+            }
+            
+            var cmdObj = {ops_path:'/CFE/CFE_ES_PerfSetFilterMaskCmd_t', args:{'Payload.FilterMaskNum': iWord, 'Payload.FilterMask': mask}};
+            
+            session.sendCommand(cmdObj);
+        }
+    }
+    
+    var perfLogFilterSet = function () {
+        for(var iWord = 0; iWord < 4; ++iWord) {
+            for(var iBit = 31; iBit >= 0; --iBit) {
+                var perfID = (iWord * 32) + iBit;
+                var domID = 'PerfLogFilter_' + perfID;
+                        
+                $('#' + domID + '_cmd').prop('checked', true);
+            }
+        }
+    }
+    
+    var perfLogFilterClear = function () {
+        for(var iWord = 0; iWord < 4; ++iWord) {
+            for(var iBit = 31; iBit >= 0; --iBit) {
+                var perfID = (iWord * 32) + iBit;
+                var domID = 'PerfLogFilter_' + perfID;
+                        
+                $('#' + domID + '_cmd').prop('checked', false);
+            }
+        }
+    }
+    
+    var perfLogFilterSync = function () {
+        for(var iWord = 0; iWord < 4; ++iWord) {
+            for(var iBit = 31; iBit >= 0; --iBit) {
+                var perfID = (iWord * 32) + iBit;
+                var domID = 'PerfLogFilter_' + perfID;
+                        
+                $('#' + domID + '_cmd').prop('checked', $('#' + domID + '_actual').prop('checked'));
+            }
+        }
+    }
+    
+    session.sendCommand({ops_path:'/config-database/cmdGetPerfIDs'}, function(err, perfIDs) {
+        if(err != null) {
+            /* TODO */
+            console.log('PerfLogFilter::sendCommand(\'/config-database/cmdGetPerfIDs\') returned an error.  ' + err);
+        } else {
+            var sortedPerfNames = orderKeys(perfIDs);
+            for(var perfName in sortedPerfNames) {
+                var idName = 'PerfLogFilter_' + sortedPerfNames[perfName].perf_id;
+                $("#perfLogFilterTable").append(
+                    "<tr id=" + idName + ">" +
+                        "<td>" + perfName + "</td>" +
+                        "<td style='text-align: center'><input id=" + idName + '_cmd' + " type='checkbox'></td>" +
+                        "<td style='text-align: center'><input id=" + idName + '_actual' + " type='checkbox'></td>" +
+                    "</tr>"
+                );
+            };
+            
+            session.subscribe([{name:'/CFE/CFE_ES_HkPacket_t/Payload.PerfFilterMask'}], function(obj) {
+                var mask = obj[0].sample[0].value;
+                
+                for(var iWord = 0; iWord < 4; ++iWord) {
+                    for(var iBit = 31; iBit >= 0; --iBit) {
+                        var bit = (mask[iWord] >> iBit) & 0x00000001;
+                        var perfID = (iWord * 32) + iBit; + iBit;
+                        var domID = 'PerfLogFilter_' + perfID;
+                        
+                        if(bit == 0) {
+                            $('#' + domID + '_actual').prop('checked', false);
+                        } else {
+                            $('#' + domID + '_actual').prop('checked', true);
+                        }
+                    }
+                }
+            } );
+        }
+    });
+    
+    
+    function orderKeys(obj, expected) {
+        var keys = Object.keys(obj).sort(function keyOrder(k1, k2) {
+            if (k1 < k2) return -1;
+            else if (k1 > k2) return +1;
+            else return 0;
+        });
+
+        var i, after = {};
+        for (i = 0; i < keys.length; i++) {
+            after[keys[i]] = obj[keys[i]];
+            delete obj[keys[i]];
+        }
+
+        for (i = 0; i < keys.length; i++) {
+            obj[keys[i]] = after[keys[i]];
+        }
+         
+        return obj;
+    }

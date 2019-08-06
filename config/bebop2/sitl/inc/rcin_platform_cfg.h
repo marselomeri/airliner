@@ -111,6 +111,8 @@ extern "C" {
 
 #define RCIN_CUSTOM_JOYSTICK_PATH    "/dev/input/futaba-t8j-0"
 
+/**\brief Max filters in event table */
+#define RCIN_MAX_EVENT_FILTERS (32)
 
 #ifdef __cplusplus
 }
