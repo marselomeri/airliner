@@ -236,6 +236,7 @@ MPC_InitPipe_Exit_Tag:
 }
     
 
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Initialize Global Variables                                     */
@@ -298,11 +299,9 @@ void MPC::InitData()
 	m_ResetPositionSetpoint = TRUE;
 	m_ResetAltitudeSetpoint = TRUE;
 	m_DoResetAltPos = TRUE;
-	m_WasArmed = FALSE;
 	m_WasLanded = TRUE;
 	m_ResetIntZ = TRUE;
 	m_ResetIntXY = TRUE;
-	m_ResetIntZManual = FALSE;
 	m_ResetYawSetpoint = TRUE;
 	m_HoldOffboardXY = FALSE;
 	m_HoldOffboardZ = FALSE;
@@ -335,6 +334,7 @@ void MPC::InitData()
 
 	UpdateParamsFromTable();
 }
+
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -392,6 +392,7 @@ MPC_InitApp_Exit_Tag:
 
     return iStatus;
 }
+
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -460,6 +461,7 @@ int32 MPC::RcvSchPipeMsg(int32 iBlocking)
 
     return iStatus;
 }
+
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -543,6 +545,8 @@ osalbool MPC::ProcessDataPipe()
     return true;
 }
 
+
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Process Incoming Commands                                       */
@@ -589,6 +593,7 @@ void MPC::ProcessCmdPipe()
         }
     }
 }
+
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -665,7 +670,7 @@ void MPC::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
             	break;
         	
         	case MPC_SET_TKO_RAMP_CC:
-            	UpdateTakeoffTampTime((MPC_SetTkoRampCmd_t *) MsgPtr);
+            	UpdateTakeoffRampTime((MPC_SetTkoRampCmd_t *) MsgPtr);
             	HkTlm.usCmdCnt++;
             	(void) CFE_EVS_SendEvent(MPC_SET_TKO_RAMP_EID, CFE_EVS_INFORMATION, 
             	                        "Updating takeoff ramp time: %f", 
@@ -680,6 +685,8 @@ void MPC::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
         }
     }
 }
+
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -705,12 +712,12 @@ void MPC::ReportHousekeeping()
 	HkTlm.RunAltControl = m_RunAltControl;
 	HkTlm.InTakeoff = m_InTakeoff;
 	HkTlm.TripletLatLonFinite = m_TripletLatLonFinite;
-	HkTlm.WasLanded = m_WasLanded;
-	HkTlm.WasArmed = m_WasArmed;
 
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&HkTlm);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&HkTlm);
 }
+
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -749,6 +756,7 @@ void MPC::ReportDiagnostic()
 }
 
 
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Publish Output Data                                             */
@@ -765,6 +773,7 @@ void MPC::SendVehicleLocalPositionSetpointMsg()
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&m_VehicleLocalPositionSetpointMsg);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&m_VehicleLocalPositionSetpointMsg);
 }
+
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -800,6 +809,7 @@ boolean MPC::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
 }
 
 
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* MPC Application C style main entry point.                       */
@@ -809,6 +819,7 @@ extern "C" void MPC_AppMain()
 {
     oMPC.AppMain();
 }
+
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -868,6 +879,13 @@ void MPC::AppMain()
     CFE_ES_ExitApp(uiRunStatus);
 }
 
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* ProcessVehicleLocalPositionMsg                                  */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::ProcessVehicleLocalPositionMsg(void)
 {
 	/* Check if a reset event has happened if the vehicle is in manual mode
@@ -894,6 +912,13 @@ void MPC::ProcessVehicleLocalPositionMsg(void)
 	m_ResetCounterXy = m_VehicleLocalPositionMsg.XY_ResetCounter;
 }
 
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* ProcessControlStateMsg                                          */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::ProcessControlStateMsg(void)
 {
 	math::Quaternion q_att(
@@ -926,6 +951,13 @@ void MPC::ProcessControlStateMsg(void)
 	}
 }
 
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* ProcessPositionSetpointTripletMsg                               */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::ProcessPositionSetpointTripletMsg(void)
 {
 	/* Set current position setpoint invalid if alt is infinite. */
@@ -944,6 +976,12 @@ void MPC::ProcessPositionSetpointTripletMsg(void)
 }
 
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Execute                                                         */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::Execute(void)
 {
 	static uint64 t_prev = 0;
@@ -1084,6 +1122,13 @@ void MPC::Execute(void)
 	}
 }
 
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* UpdateRef                                                       */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::UpdateRef(void)
 {
 	/* The reference point is only allowed to change when the vehicle is in standby state which is the
@@ -1133,6 +1178,12 @@ void MPC::UpdateRef(void)
 }
 
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* UpdateVelocityDerivative                                        */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::UpdateVelocityDerivative(float dt)
 {
 	/* Update velocity derivative independent of the current flight mode */
@@ -1194,6 +1245,12 @@ void MPC::UpdateVelocityDerivative(float dt)
 }
 
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* DoControl                                                       */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::DoControl(float dt)
 {
 	/* By default, run position/altitude controller. the control_* functions
@@ -1227,6 +1284,12 @@ void MPC::DoControl(float dt)
 }
 
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* GenerateAttitudeSetpoint                                        */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::GenerateAttitudeSetpoint(float dt)
 {
 	/* Yaw setpoint is integrated over time, but we don't want to integrate the offset's */
@@ -1327,6 +1390,12 @@ void MPC::GenerateAttitudeSetpoint(float dt)
 }
 
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* ControlManual                                                   */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::ControlManual(float dt)
 {
 	/* Entering manual control from non-manual control mode, reset alt/pos setpoints */
@@ -1497,6 +1566,12 @@ void MPC::ControlManual(float dt)
 }
 
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* ControlNonManual                                                */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::ControlNonManual(float dt)
 {
 	/* Select control source. */
@@ -1586,6 +1661,12 @@ void MPC::ControlNonManual(float dt)
 }
 
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* ThrottleCurve                                                   */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 float MPC::ThrottleCurve(float ctl, float ctr)
 {
 	float result;
@@ -1605,6 +1686,12 @@ float MPC::ThrottleCurve(float ctl, float ctr)
 }
 
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* ResetPosSetpoint                                                */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::ResetPosSetpoint(void)
 {
 	if (m_ResetPositionSetpoint)
@@ -1620,6 +1707,12 @@ void MPC::ResetPosSetpoint(void)
 }
 
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* ResetAltSetpoint                                                */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::ResetAltSetpoint(void)
 {
 	if (m_ResetAltitudeSetpoint)
@@ -1635,6 +1728,12 @@ void MPC::ResetAltSetpoint(void)
 }
 
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* ControlPosition                                                 */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::ControlPosition(float dt)
 {
 	CalculateVelocitySetpoint(dt);
@@ -1652,6 +1751,12 @@ void MPC::ControlPosition(float dt)
 }
 
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* ControlOffboard                                                 */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::ControlOffboard(float dt)
 {
 	if(m_PositionSetpointTripletMsg.Current.Valid)
@@ -1776,9 +1881,14 @@ void MPC::ControlOffboard(float dt)
 }
 
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* ControlAuto                                                     */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::ControlAuto(float dt)
 {
-
 	/* Reset position setpoint on AUTO mode activation or if we are not in MC mode */
 	if (!m_ModeAuto || !m_VehicleStatusMsg.IsRotaryWing)
 	{
@@ -2361,28 +2471,6 @@ void MPC::ControlAuto(float dt)
 			/* Otherwise: in case of interrupted mission don't go to waypoint but stay at current position */
 			m_DoResetAltPos = TRUE;
 		}
-
-//		// Handle the landing gear based on the manual landing alt
-//		const boolean high_enough_for_landing_gear = (-Position[2] + _home_pos.z > 2.0f);
-//
-//		// During a mission or in loiter it's safe to retract the landing gear.
-//		if ((PositionSetpointTripletMsg.Current.Type == PX4_SETPOINT_TYPE_POSITION ||
-//			 PositionSetpointTripletMsg.Current.Type == PX4_SETPOINT_TYPE_LOITER) &&
-//			!_vehicle_land_detected.landed &&
-//			high_enough_for_landing_gear) {
-//
-//			VehicleAttitudeSetpointMsg.landing_gear = vehicle_attitude_setpoint_s::LANDING_GEAR_UP;
-//
-//		} else if (PositionSetpointTripletMsg.Current.Type == PX4_SETPOINT_TYPE_TAKEOFF ||
-//			   PositionSetpointTripletMsg.Current.Type == PX4_SETPOINT_TYPE_LAND ||
-//			   !high_enough_for_landing_gear) {
-//
-//			// During takeoff and landing, we better put it down again.
-//			VehicleAttitudeSetpointMsg.landing_gear = vehicle_attitude_setpoint_s::LANDING_GEAR_DOWN;
-//
-//			// For the rest of the setpoint types, just leave it as is.
-//		}
-
 	}
 	else
 	{
@@ -2394,6 +2482,12 @@ void MPC::ControlAuto(float dt)
 }
 
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* CalculateVelocitySetpoint                                       */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::CalculateVelocitySetpoint(float dt)
 {
 	/* Run position & altitude controllers if enabled (otherwise use already
@@ -2514,6 +2608,12 @@ void MPC::CalculateVelocitySetpoint(float dt)
 }
 
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* CalculateThrustSetpoint                                         */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::CalculateThrustSetpoint(float dt)
 {
 	/* Reset integrals if needed. */
@@ -2849,6 +2949,12 @@ void MPC::CalculateThrustSetpoint(float dt)
 }
 
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* GetCruisingSpeedXY                                              */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 float MPC::GetCruisingSpeedXY(void)
 {
 	float Result = 0.0f;
@@ -2862,72 +2968,12 @@ float MPC::GetCruisingSpeedXY(void)
 }
 
 
-boolean MPC::CrossSphereLine(const math::Vector3F &SphereC, const float SphereR,
-		const math::Vector3F &LineA, const math::Vector3F &LineB, math::Vector3F &Res)
-{
-	boolean Result = FALSE;
-	math::Vector3F d;
-	float CdLen = 0.0f;
-	float DxLen = 0.0f;
 
-	/* Project center of sphere on line normalized AB. */
-	math::Vector3F AbNorm = LineB - LineA;
-
-	if(AbNorm.Length() < 0.01)
-	{
-		Result = TRUE;
-		goto MPC_CrossSphereLine_Exit_Tag;
-	}
-
-	AbNorm.Normalize();
-	d = LineA + AbNorm * ((SphereC - LineA) * AbNorm);
-	CdLen = (SphereC - d).Length();
-
-	if (SphereR > CdLen)
-	{
-		/* We have triangle CDX with known CD and CX = R, find DX. */
-		DxLen = sqrtf(SphereR * SphereR - CdLen * CdLen);
-
-		if ((SphereC - LineB) * AbNorm > 0.0f)
-		{
-			/* Target waypoint is already behind us. */
-			Res = LineB;
-		}
-		else
-		{
-			/* Target is in front of us. */
-			/* vector A->B on line */
-			Res = d + AbNorm * DxLen;
-		}
-
-		Result = TRUE;
-	}
-	else
-	{
-		/* Have no roots. Return D */
-		/* Go directly to line */
-		Res = d;
-
-		/* Previous waypoint is still in front of us. */
-		if ((SphereC - LineA) * AbNorm < 0.0f)
-		{
-			Res = LineA;
-		}
-
-		/* Target waypoint is already behind us. */
-		if ((SphereC - LineB) * AbNorm > 0.0f)
-		{
-			Res = LineB;
-		}
-
-		Result = FALSE;
-	}
-
-MPC_CrossSphereLine_Exit_Tag:
-	return Result;
-}
-
-
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* UpdateXyPids                                                    */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::UpdateXyPids(MPC_SetPidCmd_t* PidMsg)
 {
     /* Update values in Vector3F copies used for math operations */
@@ -2952,6 +2998,13 @@ void MPC::UpdateXyPids(MPC_SetPidCmd_t* PidMsg)
     CFE_TBL_Modified(ConfigTblHdl);
 }
 
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* UpdateZPids                                                     */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::UpdateZPids(MPC_SetPidCmd_t* PidMsg)
 {
     /* Update values in Vector3F copy used for math operations */
@@ -2970,6 +3023,13 @@ void MPC::UpdateZPids(MPC_SetPidCmd_t* PidMsg)
     CFE_TBL_Modified(ConfigTblHdl);
 }
 
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* UpdateHoldDz                                                    */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::UpdateHoldDz(MPC_SetDzCmd_t* DzMsg)
 {
     ConfigTblPtr->HOLD_DZ = DzMsg->Deadzone;
@@ -2977,6 +3037,13 @@ void MPC::UpdateHoldDz(MPC_SetDzCmd_t* DzMsg)
     CFE_TBL_Modified(ConfigTblHdl);
 }
 
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* UpdateStickExpo                                                 */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::UpdateStickExpo(MPC_SetStickExpoCmd_t* ExpoMsg)
 {
     ConfigTblPtr->XY_MAN_EXPO = ExpoMsg->XY;
@@ -2985,13 +3052,27 @@ void MPC::UpdateStickExpo(MPC_SetStickExpoCmd_t* ExpoMsg)
     CFE_TBL_Modified(ConfigTblHdl);
 }
 
-void MPC::UpdateTakeoffTampTime(MPC_SetTkoRampCmd_t* TkoRampMsg)
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* UpdateTakeoffRampTime                                           */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+void MPC::UpdateTakeoffRampTime(MPC_SetTkoRampCmd_t* TkoRampMsg)
 {
     ConfigTblPtr->TKO_RAMP_T = TkoRampMsg->TKO_RAMP_T;
 
     CFE_TBL_Modified(ConfigTblHdl);
 }
 
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* UpdateParamsFromTable                                           */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::UpdateParamsFromTable(void)
 {
 	if(ConfigTblPtr != 0)
@@ -3015,6 +3096,12 @@ void MPC::UpdateParamsFromTable(void)
 }
 
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* LimitAltitude                                                   */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::LimitAltitude(void)
 {
 	float AltitudeAboveHome = 0.0f;
@@ -3055,6 +3142,13 @@ MPC_LimitAltitude_ExitTag:
 	return;
 }
 
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* ApplyVelocitySetpointSlewRate                                   */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::ApplyVelocitySetpointSlewRate(float dt)
 {
 	math::Vector2F VelSpXy(m_VelocitySetpoint[0], m_VelocitySetpoint[1]);
@@ -3089,6 +3183,12 @@ void MPC::ApplyVelocitySetpointSlewRate(float dt)
 }
 
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* InAutoTakeoff                                                   */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 boolean MPC::InAutoTakeoff(void)
 {
 	boolean Result = FALSE;
@@ -3110,6 +3210,12 @@ boolean MPC::InAutoTakeoff(void)
 }
 
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* GetVelClose                                                     */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 float MPC::GetVelClose(const math::Vector2F &UnitPrevToCurrent, const math::Vector2F &UnitCurrentToNext)
 {
 	/* Minimum cruise speed when passing waypoint */
@@ -3185,6 +3291,12 @@ MPC_GetVelClose_ExitTag:
 }
 
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* SetManualAccelerationZ                                          */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::SetManualAccelerationZ(float &MaxAcceleration, const float StickZ, const float Dt)
 {
 	/* In manual altitude control apply acceleration limit based on stick input
@@ -3241,6 +3353,12 @@ void MPC::SetManualAccelerationZ(float &MaxAcceleration, const float StickZ, con
 }
 
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* SetManualAccelerationXY                                         */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::SetManualAccelerationXY(math::Vector2F &StickXy, const float Dt)
 {
 
@@ -3463,6 +3581,13 @@ void MPC::SetManualAccelerationXY(math::Vector2F &StickXy, const float Dt)
 	}
 }
 
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* ManualWantsTakeoff                                              */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 boolean MPC::ManualWantsTakeoff()
 {
 	const boolean ManualControlPresent = m_VehicleControlModeMsg.ControlManualEnabled && m_ManualControlSetpointMsg.Timestamp > 0;

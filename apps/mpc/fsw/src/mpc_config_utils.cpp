@@ -89,6 +89,7 @@ MPC_InitConfigTbl_Exit_Tag:
 }
 
 
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Validate MPC Configuration Table                                */
@@ -104,6 +105,7 @@ int32 MPC::ValidateConfigTbl(void* ConfigTblPtr)
 MPC_ValidateConfigTbl_Exit_Tag:
     return iStatus;
 }
+
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
