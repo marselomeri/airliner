@@ -352,6 +352,8 @@ void MPC::InitData()
     m_UserIntentionXY = BRAKE; // NOTE: This needs to be initialized to BRAKE to work.
     m_UserIntentionZ = NONE;
     m_StickInputXyPrev.Zero();
+
+    UpdateParamsFromTable();
 }
 
 
