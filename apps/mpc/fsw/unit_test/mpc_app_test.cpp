@@ -1296,9 +1296,9 @@ void Test_MPC_AppMain_Nominal_CalculateThrustSetpoint(void)
     oMPC.m_VehicleAttitudeSetpointMsg.RollBody = 0.00379150;
     oMPC.m_VehicleAttitudeSetpointMsg.PitchBody = 0.01365914;
     oMPC.m_VehicleAttitudeSetpointMsg.YawBody = 0.65241611;
-	oMPC.m_VehicleLocalPositionSetpointMsg.AccX = -0.050282537937;
-	oMPC.m_VehicleLocalPositionSetpointMsg.AccY = -0.020179396495;
-	oMPC.m_VehicleLocalPositionSetpointMsg.AccZ = -3.821856975555;
+    oMPC.m_VehicleLocalPositionSetpointMsg.AccX = -0.050282537937;
+    oMPC.m_VehicleLocalPositionSetpointMsg.AccY = -0.020179396495;
+    oMPC.m_VehicleLocalPositionSetpointMsg.AccZ = -3.821856975555;
     /* For InAutoTakeoff() */
     oMPC.m_VehicleControlModeMsg.ControlOffboardEnabled = 0;
     /* For CalculateVelocitySetpoint() */

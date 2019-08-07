@@ -265,9 +265,9 @@ typedef enum
 */
     MPC_UNK_VEL_FRM_ERR_EID                      = 13,
 
-/** \brief <tt> "Updating <XY,Z> PID values. Gain: %f, P: %f, I: %f, D: %f" </tt>
-**  \event <tt> "Updating XY PID values. Gain: %f, P: %f, I: %f, D: %f" </tt>
-**  \event <tt> "Updating Z PID values. Gain: %f, P: %f, I: %f, D: %f" </tt>
+/** \brief <tt> "Updated <XY,Z> PID values. Gain: %f, P: %f, I: %f, D: %f" </tt>
+**  \event <tt> "Updated XY PID values. Gain: %f, P: %f, I: %f, D: %f" </tt>
+**  \event <tt> "Updated Z PID values. Gain: %f, P: %f, I: %f, D: %f" </tt>
 **
 **
 **  \par Type: CFE_EVS_INFORMATION
@@ -297,8 +297,8 @@ typedef enum
 */
     MPC_SEND_DIAG_EID                            = 15,
     
-/** \brief <tt> "Updating HOLD_DZ value: %f" </tt>
-**  \event <tt> "Updating HOLD_DZ value: %f" </tt>
+/** \brief <tt> "Updated HOLD_DZ value: %f" </tt>
+**  \event <tt> "Updated HOLD_DZ value: %f" </tt>
 **
 **  \par Type: CFE_EVS_INFORMATION
 **
@@ -311,8 +311,8 @@ typedef enum
 */
     MPC_SET_DZ_EID                               = 16,
 
-/** \brief <tt> "Updating stick expo values: XY: %f Z: %f" </tt>
-**  \event <tt> "Updating stick expo values: XY: %f Z: %f" </tt>
+/** \brief <tt> "Updated stick expo values: XY: %f Z: %f" </tt>
+**  \event <tt> "Updated stick expo values: XY: %f Z: %f" </tt>
 **
 **  \par Type: CFE_EVS_INFORMATION
 **
@@ -325,8 +325,8 @@ typedef enum
 */
     MPC_SET_EXPO_EID                             = 17,
 
-/** \brief <tt> "Updating takeoff ramp time: %f" </tt>
-**  \event <tt> "Updating takeoff ramp time: %f" </tt>
+/** \brief <tt> "Updated takeoff ramp time: %f" </tt>
+**  \event <tt> "Updated takeoff ramp time: %f" </tt>
 **
 **  \par Type: CFE_EVS_INFORMATION
 **
@@ -366,7 +366,22 @@ typedef enum
     **
     **  /sa #m_PositionSetpoint
     */
-    MPC_POS_SP_NOT_FINITE_ERR_EID                = 19,
+    MPC_POS_SP_NOT_FINITE_ERR_EID                = 20,
+
+    /** \brief <tt> "Parameter %s is invalid." </tt>
+    **  \event <tt> "Parameter %s is invalid." </tt>
+    **
+    **  \par Type: CFE_EVS_ERROR
+    **
+    **  \par Cause:
+    **
+    **  This event message is issued when a parameter validation function
+    **  fails to validate a parameter.
+    **
+    */
+	MPC_INVLD_PARAM_ERR_EID                      = 21,
+
+
 
 
 

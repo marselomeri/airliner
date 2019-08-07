@@ -178,22 +178,22 @@ int32 MPC::ValidateConfigTbl(void* ConfigTblPtr)
         valid_bool = FALSE;
     }
 
-    if(!(MPC_ConfigTblPtr->Z_P >= Z_P_MIN && MPC_ConfigTblPtr->Z_P <= Z_P_MAX))
+    if(MPC::Validate_Z_P(MPC_ConfigTblPtr->Z_P) == FALSE)
     {
         valid_bool = FALSE;
     }
 
-    if(!(MPC_ConfigTblPtr->Z_VEL_P >= Z_VEL_P_MIN && MPC_ConfigTblPtr->Z_VEL_P <= Z_VEL_P_MAX))
+    if(MPC::Validate_Z_VEL_P(MPC_ConfigTblPtr->Z_VEL_P) == FALSE)
     {
         valid_bool = FALSE;
     }
 
-    if(!(MPC_ConfigTblPtr->Z_VEL_I >= Z_VEL_I_MIN && MPC_ConfigTblPtr->Z_VEL_I <= Z_VEL_I_MAX))
+    if(MPC::Validate_Z_VEL_I(MPC_ConfigTblPtr->Z_VEL_I) == FALSE)
     {
         valid_bool = FALSE;
     }
 
-    if(!(MPC_ConfigTblPtr->Z_VEL_D >= Z_VEL_D_MIN && MPC_ConfigTblPtr->Z_VEL_D <= Z_VEL_D_MAX))
+    if(MPC::Validate_Z_VEL_D(MPC_ConfigTblPtr->Z_VEL_D) == FALSE)
     {
         valid_bool = FALSE;
     }
@@ -213,22 +213,22 @@ int32 MPC::ValidateConfigTbl(void* ConfigTblPtr)
         valid_bool = FALSE;
     }
 
-    if(!(MPC_ConfigTblPtr->XY_P >= XY_P_MIN && MPC_ConfigTblPtr->XY_P <= XY_P_MAX))
+    if(MPC::Validate_XY_P(MPC_ConfigTblPtr->XY_P) == FALSE)
     {
         valid_bool = FALSE;
     }
 
-    if(!(MPC_ConfigTblPtr->XY_VEL_P >= XY_VEL_P_MIN && MPC_ConfigTblPtr->XY_VEL_P <= XY_VEL_P_MAX))
+    if(MPC::Validate_XY_VEL_P(MPC_ConfigTblPtr->XY_VEL_P) == FALSE)
     {
         valid_bool = FALSE;
     }
 
-    if(!(MPC_ConfigTblPtr->XY_VEL_I >= XY_VEL_I_MIN && MPC_ConfigTblPtr->XY_VEL_I <= XY_VEL_I_MAX))
+    if(MPC::Validate_XY_VEL_I(MPC_ConfigTblPtr->XY_VEL_I) == FALSE)
     {
         valid_bool = FALSE;
     }
 
-    if(!(MPC_ConfigTblPtr->XY_VEL_D >= XY_VEL_D_MIN && MPC_ConfigTblPtr->XY_VEL_D <= XY_VEL_D_MAX))
+    if(MPC::Validate_XY_VEL_D(MPC_ConfigTblPtr->XY_VEL_D) == FALSE)
     {
         valid_bool = FALSE;
     }
@@ -283,7 +283,7 @@ int32 MPC::ValidateConfigTbl(void* ConfigTblPtr)
         valid_bool = FALSE;
     }
 
-    if(!(MPC_ConfigTblPtr->HOLD_DZ >= HOLD_DZ_MIN && MPC_ConfigTblPtr->HOLD_DZ <= HOLD_DZ_MAX))
+    if(MPC::Validate_HOLD_DZ(MPC_ConfigTblPtr->HOLD_DZ) == FALSE)
     {
         valid_bool = FALSE;
     }
@@ -323,12 +323,12 @@ int32 MPC::ValidateConfigTbl(void* ConfigTblPtr)
         valid_bool = FALSE;
     }
 
-    if(!(MPC_ConfigTblPtr->XY_MAN_EXPO >= XY_MAN_EXPO_MIN && MPC_ConfigTblPtr->XY_MAN_EXPO <= XY_MAN_EXPO_MAX))
+    if(MPC::Validate_XY_MAN_EXPO(MPC_ConfigTblPtr->XY_MAN_EXPO) == FALSE)
     {
         valid_bool = FALSE;
     }
 
-    if(!(MPC_ConfigTblPtr->Z_MAN_EXPO >= Z_MAN_EXPO_MIN && MPC_ConfigTblPtr->Z_MAN_EXPO <= Z_MAN_EXPO_MAX))
+    if(MPC::Validate_Z_MAN_EXPO(MPC_ConfigTblPtr->Z_MAN_EXPO) == FALSE)
     {
         valid_bool = FALSE;
     }
@@ -343,7 +343,7 @@ int32 MPC::ValidateConfigTbl(void* ConfigTblPtr)
         valid_bool = FALSE;
     }
 
-    if(!(MPC_ConfigTblPtr->TKO_RAMP_T >= TKO_RAMP_T_MIN && MPC_ConfigTblPtr->TKO_RAMP_T <= TKO_RAMP_T_MAX))
+    if(MPC::Validate_TKO_RAMP_T(MPC_ConfigTblPtr->TKO_RAMP_T) == FALSE)
     {
         valid_bool = FALSE;
     }

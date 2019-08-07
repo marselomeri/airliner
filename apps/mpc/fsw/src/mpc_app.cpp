@@ -19,6 +19,7 @@
 #include <float.h>
 #include <math.h>
 #include "px4lib_msgids.h"
+#include "mpc_tbldefs.h"
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -40,12 +41,16 @@
 
 #define MPC_TILT_COS_MAX (0.7f)
 
+
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Instantiate the application object.                             */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 MPC oMPC;
+
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -60,6 +65,8 @@ MPC::MPC() :
 
 }
 
+
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Destructor constructor.                                         */
@@ -69,6 +76,8 @@ MPC::~MPC()
 {
 
 }
+
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -88,6 +97,7 @@ int32 MPC::InitEvent()
 
     return iStatus;
 }
+
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -342,8 +352,6 @@ void MPC::InitData()
     m_UserIntentionXY = BRAKE; // NOTE: This needs to be initialized to BRAKE to work.
     m_UserIntentionZ = NONE;
     m_StickInputXyPrev.Zero();
-
-    UpdateParamsFromTable();
 }
 
 
@@ -496,42 +504,58 @@ osalbool MPC::ProcessDataPipe()
             switch (MsgId)
             {
                 case PX4_CONTROL_STATE_MID:
+                {
                     ProcessControlStateMsg();
                     CFE_PSP_MemCpy(&m_ControlStateMsg, MsgPtr, sizeof(m_ControlStateMsg));
                     break;
+                }
 
                 case PX4_MANUAL_CONTROL_SETPOINT_MID:
+                {
                     CFE_PSP_MemCpy(&m_ManualControlSetpointMsg, MsgPtr, sizeof(m_ManualControlSetpointMsg));
                     break;
+                }
 
                 case PX4_HOME_POSITION_MID:
+                {
                     CFE_PSP_MemCpy(&m_HomePositionMsg, MsgPtr, sizeof(m_HomePositionMsg));
                     break;
+                }
 
                 case PX4_VEHICLE_CONTROL_MODE_MID:
+                {
                     CFE_PSP_MemCpy(&m_VehicleControlModeMsg, MsgPtr, sizeof(m_VehicleControlModeMsg));
                     break;
+                }
 
                 case PX4_POSITION_SETPOINT_TRIPLET_MID:
+                {
                     CFE_PSP_MemCpy(&m_PositionSetpointTripletMsg, MsgPtr, sizeof(m_PositionSetpointTripletMsg));
                     ProcessPositionSetpointTripletMsg();
                     break;
+                }
 
                 case PX4_VEHICLE_STATUS_MID:
+                {
                     CFE_PSP_MemCpy(&m_VehicleStatusMsg, MsgPtr, sizeof(m_VehicleStatusMsg));
-
                     break;
+                }
 
                 case PX4_VEHICLE_LAND_DETECTED_MID:
+                {
                     CFE_PSP_MemCpy(&m_VehicleLandDetectedMsg, MsgPtr, sizeof(m_VehicleLandDetectedMsg));
                     break;
+                }
 
                 case PX4_VEHICLE_LOCAL_POSITION_MID:
+                {
                     CFE_PSP_MemCpy(&m_VehicleLocalPositionMsg, MsgPtr, sizeof(m_VehicleLocalPositionMsg));
                     ProcessVehicleLocalPositionMsg();
                     break;
+                }
 
                 default:
+                {
                     /* Bump the command error counter for an unknown command.
                      * (This should only occur if it was subscribed to with this
                      *  pipe, but not handled in this switch-case.) */
@@ -539,6 +563,7 @@ osalbool MPC::ProcessDataPipe()
                     (void) CFE_EVS_SendEvent(MPC_MSGID_ERR_EID, CFE_EVS_ERROR,
                                       "Recvd invalid DATA msgId (0x%04X)", (unsigned short)MsgId);
                     break;
+                }
             }
         }
         else if (iStatus == CFE_SB_NO_MESSAGE)
@@ -579,10 +604,13 @@ void MPC::ProcessCmdPipe()
             switch (CmdMsgId)
             {
                 case MPC_CMD_MID:
+                {
                     ProcessAppCmds(CmdMsgPtr);
                     break;
+                }
 
                 default:
+                {
                     /* Bump the command error counter for an unknown command.
                      * (This should only occur if it was subscribed to with this
                      *  pipe, but not handled in this switch-case.) */
@@ -590,6 +618,7 @@ void MPC::ProcessCmdPipe()
                     (void) CFE_EVS_SendEvent(MPC_MSGID_ERR_EID, CFE_EVS_ERROR,
                                       "Recvd invalid CMD msgId (0x%04X)", (unsigned short)CmdMsgId);
                     break;
+                }
             }
         }
         else if (iStatus == CFE_SB_NO_MESSAGE)
@@ -622,77 +651,149 @@ void MPC::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
         switch (uiCmdCode)
         {
             case MPC_NOOP_CC:
-                HkTlm.usCmdCnt++;
-                (void) CFE_EVS_SendEvent(MPC_CMD_NOOP_EID, CFE_EVS_INFORMATION,
-                    "Recvd NOOP. Version %d.%d.%d.%d",
-                    MPC_MAJOR_VERSION,
-                    MPC_MINOR_VERSION,
-                    MPC_REVISION,
-                    MPC_MISSION_REV);
+            {
+                if(VerifyCmdLength(MsgPtr, sizeof(MPC_NoArgCmd_t)) == TRUE)
+                {
+                    HkTlm.usCmdCnt++;
+                    (void) CFE_EVS_SendEvent(MPC_CMD_NOOP_EID, CFE_EVS_INFORMATION,
+                        "Recvd NOOP. Version %d.%d.%d.%d",
+                        MPC_MAJOR_VERSION,
+                        MPC_MINOR_VERSION,
+                        MPC_REVISION,
+                        MPC_MISSION_REV);
+                }
                 break;
+            }
 
             case MPC_RESET_CC:
-                HkTlm.usCmdCnt = 0;
-                HkTlm.usCmdErrCnt = 0;
+            {
+                if(VerifyCmdLength(MsgPtr, sizeof(MPC_NoArgCmd_t)) == TRUE)
+                {
+                    HkTlm.usCmdCnt    = 0;
+                    HkTlm.usCmdErrCnt = 0;
+                }
                 break;
+            }
 
             case MPC_SET_XY_PID_CC:
-                UpdateXyPids((MPC_SetPidCmd_t *) MsgPtr);
-                HkTlm.usCmdCnt++;
-                (void) CFE_EVS_SendEvent(MPC_PID_UPDATE_EID, CFE_EVS_INFORMATION,
-                        "Updating XY PID values. Gain: %f, P: %f, I: %f, D: %f",
-                        m_PosP[0],
-                        m_VelP[0],
-                        m_VelI[0],
-                        m_VelD[0]);
+            {
+                if(VerifyCmdLength(MsgPtr, sizeof(MPC_SetPidCmd_t)) == TRUE)
+                {
+                    if(UpdateXyPids((MPC_SetPidCmd_t *) MsgPtr) == TRUE)
+                    {
+                        HkTlm.usCmdCnt++;
+                        (void) CFE_EVS_SendEvent(MPC_PID_UPDATE_EID, CFE_EVS_INFORMATION,
+                            "Updated XY PID values. Gain: %f, P: %f, I: %f, D: %f",
+                            m_PosP[0],
+                            m_VelP[0],
+                            m_VelI[0],
+                            m_VelD[0]);
+                    }
+                    else
+                    {
+                        HkTlm.usCmdErrCnt++;
+                    }
+                }
                 break;
+            }
 
             case MPC_SET_Z_PID_CC:
-                UpdateZPids((MPC_SetPidCmd_t *) MsgPtr);
-                HkTlm.usCmdCnt++;
-                (void) CFE_EVS_SendEvent(MPC_PID_UPDATE_EID, CFE_EVS_INFORMATION,
-                        "Updating Z PID values. Gain: %f, P: %f, I: %f, D: %f",
-                        m_PosP[2],
-                        m_VelP[2],
-                        m_VelI[2],
-                        m_VelD[2]);
+            {
+                if(VerifyCmdLength(MsgPtr, sizeof(MPC_SetPidCmd_t)) == TRUE)
+                {
+                    if(UpdateZPids((MPC_SetPidCmd_t *) MsgPtr) == TRUE)
+                    {
+                        HkTlm.usCmdCnt++;
+                        (void) CFE_EVS_SendEvent(MPC_PID_UPDATE_EID, CFE_EVS_INFORMATION,
+                                "Updating Z PID values. Gain: %f, P: %f, I: %f, D: %f",
+                                m_PosP[2],
+                                m_VelP[2],
+                                m_VelI[2],
+                                m_VelD[2]);
+                    }
+                    else
+                    {
+                        HkTlm.usCmdErrCnt++;
+                    }
+                }
                 break;
-            
+            }
+
             case MPC_SET_HOLD_DZ_CC:
-                UpdateHoldDz((MPC_SetDzCmd_t *) MsgPtr);
-                HkTlm.usCmdCnt++;
-                (void) CFE_EVS_SendEvent(MPC_SET_DZ_EID, CFE_EVS_INFORMATION,
-                        "Updating HOLD_DZ value: %f", ConfigTblPtr->HOLD_DZ);
+            {
+                if(VerifyCmdLength(MsgPtr, sizeof(MPC_SetDzCmd_t)) == TRUE)
+                {
+                    if(UpdateHoldDz((MPC_SetDzCmd_t *) MsgPtr) == TRUE)
+                    {
+                        HkTlm.usCmdCnt++;
+                        (void) CFE_EVS_SendEvent(MPC_SET_DZ_EID, CFE_EVS_INFORMATION,
+                                "Updated HOLD_DZ value: %f", ConfigTblPtr->HOLD_DZ);
+                    }
+                    else
+                    {
+                        HkTlm.usCmdErrCnt++;
+                    }
+                }
                 break;
-            
+            }
+
             case MPC_SEND_DIAG_CC:
-                ReportDiagnostic();
-                HkTlm.usCmdCnt++;
-                (void) CFE_EVS_SendEvent(MPC_SEND_DIAG_EID, CFE_EVS_INFORMATION, "Sending Diag packet.");
+            {
+                if(VerifyCmdLength(MsgPtr, sizeof(MPC_NoArgCmd_t)) == TRUE)
+                {
+                    ReportDiagnostic();
+                    HkTlm.usCmdCnt++;
+                    (void) CFE_EVS_SendEvent(MPC_SEND_DIAG_EID, CFE_EVS_INFORMATION, "Sending Diag packet.");
+                }
                 break;
-            
+            }
+
             case MPC_SET_STICK_EXPO_CC:
-                UpdateStickExpo((MPC_SetStickExpoCmd_t *) MsgPtr);
-                HkTlm.usCmdCnt++;
-                (void) CFE_EVS_SendEvent(MPC_SET_EXPO_EID, CFE_EVS_INFORMATION, 
-                                        "Updating stick expo values: XY: %f Z: %f", 
-                                        ConfigTblPtr->XY_MAN_EXPO,
-                                        ConfigTblPtr->Z_MAN_EXPO);
+            {
+                if(VerifyCmdLength(MsgPtr, sizeof(MPC_SetStickExpoCmd_t)) == TRUE)
+                {
+                    if(UpdateStickExpo((MPC_SetStickExpoCmd_t *) MsgPtr) == TRUE)
+                    {
+                        HkTlm.usCmdCnt++;
+                        (void) CFE_EVS_SendEvent(MPC_SET_EXPO_EID, CFE_EVS_INFORMATION,
+                                            "Updated stick expo values: XY: %f Z: %f",
+                                            ConfigTblPtr->XY_MAN_EXPO,
+                                            ConfigTblPtr->Z_MAN_EXPO);
+                    }
+                    else
+                    {
+                        HkTlm.usCmdErrCnt++;
+                    }
+                }
                 break;
-            
+            }
+
             case MPC_SET_TKO_RAMP_CC:
-                UpdateTakeoffRampTime((MPC_SetTkoRampCmd_t *) MsgPtr);
-                HkTlm.usCmdCnt++;
-                (void) CFE_EVS_SendEvent(MPC_SET_TKO_RAMP_EID, CFE_EVS_INFORMATION, 
-                                        "Updating takeoff ramp time: %f", 
-                                        ConfigTblPtr->TKO_RAMP_T);
+            {
+                if(VerifyCmdLength(MsgPtr, sizeof(MPC_SetTkoRampCmd_t)) == TRUE)
+                {
+                    if(UpdateTakeoffRampTime((MPC_SetTkoRampCmd_t *) MsgPtr) == TRUE)
+                    {
+                        HkTlm.usCmdCnt++;
+                        (void) CFE_EVS_SendEvent(MPC_SET_TKO_RAMP_EID, CFE_EVS_INFORMATION,
+                                            "Updated takeoff ramp time: %f",
+                                            ConfigTblPtr->TKO_RAMP_T);
+                    }
+                    else
+                    {
+                        HkTlm.usCmdErrCnt++;
+                    }
+                }
                 break;
+            }
 
             default:
+            {
                 HkTlm.usCmdErrCnt++;
                 (void) CFE_EVS_SendEvent(MPC_CC_ERR_EID, CFE_EVS_ERROR,
                                   "Recvd invalid command code (%u)", (unsigned int)uiCmdCode);
                 break;
+            }
         }
     }
 }
@@ -707,22 +808,22 @@ void MPC::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 void MPC::ReportHousekeeping()
 {
     HkTlm.AccelerationStateLimitXY = m_AccelerationStateLimitXY;
-    HkTlm.AccelerationStateLimitZ = m_AccelerationStateLimitZ;
-    HkTlm.ManualJerkLimitXY = m_ManualJerkLimitXY;
-    HkTlm.ManualJerkLimitZ = m_ManualJerkLimitZ;
-    HkTlm.TakeoffVelLimit = m_TakeoffVelLimit;
-    HkTlm.VelMaxXy = m_VelMaxXy;
-    HkTlm.YawTakeoff = m_YawTakeoff;
-    HkTlm.Yaw = m_Yaw;
-    HkTlm.UserIntentionXY = m_UserIntentionXY;
-    HkTlm.UserIntentionZ = m_UserIntentionZ;
-    HkTlm.ModeAuto = m_ModeAuto;
-    HkTlm.PositionHoldEngaged = m_PositionHoldEngaged;
-    HkTlm.AltitudeHoldEngaged = m_AltitudeHoldEngaged;
-    HkTlm.RunPosControl = m_RunPosControl;
-    HkTlm.RunAltControl = m_RunAltControl;
-    HkTlm.InTakeoff = m_InTakeoff;
-    HkTlm.TripletLatLonFinite = m_TripletLatLonFinite;
+    HkTlm.AccelerationStateLimitZ  = m_AccelerationStateLimitZ;
+    HkTlm.ManualJerkLimitXY        = m_ManualJerkLimitXY;
+    HkTlm.ManualJerkLimitZ         = m_ManualJerkLimitZ;
+    HkTlm.TakeoffVelLimit          = m_TakeoffVelLimit;
+    HkTlm.VelMaxXy                 = m_VelMaxXy;
+    HkTlm.YawTakeoff               = m_YawTakeoff;
+    HkTlm.Yaw                      = m_Yaw;
+    HkTlm.UserIntentionXY          = m_UserIntentionXY;
+    HkTlm.UserIntentionZ           = m_UserIntentionZ;
+    HkTlm.ModeAuto                 = m_ModeAuto;
+    HkTlm.PositionHoldEngaged      = m_PositionHoldEngaged;
+    HkTlm.AltitudeHoldEngaged      = m_AltitudeHoldEngaged;
+    HkTlm.RunPosControl            = m_RunPosControl;
+    HkTlm.RunAltControl            = m_RunAltControl;
+    HkTlm.InTakeoff                = m_InTakeoff;
+    HkTlm.TripletLatLonFinite      = m_TripletLatLonFinite;
 
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&HkTlm);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&HkTlm);
@@ -737,30 +838,30 @@ void MPC::ReportHousekeeping()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::ReportDiagnostic()
 {
-    DiagTlm.Z_P = m_PosP[2];
-    DiagTlm.Z_VEL_P = m_VelP[2];
-    DiagTlm.Z_VEL_I = m_VelI[2];
-    DiagTlm.Z_VEL_D = m_VelD[2];
-    DiagTlm.Z_VEL_MAX_UP = ConfigTblPtr->Z_VEL_MAX_UP;
-    DiagTlm.Z_VEL_MAX_DN = ConfigTblPtr->Z_VEL_MAX_DN;
-    DiagTlm.Z_FF = ConfigTblPtr->Z_FF;
-    DiagTlm.XY_P = m_PosP[0];
-    DiagTlm.XY_VEL_P = m_VelP[0];
-    DiagTlm.XY_VEL_I = m_VelI[0];
-    DiagTlm.XY_VEL_D = m_VelD[0];
-    DiagTlm.XY_CRUISE = ConfigTblPtr->XY_CRUISE;
-    DiagTlm.MPC_VEL_MANUAL = ConfigTblPtr->MPC_VEL_MANUAL;
-    DiagTlm.XY_VEL_MAX = ConfigTblPtr->XY_VEL_MAX;
-    DiagTlm.XY_FF = ConfigTblPtr->XY_FF;
-    DiagTlm.TILTMAX_AIR = ConfigTblPtr->TILTMAX_AIR;
-    DiagTlm.ACC_HOR_MAX = ConfigTblPtr->ACC_HOR_MAX;
-    DiagTlm.ACC_UP_MAX = ConfigTblPtr->ACC_UP_MAX;
-    DiagTlm.ACC_DOWN_MAX = ConfigTblPtr->ACC_DOWN_MAX;
+    DiagTlm.Z_P              = m_PosP[2];
+    DiagTlm.Z_VEL_P          = m_VelP[2];
+    DiagTlm.Z_VEL_I          = m_VelI[2];
+    DiagTlm.Z_VEL_D          = m_VelD[2];
+    DiagTlm.Z_VEL_MAX_UP     = ConfigTblPtr->Z_VEL_MAX_UP;
+    DiagTlm.Z_VEL_MAX_DN     = ConfigTblPtr->Z_VEL_MAX_DN;
+    DiagTlm.Z_FF             = ConfigTblPtr->Z_FF;
+    DiagTlm.XY_P             = m_PosP[0];
+    DiagTlm.XY_VEL_P         = m_VelP[0];
+    DiagTlm.XY_VEL_I         = m_VelI[0];
+    DiagTlm.XY_VEL_D         = m_VelD[0];
+    DiagTlm.XY_CRUISE        = ConfigTblPtr->XY_CRUISE;
+    DiagTlm.MPC_VEL_MANUAL   = ConfigTblPtr->MPC_VEL_MANUAL;
+    DiagTlm.XY_VEL_MAX       = ConfigTblPtr->XY_VEL_MAX;
+    DiagTlm.XY_FF            = ConfigTblPtr->XY_FF;
+    DiagTlm.TILTMAX_AIR      = ConfigTblPtr->TILTMAX_AIR;
+    DiagTlm.ACC_HOR_MAX      = ConfigTblPtr->ACC_HOR_MAX;
+    DiagTlm.ACC_UP_MAX       = ConfigTblPtr->ACC_UP_MAX;
+    DiagTlm.ACC_DOWN_MAX     = ConfigTblPtr->ACC_DOWN_MAX;
     DiagTlm.MPC_DEC_HOR_SLOW = ConfigTblPtr->MPC_DEC_HOR_SLOW;
-    DiagTlm.MPC_HOLD_DZ = ConfigTblPtr->HOLD_DZ;
-    DiagTlm.XY_MAN_EXPO = ConfigTblPtr->XY_MAN_EXPO;
-    DiagTlm.Z_MAN_EXPO = ConfigTblPtr->Z_MAN_EXPO;
-    DiagTlm.TKO_RAMP_T = ConfigTblPtr->TKO_RAMP_T;
+    DiagTlm.MPC_HOLD_DZ      = ConfigTblPtr->HOLD_DZ;
+    DiagTlm.XY_MAN_EXPO      = ConfigTblPtr->XY_MAN_EXPO;
+    DiagTlm.Z_MAN_EXPO       = ConfigTblPtr->Z_MAN_EXPO;
+    DiagTlm.TKO_RAMP_T       = ConfigTblPtr->TKO_RAMP_T;
     
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&DiagTlm);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&DiagTlm);
@@ -1009,20 +1110,20 @@ void MPC::Execute(void)
     {
         m_ResetPositionSetpoint = TRUE;
         m_ResetAltitudeSetpoint = TRUE;
-        m_DoResetAltPos = TRUE;
-        m_ModeAuto = FALSE;
-        m_PositionHoldEngaged = FALSE;
-        m_AltitudeHoldEngaged = FALSE;
-        m_RunPosControl = TRUE;
-        m_RunAltControl = TRUE;
-        m_ResetIntZ = TRUE;
-        m_ResetIntXY = TRUE;
-        m_ResetYawSetpoint = TRUE;
-        m_HoldOffboardXY = FALSE;
-        m_HoldOffboardZ = FALSE;
+        m_DoResetAltPos         = TRUE;
+        m_ModeAuto              = FALSE;
+        m_PositionHoldEngaged   = FALSE;
+        m_AltitudeHoldEngaged   = FALSE;
+        m_RunPosControl         = TRUE;
+        m_RunAltControl         = TRUE;
+        m_ResetIntZ             = TRUE;
+        m_ResetIntXY            = TRUE;
+        m_ResetYawSetpoint      = TRUE;
+        m_HoldOffboardXY        = FALSE;
+        m_HoldOffboardZ         = FALSE;
 
         /* Also reset previous setpoints */
-        m_YawTakeoff = m_Yaw;
+        m_YawTakeoff            = m_Yaw;
         m_VelocitySetpointPrevious.Zero();
         m_VelocityPrevious.Zero();
 
@@ -1092,10 +1193,10 @@ void MPC::Execute(void)
         /* Position controller disabled, reset setpoints */
         m_ResetPositionSetpoint = TRUE;
         m_ResetAltitudeSetpoint = TRUE;
-        m_DoResetAltPos = TRUE;
-        m_ModeAuto = FALSE;
-        m_ResetIntZ = TRUE;
-        m_ResetIntXY = TRUE;
+        m_DoResetAltPos         = TRUE;
+        m_ModeAuto              = FALSE;
+        m_ResetIntZ             = TRUE;
+        m_ResetIntXY            = TRUE;
 
         /* Store last velocity in case a mode switch to position control occurs */
         m_VelocitySetpointPrevious = m_Velocity;
@@ -1149,10 +1250,10 @@ void MPC::UpdateRef(void)
         && ((m_VehicleStatusMsg.ArmingState == PX4_ARMING_STATE_STANDBY)
         || (!m_RefAltIsGlobal && m_VehicleLocalPositionMsg.Z_Global)))
     {
-        double LatitudeSetpoint = 0.0f;
+        double LatitudeSetpoint  = 0.0f;
         double LongitudeSetpoint = 0.0f;
-        float AltitudeSetpoint = 0.0f;
-        uint64 CurrentTime = 0;
+        float AltitudeSetpoint   = 0.0f;
+        uint64 CurrentTime       = 0;
 
         if(m_RefTimestamp != 0)
         {
@@ -1246,7 +1347,8 @@ void MPC::UpdateVelocityDerivative(float dt)
         }
     }
 
-    if (isfinite(m_VehicleLocalPositionMsg.VZ)) {
+    if (isfinite(m_VehicleLocalPositionMsg.VZ))
+    {
         m_DerivativeZ = m_VehicleLocalPositionMsg.VZ;
     };
 
@@ -1316,6 +1418,9 @@ void MPC::GenerateAttitudeSetpoint(float dt)
     else if (!m_VehicleLandDetectedMsg.Landed &&
            !(!m_VehicleControlModeMsg.ControlAltitudeEnabled && m_ManualControlSetpointMsg.Z < 0.1f))
     {
+        float YawTarget;
+        float YawOffs;
+
         /* Do not move yaw while sitting on the ground. */
 
         /* We want to know the real constraint, and global overrides manual. */
@@ -1324,8 +1429,8 @@ void MPC::GenerateAttitudeSetpoint(float dt)
         const float YawOffsetMax = YawRateMax / math::radians(ConfigTblPtr->MC_YAW_P);
 
         m_VehicleAttitudeSetpointMsg.YawSpMoveRate = m_ManualControlSetpointMsg.R * YawRateMax;
-        float YawTarget = _wrap_pi(m_VehicleAttitudeSetpointMsg.YawBody + m_VehicleAttitudeSetpointMsg.YawSpMoveRate * dt);
-        float YawOffs = _wrap_pi(YawTarget - m_Yaw);
+        YawTarget = _wrap_pi(m_VehicleAttitudeSetpointMsg.YawBody + m_VehicleAttitudeSetpointMsg.YawSpMoveRate * dt);
+        YawOffs = _wrap_pi(YawTarget - m_Yaw);
 
         /* If the yaw offset became too big for the system to track stop
          * shifting it, only allow if it would make the offset smaller again. */
@@ -1409,6 +1514,15 @@ void MPC::GenerateAttitudeSetpoint(float dt)
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::ControlManual(float dt)
 {
+    float    YawInputFrame;
+    float    StickZ;
+    float    MaxAccZ;
+    osalbool AltHoldDesired;
+    osalbool PosHoldDesired;
+
+    /* Velocity setpoint commanded by user stick input. */
+    math::Vector3F ManVelSp(0.0f, 0.0f, 0.0f);
+
     /* Entering manual control from non-manual control mode, reset alt/pos setpoints */
     if(m_ModeAuto == TRUE)
     {
@@ -1426,9 +1540,6 @@ void MPC::ControlManual(float dt)
      * Map from stick input to velocity setpoint.
      */
 
-    /* Velocity setpoint commanded by user stick input. */
-    math::Vector3F ManVelSp(0.0f, 0.0f, 0.0f);
-
     if(m_VehicleControlModeMsg.ControlAltitudeEnabled)
     {
         /* Set vertical velocity setpoint with throttle stick, remapping of
@@ -1443,6 +1554,8 @@ void MPC::ControlManual(float dt)
 
     if (m_VehicleControlModeMsg.ControlPositionEnabled)
     {
+        float ManVelHorLength;
+
         /* Set horizontal velocity setpoint with roll/pitch stick */
         ManVelSp[0] = math::expof_deadzone(
                 m_ManualControlSetpointMsg.X,
@@ -1451,10 +1564,11 @@ void MPC::ControlManual(float dt)
                 m_ManualControlSetpointMsg.Y,
                 ConfigTblPtr->XY_MAN_EXPO, ConfigTblPtr->HOLD_DZ);
 
-        const float ManVelHorLength = math::Vector2F(ManVelSp[0], ManVelSp[1]).Length();
+        ManVelHorLength = math::Vector2F(ManVelSp[0], ManVelSp[1]).Length();
 
         /* Saturate such that magnitude is never larger than 1 */
-        if (ManVelHorLength > 1.0f) {
+        if (ManVelHorLength > 1.0f)
+        {
             ManVelSp[0] /= ManVelHorLength;
             ManVelSp[1] /= ManVelHorLength;
         }
@@ -1464,7 +1578,7 @@ void MPC::ControlManual(float dt)
     }
     
     /* Prepare yaw to rotate into NED frame */
-    float YawInputFrame = m_VehicleControlModeMsg.ControlFixedHdgEnabled ? m_YawTakeoff : m_VehicleAttitudeSetpointMsg.YawBody;
+    YawInputFrame = m_VehicleControlModeMsg.ControlFixedHdgEnabled ? m_YawTakeoff : m_VehicleAttitudeSetpointMsg.YawBody;
 
     /* Setpoint in NED frame and scaled to cruise velocity */
     ManVelSp = math::Matrix3F3::FromEuler(0.0f, 0.0f, YawInputFrame) * ManVelSp;
@@ -1472,8 +1586,8 @@ void MPC::ControlManual(float dt)
     /* Adjust acceleration based on stick input */
     math::Vector2F StickXy(ManVelSp[0], ManVelSp[1]);
     SetManualAccelerationXY(StickXy, dt);
-    float StickZ = ManVelSp[2];
-    float MaxAccZ = 0.0f;
+    StickZ = ManVelSp[2];
+    MaxAccZ = 0.0f;
     SetManualAccelerationZ(MaxAccZ, StickZ, dt);
 
     /* Prepare cruise speed (m/s) vector to scale the velocity setpoint */
@@ -1489,10 +1603,10 @@ void MPC::ControlManual(float dt)
      */
 
     /* Want to get/stay in altitude hold if user has z stick in the middle (accounted for deadzone already) */
-    const osalbool AltHoldDesired = m_VehicleControlModeMsg.ControlAltitudeEnabled && (m_UserIntentionZ == BRAKE);
+    AltHoldDesired = m_VehicleControlModeMsg.ControlAltitudeEnabled && (m_UserIntentionZ == BRAKE);
 
     /* Want to get/stay in position hold if user has xy stick in the middle (accounted for deadzone already) */
-    const osalbool PosHoldDesired = m_VehicleControlModeMsg.ControlPositionEnabled && (m_UserIntentionXY ==  BRAKE);
+    PosHoldDesired = m_VehicleControlModeMsg.ControlPositionEnabled && (m_UserIntentionXY ==  BRAKE);
 
     /* Check vertical hold engaged flag. */
     if (m_AltitudeHoldEngaged)
@@ -1585,6 +1699,8 @@ void MPC::ControlManual(float dt)
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::ControlNonManual(float dt)
 {
+    osalbool VelocityValid;
+
     /* Select control source. */
     if(m_VehicleControlModeMsg.ControlOffboardEnabled)
     {
@@ -1602,7 +1718,7 @@ void MPC::ControlNonManual(float dt)
     }
 
     /* Guard against any bad velocity values. */
-    osalbool VelocityValid = isfinite(m_PositionSetpointTripletMsg.Current.VX) &&
+    VelocityValid = isfinite(m_PositionSetpointTripletMsg.Current.VX) &&
             isfinite(m_PositionSetpointTripletMsg.Current.VY) &&
             m_PositionSetpointTripletMsg.Current.VelocityValid;
 
@@ -1900,6 +2016,14 @@ void MPC::ControlOffboard(float dt)
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::ControlAuto(float dt)
 {
+    osalbool CurrentSetpointValid  = FALSE;
+    osalbool PreviousSetpointValid = FALSE;
+    osalbool NextSetpointValid     = FALSE;
+    osalbool TripletUpdated        = FALSE;
+
+    math::Vector3F PrevSp(0.0f, 0.0f, 0.0f);
+    math::Vector3F NextSp(0.0f, 0.0f, 0.0f);
+
     /* Reset position setpoint on AUTO mode activation or if we are not in MC mode */
     if (!m_ModeAuto || !m_VehicleStatusMsg.IsRotaryWing)
     {
@@ -1917,16 +2041,9 @@ void MPC::ControlAuto(float dt)
     ResetPosSetpoint();
     ResetAltSetpoint();
 
-    osalbool CurrentSetpointValid = FALSE;
-    osalbool PreviousSetpointValid = FALSE;
-    osalbool NextSetpointValid = FALSE;
-    osalbool TripletUpdated = FALSE;
-
-    math::Vector3F PrevSp(0.0f, 0.0f, 0.0f);
-    math::Vector3F NextSp(0.0f, 0.0f, 0.0f);
-
     if (m_PositionSetpointTripletMsg.Current.Valid)
     {
+        float diff = 0.0f;
         math::Vector3F CurrPosSp = m_CurrentPositionSetpoint;
 
         /* Only project setpoints if they are finite, else use current
@@ -1968,7 +2085,6 @@ void MPC::ControlAuto(float dt)
 
         /* Check if triplets have been updated
          * note: we only can look at xy since navigator applies slewrate to z */
-        float  diff = 0.0f;
 
         if (m_TripletLatLonFinite)
         {
@@ -1979,7 +2095,8 @@ void MPC::ControlAuto(float dt)
             diff = fabsf(m_CurrentPositionSetpoint[2] - CurrPosSp[2]);
         }
 
-        if (diff > FLT_EPSILON || !isfinite(diff)) {
+        if (diff > FLT_EPSILON || !isfinite(diff))
+        {
             TripletUpdated = TRUE;
         }
 
@@ -2035,6 +2152,8 @@ void MPC::ControlAuto(float dt)
     if (CurrentSetpointValid &&
         (m_PositionSetpointTripletMsg.Current.Type != PX4_SETPOINT_TYPE_IDLE))
     {
+        float YawDiff;
+
         /* update yaw setpoint if needed */
         if (m_PositionSetpointTripletMsg.Current.YawspeedValid
             && m_PositionSetpointTripletMsg.Current.Type == PX4_SETPOINT_TYPE_FOLLOW_TARGET)
@@ -2046,7 +2165,7 @@ void MPC::ControlAuto(float dt)
             m_VehicleAttitudeSetpointMsg.YawBody = m_PositionSetpointTripletMsg.Current.Yaw;
         }
 
-        float YawDiff = _wrap_pi(m_VehicleAttitudeSetpointMsg.YawBody - m_Yaw);
+        YawDiff = _wrap_pi(m_VehicleAttitudeSetpointMsg.YawBody - m_Yaw);
 
         /* Only follow previous-current-line for specific triplet type */
         if (m_PositionSetpointTripletMsg.Current.Type == PX4_SETPOINT_TYPE_POSITION  ||
@@ -2069,6 +2188,13 @@ void MPC::ControlAuto(float dt)
              * then compute setpoint depending on vel_max */
             if ((TotalDistZ >  SIGMA_NORM) && (fabsf(m_PositionSetpoint[2] - m_CurrentPositionSetpoint[2]) > SIGMA_NORM))
             {
+                float FinalVelZ;
+                float TargetThresholdZ;
+                osalbool Is2TargetThresholdZ;
+                float Slope;
+                float MinVelZ;
+                float VelSpZ;
+
                 /* Check sign */
                 osalbool FlyingUpward;
                 if(m_CurrentPositionSetpoint[2] < m_Position[2])
@@ -2082,27 +2208,29 @@ void MPC::ControlAuto(float dt)
 
                 /* Final_vel_z is the max velocity which depends on the distance of TotalDistZ
                  * with default params.vel_max_up/down */
-                float FinalVelZ = (FlyingUpward) ? ConfigTblPtr->Z_VEL_MAX_UP : ConfigTblPtr->Z_VEL_MAX_DN;
+                FinalVelZ = (FlyingUpward) ? ConfigTblPtr->Z_VEL_MAX_UP : ConfigTblPtr->Z_VEL_MAX_DN;
 
                 /* Target threshold defines the distance to m_CurrentPositionSetpoint[2] at which
                  * the vehicle starts to slow down to approach the target smoothly */
-                float TargetThresholdZ = FinalVelZ * 1.5f;
+                TargetThresholdZ = FinalVelZ * 1.5f;
 
                 /* If the total distance in z is NOT 2x distance of target_threshold, we
                  * will need to adjust the final_vel_z */
-                osalbool Is2TargetThresholdZ = TotalDistZ >= 2.0f * TargetThresholdZ;
-                float Slope = (FinalVelZ) / (TargetThresholdZ); /* defines the the acceleration when slowing down */
-                float MinVelZ = 0.2f; // minimum velocity: this is needed since estimation is not perfect
+                Is2TargetThresholdZ = TotalDistZ >= 2.0f * TargetThresholdZ;
+                Slope = (FinalVelZ) / (TargetThresholdZ); /* defines the the acceleration when slowing down */
+                MinVelZ = 0.2f; // minimum velocity: this is needed since estimation is not perfect
 
                 if (!Is2TargetThresholdZ)
                 {
+                    float FinalVelZTmp;
+
                     /* Adjust final_vel_z since we are already very close
                      * to current and therefore it is not necessary to accelerate
                      * up to full speed (=final_vel_z) */
                     TargetThresholdZ = TotalDistZ * 0.5f;
 
                     /* Get the velocity at TargetThresholdZ */
-                    float FinalVelZTmp = Slope * (TargetThresholdZ) + MinVelZ;
+                    FinalVelZTmp = Slope * (TargetThresholdZ) + MinVelZ;
 
                     /* Make sure that final_vel_z is never smaller than 0.5 of the default final_vel_z
                      * this is mainly done because the estimation in z is not perfect and therefore
@@ -2110,7 +2238,7 @@ void MPC::ControlAuto(float dt)
                     FinalVelZ = math::constrain(FinalVelZTmp, FinalVelZ * 0.5f, FinalVelZ);
                 }
 
-                float VelSpZ = FinalVelZ;
+                VelSpZ = FinalVelZ;
 
                 /* We want to slow down */
                 if (DistToCurrentZ < TargetThresholdZ)
@@ -2164,6 +2292,17 @@ void MPC::ControlAuto(float dt)
             /* Only follow line if previous to current has a minimum distance */
             if ((VecPrevToCurrent.Length()  > ConfigTblPtr->NAV_ACC_RAD) && !StayAtCurrentPos)
             {
+                float    VelSpAlongTrackPrev;
+                float    TargetThresholdXy;
+                osalbool CloseToCurrent;
+                osalbool CloseToPrev;
+                osalbool Is2TargetThreshold;
+                osalbool CurrentBehind;
+                osalbool PreviousInFront;
+                float    VelSpAlongTrack;
+                float    VelSpOrthogonal;
+                float    CruiseSpMag;
+
                 /* Normalize prev-current line (always > nav_rad) */
                 math::Vector2F UnitPrevToCurrent = VecPrevToCurrent.Normalized();
 
@@ -2187,26 +2326,26 @@ void MPC::ControlAuto(float dt)
                 math::Vector2F VecPrevToPos((m_Position[0] - m_PreviousPositionSetpoint[0]), (m_Position[1] - m_PreviousPositionSetpoint[1]));
 
                 /* Current velocity along track */
-                float VelSpAlongTrackPrev = math::Vector2F(m_VelocitySetpoint[0], m_VelocitySetpoint[1]) * UnitPrevToCurrent;
+                VelSpAlongTrackPrev = math::Vector2F(m_VelocitySetpoint[0], m_VelocitySetpoint[1]) * UnitPrevToCurrent;
 
                 /* Distance to target when brake should occur */
-                float TargetThresholdXy = 1.5f * GetCruisingSpeedXY();
+                TargetThresholdXy = 1.5f * GetCruisingSpeedXY();
 
-                osalbool CloseToCurrent = VecPosToCurrent.Length() < TargetThresholdXy;
-                osalbool CloseToPrev = (VecPrevToPos.Length() < TargetThresholdXy) &&
+                CloseToCurrent = VecPosToCurrent.Length() < TargetThresholdXy;
+                CloseToPrev = (VecPrevToPos.Length() < TargetThresholdXy) &&
                              (VecPrevToPos.Length() < VecPosToCurrent.Length());
 
                 /* Indicates if we are at least half the distance from previous to current close to previous */
-                osalbool Is2TargetThreshold = VecPrevToCurrent.Length() >= 2.0f * TargetThresholdXy;
+                Is2TargetThreshold = VecPrevToCurrent.Length() >= 2.0f * TargetThresholdXy;
 
                 /* Check if the current setpoint is behind */
-                osalbool CurrentBehind = ((VecPosToCurrent * -1.0f) * UnitPrevToCurrent) > 0.0f;
+                CurrentBehind = ((VecPosToCurrent * -1.0f) * UnitPrevToCurrent) > 0.0f;
 
                 /* Check if the previous is in front */
-                osalbool PreviousInFront = (VecPrevToPos * UnitPrevToCurrent) < 0.0f;
+                PreviousInFront = (VecPrevToPos * UnitPrevToCurrent) < 0.0f;
                 
                 /* Default velocity along line prev-current */
-                float VelSpAlongTrack = GetCruisingSpeedXY();
+                VelSpAlongTrack = GetCruisingSpeedXY();
 
                 /*
                  * Compute velocity setpoint along track
@@ -2233,6 +2372,9 @@ void MPC::ControlAuto(float dt)
                 }
                 else if (CloseToPrev)
                 {
+                    float acc_track;
+                    float acc;
+
                     /* Accelerate from previous setpoint towards current setpoint */
 
                     /* We are close to previous and current setpoint
@@ -2243,6 +2385,10 @@ void MPC::ControlAuto(float dt)
 
                     if (!Is2TargetThreshold)
                     {
+                        /* Velocity close to current setpoint with default zero if no next setpoint is available */
+                        float vel_close = 0.0f;
+                        float acceptance_radius = 0.0f;
+
                         /* Set target threshold to half dist pre-current */
                         float TargetThresholdTmp = TargetThresholdXy;
                         TargetThresholdXy = VecPrevToCurrent.Length() * 0.5f;
@@ -2251,10 +2397,6 @@ void MPC::ControlAuto(float dt)
                         {
                             TargetThresholdXy = ConfigTblPtr->NAV_ACC_RAD;
                         }
-
-                        /* Velocity close to current setpoint with default zero if no next setpoint is available */
-                        float vel_close = 0.0f;
-                        float acceptance_radius = 0.0f;
 
                         /* We want to pass and need to compute the desired velocity close to current setpoint */
                         if (NextSetpointValid &&  !(m_PositionSetpointTripletMsg.Current.Type == PX4_SETPOINT_TYPE_LOITER))
@@ -2282,10 +2424,10 @@ void MPC::ControlAuto(float dt)
                     VelSpAlongTrack = FinalCruiseSpeed;
 
                     /* We want to accelerate not too fast */
-                    float acc_track = (FinalCruiseSpeed - VelSpAlongTrackPrev) / dt;
+                    acc_track = (FinalCruiseSpeed - VelSpAlongTrackPrev) / dt;
 
                     /* If yaw offset is large, only accelerate with 0.5m/s^2 */
-                    float acc = (fabsf(YawDiff) >  math::radians(ConfigTblPtr->NAV_MIS_YAW_ERR)) ? 0.5f : ConfigTblPtr->ACC_HOR_MAX;
+                    acc = (fabsf(YawDiff) >  math::radians(ConfigTblPtr->NAV_MIS_YAW_ERR)) ? 0.5f : ConfigTblPtr->ACC_HOR_MAX;
 
                     if (acc_track > acc)
                     {
@@ -2366,10 +2508,10 @@ void MPC::ControlAuto(float dt)
 
                 /* Compute velocity orthogonal to prev-current-line to position*/
                 math::Vector2F VecPosToClosest = ClosestPoint - math::Vector2F(m_Position[0], m_Position[1]);
-                float VelSpOrthogonal = VecPosToClosest.Length() * m_PosP[0];
+                VelSpOrthogonal = VecPosToClosest.Length() * m_PosP[0];
 
                 /* Compute the cruise speed from velocity along line and orthogonal velocity setpoint */
-                float CruiseSpMag = sqrtf(VelSpOrthogonal * VelSpOrthogonal + VelSpAlongTrack * VelSpAlongTrack);
+                CruiseSpMag = sqrtf(VelSpOrthogonal * VelSpOrthogonal + VelSpAlongTrack * VelSpAlongTrack);
 
                 /* Sanity check */
                 CruiseSpMag = (isfinite(CruiseSpMag)) ? CruiseSpMag : VelSpOrthogonal;
@@ -2404,6 +2546,8 @@ void MPC::ControlAuto(float dt)
                 }
                 else
                 {
+                    float cruise_sp;
+
                     /* We are more than cruise_speed away from track */
 
                     /* If previous is in front just go directly to previous point */
@@ -2414,7 +2558,7 @@ void MPC::ControlAuto(float dt)
                     }
 
                     /* Make sure that we never exceed maximum cruise speed */
-                    float cruise_sp = VecPosToClosest.Length() * m_PosP[0];
+                    cruise_sp = VecPosToClosest.Length() * m_PosP[0];
 
                     if (cruise_sp > GetCruisingSpeedXY())
                     {
@@ -2511,6 +2655,9 @@ void MPC::ControlAuto(float dt)
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::CalculateVelocitySetpoint(float dt)
 {
+    float LandVelLimit;
+    float VelNormXy;
+
     /* Run position & altitude controllers if enabled (otherwise use already
      * computed velocity setpoints) */
     if(m_RunPosControl)
@@ -2585,7 +2732,7 @@ void MPC::CalculateVelocitySetpoint(float dt)
 
     /* Limit vertical downwards speed (positive z) close to ground. For now we use the
      * altitude above home and assume that we want to land at same height as we took off */
-    float LandVelLimit = math::gradual(AltitudeAboveHome,
+    LandVelLimit = math::gradual(AltitudeAboveHome,
             ConfigTblPtr->LAND_ALT2, ConfigTblPtr->LAND_ALT1,
             ConfigTblPtr->LAND_SPEED, ConfigTblPtr->Z_VEL_MAX_DN);
 
@@ -2616,7 +2763,7 @@ void MPC::CalculateVelocitySetpoint(float dt)
     }
 
     /* Make sure velocity setpoint is constrained in all directions. */
-    float VelNormXy = sqrtf(m_VelocitySetpoint[0] * m_VelocitySetpoint[0] + m_VelocitySetpoint[1] * m_VelocitySetpoint[1]);
+    VelNormXy = sqrtf(m_VelocitySetpoint[0] * m_VelocitySetpoint[0] + m_VelocitySetpoint[1] * m_VelocitySetpoint[1]);
     if (VelNormXy > ConfigTblPtr->XY_VEL_MAX)
     {
         m_VelocitySetpoint[0] = m_VelocitySetpoint[0] * ConfigTblPtr->XY_VEL_MAX / VelNormXy;
@@ -2637,6 +2784,13 @@ void MPC::CalculateVelocitySetpoint(float dt)
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::CalculateThrustSetpoint(float dt)
 {
+    osalbool SaturationXy = FALSE;
+    osalbool SaturationZ  = FALSE;
+    float    ThrMin       = ConfigTblPtr->THR_MIN;
+    float    TiltMax;
+    float    ThrMax;
+    float    ThrustBodyZ;
+
     /* Reset integrals if needed. */
     if (m_VehicleControlModeMsg.ControlClimbRateEnabled)
     {
@@ -2720,11 +2874,6 @@ void MPC::CalculateThrustSetpoint(float dt)
     }
 
     /* Limit thrust vector and check for saturation. */
-    osalbool SaturationXy = FALSE;
-    osalbool SaturationZ = FALSE;
-
-    /* Limit min lift */
-    float ThrMin = ConfigTblPtr->THR_MIN;
 
     if (!m_VehicleControlModeMsg.ControlVelocityEnabled && ThrMin < 0.0f)
     {
@@ -2732,8 +2881,8 @@ void MPC::CalculateThrustSetpoint(float dt)
         ThrMin = 0.0f;
     }
 
-    float TiltMax = math::radians(ConfigTblPtr->TILTMAX_AIR);
-    float ThrMax = ConfigTblPtr->THR_MAX;
+    TiltMax = math::radians(ConfigTblPtr->TILTMAX_AIR);
+    ThrMax = ConfigTblPtr->THR_MAX;
 
     /* We can only run the control if we're already in-air, have a takeoff setpoint,
      * or if we're in offboard control.  Otherwise, we should just bail out. */
@@ -2815,7 +2964,7 @@ void MPC::CalculateThrustSetpoint(float dt)
     math::Vector3F F(ThrustSp);
 
     /* Recalculate because it might have changed. */
-    float ThrustBodyZ = F * -R_z;
+    ThrustBodyZ = F * -R_z;
 
     /* Limit max thrust. */
     if (fabsf(ThrustBodyZ) > ThrMax)
@@ -2995,28 +3144,42 @@ float MPC::GetCruisingSpeedXY(void)
 /* UpdateXyPids                                                    */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void MPC::UpdateXyPids(MPC_SetPidCmd_t* PidMsg)
+osalbool MPC::UpdateXyPids(MPC_SetPidCmd_t* PidMsg)
 {
-    /* Update values in Vector3F copies used for math operations */
-    /* X Index */
-    m_PosP[0] = PidMsg->PidGain;
-    m_VelP[0] = PidMsg->PidVelP;
-    m_VelI[0] = PidMsg->PidVelI;
-    m_VelD[0] = PidMsg->PidVelD;
+    osalbool success = TRUE;
 
-    /* Y Index */
-    m_PosP[1] = PidMsg->PidGain;
-    m_VelP[1] = PidMsg->PidVelP;
-    m_VelI[1] = PidMsg->PidVelI;
-    m_VelD[1] = PidMsg->PidVelD;;
+    if((MPC::Validate_XY_P(PidMsg->PidGain) == FALSE) ||
+       (MPC::Validate_XY_VEL_P(PidMsg->PidVelP) == FALSE) ||
+       (MPC::Validate_XY_VEL_I(PidMsg->PidVelI) == FALSE) ||
+       (MPC::Validate_XY_VEL_D(PidMsg->PidVelD) == FALSE))
+    {
+        success = FALSE;
+    }
+    else
+    {
+        /* Update values in Vector3F copies used for math operations */
+        /* X Index */
+        m_PosP[0] = PidMsg->PidGain;
+        m_VelP[0] = PidMsg->PidVelP;
+        m_VelI[0] = PidMsg->PidVelI;
+        m_VelD[0] = PidMsg->PidVelD;
 
-    /* Update in table */
-    ConfigTblPtr->XY_P = PidMsg->PidGain;
-    ConfigTblPtr->XY_VEL_P = PidMsg->PidVelP;
-    ConfigTblPtr->XY_VEL_I = PidMsg->PidVelI;
-    ConfigTblPtr->XY_VEL_D = PidMsg->PidVelD;
+        /* Y Index */
+        m_PosP[1] = PidMsg->PidGain;
+        m_VelP[1] = PidMsg->PidVelP;
+        m_VelI[1] = PidMsg->PidVelI;
+        m_VelD[1] = PidMsg->PidVelD;;
+
+        /* Update in table */
+        ConfigTblPtr->XY_P = PidMsg->PidGain;
+        ConfigTblPtr->XY_VEL_P = PidMsg->PidVelP;
+        ConfigTblPtr->XY_VEL_I = PidMsg->PidVelI;
+        ConfigTblPtr->XY_VEL_D = PidMsg->PidVelD;
+
+        CFE_TBL_Modified(ConfigTblHdl);
+    }
     
-    CFE_TBL_Modified(ConfigTblHdl);
+    return success;
 }
 
 
@@ -3026,22 +3189,36 @@ void MPC::UpdateXyPids(MPC_SetPidCmd_t* PidMsg)
 /* UpdateZPids                                                     */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void MPC::UpdateZPids(MPC_SetPidCmd_t* PidMsg)
+osalbool MPC::UpdateZPids(MPC_SetPidCmd_t* PidMsg)
 {
-    /* Update values in Vector3F copy used for math operations */
-    /* Z Index */
-    m_PosP[2] = PidMsg->PidGain;
-    m_VelP[2] = PidMsg->PidVelP;
-    m_VelI[2] = PidMsg->PidVelI;
-    m_VelD[2] = PidMsg->PidVelD;
+    osalbool success = TRUE;
 
-    /* Update in table */
-    ConfigTblPtr->Z_P = PidMsg->PidGain;
-    ConfigTblPtr->Z_VEL_P = PidMsg->PidVelP;
-    ConfigTblPtr->Z_VEL_I = PidMsg->PidVelI;
-    ConfigTblPtr->Z_VEL_D = PidMsg->PidVelD;
+    if((MPC::Validate_Z_P(PidMsg->PidGain) == FALSE) ||
+       (MPC::Validate_Z_VEL_P(PidMsg->PidVelP) == FALSE) ||
+       (MPC::Validate_Z_VEL_I(PidMsg->PidVelI) == FALSE) ||
+       (MPC::Validate_Z_VEL_D(PidMsg->PidVelD) == FALSE))
+    {
+        success = FALSE;
+    }
+    else
+    {
+        /* Update values in Vector3F copy used for math operations */
+        /* Z Index */
+        m_PosP[2] = PidMsg->PidGain;
+        m_VelP[2] = PidMsg->PidVelP;
+        m_VelI[2] = PidMsg->PidVelI;
+        m_VelD[2] = PidMsg->PidVelD;
 
-    CFE_TBL_Modified(ConfigTblHdl);
+        /* Update in table */
+        ConfigTblPtr->Z_P = PidMsg->PidGain;
+        ConfigTblPtr->Z_VEL_P = PidMsg->PidVelP;
+        ConfigTblPtr->Z_VEL_I = PidMsg->PidVelI;
+        ConfigTblPtr->Z_VEL_D = PidMsg->PidVelD;
+
+        CFE_TBL_Modified(ConfigTblHdl);
+    }
+
+    return success;
 }
 
 
@@ -3051,11 +3228,22 @@ void MPC::UpdateZPids(MPC_SetPidCmd_t* PidMsg)
 /* UpdateHoldDz                                                    */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void MPC::UpdateHoldDz(MPC_SetDzCmd_t* DzMsg)
+osalbool MPC::UpdateHoldDz(MPC_SetDzCmd_t* DzMsg)
 {
-    ConfigTblPtr->HOLD_DZ = DzMsg->Deadzone;
+    osalbool success = TRUE;
 
-    CFE_TBL_Modified(ConfigTblHdl);
+    if(MPC::Validate_HOLD_DZ(DzMsg->Deadzone) == FALSE)
+    {
+        success = FALSE;
+    }
+    else
+    {
+        ConfigTblPtr->HOLD_DZ = DzMsg->Deadzone;
+
+        CFE_TBL_Modified(ConfigTblHdl);
+    }
+
+    return success;
 }
 
 
@@ -3065,12 +3253,24 @@ void MPC::UpdateHoldDz(MPC_SetDzCmd_t* DzMsg)
 /* UpdateStickExpo                                                 */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void MPC::UpdateStickExpo(MPC_SetStickExpoCmd_t* ExpoMsg)
+osalbool MPC::UpdateStickExpo(MPC_SetStickExpoCmd_t* ExpoMsg)
 {
-    ConfigTblPtr->XY_MAN_EXPO = ExpoMsg->XY;
-    ConfigTblPtr->Z_MAN_EXPO = ExpoMsg->Z;
+    osalbool success = TRUE;
 
-    CFE_TBL_Modified(ConfigTblHdl);
+    if((MPC::Validate_XY_MAN_EXPO(ExpoMsg->XY) == FALSE) ||
+       (MPC::Validate_Z_MAN_EXPO(ExpoMsg->Z) == FALSE))
+    {
+        success = FALSE;
+    }
+    else
+    {
+        ConfigTblPtr->XY_MAN_EXPO = ExpoMsg->XY;
+        ConfigTblPtr->Z_MAN_EXPO = ExpoMsg->Z;
+
+        CFE_TBL_Modified(ConfigTblHdl);
+    }
+
+    return success;
 }
 
 
@@ -3080,11 +3280,21 @@ void MPC::UpdateStickExpo(MPC_SetStickExpoCmd_t* ExpoMsg)
 /* UpdateTakeoffRampTime                                           */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void MPC::UpdateTakeoffRampTime(MPC_SetTkoRampCmd_t* TkoRampMsg)
+osalbool MPC::UpdateTakeoffRampTime(MPC_SetTkoRampCmd_t* TkoRampMsg)
 {
-    ConfigTblPtr->TKO_RAMP_T = TkoRampMsg->TKO_RAMP_T;
+    osalbool success = TRUE;
 
-    CFE_TBL_Modified(ConfigTblHdl);
+    if(MPC::Validate_TKO_RAMP_T(TkoRampMsg->TKO_RAMP_T) == FALSE)
+    {
+        success = FALSE;
+    }
+    else
+    {
+        ConfigTblPtr->TKO_RAMP_T = TkoRampMsg->TKO_RAMP_T;
+        CFE_TBL_Modified(ConfigTblHdl);
+    }
+
+    return success;
 }
 
 
@@ -3152,7 +3362,8 @@ void MPC::LimitAltitude(void)
         /* Predict next position based on current position, velocity, max acceleration downwards and time to reach zero velocity */
         PosZNext = m_Position[2] + m_Velocity[2] * DeltaT + 0.5f * ConfigTblPtr->ACC_DOWN_MAX * DeltaT * DeltaT;
 
-        if (-(PosZNext - m_HomePositionMsg.Z) > m_VehicleLandDetectedMsg.AltMax) {
+        if (-(PosZNext - m_HomePositionMsg.Z) > m_VehicleLandDetectedMsg.AltMax)
+        {
             /* Prevent vehicle from exceeding maximum altitude by switching back to altitude control with maximum altitude as setpoint */
             m_PositionSetpoint[2] = -m_VehicleLandDetectedMsg.AltMax + m_HomePositionMsg.Z;
             m_RunAltControl = TRUE;
@@ -3172,6 +3383,8 @@ MPC_LimitAltitude_ExitTag:
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::ApplyVelocitySetpointSlewRate(float dt)
 {
+    float AccZ;
+    float MaxAccZ;
     math::Vector2F VelSpXy(m_VelocitySetpoint[0], m_VelocitySetpoint[1]);
     math::Vector2F VelSpPrevXy(m_VelocitySetpointPrevious[0], m_VelocitySetpointPrevious[1]);
     math::Vector2F AccXy = (VelSpXy - VelSpPrevXy) / dt;
@@ -3185,8 +3398,8 @@ void MPC::ApplyVelocitySetpointSlewRate(float dt)
     }
 
     /* limit vertical acceleration */
-    float AccZ = (m_VelocitySetpoint[2] - m_VelocitySetpointPrevious[2]) / dt;
-    float MaxAccZ;
+    AccZ = (m_VelocitySetpoint[2] - m_VelocitySetpointPrevious[2]) / dt;
+
 
     if (m_VehicleControlModeMsg.ControlManualEnabled)
     {
@@ -3240,15 +3453,15 @@ osalbool MPC::InAutoTakeoff(void)
 float MPC::GetVelClose(const math::Vector2F &UnitPrevToCurrent, const math::Vector2F &UnitCurrentToNext)
 {
     /* Minimum cruise speed when passing waypoint */
-    float MinCruiseSpeed = 0.2f;
-    float MiddleCruiseSpeed = ConfigTblPtr->MPC_CRUISE_90;
+    float    MinCruiseSpeed = 0.2f;
+    float    MiddleCruiseSpeed = ConfigTblPtr->MPC_CRUISE_90;
     osalbool UseLinearApproach = FALSE;
-    float Angle = 2.0f;
-    float Slope = 0.0f;
-    float VelClose = 0.0f;
-    float a = 0.0f;
-    float b = 0.0f;
-    float c = 0.0f;
+    float    Angle = 2.0f;
+    float    Slope = 0.0f;
+    float    VelClose = 0.0f;
+    float    a = 0.0f;
+    float    b = 0.0f;
+    float    c = 0.0f;
 
     /* Make sure that cruise speed is larger than minimum*/
     if ((GetCruisingSpeedXY() - MinCruiseSpeed) < SIGMA_NORM)
@@ -3334,7 +3547,8 @@ void MPC::SetManualAccelerationZ(float &MaxAcceleration, const float StickZ, con
     float Jerk = 0.0f;
 
     /* Check zero input stick */
-    if (IsCurrentZero) {
+    if (IsCurrentZero)
+    {
         Intention = BRAKE;
     }
 
@@ -3342,8 +3556,8 @@ void MPC::SetManualAccelerationZ(float &MaxAcceleration, const float StickZ, con
     MaxAcceleration = (StickZ <= 0.0f) ? ConfigTblPtr->ACC_UP_MAX : ConfigTblPtr->ACC_DOWN_MAX;
 
     /* Update user input */
-    if ((m_UserIntentionZ != BRAKE) && (Intention  == BRAKE)) {
-
+    if ((m_UserIntentionZ != BRAKE) && (Intention  == BRAKE))
+    {
         /* We start with lowest acceleration */
         m_AccelerationStateLimitZ = ConfigTblPtr->ACC_DOWN_MAX;
 
@@ -3355,19 +3569,22 @@ void MPC::SetManualAccelerationZ(float &MaxAcceleration, const float StickZ, con
     m_UserIntentionZ = Intention;
 
     /* Apply acceleration depending on state */
-    if (m_UserIntentionZ == BRAKE) {
-
+    if (m_UserIntentionZ == BRAKE)
+    {
         /* Limit jerk when braking to zero */
         Jerk = (ConfigTblPtr->ACC_UP_MAX - m_AccelerationStateLimitZ) / Dt;
 
-        if (Jerk > m_ManualJerkLimitZ) {
+        if (Jerk > m_ManualJerkLimitZ)
+        {
             m_AccelerationStateLimitZ = m_ManualJerkLimitZ * Dt + m_AccelerationStateLimitZ;
-
-        } else {
+        }
+        else
+        {
             m_AccelerationStateLimitZ = ConfigTblPtr->ACC_UP_MAX;
         }
     }
-    else if (m_UserIntentionZ == ACCELERATION) {
+    else if (m_UserIntentionZ == ACCELERATION)
+    {
         m_AccelerationStateLimitZ = (MaxAcceleration - ConfigTblPtr->ACC_DOWN_MAX) * fabsf(
                 StickZ) + ConfigTblPtr->ACC_DOWN_MAX;
     }
@@ -3468,70 +3685,70 @@ void MPC::SetManualAccelerationXY(math::Vector2F &StickXy, const float Dt)
     {
         case BRAKE:
         {
-                if (Intention != BRAKE)
-                {
-                    m_UserIntentionXY = ACCELERATION;
-                    /* We initialize with lowest acceleration */
-                    m_AccelerationStateLimitXY = ConfigTblPtr->MPC_DEC_HOR_SLOW;
-                }
+            if (Intention != BRAKE)
+            {
+                m_UserIntentionXY = ACCELERATION;
+                /* We initialize with lowest acceleration */
+                m_AccelerationStateLimitXY = ConfigTblPtr->MPC_DEC_HOR_SLOW;
+            }
 
-                break;
+            break;
         }
 
         case DIRECTION_CHANGE:
         {
-                /* Only exit direction change if brake or aligned */
-                math::Vector2F VelXy(m_Velocity[0], m_Velocity[1]);
-                math::Vector2F VelXyNorm = (VelXy.Length() > 0.0f) ? VelXy.Normalized() : VelXy;
-                osalbool StickVelAligned = (VelXyNorm * StickXyNorm > 0.0f);
+            /* Only exit direction change if brake or aligned */
+            math::Vector2F VelXy(m_Velocity[0], m_Velocity[1]);
+            math::Vector2F VelXyNorm = (VelXy.Length() > 0.0f) ? VelXy.Normalized() : VelXy;
+            osalbool StickVelAligned = (VelXyNorm * StickXyNorm > 0.0f);
 
-                /* Update manual direction change hysteresis */
-                m_ManualDirectionChangeHysteresis.set_state_and_update(!StickVelAligned, PX4LIB_GetPX4TimeUs());
+            /* Update manual direction change hysteresis */
+            m_ManualDirectionChangeHysteresis.set_state_and_update(!StickVelAligned, PX4LIB_GetPX4TimeUs());
 
-                /* Exit direction change if one of the condition is met */
-                if (Intention == BRAKE)
+            /* Exit direction change if one of the condition is met */
+            if (Intention == BRAKE)
+            {
+                m_UserIntentionXY = Intention;
+            }
+            else if (StickVelAligned)
+            {
+                m_UserIntentionXY = ACCELERATION;
+            }
+            else if (m_ManualDirectionChangeHysteresis.get_state())
+            {
+                if (StickXy.Length() > 0.6f)
                 {
-                    m_UserIntentionXY = Intention;
+                    m_AccelerationStateLimitXY = ConfigTblPtr->ACC_HOR_MAX;
                 }
-                else if (StickVelAligned)
-                {
-                    m_UserIntentionXY = ACCELERATION;
-                }
-                else if (m_ManualDirectionChangeHysteresis.get_state())
-                {
-                    if (StickXy.Length() > 0.6f)
-                    {
-                        m_AccelerationStateLimitXY = ConfigTblPtr->ACC_HOR_MAX;
-                    }
-                }
+            }
 
-                break;
+            break;
         }
 
         case ACCELERATION:
         {
-                m_UserIntentionXY = Intention;
+            m_UserIntentionXY = Intention;
 
-                if (m_UserIntentionXY == DIRECTION_CHANGE)
-                {
-                    m_VelocitySetpointPrevious[0] = m_Velocity[0];
-                    m_VelocitySetpointPrevious[1] = m_Velocity[1];
-                }
+            if (m_UserIntentionXY == DIRECTION_CHANGE)
+            {
+                m_VelocitySetpointPrevious[0] = m_Velocity[0];
+                m_VelocitySetpointPrevious[1] = m_Velocity[1];
+            }
 
-                break;
+            break;
         }
 
         case DECELERATION:
         {
-                m_UserIntentionXY = Intention;
+            m_UserIntentionXY = Intention;
 
-                if (m_UserIntentionXY == DIRECTION_CHANGE)
-                {
-                    m_VelocitySetpointPrevious[0] = m_Velocity[0];
-                    m_VelocitySetpointPrevious[1] = m_Velocity[1];
-                }
+            if (m_UserIntentionXY == DIRECTION_CHANGE)
+            {
+                m_VelocitySetpointPrevious[0] = m_Velocity[0];
+                m_VelocitySetpointPrevious[1] = m_Velocity[1];
+            }
 
-                break;
+            break;
         }
     }
 
@@ -3540,58 +3757,58 @@ void MPC::SetManualAccelerationXY(math::Vector2F &StickXy, const float Dt)
     {
         case BRAKE:
         {
+            /* Limit jerk when braking to zero */
+            float jerk = (ConfigTblPtr->ACC_HOR_MAX - m_AccelerationStateLimitXY) / Dt;
 
-                /* Limit jerk when braking to zero */
-                float jerk = (ConfigTblPtr->ACC_HOR_MAX - m_AccelerationStateLimitXY) / Dt;
+            if (jerk > m_ManualJerkLimitXY)
+            {
+                m_AccelerationStateLimitXY = m_ManualJerkLimitXY * Dt + m_AccelerationStateLimitXY;
+            }
+            else
+            {
+                m_AccelerationStateLimitXY = ConfigTblPtr->ACC_HOR_MAX;
+            }
 
-                if (jerk > m_ManualJerkLimitXY)
-                {
-                    m_AccelerationStateLimitXY = m_ManualJerkLimitXY * Dt + m_AccelerationStateLimitXY;
-                }
-                else
-                {
-                    m_AccelerationStateLimitXY = ConfigTblPtr->ACC_HOR_MAX;
-                }
-
-                break;
+            break;
         }
 
         case DIRECTION_CHANGE:
         {
-
-                /* Limit acceleration linearly on stick input*/
-                m_AccelerationStateLimitXY = (ConfigTblPtr->ACC_HOR_MAX - ConfigTblPtr->MPC_DEC_HOR_SLOW) * StickXy.Length() +
-                                   ConfigTblPtr->MPC_DEC_HOR_SLOW;
-                break;
+            /* Limit acceleration linearly on stick input*/
+            m_AccelerationStateLimitXY = (ConfigTblPtr->ACC_HOR_MAX - ConfigTblPtr->MPC_DEC_HOR_SLOW) * StickXy.Length() +
+                               ConfigTblPtr->MPC_DEC_HOR_SLOW;
+            break;
         }
 
         case ACCELERATION:
         {
-                /* Limit acceleration linearly on stick input*/
-                float acc_limit  = (ConfigTblPtr->ACC_HOR_MAX - ConfigTblPtr->MPC_DEC_HOR_SLOW) * StickXy.Length()
-                           + ConfigTblPtr->MPC_DEC_HOR_SLOW;
+            /* Limit acceleration linearly on stick input*/
+            float acc_limit  = (ConfigTblPtr->ACC_HOR_MAX - ConfigTblPtr->MPC_DEC_HOR_SLOW) * StickXy.Length()
+                       + ConfigTblPtr->MPC_DEC_HOR_SLOW;
 
-                if (m_AccelerationStateLimitXY > acc_limit)
-                {
-                    acc_limit = m_AccelerationStateLimitXY;
-                }
+            if (m_AccelerationStateLimitXY > acc_limit)
+            {
+                acc_limit = m_AccelerationStateLimitXY;
+            }
 
-                m_AccelerationStateLimitXY = acc_limit;
-                break;
+            m_AccelerationStateLimitXY = acc_limit;
+            break;
         }
 
         case DECELERATION:
         {
-                m_AccelerationStateLimitXY = ConfigTblPtr->MPC_DEC_HOR_SLOW;
-                break;
+            m_AccelerationStateLimitXY = ConfigTblPtr->MPC_DEC_HOR_SLOW;
+            break;
         }
 
-        default :
+        default:
+        {
             m_AccelerationStateLimitXY = ConfigTblPtr->ACC_HOR_MAX;
             (void) CFE_EVS_SendEvent(MPC_UNKNOWN_USER_INTENTION_ERR_EID, CFE_EVS_ERROR,
                     "User intention not recognized. %u",
                     m_UserIntentionXY);
         }
+    }
 
     /* Update previous stick input */
     m_StickInputXyPrev = math::Vector2F(m_FilterManualPitch.apply(StickXy[0]),
@@ -3618,6 +3835,260 @@ osalbool MPC::ManualWantsTakeoff()
     /* Manual takeoff is triggered if the throttle stick is above 65%. */
     return (ManualControlPresent && m_ManualControlSetpointMsg.Z > MPC_MANUAL_TAKEOFF_THRESHOLD);
 }
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Validate_XY_P                                                   */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+osalbool MPC::Validate_XY_P(float value)
+{
+    osalbool isValid = TRUE;
+
+    if(!(value >= XY_P_MIN && value <= XY_P_MAX))
+    {
+        (void) CFE_EVS_SendEvent(MPC_INVLD_PARAM_ERR_EID, CFE_EVS_ERROR,
+                "Parameter XY_P is invalid.");
+        isValid = FALSE;
+    }
+
+    return isValid;
+}
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Validate_XY_VEL_P                                               */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+osalbool MPC::Validate_XY_VEL_P(float value)
+{
+    osalbool isValid = TRUE;
+
+    if(!(value >= XY_VEL_P_MIN && value <= XY_VEL_P_MAX))
+    {
+        (void) CFE_EVS_SendEvent(MPC_INVLD_PARAM_ERR_EID, CFE_EVS_ERROR,
+                "Parameter XY_VEL_P is invalid.");
+        isValid = FALSE;
+    }
+
+    return isValid;
+}
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Validate_XY_VEL_I                                               */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+osalbool MPC::Validate_XY_VEL_I(float value)
+{
+    osalbool isValid = TRUE;
+
+    if(!(value >= XY_VEL_I_MIN && value <= XY_VEL_I_MAX))
+    {
+        (void) CFE_EVS_SendEvent(MPC_INVLD_PARAM_ERR_EID, CFE_EVS_ERROR,
+                "Parameter XY_VEL_I is invalid.");
+        isValid = FALSE;
+    }
+
+    return isValid;
+}
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Validate_XY_VEL_D                                               */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+osalbool MPC::Validate_XY_VEL_D(float value)
+{
+    osalbool isValid = TRUE;
+
+    if(!(value >= XY_VEL_D_MIN && value <= XY_VEL_D_MAX))
+    {
+        (void) CFE_EVS_SendEvent(MPC_INVLD_PARAM_ERR_EID, CFE_EVS_ERROR,
+                "Parameter XY_VEL_D is invalid.");
+        isValid = FALSE;
+    }
+
+    return isValid;
+}
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Validate_Z_P                                                    */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+osalbool MPC::Validate_Z_P(float value)
+{
+    osalbool isValid = TRUE;
+
+    if(!(value >= Z_P_MIN && value <= Z_P_MAX))
+    {
+        (void) CFE_EVS_SendEvent(MPC_INVLD_PARAM_ERR_EID, CFE_EVS_ERROR,
+                "Parameter Z_P is invalid.");
+        isValid = FALSE;
+    }
+
+    return isValid;
+}
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Validate_Z_VEL_P                                                */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+osalbool MPC::Validate_Z_VEL_P(float value)
+{
+    osalbool isValid = TRUE;
+
+    if(!(value >= Z_VEL_P_MIN && value <= Z_VEL_P_MAX))
+    {
+        (void) CFE_EVS_SendEvent(MPC_INVLD_PARAM_ERR_EID, CFE_EVS_ERROR,
+                "Parameter Z_VEL_P is invalid.");
+        isValid = FALSE;
+    }
+
+    return isValid;
+}
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Validate_Z_VEL_I                                                */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+osalbool MPC::Validate_Z_VEL_I(float value)
+{
+    osalbool isValid = TRUE;
+
+    if(!(value >= Z_VEL_I_MIN && value <= Z_VEL_I_MAX))
+    {
+        (void) CFE_EVS_SendEvent(MPC_INVLD_PARAM_ERR_EID, CFE_EVS_ERROR,
+                "Parameter Z_VEL_I is invalid.");
+        isValid = FALSE;
+    }
+
+    return isValid;
+}
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Validate_Z_VEL_D                                                */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+osalbool MPC::Validate_Z_VEL_D(float value)
+{
+    osalbool isValid = TRUE;
+
+    if(!(value >= Z_VEL_D_MIN && value <= Z_VEL_D_MAX))
+    {
+        (void) CFE_EVS_SendEvent(MPC_INVLD_PARAM_ERR_EID, CFE_EVS_ERROR,
+                "Parameter Z_VEL_D is invalid.");
+        isValid = FALSE;
+    }
+
+    return isValid;
+}
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Validate_HOLD_DZ                                                */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+osalbool MPC::Validate_HOLD_DZ(float value)
+{
+    osalbool isValid = TRUE;
+
+    if(!(value >= HOLD_DZ_MIN && value <= HOLD_DZ_MAX))
+    {
+        (void) CFE_EVS_SendEvent(MPC_INVLD_PARAM_ERR_EID, CFE_EVS_ERROR,
+                "Parameter HOLD_DZ is invalid.");
+        isValid = FALSE;
+    }
+
+    return isValid;
+}
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Validate_XY_MAN_EXPO                                            */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+osalbool MPC::Validate_XY_MAN_EXPO(float value)
+{
+    osalbool isValid = TRUE;
+
+    if(!(value >= XY_MAN_EXPO_MIN && value <= XY_MAN_EXPO_MAX))
+    {
+        (void) CFE_EVS_SendEvent(MPC_INVLD_PARAM_ERR_EID, CFE_EVS_ERROR,
+                "Parameter XY_MAN_EXPO is invalid.");
+        isValid = FALSE;
+    }
+
+    return isValid;
+}
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Validate_Z_MAN_EXPO                                             */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+osalbool MPC::Validate_Z_MAN_EXPO(float value)
+{
+    osalbool isValid = TRUE;
+
+    if(!(value >= Z_MAN_EXPO_MIN && value <= Z_MAN_EXPO_MAX))
+    {
+        (void) CFE_EVS_SendEvent(MPC_INVLD_PARAM_ERR_EID, CFE_EVS_ERROR,
+                "Parameter Z_MAN_EXPO is invalid.");
+        isValid = FALSE;
+    }
+
+    return isValid;
+}
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Validate_TKO_RAMP_T                                             */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+osalbool MPC::Validate_TKO_RAMP_T(float value)
+{
+    osalbool isValid = TRUE;
+
+    if(!(value >= TKO_RAMP_T_MIN && value <= TKO_RAMP_T_MAX))
+    {
+        (void) CFE_EVS_SendEvent(MPC_INVLD_PARAM_ERR_EID, CFE_EVS_ERROR,
+                "Parameter TKO_RAMP_T is invalid.");
+        isValid = FALSE;
+    }
+
+    return isValid;
+}
+
+
 
 /************************/
 /*  End of File Comment */

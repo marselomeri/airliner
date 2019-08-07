@@ -98,6 +98,7 @@ public:
     /** \brief Data Pipe ID */
     CFE_SB_PipeId_t DataPipeId;
 
+
     /* Task-related */
 
     /** \brief Task Run Status */
@@ -110,6 +111,7 @@ public:
 
     /** \brief Config Table Pointer */
     MPC_ConfigTbl_t* ConfigTblPtr;
+
 
     /* Output Messages */
 
@@ -133,162 +135,218 @@ public:
     PX4_VehicleLandDetectedMsg_t          m_VehicleLandDetectedMsg;
     PX4_VehicleLocalPositionMsg_t         m_VehicleLocalPositionMsg;
 
+
     /* Reset counters */
     /** \brief When set to a non-zero integer, m_PositionSetpoint[2] will get set to m_VehicleLocalPositionMsg.Z */
     uint8 m_ResetCounterZ;
+
     /** \brief When set to a non-zero integer, m_PositionSetpoint[0] and m_PositionSetpoint[1] will get set to
      *         m_VehicleLocalPositionMsg.X and m_VehicleLocalPositionMsg.Y respectively. */
     uint8 m_ResetCounterXy;
+
     /** \brief When set to a non-zero integer, m_VehicleAttitudeSetpointMsg.YawBody will get set to the Euler
      *         yaw component of the m_ControlStateMsg.QuatResetCounter quaternion. */
     uint8 m_HeadingResetCounter;
 
+
     /* Control variables used for altitude, position, and yaw hold */
     /** \brief Vehicle local position. */
     math::Vector3F m_Position;
+
     /** \brief Vehicle local position setpoint. */
     math::Vector3F m_PositionSetpoint;
+
     /** \brief Vehicle local position velocity. */
     math::Vector3F m_Velocity;
+
     /** \brief Vehicle local position velocity on the previous step. */
     math::Vector3F m_VelocityPrevious;
+
     /** \brief Vehicle local position velocity setpoint. */
     math::Vector3F m_VelocitySetpoint;
+
     /** \brief Vehicle local position velocity setpoint on the previous step. */
     math::Vector3F m_VelocitySetpointPrevious;
+
     /** \brief Derivative of the current vehicle local position velocity. */
     math::Vector3F m_VelocityErrD;
+
     /** \brief Current setpoint of the triplet. */
     math::Vector3F m_CurrentPositionSetpoint;  /**< current setpoint of the triplets */
+
     /** \brief Previous setpoint position of the triplet. */
     math::Vector3F m_PreviousPositionSetpoint;
+
     /** \brief Rotation matrix setpoint used to determine the Vehicle Attitude Setpoint quaternion. */
     math::Matrix3F3 m_RSetpoint;
+
     /** \brief Rotation matrix from attitude in quaternions. */
     math::Matrix3F3 m_Rotation;
+
     /** \brief Thrust vector used to determine the Vehicle Local Position Setpoint acceleration. */
     math::Vector3F m_ThrustInt;
+
     /** \brief Velocity in Z that agrees with the position rate. */
     float m_DerivativeZ;
+
     /** \brief Yaw Euler angle. */
     float m_Yaw;
+
     /** \brief Current yaw offset in manual mode. */
     float m_ManYawOffset;
+
 
     /* State variables */
     /** \brief Briefly set to TRUE when MPC initially enters automatic mode, causing the state machine
      *         to execute specific behavior on state entry.  This flag is reset back to FALSE immediately
      *         after the entry function has executed. */
     osalbool m_ModeAuto;
+
     /** \brief When set to TRUE, MPC will hold position, unless the pilot has applied horizontal control
      *         stick deflections beyond the deadband.  */
     osalbool m_PositionHoldEngaged;
+
     /** \brief When set to TRUE, MPC will hold position, unless the pilot has applied vertical control
      *         stick deflections beyond the deadband.  */
     osalbool m_AltitudeHoldEngaged;
+
     /** \brief When set to TRUE, MPC will hold position.  */
     osalbool m_RunPosControl;
+
     /** \brief When set to TRUE, MPC will hold altitude.  */
     osalbool m_RunAltControl;
+
     /** \brief When set to TRUE, MPC will set horizontal components of m_PositionSetpoint to
      *         m_Position. */
     osalbool m_ResetPositionSetpoint;
+
     /** \brief When set to TRUE, MPC will set vertical components of m_PositionSetpoint to
      *         m_Position. */
     osalbool m_ResetAltitudeSetpoint;
+
     /** \brief When set to TRUE, MPC will reset both the vertical and horizontal components of
      *         m_PositionSetpoint to m_Position. */
     osalbool m_DoResetAltPos;
+
     /** \brief Set by the #m_VehicleLandDetectedMsg.Landed message.  Indicates the vehicle has
      *         landed.   */
     osalbool m_WasLanded;
+
     /** \brief Resets thrust (vertical component) integrals to 0.0 when set to TRUE. */
     osalbool m_ResetIntZ;
+
     /** \brief Resets the integrals of the horizontal components to 0.0 when set to TRUE. */
     osalbool m_ResetIntXY;
+
     /** \brief Resets yaw setpoint to current position when set to TRUE. */
     osalbool m_ResetYawSetpoint;
+
     /** \brief When m_VehicleControlModeMsg.ControlOffboardEnabled is set and this is FALSE,
      *         the horizontal component of m_PositionSetpoint is set to the horizontal
      *         component of m_Position. */
     osalbool m_HoldOffboardXY;
+
     /** \brief When m_VehicleControlModeMsg.ControlOffboardEnabled is set and this is FALSE,
      *         the vertical component of m_PositionSetpoint is set to the vertical
      *         component of m_Position. */
     osalbool m_HoldOffboardZ;
+
     /** \brief Indicates that the vehicle is currently in takeoff (automatic or manual), and
      *         applying a special velocity setpoint limitation for smooth takeoff */
     osalbool m_InTakeoff;          /**< flag for smooth velocity setpoint takeoff ramp */
+
     /** \brief Indicates with the latitude and longitude have been updated (are "fresh").  When
      *         set to TRUE, sets the horizontal components of the Current Position Setpoint
      *         equal to #m_Position. */
     osalbool m_TripletLatLonFinite;
 
-    /* Reference point */
     /** \brief Set to #m_VehicleLocalPositionMsg.RefTimestamp.  When a new Vehicle Local Position
      *         message has been received, MPC detects the new RefTimestamp, causing it to run the
      *         #UpdateRef function. */
     uint64 m_RefTimestamp;
+
     /** \brief Local projection reference. */
     struct map_projection_reference_s m_RefPos;
+
     /** \brief Vehicle local position reference altitude. */
     float m_RefAlt;
+
     /** \brief TRUE when the reference altitude is defined in a global reference frame. */
     osalbool m_RefAltIsGlobal;
+
     /** \brief Home yaw angle present when vehicle was taking off (euler). */
     float m_YawTakeoff;
 
     /* Velocity controller PIDs */
     /** \brief Position Setpoint PID Proportional (gain) value. */
     math::Vector3F m_PosP;
+
     /** \brief PID Proportional (gain) value.  Used to calculate the thrust component of the
      *         Position Setpoint. */
     math::Vector3F m_VelP;
+
     /** \brief PID Integral value.  Used to calculate the thrust component of the
      *         Position Setpoint. */
     math::Vector3F m_VelI;
+
     /** \brief PID Differential value.  Used to calculate the thrust component of the
      *         Position Setpoint. */
     math::Vector3F m_VelD;
+
     /** \brief Derivative of the velocity X component.  Used to calculate the thrust component of the
      *         Position Setpoint. */
     Derivative m_VelXDeriv;
+
     /** \brief Derivative of the velocity Y component.  Used to calculate the thrust component of the
      *         Position Setpoint. */
     Derivative m_VelYDeriv;
+
     /** \brief Derivative of the velocity Z component.  Used to calculate the thrust component of the
      *         Position Setpoint. */
     Derivative m_VelZDeriv;
 
+
     /* Limit variables */
     /** \brief Horizontal acceleration limit applied in manual mode. */
     float m_AccelerationStateLimitXY;
+
     /** \brief Vertical acceleration limit applied in manual mode. */
     float m_AccelerationStateLimitZ;
+
     /** \brief Horizontal jerk limit in manual mode dependent on stick input. */
     float m_ManualJerkLimitXY;
+
     /** \brief Vertical jerk limit in manual mode. */
     float m_ManualJerkLimitZ;
+
     /** \brief Equal to XY_VEL_MAX except in auto mode when close to target.  MPC will reduce this value
      *         when close to the target in preparation for a smooth stop. */
     float m_VelMaxXy;
+
     /** \brief Velocity limit value which gets ramped up during takeoff. */
     float m_TakeoffVelLimit;
+
 
     /* Stick input variables */
     /** \brief Manual pitch input low pass filter. */
     math::LowPassFilter2p m_FilterManualPitch;
+
     /** \brief Manual roll input low pass filter. */
     math::LowPassFilter2p m_FilterManualRoll;
+
     /** \brief The previous value of the stick input.  For manual controlled mode to detect
      *         direction change. */
     math::Vector2F m_StickInputXyPrev;
+
     /** \brief Defines what the user intends to do derived from horizontal component of the stick input. */
     ManualStickInput m_UserIntentionXY;
+
     /** \brief Defines what the user intends to do derived from vertical component of the stick input. */
     ManualStickInput m_UserIntentionZ;
+
     /** \brief Used for braking. */
     systemlib::Hysteresis m_ManualDirectionChangeHysteresis;
+
 
     /************************************************************************/
     /** \brief Multicopter Position Control (MPC) application entry point
@@ -416,6 +474,12 @@ public:
      **  \par Assumptions, External Events, and Notes:
      **       None
      **
+     **  \returns
+     **  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
+     **  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
+     **  \retstmt Boolean TRUE indicates messages were successfully received
+     **           with no errors.  \endcode
+     **  \endreturns
      *************************************************************************/
     osalbool ProcessDataPipe(void);
 
@@ -511,9 +575,14 @@ public:
      **                              references the software bus message
      **  \param [in]   usExpectedLen The expected length of the message
      **
+     **
      **  \returns
-     **  TRUE if the message length matches expectations, FALSE if it does not.
+     **  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
+     **  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
+     **  \retstmt Boolean TRUE if the message length matches expectations,
+     **           FALSE if it does not.  \endcode
      **  \endreturns
+     **  \returns
      **
      *************************************************************************/
     osalbool VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
@@ -949,8 +1018,15 @@ public:
     **  \par Assumptions, External Events, and Notes:
     **       None
     **
+    **  \returns
+    **  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
+    **  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
+    **  \retstmt Boolean TRUE indicates the command was valid and the change
+    **           was successful. \endcode
+    **  \endreturns
+    **
     *************************************************************************/
-    void UpdateXyPids(MPC_SetPidCmd_t* PidMsg);
+    osalbool UpdateXyPids(MPC_SetPidCmd_t* PidMsg);
 
     /************************************************************************/
     /** \brief Update Z PIDs.
@@ -962,8 +1038,15 @@ public:
     **  \par Assumptions, External Events, and Notes:
     **       None
     **
+    **  \returns
+    **  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
+    **  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
+    **  \retstmt Boolean TRUE indicates the command was valid and the change
+    **           was successful. \endcode
+    **  \endreturns
+    **
     *************************************************************************/
-    void UpdateZPids(MPC_SetPidCmd_t* PidMsg);
+    osalbool UpdateZPids(MPC_SetPidCmd_t* PidMsg);
 
     /************************************************************************/
     /** \brief Update the hold dead zone (HOLD_DZ)
@@ -975,8 +1058,15 @@ public:
     **  \par Assumptions, External Events, and Notes:
     **       None
     **
+    **  \returns
+    **  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
+    **  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
+    **  \retstmt Boolean TRUE indicates the command was valid and the change
+    **           was successful. \endcode
+    **  \endreturns
+    **
     *************************************************************************/
-    void UpdateHoldDz(MPC_SetDzCmd_t* DzMsg);
+    osalbool UpdateHoldDz(MPC_SetDzCmd_t* DzMsg);
 
     /************************************************************************/
     /** \brief Set manual stick EXPO (XY_MAN_EXPO and Z_MAN_EXPO)
@@ -988,8 +1078,15 @@ public:
     **  \par Assumptions, External Events, and Notes:
     **       None
     **
+    **  \returns
+    **  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
+    **  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
+    **  \retstmt Boolean TRUE indicates the command was valid and the change
+    **           was successful. \endcode
+    **  \endreturns
+    **
     *************************************************************************/    
-    void UpdateStickExpo(MPC_SetStickExpoCmd_t* ExpoMsg);
+    osalbool UpdateStickExpo(MPC_SetStickExpoCmd_t* ExpoMsg);
 
     /************************************************************************/
     /** \brief Update the takeoff ramp time (TKO_RAMP_T)
@@ -1000,8 +1097,15 @@ public:
     **  \par Assumptions, External Events, and Notes:
     **       None
     **
+    **  \returns
+    **  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
+    **  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
+    **  \retstmt Boolean TRUE indicates the command was valid and the change
+    **           was successful. \endcode
+    **  \endreturns
+    **
     *************************************************************************/    
-    void UpdateTakeoffRampTime(MPC_SetTkoRampCmd_t* TkoRampMsg);
+    osalbool UpdateTakeoffRampTime(MPC_SetTkoRampCmd_t* TkoRampMsg);
 
     /************************************************************************/
     /** \brief Validate MPC configuration table
@@ -1020,6 +1124,247 @@ public:
     **
     *************************************************************************/
     static int32  ValidateConfigTbl(void*);
+
+    /************************************************************************/
+    /** \brief Validate the XY_P parameter.
+    **
+    **  \par Description
+    **       This function validates the XY_P parameter
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \param [in]   value    The value to be validated.
+    **
+    **  \returns
+    **  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
+    **  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
+    **  \retstmt Boolean TRUE indicates the value passed is valid. \endcode
+    **  \endreturns
+    **
+    *************************************************************************/
+    static osalbool Validate_XY_P(float value);
+
+    /************************************************************************/
+    /** \brief Validate the XY_VEL_P parameter.
+    **
+    **  \par Description
+    **       This function validates the XY_VEL_P parameter
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \param [in]   value    The value to be validated.
+    **
+    **  \returns
+    **  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
+    **  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
+    **  \retstmt Boolean TRUE indicates the value passed is valid. \endcode
+    **  \endreturns
+    **
+    *************************************************************************/
+    static osalbool Validate_XY_VEL_P(float value);
+
+    /************************************************************************/
+    /** \brief Validate the XY_VEL_I parameter.
+    **
+    **  \par Description
+    **       This function validates the XY_VEL_I parameter
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \param [in]   value    The value to be validated.
+    **
+    **  \returns
+    **  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
+    **  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
+    **  \retstmt Boolean TRUE indicates the value passed is valid. \endcode
+    **  \endreturns
+    **
+    *************************************************************************/
+    static osalbool Validate_XY_VEL_I(float value);
+
+    /************************************************************************/
+    /** \brief Validate the XY_VEL_D parameter.
+    **
+    **  \par Description
+    **       This function validates the XY_VEL_D parameter
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \param [in]   value    The value to be validated.
+    **
+    **  \returns
+    **  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
+    **  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
+    **  \retstmt Boolean TRUE indicates the value passed is valid. \endcode
+    **  \endreturns
+    **
+    *************************************************************************/
+    static osalbool Validate_XY_VEL_D(float value);
+
+    /************************************************************************/
+    /** \brief Validate the Z_P parameter.
+    **
+    **  \par Description
+    **       This function validates the Z_P parameter
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \param [in]   value    The value to be validated.
+    **
+    **  \returns
+    **  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
+    **  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
+    **  \retstmt Boolean TRUE indicates the value passed is valid. \endcode
+    **  \endreturns
+    **
+    *************************************************************************/
+    static osalbool Validate_Z_P(float value);
+
+    /************************************************************************/
+    /** \brief Validate the Z_VEL_P parameter.
+    **
+    **  \par Description
+    **       This function validates the Z_VEL_P parameter
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \param [in]   value    The value to be validated.
+    **
+    **  \returns
+    **  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
+    **  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
+    **  \retstmt Boolean TRUE indicates the value passed is valid. \endcode
+    **  \endreturns
+    **
+    *************************************************************************/
+    static osalbool Validate_Z_VEL_P(float value);
+
+    /************************************************************************/
+    /** \brief Validate the Z_VEL_I parameter.
+    **
+    **  \par Description
+    **       This function validates the Z_VEL_I parameter
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \param [in]   value    The value to be validated.
+    **
+    **  \returns
+    **  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
+    **  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
+    **  \retstmt Boolean TRUE indicates the value passed is valid. \endcode
+    **  \endreturns
+    **
+    *************************************************************************/
+    static osalbool Validate_Z_VEL_I(float value);
+
+    /************************************************************************/
+    /** \brief Validate the Z_VEL_D parameter.
+    **
+    **  \par Description
+    **       This function validates the Z_VEL_D parameter
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \param [in]   value    The value to be validated.
+    **
+    **  \returns
+    **  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
+    **  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
+    **  \retstmt Boolean TRUE indicates the value passed is valid. \endcode
+    **  \endreturns
+    **
+    *************************************************************************/
+    static osalbool Validate_Z_VEL_D(float value);
+
+    /************************************************************************/
+    /** \brief Validate the HOLD_DZ parameter.
+    **
+    **  \par Description
+    **       This function validates the HOLD_DZ parameter
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \param [in]   value    The value to be validated.
+    **
+    **  \returns
+    **  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
+    **  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
+    **  \retstmt Boolean TRUE indicates the value passed is valid. \endcode
+    **  \endreturns
+    **
+    *************************************************************************/
+    static osalbool Validate_HOLD_DZ(float value);
+
+    /************************************************************************/
+    /** \brief Validate the XY_MAN_EXPO parameter.
+    **
+    **  \par Description
+    **       This function validates the XY_MAN_EXPO parameter
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \param [in]   value    The value to be validated.
+    **
+    **  \returns
+    **  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
+    **  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
+    **  \retstmt Boolean TRUE indicates the value passed is valid. \endcode
+    **  \endreturns
+    **
+    *************************************************************************/
+    static osalbool Validate_XY_MAN_EXPO(float value);
+
+    /************************************************************************/
+    /** \brief Validate the Z_MAN_EXPO parameter.
+    **
+    **  \par Description
+    **       This function validates the Z_MAN_EXPO parameter
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \param [in]   value    The value to be validated.
+    **
+    **  \returns
+    **  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
+    **  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
+    **  \retstmt Boolean TRUE indicates the value passed is valid. \endcode
+    **  \endreturns
+    **
+    *************************************************************************/
+    static osalbool Validate_Z_MAN_EXPO(float value);
+
+    /************************************************************************/
+    /** \brief Validate the TKO_RAMP_T parameter.
+    **
+    **  \par Description
+    **       This function validates the TKO_RAMP_T parameter
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       The #MPC_INVLD_PARAM_ERR_EID error event message will be
+    **         sent if the function fails validation.
+    **
+    **  \param [in]   value    The value to be validated.
+    **
+    **  \returns
+    **  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
+    **  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
+    **  \retstmt Boolean TRUE indicates the value passed is valid. \endcode
+    **  \endreturns
+    **
+    *************************************************************************/
+    static osalbool Validate_TKO_RAMP_T(float value);
 };
 
 #ifdef __cplusplus

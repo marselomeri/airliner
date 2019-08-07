@@ -76,10 +76,11 @@ extern "C" {
 **  \par Error Conditions
 **       This command may fail for the following reason(s):
 **       - Command packet length not as expected
-** 
-**  \par Evidence of failure may be found in the following telemetry: 
+**
+**  \par Evidence of failure may be found in the following telemetry:
 **       - \b \c \MPC_CMDRJCTCNT - command error counter will increment
-**       - Error specific event message #MPC_MSGID_ERR_EID
+**       - The #MPC_MSGLEN_ERR_EID error event message will be
+**         generated if the command has the wrong length.
 **
 **  \par Criticality
 **       None
@@ -109,10 +110,11 @@ extern "C" {
 **  \par Error Conditions
 **       This command may fail for the following reason(s):
 **       - Command packet length not as expected
-** 
-**  \par Evidence of failure may be found in the following telemetry: 
+**
+**  \par Evidence of failure may be found in the following telemetry:
 **       - \b \c \MPC_CMDRJCTCNT - command error counter will increment
-**       - Error specific event message #MPC_MSGID_ERR_EID
+**       - The #MPC_MSGLEN_ERR_EID error event message will be
+**         generated if the command has the wrong length.
 **
 **  \par Criticality
 **       None
@@ -124,47 +126,51 @@ extern "C" {
 /** \mpccmd
 **
 **  \par Description
-**
+**       Updates XY PID values.
 **
 **  \par Command Structure
-**       #MPC_NoArgCmd_t
+**       #MPC_SetPidCmd_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with
 **       the following telemetry:
 **       - \b \c \MPC_CMDACPTCNT - command counter will increment
-**       - The #TODO informational event message will be
-**         generated when the command is received
+**       - The #MPC_PID_UPDATE_EID information event message will be
+**         generated when the command is executed
 **
 **  \par Error Conditions
 **       This command may fail for the following reason(s):
-**       - Command packet length not as expected
+**       - Command packet length not as expected.
+**       - Arguments are invalid or out of bounds.
 **
 **  \par Evidence of failure may be found in the following telemetry:
 **       - \b \c \MPC_CMDRJCTCNT - command error counter will increment
-**       - Error specific event message #TODO
+**       - The #MPC_MSGLEN_ERR_EID error event message will be
+**         generated if the command has the wrong length.
+**       - The #MPC_INVLD_PARAM_ERR_EID error event message will be
+**         generated if the an argument is invalid.
 **
 **  \par Criticality
 **       TODO
 **
-**  \sa #MPC_NOOP_CC
+**  \sa #UpdateXyPids, #XY_P, #XY_VEL_P, #XY_VEL_I, #XY_VEL_D
 */
 #define MPC_SET_XY_PID_CC                         (2)
 
 /** \mpccmd
 **
 **  \par Description
-**
+**       Updates Z PID values.
 **
 **  \par Command Structure
-**       #MPC_NoArgCmd_t
+**       #MPC_SetPidCmd_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with
 **       the following telemetry:
 **       - \b \c \MPC_CMDACPTCNT - command counter will increment
-**       - The #TODO informational event message will be
-**         generated when the command is received
+**       - The #MPC_PID_UPDATE_EID information event message will be
+**         generated when the command is executed
 **
 **  \par Error Conditions
 **       This command may fail for the following reason(s):
@@ -172,19 +178,22 @@ extern "C" {
 **
 **  \par Evidence of failure may be found in the following telemetry:
 **       - \b \c \MPC_CMDRJCTCNT - command error counter will increment
-**       - Error specific event message #TODO
+**       - The #MPC_MSGLEN_ERR_EID error event message will be
+**         generated if the command has the wrong length.
+**       - The #MPC_INVLD_PARAM_ERR_EID error event message will be
+**         generated if the an argument is invalid.
 **
 **  \par Criticality
 **       TODO
 **
-**  \sa #MPC_NOOP_CC
+**  \sa #UpdateZPids, #Z_P, #Z_VEL_P, #Z_VEL_I, #Z_VEL_D
 */
 #define MPC_SET_Z_PID_CC                         (3)
 
 /** \mpccmd
 **
 **  \par Description
-**
+**       This commands causes MPC to send a diagnostic message.
 **
 **  \par Command Structure
 **       #MPC_NoArgCmd_t
@@ -193,7 +202,7 @@ extern "C" {
 **       Successful execution of this command may be verified with
 **       the following telemetry:
 **       - \b \c \MPC_CMDACPTCNT - command counter will increment
-**       - The #TODO informational event message will be
+**       - The #MPC_SEND_DIAG_EID informational event message will be
 **         generated when the command is received
 **
 **  \par Error Conditions
@@ -202,28 +211,29 @@ extern "C" {
 **
 **  \par Evidence of failure may be found in the following telemetry:
 **       - \b \c \MPC_CMDRJCTCNT - command error counter will increment
-**       - Error specific event message #TODO
+**       - The #MPC_MSGLEN_ERR_EID error event message will be
+**         generated if the command has the wrong length.
 **
 **  \par Criticality
 **       TODO
 **
-**  \sa #MPC_SEND_DIAG_CC
+**  \sa #ReportDiagnostic, #MPC_DiagPacket_t
 */
 #define MPC_SEND_DIAG_CC                         (4)
 
 /** \mpccmd
 **
 **  \par Description
-**
+**       Update the HOLD_DZ configuration parameter.
 **
 **  \par Command Structure
-**       #MPC_NoArgCmd_t
+**       #MPC_SetDzCmd_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with
 **       the following telemetry:
 **       - \b \c \MPC_CMDACPTCNT - command counter will increment
-**       - The #TODO informational event message will be
+**       - The #MPC_SET_DZ_EID informational event message will be
 **         generated when the command is received
 **
 **  \par Error Conditions
@@ -232,28 +242,32 @@ extern "C" {
 **
 **  \par Evidence of failure may be found in the following telemetry:
 **       - \b \c \MPC_CMDRJCTCNT - command error counter will increment
-**       - Error specific event message #TODO
+**       - The #MPC_MSGLEN_ERR_EID error event message will be
+**         generated if the command has the wrong length.
+**       - The #MPC_INVLD_PARAM_ERR_EID error event message will be
+**         generated if the an argument is invalid.
 **
 **  \par Criticality
 **       TODO
 **
-**  \sa #MPC_SET_HOLD_DZ_CC
+**  \sa #UpdateHoldDz, #HOLD_DZ
 */
 #define MPC_SET_HOLD_DZ_CC                       (5)
 
 /** \mpccmd
 **
 **  \par Description
-**
+**       Update the XY_MAN_EXPO, and Z_MAN_EXPO configuration
+**       parameters.
 **
 **  \par Command Structure
-**       #MPC_NoArgCmd_t
+**       #MPC_SetStickExpoCmd_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with
 **       the following telemetry:
 **       - \b \c \MPC_CMDACPTCNT - command counter will increment
-**       - The #TODO informational event message will be
+**       - The #MPC_SET_EXPO_EID informational event message will be
 **         generated when the command is received
 **
 **  \par Error Conditions
@@ -262,28 +276,31 @@ extern "C" {
 **
 **  \par Evidence of failure may be found in the following telemetry:
 **       - \b \c \MPC_CMDRJCTCNT - command error counter will increment
-**       - Error specific event message #TODO
+**       - The #MPC_MSGLEN_ERR_EID error event message will be
+**         generated if the command has the wrong length.
+**       - The #MPC_INVLD_PARAM_ERR_EID error event message will be
+**         generated if the an argument is invalid.
 **
 **  \par Criticality
 **       TODO
 **
-**  \sa #MPC_SET_STICK_EXPO
+**  \sa #UpdateStickExpo
 */
 #define MPC_SET_STICK_EXPO_CC                    (6)
 
 /** \mpccmd
 **
 **  \par Description
-**
+**       Update the TKO_RAMP_T configuration parameter.
 **
 **  \par Command Structure
-**       #MPC_NoArgCmd_t
+**       #MPC_SetTkoRampCmd_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with
 **       the following telemetry:
 **       - \b \c \MPC_CMDACPTCNT - command counter will increment
-**       - The #TODO informational event message will be
+**       - The #MPC_SET_TKO_RAMP_EID informational event message will be
 **         generated when the command is received
 **
 **  \par Error Conditions
@@ -292,12 +309,15 @@ extern "C" {
 **
 **  \par Evidence of failure may be found in the following telemetry:
 **       - \b \c \MPC_CMDRJCTCNT - command error counter will increment
-**       - Error specific event message #TODO
+**       - The #MPC_MSGLEN_ERR_EID error event message will be
+**         generated if the command has the wrong length.
+**       - The #MPC_INVLD_PARAM_ERR_EID error event message will be
+**         generated if the an argument is invalid.
 **
 **  \par Criticality
 **       TODO
 **
-**  \sa #MPC_SET_STICK_EXPO
+**  \sa #UpdateTakeoffRampTime
 */
 #define MPC_SET_TKO_RAMP_CC                      (7)
 

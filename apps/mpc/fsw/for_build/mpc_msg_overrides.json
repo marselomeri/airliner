@@ -45,7 +45,8 @@
                   {"macro": "MPC_SET_EXPO_EID",                   "id": 17},
                   {"macro": "MPC_SET_TKO_RAMP_EID",               "id": 18},
                   {"macro": "MPC_UNKNOWN_USER_INTENTION_ERR_EID", "id": 19},
-                  {"macro": "MPC_POS_SP_NOT_FINITE_ERR_EID",      "id": 20}
+                  {"macro": "MPC_POS_SP_NOT_FINITE_ERR_EID",      "id": 20},
+                  {"macro": "MPC_INVLD_PARAM_ERR_EID",            "id": 21}
               ],
               "config": {
               },
