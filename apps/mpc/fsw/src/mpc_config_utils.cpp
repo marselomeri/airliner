@@ -54,10 +54,10 @@ int32 MPC::InitConfigTbl()
 
     /* Register Config table */
     iStatus = CFE_TBL_Register(&ConfigTblHdl,
-		MPC_CONFIG_TABLENAME,
-		(sizeof(MPC_ConfigTbl_t)),
-		CFE_TBL_OPT_DEFAULT,
-		MPC::ValidateConfigTbl);
+        MPC_CONFIG_TABLENAME,
+        (sizeof(MPC_ConfigTbl_t)),
+        CFE_TBL_OPT_DEFAULT,
+        MPC::ValidateConfigTbl);
     if (iStatus != CFE_SUCCESS)
     {
         /* Note, a critical table could return another nominal code.  If this table is
@@ -71,7 +71,7 @@ int32 MPC::InitConfigTbl()
     /* Load Config table file */
     iStatus = CFE_TBL_Load(ConfigTblHdl,
                            CFE_TBL_SRC_FILE,
-						   MPC_CONFIG_TABLE_FILENAME);
+                           MPC_CONFIG_TABLE_FILENAME);
     if (iStatus != CFE_SUCCESS)
     {
         /* Note, CFE_SUCCESS is for a successful full table load.  If a partial table
@@ -85,24 +85,6 @@ int32 MPC::InitConfigTbl()
     iStatus = AcquireConfigPointers();
 
 MPC_InitConfigTbl_Exit_Tag:
-    return iStatus;
-}
-
-
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/*                                                                 */
-/* Validate MPC Configuration Table                                */
-/*                                                                 */
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-int32 MPC::ValidateConfigTbl(void* ConfigTblPtr)
-{
-    int32  iStatus=0;
-    MPC_ConfigTbl_t* MPC_ConfigTblPtr = (MPC_ConfigTbl_t*)(ConfigTblPtr);
-
-    /* TODO:  Add validation code here. */
-
-MPC_ValidateConfigTbl_Exit_Tag:
     return iStatus;
 }
 
@@ -148,13 +130,270 @@ int32 MPC::AcquireConfigPointers(void)
     }
     else if(iStatus != CFE_SUCCESS)
     {
-    	ConfigTblPtr = 0;
+        ConfigTblPtr = 0;
         (void) CFE_EVS_SendEvent(MPC_CFGTBL_GETADDR_ERR_EID, CFE_EVS_ERROR,
                                  "Failed to get Config table's address (0x%08lX)",
                                  iStatus);
     }
 
 MPC_AcquireConfigPointers_Exit_Tag:
+    return iStatus;
+}
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Validate MPC Configuration Table                                */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+int32 MPC::ValidateConfigTbl(void* ConfigTblPtr)
+{
+    int32  iStatus=0;
+    osalbool valid_bool = TRUE;
+    MPC_ConfigTbl_t* MPC_ConfigTblPtr = (MPC_ConfigTbl_t*)(ConfigTblPtr);
+
+    if(!(MPC_ConfigTblPtr->THR_MIN >= THR_MIN_MIN && MPC_ConfigTblPtr->THR_MIN <= THR_MIN_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->THR_HOVER >= THR_HOVER_MIN && MPC_ConfigTblPtr->THR_HOVER <= THR_HOVER_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->THR_MAX >= THR_MAX_MIN && MPC_ConfigTblPtr->THR_MAX <= THR_MAX_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->MANTHR_MIN >= MANTHR_MIN_MIN && MPC_ConfigTblPtr->MANTHR_MIN <= MANTHR_MIN_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->MANTHR_MAX >= MANTHR_MAX_MIN && MPC_ConfigTblPtr->MANTHR_MAX <= MANTHR_MAX_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->Z_P >= Z_P_MIN && MPC_ConfigTblPtr->Z_P <= Z_P_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->Z_VEL_P >= Z_VEL_P_MIN && MPC_ConfigTblPtr->Z_VEL_P <= Z_VEL_P_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->Z_VEL_I >= Z_VEL_I_MIN && MPC_ConfigTblPtr->Z_VEL_I <= Z_VEL_I_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->Z_VEL_D >= Z_VEL_D_MIN && MPC_ConfigTblPtr->Z_VEL_D <= Z_VEL_D_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->Z_VEL_MAX_UP >= Z_VEL_MAX_UP_MIN && MPC_ConfigTblPtr->Z_VEL_MAX_UP <= Z_VEL_MAX_UP_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->Z_VEL_MAX_DN >= Z_VEL_MAX_DN_MIN && MPC_ConfigTblPtr->Z_VEL_MAX_DN <= Z_VEL_MAX_DN_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->Z_FF >= Z_FF_MIN && MPC_ConfigTblPtr->Z_FF <= Z_FF_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->XY_P >= XY_P_MIN && MPC_ConfigTblPtr->XY_P <= XY_P_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->XY_VEL_P >= XY_VEL_P_MIN && MPC_ConfigTblPtr->XY_VEL_P <= XY_VEL_P_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->XY_VEL_I >= XY_VEL_I_MIN && MPC_ConfigTblPtr->XY_VEL_I <= XY_VEL_I_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->XY_VEL_D >= XY_VEL_D_MIN && MPC_ConfigTblPtr->XY_VEL_D <= XY_VEL_D_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->XY_CRUISE >= XY_CRUISE_MIN && MPC_ConfigTblPtr->XY_CRUISE <= XY_CRUISE_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->TARGET_THRE >= TARGET_THRE_MIN && MPC_ConfigTblPtr->TARGET_THRE <= TARGET_THRE_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->XY_VEL_MAX >= XY_VEL_MAX_MIN && MPC_ConfigTblPtr->XY_VEL_MAX <= XY_VEL_MAX_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->XY_FF >= XY_FF_MIN && MPC_ConfigTblPtr->XY_FF <= XY_FF_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->TILTMAX_AIR >= TILTMAX_AIR_MIN && MPC_ConfigTblPtr->TILTMAX_AIR <= TILTMAX_AIR_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->TILTMAX_LND >= TILTMAX_LND_MIN && MPC_ConfigTblPtr->TILTMAX_LND <= TILTMAX_LND_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->LAND_SPEED >= LAND_SPEED_MIN && MPC_ConfigTblPtr->LAND_SPEED <= LAND_SPEED_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->TKO_SPEED >= TKO_SPEED_MIN && MPC_ConfigTblPtr->TKO_SPEED <= TKO_SPEED_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->MAN_TILT_MAX >= MAN_TILT_MAX_MIN && MPC_ConfigTblPtr->MAN_TILT_MAX <= MAN_TILT_MAX_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->MAN_Y_MAX >= MAN_Y_MAX_MIN && MPC_ConfigTblPtr->MAN_Y_MAX <= MAN_Y_MAX_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->HOLD_DZ >= HOLD_DZ_MIN && MPC_ConfigTblPtr->HOLD_DZ <= HOLD_DZ_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->HOLD_MAX_XY >= HOLD_MAX_XY_MIN && MPC_ConfigTblPtr->HOLD_MAX_XY <= HOLD_MAX_XY_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->HOLD_MAX_Z >= HOLD_MAX_Z_MIN && MPC_ConfigTblPtr->HOLD_MAX_Z <= HOLD_MAX_Z_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->VELD_LP >= VELD_LP_MIN && MPC_ConfigTblPtr->VELD_LP <= VELD_LP_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->ACC_HOR_MAX >= ACC_HOR_MAX_MIN && MPC_ConfigTblPtr->ACC_HOR_MAX <= ACC_HOR_MAX_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->ACC_UP_MAX >= ACC_UP_MAX_MIN && MPC_ConfigTblPtr->ACC_UP_MAX <= ACC_UP_MAX_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->ACC_DOWN_MAX >= ACC_DOWN_MAX_MIN && MPC_ConfigTblPtr->ACC_DOWN_MAX <= ACC_DOWN_MAX_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->ALT_MODE >= ALT_MODE_MIN && MPC_ConfigTblPtr->ALT_MODE <= ALT_MODE_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->XY_MAN_EXPO >= XY_MAN_EXPO_MIN && MPC_ConfigTblPtr->XY_MAN_EXPO <= XY_MAN_EXPO_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->Z_MAN_EXPO >= Z_MAN_EXPO_MIN && MPC_ConfigTblPtr->Z_MAN_EXPO <= Z_MAN_EXPO_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->LAND_ALT1 >= LAND_ALT1_MIN && MPC_ConfigTblPtr->LAND_ALT1 <= LAND_ALT1_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->LAND_ALT2 >= LAND_ALT2_MIN && MPC_ConfigTblPtr->LAND_ALT2 <= LAND_ALT2_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->TKO_RAMP_T >= TKO_RAMP_T_MIN && MPC_ConfigTblPtr->TKO_RAMP_T <= TKO_RAMP_T_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->MC_YAWRATE_MAX >= MC_YAWRATE_MAX_MIN && MPC_ConfigTblPtr->MC_YAWRATE_MAX <= MC_YAWRATE_MAX_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->MC_YAW_P >= MC_YAW_P_MIN && MPC_ConfigTblPtr->MC_YAW_P <= MC_YAW_P_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->MPC_CRUISE_90 >= MPC_CRUISE_90_MIN && MPC_ConfigTblPtr->MPC_CRUISE_90 <= MPC_CRUISE_90_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->MPC_JERK_MAX >= MPC_JERK_MAX_MIN && MPC_ConfigTblPtr->MPC_JERK_MAX <= MPC_JERK_MAX_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->MPC_JERK_MIN >= MPC_JERK_MIN_MIN && MPC_ConfigTblPtr->MPC_JERK_MIN <= MPC_JERK_MIN_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->MPC_DEC_HOR_SLOW >= MPC_DEC_HOR_SLOW_MIN && MPC_ConfigTblPtr->MPC_DEC_HOR_SLOW <= MPC_DEC_HOR_SLOW_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->MPC_VEL_MANUAL >= MPC_VEL_MANUAL_MIN && MPC_ConfigTblPtr->MPC_VEL_MANUAL <= MPC_VEL_MANUAL_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->NAV_ACC_RAD >= NAV_ACC_RAD_MIN && MPC_ConfigTblPtr->NAV_ACC_RAD <= NAV_ACC_RAD_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(MPC_ConfigTblPtr->NAV_MIS_YAW_ERR >= NAV_MIS_YAW_ERR_MIN && MPC_ConfigTblPtr->NAV_MIS_YAW_ERR <= NAV_MIS_YAW_ERR_MAX))
+    {
+        valid_bool = FALSE;
+    }
+
+MPC_ValidateConfigTbl_Exit_Tag:
     return iStatus;
 }
 

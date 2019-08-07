@@ -76,15 +76,6 @@ extern "C" {
 
 
 
-enum ManualStickInput {
-	BRAKE = 0,
-	DIRECTION_CHANGE = 1,
-	ACCELERATION = 2,
-	DECELERATION = 3,
-	NONE = 4
-};
-
-
 /************************************************************************
  ** Local Structure Definitions
  *************************************************************************/
@@ -142,162 +133,162 @@ public:
     PX4_VehicleLandDetectedMsg_t          m_VehicleLandDetectedMsg;
     PX4_VehicleLocalPositionMsg_t         m_VehicleLocalPositionMsg;
 
-	/* Reset counters */
+    /* Reset counters */
     /** \brief When set to a non-zero integer, m_PositionSetpoint[2] will get set to m_VehicleLocalPositionMsg.Z */
-	uint8 m_ResetCounterZ;
+    uint8 m_ResetCounterZ;
     /** \brief When set to a non-zero integer, m_PositionSetpoint[0] and m_PositionSetpoint[1] will get set to
      *         m_VehicleLocalPositionMsg.X and m_VehicleLocalPositionMsg.Y respectively. */
-	uint8 m_ResetCounterXy;
+    uint8 m_ResetCounterXy;
     /** \brief When set to a non-zero integer, m_VehicleAttitudeSetpointMsg.YawBody will get set to the Euler
      *         yaw component of the m_ControlStateMsg.QuatResetCounter quaternion. */
-	uint8 m_HeadingResetCounter;
+    uint8 m_HeadingResetCounter;
 
-	/* Control variables used for altitude, position, and yaw hold */
+    /* Control variables used for altitude, position, and yaw hold */
     /** \brief Vehicle local position. */
-	math::Vector3F m_Position;
+    math::Vector3F m_Position;
     /** \brief Vehicle local position setpoint. */
-	math::Vector3F m_PositionSetpoint;
+    math::Vector3F m_PositionSetpoint;
     /** \brief Vehicle local position velocity. */
-	math::Vector3F m_Velocity;
+    math::Vector3F m_Velocity;
     /** \brief Vehicle local position velocity on the previous step. */
-	math::Vector3F m_VelocityPrevious;
+    math::Vector3F m_VelocityPrevious;
     /** \brief Vehicle local position velocity setpoint. */
-	math::Vector3F m_VelocitySetpoint;
+    math::Vector3F m_VelocitySetpoint;
     /** \brief Vehicle local position velocity setpoint on the previous step. */
-	math::Vector3F m_VelocitySetpointPrevious;
+    math::Vector3F m_VelocitySetpointPrevious;
     /** \brief Derivative of the current vehicle local position velocity. */
-	math::Vector3F m_VelocityErrD;
+    math::Vector3F m_VelocityErrD;
     /** \brief Current setpoint of the triplet. */
-	math::Vector3F m_CurrentPositionSetpoint;  /**< current setpoint of the triplets */
+    math::Vector3F m_CurrentPositionSetpoint;  /**< current setpoint of the triplets */
     /** \brief Previous setpoint position of the triplet. */
-	math::Vector3F m_PreviousPositionSetpoint;
+    math::Vector3F m_PreviousPositionSetpoint;
     /** \brief Rotation matrix setpoint used to determine the Vehicle Attitude Setpoint quaternion. */
-	math::Matrix3F3 m_RSetpoint;
+    math::Matrix3F3 m_RSetpoint;
     /** \brief Rotation matrix from attitude in quaternions. */
-	math::Matrix3F3 m_Rotation;
+    math::Matrix3F3 m_Rotation;
     /** \brief Thrust vector used to determine the Vehicle Local Position Setpoint acceleration. */
-	math::Vector3F m_ThrustInt;
+    math::Vector3F m_ThrustInt;
     /** \brief Velocity in Z that agrees with the position rate. */
-	float m_DerivativeZ;
+    float m_DerivativeZ;
     /** \brief Yaw Euler angle. */
-	float m_Yaw;
+    float m_Yaw;
     /** \brief Current yaw offset in manual mode. */
-	float m_ManYawOffset;
+    float m_ManYawOffset;
 
-	/* State variables */
+    /* State variables */
     /** \brief Briefly set to TRUE when MPC initially enters automatic mode, causing the state machine
      *         to execute specific behavior on state entry.  This flag is reset back to FALSE immediately
      *         after the entry function has executed. */
-	boolean m_ModeAuto;
+    osalbool m_ModeAuto;
     /** \brief When set to TRUE, MPC will hold position, unless the pilot has applied horizontal control
      *         stick deflections beyond the deadband.  */
-	boolean m_PositionHoldEngaged;
+    osalbool m_PositionHoldEngaged;
     /** \brief When set to TRUE, MPC will hold position, unless the pilot has applied vertical control
      *         stick deflections beyond the deadband.  */
-	boolean m_AltitudeHoldEngaged;
+    osalbool m_AltitudeHoldEngaged;
     /** \brief When set to TRUE, MPC will hold position.  */
-	boolean m_RunPosControl;
+    osalbool m_RunPosControl;
     /** \brief When set to TRUE, MPC will hold altitude.  */
-	boolean m_RunAltControl;
+    osalbool m_RunAltControl;
     /** \brief When set to TRUE, MPC will set horizontal components of m_PositionSetpoint to
      *         m_Position. */
-	boolean m_ResetPositionSetpoint;
+    osalbool m_ResetPositionSetpoint;
     /** \brief When set to TRUE, MPC will set vertical components of m_PositionSetpoint to
      *         m_Position. */
-	boolean m_ResetAltitudeSetpoint;
+    osalbool m_ResetAltitudeSetpoint;
     /** \brief When set to TRUE, MPC will reset both the vertical and horizontal components of
      *         m_PositionSetpoint to m_Position. */
-	boolean m_DoResetAltPos;
+    osalbool m_DoResetAltPos;
     /** \brief Set by the #m_VehicleLandDetectedMsg.Landed message.  Indicates the vehicle has
      *         landed.   */
-	boolean m_WasLanded;
+    osalbool m_WasLanded;
     /** \brief Resets thrust (vertical component) integrals to 0.0 when set to TRUE. */
-	boolean m_ResetIntZ;
+    osalbool m_ResetIntZ;
     /** \brief Resets the integrals of the horizontal components to 0.0 when set to TRUE. */
-	boolean m_ResetIntXY;
+    osalbool m_ResetIntXY;
     /** \brief Resets yaw setpoint to current position when set to TRUE. */
-	boolean m_ResetYawSetpoint;
+    osalbool m_ResetYawSetpoint;
     /** \brief When m_VehicleControlModeMsg.ControlOffboardEnabled is set and this is FALSE,
      *         the horizontal component of m_PositionSetpoint is set to the horizontal
      *         component of m_Position. */
-	boolean m_HoldOffboardXY;
+    osalbool m_HoldOffboardXY;
     /** \brief When m_VehicleControlModeMsg.ControlOffboardEnabled is set and this is FALSE,
      *         the vertical component of m_PositionSetpoint is set to the vertical
      *         component of m_Position. */
-	boolean m_HoldOffboardZ;
+    osalbool m_HoldOffboardZ;
     /** \brief Indicates that the vehicle is currently in takeoff (automatic or manual), and
      *         applying a special velocity setpoint limitation for smooth takeoff */
-	boolean m_InTakeoff;	      /**< flag for smooth velocity setpoint takeoff ramp */
+    osalbool m_InTakeoff;          /**< flag for smooth velocity setpoint takeoff ramp */
     /** \brief Indicates with the latitude and longitude have been updated (are "fresh").  When
      *         set to TRUE, sets the horizontal components of the Current Position Setpoint
      *         equal to #m_Position. */
-	boolean m_TripletLatLonFinite;
+    osalbool m_TripletLatLonFinite;
 
-	/* Reference point */
+    /* Reference point */
     /** \brief Set to #m_VehicleLocalPositionMsg.RefTimestamp.  When a new Vehicle Local Position
      *         message has been received, MPC detects the new RefTimestamp, causing it to run the
      *         #UpdateRef function. */
-	uint64 m_RefTimestamp;
+    uint64 m_RefTimestamp;
     /** \brief Local projection reference. */
-	struct map_projection_reference_s m_RefPos;
+    struct map_projection_reference_s m_RefPos;
     /** \brief Vehicle local position reference altitude. */
-	float m_RefAlt;
+    float m_RefAlt;
     /** \brief TRUE when the reference altitude is defined in a global reference frame. */
-	boolean m_RefAltIsGlobal;
+    osalbool m_RefAltIsGlobal;
     /** \brief Home yaw angle present when vehicle was taking off (euler). */
-	float m_YawTakeoff;
+    float m_YawTakeoff;
 
-	/* Velocity controller PIDs */
+    /* Velocity controller PIDs */
     /** \brief Position Setpoint PID Proportional (gain) value. */
-	math::Vector3F m_PosP;
+    math::Vector3F m_PosP;
     /** \brief PID Proportional (gain) value.  Used to calculate the thrust component of the
      *         Position Setpoint. */
-	math::Vector3F m_VelP;
+    math::Vector3F m_VelP;
     /** \brief PID Integral value.  Used to calculate the thrust component of the
      *         Position Setpoint. */
-	math::Vector3F m_VelI;
+    math::Vector3F m_VelI;
     /** \brief PID Differential value.  Used to calculate the thrust component of the
      *         Position Setpoint. */
-	math::Vector3F m_VelD;
+    math::Vector3F m_VelD;
     /** \brief Derivative of the velocity X component.  Used to calculate the thrust component of the
      *         Position Setpoint. */
-	Derivative m_VelXDeriv;
+    Derivative m_VelXDeriv;
     /** \brief Derivative of the velocity Y component.  Used to calculate the thrust component of the
      *         Position Setpoint. */
-	Derivative m_VelYDeriv;
+    Derivative m_VelYDeriv;
     /** \brief Derivative of the velocity Z component.  Used to calculate the thrust component of the
      *         Position Setpoint. */
-	Derivative m_VelZDeriv;
+    Derivative m_VelZDeriv;
 
-	/* Limit variables */
+    /* Limit variables */
     /** \brief Horizontal acceleration limit applied in manual mode. */
-	float m_AccelerationStateLimitXY;
+    float m_AccelerationStateLimitXY;
     /** \brief Vertical acceleration limit applied in manual mode. */
-	float m_AccelerationStateLimitZ;
+    float m_AccelerationStateLimitZ;
     /** \brief Horizontal jerk limit in manual mode dependent on stick input. */
-	float m_ManualJerkLimitXY;
+    float m_ManualJerkLimitXY;
     /** \brief Vertical jerk limit in manual mode. */
-	float m_ManualJerkLimitZ;
+    float m_ManualJerkLimitZ;
     /** \brief Equal to XY_VEL_MAX except in auto mode when close to target.  MPC will reduce this value
      *         when close to the target in preparation for a smooth stop. */
-	float m_VelMaxXy;
+    float m_VelMaxXy;
     /** \brief Velocity limit value which gets ramped up during takeoff. */
-	float m_TakeoffVelLimit;
+    float m_TakeoffVelLimit;
 
-	/* Stick input variables */
+    /* Stick input variables */
     /** \brief Manual pitch input low pass filter. */
-	math::LowPassFilter2p m_FilterManualPitch;
+    math::LowPassFilter2p m_FilterManualPitch;
     /** \brief Manual roll input low pass filter. */
-	math::LowPassFilter2p m_FilterManualRoll;
+    math::LowPassFilter2p m_FilterManualRoll;
     /** \brief The previous value of the stick input.  For manual controlled mode to detect
      *         direction change. */
-	math::Vector2F m_StickInputXyPrev;
+    math::Vector2F m_StickInputXyPrev;
     /** \brief Defines what the user intends to do derived from horizontal component of the stick input. */
-	ManualStickInput m_UserIntentionXY;
+    ManualStickInput m_UserIntentionXY;
     /** \brief Defines what the user intends to do derived from vertical component of the stick input. */
-	ManualStickInput m_UserIntentionZ;
+    ManualStickInput m_UserIntentionZ;
     /** \brief Used for braking. */
-	systemlib::Hysteresis m_ManualDirectionChangeHysteresis;
+    systemlib::Hysteresis m_ManualDirectionChangeHysteresis;
 
     /************************************************************************/
     /** \brief Multicopter Position Control (MPC) application entry point
@@ -525,7 +516,7 @@ public:
      **  \endreturns
      **
      *************************************************************************/
-    boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
+    osalbool VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
 
     /************************************************************************/
     /** \brief Initialize the MPC configuration tables.
@@ -870,7 +861,7 @@ public:
     **  \endreturns
     **
     *************************************************************************/
-    boolean InAutoTakeoff(void);
+    osalbool InAutoTakeoff(void);
 
     /************************************************************************/
     /** \brief Apply Velocity Setpoint Slew Rate
@@ -883,7 +874,7 @@ public:
     **       None
     **
     *************************************************************************/
-	void ApplyVelocitySetpointSlewRate(float dt);
+    void ApplyVelocitySetpointSlewRate(float dt);
 
     /************************************************************************/
     /** \brief Get velocity close
@@ -900,7 +891,7 @@ public:
     **  \endreturns
     **
     *************************************************************************/
-	float GetVelClose(const math::Vector2F &UnitPrevToCurrent, const math::Vector2F &UnitCurrentToNext);
+    float GetVelClose(const math::Vector2F &UnitPrevToCurrent, const math::Vector2F &UnitCurrentToNext);
 
     /************************************************************************/
     /** \brief Set manual vertical acceleration
@@ -913,7 +904,7 @@ public:
     **       None
     **
     *************************************************************************/
-	void SetManualAccelerationZ(float &max_acceleration, const float stick_z, const float dt);
+    void SetManualAccelerationZ(float &max_acceleration, const float stick_z, const float dt);
 
     /************************************************************************/
     /** \brief Set manual horizontal acceleration
@@ -926,7 +917,7 @@ public:
     **       None
     **
     *************************************************************************/
-	void SetManualAccelerationXY(math::Vector2F &stick_xy, const float dt);
+    void SetManualAccelerationXY(math::Vector2F &stick_xy, const float dt);
 
     /************************************************************************/
     /** \brief Pilot is commanding a manual takeoff
@@ -946,7 +937,7 @@ public:
     **  \endreturns
     **
     *************************************************************************/
-	boolean ManualWantsTakeoff(void);
+    osalbool ManualWantsTakeoff(void);
 
     /************************************************************************/
     /** \brief Update XY PIDs.
@@ -959,7 +950,7 @@ public:
     **       None
     **
     *************************************************************************/
-	void UpdateXyPids(MPC_SetPidCmd_t* PidMsg);
+    void UpdateXyPids(MPC_SetPidCmd_t* PidMsg);
 
     /************************************************************************/
     /** \brief Update Z PIDs.
@@ -972,7 +963,7 @@ public:
     **       None
     **
     *************************************************************************/
-	void UpdateZPids(MPC_SetPidCmd_t* PidMsg);
+    void UpdateZPids(MPC_SetPidCmd_t* PidMsg);
 
     /************************************************************************/
     /** \brief Update the hold dead zone (HOLD_DZ)
@@ -985,7 +976,7 @@ public:
     **       None
     **
     *************************************************************************/
-	void UpdateHoldDz(MPC_SetDzCmd_t* DzMsg);
+    void UpdateHoldDz(MPC_SetDzCmd_t* DzMsg);
 
     /************************************************************************/
     /** \brief Set manual stick EXPO (XY_MAN_EXPO and Z_MAN_EXPO)
@@ -997,8 +988,8 @@ public:
     **  \par Assumptions, External Events, and Notes:
     **       None
     **
-    *************************************************************************/	
-	void UpdateStickExpo(MPC_SetStickExpoCmd_t* ExpoMsg);
+    *************************************************************************/    
+    void UpdateStickExpo(MPC_SetStickExpoCmd_t* ExpoMsg);
 
     /************************************************************************/
     /** \brief Update the takeoff ramp time (TKO_RAMP_T)
@@ -1009,8 +1000,8 @@ public:
     **  \par Assumptions, External Events, and Notes:
     **       None
     **
-    *************************************************************************/	
-	void UpdateTakeoffRampTime(MPC_SetTkoRampCmd_t* TkoRampMsg);
+    *************************************************************************/    
+    void UpdateTakeoffRampTime(MPC_SetTkoRampCmd_t* TkoRampMsg);
 
     /************************************************************************/
     /** \brief Validate MPC configuration table

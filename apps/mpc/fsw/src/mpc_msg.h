@@ -86,7 +86,7 @@ extern "C" {
 **
 **  \sa #MPC_RESET_CC
 */
-#define MPC_NOOP_CC                 (0)
+#define MPC_NOOP_CC                              (0)
 
 /** \mpccmd Reset Counters
 **  
@@ -119,7 +119,7 @@ extern "C" {
 **
 **  \sa #MPC_NOOP_CC
 */
-#define MPC_RESET_CC                (1)
+#define MPC_RESET_CC                             (1)
 
 /** \mpccmd
 **
@@ -149,7 +149,7 @@ extern "C" {
 **
 **  \sa #MPC_NOOP_CC
 */
-#define MPC_SET_XY_PID_CC           (2)
+#define MPC_SET_XY_PID_CC                         (2)
 
 /** \mpccmd
 **
@@ -179,7 +179,7 @@ extern "C" {
 **
 **  \sa #MPC_NOOP_CC
 */
-#define MPC_SET_Z_PID_CC            (3)
+#define MPC_SET_Z_PID_CC                         (3)
 
 /** \mpccmd
 **
@@ -209,7 +209,7 @@ extern "C" {
 **
 **  \sa #MPC_SEND_DIAG_CC
 */
-#define MPC_SEND_DIAG_CC            (4)
+#define MPC_SEND_DIAG_CC                         (4)
 
 /** \mpccmd
 **
@@ -239,7 +239,7 @@ extern "C" {
 **
 **  \sa #MPC_SET_HOLD_DZ_CC
 */
-#define MPC_SET_HOLD_DZ_CC            (5)
+#define MPC_SET_HOLD_DZ_CC                       (5)
 
 /** \mpccmd
 **
@@ -269,7 +269,7 @@ extern "C" {
 **
 **  \sa #MPC_SET_STICK_EXPO
 */
-#define MPC_SET_STICK_EXPO_CC            (6)
+#define MPC_SET_STICK_EXPO_CC                    (6)
 
 /** \mpccmd
 **
@@ -299,11 +299,20 @@ extern "C" {
 **
 **  \sa #MPC_SET_STICK_EXPO
 */
-#define MPC_SET_TKO_RAMP_CC              (7)
+#define MPC_SET_TKO_RAMP_CC                      (7)
 
 /************************************************************************
 ** Local Structure Declarations
 *************************************************************************/
+
+enum ManualStickInput
+{
+    BRAKE            = 0,
+    DIRECTION_CHANGE = 1,
+    ACCELERATION     = 2,
+    DECELERATION     = 3,
+    NONE             = 4
+};
 
 /** 
 **  \brief No Arguments Command
@@ -320,7 +329,7 @@ typedef struct
 */
 typedef struct
 {
-	/** \brief cFE SB Tlm Msg Hdr */
+    /** \brief cFE SB Tlm Msg Hdr */
     uint8              TlmHeader[CFE_SB_TLM_HDR_SIZE];
 
     /** \mpctlmmnemonic \MPC_CMDACPTCNT
@@ -328,65 +337,65 @@ typedef struct
     uint8              usCmdCnt;   
 
     /** \mpctlmmnemonic \MPC_CMDRJCTCNT
-		\brief Count of failed commands */
+        \brief Count of failed commands */
     uint8              usCmdErrCnt;
 
-    /** \brief  */
-	float              AccelerationStateLimitXY;
+    /** \brief See #m_AccelerationStateLimitXY */
+    float              AccelerationStateLimitXY;
 
-	/** \brief  */
-	float              AccelerationStateLimitZ;
+    /** \brief See #m_AccelerationStateLimitZ */
+    float              AccelerationStateLimitZ;
 
-	/** \brief  */
-	float              ManualJerkLimitXY;
+    /** \brief See #m_ManualJerkLimitXY */
+    float              ManualJerkLimitXY;
 
-	/** \brief  */
-	float              ManualJerkLimitZ;
+    /** \brief See #m_ManualJerkLimitZ */
+    float              ManualJerkLimitZ;
 
-	/** \brief  */
-	float              TakeoffVelLimit;
+    /** \brief See #m_TakeoffVelLimit */
+    float              TakeoffVelLimit;
 
-	/** \brief  */
-	float              VelMaxXy;
+    /** \brief See #m_VelMaxXy */
+    float              VelMaxXy;
 
-	/** \brief  */
-	float              YawTakeoff;
+    /** \brief See #m_YawTakeoff */
+    float              YawTakeoff;
 
-	/** \brief  */
-	float              Yaw;
+    /** \brief See #m_Yaw */
+    float              Yaw;
 
-	/** \brief Defines what the user intends to do derived from the stick input in xy axis */
-	uint8   UserIntentionXY;
+    /** \brief See #m_UserIntentionXY */
+    ManualStickInput   UserIntentionXY;
 
-	/** \brief Defines what the user intends to do derived from the stick input in z axis */
-	uint8   UserIntentionZ;
+    /** \brief See #m_UserIntentionZ */
+    ManualStickInput   UserIntentionZ;
 
-	/** \brief  */
-	boolean            ModeAuto;
+    /** \brief See #m_ModeAuto */
+    osalbool            ModeAuto;
 
-	/** \brief  */
-	boolean            PositionHoldEngaged;
+    /** \brief See #m_PositionHoldEngaged */
+    osalbool            PositionHoldEngaged;
 
-	/** \brief  */
-	boolean            AltitudeHoldEngaged;
+    /** \brief See #m_AltitudeHoldEngaged */
+    osalbool            AltitudeHoldEngaged;
 
-	/** \brief  */
-	boolean            RunPosControl;
+    /** \brief See #m_RunPosControl */
+    osalbool            RunPosControl;
 
-	/** \brief  */
-	boolean            RunAltControl;
+    /** \brief See #m_RunAltControl */
+    osalbool            RunAltControl;
 
-	/** \brief  */
-	boolean            InTakeoff;
+    /** \brief See #m_InTakeoff */
+    osalbool            InTakeoff;
 
-	/** \brief  */
-	boolean            TripletLatLonFinite;
+    /** \brief See #m_TripletLatLonFinite */
+    osalbool            TripletLatLonFinite;
 
-	/** \brief  */
-	boolean            WasLanded;
+    /** \brief See #m_WasLanded */
+    osalbool            WasLanded;
 
-	/** \brief  */
-	boolean            WasArmed;
+    /** \brief See #m_WasArmed */
+    osalbool            WasArmed;
 
 } MPC_HkTlm_t;
 
@@ -397,142 +406,150 @@ typedef struct
 {
     uint8           TlmHeader[CFE_SB_TLM_HDR_SIZE];
 
-    /** \brief  */
-	float            Z_P;
+    /** \brief See #MPC_ConfigTbl_t.Z_P */
+    float            Z_P;
 
-    /** \brief  */
-	float            Z_VEL_P;
+    /** \brief See #MPC_ConfigTbl_t.Z_VEL_P */
+    float            Z_VEL_P;
 
-    /** \brief  */
-	float            Z_VEL_I;
+    /** \brief See #MPC_ConfigTbl_t.Z_VEL_I */
+    float            Z_VEL_I;
 
-    /** \brief  */
-	float            Z_VEL_D;
+    /** \brief See #MPC_ConfigTbl_t.Z_VEL_D */
+    float            Z_VEL_D;
 
-    /** \brief  */
-	float            Z_VEL_MAX_UP;
+    /** \brief See #MPC_ConfigTbl_t.Z_VEL_MAX_UP */
+    float            Z_VEL_MAX_UP;
 
-    /** \brief  */
-	float            Z_VEL_MAX_DN;
+    /** \brief See #MPC_ConfigTbl_t.Z_VEL_MAX_DN */
+    float            Z_VEL_MAX_DN;
 
-    /** \brief  */
-	float            Z_FF;
+    /** \brief See #MPC_ConfigTbl_t.Z_FF */
+    float            Z_FF;
 
-    /** \brief  */
-	float            XY_P;
+    /** \brief See #MPC_ConfigTbl_t.XY_P */
+    float            XY_P;
 
-    /** \brief  */
-	float            XY_VEL_P;
+    /** \brief See #MPC_ConfigTbl_t.XY_VEL_P */
+    float            XY_VEL_P;
 
-    /** \brief  */
-	float            XY_VEL_I;
+    /** \brief See #MPC_ConfigTbl_t.XY_VEL_I */
+    float            XY_VEL_I;
 
-    /** \brief  */
-	float            XY_VEL_D;
+    /** \brief See #MPC_ConfigTbl_t.XY_VEL_D */
+    float            XY_VEL_D;
 
-    /** \brief  */
-	float            XY_CRUISE;
+    /** \brief See #MPC_ConfigTbl_t.XY_CRUISE */
+    float            XY_CRUISE;
 
-    /** \brief  */
-	float            MPC_VEL_MANUAL;
+    /** \brief See #MPC_ConfigTbl_t.MPC_VEL_MANUAL */
+    float            MPC_VEL_MANUAL;
 
-    /** \brief  */
-	float            XY_VEL_MAX;
+    /** \brief See #MPC_ConfigTbl_t.XY_VEL_MAX */
+    float            XY_VEL_MAX;
 
-    /** \brief  */
-	float            XY_FF;
+    /** \brief See #MPC_ConfigTbl_t.XY_FF */
+    float            XY_FF;
 
-    /** \brief  */
-	float            TILTMAX_AIR;
+    /** \brief See #MPC_ConfigTbl_t.TILTMAX_AIR */
+    float            TILTMAX_AIR;
 
-    /** \brief  */
-	float            ACC_HOR_MAX;
+    /** \brief See #MPC_ConfigTbl_t.ACC_HOR_MAX */
+    float            ACC_HOR_MAX;
 
-    /** \brief  */
-	float            ACC_UP_MAX;
+    /** \brief See #MPC_ConfigTbl_t.ACC_UP_MAX */
+    float            ACC_UP_MAX;
 
-    /** \brief  */
-	float            ACC_DOWN_MAX;
+    /** \brief See #MPC_ConfigTbl_t.ACC_DOWN_MAX */
+    float            ACC_DOWN_MAX;
 
-    /** \brief  */
-	float            MPC_DEC_HOR_SLOW;
+    /** \brief See #MPC_ConfigTbl_t.MPC_DEC_HOR_SLOW */
+    float            MPC_DEC_HOR_SLOW;
 
-    /** \brief  */
-	float            MPC_HOLD_DZ;
-	
-    /** \brief  */
-	float            XY_MAN_EXPO;
-	
-    /** \brief  */
-	float            Z_MAN_EXPO;
-	
-	/** \brief  */
-	float            TKO_RAMP_T;
+    /** \brief See #MPC_ConfigTbl_t.MPC_HOLD_DZ */
+    float            MPC_HOLD_DZ;
+
+    /** \brief See #MPC_ConfigTbl_t.XY_MAN_EXPO */
+    float            XY_MAN_EXPO;
+
+    /** \brief See #MPC_ConfigTbl_t.Z_MAN_EXPO */
+    float            Z_MAN_EXPO;
+
+    /** \brief See #MPC_ConfigTbl_t.TKO_RAMP_T */
+    float            TKO_RAMP_T;
 
 } MPC_DiagPacket_t;
 
 /**
 **  \brief MPC set PID cmd
+**
+**  \sa #MPC_SET_XY_PID_CC, #MPC_SET_Z_PID_CC
 */
 typedef struct
 {
-	/** \brief cFE SB Cmd Msg Hdr */
-	uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
+    /** \brief cFE SB Cmd Msg Hdr */
+    uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
 
-	/** \brief PID Gain */
-	float  PidGain;
+    /** \brief PID Gain */
+    float  PidGain;
 
-	/** \brief PID P value */
-	float  PidVelP;
+    /** \brief PID P value */
+    float  PidVelP;
 
-	/** \brief PID I value */
-	float  PidVelI;
+    /** \brief PID I value */
+    float  PidVelI;
 
-	/** \brief PID D value */
-	float  PidVelD;
+    /** \brief PID D value */
+    float  PidVelD;
 
 } MPC_SetPidCmd_t;
 
 /**
 **  \brief MPC set Hold DZ
+**
+**  \sa #MPC_SET_HOLD_DZ_CC
 */
 typedef struct
 {
-	/** \brief cFE SB Cmd Msg Hdr */
-	uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
+    /** \brief cFE SB Cmd Msg Hdr */
+    uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
 
-	/** \brief PID Gain */
-	float  Deadzone;
+    /** \brief Deadzone */
+    float  Deadzone;
 
 } MPC_SetDzCmd_t;
 
 /**
 **  \brief MPC set stick exponential curve values
+**
+**  \sa #MPC_SET_STICK_EXPO_CC
 */
 typedef struct
 {
-	/** \brief cFE SB Cmd Msg Hdr */
-	uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
+    /** \brief cFE SB Cmd Msg Hdr */
+    uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
 
-	/** \brief XY Expo */
-	float  XY;
-	
-	/** \brief Z Expo */
-	float  Z;
+    /** \brief XY Expo */
+    float  XY;
+    
+    /** \brief Z Expo */
+    float  Z;
 
 } MPC_SetStickExpoCmd_t;
 
 /**
-**  \brief MPC set take ramp time
+**  \brief MPC set takeoff ramp time
+**
+**  \sa #MPC_SET_TKO_RAMP_CC
 */
 typedef struct
 {
-	/** \brief cFE SB Cmd Msg Hdr */
-	uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
+    /** \brief cFE SB Cmd Msg Hdr */
+    uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
 
-	/** \brief XY Expo */
-	float  TKO_RAMP_T;
-	
+    /** \brief XY Expo */
+    float  TKO_RAMP_T;
+    
 } MPC_SetTkoRampCmd_t;
 
 #ifdef __cplusplus

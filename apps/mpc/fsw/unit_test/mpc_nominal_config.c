@@ -259,19 +259,6 @@ MPC_ConfigTbl_t MPC_NominalConfigTbl =
 	5.0f,
 
 	/**
-	 * MPC_VEL_MAN_MAX
-	 * Nominal horizontal velocity for manual controlled mode
-	 *
-	 * @unit m/s
-	 * @min 3.0
-	 * @max 20.0
-	 * @increment 1
-	 * @decimal 2
-	 * @group Multicopter Position Control
-	 */
-	10.0f,
-
-	/**
 	 * MPC_TARGET_THRE
 	 * Distance Threshold Horizontal Auto
 	 *
@@ -453,19 +440,6 @@ MPC_ConfigTbl_t MPC_NominalConfigTbl =
 	10.0f,
 
 	/**
-	 * MPC_DEC_HOR_MAX
-	 * Maximum horizonal braking deceleration in velocity controlled modes
-	 *
-	 * @unit m/s/s
-	 * @min 2.0
-	 * @max 15.0
-	 * @increment 1
-	 * @decimal 2
-	 * @group Multicopter Position Control
-	 */
-	10.0f,
-
-	/**
 	 * MPC_ACC_UP_MAX
 	 * Maximum vertical acceleration in velocity controlled modes upward
 	 *
@@ -597,10 +571,104 @@ MPC_ConfigTbl_t MPC_NominalConfigTbl =
 	 */
 	0,
 
-	/**
-	 * MIS_LTRMIN_ALT
-	 */
-	1.20000005
+    /**
+     * MPC_CRUISE_90
+     * Cruise speed when angle prev-current/current-next setpoint
+     * is 90 degrees. It should be lower than MPC_XY_CRUISE.
+     *
+     * Applies only in AUTO modes (includes
+     * also RTL / hold / etc.)
+     *
+     * @unit m/s
+     * @min 1.0
+     * @increment 1
+     * @decimal 2
+     * @group Multicopter Position Control
+     */
+    3.0f,
+
+    /**
+     * MPC_JERK_MAX
+     * Maximum jerk in manual controlled mode for BRAKING to zero.
+     * If this value is below MPC_JERK_MIN, the acceleration limit in xy and z
+     * is MPC_ACC_HOR_MAX and MPC_ACC_UP_MAX respectively instantaneously when the
+     * user demands brake (=zero stick input).
+     * Otherwise the acceleration limit increases from current acceleration limit
+     * towards MPC_ACC_HOR_MAX/MPC_ACC_UP_MAX with jerk limit
+     *
+     * @unit m/s/s/s
+     * @min 0.0
+     * @max 15.0
+     * @increment 1
+     * @decimal 2
+     * @group Multicopter Position Control
+     */
+    10.0f,
+
+    /**
+     * MPC_JERK_MIN
+     * Minimum jerk in manual controlled mode for BRAKING to zero
+     *
+     * @unit m/s/s/s
+     * @min 0.5
+     * @max 10.0
+     * @increment 1
+     * @decimal 2
+     * @group Multicopter Position Control
+     */
+    0.0f,
+
+    /**
+     * MPC_DEC_HOR_SLOW
+     * Slow horizontal manual deceleration for manual mode
+     *
+     * @unit m/s/s
+     * @min 0.5
+     * @max 10.0
+     * @increment 1
+     * @decimal 2
+     * @group Multicopter Position Control
+     */
+    3.0f,
+
+    /**
+     * MPC_VEL_MANUAL
+     * Maximum horizontal velocity setpoint for manual controlled mode
+     * If velocity setpoint larger than MPC_XY_VEL_MAX is set, then
+     * the setpoint will be capped to MPC_XY_VEL_MAX
+     *
+     * @unit m/s
+     * @min 3.0
+     * @max 20.0
+     * @increment 1
+     * @decimal 2
+     * @group Multicopter Position Control
+     */
+    7.0f,
+
+    /**
+     * NAV_ACC_RAD
+     *
+     * Default acceptance radius, overridden by acceptance radius of waypoint if set.
+     * For fixed wing the L1 turning distance is used for horizontal acceptance.
+     *
+     * @unit m
+     * @min 0.05
+     * @max 200.0
+     * @decimal 1
+     * @increment 0.5
+     * @group Mission
+     */
+    2.0f,
+
+    /** NAV_MIS_YAW_ERR
+     *
+     *  \brief Max yaw error in degrees needed for waypoint heading acceptance.
+     *
+     *  \par Limits:
+     *       Min > Max (incr.) 0 > 90 , default 12.0.
+     */
+    12.0f
 };
 
 /*
