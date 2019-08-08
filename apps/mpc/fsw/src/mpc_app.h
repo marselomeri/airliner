@@ -65,6 +65,17 @@ extern "C" {
 /************************************************************************
  ** Local Defines
  *************************************************************************/
+
+
+/** \brief Pipe depth for the data pipe
+*/
+#define MPC_DATA_PIPE_DEPTH            (8)
+
+/** \brief Pipe name for the data pipe */
+#define MPC_DATA_PIPE_NAME             ("MPC_DATA_PIPE")
+
+
+
 enum ManualStickInput {
 	BRAKE = 0,
 	DIRECTION_CHANGE = 1,
@@ -92,6 +103,9 @@ public:
 
     /** \brief Command Pipe ID */
     CFE_SB_PipeId_t CmdPipeId;
+
+    /** \brief Data Pipe ID */
+    CFE_SB_PipeId_t DataPipeId;
 
     /* Task-related */
 
@@ -317,6 +331,19 @@ public:
      **
      *************************************************************************/
     int32 RcvSchPipeMsg(int32 iBlocking);
+
+    /************************************************************************/
+    /** \brief Multicopter Position Control Task incoming data processing
+     **
+     **  \par Description
+     **       This function processes incoming data subscribed
+     **       by MPC application
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
+    osalbool ProcessDataPipe(void);
 
     /************************************************************************/
     /** \brief Multicopter Position Control Task incoming command processing

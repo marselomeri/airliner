@@ -111,78 +111,6 @@ int32 MPC::InitPipe()
 					 (unsigned int)iStatus);
             goto MPC_InitPipe_Exit_Tag;
         }
-
-        iStatus = CFE_SB_SubscribeEx(PX4_CONTROL_STATE_MID, SchPipeId, CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS)
-        {
-            (void) CFE_EVS_SendEvent(MPC_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-					 "CMD Pipe failed to subscribe to PX4_CONTROL_STATE_MID. (0x%08lX)",
-					 iStatus);
-            goto MPC_InitPipe_Exit_Tag;
-        }
-
-        iStatus = CFE_SB_SubscribeEx(PX4_MANUAL_CONTROL_SETPOINT_MID, SchPipeId, CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS)
-        {
-            (void) CFE_EVS_SendEvent(MPC_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-					 "CMD Pipe failed to subscribe to PX4_MANUAL_CONTROL_SETPOINT_MID. (0x%08lX)",
-					 iStatus);
-            goto MPC_InitPipe_Exit_Tag;
-        }
-
-        iStatus = CFE_SB_SubscribeEx(PX4_HOME_POSITION_MID, SchPipeId, CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS)
-        {
-            (void) CFE_EVS_SendEvent(MPC_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-					 "CMD Pipe failed to subscribe to PX4_HOME_POSITION_MID. (0x%08lX)",
-					 iStatus);
-            goto MPC_InitPipe_Exit_Tag;
-        }
-
-        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_CONTROL_MODE_MID, SchPipeId, CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS)
-        {
-            (void) CFE_EVS_SendEvent(MPC_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-					 "CMD Pipe failed to subscribe to PX4_VEHICLE_CONTROL_MODE_MID. (0x%08lX)",
-					 iStatus);
-            goto MPC_InitPipe_Exit_Tag;
-        }
-
-        iStatus = CFE_SB_SubscribeEx(PX4_POSITION_SETPOINT_TRIPLET_MID, SchPipeId, CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS)
-        {
-            (void) CFE_EVS_SendEvent(MPC_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-					 "CMD Pipe failed to subscribe to PX4_POSITION_SETPOINT_TRIPLET_MID. (0x%08lX)",
-					 iStatus);
-            goto MPC_InitPipe_Exit_Tag;
-        }
-
-        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_STATUS_MID, SchPipeId, CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS)
-        {
-            (void) CFE_EVS_SendEvent(MPC_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-					 "CMD Pipe failed to subscribe to PX4_VEHICLE_STATUS_MID. (0x%08lX)",
-					 iStatus);
-            goto MPC_InitPipe_Exit_Tag;
-        }
-
-        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_LAND_DETECTED_MID, SchPipeId, CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS)
-        {
-            (void) CFE_EVS_SendEvent(MPC_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-					 "CMD Pipe failed to subscribe to PX4_VEHICLE_LAND_DETECTED_MID. (0x%08lX)",
-					 iStatus);
-            goto MPC_InitPipe_Exit_Tag;
-        }
-
-        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_LOCAL_POSITION_MID, SchPipeId, CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS)
-        {
-            (void) CFE_EVS_SendEvent(MPC_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-					 "CMD Pipe failed to subscribe to PX4_VEHICLE_LOCAL_POSITION_MID. (0x%08lX)",
-					 iStatus);
-            goto MPC_InitPipe_Exit_Tag;
-        }
     }
     else
     {
@@ -217,6 +145,92 @@ int32 MPC::InitPipe()
         goto MPC_InitPipe_Exit_Tag;
     }
 
+    /* Init data pipe and subscribe to command messages */
+    iStatus = CFE_SB_CreatePipe(&DataPipeId,
+    		MPC_DATA_PIPE_DEPTH,
+			MPC_DATA_PIPE_NAME);
+    if (iStatus == CFE_SUCCESS)
+    {
+        iStatus = CFE_SB_SubscribeEx(PX4_CONTROL_STATE_MID, DataPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(MPC_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+					 "DATA Pipe failed to subscribe to PX4_CONTROL_STATE_MID. (0x%08lX)",
+					 iStatus);
+            goto MPC_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(PX4_MANUAL_CONTROL_SETPOINT_MID, DataPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(MPC_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+					 "DATA Pipe failed to subscribe to PX4_MANUAL_CONTROL_SETPOINT_MID. (0x%08lX)",
+					 iStatus);
+            goto MPC_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(PX4_HOME_POSITION_MID, DataPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(MPC_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+					 "DATA Pipe failed to subscribe to PX4_HOME_POSITION_MID. (0x%08lX)",
+					 iStatus);
+            goto MPC_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_CONTROL_MODE_MID, DataPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(MPC_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+					 "DATA Pipe failed to subscribe to PX4_VEHICLE_CONTROL_MODE_MID. (0x%08lX)",
+					 iStatus);
+            goto MPC_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(PX4_POSITION_SETPOINT_TRIPLET_MID, DataPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(MPC_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+					 "DATA Pipe failed to subscribe to PX4_POSITION_SETPOINT_TRIPLET_MID. (0x%08lX)",
+					 iStatus);
+            goto MPC_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_STATUS_MID, DataPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(MPC_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+					 "DATA Pipe failed to subscribe to PX4_VEHICLE_STATUS_MID. (0x%08lX)",
+					 iStatus);
+            goto MPC_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_LAND_DETECTED_MID, DataPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(MPC_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+					 "DATA Pipe failed to subscribe to PX4_VEHICLE_LAND_DETECTED_MID. (0x%08lX)",
+					 iStatus);
+            goto MPC_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_LOCAL_POSITION_MID, DataPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(MPC_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+					 "DATA Pipe failed to subscribe to PX4_VEHICLE_LOCAL_POSITION_MID. (0x%08lX)",
+					 iStatus);
+            goto MPC_InitPipe_Exit_Tag;
+        }
+    }
+    else
+    {
+        (void) CFE_EVS_SendEvent(MPC_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
+			 "Failed to create DATA pipe (0x%08lX)",
+			 iStatus);
+        goto MPC_InitPipe_Exit_Tag;
+    }
+
 MPC_InitPipe_Exit_Tag:
     return iStatus;
 }
@@ -246,15 +260,15 @@ void MPC::InitData()
 		PX4_VEHICLE_LOCAL_POSITION_SETPOINT_MID, sizeof(PX4_VehicleLocalPositionSetpointMsg_t), TRUE);
 
 	/* Clear input messages */
-	memset(&m_ControlStateMsg, 0, sizeof(m_ControlStateMsg));
-	memset(&m_ManualControlSetpointMsg, 0, sizeof(m_ManualControlSetpointMsg));
-	memset(&m_HomePositionMsg, 0, sizeof(m_HomePositionMsg));
-	memset(&m_VehicleControlModeMsg, 0, sizeof(m_VehicleControlModeMsg));
-	memset(&m_PositionSetpointTripletMsg, 0, sizeof(m_PositionSetpointTripletMsg));
-	memset(&m_VehicleStatusMsg, 0, sizeof(m_VehicleStatusMsg));
-	memset(&m_VehicleLandDetectedMsg, 0, sizeof(m_VehicleLandDetectedMsg));
-	memset(&m_VehicleLocalPositionMsg, 0, sizeof(m_VehicleLocalPositionMsg));
-	memset(&m_VehicleLocalPositionSetpointMsg, 0, sizeof(m_VehicleLocalPositionSetpointMsg));
+	CFE_PSP_MemSet(&m_ControlStateMsg, 0, sizeof(m_ControlStateMsg));
+	CFE_PSP_MemSet(&m_ManualControlSetpointMsg, 0, sizeof(m_ManualControlSetpointMsg));
+	CFE_PSP_MemSet(&m_HomePositionMsg, 0, sizeof(m_HomePositionMsg));
+	CFE_PSP_MemSet(&m_VehicleControlModeMsg, 0, sizeof(m_VehicleControlModeMsg));
+	CFE_PSP_MemSet(&m_PositionSetpointTripletMsg, 0, sizeof(m_PositionSetpointTripletMsg));
+	CFE_PSP_MemSet(&m_VehicleStatusMsg, 0, sizeof(m_VehicleStatusMsg));
+	CFE_PSP_MemSet(&m_VehicleLandDetectedMsg, 0, sizeof(m_VehicleLandDetectedMsg));
+	CFE_PSP_MemSet(&m_VehicleLocalPositionMsg, 0, sizeof(m_VehicleLocalPositionMsg));
+	CFE_PSP_MemSet(&m_VehicleLocalPositionSetpointMsg, 0, sizeof(m_VehicleLocalPositionSetpointMsg));
 
 	m_ResetCounterZ = 0;
 	m_ResetCounterXy = 0;
@@ -408,48 +422,14 @@ int32 MPC::RcvSchPipeMsg(int32 iBlocking)
             case MPC_WAKEUP_MID:
                 /* If vehicle local position has been received begin
                  * cyclic ops. */
-                Execute();
+                if(ProcessDataPipe() == true) {
+                	Execute();
+                }
                 break;
 
             case MPC_SEND_HK_MID:
                 ProcessCmdPipe();
                 ReportHousekeeping();
-                break;
-
-            case PX4_CONTROL_STATE_MID:
-            	ProcessControlStateMsg();
-                memcpy(&m_ControlStateMsg, MsgPtr, sizeof(m_ControlStateMsg));
-                break;
-
-            case PX4_MANUAL_CONTROL_SETPOINT_MID:
-                memcpy(&m_ManualControlSetpointMsg, MsgPtr, sizeof(m_ManualControlSetpointMsg));
-                break;
-
-            case PX4_HOME_POSITION_MID:
-                memcpy(&m_HomePositionMsg, MsgPtr, sizeof(m_HomePositionMsg));
-                break;
-
-            case PX4_VEHICLE_CONTROL_MODE_MID:
-                memcpy(&m_VehicleControlModeMsg, MsgPtr, sizeof(m_VehicleControlModeMsg));
-                break;
-
-            case PX4_POSITION_SETPOINT_TRIPLET_MID:
-                memcpy(&m_PositionSetpointTripletMsg, MsgPtr, sizeof(m_PositionSetpointTripletMsg));
-                ProcessPositionSetpointTripletMsg();
-                break;
-
-            case PX4_VEHICLE_STATUS_MID:
-                memcpy(&m_VehicleStatusMsg, MsgPtr, sizeof(m_VehicleStatusMsg));
-
-                break;
-
-            case PX4_VEHICLE_LAND_DETECTED_MID:
-                memcpy(&m_VehicleLandDetectedMsg, MsgPtr, sizeof(m_VehicleLandDetectedMsg));
-                break;
-
-            case PX4_VEHICLE_LOCAL_POSITION_MID:
-                memcpy(&m_VehicleLocalPositionMsg, MsgPtr, sizeof(m_VehicleLocalPositionMsg));
-                ProcessVehicleLocalPositionMsg();
                 break;
 
             default:
@@ -481,6 +461,87 @@ int32 MPC::RcvSchPipeMsg(int32 iBlocking)
     return iStatus;
 }
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Process Incoming Commands                                       */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+osalbool MPC::ProcessDataPipe()
+{
+    int32 iStatus = CFE_SUCCESS;
+    CFE_SB_Msg_t*   MsgPtr=NULL;
+    CFE_SB_MsgId_t  MsgId;
+
+    /* Process command messages until the pipe is empty */
+    while (1)
+    {
+        iStatus = CFE_SB_RcvMsg(&MsgPtr, DataPipeId, CFE_SB_POLL);
+        if(iStatus == CFE_SUCCESS)
+        {
+            MsgId = CFE_SB_GetMsgId(MsgPtr);
+            switch (MsgId)
+            {
+				case PX4_CONTROL_STATE_MID:
+					ProcessControlStateMsg();
+					CFE_PSP_MemCpy(&m_ControlStateMsg, MsgPtr, sizeof(m_ControlStateMsg));
+					break;
+
+				case PX4_MANUAL_CONTROL_SETPOINT_MID:
+					CFE_PSP_MemCpy(&m_ManualControlSetpointMsg, MsgPtr, sizeof(m_ManualControlSetpointMsg));
+					break;
+
+				case PX4_HOME_POSITION_MID:
+					CFE_PSP_MemCpy(&m_HomePositionMsg, MsgPtr, sizeof(m_HomePositionMsg));
+					break;
+
+				case PX4_VEHICLE_CONTROL_MODE_MID:
+					CFE_PSP_MemCpy(&m_VehicleControlModeMsg, MsgPtr, sizeof(m_VehicleControlModeMsg));
+					break;
+
+				case PX4_POSITION_SETPOINT_TRIPLET_MID:
+					CFE_PSP_MemCpy(&m_PositionSetpointTripletMsg, MsgPtr, sizeof(m_PositionSetpointTripletMsg));
+					ProcessPositionSetpointTripletMsg();
+					break;
+
+				case PX4_VEHICLE_STATUS_MID:
+					CFE_PSP_MemCpy(&m_VehicleStatusMsg, MsgPtr, sizeof(m_VehicleStatusMsg));
+
+					break;
+
+				case PX4_VEHICLE_LAND_DETECTED_MID:
+					CFE_PSP_MemCpy(&m_VehicleLandDetectedMsg, MsgPtr, sizeof(m_VehicleLandDetectedMsg));
+					break;
+
+				case PX4_VEHICLE_LOCAL_POSITION_MID:
+					CFE_PSP_MemCpy(&m_VehicleLocalPositionMsg, MsgPtr, sizeof(m_VehicleLocalPositionMsg));
+					ProcessVehicleLocalPositionMsg();
+					break;
+
+                default:
+                    /* Bump the command error counter for an unknown command.
+                     * (This should only occur if it was subscribed to with this
+                     *  pipe, but not handled in this switch-case.) */
+                    HkTlm.usCmdErrCnt++;
+                    (void) CFE_EVS_SendEvent(MPC_MSGID_ERR_EID, CFE_EVS_ERROR,
+                                      "Recvd invalid DATA msgId (0x%04X)", (unsigned short)MsgId);
+                    break;
+            }
+        }
+        else if (iStatus == CFE_SB_NO_MESSAGE)
+        {
+            break;
+        }
+        else
+        {
+            (void) CFE_EVS_SendEvent(MPC_RCVMSG_ERR_EID, CFE_EVS_ERROR,
+                  "DATA pipe read error (0x%08lX)", iStatus);
+            break;
+        }
+    }
+
+    return true;
+}
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
