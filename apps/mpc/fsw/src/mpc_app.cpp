@@ -260,15 +260,15 @@ void MPC::InitData()
 		PX4_VEHICLE_LOCAL_POSITION_SETPOINT_MID, sizeof(PX4_VehicleLocalPositionSetpointMsg_t), TRUE);
 
 	/* Clear input messages */
-	memset(&m_ControlStateMsg, 0, sizeof(m_ControlStateMsg));
-	memset(&m_ManualControlSetpointMsg, 0, sizeof(m_ManualControlSetpointMsg));
-	memset(&m_HomePositionMsg, 0, sizeof(m_HomePositionMsg));
-	memset(&m_VehicleControlModeMsg, 0, sizeof(m_VehicleControlModeMsg));
-	memset(&m_PositionSetpointTripletMsg, 0, sizeof(m_PositionSetpointTripletMsg));
-	memset(&m_VehicleStatusMsg, 0, sizeof(m_VehicleStatusMsg));
-	memset(&m_VehicleLandDetectedMsg, 0, sizeof(m_VehicleLandDetectedMsg));
-	memset(&m_VehicleLocalPositionMsg, 0, sizeof(m_VehicleLocalPositionMsg));
-	memset(&m_VehicleLocalPositionSetpointMsg, 0, sizeof(m_VehicleLocalPositionSetpointMsg));
+	CFE_PSP_MemSet(&m_ControlStateMsg, 0, sizeof(m_ControlStateMsg));
+	CFE_PSP_MemSet(&m_ManualControlSetpointMsg, 0, sizeof(m_ManualControlSetpointMsg));
+	CFE_PSP_MemSet(&m_HomePositionMsg, 0, sizeof(m_HomePositionMsg));
+	CFE_PSP_MemSet(&m_VehicleControlModeMsg, 0, sizeof(m_VehicleControlModeMsg));
+	CFE_PSP_MemSet(&m_PositionSetpointTripletMsg, 0, sizeof(m_PositionSetpointTripletMsg));
+	CFE_PSP_MemSet(&m_VehicleStatusMsg, 0, sizeof(m_VehicleStatusMsg));
+	CFE_PSP_MemSet(&m_VehicleLandDetectedMsg, 0, sizeof(m_VehicleLandDetectedMsg));
+	CFE_PSP_MemSet(&m_VehicleLocalPositionMsg, 0, sizeof(m_VehicleLocalPositionMsg));
+	CFE_PSP_MemSet(&m_VehicleLocalPositionSetpointMsg, 0, sizeof(m_VehicleLocalPositionSetpointMsg));
 
 	m_ResetCounterZ = 0;
 	m_ResetCounterXy = 0;
@@ -484,37 +484,37 @@ osalbool MPC::ProcessDataPipe()
             {
 				case PX4_CONTROL_STATE_MID:
 					ProcessControlStateMsg();
-					memcpy(&m_ControlStateMsg, MsgPtr, sizeof(m_ControlStateMsg));
+					CFE_PSP_MemCpy(&m_ControlStateMsg, MsgPtr, sizeof(m_ControlStateMsg));
 					break;
 
 				case PX4_MANUAL_CONTROL_SETPOINT_MID:
-					memcpy(&m_ManualControlSetpointMsg, MsgPtr, sizeof(m_ManualControlSetpointMsg));
+					CFE_PSP_MemCpy(&m_ManualControlSetpointMsg, MsgPtr, sizeof(m_ManualControlSetpointMsg));
 					break;
 
 				case PX4_HOME_POSITION_MID:
-					memcpy(&m_HomePositionMsg, MsgPtr, sizeof(m_HomePositionMsg));
+					CFE_PSP_MemCpy(&m_HomePositionMsg, MsgPtr, sizeof(m_HomePositionMsg));
 					break;
 
 				case PX4_VEHICLE_CONTROL_MODE_MID:
-					memcpy(&m_VehicleControlModeMsg, MsgPtr, sizeof(m_VehicleControlModeMsg));
+					CFE_PSP_MemCpy(&m_VehicleControlModeMsg, MsgPtr, sizeof(m_VehicleControlModeMsg));
 					break;
 
 				case PX4_POSITION_SETPOINT_TRIPLET_MID:
-					memcpy(&m_PositionSetpointTripletMsg, MsgPtr, sizeof(m_PositionSetpointTripletMsg));
+					CFE_PSP_MemCpy(&m_PositionSetpointTripletMsg, MsgPtr, sizeof(m_PositionSetpointTripletMsg));
 					ProcessPositionSetpointTripletMsg();
 					break;
 
 				case PX4_VEHICLE_STATUS_MID:
-					memcpy(&m_VehicleStatusMsg, MsgPtr, sizeof(m_VehicleStatusMsg));
+					CFE_PSP_MemCpy(&m_VehicleStatusMsg, MsgPtr, sizeof(m_VehicleStatusMsg));
 
 					break;
 
 				case PX4_VEHICLE_LAND_DETECTED_MID:
-					memcpy(&m_VehicleLandDetectedMsg, MsgPtr, sizeof(m_VehicleLandDetectedMsg));
+					CFE_PSP_MemCpy(&m_VehicleLandDetectedMsg, MsgPtr, sizeof(m_VehicleLandDetectedMsg));
 					break;
 
 				case PX4_VEHICLE_LOCAL_POSITION_MID:
-					memcpy(&m_VehicleLocalPositionMsg, MsgPtr, sizeof(m_VehicleLocalPositionMsg));
+					CFE_PSP_MemCpy(&m_VehicleLocalPositionMsg, MsgPtr, sizeof(m_VehicleLocalPositionMsg));
 					ProcessVehicleLocalPositionMsg();
 					break;
 
