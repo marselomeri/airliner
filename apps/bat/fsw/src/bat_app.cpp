@@ -137,15 +137,6 @@ int32 BAT::InitPipe()
                      (unsigned int)iStatus);
             goto BAT_InitPipe_Exit_Tag;
         }
-
-        iStatus = CFE_SB_SubscribeEx(PX4_ACTUATOR_CONTROLS_0_MID, SchPipeId, CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS)
-        {
-            (void) CFE_EVS_SendEvent(BAT_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                     "SCH Pipe failed to subscribe to PX4_ACTUATOR_CONTROLS_0_MID. (0x%08X)",
-                     (unsigned int)iStatus);
-            goto BAT_InitPipe_Exit_Tag;
-        }
     }
     else
     {
@@ -177,6 +168,38 @@ int32 BAT::InitPipe()
         (void) CFE_EVS_SendEvent(BAT_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
              "Failed to create CMD pipe (0x%08lX)",
              iStatus);
+        goto BAT_InitPipe_Exit_Tag;
+    }
+
+    /* Init command pipe and subscribe to command messages */
+    iStatus = CFE_SB_CreatePipe(&DataPipeId,
+    		BAT_DATA_PIPE_DEPTH,
+			BAT_DATA_PIPE_NAME);
+    if (iStatus == CFE_SUCCESS)
+    {
+        iStatus = CFE_SB_SubscribeEx(PX4_ACTUATOR_CONTROLS_0_MID, DataPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(BAT_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                     "DATA Pipe failed to subscribe to PX4_ACTUATOR_CONTROLS_0_MID. (0x%08X)",
+                     (unsigned int)iStatus);
+            goto BAT_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(PX4_ACTUATOR_ARMED_MID, DataPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(BAT_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                     "DATA Pipe failed to subscribe to PX4_ACTUATOR_ARMED_MID. (0x%08X)",
+                     (unsigned int)iStatus);
+            goto BAT_InitPipe_Exit_Tag;
+        }
+    }
+    else
+    {
+        (void) CFE_EVS_SendEvent(BAT_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
+			 "Failed to create DATA pipe (0x%08lX)",
+			 iStatus);
         goto BAT_InitPipe_Exit_Tag;
     }
 
@@ -306,6 +329,8 @@ int32 BAT::RcvSchPipeMsg(int32 iBlocking)
         {
             case BAT_WAKEUP_MID:
             {
+                HkTlm.WakeupCount++;
+                ProcessDataPipe();
                 PublishBatteryStatus();
                 break;
             }
@@ -316,16 +341,7 @@ int32 BAT::RcvSchPipeMsg(int32 iBlocking)
                 ReportHousekeeping();
                 break;
             }
-            case PX4_ACTUATOR_ARMED_MID:
-            {
-                CFE_PSP_MemCpy(&CVT.ActuatorArmed, MsgPtr, sizeof(CVT.ActuatorArmed));
-                break;
-            }
-            case PX4_ACTUATOR_CONTROLS_0_MID:
-            {
-                CFE_PSP_MemCpy(&CVT.ActuatorControls0, MsgPtr, sizeof(CVT.ActuatorControls0));
-                break;
-            }
+
             default:
             {
                 (void) CFE_EVS_SendEvent(BAT_MSGID_ERR_EID, CFE_EVS_ERROR,
@@ -400,6 +416,61 @@ void BAT::ProcessCmdPipe()
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
+/* Process Incoming Data                                           */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+void BAT::ProcessDataPipe()
+{
+    int32 iStatus = CFE_SUCCESS;
+    CFE_SB_Msg_t*   MsgPtr=NULL;
+    CFE_SB_MsgId_t  MsgId;
+
+    /* Process command messages until the pipe is empty */
+    while (1)
+    {
+        iStatus = CFE_SB_RcvMsg(&MsgPtr, DataPipeId, CFE_SB_POLL);
+        if(iStatus == CFE_SUCCESS)
+        {
+            MsgId = CFE_SB_GetMsgId(MsgPtr);
+            switch (MsgId)
+            {
+				case PX4_ACTUATOR_ARMED_MID:
+					HkTlm.ActuatorArmedMsgCount++;
+					CFE_PSP_MemCpy(&CVT.ActuatorArmed, MsgPtr, sizeof(CVT.ActuatorArmed));
+					break;
+
+				case PX4_ACTUATOR_CONTROLS_0_MID:
+					HkTlm.ActuatorControls0MsgCount++;
+					CFE_PSP_MemCpy(&CVT.ActuatorControls0, MsgPtr, sizeof(CVT.ActuatorControls0));
+					break;
+
+                default:
+                    /* Bump the command error counter for an unknown command.
+                     * (This should only occur if it was subscribed to with this
+                     *  pipe, but not handled in this switch-case.) */
+                    HkTlm.usCmdErrCnt++;
+                    (void) CFE_EVS_SendEvent(BAT_MSGID_ERR_EID, CFE_EVS_ERROR,
+                                      "Recvd invalid DATA msgId (0x%04X)", (unsigned short)MsgId);
+                    break;
+            }
+        }
+        else if (iStatus == CFE_SB_NO_MESSAGE)
+        {
+            break;
+        }
+        else
+        {
+            (void) CFE_EVS_SendEvent(BAT_RCVMSG_ERR_EID, CFE_EVS_ERROR,
+                  "DATA pipe read error (0x%08lX)", iStatus);
+            break;
+        }
+    }
+}
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
 /* Process BAT Commands                                            */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -428,6 +499,8 @@ void BAT::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
             {
                 HkTlm.usCmdCnt = 0;
                 HkTlm.usCmdErrCnt = 0;
+                HkTlm.ActuatorControls0MsgCount = 0;
+                HkTlm.ActuatorArmedMsgCount = 0;
                 break;
             }
             default:

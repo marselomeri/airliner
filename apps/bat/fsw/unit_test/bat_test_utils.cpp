@@ -48,13 +48,7 @@
 
 #include <time.h>
 
-/*
- * Config table for testing
- */
-BAT_ConfigTbl_t ConfigTbl = {
-        /* TODO:  Define table */
-		0
-};
+extern BAT_ConfigTbl_t BAT_ConfigTbl;
 
 /*
  * Function Definitions
@@ -73,7 +67,7 @@ void BAT_Test_Setup(void)
     Ut_OSAPI_Reset();
     Ut_OSFILEAPI_Reset();
 
-    Ut_CFE_TBL_AddTable(BAT_CONFIG_TABLE_FILENAME, (void *) &ConfigTbl);
+    Ut_CFE_TBL_AddTable(BAT_CONFIG_TABLE_FILENAME, (void *) &BAT_ConfigTbl);
 }
 
 void BAT_Test_TearDown(void) {
