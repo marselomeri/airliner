@@ -5,3 +5,7 @@ add_airliner_app_table(
     NAME mac_param
     SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/mac_param.c
 )
+
+
+target_sources(mac-ut PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/tables/mac_param.c)
+    

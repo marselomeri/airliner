@@ -60,7 +60,7 @@ add_airliner_app_def(mac
         ${PROJECT_SOURCE_DIR}/apps/mac/fsw/platform_inc
 )
 
-add_airliner_app_unit_test(MAC-UT
+add_airliner_app_unit_test(mac-ut
     UTASSERT
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mac_app_test.cpp
