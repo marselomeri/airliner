@@ -185,6 +185,14 @@ typedef struct
     /** \brief Warning flag enumeration */
     PX4_BatteryWarningSeverity_t Warning;
     
+    /** \brief Number of times BAT has woken up. */
+	uint32             WakeupCount;
+
+    /** \brief Number of ActuatorControls0 messages BAT has successfully received. */
+	uint32             ActuatorControls0MsgCount;
+
+    /** \brief Number of ActuatorArmed messages BAT has successfully received. */
+	uint32             ActuatorArmedMsgCount;
 } BAT_HkTlm_t;
 
 

@@ -1,4 +1,4 @@
-﻿{
+{
  "settings": {
   "hasHeaders": true,
   "constrainDragToContainer": false,
@@ -47,10 +47,10 @@
      "title": "",
      "activeItemIndex": 0,
      "height": 100,
-     "width": 28.182558492087555,
+     "width": 45.098167414601306,
      "content": [
       {
-       "title": "Battery Housekeeping",
+       "title": "HK",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
@@ -69,37 +69,59 @@
      "reorderEnabled": true,
      "title": "",
      "activeItemIndex": 0,
-     "width": 33.83121784502751,
+     "width": 54.90183258539869,
      "content": [
       {
-       "title": "Application Scheduling",
-       "type": "component",
-       "componentName": "Blank",
-       "componentState": {
-        "text": "text",
-        "link": "flight/apps/sch/app_sch?appName=BAT"
-       },
-       "isClosable": true,
-       "reorderEnabled": true
-      }
-     ]
-    },
-    {
-     "type": "stack",
-     "header": {},
-     "isClosable": true,
-     "reorderEnabled": true,
-     "title": "",
-     "activeItemIndex": 0,
-     "width": 37.98622366288493,
-     "content": [
-      {
-       "title": "Event Filter",
+       "title": "Events",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
         "text": "text",
         "link": "flight/core/evs/efltr?appName=BAT"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "App Ctrl",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "/flight/core/es/appctrl?appName=BAT"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "Scheduling",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "/flight/apps/sch/app_sch?appName=BAT"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "Telemetry",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "/flight/apps/to/tlm_app?appName=BAT"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "Table",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "/flight/core/tbl/tbl_ctl?appName=BAT"
        },
        "isClosable": true,
        "reorderEnabled": true
