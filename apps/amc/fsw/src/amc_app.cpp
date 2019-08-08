@@ -415,8 +415,8 @@ void AMC::InitData(void)
     CFE_SB_InitMsg(&HkTlm,
             AMC_HK_TLM_MID, sizeof(HkTlm), TRUE);
 
-    memset(&CVT.ActuatorArmed, 0, sizeof(CVT.ActuatorArmed));
-    memset(&CVT.ActuatorControls0, 0, sizeof(CVT.ActuatorControls0));
+    CFE_PSP_MemSet(&CVT.ActuatorArmed, 0, sizeof(CVT.ActuatorArmed));
+    CFE_PSP_MemSet(&CVT.ActuatorControls0, 0, sizeof(CVT.ActuatorControls0));
 }
 
 
@@ -550,20 +550,26 @@ int32 AMC::RcvSchPipeMsg(int32 iBlocking)
         switch (MsgId)
         {
             case AMC_UPDATE_MOTORS_MID:
+            {
                 ProcessDataPipe();
                 break;
+            }
 
             case AMC_SEND_HK_MID:
+            {
                 ReportHousekeeping();
                 // TODO: Move these somewhere more appropriate later
                 ProcessParamPipe();
                 ProcessCmdPipe();
                 break;
+            }
 
             default:
+            {
                 CFE_EVS_SendEvent(AMC_MSGID_ERR_EID, CFE_EVS_ERROR,
                         "Recvd invalid SCH msgId (0x%04X)",
                         (unsigned short)MsgId);
+            }
         }
     }
     else if (iStatus == CFE_SB_TIME_OUT)
@@ -608,11 +614,14 @@ void AMC::ProcessCmdPipe(void)
             switch (CmdMsgId)
             {
                 case AMC_CMD_MID:
+                {
                     /* We did receive a command.  Process it. */
                     ProcessAppCmds(CmdMsgPtr);
                     break;
+                }
 
                 default:
+                {
                     /* Bump the command error counter for an unknown command.
                      * (This should only occur if it was subscribed to with
                      * this pipe, but not handled in this switch-case.) */
@@ -621,6 +630,7 @@ void AMC::ProcessCmdPipe(void)
                             "Recvd invalid CMD msgId (0x%04X)",
                             (unsigned short)CmdMsgId);
                     break;
+                }
             }
         }
         else if (iStatus == CFE_SB_NO_MESSAGE)
@@ -663,16 +673,21 @@ void AMC::ProcessDataPipe(void)
             switch (MsgId)
             {
                 case PX4_ACTUATOR_ARMED_MID:
-                    memcpy(&CVT.ActuatorArmed, MsgPtr, sizeof(CVT.ActuatorArmed));
+                {
+                    CFE_PSP_MemCpy(&CVT.ActuatorArmed, MsgPtr, sizeof(CVT.ActuatorArmed));
                     UpdateMotors();
                     break;
+                }
 
                 case PX4_ACTUATOR_CONTROLS_0_MID:
-                    memcpy(&CVT.ActuatorControls0, MsgPtr,
+                {
+                    CFE_PSP_MemCpy(&CVT.ActuatorControls0, MsgPtr,
                         sizeof(CVT.ActuatorControls0));
                     break;
+                }
 
                 default:
+                {
                     /* Bump the command error counter for an unknown command.
                      * (This should only occur if it was subscribed to with
                      * this pipe, but not handled in this switch-case.) */
@@ -681,6 +696,7 @@ void AMC::ProcessDataPipe(void)
                             "Recvd invalid DATA msgId (0x%04X)",
                             (unsigned short)MsgId);
                     break;
+                }
             }
         }
         else if (iStatus == CFE_SB_NO_MESSAGE)
@@ -725,12 +741,15 @@ void AMC::ProcessParamPipe(void)
             switch (CmdMsgId)
             {
                 case PRMLIB_PARAM_UPDATED_MID:
+                {
                     /* We did receive a parameter request.  Process it. */
                     ProcessUpdatedParam(
                             (PRMLIB_UpdatedParamMsg_t *) CmdMsgPtr);
                     break;
+                }
 
                 default:
+                {
                     /* Bump the command error counter for an unknown command.
                      * (This should only occur if it was subscribed to with
                      * this pipe, but not handled in this switch-case.) */
@@ -739,6 +758,7 @@ void AMC::ProcessParamPipe(void)
                             "Recvd invalid CMD msgId (0x%04X)",
                             (unsigned short)CmdMsgId);
                     break;
+                }
             }
         }
         else if (iStatus == CFE_SB_NO_MESSAGE)
@@ -772,6 +792,7 @@ void AMC::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
         switch (uiCmdCode)
         {
             case AMC_NOOP_CC:
+            {
                 /* A NoOp command was received.  Increment the counter,
                  * and raise a NOOP event. */
                 HkTlm.usCmdCnt++;
@@ -782,15 +803,19 @@ void AMC::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
                         AMC_REVISION,
                         AMC_MISSION_REV);
                 break;
+            }
 
             case AMC_RESET_CC:
+            {
                 /* A RESET command was received.  Reset both success and
                  * error counters. */
                 HkTlm.usCmdCnt = 0;
                 HkTlm.usCmdErrCnt = 0;
                 break;
+            }
 
             default:
+            {
                 /* An unknown command was received.  Increment the command
                  * error counter and raise an event. */
                 HkTlm.usCmdErrCnt++;
@@ -798,6 +823,7 @@ void AMC::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
                         "Recvd invalid command code (%u)",
                         (unsigned int)uiCmdCode);
                 break;
+            }
         }
     }
 }
