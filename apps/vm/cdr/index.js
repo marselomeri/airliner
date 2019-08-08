@@ -19,12 +19,12 @@ module.exports = class CfeCdrFlightAppsPlugin extends CdrFlightAppsPlugin {
                         type: CdrFlightAppsPlugin.ContentType.LAYOUT,
                         shortDescription: 'Main',
                         longDescription: 'Main VM.',
-                        filePath: 'main.lyt'
+                        filePath: 'main_layout.lyt'
                     },
                     hk: {
                         type: CdrFlightAppsPlugin.ContentType.PANEL,
-                        shortDescription: 'Housekeeping',
-                        longDescription: 'VM Housekeeping.',
+                        shortDescription: 'HK',
+                        longDescription: 'Vehicle Manager Housekeeping',
                         filePath: 'hk.pug'
                     },
                     vs: {

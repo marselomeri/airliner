@@ -249,7 +249,6 @@ int32 VM::InitPipe()
                     iStatus);
             goto VM_InitPipe_Exit_Tag;
         }
-
         iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_ATTITUDE_MID, DataPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
@@ -375,7 +374,7 @@ int32 VM::InitPipe()
     }
 
 VM_InitPipe_Exit_Tag:
-	return iStatus;
+    return iStatus;
 }
 
 
@@ -483,8 +482,8 @@ VM_InitApp_Exit_Tag:
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 VM::RcvSchPipeMsg(int32 iBlocking)
 {
-    int32 iStatus = CFE_SUCCESS;
-    CFE_SB_Msg_t* MsgPtr = 0;
+    int32          iStatus = CFE_SUCCESS;
+    CFE_SB_Msg_t*  MsgPtr = 0;
     CFE_SB_MsgId_t MsgId;
 
     /* Stop Performance Log entry */
@@ -831,29 +830,29 @@ void VM::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 
             case VM_RESET_CC:
             {
-                HkTlm.usCmdCnt = 0;
-                HkTlm.usCmdErrCnt = 0;
-                HkTlm.WakeupCount = 0;
-                HkTlm.SensorMagMsgCount = 0;
-                HkTlm.SensorGyroMsgCount = 0;
-                HkTlm.BatteryStatusMsgCount = 0;
-                HkTlm.TelemetryStatusMsgCount = 0;
-                HkTlm.SubsystemInfoMsgCount = 0;
-                HkTlm.VehicleAttitudeMsgCount = 0;
-                HkTlm.VehicleLocalPositionMsgCount = 0;
-                HkTlm.VehicleLandDetectedMsgCount = 0;
-                HkTlm.MissionResultMsgCount = 0;
-                HkTlm.ManualControlSetpointMsgCount = 0;
+                HkTlm.usCmdCnt                        = 0;
+                HkTlm.usCmdErrCnt                     = 0;
+                HkTlm.WakeupCount                     = 0;
+                HkTlm.SensorMagMsgCount               = 0;
+                HkTlm.SensorGyroMsgCount              = 0;
+                HkTlm.BatteryStatusMsgCount           = 0;
+                HkTlm.TelemetryStatusMsgCount         = 0;
+                HkTlm.SubsystemInfoMsgCount           = 0;
+                HkTlm.VehicleAttitudeMsgCount         = 0;
+                HkTlm.VehicleLocalPositionMsgCount    = 0;
+                HkTlm.VehicleLandDetectedMsgCount     = 0;
+                HkTlm.MissionResultMsgCount           = 0;
+                HkTlm.ManualControlSetpointMsgCount   = 0;
                 HkTlm.PositionSetpointTripletMsgCount = 0;
-                HkTlm.SensorAccelMsgCount = 0;
-                HkTlm.SafetyMsgCount = 0;
-                HkTlm.SensorCorrectionMsgCount = 0;
-                HkTlm.VehicleStatusMsgCount = 0;
-                HkTlm.VehicleControlModeMsgCount = 0;
-                HkTlm.SensorCombinedMsgCount = 0;
-                HkTlm.VehicleCommandMsgCount = 0;
-                HkTlm.VehicleGlobalPositionMsgCount = 0;
-                HkTlm.VehicleGpsPositionMsgCount = 0;
+                HkTlm.SensorAccelMsgCount             = 0;
+                HkTlm.SafetyMsgCount                  = 0;
+                HkTlm.SensorCorrectionMsgCount        = 0;
+                HkTlm.VehicleStatusMsgCount           = 0;
+                HkTlm.VehicleControlModeMsgCount      = 0;
+                HkTlm.SensorCombinedMsgCount          = 0;
+                HkTlm.VehicleCommandMsgCount          = 0;
+                HkTlm.VehicleGlobalPositionMsgCount   = 0;
+                HkTlm.VehicleGpsPositionMsgCount      = 0;
                 break;
             }
 
@@ -1434,13 +1433,13 @@ void VM::SetHomePosition()
 void VM::Initialization()
 {
     /* Initialize status flags */
-	HkTlm.StatusFlags.SensorsInitialized = true;
+    HkTlm.StatusFlags.SensorsInitialized = true;
 
     /* Always accept RC input as default */
-	HkTlm.StatusFlags.RcInputIsTemporarilyBlocked = false;
-	HkTlm.StatusFlags.RcSignalFoundOnce = false;
+    HkTlm.StatusFlags.RcInputIsTemporarilyBlocked = false;
+    HkTlm.StatusFlags.RcSignalFoundOnce = false;
 
-	HkTlm.StatusFlags.UsbPowerConnected = false;
+    HkTlm.StatusFlags.UsbPowerConnected = false;
 
     /* Vehicle status defaults */
     VehicleStatusMsg.OnboardControlSensorsPresent = 0;
@@ -1728,7 +1727,7 @@ void VM::Execute()
 
         if(!HkTlm.StatusFlags.RcSignalFoundOnce)
         {
-        	HkTlm.StatusFlags.RcSignalFoundOnce = true;
+            HkTlm.StatusFlags.RcSignalFoundOnce = true;
         }
         else
         {
@@ -1776,7 +1775,7 @@ void VM::Execute()
         /* do not reset the counter when holding the arm button longer than needed */
         else if (!(ConfigTblPtr->COM_ARM_SWISBTN ==1 && ManualControlSetpointMsg.ArmSwitch == PX4_SWITCH_POS_ON))
         {
-        	HkTlm.StickOffCounter = 0;
+            HkTlm.StickOffCounter = 0;
         }
 
         if(!in_armed_state && VehicleStatusMsg.RcInputMode != PX4_RC_IN_MODE_OFF && (stick_in_lower_right || arm_button_pressed || arm_switch_to_arm_transition))
@@ -1817,7 +1816,7 @@ void VM::Execute()
         /* do not reset the counter when holding the arm button longer than needed */
         else if (!(ConfigTblPtr->COM_ARM_SWISBTN ==1 && ManualControlSetpointMsg.ArmSwitch == PX4_SWITCH_POS_ON))
         {
-        	HkTlm.StickOnCounter = 0;
+            HkTlm.StickOnCounter = 0;
         }
 
         HkTlm.LastSpManArmSwitch = ManualControlSetpointMsg.ArmSwitch;

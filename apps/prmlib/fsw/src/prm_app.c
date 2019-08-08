@@ -474,7 +474,6 @@ void PRM_ProcessNewCmds()
         if(iStatus == CFE_SUCCESS)
         {
             CmdMsgId = CFE_SB_GetMsgId(CmdMsgPtr);
-        	OS_printf("%s %u\n", __FUNCTION__, __LINE__);
             switch (CmdMsgId)
             {
                 case PRM_CMD_MID:
@@ -527,7 +526,6 @@ void PRM_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr)
     if (MsgPtr != 0)
     {
         uiCmdCode = CFE_SB_GetCmdCode(MsgPtr);
-    	OS_printf("%s %u\n", __FUNCTION__, __LINE__);
         switch (uiCmdCode)
         {
             case PRM_NOOP_CC:
@@ -555,8 +553,6 @@ void PRM_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr)
                 PRM_SetParameterCmd_t *cmd = (PRM_SetParameterCmd_t*)MsgPtr;
                 PRMLIB_UpdatedParamMsg_t UpdatedMsg = {0};
 
-            	OS_printf("%s %u\n", __FUNCTION__, __LINE__);
-
             	/* Copy data from msg to lib format */
             	param_lib_data.type = cmd->Type;
             	strcpy(param_lib_data.name, cmd->Name);
@@ -576,22 +572,18 @@ void PRM_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr)
             	/* Notify apps a param has changed */
             	CFE_SB_InitMsg((CFE_SB_Msg_t*)&UpdatedMsg, PRMLIB_PARAM_UPDATED_MID, sizeof(PRMLIB_UpdatedParamMsg_t), TRUE);
             	strcpy(UpdatedMsg.name, cmd->Name);
-            	OS_printf("%s %u\n", __FUNCTION__, __LINE__);
                 CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&UpdatedMsg);
             	CFE_SB_SendMsg((CFE_SB_Msg_t*)&UpdatedMsg);
-            	OS_printf("%s %u\n", __FUNCTION__, __LINE__);
                 break;
             }
 
             default:
                 PRM_AppData.HkTlm.usCmdErrCnt++;
-            	OS_printf("%s %u\n", __FUNCTION__, __LINE__);
                 (void) CFE_EVS_SendEvent(PRM_MSGID_ERR_EID, CFE_EVS_ERROR,
                                   "Recvd invalid cmdId (%u)", (unsigned int)uiCmdCode);
                 break;
         }
     }
-	OS_printf("%s %u\n", __FUNCTION__, __LINE__);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

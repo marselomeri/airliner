@@ -76,6 +76,20 @@ extern "C" {
 #define COMMANDER_MONITORING_LOOPSPERMSEC (1/(COMMANDER_MONITORING_INTERVAL/1000.0f))
 #define STICK_ON_OFF_LIMIT (0.9f)
 
+/** \brief Pipe depth for the data pipe
+**
+**  \par Limits:
+**       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
+*/
+#define VM_DATA_PIPE_DEPTH            (18)
+
+/** \brief Pipe name for the Scheduler pipe
+**
+**  \par Limits:
+**       Note, this name must fit in OS_MAX_API_NAME.
+*/
+#define VM_DATA_PIPE_NAME             ("VM_DATA_PIPE")
+
 #define COM_RC_IN_MODE_MAX  (2)
 #define COM_RC_ARM_HYST_MIN (100)
 #define COM_RC_ARM_HYST_MAX (1500)
@@ -89,6 +103,7 @@ extern "C" {
 #define COM_HOME_H_T_MAX    (15.0)
 #define COM_HOME_V_T_MIN    (5.0)
 #define COM_HOME_V_T_MAX    (25.0)
+
 
 /************************************************************************
  ** Local Structure Definitions
@@ -327,7 +342,7 @@ public:
     int32 RcvSchPipeMsg(int32 iBlocking);
 
     /************************************************************************/
-    /** \brief Vehicle Manager Task incoming data message processing
+    /** \brief Process incoming data messages
      **
      **  \par Description
      **       This function processes incoming data messages subscribed

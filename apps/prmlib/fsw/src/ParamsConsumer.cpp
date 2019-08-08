@@ -114,7 +114,6 @@ InitParams_Exit_Tag:
 
 void ParamsConsumer::onParamsChange(PRMLIB_ParamRegistration_t *ParamsData, uint32 ParamsCount)
 {
-	OS_printf("%s %u\n", __FUNCTION__, __LINE__);
 }
 
 
@@ -253,7 +252,6 @@ int32 ParamsConsumer::CheckParams(void)
                 		int32 val_int32 	= 0;
                 		float val_float		= 0.0;
 
-                		//OS_printf("Was %u\n", *((uint32*)paramRegistration->Value));
                         iStatus = PRMLIB_GetParamValueById(paramMsg->name, (cpuaddr*)newValue);
                         if(iStatus != CFE_SUCCESS)
                         {
@@ -383,10 +381,6 @@ int32 ParamsConsumer::CheckParams(void)
 
                         if(isValid == TRUE)
                         {
-                            //CFE_PSP_MemSet(ParamRegistration[i].Value, 1, sizeof(ParamRegistration[i].Type));
-                            //OS_printf("Is %u\n", *((uint32*)paramRegistration->Value));
-                            OS_printf("%s %u\n", __FUNCTION__, __LINE__);
-                            //CFE_PSP_MemCpy(paramData->Value, &paramData->Value, paramData->Type);
                             CFE_PSP_MemCpy(&paramDataOut[paramsOut], paramRegistration, sizeof(paramDataOut[paramsOut]));
                             paramsOut++;
                         }

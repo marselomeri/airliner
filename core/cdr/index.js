@@ -272,10 +272,10 @@ module.exports = class CfeCdrPlugin extends CdrFlightPlugin {
                                 shortDescription: 'Registry',
                                 filePath: 'tbl/registry.pug'
                             },
-                            tc: {
+                            tbl_ctl: {
                                 type: CdrFlightPlugin.ContentType.PANEL,
                                 shortDescription: 'Tbl Ctrl',
-                                filePath: '/tbl/tc.pug'
+                                filePath: '/tbl/tbl_ctl.pug'
                             }
                         }
                     },

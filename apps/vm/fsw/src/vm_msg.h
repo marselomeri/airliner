@@ -731,69 +731,6 @@ typedef struct
      \brief Count of failed commands.  Cleared by Reset Command.  */
     uint8 usCmdErrCnt;
 
-    /** \brief Count of wakeups.  Cleared by Reset Command.  */
-    uint32 WakeupCount;
-
-    /** \brief Count of wakeups.  Cleared by Reset Command.  */
-    uint32 SensorMagMsgCount;
-
-    /** \brief Count of Sensor Gyro messages received.  Cleared by Reset Command.  */
-    uint32 SensorGyroMsgCount;
-
-    /** \brief Count of Battery Status messages received.  Cleared by Reset Command.  */
-    uint32 BatteryStatusMsgCount;
-
-    /** \brief Count of Telemetry Status messages received.  Cleared by Reset Command.  */
-    uint32 TelemetryStatusMsgCount;
-
-    /** \brief Count of Substem Info messages received.  Cleared by Reset Command.  */
-    uint32 SubsystemInfoMsgCount;
-
-    /** \brief Count of Vehicle Attitude messages received.  Cleared by Reset Command.  */
-    uint32 VehicleAttitudeMsgCount;
-
-    /** \brief Count of Vehicle Local Position messages received.  Cleared by Reset Command.  */
-    uint32 VehicleLocalPositionMsgCount;
-
-    /** \brief Count of Vehicle Land Detected messages received.  Cleared by Reset Command.  */
-    uint32 VehicleLandDetectedMsgCount;
-
-    /** \brief Count of Mission Result messages received.  Cleared by Reset Command.  */
-    uint32 MissionResultMsgCount;
-
-    /** \brief Count of Manual Control Setpoint messages received.  Cleared by Reset Command.  */
-    uint32 ManualControlSetpointMsgCount;
-
-    /** \brief Count of Position Setpoint Triplet messages received.  Cleared by Reset Command.  */
-    uint32 PositionSetpointTripletMsgCount;
-
-    /** \brief Count of Sensor Accel messages received.  Cleared by Reset Command.  */
-    uint32 SensorAccelMsgCount;
-
-    /** \brief Count of Safety messages received.  Cleared by Reset Command.  */
-    uint32 SafetyMsgCount;
-
-    /** \brief Count of Sensor Correction messages received.  Cleared by Reset Command.  */
-    uint32 SensorCorrectionMsgCount;
-
-    /** \brief Count of Vehicle Status messages received.  Cleared by Reset Command.  */
-    uint32 VehicleStatusMsgCount;
-
-    /** \brief Count of Vehicle Control Mode messages received.  Cleared by Reset Command.  */
-    uint32 VehicleControlModeMsgCount;
-
-    /** \brief Count of Sensor Combined messages received.  Cleared by Reset Command.  */
-    uint32 SensorCombinedMsgCount;
-
-    /** \brief Count of Vehicle Command messages received.  Cleared by Reset Command.  */
-    uint32 VehicleCommandMsgCount;
-
-    /** \brief Count of Vehicle Global Position messages received.  Cleared by Reset Command.  */
-    uint32 VehicleGlobalPositionMsgCount;
-
-    /** \brief Count of Vehicle GPS Position messages received.  Cleared by Reset Command.  */
-    uint32 VehicleGpsPositionMsgCount;
-
     /** \vmtlmmnemonic \VM_ARMSTATE
      \brief Current arm state */
     uint32 ArmingState;
@@ -801,6 +738,69 @@ typedef struct
     /** \vmtlmmnemonic \VM_NAVSTATE
      \brief Current navigation state */
     uint32 NavState;
+
+    /** \brief Number of times the main loop has woken up. */
+    uint32 WakeupCount;
+
+    /** \brief Number of times the SensorMag message has been received. */
+    uint32 SensorMagMsgCount;
+
+    /** \brief Number of times the Sensor Gyro message has been received. */
+    uint32 SensorGyroMsgCount;
+
+    /** \brief Number of times the Battery Status message has been received. */
+    uint32 BatteryStatusMsgCount;
+
+    /** \brief Number of times the Telemetry Status message has been received. */
+    uint32 TelemetryStatusMsgCount;
+
+    /** \brief Number of times the Subsystem Info message has been received. */
+    uint32 SubsystemInfoMsgCount;
+
+    /** \brief Number of times the Vehicle Attitude message has been received. */
+    uint32 VehicleAttitudeMsgCount;
+
+    /** \brief Number of times the Vehicle Local Position message has been received. */
+    uint32 VehicleLocalPositionMsgCount;
+
+    /** \brief Number of times the Vehicle Land Detected message has been received. */
+    uint32 VehicleLandDetectedMsgCount;
+
+    /** \brief Number of times the Mission Result message has been received. */
+    uint32 MissionResultMsgCount;
+
+    /** \brief Number of times the Manual Control Setpoint message has been received. */
+    uint32 ManualControlSetpointMsgCount;
+
+    /** \brief Number of times the Position Setpoint Triplet message has been received. */
+    uint32 PositionSetpointTripletMsgCount;
+
+    /** \brief Number of times the Sensor Accel message has been received. */
+    uint32 SensorAccelMsgCount;
+
+    /** \brief Number of times the Safety message has been received. */
+    uint32 SafetyMsgCount;
+
+    /** \brief Number of times the Sensor Correction message has been received. */
+    uint32 SensorCorrectionMsgCount;
+
+    /** \brief Number of times the Sensor Combined message has been received. */
+    uint32 SensorCombinedMsgCount;
+
+    /** \brief Number of times the Vehicle Command message has been received. */
+    uint32 VehicleCommandMsgCount;
+
+    /** \brief Number of times the Vehicle Global Position message has been received. */
+    uint32 VehicleGlobalPositionMsgCount;
+
+    /** \brief Number of times the Vehicle GPS Position message has been received. */
+    uint32 VehicleGpsPositionMsgCount;
+
+    /** \brief Number of times the Vehicle Status message has been received. */
+    uint32 VehicleStatusMsgCount;
+
+    /** \brief Number of times the Vehicle Control Mode message has been received. */
+    uint32 VehicleControlModeMsgCount;
 
     /** \brief True if home position is not set and local variables are not initialization */
     osalbool NotInitialized;
@@ -848,7 +848,6 @@ typedef struct
     VM_Modes PreviousModes;
 
 } VM_HkTlm_t;
-
 
 #ifdef __cplusplus
 }
