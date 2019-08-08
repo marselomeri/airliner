@@ -449,7 +449,6 @@ void Test_MAC_AppMain_ProcessNewData_InvalidMsgID(void)
     oMAC.AppMain();
 
     /* Verify results */
-    printf("Ut_CFE_EVS_GetEventQueueDepth() = %u\n", Ut_CFE_EVS_GetEventQueueDepth());
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 2");
     UtAssert_EventSent(MAC_MSGID_ERR_EID, CFE_EVS_ERROR, "Recvd invalid DATA msgId (0x0000)", "Error Event Sent");
 }
@@ -489,7 +488,6 @@ void Test_MAC_ControlAttitude(void)
     oMAC.m_Params.auto_rate_max[0] = 3.8397247791f;
     oMAC.m_Params.auto_rate_max[1] = 3.8397247791f;
     oMAC.m_Params.auto_rate_max[2] = 0.7853982449f;
-//    oMAC.m_Params.vtol_wv_yaw_rate_scale = 0.1500000060f;
     oMAC.m_AngularRatesSetpoint[0] = 0.5145305991f;
     oMAC.m_AngularRatesSetpoint[1] = -0.0270411316f;
     oMAC.m_AngularRatesSetpoint[2] = 0.0020858147f;
