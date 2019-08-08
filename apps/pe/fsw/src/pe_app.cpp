@@ -212,91 +212,19 @@ int32 PE::InitPipe()
                      (unsigned int)iStatus);
             goto PE_InitPipe_Exit_Tag;
         }
-        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_GPS_POSITION_MID, SchPipeId, CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS)
-        {
-            (void) CFE_EVS_SendEvent(PE_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                     "CMD Pipe failed to subscribe to PX4_VEHICLE_GPS_POSITION_MID. (0x%08lX)",
-                     iStatus);
-            goto PE_InitPipe_Exit_Tag;
-        }
-        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_STATUS_MID, SchPipeId, CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS)
-        {
-            (void) CFE_EVS_SendEvent(PE_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                     "CMD Pipe failed to subscribe to PX4_VEHICLE_STATUS_MID. (0x%08lX)",
-                     iStatus);
-            goto PE_InitPipe_Exit_Tag;
-        }
-        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_LAND_DETECTED_MID, SchPipeId, CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS)
-        {
-            (void) CFE_EVS_SendEvent(PE_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                     "CMD Pipe failed to subscribe to PX4_VEHICLE_LAND_DETECTED_MID. (0x%08lX)",
-                     iStatus);
-            goto PE_InitPipe_Exit_Tag;
-        }
-        iStatus = CFE_SB_SubscribeEx(PX4_ACTUATOR_ARMED_MID, SchPipeId, CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS)
-        {
-            (void) CFE_EVS_SendEvent(PE_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                     "CMD Pipe failed to subscribe to PX4_ACTUATOR_ARMED_MID. (0x%08lX)",
-                     iStatus);
-            goto PE_InitPipe_Exit_Tag;
-        }
-        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_ATTITUDE_MID, SchPipeId, CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS)
-        {
-            (void) CFE_EVS_SendEvent(PE_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                     "CMD Pipe failed to subscribe to PX4_VEHICLE_ATTITUDE_MID. (0x%08lX)",
-                     iStatus);
-            goto PE_InitPipe_Exit_Tag;
-        }
-        iStatus = CFE_SB_SubscribeEx(PX4_SENSOR_COMBINED_MID, SchPipeId, CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS)
-        {
-            (void) CFE_EVS_SendEvent(PE_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                     "CMD Pipe failed to subscribe to PX4_SENSOR_COMBINED_MID. (0x%08lX)",
-                     iStatus);
-            goto PE_InitPipe_Exit_Tag;
-        }
-        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_ATTITUDE_SETPOINT_MID, SchPipeId, CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS)
-        {
-            (void) CFE_EVS_SendEvent(PE_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                     "CMD Pipe failed to subscribe to PX4_VEHICLE_ATTITUDE_SETPOINT_MID. (0x%08lX)",
-                     iStatus);
-            goto PE_InitPipe_Exit_Tag;
-        }
-        iStatus = CFE_SB_SubscribeEx(PX4_DISTANCE_SENSOR_MID, SchPipeId, CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS)
-        {
-            (void) CFE_EVS_SendEvent(PE_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                     "CMD Pipe failed to subscribe to PX4_DISTANCE_SENSOR_MID. (0x%08lX)",
-                     iStatus);
-            goto PE_InitPipe_Exit_Tag;
-        }
-        iStatus = CFE_SB_SubscribeEx(PX4_OPTICAL_FLOW_MID, SchPipeId, CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS)
-        {
-            (void) CFE_EVS_SendEvent(PE_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                     "CMD Pipe failed to subscribe to PX4_OPTICAL_FLOW_MID. (0x%08lX)",
-                     iStatus);
-            goto PE_InitPipe_Exit_Tag;
-        }
     }
     else
     {
         (void) CFE_EVS_SendEvent(PE_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
-             "Failed to create SCH pipe (0x%08lX)",
-             iStatus);
+			 "Failed to create SCH pipe (0x%08lX)",
+			 iStatus);
         goto PE_InitPipe_Exit_Tag;
     }
 
     /* Init command pipe and subscribe to command messages */
     iStatus = CFE_SB_CreatePipe(&CmdPipeId,
-            PE_CMD_PIPE_DEPTH,
-            PE_CMD_PIPE_NAME);
+    		PE_CMD_PIPE_DEPTH,
+			PE_CMD_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
         /* Subscribe to command messages */
@@ -305,16 +233,104 @@ int32 PE::InitPipe()
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(PE_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                 "CMD Pipe failed to subscribe to PE_CMD_MID. (0x%08lX)",
-                 iStatus);
+				 "CMD Pipe failed to subscribe to PE_CMD_MID. (0x%08lX)",
+				 iStatus);
             goto PE_InitPipe_Exit_Tag;
         }
     }
     else
     {
         (void) CFE_EVS_SendEvent(PE_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
-             "Failed to create CMD pipe (0x%08lX)",
-             iStatus);
+			 "Failed to create CMD pipe (0x%08lX)",
+			 iStatus);
+        goto PE_InitPipe_Exit_Tag;
+    }
+
+    /* Init data pipe and subscribe to command messages */
+    iStatus = CFE_SB_CreatePipe(&DataPipeId,
+    		PE_DATA_PIPE_DEPTH,
+			PE_DATA_PIPE_NAME);
+    if (iStatus == CFE_SUCCESS)
+    {
+        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_GPS_POSITION_MID, DataPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(PE_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                     "DATA Pipe failed to subscribe to PX4_VEHICLE_GPS_POSITION_MID. (0x%08lX)",
+                     iStatus);
+            goto PE_InitPipe_Exit_Tag;
+        }
+        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_STATUS_MID, DataPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(PE_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                     "DATA Pipe failed to subscribe to PX4_VEHICLE_STATUS_MID. (0x%08lX)",
+                     iStatus);
+            goto PE_InitPipe_Exit_Tag;
+        }
+        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_LAND_DETECTED_MID, DataPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(PE_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                     "DATA Pipe failed to subscribe to PX4_VEHICLE_LAND_DETECTED_MID. (0x%08lX)",
+                     iStatus);
+            goto PE_InitPipe_Exit_Tag;
+        }
+        iStatus = CFE_SB_SubscribeEx(PX4_ACTUATOR_ARMED_MID, DataPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(PE_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                     "DATA Pipe failed to subscribe to PX4_ACTUATOR_ARMED_MID. (0x%08lX)",
+                     iStatus);
+            goto PE_InitPipe_Exit_Tag;
+        }
+        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_ATTITUDE_MID, DataPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(PE_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                     "DATA Pipe failed to subscribe to PX4_VEHICLE_ATTITUDE_MID. (0x%08lX)",
+                     iStatus);
+            goto PE_InitPipe_Exit_Tag;
+        }
+        iStatus = CFE_SB_SubscribeEx(PX4_SENSOR_COMBINED_MID, DataPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(PE_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                     "DATA Pipe failed to subscribe to PX4_SENSOR_COMBINED_MID. (0x%08lX)",
+                     iStatus);
+            goto PE_InitPipe_Exit_Tag;
+        }
+        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_ATTITUDE_SETPOINT_MID, DataPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(PE_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                     "DATA Pipe failed to subscribe to PX4_VEHICLE_ATTITUDE_SETPOINT_MID. (0x%08lX)",
+                     iStatus);
+            goto PE_InitPipe_Exit_Tag;
+        }
+        iStatus = CFE_SB_SubscribeEx(PX4_DISTANCE_SENSOR_MID, DataPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(PE_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                     "DATA Pipe failed to subscribe to PX4_DISTANCE_SENSOR_MID. (0x%08lX)",
+                     iStatus);
+            goto PE_InitPipe_Exit_Tag;
+        }
+        iStatus = CFE_SB_SubscribeEx(PX4_OPTICAL_FLOW_MID, DataPipeId, CFE_SB_Default_Qos, 1);
+		if (iStatus != CFE_SUCCESS)
+		{
+			(void) CFE_EVS_SendEvent(PE_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+					 "DATA Pipe failed to subscribe to PX4_OPTICAL_FLOW_MID. (0x%08lX)",
+					 iStatus);
+			goto PE_InitPipe_Exit_Tag;
+		}
+    }
+    else
+    {
+        (void) CFE_EVS_SendEvent(PE_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
+			 "Failed to create DATA pipe (0x%08lX)",
+			 iStatus);
+
         goto PE_InitPipe_Exit_Tag;
     }
 
@@ -703,7 +719,11 @@ int32 PE::RcvSchPipeMsg(int32 iBlocking)
         {
             /* Cyclic op - 125hz */
             case PE_WAKEUP_MID:
-                Update();
+            	HkTlm.WakeupCount++;
+            	if(ProcessDataPipe())
+                {
+            		Update();
+                }
                 break;
 
             case PE_SEND_HK_MID:
@@ -711,147 +731,9 @@ int32 PE::RcvSchPipeMsg(int32 iBlocking)
                 ReportHousekeeping();
                 break;
 
-            case PX4_VEHICLE_GPS_POSITION_MID:
-                CFE_PSP_MemCpy(&m_VehicleGpsPositionMsg, MsgPtr, sizeof(m_VehicleGpsPositionMsg));
-
-                /* Check if fusing distance sensor */
-                if(TRUE == m_GpsFuse)
-                {
-                    if(m_GpsTimeout)
-                    {
-                        gpsInit();
-                    }
-                    else
-                    {
-                        gpsCorrect();
-                    }
-                }
-                break;
-
-            case PX4_VEHICLE_STATUS_MID:
-                CFE_PSP_MemCpy(&m_VehicleStatusMsg, MsgPtr, sizeof(m_VehicleStatusMsg));
-                break;
-
-            case PX4_VEHICLE_LAND_DETECTED_MID:
-                CFE_PSP_MemCpy(&m_VehicleLandDetectedMsg, MsgPtr, sizeof(m_VehicleLandDetectedMsg));
-
-                /* Check if fusing land */
-                if(TRUE == m_LandFuse)
-                {
-                    if(landed())
-                    {
-                        /* Throttle rate */
-                        if((m_Timestamp - m_TimeLastLand) > 1.0e6f / LAND_RATE)
-                        {
-                            if(m_LandTimeout)
-                            {
-                                landInit();
-                            }
-                            else
-                            {
-                                landCorrect();
-                            }
-                        }
-                    }
-                }
-                break;
-
-            case PX4_ACTUATOR_ARMED_MID:
-                CFE_PSP_MemCpy(&m_ActuatorArmedMsg, MsgPtr, sizeof(m_ActuatorArmedMsg));
-                break;
-
-            case PX4_VEHICLE_ATTITUDE_MID:
-                CFE_PSP_MemCpy(&m_VehicleAttitudeMsg, MsgPtr, sizeof(m_VehicleAttitudeMsg));
-                break;
-
-            case PX4_SENSOR_COMBINED_MID:
-                /* Don't prevent CFE_PSP_MemCpy - we fuse accel every cycle */
-                CFE_PSP_MemCpy(&m_SensorCombinedMsg, MsgPtr, sizeof(m_SensorCombinedMsg));
-
-                /* Check if fusing baro */
-                if(TRUE == m_BaroFuse)
-                {
-                    /* If baro is valid */
-                    if(m_SensorCombinedMsg.BaroTimestampRelative != PX4_RELATIVE_TIMESTAMP_INVALID)
-                    {
-                        /* Get the baro timestamp from the sensor combined timestamp
-                         * (which is the gyro timestamp) plus the baro relative timestamp.
-                         * Baro relative is the difference between the gyro and baro
-                         * when received by the sensors application. If baro is fresh.
-                         */
-                        if((m_SensorCombinedMsg.Timestamp +
-                           m_SensorCombinedMsg.BaroTimestampRelative)
-                           != m_TimeLastBaro)
-                        {
-                            if(m_BaroTimeout)
-                            {
-                                baroInit();
-                            }
-                            else
-                            {
-                                baroCorrect();
-                            }
-                            /* Save the last valid timestamp */
-                            m_TimeLastBaro = m_SensorCombinedMsg.Timestamp + m_SensorCombinedMsg.BaroTimestampRelative;
-                        }
-                    }
-                }
-                break;
-
-            case PX4_VEHICLE_ATTITUDE_SETPOINT_MID:
-                CFE_PSP_MemCpy(&m_VehicleAttitudeSetpointMsg, MsgPtr, sizeof(m_VehicleAttitudeSetpointMsg));
-                break;
-
-            case PX4_DISTANCE_SENSOR_MID:
-                CFE_PSP_MemCpy(&m_DistanceSensor, MsgPtr, sizeof(m_DistanceSensor));
-                
-                /* Check that distance sensor is expected type for this platform */
-                if(m_DistanceSensor.Type == DIST_SENSOR_TYPE)
-                {
-                    /* Check if fusing distance sensor */
-                    if(TRUE == m_DistFuse)
-                    {
-                        /* Don't integrate while landed */
-                        if(!landed())
-                        {
-                            /* Throttle rate */
-                            if((m_Timestamp - m_TimeLastLand) > 1.0e6f / DIST_RATE)
-                            {
-                                if(m_DistTimeout)
-                                {
-                                    distInit();
-                                }
-                                else
-                                {
-                                    distCorrect();
-                                }
-                            }
-                        }
-                    }
-                }
-                break;
-
-            case PX4_OPTICAL_FLOW_MID:
-                CFE_PSP_MemCpy(&m_OpticalFlowMsg, MsgPtr, sizeof(m_OpticalFlowMsg));
-
-                /* Check if fusing distance sensor */
-                if(TRUE == m_FlowFuse)
-                {
-                    if(m_FlowTimeout)
-                    {
-                        flowInit();
-                    }
-                    else
-                    {
-                        flowCorrect();
-                    }
-                }
-                break;
-
             default:
                 (void) CFE_EVS_SendEvent(PE_MSGID_ERR_EID, CFE_EVS_ERROR,
                      "Recvd invalid SCH msgId (0x%04X)", MsgId);
-                break;
         }
     }
     else if (iStatus == CFE_SB_NO_MESSAGE)
@@ -865,10 +747,219 @@ int32 PE::RcvSchPipeMsg(int32 iBlocking)
     else
     {
         (void) CFE_EVS_SendEvent(PE_RCVMSG_ERR_EID, CFE_EVS_ERROR,
-              "SCH pipe read error (0x%08lX).", iStatus);
+			  "SCH pipe read error (0x%08lX).", iStatus);
     }
 
     return iStatus;
+}
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Process Incoming Data                                           */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+osalbool PE::ProcessDataPipe()
+{
+    int32 iStatus = CFE_SUCCESS;
+    CFE_SB_Msg_t*   MsgPtr=NULL;
+    CFE_SB_MsgId_t  MsgId;
+
+    /* Process command messages until the pipe is empty */
+    while (1)
+    {
+        iStatus = CFE_SB_RcvMsg(&MsgPtr, DataPipeId, CFE_SB_POLL);
+        if(iStatus == CFE_SUCCESS)
+        {
+            MsgId = CFE_SB_GetMsgId(MsgPtr);
+            switch (MsgId)
+            {
+			    case PX4_VEHICLE_GPS_POSITION_MID:
+			    {
+            	    HkTlm.VehicleGpsPositionMsgCount++;
+				    CFE_PSP_MemCpy(&m_VehicleGpsPositionMsg, MsgPtr, sizeof(m_VehicleGpsPositionMsg));
+
+                    /* Check if fusing distance sensor */
+                    if(TRUE == m_GpsFuse)
+				    {
+					    if(m_GpsTimeout)
+					    {
+						    gpsInit();
+					    }
+					    else
+					    {
+						    gpsCorrect();
+					    }
+				    }
+				    break;
+			    }
+
+			    case PX4_VEHICLE_STATUS_MID:
+			    {
+            	    HkTlm.VehicleStatusMsgCount++;
+				    CFE_PSP_MemCpy(&m_VehicleStatusMsg, MsgPtr, sizeof(m_VehicleStatusMsg));
+				    break;
+			    }
+
+    			case PX4_VEHICLE_LAND_DETECTED_MID:
+    			{
+                	HkTlm.VehicleLandDetectedMsgCount++;
+		    		CFE_PSP_MemCpy(&m_VehicleLandDetectedMsg, MsgPtr, sizeof(m_VehicleLandDetectedMsg));
+
+				    /* Check if fusing land */
+				    if(TRUE == m_LandFuse)
+				    {
+					    if(landed())
+					    {
+						    /* Throttle rate */
+						    if((m_Timestamp - m_TimeLastLand) > 1.0e6f / LAND_RATE)
+						    {
+							    if(m_LandTimeout)
+							    {
+								    landInit();
+							    }
+							    else
+							    {
+								    landCorrect();
+							    }
+						    }
+					    }
+				    }
+				    break;
+    			}
+
+			    case PX4_ACTUATOR_ARMED_MID:
+			    {
+            	    HkTlm.ActuatorArmedMsgCount++;
+				    CFE_PSP_MemCpy(&m_ActuatorArmedMsg, MsgPtr, sizeof(m_ActuatorArmedMsg));
+				    break;
+			    }
+
+			    case PX4_VEHICLE_ATTITUDE_MID:
+		        {
+            	    HkTlm.VehicleAttitudeMsgCount++;
+				    CFE_PSP_MemCpy(&m_VehicleAttitudeMsg, MsgPtr, sizeof(m_VehicleAttitudeMsg));
+				    break;
+			    }
+
+			    case PX4_SENSOR_COMBINED_MID:
+			    {
+            	    HkTlm.SensorCombinedMsgCount++;
+				    /* Don't prevent memcpy - we fuse accel every cycle */
+				    CFE_PSP_MemCpy(&m_SensorCombinedMsg, MsgPtr, sizeof(m_SensorCombinedMsg));
+
+				    /* Check if fusing baro */
+				    if(TRUE == m_BaroFuse)
+				    {
+					    /* If baro is valid */
+					    if(m_SensorCombinedMsg.BaroTimestampRelative != PX4_RELATIVE_TIMESTAMP_INVALID)
+					    {
+						    /* Get the baro timestamp from the sensor combined timestamp
+						     * (which is the gyro timestamp) plus the baro relative timestamp.
+						     * Baro relative is the difference between the gyro and baro
+						     * when received by the sensors application. If baro is fresh.
+						     */
+						    if((m_SensorCombinedMsg.Timestamp +
+						       m_SensorCombinedMsg.BaroTimestampRelative)
+						       != m_TimeLastBaro)
+						    {
+							    if(m_BaroTimeout)
+							    {
+							    	baroInit();
+							    }
+							    else
+							    {
+							    	baroCorrect();
+							    }
+							    /* Save the last valid timestamp */
+							    m_TimeLastBaro = m_SensorCombinedMsg.Timestamp + m_SensorCombinedMsg.BaroTimestampRelative;
+						    }
+					    }
+				    }
+				    break;
+			    }
+
+			    case PX4_VEHICLE_ATTITUDE_SETPOINT_MID:
+            	{
+            	    HkTlm.VehicleAttitudeSetpointMsgCount++;
+				    CFE_PSP_MemCpy(&m_VehicleAttitudeSetpointMsg, MsgPtr, sizeof(m_VehicleAttitudeSetpointMsg));
+				    break;
+			    }
+
+			    case PX4_DISTANCE_SENSOR_MID:
+			    {
+            	    HkTlm.DistanceSensorMsgCount++;
+				    CFE_PSP_MemCpy(&m_DistanceSensor, MsgPtr, sizeof(m_DistanceSensor));
+
+				    /* Check that distance sensor is expected type for this platform */
+				    if(m_DistanceSensor.Type == DIST_SENSOR_TYPE)
+				    {
+					    /* Check if fusing distance sensor */
+					    if(TRUE == m_DistFuse)
+					    {
+						    /* Don't integrate while landed */
+						    if(!landed())
+						    {
+							    /* Throttle rate */
+							    if((m_Timestamp - m_TimeLastLand) > 1.0e6f / DIST_RATE)
+							    {
+								    if(m_DistTimeout)
+								    {
+									    distInit();
+								    }
+								    else
+								    {
+									    distCorrect();
+								    }
+							    }
+						    }
+					    }
+				    }
+				    break;
+			    }
+
+			    case PX4_OPTICAL_FLOW_MID:
+		        {
+            	    HkTlm.OpticalFlowMsgCount++;
+				    CFE_PSP_MemCpy(&m_OpticalFlowMsg, MsgPtr, sizeof(m_OpticalFlowMsg));
+
+				    /* Check if fusing distance sensor */
+				    if(TRUE == m_FlowFuse)
+				    {
+					    if(m_FlowTimeout)
+					    {
+						    flowInit();
+					    }
+					    else
+					    {
+						    flowCorrect();
+					    }
+				    }
+				    break;
+		        }
+
+                default:
+		        {
+                    (void) CFE_EVS_SendEvent(PE_MSGID_ERR_EID, CFE_EVS_ERROR,
+                                  "Recvd invalid DATA msgId (0x%04X)", (unsigned short)MsgId);
+                    break;
+		        }
+            }
+        }
+        else if (iStatus == CFE_SB_NO_MESSAGE)
+        {
+            break;
+        }
+        else
+        {
+            (void) CFE_EVS_SendEvent(PE_RCVMSG_ERR_EID, CFE_EVS_ERROR,
+                  "DATA pipe read error (0x%08lX)", iStatus);
+            break;
+        }
+    }
+
+    return true;
 }
 
 
@@ -949,6 +1040,16 @@ void PE::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
             case PE_RESET_CC:
                 HkTlm.usCmdCnt = 0;
                 HkTlm.usCmdErrCnt = 0;
+            	HkTlm.WakeupCount = 0;
+                HkTlm.VehicleGpsPositionMsgCount = 0;
+                HkTlm.VehicleStatusMsgCount = 0;
+                HkTlm.VehicleLandDetectedMsgCount = 0;
+                HkTlm.ActuatorArmedMsgCount = 0;
+                HkTlm.VehicleAttitudeMsgCount = 0;
+                HkTlm.SensorCombinedMsgCount = 0;
+                HkTlm.VehicleAttitudeSetpointMsgCount = 0;
+                HkTlm.DistanceSensorMsgCount = 0;
+                HkTlm.OpticalFlowMsgCount = 0;
                 break;
 
             case PE_FUSE_DIST_SENS_CC:

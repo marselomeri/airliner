@@ -35,20 +35,26 @@ initialize_airliner_build(
 
 add_airliner_app(
     cfs_lib
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/cfs_lib/fsw/for_build)
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/cfs_lib/fsw/for_build
+)
 
 add_airliner_app(
     px4lib
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/px4lib/fsw/for_build
-    MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/px4lib/px4_msg_overrides.json)
+    MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/px4lib/px4_msg_overrides.json
+)
 
 add_airliner_app(
     pblib
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/pblib/fsw/for_build)
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/pblib/fsw/for_build
+)
 
 add_airliner_app(
     prmlib
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/prmlib/fsw/for_build)
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/prmlib/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/prm
+    MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/prm/prm_custom_overrides.json
+)
 
 add_airliner_app(
     sim
@@ -469,3 +475,4 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/lgc_perfids.h
     MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/lgc/lgc_msg_overrides.json
 )
+

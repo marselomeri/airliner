@@ -84,6 +84,7 @@
 #define LGC_MAIN_TASK_PERF_ID       112
 #define FLOW_MAIN_TASK_PERF_ID      113
 #define FLOW_COMPUTE_PERF_ID      	114
+#define PRM_MAIN_TASK_PERF_ID       115
 
 #endif
 

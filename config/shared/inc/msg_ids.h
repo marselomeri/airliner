@@ -670,6 +670,18 @@
 /* LD                                                   */
 #define LD_DIAG_TLM_MID                             0x0ceb
 
+
+
+#define VM_CONFIG_TLM_MID                           0x0cec
+
+
+/* LD                                                   */
+#define PRM_CMD_MID                                (0x1ced)
+#define PRM_SEND_HK_MID                            (0x1cee)
+#define PRM_WAKEUP_MID                             (0x1cef)
+#define PRM_OUT_DATA_MID                           (0x1cf0)
+#define PRM_HK_TLM_MID                             (0x0cf1)
+
 #define SCH_ACTIVITY_DONE_MID                       0x0f00
 
 #endif

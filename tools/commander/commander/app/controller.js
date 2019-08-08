@@ -264,7 +264,6 @@ $( () => {
         InitCommandInputForm();
         InitMenuState();
         InitToolTips();
-        InitScrollBar();
         InitResizeCtl();
         InitSidebar();
         InitWidgets();

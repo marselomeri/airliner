@@ -97,6 +97,20 @@ extern "C" {
 /** \brief PE params mutex name. */
 #define PE_PARAMS_MUTEX                "PE_PARAMS_MUTEX"
 
+/** \brief Pipe depth for the data pipe
+**
+**  \par Limits:
+**       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
+*/
+#define PE_DATA_PIPE_DEPTH            (9)
+
+/** \brief Pipe name for the Scheduler pipe
+**
+**  \par Limits:
+**       Note, this name must fit in OS_MAX_API_NAME.
+*/
+#define PE_DATA_PIPE_NAME             ("PE_DATA_PIPE")
+
 /************************************************************************
  ** Local Structure Definitions
  *************************************************************************/
@@ -194,6 +208,9 @@ public:
 
     /** \brief Command Pipe ID */
     CFE_SB_PipeId_t CmdPipeId;
+
+    /** \brief Data Pipe ID */
+    CFE_SB_PipeId_t DataPipeId;
 
     /* Task-related */
 
@@ -545,6 +562,19 @@ public:
      **
      *************************************************************************/
     void ProcessCmdPipe(void);
+
+    /************************************************************************/
+    /** \brief Position Estimator Task incoming data processing
+     **
+     **  \par Description
+     **       This function processes incoming data messages subscribed
+     **       by PE application
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
+    osalbool ProcessDataPipe(void);
 
     /************************************************************************/
     /** \brief Position Estimator Task application commands
