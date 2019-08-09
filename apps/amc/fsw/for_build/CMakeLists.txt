@@ -33,7 +33,7 @@
 
 
 add_airliner_app_def(amc
-    FILE amc
+    FILE AMC
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/amc_app.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/amc_app.h
