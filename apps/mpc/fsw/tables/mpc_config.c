@@ -42,7 +42,7 @@ static CFE_TBL_FileDef_t CFE_TBL_FileDef =
 /* Default MPC config table data */
 MPC_ConfigTbl_t MPC_ConfigTbl =
 {
-	/* TODO:  Define table. */
+    /* TODO:  Define table. */
 };
 
 /*

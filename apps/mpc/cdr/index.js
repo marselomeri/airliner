@@ -55,6 +55,6 @@ module.exports = class CfeCdrFlightAppsPlugin extends CdrFlightAppsPlugin {
             }
         };
         
-      	this.addContent(content);
+        this.addContent(content);
     };
 };
