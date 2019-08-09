@@ -7,6 +7,8 @@ add_airliner_app_table(
     INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/src/
 )
 
+psp_add_custom_source_to_unit_tests(${APP_NAME} SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/ci_config.c)
+
 add_airliner_app_unit_test(ci-custom-ut
     UTASSERT 
     SOURCES

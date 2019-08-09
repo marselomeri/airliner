@@ -54,6 +54,8 @@ extern MAC_ParamTbl_t MAC_ParamTbl;
 /*
  * Config table for testing
  */
+extern MAC_ParamTbl_t MAC_ParamTbl;
+
 MAC_ParamTbl_t MAC_ParamTblNominal =
 {
     5.0,		/* MC_ROLL_P 	   */

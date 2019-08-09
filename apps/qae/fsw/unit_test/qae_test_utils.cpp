@@ -48,59 +48,61 @@
 
 #include <time.h>
 
-/*
- * Config table for testing
- */
-QAE_ConfigTbl_t ConfigTbl = {
-    /** \brief Complimentary filter accelerometer weight.
-     * 
-     *  \par Limits:
-     *       Min > Max (incr.) 0 > 1, default 0.2.
-     */
-    0.2f,
-    /** \brief Complimentary filter magnetometer weight.
-     * 
-     *  \par Limits:
-     *       Min > Max (incr.) 0 > 1, default 0.1.
-     */
-    0.1f,
-    /** \brief Complimentary filter gyroscope bias weight.
-     * 
-     *  \par Limits:
-     *       Min > Max (incr.) 0 > 1, default 0.1.
-     */
-    0.1f,
-    /** \brief Magnetic declination, in degrees.
-     * 
-     *  \par Limits:
-     *       Min > Max (incr.) 0 > 180, default 0.0.
-     */
-    0.0f,
-    /** \brief Automatic GPS based declination compensation.
-     * 
-     *  \par Limits:
-     *       TRUE or FALSE, default 1 (TRUE).
-     */
-    1,
-    /** \brief Acceleration compensation based on GPS velocity.
-     * 
-     *  \par Limits:
-     *       TRUE or FALSE, default 1 (TRUE).
-     */
-    1,
-    /** \brief Gyro bias limit in rad/s.
-     * 
-     *  \par Limits:
-     *       Min > Max (incr.) 0 > 2, default 0.05.
-     */
-    0.05f,
-    /** \brief Airspeed mode.
-     * 
-     *  \par Limits:
-     *       Min > Max (incr.) ?, default 0.
-     */
-    0
-};
+extern QAE_ConfigTbl_t QAE_ConfigTbl;
+
+///*
+// * Config table for testing
+// */
+//QAE_ConfigTbl_t ConfigTbl = {
+//    /** \brief Complimentary filter accelerometer weight.
+//     *
+//     *  \par Limits:
+//     *       Min > Max (incr.) 0 > 1, default 0.2.
+//     */
+//    0.2f,
+//    /** \brief Complimentary filter magnetometer weight.
+//     *
+//     *  \par Limits:
+//     *       Min > Max (incr.) 0 > 1, default 0.1.
+//     */
+//    0.1f,
+//    /** \brief Complimentary filter gyroscope bias weight.
+//     *
+//     *  \par Limits:
+//     *       Min > Max (incr.) 0 > 1, default 0.1.
+//     */
+//    0.1f,
+//    /** \brief Magnetic declination, in degrees.
+//     *
+//     *  \par Limits:
+//     *       Min > Max (incr.) 0 > 180, default 0.0.
+//     */
+//    0.0f,
+//    /** \brief Automatic GPS based declination compensation.
+//     *
+//     *  \par Limits:
+//     *       TRUE or FALSE, default 1 (TRUE).
+//     */
+//    1,
+//    /** \brief Acceleration compensation based on GPS velocity.
+//     *
+//     *  \par Limits:
+//     *       TRUE or FALSE, default 1 (TRUE).
+//     */
+//    1,
+//    /** \brief Gyro bias limit in rad/s.
+//     *
+//     *  \par Limits:
+//     *       Min > Max (incr.) 0 > 2, default 0.05.
+//     */
+//    0.05f,
+//    /** \brief Airspeed mode.
+//     *
+//     *  \par Limits:
+//     *       Min > Max (incr.) ?, default 0.
+//     */
+//    0
+//};
 
 /*
  * Function Definitions
@@ -119,7 +121,7 @@ void QAE_Test_Setup(void)
     Ut_OSAPI_Reset();
     Ut_OSFILEAPI_Reset();
 
-    Ut_CFE_TBL_AddTable(QAE_CONFIG_TABLE_FILENAME, (void *) &ConfigTbl);
+    Ut_CFE_TBL_AddTable(QAE_CONFIG_TABLE_FILENAME, (void *) &QAE_ConfigTbl);
 }
 
 void QAE_Test_TearDown(void) {

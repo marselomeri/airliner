@@ -37,3 +37,5 @@ add_airliner_app_table(
     NAME ms5607_config
     SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/ms5607_config.c
 )
+
+psp_add_custom_source_to_unit_tests(${APP_NAME} SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/ms5607_config.c)
