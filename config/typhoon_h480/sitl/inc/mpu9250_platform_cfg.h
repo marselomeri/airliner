@@ -143,11 +143,11 @@ extern "C" {
 /** \brief IMU device ID. */
 #define MPU9250_DEVICE_ID                   (0x71)
 /** \brief IMU accelerometer sample rate. */
-#define MPU9250_ACCEL_SAMPLE_RATE           (200)
+#define MPU9250_ACCEL_SAMPLE_RATE           (1000)
 /** \brief IMU accelerometer filter cutoff frequency. */
 #define MPU9250_ACCEL_FILTER_CUTOFF_FREQ    (30)
 /** \brief IMU gyroscope sample rate. */
-#define MPU9250_GYRO_SAMPLE_RATE            (200)
+#define MPU9250_GYRO_SAMPLE_RATE            (1000)
 /** \brief IMU gyroscope filter cutoff frequency. */
 #define MPU9250_GYRO_FILTER_CUTOFF_FREQ     (30)
 /** \brief Set to never publish (0) in PX4 mpu9250 wrapper. */
@@ -160,6 +160,8 @@ extern "C" {
 #define MPU9250_ROOM_TEMP_OFFSET            (0.0f)
 /** \brief Temperature sensitivity */
 #define MPU9250_TEMP_SENS                   (361.0f)
+/** \brief Send internal mag message. */
+//#define MPU9250_SEND_INTERNAL_MAG
 
 
 #ifdef __cplusplus
