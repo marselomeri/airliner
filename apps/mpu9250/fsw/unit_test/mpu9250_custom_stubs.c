@@ -72,21 +72,51 @@ boolean MPU9250_SetGyroScale(uint32 Scale, float *GyroDivider)
     return TRUE;
 }
 
-boolean MPU9250_Measure(MPU9250_SampleQueue_t *SampleQueue)
+boolean MPU9250_Read_Gyro(int16 *X, int16 *Y, int16 *Z)
 {
-    SampleQueue->Samples[0].GX = MPU9250_Custom_Returns.MPU9250_Read_Gyro_X_Value;
-    SampleQueue->Samples[0].GY = MPU9250_Custom_Returns.MPU9250_Read_Gyro_Y_Value;
-    SampleQueue->Samples[0].GZ = MPU9250_Custom_Returns.MPU9250_Read_Gyro_Z_Value;
-    SampleQueue->Samples[0].AX = MPU9250_Custom_Returns.MPU9250_Read_Accel_X_Value;
-    SampleQueue->Samples[0].AY = MPU9250_Custom_Returns.MPU9250_Read_Accel_Y_Value;
-    SampleQueue->Samples[0].AZ = MPU9250_Custom_Returns.MPU9250_Read_Accel_Z_Value;
-    SampleQueue->Samples[0].MX = MPU9250_Custom_Returns.MPU9250_Read_Mag_X_Value;
-    SampleQueue->Samples[0].MY = MPU9250_Custom_Returns.MPU9250_Read_Mag_Y_Value;
-    SampleQueue->Samples[0].MZ = MPU9250_Custom_Returns.MPU9250_Read_Mag_Z_Value;
-    SampleQueue->Samples[0].Temp = MPU9250_Custom_Returns.MPU9250_Read_Temp_Value;
-    SampleQueue->Samples[0].MagDataValid = TRUE;
-    SampleQueue->SampleCount = 1;
+    *X = MPU9250_Custom_Returns.MPU9250_Read_Gyro_X_Value;
+    *Y = MPU9250_Custom_Returns.MPU9250_Read_Gyro_Y_Value;
+    *Z = MPU9250_Custom_Returns.MPU9250_Read_Gyro_Z_Value;
+    return MPU9250_Custom_Returns.MPU9250_Read_Gyro_Return;
+}
 
+
+boolean MPU9250_Read_Accel(int16 *X, int16 *Y, int16 *Z)
+{
+    *X = MPU9250_Custom_Returns.MPU9250_Read_Accel_X_Value;
+    *Y = MPU9250_Custom_Returns.MPU9250_Read_Accel_Y_Value;
+    *Z = MPU9250_Custom_Returns.MPU9250_Read_Accel_Z_Value;
+    return MPU9250_Custom_Returns.MPU9250_Read_Accel_Return;
+}
+
+
+boolean MPU9250_Read_Mag(int16 *X, int16 *Y, int16 *Z)
+{
+    return TRUE;
+}
+
+
+boolean MPU9250_Read_Temp(uint16 *Temp)
+{
+    *Temp = MPU9250_Custom_Returns.MPU9250_Read_Temp_Value;
+    return MPU9250_Custom_Returns.MPU9250_Read_Temp_Return;
+}
+
+
+boolean MPU9250_Read_ImuStatus(boolean *WOM, boolean *FifoOvflw, boolean *Fsync, boolean *DataReady)
+{
+    return TRUE;
+}
+
+
+boolean MPU9250_Read_MagStatus(boolean *Overrun, boolean *DataReady, boolean *Overflow, boolean *Output16Bit)
+{
+    return TRUE;
+}
+
+
+boolean MPU9250_Read_MagAdj(uint8 *X, uint8 *Y, uint8 *Z)
+{
     return TRUE;
 }
 
@@ -134,7 +164,8 @@ boolean MPU9250_Apply_Mag_Platform_Rotation(float *X, float *Y, float *Z)
 }
 
 
-boolean MPU9250_Read_MagAdj(uint8 *X, uint8 *Y, uint8 *Z)
+boolean MPU9250_Measure(MPU9250_SampleQueue_t *SampleQueue)
 {
     return TRUE;
-} 
+}
+

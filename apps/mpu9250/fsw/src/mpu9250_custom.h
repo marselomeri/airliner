@@ -50,7 +50,12 @@ extern "C" {
 /************************************************************************
 ** Defines
 *************************************************************************/
-/** \brief Maximum FIFO samples per measurement. */
+/** \brief Maximum FIFO samples per measurement.
+ *
+ *  \par Description
+ *         This value is X3 normal FIFO length which is (if running at 
+ *         250Hz) 4 samples per measurement. 
+ */
 #define MPU9250_MAX_FIFO_LENGTH              (12)
 
 /************************************************************************
@@ -58,24 +63,38 @@ extern "C" {
 *************************************************************************/
 typedef struct
 {
+    /** \brief Gyro measurement X. */
     int16 GX; 
+    /** \brief Gyro measurement Y. */
     int16 GY; 
+    /** \brief Gyro measurement Z. */
     int16 GZ; 
+    /** \brief Accel measurement X. */
     int16 AX; 
+    /** \brief Accel measurement Y. */
     int16 AY; 
+    /** \brief Accel measurement Z. */
     int16 AZ; 
+    /** \brief Mag measurement X. */
     int16 MX;
+    /** \brief Mag measurement Y. */
     int16 MY;
+    /** \brief Mag measurement Z. */
     int16 MZ;
+    /** \brief Temperature measurement. */
     int16 Temp;
+    /** \brief Mag data valid flag. */
     boolean MagDataValid;
 } MPU9250_Measurement_t;
 
 
 typedef struct
 {
+    /** \brief Measurement samples. */
     MPU9250_Measurement_t Samples[MPU9250_MAX_FIFO_LENGTH];
+    /** \brief Sample interval in us. */
     uint32 SampleIntervalUs;
+    /** \brief The number of samples (measurements). */
     int16 SampleCount;
 } MPU9250_SampleQueue_t;
 
@@ -295,7 +314,6 @@ boolean MPU9250_Apply_Platform_Rotation(float *X, float *Y, float *Z);
 **
 *************************************************************************/
 boolean MPU9250_Apply_Mag_Platform_Rotation(float *X, float *Y, float *Z);
-
 
 #ifdef __cplusplus
 }

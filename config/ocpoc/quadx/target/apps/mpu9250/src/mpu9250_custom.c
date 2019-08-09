@@ -198,7 +198,7 @@ boolean MPU9250_Fifo_Reset(void)
         goto end_of_function;
     }
 
-    usleep(1000);
+    //usleep(1000);
 
 end_of_function:
     return returnBool;
@@ -1118,8 +1118,7 @@ void MPU9250_Get_Rotation(uint8 *Rotation)
             "MPU9250 Get_Rotation Null Pointer");
         goto end_of_function;
     }
-    
-    /* TODO move to a table */
+
     *Rotation = ROTATION_ROLL_180_YAW_90;
 
 end_of_function:
@@ -1137,8 +1136,7 @@ void MPU9250_Get_Mag_Rotation(uint8 *Rotation)
             "MPU9250 Get_Mag_Rotation Null Pointer");
         goto end_of_function;
     }
-    
-    /* TODO move to a table */
+
     *Rotation = ROTATION_NONE;
 
 end_of_function:
@@ -1296,7 +1294,7 @@ boolean MPU9250_Measure(MPU9250_SampleQueue_t *SampleQueue)
         SampleQueue->Samples[index].MY   = MPU9250_AppCustomData.samples[index].mag_y;
         SampleQueue->Samples[index].MZ   = MPU9250_AppCustomData.samples[index].mag_z;
 
-        returnBool = MPU9250_sampleChecks(&SampleQueue->Samples[index]);
+        returnBool = MPU9250_SampleChecks(&SampleQueue->Samples[index]);
         if(FALSE == returnBool)
         {
             goto end_of_function;
@@ -1359,14 +1357,14 @@ uint16 MPU9250_GetFifoCount(void)
 }
 
 
-boolean MPU9250_sampleChecks(MPU9250_Measurement_t *sample)
+boolean MPU9250_SampleChecks(MPU9250_Measurement_t *sample)
 {
     boolean returnBool = TRUE;
 
     if(0 == sample)
     {
         CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "Null pointer in MPU9250_sampleChecks.");
+            "Null pointer in MPU9250_SampleChecks.");
         goto end_of_function;
     }
 

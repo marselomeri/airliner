@@ -47,7 +47,6 @@ extern "C" {
 *************************************************************************/
 #include "cfe.h"
 
-
 /************************************************************************
 ** Local Defines
 *************************************************************************/
@@ -195,6 +194,7 @@ extern "C" {
 */
 typedef struct
 {
+    /** \brief Command header. */
     uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
 } MPU9250_NoArgCmd_t;
 
@@ -206,11 +206,9 @@ typedef struct
 {
     /** \brief cFE SB Tlm Msg Hdr */
     uint8              TlmHeader[CFE_SB_TLM_HDR_SIZE];
-
     /** \mpu9250tlmmnemonic \MPU9250_CMDACPTCNT
         \brief Count of accepted commands */
     uint8              usCmdCnt;   
-
     /** \mpu9250tlmmnemonic \MPU9250_CMDRJCTCNT
         \brief Count of failed commands */
     uint8              usCmdErrCnt; 
@@ -224,45 +222,45 @@ typedef struct
 */
 typedef struct
 {
-    /*! Acceleration X-axis calibration param scale. */
+    /** \brief Acceleration X-axis calibration param scale. */
     float AccXScale;
-    /*! Acceleration Y-axis calibration param scale. */
+    /** \brief Acceleration Y-axis calibration param scale. */
     float AccYScale;
-    /*! Acceleration Z-axis calibration param scale. */
+    /** \brief Acceleration Z-axis calibration param scale. */
     float AccZScale;
-    /*! Acceleration X-axis calibration param offset. */
+    /** \brief Acceleration X-axis calibration param offset. */
     float AccXOffset;
-    /*! Acceleration Y-axis calibration param offset. */
+    /** \brief Acceleration Y-axis calibration param offset. */
     float AccYOffset;
-    /*! Acceleration Z-axis calibration param offset. */
+    /** \brief Acceleration Z-axis calibration param offset. */
     float AccZOffset;
-    /*! Gyro X-axis calibration param scale. */
+    /** \brief Gyro X-axis calibration param scale. */
     float GyroXScale;
-    /*! Gyro Y-axis calibration param scale. */
+    /** \brief Gyro Y-axis calibration param scale. */
     float GyroYScale;
-    /*! Gyro Z-axis calibration param scale. */
+    /** \brief Gyro Z-axis calibration param scale. */
     float GyroZScale;
-    /*! Gyro X-axis calibration param offset. */
+    /** \brief Gyro X-axis calibration param offset. */
     float GyroXOffset;
-    /*! Gyro Y-axis calibration param offset. */
+    /** \brief Gyro Y-axis calibration param offset. */
     float GyroYOffset;
-    /*! Gyro Z-axis calibration param offset. */
+    /** \brief Gyro Z-axis calibration param offset. */
     float GyroZOffset;
-    /*! Platform rotation. */
+    /** \brief Platform rotation. */
     uint8 Rotation;
-    /*! Mag X-axis calibration param scale. */
+    /** \brief Mag X-axis calibration param scale. */
     float MagXScale;
-    /*! Mag Y-axis calibration param scale. */
+    /** \brief Mag Y-axis calibration param scale. */
     float MagYScale;
-    /*! Mag Z-axis calibration param scale. */
+    /** \brief Mag Z-axis calibration param scale. */
     float MagZScale;
-    /*! Mag X-axis calibration param offset. */
+    /** \brief Mag X-axis calibration param offset. */
     float MagXOffset;
-    /*! Mag Y-axis calibration param offset. */
+    /** \brief Mag Y-axis calibration param offset. */
     float MagYOffset;
-    /*! Mag Z-axis calibration param offset. */
+    /** \brief Mag Z-axis calibration param offset. */
     float MagZOffset;
-    /*! Mag Platform Rotation */
+    /** \brief Mag Platform Rotation */
     uint8 MagRotation;
 } MPU9250_CalibrationMsg_t;
 
@@ -272,27 +270,27 @@ typedef struct
 */
 typedef struct
 {
-    /*! Accel unit value */
+    /** \brief Accel unit value */
     float AccUnit;
-    /*! Gyro unit value */
+    /** \brief Gyro unit value */
     float GyroUnit;
-    /*! Accel divider value */
+    /** \brief Accel divider value */
     float AccDivider;
-    /*! Gyro divider value */
+    /** \brief Gyro divider value */
     float GyroDivider;
-    /*! Room temperature offset value */
+    /** \brief Room temperature offset value */
     float RoomTempOffset;
-    /*! Temperature sensitivity value */
+    /** \brief Temperature sensitivity value */
     float TempSensitivity;
-    /*! Accel scale value*/
+    /** \brief Accel scale value*/
     uint16 AccScale;
-    /*! Gyro scale value*/
+    /** \brief Gyro scale value*/
     uint16 GyroScale;
-    /*! Mag X-axis sensitivity adjustment value */
+    /** \brief Mag X-axis sensitivity adjustment value */
     float MagXAdj;
-    /*! Mag Y-axis sensitivity adjustment value */
+    /** \brief Mag Y-axis sensitivity adjustment value */
     float MagYAdj;
-    /*! Mag Z-axis sensitivity adjustment value */
+    /** \brief Mag Z-axis sensitivity adjustment value */
     float MagZAdj;
 } MPU9250_ConversionMsg_t;
 
@@ -302,10 +300,11 @@ typedef struct
 */
 typedef struct
 {
+    /** \brief Telemetry header. */
     uint8           TlmHeader[CFE_SB_TLM_HDR_SIZE];
-    /*! All calibration info */
+    /** \brief All calibration info */
     MPU9250_CalibrationMsg_t          Calibration;
-    /*! All conversion info */
+    /** \brief All conversion info */
     MPU9250_ConversionMsg_t           Conversion;
 } MPU9250_DiagPacket_t;
 
@@ -314,8 +313,9 @@ typedef struct
 */
 typedef struct
 {
+    /** \brief Command header. */
     uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
-    /*! All calibration info */
+    /** \brief All calibration info */
     MPU9250_CalibrationMsg_t Calibration;
 } MPU9250_SetCalibrationCmd_t;
 

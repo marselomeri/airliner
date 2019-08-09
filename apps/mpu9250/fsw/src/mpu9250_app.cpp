@@ -385,6 +385,9 @@ int32 MPU9250::InitApp()
 
     /* Get the rotation from custom for diag */
     MPU9250_Get_Rotation(&Diag.Calibration.Rotation);
+    
+    /* Get the mag rotation from custom for diag */
+    MPU9250_Get_Mag_Rotation(&Diag.Calibration.MagRotation);
 
     HkTlm.State = MPU9250_INITIALIZED;
 

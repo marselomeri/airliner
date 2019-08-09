@@ -62,7 +62,7 @@
 /** \brief SPI device receive delay. */
 #define MPU9250_SPI_RX_DELAY                 (0)
 /** \brief SPI transfer maximum buffer size. */
-#define MPU9250_SPI_MAX_BUFFER               512
+#define MPU9250_SPI_MAX_BUFFER               (512)
 /** \brief Array initializer. */
 #define MPU9250_INITREGNUM                   (12)
 /** \brief Configured measurement interval. */
@@ -77,7 +77,7 @@ typedef enum
     /** \brief MPU9250 status uninitialized. */
     MPU9250_CUSTOM_UNINITIALIZED  = 0,
     /** \brief MPU9250 status initialized. */
-    MPU9250_CUSTOM_INITIALIZED   = 1
+    MPU9250_CUSTOM_INITIALIZED    = 1
 } MPU9250_Custom_Status_t;
 
 
@@ -393,6 +393,6 @@ uint16 MPU9250_GetFifoCount(void);
 **  \endreturns
 **
 *************************************************************************/
-boolean MPU9250_sampleChecks(MPU9250_Measurement_t *sample);
+boolean MPU9250_SampleChecks(MPU9250_Measurement_t *sample);
 
 #endif /* MPU9250_SPI_H */

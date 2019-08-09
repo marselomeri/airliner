@@ -192,6 +192,7 @@
 /* Configuration bits mpu9250 */
 
 /* Config register bits. */
+/** \brief Fifo overwrite mode. */
 #define MPU9250_CONFIG_FIFO_MODE_OVERWRITE  (0x00)
 
 /* Gyro config register bits. */
@@ -215,26 +216,43 @@
 #define MPU9250_BITS_FS_16G                 (0x18)
 
 /* Accel config 2 register bits. */
+/** \brief Accel bandwidth 41 Hz */
 #define MPU9250_ACCEL_CONFIG2_BW_41HZ       (0x03)
+/** \brief Accel bandwidth 184 Hz */
 #define MPU9250_ACCEL_CONFIG2_BW_184HZ      (0x09)
 
 /* FIFO enable register bits. */
+/** \brief Enable temperature in the FIFO queue. */
 #define MPU9250_FIFO_EN_TEMP_OUT            (0x80)
+/** \brief Enable gyro X in the FIFO queue. */
 #define MPU9250_FIFO_EN_GYRO_XOUT           (0x40)
+/** \brief Enable gyro Y in the FIFO queue. */
 #define MPU9250_FIFO_EN_GYRO_YOUT           (0x20)
+/** \brief Enable gyro Z in the FIFO queue. */
 #define MPU9250_FIFO_EN_GYRO_ZOUT           (0x10)
+/** \brief Enable accel in the FIFO queue. */
 #define MPU9250_FIFO_EN_ACCEL_OUT           (0x08)
+/** \brief Enable slave 2 in the FIFO queue. */
 #define MPU9250_FIFO_EN_SLV2_OUT            (0x04)
+/** \brief Enable slave 1 in the FIFO queue. */
 #define MPU9250_FIFO_EN_SLV1_OUT            (0x02)
+/** \brief Enable slave 0 in the FIFO queue. */
 #define MPU9250_FIFO_EN_SLV0_OUT            (0x01)
 
 /* User control register bits. */
+/** \brief FIFO enable. */
 #define MPU9250_USER_CTRL_FIFO_EN           (0x40)
+/** \brief I2C master enable. */
 #define MPU9250_USER_CTRL_I2C_MST_EN        (0x20)
+/** \brief Disable slave, SPI only. */
 #define MPU9250_USER_CTRL_I2C_IF_DIS        (0x10)
+/** \brief Digital motion processor reset. */
 #define MPU9250_USER_CTRL_DMP_RST           (0x08)
+/** \brief FIFO reset. */
 #define MPU9250_USER_CTRL_FIFO_RST          (0x04)
+/** \brief I2C master reset. */
 #define MPU9250_USER_CTRL_I2C_MST_RST       (0x02)
+/** \brief Reset signal paths, clear sensor registers. */
 #define MPU9250_USER_CTRL_SIG_COND_RST      (0x01)
 
 /* Power management 1 register bits. */
@@ -242,11 +260,15 @@
 #define MPU9250_PWR_MGMT_1_H_RESET          (0x80)
 /** \brief Power Management 1 sleep bit. */
 #define MPU9250_PWR_MGMT_1_SLEEP            (0x40)
+/** \brief Power Management 1 cycle bit. */
 #define MPU9250_PWR_MGMT_1_CYCLE            (0x20)
+/** \brief Power Management 1 gyro standby bit. */
 #define MPU9250_PWR_MGMT_1_GYRO_STDBY       (0x10)
+/** \brief Power Management 1 power down PTAT. */
 #define MPU9250_PWR_MGMT_1_PD_PTAT          (0x08)
 /** \brief Power Management 1 clock select bit. */
 #define MPU9250_PWR_MGMT_1_CLKSEL           (0x07)
+/** \brief Power Management 1 auto clock select bit. */
 #define MPU9250_PWR_MGMT_1_AUTO_CLKSEL      (0x01)
 /** \brief Power Management 1 sleep bit. */
 #define MPU9250_BIT_SLEEP                   (0x40)
@@ -256,23 +278,30 @@
 #define MPU9250_BITS_CLKSEL                 (0x07)
 
 /* I2C Master delay control. */
+/** \brief Slave 0 delay enable. */
 #define MPU9250_SLAVE_0_DLY_EN              (0x01)
 
 /* I2C Slave CTRL bits. */
+/** \brief Slave enable. */
 #define MPU9250_SLAVE_EN                    (0x80)
 #define MPU9250_SLAVE_READ_8BYTES           (0x08)
 
 /* I2C Slave ADDR bits. */
+/** \brief Slave read. */
 #define MPU9250_SLAVE_READ                  (0x80)
+/** \brief Slave write. */
 #define MPU9250_SLAVE_WRITE                 (0x00)
 
 /* I2C master status bits. */
+/** \brief Slave 4 done. */
 #define MPU9250_I2C_SLV4_DONE               (0x40)
 
 /* Interrupt status bits. */
+/** \brief Fifo overflow bit. */
 #define MPU9250_INT_STATUS_FIFO_OVERFLOW    (0x10)
-
+/** \brief Clock select gyro X. */
 #define MPU9250_MPU_CLK_SEL_PLLGYROX        (0x01)
+/** \brief Clock select gyro Z. */
 #define MPU9250_MPU_CLK_SEL_PLLGYROZ        (0x03)
 #define MPU9250_MPU_EXT_SYNC_GYROX          (0x02)
 /** \brief Digital Low Pass Filter Configuration bit 250Hz. */
@@ -299,9 +328,11 @@
 #define MPU9250_BIT_RAW_RDY_EN              (0x01)
 /** \brief Reset I2C slave and set interface to SPI mode only. */
 #define MPU9250_BIT_I2C_IF_DIS              (0x10)
-
+/** \brief Read flag bit. */
 #define MPU9250_READ_FLAG                   (0x80)
+/** \brief Enable raw sensor data ready interrupt bit */
 #define MPU9250_BIT_RAW_RDY_EN              (0x01)
+/** \brief Interrupt status clear if read */
 #define MPU9250_BIT_INT_ANYRD_2CLEAR        (0x10)
 /** \brief The default value of the MPU9250 device ID. */
 #define MPU9250_WHOAMI_9250                 (0x71)
@@ -352,13 +383,21 @@
 #define MPU9250_AK8963_ASAZ                 (0x12)
 
 /* Mag bits */
+/** \brief Mag power down mode bit. */
 #define MPU9250_MAG_CNTL1_MODE_POWER_DOWN       (0x00)
+/** \brief Mag single measurement mode bit. */
 #define MPU9250_MAG_CNTL1_MODE_SINGLE_MEASURE   (0x01)
+/** \brief Mag continuous measurement mode 1 bit. */
 #define MPU9250_MAG_CNTL1_MODE_CONT_MEASURE_1   (0x02)
+/** \brief Mag continuous measurement mode 2 bit. */
 #define MPU9250_MAG_CNTL1_MODE_CONT_MEASURE_2   (0x06)
+/** \brief Mag fuse rom access mode bit. */
 #define MPU9250_MAG_CNTL1_FUSE_ROM_ACCESS_MODE  (0x0F)
+/** \brief Mag 16-bit measurement mode bit. */
 #define MPU9250_MAG_CNTL1_16_BITS               (0x10)
+/** \brief Mag magnetic overflow bit. */
 #define MPU9250_MAG_HOFL                        (0x08)
+/** \brief Mag soft reset bit. */
 #define MPU9250_MAG_CNTL2_SOFT_RESET            (0x01)
 
 /* Masks Mag */

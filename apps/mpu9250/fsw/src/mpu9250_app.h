@@ -130,7 +130,6 @@ public:
     CFE_SB_PipeId_t ParamPipeId;
 
     /* Task-related */
-
     /** \brief Task Run Status */
     uint32 uiRunStatus;
 

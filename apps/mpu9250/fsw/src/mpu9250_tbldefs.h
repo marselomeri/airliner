@@ -62,41 +62,41 @@ extern "C" {
 /** \brief Definition for a single config table entry */
 typedef struct
 {
-    /*! Acceleration X-axis calibration param scale. */
+    /** \brief Acceleration X-axis calibration param scale. */
     float AccXScale;
-    /*! Acceleration Y-axis calibration param scale. */
+    /** \brief Acceleration Y-axis calibration param scale. */
     float AccYScale;
-    /*! Acceleration Z-axis calibration param scale. */
+    /** \brief Acceleration Z-axis calibration param scale. */
     float AccZScale;
-    /*! Acceleration X-axis calibration param offset. */
+    /** \brief Acceleration X-axis calibration param offset. */
     float AccXOffset;
-    /*! Acceleration Y-axis calibration param offset. */
+    /** \brief Acceleration Y-axis calibration param offset. */
     float AccYOffset;
-    /*! Acceleration Z-axis calibration param offset. */
+    /** \brief Acceleration Z-axis calibration param offset. */
     float AccZOffset;
-    /*! Gyro X-axis calibration param scale. */
+    /** \brief Gyro X-axis calibration param scale. */
     float GyroXScale;
-    /*! Gyro Y-axis calibration param scale. */
+    /** \brief Gyro Y-axis calibration param scale. */
     float GyroYScale;
-    /*! Gyro Z-axis calibration param scale. */
+    /** \brief Gyro Z-axis calibration param scale. */
     float GyroZScale;
-    /*! Gyro X-axis calibration param offset. */
+    /** \brief Gyro X-axis calibration param offset. */
     float GyroXOffset;
-    /*! Gyro Y-axis calibration param offset. */
+    /** \brief Gyro Y-axis calibration param offset. */
     float GyroYOffset;
-    /*! Gyro Z-axis calibration param offset. */
+    /** \brief Gyro Z-axis calibration param offset. */
     float GyroZOffset;
-    /*! Mag X-axis calibration param scale. */
+    /** \brief Mag X-axis calibration param scale. */
     float MagXScale;
-    /*! Mag Y-axis calibration param scale. */
+    /** \brief Mag Y-axis calibration param scale. */
     float MagYScale;
-    /*! Mag Z-axis calibration param scale. */
+    /** \brief Mag Z-axis calibration param scale. */
     float MagZScale;
-    /*! Mag X-axis calibration param offset. */
+    /** \brief Mag X-axis calibration param offset. */
     float MagXOffset;
-    /*! Mag Y-axis calibration param offset. */
+    /** \brief Mag Y-axis calibration param offset. */
     float MagYOffset;
-    /*! Mag Z-axis calibration param offset. */
+    /** \brief Mag Z-axis calibration param offset. */
     float MagZOffset;
 } MPU9250_ConfigTbl_t;
 

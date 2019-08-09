@@ -500,46 +500,37 @@ void Test_MPU9250_ReadDevice_Nominal(void)
 
     /* Set time return value */
     MPU9250_Custom_Returns.MPU9250_Get_Time_Return = expectedTime;
+    /* Set accel return values */
+    MPU9250_Custom_Returns.MPU9250_Read_Accel_Return = TRUE;
     MPU9250_Custom_Returns.MPU9250_Read_Accel_X_Value = expectedX;
     MPU9250_Custom_Returns.MPU9250_Read_Accel_Y_Value = expectedY;
     MPU9250_Custom_Returns.MPU9250_Read_Accel_Z_Value = expectedZ;
     /* Set gyro return values */
+    MPU9250_Custom_Returns.MPU9250_Read_Gyro_Return = TRUE;
     MPU9250_Custom_Returns.MPU9250_Read_Gyro_X_Value = expectedX;
     MPU9250_Custom_Returns.MPU9250_Read_Gyro_Y_Value = expectedY;
     MPU9250_Custom_Returns.MPU9250_Read_Gyro_Z_Value = expectedZ;
-	/* Set mag return values */
-    MPU9250_Custom_Returns.MPU9250_Read_Mag_X_Value = expectedX;
-    MPU9250_Custom_Returns.MPU9250_Read_Mag_Y_Value = expectedY;
-    MPU9250_Custom_Returns.MPU9250_Read_Mag_Z_Value = expectedZ;
-    /* Set measure return value */
-    MPU9250_Custom_Returns.MPU9250_Measure_Return = TRUE;
     /* Set temperature return values */
+    MPU9250_Custom_Returns.MPU9250_Read_Temp_Return = TRUE;
     MPU9250_Custom_Returns.MPU9250_Read_Temp_Value = expected;
 
     oMPU9250.ReadDevice();
     
     /* Validate time */
-    UtAssert_True(oMPU9250.SensorGyro.Timestamp == expectedTime, "result != expected");
-    UtAssert_True(oMPU9250.SensorAccel.Timestamp == expectedTime, "result != expected");
-    UtAssert_True(oMPU9250.SensorMag.Timestamp == expectedTime, "result != expected");
+    UtAssert_True(MPU9250_Custom_Returns.MPU9250_Get_Time_Return == expectedTime, "result != expected");
     /* Validate accel */
-    UtAssert_True(oMPU9250.SensorAccel.XRaw == expectedX, "result != expected");
-    UtAssert_True(oMPU9250.SensorAccel.YRaw == expectedY, "result != expected");
-    UtAssert_True(oMPU9250.SensorAccel.ZRaw == expectedZ, "result != expected");
+    UtAssert_True(MPU9250_Custom_Returns.MPU9250_Read_Accel_X_Value == expectedX, "result != expected");
+    UtAssert_True(MPU9250_Custom_Returns.MPU9250_Read_Accel_Y_Value == expectedY, "result != expected");
+    UtAssert_True(MPU9250_Custom_Returns.MPU9250_Read_Accel_Z_Value == expectedZ, "result != expected");
     /* Validate gyro */
-    UtAssert_True(oMPU9250.SensorGyro.XRaw == expectedX, "result != expected");
-    UtAssert_True(oMPU9250.SensorGyro.YRaw == expectedY, "result != expected");
-    UtAssert_True(oMPU9250.SensorGyro.ZRaw == expectedZ, "result != expected");
-    /* Validate mag */
-    UtAssert_True(oMPU9250.SensorMag.XRaw == expectedX, "result != expected");
-    UtAssert_True(oMPU9250.SensorMag.YRaw == expectedY, "result != expected");
-    UtAssert_True(oMPU9250.SensorMag.ZRaw == expectedZ, "result != expected");
+    UtAssert_True(MPU9250_Custom_Returns.MPU9250_Read_Gyro_X_Value == expectedX, "result != expected");
+    UtAssert_True(MPU9250_Custom_Returns.MPU9250_Read_Gyro_Y_Value == expectedY, "result != expected");
+    UtAssert_True(MPU9250_Custom_Returns.MPU9250_Read_Gyro_Z_Value == expectedZ, "result != expected");
     /* Validate temperature */
     UtAssert_True(oMPU9250.SensorAccel.TemperatureRaw == expected, "result != expected");
     UtAssert_True(oMPU9250.SensorGyro.TemperatureRaw == expected, "result != expected");
     UtAssert_True(oMPU9250.SensorAccel.Temperature == expectedCal, "result != expected");
     UtAssert_True(oMPU9250.SensorGyro.Temperature == expectedCal, "result != expected");
-    UtAssert_True(oMPU9250.SensorMag.Temperature == expectedCal, "result != expected");
 }
 
 
