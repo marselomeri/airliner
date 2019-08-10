@@ -7,4 +7,3 @@ add_airliner_app_table(
 )
 
 psp_add_custom_source_to_unit_tests(${APP_NAME} SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/bat_config.c)
-

@@ -83,7 +83,7 @@ extern "C" {
 /** \brief Pipe depth for the data pipe 
 **
 **  \par Limits:
-**       minimum of 18, max of CFE_SB_MAX_PIPE_DEPTH.
+**       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
 */
 #define VM_DATA_PIPE_DEPTH            (18)
 
@@ -93,6 +93,20 @@ extern "C" {
 **       Note, this name must fit in OS_MAX_API_NAME.
 */
 #define VM_DATA_PIPE_NAME             ("VM_DATA_PIPE")
+
+/** \brief Pipe depth for the parameters pipe
+**
+**  \par Limits:
+**       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
+*/
+#define VM_PARAM_PIPE_DEPTH             (4)
+
+/** \brief Pipe name for the parameters pipe
+**
+**  \par Limits:
+**       Note, this name must fit in OS_MAX_API_NAME.
+*/
+#define VM_PARAM_PIPE_NAME              ("VM_PARAM_PIPE")
 
 /** \brief The config table default filename
 **
@@ -108,6 +122,21 @@ extern "C" {
 **       This parameter must be at least 1000 (ms).
 */
 #define VM_STARTUP_TIMEOUT_MSEC    (1000)
+
+/** \brief The timeout value, in microseconds, to wait until VM starts checking battery
+**         voltage.
+**
+**  \par Limits:
+**       None
+*/
+#define VM_BATTERY_VOLTAGE_CHECK_DELAY (6000000)
+
+/** \brief The minimum battery voltage to be considered valid.
+**
+**  \par Limits:
+**       Must be greater than or equal to FLT_EPSILON.
+*/
+#define VM_MINIMUM_VALID_BATTERY_VOLTAGE (2.0f)
 
 
 #ifdef __cplusplus

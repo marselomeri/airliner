@@ -675,7 +675,7 @@
 #define VM_CONFIG_TLM_MID                           0x0cec
 
 
-/* LD                                                   */
+/* PRM                                                  */
 #define PRM_CMD_MID                                (0x1ced)
 #define PRM_SEND_HK_MID                            (0x1cee)
 #define PRM_WAKEUP_MID                             (0x1cef)

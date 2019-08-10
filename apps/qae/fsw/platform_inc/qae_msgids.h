@@ -5,10 +5,10 @@
 extern "C" {
 #endif
 
-#define AE_HK_TLM_MID                               0x0c59
-#define AE_SEND_HK_MID                              0x1c5a
-#define AE_WAKEUP_MID                               0x1c5b
-#define AE_CMD_MID                                  0x1c5c
+#define QAE_HK_TLM_MID                               0x0c59
+#define QAE_SEND_HK_MID                              0x1c5a
+#define QAE_WAKEUP_MID                               0x1c5b
+#define QAE_CMD_MID                                  0x1c5c
 
 #ifdef __cplusplus
 }

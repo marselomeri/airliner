@@ -132,7 +132,6 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/flow_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/flow_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/flow_perfids.h
-        
 )
 
 add_airliner_app(

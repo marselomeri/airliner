@@ -1,42 +1,43 @@
-#ifndef RCIN_PLATFORM_CFG_H
-#define RCIN_PLATFORM_CFG_H
+    
+#ifndef PRM_PLATFORM_CFG_H
+#define PRM_PLATFORM_CFG_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /*
-** RCIN Platform Configuration Parameter Definitions
+** prm Platform Configuration Parameter Definitions
 */
 
-/** \brief Mission specific version number for RCIN application
+/** \brief Mission specific version number for PRM application
 **  
 **  \par Description:
 **       An application version number consists of four parts:
 **       major version number, minor version number, revision
 **       number and mission specific revision number. The mission
 **       specific revision number is defined here and the other
-**       parts are defined in "amc_version.h".
+**       parts are defined in "prm_version.h".
 **
 **  \par Limits:
 **       Must be defined as a numeric value that is greater than
 **       or equal to zero.
 */
-#define RCIN_MISSION_REV                (0)
+#define PRM_MISSION_REV                (0)
 
 /** \brief Pipe depth for the Scheduler pipe 
 **
 **  \par Limits:
 **       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
 */
-#define RCIN_SCH_PIPE_DEPTH             (2)
+#define PRM_SCH_PIPE_DEPTH             (2)
 
 /** \brief Pipe name for the Scheduler pipe 
 **
 **  \par Limits:
 **       Note, this name must fit in OS_MAX_API_NAME.
 */
-#define RCIN_SCH_PIPE_NAME              ("RCIN_SCH_PIPE")
+#define PRM_SCH_PIPE_NAME              ("PRM_SCH_PIPE")
 
 /** \brief The SB pend behavior type for the Scheduler pipe.
 **
@@ -46,53 +47,53 @@ extern "C" {
 **       Note, using CFE_SB_PEND_FOREVER may cause an unresponsive
 **       application if no messages arrive on this pipe.
 */
-#define RCIN_SCH_PIPE_PEND_TIME         (2000)
+#define PRM_SCH_PIPE_PEND_TIME         (2000)
 
 /** \brief The number of WAKEUP messages to reserve on the Scheduler pipe.
 **
 **  \par Limits:
 **       minimum of 1, max limited to CFE_SB_MAX_PIPE_DEPTH-1.  Note the
-**       RCIN_WAKEUP_MID_MAX_MSG_COUNT and RCIN_SEND_HK_MID_MAX_MSG_COUNT
-**       must be less than RCIN_SCH_PIPE_DEPTH.
+**       PRM_SCH_PIPE_WAKEUP_RESERVED and PRM_SCH_PIPE_SEND_HK_RESERVED
+**       must be less than PRM_SCH_PIPE_DEPTH.
 */
-#define RCIN_WAKEUP_MID_MAX_MSG_COUNT   (1)
+#define PRM_SCH_PIPE_WAKEUP_RESERVED   (1)
 
 /** \brief The number of SEND_HK messages to reserve on the Scheduler pipe.
 **
 **  \par Limits:
 **       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.  Note the
-**       RCIN_WAKEUP_MID_MAX_MSG_COUNT and RCIN_SEND_HK_MID_MAX_MSG_COUNT
-**       must be less than RCIN_SCH_PIPE_DEPTH.
+**       PRM_SCH_PIPE_WAKEUP_RESERVED and PRM_SCH_PIPE_SEND_HK_RESERVED
+**       must be less than PRM_SCH_PIPE_DEPTH.
 */
-#define RCIN_SEND_HK_MID_MAX_MSG_COUNT  (1)
+#define PRM_SCH_PIPE_SEND_HK_RESERVED  (1)
 
 /** \brief Pipe depth for the command pipe
 **
 **  \par Limits:
 **       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
 */
-#define RCIN_CMD_PIPE_DEPTH             (4)
+#define PRM_CMD_PIPE_DEPTH             (4)
 
 /** \brief Pipe name for the Scheduler pipe 
 **
 **  \par Limits:
 **       Note, this name must fit in OS_MAX_API_NAME.
 */
-#define RCIN_CMD_PIPE_NAME              ("RCIN_CMD_PIPE")
+#define PRM_CMD_PIPE_NAME              ("PRM_CMD_PIPE")
 
 /** \brief Pipe depth for the data pipe 
 **
 **  \par Limits:
 **       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
 */
-#define RCIN_DATA_PIPE_DEPTH            (4)
+#define PRM_DATA_PIPE_DEPTH            (4)
 
 /** \brief Pipe name for the Scheduler pipe 
 **
 **  \par Limits:
 **       Note, this name must fit in OS_MAX_API_NAME.
 */
-#define RCIN_DATA_PIPE_NAME             ("RCIN_DATA_PIPE")
+#define PRM_DATA_PIPE_NAME             ("PRM_DATA_PIPE")
 
 /** \brief The config table default filename
 **
@@ -100,23 +101,23 @@ extern "C" {
 **       The length of each string, including the NULL terminator cannot exceed
 **       the #OS_MAX_PATH_LEN value.
 */
-#define RCIN_CONFIG_TABLE_FILENAME      ("/cf/apps/rcin_config.tbl")
-
+#define PRM_CONFIG_TABLE_FILENAME      ("/cf/apps/prm_config.tbl")
 /** \brief The timeout value, in milliseconds, to wait for ES application startup sync.
 **
 **  \par Limits:
 **       This parameter must be at least 1000 (ms).
 */
-#define RCIN_STARTUP_TIMEOUT_MSEC    (1000)
+#define PRM_STARTUP_TIMEOUT_MSEC    (1000)
 
-#define RCIN_CUSTOM_JOYSTICK_PATH    "/dev/input/futaba-t8j-0"
+/* TODO:  Add Doxygen markup. */
+#define PRM_CUSTOM_DEV_PATH       "/tmp/ttyS0"
 
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* RCIN_PLATFORM_CFG_H */
+#endif /* PRM_PLATFORM_CFG_H */
 
 /************************/
 /*  End of File Comment */
