@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "workshop"
+  config.vm.box = "windhoverlabs/workshop"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -23,8 +23,15 @@ Vagrant.configure("2") do |config|
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
   # NOTE: This will enable public access to the opened 
+  
+  # This is for Commander.
   config.vm.network "forwarded_port", guest: 3000, host: 3000, protocol: "tcp"
+
+  # This is for incoming video.
   config.vm.network "forwarded_port", guest: 3001, host: 3001, protocol: "udp"
+
+  # This is for incoming telemetry.
+  config.vm.network "forwarded_port", guest: 5011, host: 5011, protocol: "udp"
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine and only allow access
@@ -57,10 +64,9 @@ Vagrant.configure("2") do |config|
     # Customize the amount of memory on the VM:
     vb.memory = "4096"
     vb.cpus = "2"
-	#vb.customize ["modifyvm", :id, "--monitorcount", "2"]
-	#vb.customize ["modifyvm", :id, "--usb", "on", "--usbehci", "on"]
-	config.vm.network "forwarded_port", guest: 5011, host: 5011, protocol: "udp"
-	
+    
+    #vb.customize ["modifyvm", :id, "--monitorcount", "2"]
+    #vb.customize ["modifyvm", :id, "--usb", "on", "--usbehci", "on"]
   end
   #
   # View the documentation for the provider you are using for more
