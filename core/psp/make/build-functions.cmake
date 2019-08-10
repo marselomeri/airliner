@@ -228,13 +228,9 @@ function(psp_initialize_airliner_build)
         DATABASE_NAME  ${EXPLAIN_DIR}/airliner-symbols.sqlite
         OUTPUT_FILE    ${EXPLAIN_DIR}/explain-symbols.json
     )
-	
-    # Add the generic JSON override files
-    #CFE_MSG_OVERRIDES
 
     # Add the common and custom JSON override files
     foreach(override_file ${PARSED_ARGS_MSG_OVERRIDES})
-        file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/exe/${override_file})
         add_airliner_json_input(
            INPUT_FILE ${override_file}
            OUTPUT_DIR ${EXPLAIN_DIR}
