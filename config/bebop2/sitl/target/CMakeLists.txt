@@ -29,7 +29,7 @@ initialize_airliner_build(
 
     MSG_OVERRIDES
         ${CMAKE_CURRENT_SOURCE_DIR}/cfe/cfe_msg_overrides.json
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/airliner_overrides.json
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/defs/airliner_overrides.json
 )
 
 

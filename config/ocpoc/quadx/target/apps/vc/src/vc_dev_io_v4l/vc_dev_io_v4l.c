@@ -512,7 +512,7 @@ void VC_Stream_Task(void)
                             if(returnCode != 0)
                             {
                                 (void) CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                                    "VC Send_Buffer failed, a device may have been disconnected, disabling device %u", i);
+                                    "VC Send_Buffer failed, a device may have been disconnected, disabling device %u", (unsigned int)i);
                                 VC_DisableDevice(i);
                             }
                         }
