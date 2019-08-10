@@ -831,3 +831,30 @@ function(psp_add_airliner_app_table)
     )
 endfunction(psp_add_airliner_app_table)
 
+
+
+function(psp_add_custom_source_to_unit_tests)
+    set(PARSED_ARGS_TARGET ${ARGV0})
+    cmake_parse_arguments(PARSED_ARGS "" "" "SOURCES" ${ARGN})
+
+    if(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut)
+        target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut PRIVATE ${PARSED_ARGS_SOURCES})
+    endif(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut)
+
+    if(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-gcov)
+        target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-gcov PRIVATE ${PARSED_ARGS_SOURCES})
+    endif(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-gcov)
+
+    if(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-memcheck)
+        target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-memcheck PRIVATE ${PARSED_ARGS_SOURCES})
+    endif(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-memcheck)
+
+    if(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-helgrind)
+        target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-helgrind PRIVATE ${PARSED_ARGS_SOURCES})
+    endif(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-helgrind)
+
+    if(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-massif)
+        target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-massif PRIVATE ${PARSED_ARGS_SOURCES})
+    endif(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-massif)
+endfunction(psp_add_custom_source_to_unit_tests)
+

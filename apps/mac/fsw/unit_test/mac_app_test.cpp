@@ -212,7 +212,7 @@ void Test_MAC_InitData(void)
     int32 result = -1;
     int32 expected = CFE_SUCCESS;
 
-    /* Initialize the table, so the pointer is set. */
+    /* Initialize the table so the table pointer is set. */
     oMAC.InitConfigTbl();
 
     /* Execute the function being tested */
@@ -454,7 +454,6 @@ void Test_MAC_AppMain_ProcessNewData_InvalidMsgID(void)
 }
 
 
-
 void Test_MAC_RunController(void)
 {
 	/* Set inputs */
@@ -683,8 +682,6 @@ void MAC_App_Test_AddTestCases(void)
                "Test_MAC_AppMain_Nominal_SendHK");
     UtTest_Add(Test_MAC_AppMain_Nominal_Wakeup, MAC_Test_Setup, MAC_Test_TearDown,
                "Test_MAC_AppMain_Nominal_Wakeup");
-    UtTest_Add(Test_MAC_AppMain_ProcessNewData_InvalidMsgID, MAC_Test_Setup, MAC_Test_TearDown,
-               "Test_MAC_AppMain_ProcessNewData_InvalidMsgID");
 
     UtTest_Add(Test_MAC_RunController, MAC_Test_Setup, MAC_Test_TearDown,
                "Test_MAC_RunController");

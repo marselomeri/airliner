@@ -49,6 +49,7 @@ typedef struct
     int16      AK8963_Read_Mag_X_Value;
     int16      AK8963_Read_Mag_Y_Value;
     int16      AK8963_Read_Mag_Z_Value;
+    uint64     AK8963_Get_Time_Return;
 } AK8963_Custom_Returns_t;
 
 

@@ -277,21 +277,21 @@ int32 VC_InitApp(void)
         hasEvents = 1;
     }
     
-    iStatus = VC_InitPipe();
-    if (iStatus != CFE_SUCCESS)
-    {
-        (void) CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,
-                                "Failed to init pipes (0x%08X)",
-                                (unsigned int)iStatus);
-        goto VC_InitApp_Exit_Tag;
-    }
-    
     iStatus = VC_InitData();
     if (iStatus != CFE_SUCCESS)
     {
         (void) CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,
                                  "Failed to init data (0x%08X)",
                                  (unsigned int)iStatus);
+        goto VC_InitApp_Exit_Tag;
+    }
+    
+    iStatus = VC_InitPipe();
+    if (iStatus != CFE_SUCCESS)
+    {
+        (void) CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                "Failed to init pipes (0x%08X)",
+                                (unsigned int)iStatus);
         goto VC_InitApp_Exit_Tag;
     }
     
