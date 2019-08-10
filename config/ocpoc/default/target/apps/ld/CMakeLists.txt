@@ -6,4 +6,4 @@ add_airliner_app_table(
     SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/ld_config.c
 )
 
-psp_add_custom_source_to_unit_tests(${APP_NAME} SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/ld_config.c)
+add_airliner_app_unit_test_src(${APP_NAME} SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/ld_config.c)

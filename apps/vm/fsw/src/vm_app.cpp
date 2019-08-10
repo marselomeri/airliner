@@ -1299,19 +1299,18 @@ void VM::AppMain()
         CFE_ES_PerfLogExit(VM_MAIN_TASK_PERF_ID);
         CFE_ES_WaitForStartupSync(VM_STARTUP_TIMEOUT_MSEC);
         CFE_ES_PerfLogEntry(VM_MAIN_TASK_PERF_ID);
+
+        /* Initialize state machine */
+        ArmingSM.FSM.InitComplete();
+        NavigationSM.FSM.trInitComplete();
+
+        Initialization();
+        SetHomePosition();
     }
     else
     {
         uiRunStatus = CFE_ES_APP_ERROR;
     }
-
-    /* Initialize state machine */
-
-    ArmingSM.FSM.InitComplete();
-    NavigationSM.FSM.trInitComplete();
-
-    Initialization();
-    SetHomePosition();
 
     /* Application main loop */
     while (CFE_ES_RunLoop(&uiRunStatus) == TRUE)

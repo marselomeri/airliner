@@ -833,7 +833,7 @@ endfunction(psp_add_airliner_app_table)
 
 
 
-function(psp_add_custom_source_to_unit_tests)
+function(add_airliner_app_unit_test_src)
     set(PARSED_ARGS_TARGET ${ARGV0})
     cmake_parse_arguments(PARSED_ARGS "" "" "SOURCES" ${ARGN})
 
@@ -856,5 +856,5 @@ function(psp_add_custom_source_to_unit_tests)
     if(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-massif)
         target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-massif PRIVATE ${PARSED_ARGS_SOURCES})
     endif(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-massif)
-endfunction(psp_add_custom_source_to_unit_tests)
+endfunction(add_airliner_app_unit_test_src)
 

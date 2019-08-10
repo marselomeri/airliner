@@ -469,7 +469,7 @@ void Test_VC_ProcessNewCustomCmds_StopStreaming_InvalidState(void)
  */
 void Test_VC_Custom_Max_Events_Not_Reached_Nominal(void)
 {
-    UtAssert_True(VC_Custom_Max_Events_Not_Reached(CFE_EVS_MAX_EVENT_FILTERS - 1) == TRUE,
+    UtAssert_True(VC_Custom_Max_Events_Not_Reached(VC_MAX_EVENT_FILTERS - 1) == TRUE,
             "Max events not reached did return true");
 }
 
@@ -480,7 +480,7 @@ void Test_VC_Custom_Max_Events_Not_Reached_Nominal(void)
  */
 void Test_VC_Custom_Max_Events_Not_Reached_Fail(void)
 {
-    UtAssert_True(VC_Custom_Max_Events_Not_Reached(CFE_EVS_MAX_EVENT_FILTERS + 1) == FALSE,
+    UtAssert_True(VC_Custom_Max_Events_Not_Reached(VC_MAX_EVENT_FILTERS + 1) == FALSE,
             "Max events not reached did not return false");
 }
 
@@ -496,7 +496,7 @@ void Test_VC_Custom_Init_EventFilters_Nominal(void)
     int32 returnCode = 0;
     int32 expected   = 2;
 
-    CFE_EVS_BinFilter_t   EventTbl[CFE_EVS_MAX_EVENT_FILTERS];
+    CFE_EVS_BinFilter_t   EventTbl[VC_MAX_EVENT_FILTERS];
     
     returnCode = VC_Custom_Init_EventFilters(1, EventTbl);
     
@@ -516,9 +516,9 @@ void Test_VC_Custom_Init_EventFilters_Fail1(void)
 {
     int32 returnCode = 0;
     int32 expected   = -1;
-    CFE_EVS_BinFilter_t   EventTbl[CFE_EVS_MAX_EVENT_FILTERS];
+    CFE_EVS_BinFilter_t   EventTbl[VC_MAX_EVENT_FILTERS];
     
-    returnCode = VC_Custom_Init_EventFilters(CFE_EVS_MAX_EVENT_FILTERS, EventTbl);
+    returnCode = VC_Custom_Init_EventFilters(VC_MAX_EVENT_FILTERS, EventTbl);
     
     UtAssert_True(returnCode == expected,
             "Test_VC_Custom_Init_EventFilters_Fail did not return the expected value");
@@ -533,15 +533,15 @@ void Test_VC_Custom_Init_EventFilters_Fail2(void)
 {
     int32 returnCode = 0;
     int32 expected   = -1;
-    CFE_EVS_BinFilter_t   EventTbl[CFE_EVS_MAX_EVENT_FILTERS];
+    CFE_EVS_BinFilter_t   EventTbl[VC_MAX_EVENT_FILTERS];
     
-    returnCode = VC_Custom_Init_EventFilters(CFE_EVS_MAX_EVENT_FILTERS-1, EventTbl);
+    returnCode = VC_Custom_Init_EventFilters(VC_MAX_EVENT_FILTERS-1, EventTbl);
     
     UtAssert_True(returnCode == expected,
             "Test_VC_Custom_Init_EventFilters_Fail did not return the expected value");
     UtAssert_True(returnCode == expected,
             "Test_VC_Custom_Init_EventFilters_Nominal did not return the expected value");
-    UtAssert_True(EventTbl[CFE_EVS_MAX_EVENT_FILTERS-1].EventID == VC_SOCKET_ERR_EID,
+    UtAssert_True(EventTbl[VC_MAX_EVENT_FILTERS-1].EventID == VC_SOCKET_ERR_EID,
             "Event filter array entries not added");
 
 }

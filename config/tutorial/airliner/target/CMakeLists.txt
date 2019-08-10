@@ -2,8 +2,8 @@
 # cross toolchain or has target independent functions.
 
 initialize_airliner_build(
-    PSP ${PSP_TARGET_DIR}/pc-linux-nasa
-    OSAL ${OSAL_TARGET_DIR}/posix-nasa
+    PSP ${PSP_TARGET_DIR}/pc-linux-wh
+    OSAL ${OSAL_TARGET_DIR}/posix-wh
     CORE_BINARY ${CMAKE_CURRENT_SOURCE_DIR}/airliner
     CORE_TOOLS ${CMAKE_CURRENT_SOURCE_DIR}/tools
     CONFIG
