@@ -1,15 +1,9 @@
 [submodule "tools/sitl_gazebo"]
 	path = tools/sitl_gazebo
-	url = https://hangar.windhoverlabs.com/code/scm/pub/sitl_gazebo.git
+	url = https://github.com/WindhoverLabs/sitl_gazebo.git
 [submodule "tools/pygazebo"]
 	path = tools/pygazebo
-	url = https://hangar.windhoverlabs.com/code/scm/pub/pygazebo.git
+	url = https://github.com/WindhoverLabs/pygazebo.git
 [submodule "tools/jmavsim"]
 	path = tools/jmavsim
-	url = https://hangar.windhoverlabs.com/code/scm/pub/jMAVSim.git
-[submodule "tools/commander"]
-	path = tools/commander
-	url = https://hangar.windhoverlabs.com/code/scm/pub/commander.git
-[submodule "tools/explain"]
-	path = tools/explain
-	url = https://hangar.windhoverlabs.com/code/scm/pub/explain.git
+	url = https://github.com/WindhoverLabs/jMAVSim.git
