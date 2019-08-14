@@ -557,7 +557,7 @@ class BinaryDecoder extends CdrGroundPlugin {
      * Processes binary message
      * @param  {Object} buffer buffer object
      */
-    processBinaryMessage( buffer ) {
+    processBinaryMessage( buffer, cb ) {
         var self = this;
         
         try {
@@ -601,6 +601,18 @@ class BinaryDecoder extends CdrGroundPlugin {
                         
                         this.namespace.send( config.get( 'jsonOutputStreamID' ), output );
                     }
+                }
+            } else {
+                var output = {
+                	content: message,
+                    msgID: msgID,
+                    msgTime: msgTime
+                };
+                
+                if(typeof cb === 'undefined') {
+                    this.namespace.send( config.get( 'jsonOutputStreamID' ), output );
+                } else {
+                    cb(output);
                 }
             }
         } catch ( e ) {
@@ -679,7 +691,7 @@ class BinaryDecoder extends CdrGroundPlugin {
                         fieldLength = ( buffer.length - ( bitOffset / 8 ) );
                     }
 
-                    value = buffer.toString( 'utf8', bitOffset / 8, fieldLength );
+                    value = buffer.toString( 'utf8', bitOffset / 8, (bitOffset / 8) + fieldLength );
                     break;
 
                 case 'uint16':
@@ -957,7 +969,7 @@ class BinaryDecoder extends CdrGroundPlugin {
                         fieldLength = ( buffer.length - ( bitOffset / 8 ) );
                     }
 
-                    value = buffer.toString( 'utf8', bitOffset / 8, fieldLength );
+                    value = buffer.toString( 'utf8', bitOffset / 8, (bitOffset / 8) + fieldLength );
                     break;
 
                 case 'uint16':

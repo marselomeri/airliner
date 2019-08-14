@@ -4,30 +4,21 @@
 table.table.table-condensed
   tbody
     tr 
-      th #
-      th Watch
-      th Action State
-      th Action Result
-      th Commands
-      th
-      th
-      th
-      th
+      th(style='width: 50px;') #
+      th(style='min-width:75px;') Watch Result
+      th(style='min-width:75px;') Action Result
+      th(style='min-width:500px;') Commands
     - for (var iPoint = STARTING_POINT; iPoint < ENDING_POINT; ++iPoint) {   
     tr
-      th #{iPoint}
+      th(style='width: 50px;') #{iPoint}
       td
         div(data-cdr={tlm:[{name:'/LC/LC_HkPacket_t/WPResults['+iPoint+']'}]}) ---
       td
         div(data-cdr={tlm:[{name:'/LC/LC_HkPacket_t/APResults['+iPoint+']'}]}) ---
       td
-        div(data-cdr={tlm:[{name:'/LC/LC_HkPacket_t/x'}]}) ---
-      td
-        button.btn.cdr-primary(data-cdr={cmd:{name:'/LC/SetAPState', argument:[{name:'APNumber', value:iPoint}]}}) Set AP State
-      td
-        button.btn.cdr-primary(data-cdr={cmd:{name:'/LC/SetAPPermOff', argument:[{name:'APNumber', value:iPoint}]}}) Set AP Perm Off
-      td
-        button.btn.cdr-primary(data-cdr={cmd:{name:'/LC/ResetAPStats', argument:[{name:'APNumber', value:iPoint}]}}) Reset AP Stats 
-      td
-        button.btn.cdr-primary(data-cdr={cmd:{name:'/LC/ResetWPStats', argument:[{name:'APNumber', value:iPoint}]}}) Reset WP Stats 
+        .btn-group
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/LC/SetAPState',   args:{'APNumber': iPoint}}}) Set AP State
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/LC/SetAPPermOff', args:{'APNumber': iPoint}}}) Set AP Perm Off
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/LC/ResetAPStats', args:{'APNumber': iPoint}}}) Reset AP Stats 
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/LC/ResetWPStats', args:{'APNumber': iPoint}}}) Reset WP Stats 
     - }

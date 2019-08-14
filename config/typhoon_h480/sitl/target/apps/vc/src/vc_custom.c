@@ -196,7 +196,7 @@ void VC_StopStreamingCmd(CFE_SB_Msg_t* MsgPtr)
 boolean VC_Custom_Max_Events_Not_Reached(int32 ind)
 {
     boolean returnBool = FALSE;
-    if ((ind < CFE_EVS_MAX_EVENT_FILTERS) && (ind > 0))
+    if ((ind < VC_MAX_EVENT_FILTERS) && (ind > 0))
     {
         returnBool = TRUE;
     }
@@ -212,7 +212,7 @@ int32 VC_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl)
     /* Null check */
     if(0 == EventTbl)
     {
-        customEventCount = -1;
+        customEventCount = VC_CUSTOM_ERROR_CODE;
         goto end_of_function;
     }
 
@@ -223,7 +223,7 @@ int32 VC_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl)
     }
     else
     {
-        customEventCount = -1;
+        customEventCount = VC_CUSTOM_ERROR_CODE;
         goto end_of_function;
     }
     
@@ -234,7 +234,7 @@ int32 VC_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl)
     }
     else
     {
-        customEventCount = -1;
+        customEventCount = VC_CUSTOM_ERROR_CODE;
         goto end_of_function;
     }
 

@@ -33,15 +33,13 @@
 
 
 add_airliner_app_def(mac
-    FILE MAC
+    FILE mac
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_app.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_app.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_config_utils.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_events.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_msg.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_private_ids.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_private_types.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_tbldefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_version.h
 
@@ -62,7 +60,7 @@ add_airliner_app_def(mac
         ${PROJECT_SOURCE_DIR}/apps/mac/fsw/platform_inc
 )
 
-add_airliner_app_unit_test(MAC-UT
+add_airliner_app_unit_test(mac-ut
     UTASSERT
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mac_app_test.cpp
@@ -79,7 +77,6 @@ add_airliner_app_unit_test(MAC-UT
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_app.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_events.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_msg.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_private_types.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_tbldefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_version.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_config_utils.cpp

@@ -142,23 +142,36 @@ typedef struct
 typedef struct
 {
     /** \brief cFE SB Tlm Msg Hdr */
-    uint8              TlmHeader[CFE_SB_TLM_HDR_SIZE];
+    uint8                    TlmHeader[CFE_SB_TLM_HDR_SIZE];
 
     /** \ulrtlmmnemonic \ULR_CMDACPTCNT
         \brief Count of accepted commands */
-    uint8              usCmdCnt;   
+    uint8                    usCmdCnt;
 
     /** \ulrtlmmnemonic \ULR_CMDRJCTCNT
         \brief Count of failed commands */
-    uint8              usCmdErrCnt; 
+    uint8                    usCmdErrCnt;
 
-	float 			   MinDistance;
-	float              MaxDistance;
-	float              CurrentDistance;
-	float              Covariance;
-	PX4_DistanceSensorType_t Type;
-	uint32             SensorID;
-	PX4_SensorOrientation_t  SensorOrientation;
+    /** \brief Minimum distance that the device should be valid. */
+    float                    MinDistance;
+
+    /** \brief Maximum distance that the device should be valid. */
+    float                    MaxDistance;
+
+    /** \brief Current distance measured by the device. */
+    float                    CurrentDistance;
+
+    /** \brief Covariance of the measurement.  See #ULR_SENS_VARIANCE. */
+    float                    Covariance;
+
+    /** \brief Type of the sensor.  This will always be #PX4_DISTANCE_SENSOR_RADAR. */
+    PX4_DistanceSensorType_t Type;
+
+    /** \brief ID of the sensor.  See #ULR_SENSOR_ID. */
+    uint32                   SensorID;
+
+    /** \brief Orientation of the sensor.  See #PX4_SENSOR_ORIENTATION_ROLL_180. */
+    PX4_SensorOrientation_t  SensorOrientation;
 
 } ULR_HkTlm_t;
 

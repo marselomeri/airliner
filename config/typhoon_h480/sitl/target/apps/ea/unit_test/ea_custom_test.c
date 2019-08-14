@@ -101,8 +101,8 @@ void Test_EA_Custom_StartApp_FailFork(void)
 void Test_EA_Custom_StartApp_Nominal(void)
 {
 	/* Set so everything looks valid */
-	strncpy(EA_AppData.ChildData.AppInterpreter, CUSTOM_APP_PATH, OS_MAX_PATH_LEN);
-	strncpy(EA_AppData.ChildData.AppScript, CUSTOM_TEST_ARG, OS_MAX_PATH_LEN);
+	strncpy(EA_AppData.ChildData.Cmd, CUSTOM_APP_PATH, OS_MAX_PATH_LEN);
+	strncpy(EA_AppData.ChildData.Args, CUSTOM_TEST_ARG, OS_MAX_PATH_LEN);
 	FORK_RET_CODE = 1;
 	WAITPID_RET_CODE = 2;
 

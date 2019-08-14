@@ -1,4 +1,4 @@
-﻿{
+{
  "settings": {
   "hasHeaders": true,
   "constrainDragToContainer": false,
@@ -47,7 +47,7 @@
      "title": "",
      "activeItemIndex": 0,
      "height": 100,
-     "width": 50,
+     "width": 45.97034171502257,
      "content": [
       {
        "title": "Housekeeping",
@@ -56,6 +56,17 @@
        "componentState": {
         "text": "text",
         "link": "flight/apps/sch/hk"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "Schedule Diagnostics",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "flight/apps/sch/diag"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -68,28 +79,50 @@
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "activeItemIndex": 1,
-     "width": 50,
+     "activeItemIndex": 0,
+     "width": 54.02965828497743,
      "height": 100,
      "content": [
       {
-       "title": "Schedule Diagnostics",
-       "type": "component",
-       "componentName": "Blank",
-       "componentState": {
-        "text": "text",
-        "link": "flight/apps/sch/diag"
-       },
-       "isClosable": true,
-       "reorderEnabled": true
-      },
-      {
-       "title": "Event Filter",
+       "title": "Events",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
         "text": "text",
         "link": "flight/core/evs/efltr?appName=SCH"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "App Ctrl",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "/flight/core/es/appctrl?appName=SCH"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "Telemetry",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "/flight/apps/to/tlm_app?appName=SCH"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "Tables",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "/flight/core/tbl/tbl_ctl?appName=SCH"
        },
        "isClosable": true,
        "reorderEnabled": true

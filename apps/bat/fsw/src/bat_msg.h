@@ -152,17 +152,47 @@ typedef struct
         \brief Count of failed commands */
     uint8              usCmdErrCnt; 
 
-	uint64 			   Timestamp;
-	float              Voltage;					/* V */
-	float              VoltageFiltered;			/* V */
-	float              Current;					/* A */
-	float              CurrentFiltered;			/* A */
-	float              Discharged;				/* mAh */
-	float              Remaining;
-	float              Scale;
-	int32              CellCount;
-	boolean            Connected;
-	PX4_BatteryWarningSeverity_t Warning;
+    /** \brief Timestamp of sampled battery status */
+    uint64                Timestamp;
+    
+    /** \brief Sampled voltage */
+    float              Voltage;                    /* V */
+    
+    /** \brief Filtered voltage value */
+    float              VoltageFiltered;            /* V */
+    
+    /** \brief Sampled Current */
+    float              Current;                    /* A */
+    
+    /** \brief Filtered current vlaue */
+    float              CurrentFiltered;            /* A */
+    
+    /** \brief Discharged mAh from battery */
+    float              Discharged;                /* mAh */
+    
+    /** \brief Percentage of battery charge remaining */
+    float              Remaining;
+    
+    /** \brief Scale of voltage */
+    float              Scale;
+    
+    /** \brief Number of cells for battery */
+    int32              CellCount;
+    
+    /** \brief Flag for connection to battery */
+    osalbool           Connected;
+    
+    /** \brief Warning flag enumeration */
+    PX4_BatteryWarningSeverity_t Warning;
+    
+    /** \brief Number of times BAT has woken up. */
+	uint32             WakeupCount;
+
+    /** \brief Number of ActuatorControls0 messages BAT has successfully received. */
+	uint32             ActuatorControls0MsgCount;
+
+    /** \brief Number of ActuatorArmed messages BAT has successfully received. */
+	uint32             ActuatorArmedMsgCount;
 } BAT_HkTlm_t;
 
 

@@ -48,13 +48,9 @@
 
 #include <time.h>
 
-/*
- * Config table for testing
- */
-MS5607_ConfigTbl_t ConfigTbl = {
-        /* TODO:  Define table */
-		0
-};
+
+extern MS5607_ConfigTbl_t MS5607_ConfigTbl;
+
 
 /*
  * Function Definitions
@@ -73,7 +69,7 @@ void MS5607_Test_Setup(void)
     Ut_OSAPI_Reset();
     Ut_OSFILEAPI_Reset();
 
-    Ut_CFE_TBL_AddTable(MS5607_CONFIG_TABLE_FILENAME, (void *) &ConfigTbl);
+    Ut_CFE_TBL_AddTable(MS5607_CONFIG_TABLE_FILENAME, (void *) &MS5607_ConfigTbl);
 }
 
 void MS5607_Test_TearDown(void) {

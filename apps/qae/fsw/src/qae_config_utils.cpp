@@ -107,42 +107,37 @@ int32 QAE::ValidateConfigTbl(void* ConfigTblPtr)
     boolean valid_bool = TRUE;
     QAE_ConfigTbl_t* QAE_ConfigTblPtr = (QAE_ConfigTbl_t*)(ConfigTblPtr);
     
-    if(!(QAE_ConfigTblPtr->ATT_W_ACC >= 0.0f && QAE_ConfigTblPtr->ATT_W_ACC <= 1.0f))
+    if(!(QAE_ConfigTblPtr->ATT_W_ACC >= ATT_W_ACC_MIN && QAE_ConfigTblPtr->ATT_W_ACC <= ATT_W_ACC_MAX))
     {
         valid_bool = FALSE;
     }
 
-    if(!(QAE_ConfigTblPtr->ATT_W_MAG >= 0.0f && QAE_ConfigTblPtr->ATT_W_MAG <= 1.0f))
+    if(!(QAE_ConfigTblPtr->ATT_W_MAG >= ATT_W_MAG_MIN && QAE_ConfigTblPtr->ATT_W_MAG <= ATT_W_MAG_MAX))
     {
         valid_bool = FALSE;
     }
 
-    if(!(QAE_ConfigTblPtr->ATT_W_GYRO_BIAS >= 0.0f && QAE_ConfigTblPtr->ATT_W_GYRO_BIAS <= 1.0f))
+    if(!(QAE_ConfigTblPtr->ATT_W_GYRO_BIAS >= ATT_W_GYRO_BIAS_MIN && QAE_ConfigTblPtr->ATT_W_GYRO_BIAS <= ATT_W_GYRO_BIAS_MAX))
     {
         valid_bool = FALSE;
     }
 
-    if(!(QAE_ConfigTblPtr->ATT_MAG_DECL >= 0.0f && QAE_ConfigTblPtr->ATT_MAG_DECL <= 180.0f))
+    if(!(QAE_ConfigTblPtr->ATT_MAG_DECL >= ATT_MAG_DECL_MIN && QAE_ConfigTblPtr->ATT_MAG_DECL <= ATT_MAG_DECL_MAX))
     {
         valid_bool = FALSE;
     }
 
-    if(!(QAE_ConfigTblPtr->ATT_MAG_DECL_A == 0 || QAE_ConfigTblPtr->ATT_MAG_DECL_A == 1))
+    if(!(QAE_ConfigTblPtr->ATT_MAG_DECL_A == ATT_MAG_DECL_A_MIN || QAE_ConfigTblPtr->ATT_MAG_DECL_A == ATT_MAG_DECL_A_MAX))
     {
         valid_bool = FALSE;
     }
 
-    if(!(QAE_ConfigTblPtr->ATT_ACC_COMP == 0 || QAE_ConfigTblPtr->ATT_ACC_COMP == 1))
+    if(!(QAE_ConfigTblPtr->ATT_ACC_COMP == ATT_ACC_COMP_MIN || QAE_ConfigTblPtr->ATT_ACC_COMP == ATT_ACC_COMP_MAX))
     {
         valid_bool = FALSE;
     }
 
-    if(!(QAE_ConfigTblPtr->ATT_BIAS_MAX >= 0.0f && QAE_ConfigTblPtr->ATT_BIAS_MAX <= 2.0f))
-    {
-        valid_bool = FALSE;
-    }
-
-    if(!(QAE_ConfigTblPtr->FW_ARSP_MODE >= 0 && QAE_ConfigTblPtr->FW_ARSP_MODE <= 2))
+    if(!(QAE_ConfigTblPtr->ATT_BIAS_MAX >= ATT_BIAS_MAX_MIN && QAE_ConfigTblPtr->ATT_BIAS_MAX <= ATT_BIAS_MAX_MAX))
     {
         valid_bool = FALSE;
     }
@@ -170,9 +165,6 @@ int32 QAE::AcquireConfigPointers(void)
     /*
     ** Release the table
     */
-    /* TODO: This return value can indicate success, error, or that the info has been 
-     * updated.  We ignore this return value in favor of checking CFE_TBL_Manage(), but
-     * be sure this is the behavior you want. */
     (void) CFE_TBL_ReleaseAddress(ConfigTblHdl);
 
     /*
@@ -194,6 +186,7 @@ int32 QAE::AcquireConfigPointers(void)
     if (iStatus == CFE_TBL_INFO_UPDATED)
     {
         iStatus = CFE_SUCCESS;
+        m_MagDeclination = ConfigTblPtr->ATT_MAG_DECL;
     }
     else if(iStatus != CFE_SUCCESS)
     {
