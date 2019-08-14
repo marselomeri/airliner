@@ -1,0 +1,28 @@
+table.table.table-condensed
+  tbody
+    tr
+      th State
+      td
+        div(data-cdr={tlm:[{name:'/CS/CS_HkPacket_t/EepromCSState'}]}) ---
+      td
+        .btn-group(role="group")
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/CS/EnableEEPROM'}}) Enable 
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/CS/DisableEEPROM'}}) Disable
+    tr
+      th Error Count
+      td
+        span(data-cdr={tlm: [{name:'/CS/CS_HkPacket_t/EepromCSErrCounter'}]}) ---
+      td
+    tr
+      th Baseline
+      td
+        span(data-cdr={tlm: [{name:'/CS/CS_HkPacket_t/EepromBaseline'}]}) ---
+      td
+        .btn-group(role="group")
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/CS/ReportBaselineEEPROM'}}) Report 
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/CS/RecomputeBaselineEEPROM'}}) Recompute
+              
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/CS/EnableEntryEEPROM'}}) Enable Entry  
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/CS/DisableEntryEEPROM'}}) Disable Entry
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/CS/GetEntryIDEEPROM'}}) Get Entry ID

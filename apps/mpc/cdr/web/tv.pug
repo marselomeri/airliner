@@ -1,0 +1,72 @@
+table.table.table-condensed
+  tbody
+    tr
+      th XY_VEL_MAX
+      td
+        div(data-cdr={tlm:[{name:'/MPC/MPC_DiagPacket_t/XY_VEL_MAX'}]}) ---
+    tr
+      th MPC_VEL_MANUAL
+      td
+        div(data-cdr={tlm:[{name:'/MPC/MPC_DiagPacket_t/MPC_VEL_MANUAL'}]}) ---
+    tr
+      th XY_CRUISE
+      td
+        div(data-cdr={tlm:[{name:'/MPC/MPC_DiagPacket_t/XY_CRUISE'}]}) ---
+    tr
+      th Z_VEL_MAX_UP
+      td
+        div(data-cdr={tlm:[{name:'/MPC/MPC_DiagPacket_t/Z_VEL_MAX_UP'}]}) ---
+    tr
+      th Z_VEL_MAX_DN
+      td
+        div(data-cdr={tlm:[{name:'/MPC/MPC_DiagPacket_t/Z_VEL_MAX_DN'}]}) ---
+    tr
+      th Z_FF
+      td
+        div(data-cdr={tlm:[{name:'/MPC/MPC_DiagPacket_t/Z_FF'}]}) ---
+    tr
+      th XY_FF
+      td
+        div(data-cdr={tlm:[{name:'/MPC/MPC_DiagPacket_t/XY_FF'}]}) ---
+    tr
+      th TILTMAX_AIR
+      td
+        div(data-cdr={tlm:[{name:'/MPC/MPC_DiagPacket_t/TILTMAX_AIR'}]}) ---           
+    tr
+      th ACC_HOR_MAX
+      td
+        div(data-cdr={tlm:[{name:'/MPC/MPC_DiagPacket_t/ACC_HOR_MAX'}]}) ---
+    tr
+      th MPC_DEC_HOR_SLOW
+      td
+        div(data-cdr={tlm:[{name:'/MPC/MPC_DiagPacket_t/MPC_DEC_HOR_SLOW'}]}) ---
+    tr
+      th ACC_UP_MAX
+      td
+        div(data-cdr={tlm:[{name:'/MPC/MPC_DiagPacket_t/ACC_UP_MAX'}]}) ---
+    tr
+      th ACC_DOWN_MAX
+      td
+        div(data-cdr={tlm:[{name:'/MPC/MPC_DiagPacket_t/ACC_DOWN_MAX'}]}) ---
+    tr
+      th HOLD_DZ
+      td
+        div(data-cdr={tlm:[{name:'/MPC/MPC_DiagPacket_t/MPC_HOLD_DZ', format: '%.8f' }]}) ---
+    tr
+      th XY_MAN_EXPO
+      td
+        div(data-cdr={tlm:[{name:'/MPC/MPC_DiagPacket_t/XY_MAN_EXPO'}]}) ---
+    tr
+      th Z_MAN_EXPO
+      td
+        div(data-cdr={tlm:[{name:'/MPC/MPC_DiagPacket_t/Z_MAN_EXPO'}]}) ---
+    tr
+      th TKO_RAMP_T
+      td
+        div(data-cdr={tlm:[{name:'/MPC/MPC_DiagPacket_t/TKO_RAMP_T', format: '%.8f' }]}) ---
+
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MPC/SendDiag'}}) Query    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MPC/SetHoldDZ'}}) Set Hold DZ
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MPC/SetStickExpo'}}) Set Stick Expo
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MPC/SetTkoRamp'}}) Set Takeoff Ramp Time

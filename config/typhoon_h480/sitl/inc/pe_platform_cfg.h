@@ -80,20 +80,6 @@ extern "C" {
 */
 #define PE_CMD_PIPE_NAME              ("PE_CMD_PIPE")
 
-/** \brief Pipe depth for the data pipe 
-**
-**  \par Limits:
-**       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
-*/
-#define PE_DATA_PIPE_DEPTH            (4)
-
-/** \brief Pipe name for the Scheduler pipe 
-**
-**  \par Limits:
-**       Note, this name must fit in OS_MAX_API_NAME.
-*/
-#define PE_DATA_PIPE_NAME             ("PE_DATA_PIPE")
-
 /** \brief The config table default filename
 **
 **  \par Limits:
@@ -119,11 +105,11 @@ extern "C" {
 /*** Sensor Configuration ***/
 
 /* Baro */
-#define REQ_BARO_INIT_COUNT     (100)
+#define REQ_BARO_INIT_COUNT     (2000)
 #define BARO_TIMEOUT            (100000) /* 0.1 s */
 
 /* GPS */
-#define REQ_GPS_INIT_COUNT      (10)
+#define REQ_GPS_INIT_COUNT      (50)
 #define GPS_TIMEOUT             (1000000) /* 1.0 s */
 
 /* Land */
@@ -131,7 +117,7 @@ extern "C" {
 #define LAND_TIMEOUT   		    (1000000) /* 1.0 s */
 
 /* Distance sensor */
-#define REQ_DIST_INIT_COUNT     (10)
+#define REQ_DIST_INIT_COUNT     (50)
 #define DIST_TIMEOUT            (150000) /* 0.1 s */
 #define DIST_BETA_MAX           (700)
 #define DIST_SENSOR_TYPE        (3) /* 3 = radar */

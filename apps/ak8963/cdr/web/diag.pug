@@ -1,0 +1,39 @@
+table.table.table-condensed
+  tbody
+    tr
+      th 
+      th(style='width: 100px') X
+      th(style='width: 100px') Y
+      th(style='width: 100px') Z
+    tr
+      th Scale
+      td
+        div(data-cdr={tlm:[{name:'/AK8963/AK8963_DiagPacket_t/Calibration.MagXScale'}]}) ---
+      td
+        div(data-cdr={tlm:[{name:'/AK8963/AK8963_DiagPacket_t/Calibration.MagYScale'}]}) ---
+      td
+        div(data-cdr={tlm:[{name:'/AK8963/AK8963_DiagPacket_t/Calibration.MagZScale'}]}) ---
+    tr
+      th Offset
+      td
+        div(data-cdr={tlm:[{name:'/AK8963/AK8963_DiagPacket_t/Calibration.MagXOffset'}]}) ---
+      td
+        div(data-cdr={tlm:[{name:'/AK8963/AK8963_DiagPacket_t/Calibration.MagYOffset'}]}) ---
+      td
+        div(data-cdr={tlm:[{name:'/AK8963/AK8963_DiagPacket_t/Calibration.MagZOffset'}]}) ---
+    tr
+      th Rotation
+      td
+        div(data-cdr={tlm:[{name:'/AK8963/AK8963_DiagPacket_t/Calibration.MagRotation'}]}) ---
+    tr
+      th Adjust
+      td
+        div(data-cdr={tlm:[{name:'/AK8963/AK8963_DiagPacket_t/Conversion.MagXAdj'}]}) ---
+      td
+        div(data-cdr={tlm:[{name:'/AK8963/AK8963_DiagPacket_t/Conversion.MagYAdj'}]}) ---
+      td
+        div(data-cdr={tlm:[{name:'/AK8963/AK8963_DiagPacket_t/Conversion.MagZAdj'}]}) ---
+              
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/AK8963/SendDiag'}}) Send Diag    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/AK8963/AK8963_SetCalibrationCmd_t'}}) Set Calibration 

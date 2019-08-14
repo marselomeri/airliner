@@ -1,0 +1,48 @@
+- var pluginName = query.pluginName;
+table.table.table-condensed
+  tbody
+    tr
+      th Commands Accepted 
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/cmdAcceptCount'}]}) ---
+      td
+    tr
+      th Commands Rejected
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/cmdRejectCount'}]}) ---
+      td
+    tr
+      th Events Received
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/eventCount'}]}) ---
+      td
+    tr
+      th Critical Events Received
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/critEventCount'}]}) ---
+      td
+    tr
+      th Error Events Received
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/errorEventCount'}]}) ---
+      td
+    tr
+      th Info Events Received
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/infoEventCount'}]}) ---
+      td
+    tr
+      th Debug Events Received
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/debugEventCount'}]}) ---
+      td
+    tr
+      th Input Stream
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/inputStreamID'}]}) ---
+      td
+    tr
+      th Subscription Request Stream
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/reqSubscribeStreamID'}]}) ---
+      td

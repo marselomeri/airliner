@@ -1,0 +1,115 @@
+- var appName = query.appName;
+- if(typeof appName !== 'undefined') {  
+-
+-   var queryString = '$.Airliner.apps.' + appName + '.tables';
+-   global.COMMANDER.queryConfigDB(queryString, function (results) {
+-     var tables = results[0];
+
+table.table.table-condensed
+        tbody
+          tr
+            th Cmd Count
+            td
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_HkPacket_t/Payload.CmdCounter'}]}) ---
+            td
+              button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_TBL_Noop'}, indicator:'cmd'}) NoOp
+          tr
+            th Cmd Error Count
+            td
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_HkPacket_t/Payload.ErrCounter'}]}) ---
+            td
+              button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_TBL_Reset'}, indicator:'cmd'}) Counter Reset
+          tr
+            th Number of Tables
+            td 
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_HkPacket_t/Payload.NumTables'}]}) ---
+            td
+          tr
+            th Pending updates
+            td
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_HkPacket_t/Payload.NumLoadPending'}]}) ---
+            td
+          tr
+            th Validations
+            td
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_HkPacket_t/Payload.ValidationCtr'}]}) ---
+            td
+          tr
+            th Last CRC
+            td
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_HkPacket_t/Payload.LastValCrc', format:'0x%08x'}]}) ---
+            td
+          tr
+            th Last Valid Table
+            td
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_HkPacket_t/Payload.LastValTableName'}]}) ---
+            td
+          tr
+            th Last Validation
+            td
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_HkPacket_t/Payload.LastValStatus'}]}) ---
+            td
+          tr
+            th Active Buffer
+            td
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_HkPacket_t/Payload.ActiveBuffer'}]}) ---
+            td
+          tr
+            th Successful Validations
+            td
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_HkPacket_t/Payload.SuccessValCtr'}]}) ---
+            td
+          tr
+            th Failed Validations
+            td
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_HkPacket_t/Payload.FailedValCtr'}]}) ---
+            td
+          tr
+            th Validation Requests
+            td
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_HkPacket_t/Payload.NumValRequests'}]}) ---
+            td
+          tr
+            th Free Shared Buffers
+            td
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_HkPacket_t/Payload.NumFreeSharedBufs'}]}) ---
+            td
+          tr
+            th Last Updated Table
+            td
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_HkPacket_t/Payload.LastUpdatedTbl'}]}) ---
+            td
+          tr
+            th Last File Loaded
+            td
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_HkPacket_t/Payload.LastFileLoaded'}]}) ---
+            td
+          tr
+            th Last File Dumped
+            td
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_HkPacket_t/Payload.LastFileDumped'}]}) ---
+            td
+          tr
+            th ID
+            th Description
+            th Is Dump Table
+          - for(var i = 0; i < tables.length; ++i) {
+          tr
+            th #{tables[i].id}
+            td #{tables[i].title}
+            td #{tables[i].isDumpTable}
+          tr
+            td
+            td(colspan=2)
+              .btn-group
+                button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_TBL_AbortLdCmd_t', argument: [{name: 'Payload.TableName', value: tables[i].id}]}, indicator:'cmd'}) Abort Load
+                button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_TBL_DumpCmd_t', argument: [{name: 'Payload.TableName', value: tables[i].id}]}, indicator:'cmd'}) Dump
+                button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_TBL_ValidateCmd_t', argument: [{name: 'Payload.TableName', value: tables[i].id}]}, indicator:'cmd'}) Validate
+                button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_TBL_ActivateCmd_t', argument: [{name: 'Payload.TableName', value: tables[i].id}]}, indicator:'cmd'}) Activate
+                button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_TBL_DelCDSCmd_t', argument: [{name: 'Payload.TableName', value: tables[i].id}]}, indicator:'cmd'}) Delete CDS
+          - }
+          
+footer
+      button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_TBL_LoadCmd_t'}, indicator:'cmd'}) Load
+-   })
+- }

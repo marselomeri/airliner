@@ -1,0 +1,21 @@
+table.table.table-condensed
+  tbody
+    tr
+      th State
+      td
+        div(data-cdr={tlm:[{name:'/CS/CS_HkPacket_t/AppCSState'}]}) ---
+      td
+        .btn-group(role="group")
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/CS/EnableApps'}}) Enable 
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/CS/DisableApps'}}) Disable
+    tr
+      th Error Count
+      td
+        div(data-cdr={tlm:[{name:'/CS/CS_HkPacket_t/AppCSErrCounter'}]}) ---
+      td
+              
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/CS/ReportBaselineApp'}}) Report Baseline  
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/CS/RecomputeBaselineApp'}}) Recompute Baseline  
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/CS/EnableNameApp'}}) Enable by Name
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/CS/DisableNameApp'}}) Disable by Name

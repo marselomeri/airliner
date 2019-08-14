@@ -1,0 +1,45 @@
+{
+    "Airliner": {
+        "apps": {
+            "MAC": {
+                "operations": {
+                  "Noop":           { "airliner_cc":  0, "macro": "MAC_CMD_MID", "airliner_msg": "" },
+                  "Reset":          { "airliner_cc":  1, "macro": "MAC_CMD_MID", "airliner_msg": "" },
+                  "MAC_HkTlm_t":    { "airliner_cc": -1, "macro": "MAC_HK_TLM_MID", "airliner_msg": "MAC_HkTlm_t" },
+                  "RunController":  { "airliner_cc":  0, "macro": "MAC_RUN_CONTROLLER_MID", "airliner_msg": "" },
+                  "SendHk":         { "airliner_cc":  0, "macro": "MAC_SEND_HK_MID", "airliner_msg": "" }
+                },
+                "scheduler": {
+                    "activities": [
+                        "MAC_SEND_HK_MID",
+                        "MAC_RUN_CONTROLLER_MID"
+                    ],
+                    "groups": [
+                        { "id": 1, "macro": "MAC_SCH_GRP" }
+                    ]
+                },
+                "events": [
+                    {"macro": "MAC_INF_EID", "id": 1},
+                    {"macro": "MAC_INIT_INF_EID", "id": 2},
+                    {"macro": "MAC_CONFIG_TABLE_INF_EID", "id": 3},
+                    {"macro": "MAC_CDS_INF_EID", "id": 4},
+                    {"macro": "MAC_CMD_INF_EID", "id": 5},
+                    {"macro": "MAC_ERR_EID", "id": 6},
+                    {"macro": "MAC_INIT_ERR_EID", "id": 7},
+                    {"macro": "MAC_CONFIG_TABLE_ERR_EID", "id": 8},
+                    {"macro": "MAC_CDS_ERR_EID", "id": 9},
+                    {"macro": "MAC_CMD_ERR_EID", "id": 10},
+                    {"macro": "MAC_PIPE_ERR_EID", "id": 11},
+                    {"macro": "MAC_MSGID_ERR_EID", "id": 12},
+                    {"macro": "MAC_MSGLEN_ERR_EID", "id": 13},
+                    {"macro": "MAC_PWM_CALIB_INFO_EID", "id": 14}
+                ],
+                "config": {
+                },
+                "tables": [
+                    {"id": "PARAM_TBL",  "title": "MAC Configuration",  "isDumpTable": false}
+                ]
+            }
+        }
+    }
+}

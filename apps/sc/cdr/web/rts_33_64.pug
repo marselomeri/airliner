@@ -1,0 +1,19 @@
+table.table.table-condensed
+  tbody
+    - for(var id = 33; id < 65; id++){
+      - var idx = id - 1 ;
+      tr
+        th(style='width: 50px;') #{id}
+        td(style='min-width:75px;')
+          div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/RtsExecutingStatus['+ idx +']'}]}) ---
+        td
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/SC/StartAts', argument:[{name:'RtsId', value:id}]}}) Start   
+        td
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/SC/StopAts', argument:[{name:'RtsId', value:id}]}}) Stop    
+        td
+          div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/RtsDisabledStatus['+ idx +']'}]}) ---
+        td
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/SC/EnableRts', argument:[{name:'RtsId', value:id}]}}) Enable   
+        td
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/SC/DisableRts', argument:[{name:'RtsId', value:id}]}}) Disable    
+    -}

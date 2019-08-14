@@ -50,6 +50,9 @@ include(core/psp/set-paths.cmake)
 include(core/cfe/build-functions.cmake)
 
 # Now, start building with the configuration.
-add_subdirectory(config/${BUILDNAME}/target target)
-add_subdirectory(config/${BUILDNAME}/host host)
-
+if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/config/${BUILDNAME}/target)
+    add_subdirectory(config/${BUILDNAME}/target target)
+endif()
+if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/config/${BUILDNAME}/host)
+    add_subdirectory(config/${BUILDNAME}/host host)
+endif()

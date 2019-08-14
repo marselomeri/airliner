@@ -1,0 +1,47 @@
+- var pluginName = query.pluginName;
+table.table.table-condensed
+  tbody
+    tr
+      th Commands Accepted 
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/cmdAcceptCount'}]}) ---
+      td
+    tr
+      th Commands Rejected
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/cmdRejectCount'}]}) ---
+      td
+    tr
+      th Input Port
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/inPort'}]}) ---
+      td
+        button.btn.cdr-primary(data-cdr={cmd:{name:'/' + pluginName + '/setInput'}}) Set
+    tr
+      th Output Address:Port
+      td 
+        span.span-inline-block(data-cdr={tlm:[{name:'/' + pluginName + '/hk/outAddress'}]}) ---
+        span.span-inline-block :
+        span.span-inline-block(data-cdr={tlm:[{name:'/' + pluginName + '/hk/outPort'}]}) ---
+      td
+        button.btn.cdr-primary(data-cdr={cmd:{name:'/' + pluginName + '/setOutput'}}) Set
+    tr
+      th Messages Sent
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/msgSentCount'}]}) ---
+      td
+    tr
+      th Messages Received
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/msgRecvCount'}]}) ---
+      td
+    tr
+      th Input Stream
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/inputStreamID'}]}) ---
+      td
+    tr
+      th Output Stream
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/outputStreamID'}]}) ---
+      td

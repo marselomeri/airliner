@@ -435,24 +435,24 @@ boolean RCIN_Custom_PWM_Translate(uint8 *data, int size)
             & 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f) + RCIN_SBUS_SCALE_OFFSET;
     RCIN_AppCustomData.Measure.Values[7] = (uint16)(((data[10] >> 5 | data[11] << 3)
             & 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f) + RCIN_SBUS_SCALE_OFFSET; // & the other 8 + 2 channels if you need them
-    //RCIN_AppCustomData.Measure.Values[8] = (uint16)(((data[12] | data[13] << 8)
-            //& 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f) + RCIN_SBUS_SCALE_OFFSET;
-    //RCIN_AppCustomData.Measure.Values[9] = (uint16)(((data[13] >> 3 | data[14] << 5)
-            //& 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f) + RCIN_SBUS_SCALE_OFFSET;
-    //RCIN_AppCustomData.Measure.Values[10] = (uint16)(((data[14] >> 6 | data[15] << 2
-            //| data[16] << 10) & 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f)
-            //+ RCIN_SBUS_SCALE_OFFSET;
-    //RCIN_AppCustomData.Measure.Values[11] = (uint16)(((data[16] >> 1 | data[17] << 7)
-            //& 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f) + RCIN_SBUS_SCALE_OFFSET;
-    //RCIN_AppCustomData.Measure.Values[12] = (uint16)(((data[17] >> 4 | data[18] << 4)
-            //& 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f) + RCIN_SBUS_SCALE_OFFSET;
-    //RCIN_AppCustomData.Measure.Values[13] = (uint16)(((data[18] >> 7 | data[19] << 1
-            //| data[20] << 9) & 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f)
-            //+ RCIN_SBUS_SCALE_OFFSET;
-    //RCIN_AppCustomData.Measure.Values[14] = (uint16)(((data[20] >> 2 | data[21] << 6)
-            //& 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f) + RCIN_SBUS_SCALE_OFFSET;
-    //RCIN_AppCustomData.Measure.Values[15] = (uint16)(((data[21] >> 5 | data[22] << 3)
-            //& 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f) + RCIN_SBUS_SCALE_OFFSET;
+    RCIN_AppCustomData.Measure.Values[8] = (uint16)(((data[12] | data[13] << 8)
+            & 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f) + RCIN_SBUS_SCALE_OFFSET;
+    RCIN_AppCustomData.Measure.Values[9] = (uint16)(((data[13] >> 3 | data[14] << 5)
+            & 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f) + RCIN_SBUS_SCALE_OFFSET;
+    RCIN_AppCustomData.Measure.Values[10] = (uint16)(((data[14] >> 6 | data[15] << 2
+            | data[16] << 10) & 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f)
+            + RCIN_SBUS_SCALE_OFFSET;
+    RCIN_AppCustomData.Measure.Values[11] = (uint16)(((data[16] >> 1 | data[17] << 7)
+            & 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f) + RCIN_SBUS_SCALE_OFFSET;
+    RCIN_AppCustomData.Measure.Values[12] = (uint16)(((data[17] >> 4 | data[18] << 4)
+            & 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f) + RCIN_SBUS_SCALE_OFFSET;
+    RCIN_AppCustomData.Measure.Values[13] = (uint16)(((data[18] >> 7 | data[19] << 1
+            | data[20] << 9) & 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f)
+            + RCIN_SBUS_SCALE_OFFSET;
+    RCIN_AppCustomData.Measure.Values[14] = (uint16)(((data[20] >> 2 | data[21] << 6)
+            & 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f) + RCIN_SBUS_SCALE_OFFSET;
+    RCIN_AppCustomData.Measure.Values[15] = (uint16)(((data[21] >> 5 | data[22] << 3)
+            & 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f) + RCIN_SBUS_SCALE_OFFSET;
 
     /* Timestamp */
     RCIN_AppCustomData.Measure.Timestamp = PX4LIB_GetPX4TimeUs();
@@ -785,6 +785,7 @@ boolean RCIN_Custom_Measure(PX4_InputRcMsg_t *Measure)
     {
         Measure->Values[i] = RCIN_AppCustomData.Measure.Values[i];
     }
+
     Measure->RcFailsafe = RCIN_AppCustomData.Measure.RcFailsafe;
     Measure->RcLost = RCIN_AppCustomData.Measure.RcLost;
     Measure->InputSource = RCIN_AppCustomData.Measure.InputSource;
@@ -828,7 +829,7 @@ boolean RCIN_Custom_Max_Events_Not_Reached(int32 ind)
 {
     boolean returnBool = FALSE;
 
-    if ((ind < CFE_EVS_MAX_EVENT_FILTERS) && (ind > 0))
+    if ((ind < RCIN_MAX_EVENT_FILTERS) && (ind > 0))
     {
         returnBool = TRUE;
     }
