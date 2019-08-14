@@ -49,7 +49,7 @@ typedef struct
 {
     int32   Value;
     uint32  Count;
-    boolean ContinueReturnCodeAfterCountZero;
+    osalbool ContinueReturnCodeAfterCountZero;
 } Ut_MPC_Custom_ReturnCodeTable_t;
 
 void Ut_MPC_Custom_Reset(void);

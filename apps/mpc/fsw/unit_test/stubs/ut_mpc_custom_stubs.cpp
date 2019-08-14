@@ -71,7 +71,7 @@ void Ut_MPC_Custom_SetReturnCode(uint32 Index, int32 RtnVal, uint32 CallCnt)
     }
 }
 
-boolean Ut_MPC_Custom_UseReturnCode(uint32 Index)
+osalbool Ut_MPC_Custom_UseReturnCode(uint32 Index)
 {
     if (Ut_MPC_Custom_ReturnCodeTable[Index].Count > 0)
     {
