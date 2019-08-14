@@ -1,0 +1,38 @@
+table.table.table-condensed
+  tbody
+    tr
+      th Cmd Count
+      td
+        div(data-cdr={tlm:[{name:'/RGBLED/RGBLED_HkTlm_t/usCmdCnt'}]}) ---
+    tr
+      th Error Count
+      td
+        div(data-cdr={tlm:[{name:'/RGBLED/RGBLED_HkTlm_t/usCmdErrCnt'}]}) ---
+    tr
+      th Color
+      td
+        div(data-cdr={tlm:[{name:'/RGBLED/RGBLED_HkTlm_t/Color', calibration:{ type:'enumeration',
+          enumerations:[
+            { value: 0, name:'OFF'},
+            { value: 1, name:'RED'},
+            { value: 2, name:'GREEN'},
+            { value: 3, name:'BLUE'},
+            { value: 4, name:'AMBER'},
+            { value: 5, name:'YELLOW'},
+            { value: 6, name:'PURPLE'},
+            { value: 7, name:'CYAN'},
+            { value: 8, name:'WHITE'}
+          ]}}]}) ---
+    tr
+      th State
+      td
+        div(data-cdr={tlm:[{name:'/RGBLED/RGBLED_HkTlm_t/State', calibration:{ type:'enumeration',
+          enumerations:[
+            { value: 0, name:'UNINITIALIZED'},
+            { value: 1, name:'INITIALIZED'},
+            { value: 2, name:'ON'},
+            { value: 3, name:'SELFTEST'}
+          ]}}]}) ---
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/RGBLED/Noop'}}) No-Op    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/RGBLED/Reset'}}) Reset

@@ -88,11 +88,17 @@ function(initialize_airliner_build)
     set(CFE_OSAL_DIR ${PARSED_ARGS_OSAL})
 
     include(${PARSED_ARGS_PSP}/make/build-vars.cmake)
-    include(${PARSED_ARGS_PSP}/make/build-functions.cmake)
+    include(${PROJECT_SOURCE_DIR}/core/psp/make/build-functions.cmake)
     
     set_global_airliner_includes(${PARSED_ARGS_CONFIG})
     
-    psp_initialize_airliner_build(${ARGN})
+    if(${BUILD_CORE_FROM_SOURCE})    
+        add_subdirectory(${PARSED_ARGS_PSP}/src psp/platform)
+        add_subdirectory(${PSP_SHARED_DIR} psp/shared)
+    
+        # Parse the various CFE component CMake files that will specify the various source files.
+        add_subdirectory(${CFE_CORE_SRC}/make cfe)
+    endif()
     
     set(CFS_DOCS_DIR ${CFS_DOCS_DIR} PARENT_SCOPE)
     set(CFS_DOCS_HTML_DIR ${CFS_DOCS_HTML_DIR} PARENT_SCOPE)
@@ -100,6 +106,9 @@ function(initialize_airliner_build)
     set(HELGRIND_COMMAND ${HELGRIND_COMMAND} PARENT_SCOPE)
     set(MASSIF_COMMAND ${MASSIF_COMMAND} PARENT_SCOPE)
     set(UNIT_TEST_WRAPPER ${UNIT_TEST_WRAPPER} PARENT_SCOPE)
+    
+    psp_initialize_airliner_build(${ARGN})
+    
 endfunction(initialize_airliner_build)
 
 
@@ -157,13 +166,7 @@ endfunction(add_airliner_app_src)
 
 
 function(add_airliner_app_unit_test_src)
-    set(PARSED_ARGS_TARGET ${ARGV0})
-    cmake_parse_arguments(PARSED_ARGS "" "" "SOURCES" ${ARGN})
-
-    get_property(AIRLINER_BUILD_PREFIX GLOBAL PROPERTY AIRLINER_BUILD_PREFIX_PROPERTY)
-    target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${PARSED_ARGS_SOURCES})
-    target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC ${PARSED_ARGS_SOURCES})
-
+    add_airliner_app_unit_test_src(${ARGN})
 endfunction(add_airliner_app_unit_test_src)
 
 

@@ -1,0 +1,26 @@
+table.table.table-condensed
+  tbody
+    tr
+      th Cmd Count
+      td
+        div(data-cdr={tlm:[{name:'/HK/HK_HkPacket_t/CmdCounter'}]}) ---
+    tr
+      th Error Count
+      td
+        div(data-cdr={tlm:[{name:'/HK/HK_HkPacket_t/ErrCounter'}]}) ---
+    tr
+      th Combined Packets Sent
+      td
+        span(data-cdr={tlm: [{name:'/HK/HK_HkPacket_t/CombinedPacketsSent'}]}) ---
+    tr
+      th Missing Data Count
+      td
+        span(data-cdr={tlm: [{name:'/HK/HK_HkPacket_t/MissingDataCtr'}]}) ---
+    tr
+      th Memory Pool Handle
+      td
+        span(data-cdr={tlm: [{name:'/HK/HK_HkPacket_t/MemPoolHandle'}]}) ---
+              
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/HK/Noop'}}) No-Op    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/HK/Reset'}}) Reset

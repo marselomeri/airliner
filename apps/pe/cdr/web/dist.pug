@@ -1,0 +1,31 @@
+table.table.table-condensed
+  tbody
+    tr
+      th Last Update
+      td
+        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/TimeLastDist'}]}) ---
+    tr
+      th Alt Origin
+      td
+        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/m_DistAltOrigin'}]}) ---
+    tr
+      th Initialized
+      td
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/DistInitialized', notext: true, class: [{eval: '==0', class: 'CDR-LED-RED'},{eval: '==1', class: 'CDR-LED-GREEN'}]}]})
+    tr
+      th Fault
+      td
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/DistFault', notext: true, class: [{eval: '==0', class: 'CDR-LED-OFF'},{eval: '==1', class: 'CDR-LED-RED'}]}]})
+    tr
+      th Timeout
+      td
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/DistTimeout', notext: true, class: [{eval: '==0', class: 'CDR-LED-OFF'},{eval: '==1', class: 'CDR-LED-RED'}]}]})
+    tr
+      th Fused
+      td
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/DistFused', notext: true, class: [{eval: '==0', class: 'CDR-LED-YELLOW'},{eval: '==1', class: 'CDR-LED-GREEN'}]}]})
+              
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/PE/EnableDistanceSensor'}}) Enable
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/PE/DisableDistanceSensor'}}) Disable 
+      

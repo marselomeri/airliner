@@ -127,7 +127,7 @@ int32 AMC::InitDevice(void)
             type %hhu motors %hhu, flights %hu, last flight time %hu, \
             total flight time %u, last error %hhu", info.version_major, 
             info.version_minor, info.type, info.n_motors_controlled,
-            info.n_flights, info.last_flight_time, info.total_flight_time,
+            info.n_flights, info.last_flight_time, (unsigned int)info.total_flight_time,
             info.last_error);
     }
     else

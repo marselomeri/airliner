@@ -1,0 +1,23 @@
+table.table.table-condensed
+  tbody
+    tr
+      th Cmd Count
+      td
+        div(data-cdr={tlm:[{name:'/RCIN/RCIN_HkTlm_t/usCmdCnt'}]}) ---
+    tr
+      th Error Count
+      td
+        div(data-cdr={tlm:[{name:'/RCIN/RCIN_HkTlm_t/usCmdErrCnt'}]}) ---
+    tr
+      th State
+      td
+        div(data-cdr={tlm:[{name:'/RCIN/RCIN_HkTlm_t/State', calibration:{ type:'enumeration',
+          enumerations:[
+            { value: 0, name:'UNINITIALIZED'},
+            { value: 1, name:'INITIALIZED'},
+            { value: 2, name:'NOT_PUBLISHING'},
+            { value: 3, name:'PUBLISHING'}
+          ]}}]}) ---
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/RCIN/Noop'}}) No-Op    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/RCIN/Reset'}}) Reset

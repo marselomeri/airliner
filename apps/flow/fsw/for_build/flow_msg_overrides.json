@@ -1,0 +1,42 @@
+{
+    "Airliner": {
+        "apps": {
+            "FLOW": {
+                "operations": {
+                    "Noop":                 { "airliner_cc":  0, "macro": "FLOW_CMD_MID",    "airliner_msg": "FLOW_NoArgCmd_t" },
+                    "Reset":                { "airliner_cc":  1, "macro": "FLOW_CMD_MID",    "airliner_msg": "FLOW_NoArgCmd_t" },
+                    "PX4_OpticalFlowMsg_t": {                    "macro": "FLOW_HK_TLM_MID", "airliner_msg": "FLOW_HkTlm_t" }
+                },    
+                "scheduler": {
+                    "activities": [
+                        "FLOW_SEND_HK_MID",
+                        "FLOW_WAKEUP_MID"
+                    ]
+                },
+                "events": [
+                    {"macro": "FLOW_INIT_INF_EID",            "id":  1},
+                    {"macro": "FLOW_CMD_NOOP_EID",            "id":  2},
+                    {"macro": "FLOW_SUBSCRIBE_ERR_EID",       "id":  3},
+                    {"macro": "FLOW_PIPE_INIT_ERR_EID",       "id":  4},
+                    {"macro": "FLOW_CFGTBL_MANAGE_ERR_EID",   "id":  5},
+                    {"macro": "FLOW_CFGTBL_GETADDR_ERR_EID",  "id":  6},
+                    {"macro": "FLOW_RCVMSG_ERR_EID",          "id":  7},
+                    {"macro": "FLOW_MSGID_ERR_EID",           "id":  8},
+                    {"macro": "FLOW_CC_ERR_EID",              "id":  9},
+                    {"macro": "FLOW_MSGLEN_ERR_EID",          "id": 10},
+                    {"macro": "FLOW_CFGTBL_REG_ERR_EID",      "id": 11},
+                    {"macro": "FLOW_CFGTBL_LOAD_ERR_EID",     "id": 12},
+                    {"macro": "FLOW_CFGTBL_VALIDATE_ERR_EID", "id": 13},
+                    {"macro": "FLOW_ACCEPTED_ERR_EID",        "id": 14},
+                    {"macro": "FLOW_CMD_REJECTED_ERR_EID",    "id": 15},
+                    {"macro": "FLOW_BUF_ORUN_ERR_EID",        "id": 16}
+                ],
+                "config": {
+                },
+                "tables": [
+                    {"id": "CONFIG_TBL",  "title": "Flow Configuration",  "isDumpTable": false}
+                ]
+            }
+        }
+    }
+}

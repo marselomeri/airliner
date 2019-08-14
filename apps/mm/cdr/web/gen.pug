@@ -1,0 +1,39 @@
+table.table.table-condensed
+  tbody
+    tr
+      th Last Action
+      td
+        div(data-cdr={tlm:[{name:'/MM/MM_HkPacket_t/LastAction'}]}) ---
+    tr
+      th Mem Type
+      td
+        div(data-cdr={tlm:[{name:'/MM/MM_HkPacket_t/MemType'}]}) ---
+    tr
+      th Address
+      td
+        div(data-cdr={tlm:[{name:'/MM/MM_HkPacket_t/Address'}]}) ---
+    tr
+      th Data Value
+      td
+        div(data-cdr={tlm:[{name:'/MM/MM_HkPacket_t/DataValue'}]}) ---
+    tr
+      th Bytes Processed
+      td
+        div(data-cdr={tlm:[{name:'/MM/MM_HkPacket_t/BytesProcessed'}]}) ---
+    tr
+      th File Name
+      td
+        div(data-cdr={tlm:[{name:'/MM/MM_HkPacket_t/FileName'}]}) ---
+
+footer
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MM/Peek'}}) Peek
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MM/Poke'}}) Poke
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MM/LoadMemWid'}}) Load Memory Wid
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MM/LoadMemFromFile'}}) Load Memory From File
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MM/DumpMemToFile'}}) Dump Memory To File
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MM/DumpInEvt'}}) Dump In Event 
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MM/FillMem'}}) Fill Memory
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MM/LookupSym'}}) Lookup Symbol
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MM/SymTblToFile'}}) Symbol Table To File
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MM/EnableEEPROMWrite'}}) Enable EEPROM Write 
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MM/DisableEEPROMWrite'}}) Disable EEPROM Write

@@ -43,7 +43,6 @@
     msgDefs: [
     	{file: '/airliner.json'}
     ],
-    jsonInputStreamID:       'json-cmd-stream',
     binaryOutputStreamID:    'bin-cmd-stream',
     cmdDefReqStreamID:       'cmd-def-request',
     cmdSendStreamID:         'cmd-send',

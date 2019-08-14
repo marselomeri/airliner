@@ -1,0 +1,52 @@
+table.table.table-condensed
+  tbody
+    tr
+      th RC Control Input Mode (COM_RC_IN_MODE)
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_ConfigTlm_t/ConfigTbl.COM_RC_IN_MODE'}]}) ---
+    tr
+      th Is Arming Switch a Button (COM_ARM_SWISBTN)
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_ConfigTlm_t/ConfigTbl.COM_ARM_SWISBTN'}]}) ---
+    tr
+      th Arm/Disarm Hysteresis (COM_RC_ARM_HYST)
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_ConfigTlm_t/ConfigTbl.COM_RC_ARM_HYST'}]}) ---
+    tr
+      th Mavlink System ID (MAV_SYS_ID)
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_ConfigTlm_t/ConfigTbl.MAV_SYS_ID'}]}) ---
+    tr
+      th Mavlink Component ID (MAV_COMP_ID)
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_ConfigTlm_t/ConfigTbl.MAV_COMP_ID'}]}) ---
+    tr
+      th RC Loss Time Threshold (COM_RC_LOSS_T)
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_ConfigTlm_t/ConfigTbl.COM_RC_LOSS_T'}]}) ---
+    tr
+      th Battery Failsafe Mode (COM_LOW_BAT_ACT)
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_ConfigTlm_t/ConfigTbl.COM_LOW_BAT_ACT', calibration:{ type:'enumeration',
+          enumerations:[
+            { value: 0, name:'WARN'},
+            { value: 1, name:'RTL'},
+            { value: 2, name:'LAND'},
+            { value: 3, name:'RTL/LAND'}
+            ]}}]}) ---
+    tr
+      th Home Set Vertical Threshold (COM_HOME_H_T)
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_ConfigTlm_t/ConfigTbl.COM_HOME_H_T'}]}) ---
+    tr
+      th Home Set Horizontal Threshold (COM_HOME_V_T)
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_ConfigTlm_t/ConfigTbl.COM_HOME_V_T'}]}) ---
+    tr
+      th Home Position Altitude Padding (HOME_POS_ALT_PADDING)
+      td
+        div(data-cdr={tlm:[{name:'/VM/VM_ConfigTlm_t/ConfigTbl.HOME_POS_ALT_PADDING'}]}) ---
+        
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/VM/SendConfig'}}) Send Configuration   
+

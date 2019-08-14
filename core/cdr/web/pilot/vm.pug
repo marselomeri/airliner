@@ -1,0 +1,45 @@
+style.
+  .pfd-container{
+    background-color: var(--th-bg-color);
+    padding: 5px;
+    display: grid;
+    margin: 9px;
+    border: 2px solid var(--btn-primary-background-color);
+    border-radius: 7px;
+    min-width:200px;
+    max-width:500px;
+  }
+  .pfd-container>button{
+    margin:3px;
+    padding: 5px;
+    overflow: hidden;
+  }
+.row.os-theme-dark
+  article.col-xs-12.col-sm-12
+    .pfd-container
+      button.btn.cdr-important(data-cdr={cmd:{name:'/VM/Arm'}}) ARM  
+          i.fa.fa-superpowers
+      button.btn.cdr-important(data-cdr={cmd:{name:'/VM/Disarm'}}) DISARM  
+          i.fa.fa-stop-circle-o
+    .pfd-container 
+      button.btn.cdr-primary(data-cdr={cmd:{name:'/VM/AutoTakeOff'}}) Auto Takeoff    
+          i.fa.fa-paper-plane-o
+      button.btn.cdr-primary(data-cdr={cmd:{name:'/VM/AutoLoiter'}}) Auto Loiter   
+          i.fa.fa-pause-circle-o
+      button.btn.cdr-primary(data-cdr={cmd:{name:'/VM/AutoLand'}}) Auto Land    
+          i.fa.fa-road
+      button.btn.cdr-primary(data-cdr={cmd:{name:'/VM/AutoRtl'}}) Auto RTL   
+          i.fa.fa-home
+    .pfd-container
+      button.btn.cdr-primary(data-cdr={cmd:{name:'/VM/Manual'}}) Manual    
+          i.fa.fa-hand-grab-o
+      button.btn.cdr-primary(data-cdr={cmd:{name:'/VM/PosCtl'}}) Position Control   
+          i.fa.fa-gears
+      button.btn.cdr-primary(data-cdr={cmd:{name:'/VM/AltCtl'}}) Altitude Control      
+          i.fa.fa-gears
+      button.btn.cdr-primary(data-cdr={cmd:{name:'/VM/Acrobatic'}}) Acrobatic Control      
+          i.fa.fa-gears
+      button.btn.cdr-primary(data-cdr={cmd:{name:'/VM/Rattitude'}}) Rattitude Control      
+          i.fa.fa-gears
+      button.btn.cdr-primary(data-cdr={cmd:{name:'/VM/Stabilized'}}) Stabilized Control      
+          i.fa.fa-gears

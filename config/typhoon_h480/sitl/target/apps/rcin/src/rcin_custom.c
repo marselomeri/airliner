@@ -48,6 +48,7 @@
 #include "rcin_custom.h"
 #include <string.h>
 #include <math.h>
+#include <unistd.h>
 
 /************************************************************************
 ** Local Defines
@@ -58,6 +59,7 @@
 #define RCIN_CUSTOM_AXIS_OUTPUT_MIN_VALUE     (1000.0f)
 #define RCIN_CUSTOM_AXIS_OUTPUT_MAX_VALUE     (2000.0f)
 #define RCIN_CUSTOM_JOYSTICK_NAME_MAX_LENGTH  (80)
+#define RCIN_CUSTOM_FRSKY_USB_CHAN_COUNT      (16)
 
 
 typedef struct {
@@ -68,6 +70,11 @@ typedef struct {
     uint32 OutChannel;
 } RCIN_Custom_JoystickChannelMapping_t;
 
+typedef struct {
+    float OutMin;
+    float OutMax;
+    uint32 OutChannel;
+} RCIN_Custom_JoystickButtonMapping_t;
 
 RCIN_Custom_JoystickChannelMapping_t RCIN_Custom_JoystickChannelMapping[PX4_RC_INPUT_MAX_CHANNELS] = 
 {
@@ -78,7 +85,19 @@ RCIN_Custom_JoystickChannelMapping_t RCIN_Custom_JoystickChannelMapping[PX4_RC_I
     {-32767.0f, 32767.0f, 1000.0f, 2000.0f, 4},
     {-32767.0f, 32767.0f, 1000.0f, 2000.0f, 5},
     {-32767.0f, 32767.0f, 1000.0f, 2000.0f, 6},
-    {-32767.0f, 32767.0f, 1000.0f, 2000.0f, 7},
+    {-32767.0f, 32767.0f, 1000.0f, 2000.0f, 7}
+};
+
+RCIN_Custom_JoystickButtonMapping_t RCIN_Custom_JoystickButtonMapping[PX4_RC_INPUT_MAX_CHANNELS] = 
+{
+    {1000.0f, 2000.0f, 8},
+    {1000.0f, 2000.0f, 9},
+    {1000.0f, 2000.0f, 10},
+    {1000.0f, 2000.0f, 11},
+    {1000.0f, 2000.0f, 12},
+    {1000.0f, 2000.0f, 13},
+    {1000.0f, 2000.0f, 14},
+    {1000.0f, 2000.0f, 15}
 };
 
 
@@ -258,14 +277,24 @@ int32 RCIN_Custom_MapJSButtonToRcIn(uint32 inButton, int32 inValue, uint32 *outV
         rc = -1;
         goto end_of_function;
     }
+    
+    /* Just map Axis to Value Index directly, for now. */
+    *outValueIndex = RCIN_Custom_JoystickButtonMapping[inButton].OutChannel;
 
-    /* Not yet supported, for now.  Set out values to illegal values.
-     * The caller function we range check these.  But also return an
-     * error.*/
-    *outValueIndex = PX4_RC_INPUT_MAX_CHANNELS;
-    *outValue = RCIN_CUSTOM_AXIS_OUTPUT_MAX_VALUE + 1;
+    if(inValue == 0) /* Off position */
+    {
+        *outValue = RCIN_Custom_JoystickButtonMapping[inButton].OutMin;
+    }
+    else if(inValue == 1) /* On position */
+    {
+        *outValue = RCIN_Custom_JoystickButtonMapping[inButton].OutMax;
+    }
+    else /* Invalid position */
+    {
+        *outValue = RCIN_CUSTOM_AXIS_OUTPUT_MAX_VALUE + 1;
+    }
 
-    rc = -1;
+    rc = 0;
 
 end_of_function:
 
@@ -281,10 +310,10 @@ boolean RCIN_Custom_Measure(PX4_InputRcMsg_t *Measure)
     boolean returnBool            = TRUE;
     uint32 i                      = 0;
     uint8 RSSI                    = 100;
-    uint16 ChannelCount           = 12;
+    uint16 ChannelCount           = RCIN_CUSTOM_FRSKY_USB_CHAN_COUNT;
     static uint32 totalFrameCount = 0;
     struct js_event js;
-    uint16 Channel[12];
+    uint16 Channel[RCIN_CUSTOM_FRSKY_USB_CHAN_COUNT];
     int readStatus;
 
 
@@ -358,10 +387,12 @@ boolean RCIN_Custom_Measure(PX4_InputRcMsg_t *Measure)
     for(i = 0; i < PX4_RC_INPUT_MAX_CHANNELS; ++i)
     {
         Measure->Values[i] = RCIN_CustomData.Values[i];
+        //OS_printf("%i: %i    ", i, Measure->Values[i]);
     }
+    //OS_printf("\n");
 
     /* Channel count */
-    Measure->ChannelCount      = 12;
+    Measure->ChannelCount      = RCIN_CUSTOM_FRSKY_USB_CHAN_COUNT;
     Measure->RSSI              = RSSI;
     // For now handle outside measure function call.
     //Measure->RcLostFrameCount = errorCount;
@@ -388,7 +419,7 @@ boolean RCIN_Custom_Max_Events_Not_Reached(int32 ind)
 {
     boolean returnBool = FALSE;
 
-    if ((ind < CFE_EVS_MAX_EVENT_FILTERS) && (ind > 0))
+    if ((ind < RCIN_MAX_EVENT_FILTERS) && (ind > 0))
     {
         returnBool = TRUE;
     }

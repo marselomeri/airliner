@@ -111,6 +111,8 @@ extern "C" {
 */
 #define RCIN_STARTUP_TIMEOUT_MSEC    (1000)
 
+/**\brief Max filters in event table */
+#define RCIN_MAX_EVENT_FILTERS (32)
 
 #ifdef __cplusplus
 }

@@ -33,4 +33,6 @@
  
 # Set some paths that we'll use later in the CFE build.
 set(PSP_DIR  ${CMAKE_CURRENT_LIST_DIR})
-set(PSP_INC_DIRS ${PSP_DIR}/inc)
+set(PSP_TARGET_DIR ${PSP_DIR}/fsw)
+set(PSP_INC_DIRS ${PSP_TARGET_DIR}/inc)
+set(PSP_SHARED_DIR ${PSP_TARGET_DIR}/shared)

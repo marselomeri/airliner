@@ -1,0 +1,33 @@
+table.table.table-condensed
+  tbody
+    tr
+      th Index
+      td
+        div(data-cdr={tlm:[{name:'/TO/TO_ChannelDiagTlm_t/Index'}]}) ---
+    tr
+      th State
+      td
+        div(data-cdr={tlm:[{name:'/TO/TO_ChannelDiagTlm_t/State'}]}) ---
+    tr
+      th Config Table Name
+      td
+        div(data-cdr={tlm:[{name:'/TO/TO_ChannelDiagTlm_t/ConfigTableName'}]}) ---
+    tr
+      th Config Table FileName
+      td
+        div(data-cdr={tlm:[{name:'/TO/TO_ChannelDiagTlm_t/ConfigTableFileName'}]}) ---
+    tr
+      th Dump Table Name
+      td
+        div(data-cdr={tlm:[{name:'/TO/TO_ChannelDiagTlm_t/DumpTableName'}]}) ---
+    tr
+      th Channel Name
+      td
+        div(data-cdr={tlm:[{name:'/TO/TO_ChannelDiagTlm_t/ChannelName'}]}) ---
+    tr
+      th Table ID
+      td
+        div(data-cdr={tlm:[{name:'/TO/TO_ChannelDiagTlm_t/TableID'}]}) ---
+              
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/TO_SendDiagCmd_t'}}) Send Diagnostics

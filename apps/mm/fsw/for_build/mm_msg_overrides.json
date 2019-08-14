@@ -1,0 +1,98 @@
+{
+    "Airliner": {
+        "apps": {
+            "MM": {
+              "operations": {
+                  "Noop":               { "airliner_cc":  0, "macro": "MM_CMD_MID", "airliner_msg": "" },
+                  "Reset":              { "airliner_cc":  1, "macro": "MM_CMD_MID", "airliner_msg": "" },
+                  "Peek":               { "airliner_cc":  2, "macro": "MM_CMD_MID", "airliner_msg": "MM_PeekCmd_t" },
+                  "Poke":               { "airliner_cc":  3, "macro": "MM_CMD_MID", "airliner_msg": "MM_PokeCmd_t" },
+                  "LoadMemWid":         { "airliner_cc":  4, "macro": "MM_CMD_MID", "airliner_msg": "MM_LoadMemWIDCmd_t" },
+                  "LoadMemFromFile":    { "airliner_cc":  5, "macro": "MM_CMD_MID", "airliner_msg": "MM_LoadMemFromFileCmd_t" },
+                  "DumpMemToFile":      { "airliner_cc":  6, "macro": "MM_CMD_MID", "airliner_msg": "MM_DumpMemToFileCmd_t" },
+                  "DumpInEvt":          { "airliner_cc":  7, "macro": "MM_CMD_MID", "airliner_msg": "MM_DumpInEventCmd_t" },
+                  "FillMem":            { "airliner_cc":  8, "macro": "MM_CMD_MID", "airliner_msg": "MM_FillMemCmd_t" },
+                  "LookupSym":          { "airliner_cc":  9, "macro": "MM_CMD_MID", "airliner_msg": "MM_LookupSymCmd_t" },
+                  "SymTblToFile":       { "airliner_cc":  10, "macro": "MM_CMD_MID", "airliner_msg": "MM_SymTblToFileCmd_t" },
+                  "EnableEEPROMWrite":  { "airliner_cc":  11, "macro": "MM_CMD_MID", "airliner_msg": "MM_EepromWriteEnaCmd_t" },
+                  "DisableEEPROMWrite": { "airliner_cc":  12, "macro": "MM_CMD_MID", "airliner_msg": "MM_EepromWriteDisCmd_t" },
+                  "MM_HkPacket_t":      { "airliner_cc": -1, "macro": "MM_HK_TLM_MID", "airliner_msg": "MM_HkPacket_t" },
+                  "SendHk":             { "airliner_cc":  0, "macro": "MM_SEND_HK_MID", "airliner_msg": "" }
+              },
+              "scheduler": {
+                  "activities": [
+                      "MM_SEND_HK_MID"
+                  ],
+                  "groups": [
+                      { "id": 1, "macro": "MM_SCH_GRP" }
+                  ]
+              },
+              "events": [
+                  {"macro": "MM_INIT_INF_EID", "id": 1},
+                  {"macro": "MM_CMD_NOOP_EID", "id": 2},
+                  {"macro": "MM_RESET_DBG_EID", "id": 3},
+                  {"macro": "MM_LOAD_WID_INF_EID", "id": 4},
+                  {"macro": "MM_LD_MEM_FILE_INF_EID", "id": 5},
+                  {"macro": "MM_FILL_INF_EID", "id": 6},
+                  {"macro": "MM_PEEK_BYTE_INF_EID", "id": 7},
+                  {"macro": "MM_PEEK_WORD_INF_EID", "id": 8},
+                  {"macro": "MM_PEEK_DWORD_INF_EID", "id": 9},
+                  {"macro": "MM_POKE_BYTE_INF_EID", "id": 10},
+                  {"macro": "MM_POKE_WORD_INF_EID", "id": 11},
+                  {"macro": "MM_POKE_DWORD_INF_EID", "id": 12},
+                  {"macro": "MM_DMP_MEM_FILE_INF_EID", "id": 13},
+                  {"macro": "MM_DUMP_INEVENT_INF_EID", "id": 14},
+                  {"macro": "MM_PIPE_ERR_EID", "id": 15},
+                  {"macro": "MM_MID_ERR_EID", "id": 16},
+                  {"macro": "MM_CC1_ERR_EID", "id": 17},
+                  {"macro": "MM_LEN_ERR_EID", "id": 18},
+                  {"macro": "MM_MEMTYPE_ERR_EID", "id": 19},
+                  {"macro": "MM_SYMNAME_ERR_EID", "id": 20},
+                  {"macro": "MM_DATA_SIZE_BYTES_ERR_EID", "id": 21},
+                  {"macro": "MM_DATA_SIZE_BITS_ERR_EID", "id": 22},
+                  {"macro": "MM_ALIGN32_ERR_EID", "id": 23},
+                  {"macro": "MM_ALIGN16_ERR_EID", "id": 24},
+                  {"macro": "MM_OS_MEMVALIDATE_ERR_EID", "id": 25},
+                  {"macro": "MM_LOAD_FILE_CRC_ERR_EID", "id": 26},
+                  {"macro": "MM_LOAD_WID_CRC_ERR_EID", "id": 27},
+                  {"macro": "MM_OS_EEPROMWRITE8_ERR_EID", "id": 28},
+                  {"macro": "MM_OS_EEPROMWRITE16_ERR_EID", "id": 29},
+                  {"macro": "MM_OS_EEPROMWRITE32_ERR_EID", "id": 30},
+                  {"macro": "MM_OS_CREAT_ERR_EID", "id": 31},
+                  {"macro": "MM_OS_OPEN_ERR_EID", "id": 32},
+                  {"macro": "MM_OS_CLOSE_ERR_EID", "id": 33},
+                  {"macro": "MM_OS_READ_ERR_EID", "id": 34},
+                  {"macro": "MM_OS_READ_EXP_ERR_EID", "id": 35},
+                  {"macro": "MM_OS_WRITE_EXP_ERR_EID", "id": 36},
+                  {"macro": "MM_OS_STAT_ERR_EID", "id": 37},
+                  {"macro": "MM_CFS_COMPUTECRCFROMFILE_ERR_EID", "id": 38},
+                  {"macro": "MM_CMD_FNAME_ERR_EID", "id": 39},
+                  {"macro": "MM_LD_FILE_SIZE_ERR_EID", "id": 40},
+                  {"macro": "MM_FILE_LOAD_PARAMS_ERR_EID", "id": 41},
+                  {"macro": "MM_CFE_FS_READHDR_ERR_EID", "id": 42},
+                  {"macro": "MM_CFE_FS_WRITEHDR_ERR_EID", "id": 43},
+                  {"macro": "MM_HKREQ_LEN_ERR_EID", "id": 44},
+                  {"macro": "MM_SYM_LOOKUP_INF_EID", "id": 45},
+                  {"macro": "MM_SYMNAME_NUL_ERR_EID", "id": 46},
+                  {"macro": "MM_SYMTBL_TO_FILE_INF_EID", "id": 47},
+                  {"macro": "MM_SYMFILENAME_NUL_ERR_EID", "id": 48},
+                  {"macro": "MM_SYMTBL_TO_FILE_FAIL_ERR_EID", "id": 49},
+                  {"macro": "MM_SYMTBL_TO_FILE_INVALID_ERR_EID", "id": 50},
+                  {"macro": "MM_EEPROM_WRITE_ENA_INF_EID", "id": 51},
+                  {"macro": "MM_EEPROM_WRITE_ENA_ERR_EID", "id": 52},
+                  {"macro": "MM_EEPROM_WRITE_DIS_INF_EID", "id": 53},
+                  {"macro": "MM_EEPROM_WRITE_DIS_ERR_EID", "id": 54},
+                  {"macro": "MM_OS_ZERO_READ_ERR_EID", "id": 55},
+                  {"macro": "MM_PSP_READ_ERR_EID", "id": 56},
+                  {"macro": "MM_PSP_WRITE_ERR_EID", "id": 57},
+                  {"macro": "MM_PSP_COPY_ERR_EID", "id": 58},
+                  {"macro": "MM_PSP_SET_ERR_EID", "id": 59}
+              ],
+              "config": {
+              },
+              "tables": [
+              ]
+            }
+        }
+    }
+}
