@@ -93,10 +93,6 @@
 #define LGC_WAKEUP_MIDX                         93
 #define LGC_SEND_HK_MIDX 			94
 
-#define SG33BL_SEND_HK_MIDX 	    96
-#define SG33BL_WAKEUP_MIDX 			97
-#define SG33BL_CUSTOM_WAKEUP_MIDX 	98
-
 #define PX4BR_PROC_CMD_MIDX			100
 #define PX4BR_SEND_HK_MIDX			101
 #define QAE_SEND_HK_MIDX			        102

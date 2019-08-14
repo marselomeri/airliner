@@ -473,18 +473,3 @@ add_airliner_app(
         
     )
 
-add_airliner_app(
-    sg33bl
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/sg33bl/fsw/for_build
-    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/sg33bl
-    CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/sg33bl/src/ads1115_custom.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/sg33bl/src/sg33bl_custom.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/sg33bl/src/rgbled_custom.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/sg33bl/src/rgbled_driver.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/rgbled_platform_cfg.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/sg33bl_platform_cfg.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sg33bl_msgids.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sg33bl_perfids.h
-    MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/sg33bl/sg33bl_msg_overrides.json
-)

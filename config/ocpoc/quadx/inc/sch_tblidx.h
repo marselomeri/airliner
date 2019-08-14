@@ -18,8 +18,6 @@
 #define CFE_TIME_SEND_HK_MIDX  		        4
 #define CFE_TBL_SEND_HK_MIDX   		        5
 #define CFE_TIME_FAKE_CMD_MIDX		        6
-#define LC_SAMPLE_AP_MIDX			9
-
 #define SCH_SEND_HK_MIDX       		        15
 #define TO_SEND_HK_MIDX				16
 #define HK_SEND_HK_MIDX       		        17
@@ -93,10 +91,6 @@
 #define LGC_WAKEUP_MIDX                         93
 #define LGC_SEND_HK_MIDX 			94
 
-#define SG33BL_SEND_HK_MIDX 	    96
-#define SG33BL_WAKEUP_MIDX 			97
-#define SG33BL_CUSTOM_WAKEUP_MIDX 	98
-
 #define PX4BR_PROC_CMD_MIDX			100
 #define PX4BR_SEND_HK_MIDX			101
 #define QAE_SEND_HK_MIDX			        102
@@ -128,7 +122,6 @@
 #define EA_WAKEUP_MIDX 				125
 #define EA_PERFMON_MIDX 			126
 #define EA_SEND_HK_MIDX 			127
-
 
 #endif /* SCH_TBL_IDX_H */
 
