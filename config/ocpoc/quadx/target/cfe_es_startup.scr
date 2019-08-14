@@ -4,7 +4,6 @@ CFE_LIB, /cf/apps/PX4LIB.so,    PX4LIB_LibInit,  PX4LIB,    0,     0, 0x0, 0, 2;
 CFE_LIB, /cf/apps/PBLIB.so,     PBLIB_LibInit,   PBLIB,      0,     0, 0x0, 0, 2;
 CFE_APP, /cf/apps/AMC.so,       AMC_AppMain,     AMC,       43, 327680, 0x0, 0, 2;
 CFE_APP, /cf/apps/SENS.so,      SENS_AppMain,    SENS,      52, 327680, 0x0, 0, 2;
-CFE_APP, /cf/apps/SG33BL.so,    SG33BL_AppMain,      SG33BL,       37, 327680, 0x0, 0, 2;
 CFE_APP, /cf/apps/MPU9250.so,   MPU9250_AppMain,     MPU9250,      46, 327680, 0x0, 0, 2;
 CFE_APP, /cf/apps/HMC5883.so,   HMC5883_AppMain,     HMC5883,      49, 327680, 0x0, 0, 2;
 CFE_APP, /cf/apps/MS5611.so,    MS5611_AppMain,      MS5611,       82, 327680, 0x0, 0, 2;

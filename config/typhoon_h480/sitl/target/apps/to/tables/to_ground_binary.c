@@ -106,6 +106,7 @@ TO_ChannelTbl_t TO_ConfigTbl =
 		{FLOW_DIAG_TLM_MID,			      1,	TO_PQUEUE_MEDIUM_IDX},
 	    {MPC_DIAG_TLM_MID,		      1,	TO_PQUEUE_MEDIUM_IDX},
         {LD_DIAG_TLM_MID,		      1,	TO_PQUEUE_MEDIUM_IDX},
+        
             /* Internal PX4 type messages.  These should eventually be removed with
                codified and vetted flight specific telemetry.  These are currently
                set to low priority because some do or could be generated at a high

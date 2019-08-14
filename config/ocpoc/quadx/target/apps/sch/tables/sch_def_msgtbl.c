@@ -58,7 +58,7 @@ SCH_MessageEntry_t SCH_DefaultMessageTable[SCH_MAX_MESSAGES] =
    /* Command ID #8 */
    { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0,0), 0 } },
    /* Command ID #9 */
-   { { SCH_FIX_HEADER(LC_SAMPLE_AP_MID, 0xC000, 0x0007), 0x0000, 0x0000, 0x0001, 0x0001 } },
+   { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0,0), 0 } },
    /* Command ID #10 - Health and safety HK request*/
    { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0,0), 0 } },
    /* Command ID #11 - Limit checker HK request*/
@@ -232,11 +232,11 @@ SCH_MessageEntry_t SCH_DefaultMessageTable[SCH_MAX_MESSAGES] =
    /* Command ID #95*/
    { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0, 0), 0 } },
    /* Command ID #96 */
-   { { SCH_FIX_HEADER(SG33BL_SEND_HK_MID, 0xC000, 0x0001), 0x0000 } },
+   { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0, 0), 0 } },
    /* Command ID #97 */
-   { { SCH_FIX_HEADER(SG33BL_WAKEUP_MID, 0xC000, 0x0001), 0x0000 } },
+   { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0, 0), 0 } },
    /* Command ID #98 */
-   { { SCH_FIX_HEADER(SG33BL_CUSTOM_WAKEUP_MID, 0xC000, 0x0001), 0x0000 } },
+   { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0, 0), 0 } },
    /* Command ID #99 */
    { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0, 0), 0 } },
    /* Command ID #100 */
