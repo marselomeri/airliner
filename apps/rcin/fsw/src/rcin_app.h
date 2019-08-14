@@ -39,10 +39,6 @@ extern "C" {
 #endif
 
 /************************************************************************
- ** Pragmas
- *************************************************************************/
-
-/************************************************************************
  ** Includes
  *************************************************************************/
 #include "cfe.h"
@@ -58,11 +54,18 @@ extern "C" {
  ** Local Defines
  *************************************************************************/
 
+/**\brief RCIN specific error code */
+#define RCIN_ERROR (-1)
+
+/**\brief RCIN threshold for failed reads */
+#define RCIN_STRIKE_COUNT_THRES (10)
+
 /************************************************************************
  ** Local Structure Definitions
  *************************************************************************/
+ 
 /**
- * \brief application status
+ * \brief Application status
  */
 typedef enum
 {
@@ -99,8 +102,12 @@ public:
     /** \brief Output Data published at the end of cycle */
     PX4_InputRcMsg_t InputRcMsg;
 
+    /** \brief Counter for invalid or failed reads from custom layer */
+    uint8 StrikeCount;
+
     /** \brief Housekeeping Telemetry for downlink */
     RCIN_HkTlm_t HkTlm;
+    
     /************************************************************************/
     /** \brief Radio Control Input (RCIN) application entry point
      **
@@ -257,12 +264,12 @@ public:
      **
      *************************************************************************/
     void ReportHousekeeping(void);
+    
     /************************************************************************/
     /** \brief Sends the InputRcMsg message.
      **
      **  \par Description
-     **       This function publishes the InputRcMsg message containing
-     **       <TODO>
+     **       This function publishes the InputRcMsg message.
      **
      **  \par Assumptions, External Events, and Notes:
      **       None
@@ -291,11 +298,11 @@ public:
     boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
     
     /************************************************************************/
-    /** \brief Sends the RCInput message.
+    /** \brief Read RC device
      **
      **  \par Description
-     **       This function publishes the RCInput message containing
-     **       <TODO>
+     **       This function calls the custom layer to read from the device and 
+     **       updates the InputRC message with current values.
      **
      **  \par Assumptions, External Events, and Notes:
      **       None

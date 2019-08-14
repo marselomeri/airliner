@@ -231,8 +231,8 @@ int32 SONAR::InitApp()
     if (FALSE == returnBool)
     {
        (void) CFE_EVS_SendEvent(SONAR_CUSTOM_INIT_ERR_EID, CFE_EVS_ERROR,
-                                 "Sonar failed custom init.",
-                                 (unsigned int)iStatus);
+                                 "Sonar failed custom init (0x%08lX).",
+                                 iStatus);
         iStatus = -1;
         goto SONAR_InitApp_Exit_Tag;
     }

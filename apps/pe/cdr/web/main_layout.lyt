@@ -1,4 +1,4 @@
-﻿{
+{
  "settings": {
   "hasHeaders": true,
   "constrainDragToContainer": false,
@@ -54,10 +54,10 @@
        "title": "",
        "activeItemIndex": 0,
        "width": 50,
-       "height": 40.71925754060325,
+       "height": 55.4524361948956,
        "content": [
         {
-         "title": "PE HK",
+         "title": "HK",
          "type": "component",
          "componentName": "Blank",
          "componentState": {
@@ -74,7 +74,7 @@
        "isClosable": true,
        "reorderEnabled": true,
        "title": "",
-       "height": 59.28074245939675,
+       "height": 44.5475638051044,
        "content": [
         {
          "type": "stack",
@@ -87,7 +87,7 @@
          "width": 50,
          "content": [
           {
-           "title": "PE GPS",
+           "title": "GPS",
            "type": "component",
            "componentName": "Blank",
            "componentState": {
@@ -109,7 +109,7 @@
          "width": 50,
          "content": [
           {
-           "title": "PE Baro",
+           "title": "Baro",
            "type": "component",
            "componentName": "Blank",
            "componentState": {
@@ -138,12 +138,12 @@
        "isClosable": true,
        "reorderEnabled": true,
        "title": "",
-       "activeItemIndex": 2,
+       "activeItemIndex": 0,
        "width": 50,
-       "height": 40.835266821345705,
+       "height": 55.22041763341067,
        "content": [
         {
-         "title": "Event Filter",
+         "title": "Events",
          "type": "component",
          "componentName": "Blank",
          "componentState": {
@@ -154,23 +154,45 @@
          "reorderEnabled": true
         },
         {
-         "title": "Application Scheduling",
+         "title": "App Ctrl",
          "type": "component",
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "flight/apps/sch/app_sch?appName=PE"
+          "link": "flight/core/es/appctrl?appName=PE"
          },
          "isClosable": true,
          "reorderEnabled": true
         },
         {
-         "title": "Telemetry Control",
+         "title": "Scheduling",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/apps/sch/app_sch?appName=PE"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        },
+        {
+         "title": "Telemetry",
          "type": "component",
          "componentName": "Blank",
          "componentState": {
           "text": "text",
           "link": "flight/apps/to/tlm_app?appName=PE"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        },
+        {
+         "title": "Table",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/core/tbl/tbl_ctl?appName=PE"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -182,7 +204,7 @@
        "isClosable": true,
        "reorderEnabled": true,
        "title": "",
-       "height": 59.164733178654295,
+       "height": 44.77958236658933,
        "content": [
         {
          "type": "stack",
@@ -195,7 +217,7 @@
          "width": 50,
          "content": [
           {
-           "title": "PE Distance",
+           "title": "Distance",
            "type": "component",
            "componentName": "Blank",
            "componentState": {

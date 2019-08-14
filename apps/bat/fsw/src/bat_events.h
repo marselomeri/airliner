@@ -249,8 +249,22 @@ typedef enum {
 **
 */
 	BAT_CFGTBL_LOAD_ERR_EID = 12,
-	BAT_CUSTOM_INIT_ERR_EID = 13,
-	BAT_LISTENER_CREATE_CHDTASK_ERR_EID = 14,
+
+/** \brief <tt> 'Listener child task failed.  CFE_ES_CreateChildTask returned: 0x%08lX' </tt>
+**  \event <tt> 'Listener child task failed.  CFE_ES_CreateChildTask returned: 0x%08lX' </tt>
+**
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when the CFS BAT Task fails to
+**  create the listener child task.
+**
+**  The 32 bit hexadecimal number is the error code returned by CFE
+**  #CFE_ES_CreateChildTask function.
+**
+*/
+	BAT_LISTENER_CREATE_CHDTASK_ERR_EID = 13,
 
 /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
 	BAT_EVT_CNT

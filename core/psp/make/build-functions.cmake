@@ -31,10 +31,20 @@
 #
 #############################################################################
  
+# "Explain" variables.
+set(EXPLAIN_OBJS_INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/explain-objs)
+set(EXPLAIN_DIR	${CMAKE_CURRENT_BINARY_DIR}/)
+set(EXPLAIN_DB	${EXPLAIN_DIR}/airliner-symbols.sqlite)
+set(EXPLAIN_OBJS_INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/explain-objs PARENT_SCOPE)
+set(EXPLAIN_DIR	${CMAKE_CURRENT_BINARY_DIR}/ PARENT_SCOPE)
+set(EXPLAIN_DB	${EXPLAIN_DIR}/airliner-symbols.sqlite PARENT_SCOPE)
+
+ 
 include(${PROJECT_SOURCE_DIR}/tools/explain/python/GenerateSymbolMap.cmake)
 include(${PROJECT_SOURCE_DIR}/tools/gen_serialization/GenerateSerialization.cmake)
 
 include(${PARSED_ARGS_PSP}/make/build-functions.cmake)
+
  
 #psp_initialize_airliner_build(
 #    PSP    pc-linux
@@ -54,7 +64,7 @@ include(${PARSED_ARGS_PSP}/make/build-functions.cmake)
 #)
 function(psp_initialize_airliner_build)
     # Define the function arguments.
-    cmake_parse_arguments(PARSED_ARGS "REFERENCE" "CORE_BINARY;CONFIG;PREFIX;OSAL;STARTUP_SCRIPT;UNIT_TEST_WRAPPER;CONFIG_SOURCES;MSG_OVERRIDES" "FILESYS" ${ARGN})
+    cmake_parse_arguments(PARSED_ARGS "REFERENCE" "CORE_BINARY;CONFIG;PREFIX;OSAL;STARTUP_SCRIPT;UNIT_TEST_WRAPPER;CONFIG_SOURCES" "FILESYS;MSG_OVERRIDES" ${ARGN})
 
     set(PSP_UNIT_TEST_WRAPPER target/${PARSED_ARGS_UNIT_TEST_WRAPPER})
     
@@ -62,11 +72,6 @@ function(psp_initialize_airliner_build)
     foreach(dir ${PARSED_ARGS_FILESYS})
         file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/exe/${dir})
     endforeach()
-    
-    # Copy the core binary to the correct location.
-    if(EXISTS "${PARSED_ARGS_CORE_BINARY}")
-        file(COPY ${PARSED_ARGS_CORE_BINARY} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/exe)
-    endif()
     
     # Find the Nano Protobuf utility to use later.
     set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE BOTH)
@@ -90,9 +95,6 @@ function(psp_initialize_airliner_build)
         file(COPY ${PARSED_ARGS_STARTUP_SCRIPT} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/exe/cf/apps)
     endif()
     
-    # Set what we're going to call the executable file.
-    set(CFE_EXEC_FILE core-bin)
-
     # Where to put applications
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${INSTALL_DIR})
 
@@ -101,25 +103,110 @@ function(psp_initialize_airliner_build)
 
     ###  EXPLAIN
     # Prepare the build to be ready to use the Explain utility.
-    add_custom_target(ground_tools)
-    add_custom_target(explain_parsing)
+	add_custom_target(ground_tools)
+	add_custom_target(explain_parsing)
 	
-    # Set the path to put the objects we create for Explain to parse.
-    file(MAKE_DIRECTORY ${EXPLAIN_OBJS_INSTALL_DIR})
+	# Set the path to put the objects we create for Explain to parse.
+	file(MAKE_DIRECTORY ${EXPLAIN_OBJS_INSTALL_DIR})
 	
-    # EXPLAIN_DIR:  This is the directory for all explain generated files.
-    if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/airliner-symbols.sqlite)
-        file(MAKE_DIRECTORY ${EXPLAIN_DIR})
-        file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/airliner-symbols.sqlite DESTINATION ${EXPLAIN_DIR})
-    endif()
+	# EXPLAIN_DIR:  This is the directory for all explain generated files.
+	file(MAKE_DIRECTORY ${EXPLAIN_DIR})
+	
+	# Prepare the build to be ready to use the Explain utility.
+	explain_setup()
     
-    # Remove the combined airliner JSON overrides file, if it exists.
-    if(EXISTS ${EXPLAIN_DIR}/airliner-overrides.json)
-        file(REMOVE ${EXPLAIN_DIR}/airliner-overrides.json)
+    if(${BUILD_CORE_FROM_SOURCE})
+        # Do the things that we only do when we build the core binary from source.
+        
+        # Set what we're going to call the executable file.
+        set(CFE_EXEC_FILE core-bin)
+        
+        # Parse the OSAL CMake files that will specify the various source files.
+        if(NOT EXISTS ${PARSED_ARGS_OSAL})
+            message(FATAL_ERROR "*** The path to the OSAL is either incorrect, or does not include source code.")
+        endif()
+        
+        # Parse the OSAL CMake files that will specify the various source files.
+        add_subdirectory(${PARSED_ARGS_OSAL} osal)
+ 
+	    # Now build CFE using the various source files that just parsed.
+	    add_executable(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} ${CFE_SRC} ${OSAL_SRC} ${PSP_PLATFORM_SRC} ${PSP_SHARED_SRC})
+	    set_target_properties(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} PROPERTIES OUTPUT_NAME ${CFE_EXEC_FILE})
+	    
+	    # Add the OSAL include paths, if any. 
+	    target_include_directories(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} PUBLIC ${OSAL_INCS})
+	
+	    # Make sure we enable exports, to prevent the compiler from optimizing them out.  This needs to be done so the
+	    # applications can call all the CFE functions.  Otherwise, the compiler will just remove most of the functions
+	    # because they aren't being used by CFE.
+	    set_target_properties(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} PROPERTIES ENABLE_EXPORTS TRUE)
+	
+	    # Link in the various libraries specified by the PSP
+	    target_link_libraries(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} ${LIBS})
+	
+	    # Add in the various flags also supplied by the PSP.
+	    set_target_properties(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} PROPERTIES COMPILE_FLAGS ${COMPILE_FLAGS})
+	    if(NOT LINK_FLAGS STREQUAL "")
+	        set_target_properties(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} PROPERTIES LINK_FLAGS ${LINK_FLAGS})
+	    endif()
+	
+	    # Specify where the files are going to, defined at the top of this file.
+	    set_target_properties(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CFE_INSTALL_DIR})
+	
+	    # Generate documentation
+	    #add_subdirectory($ENV{CFE_DIR}/docs docs)
+	    
+	    ## Generate documentation
+	    find_package(Doxygen)
+	    if(DOXYGEN_FOUND)
+	        string (REPLACE ";" " " OSAL_SRC_FILES "${OSAL_SRC}")
+	        string (REPLACE ";" " " CONFIG_SOURCES "${PARSED_ARGS_CONFIG_SOURCES}")
+	
+	        if(NOT {PARSED_ARGS_PREFIX}docs)        
+	            add_custom_target(${PARSED_ARGS_PREFIX}docs)
+	        endif()
+	        
+	        set(CFS_DOCS_HTML_DIR ${CMAKE_BINARY_DIR}/docs/html)
+	        set(CFS_DOCS_LATEX_DIR ${CMAKE_BINARY_DIR}/docs/latex)      
+	        configure_file(${CFE_DOCS_DIR}/user_doxy.in ${CMAKE_CURRENT_BINARY_DIR}/user_doxy @ONLY)
+	        configure_file(${CFE_DOCS_DIR}/detail_doxy.in ${CMAKE_CURRENT_BINARY_DIR}/detail_doxy @ONLY)
+	        add_custom_target(${PARSED_ARGS_PREFIX}cfe-docs
+	            COMMAND mkdir -p ${CFS_DOCS_HTML_DIR}/detailed_design/cfe/
+	            COMMAND mkdir -p ${CFS_DOCS_HTML_DIR}/users_guide/cfe/
+	            COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/detail_doxy
+	            COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/user_doxy
+	            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/
+	        )
+	        add_dependencies(${PARSED_ARGS_PREFIX}docs ${PARSED_ARGS_PREFIX}cfe-docs)
+	    endif(DOXYGEN_FOUND)  
+	    
+	    # Generate the Explain symbol maps
+	    explain_read_elf(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} 
+	        INPUT_PATH     ${CFE_INSTALL_DIR}/${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE}
+	        DATABASE_NAME  ${EXPLAIN_DB}
+	    )
+	    
+	    #set(EXPLAIN_SYMBOL_FILE airliner-symbols.json)
+	    #explain_generate_symbol_map(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} 
+	    #    INPUT_PATH  ${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE}
+	    #    INPUT_FILE  ${CFE_EXEC_FILE}
+	    #    DATABASE_NAME  ${EXPLAIN_DIR}/airliner-symbols.sqlite
+	    #    OUTPUT_FILE ${EXPLAIN_DIR}/airliner-symbols.json
+	    #)
+    else()
+        # Do the things that we only do when we are assuming the core binary is already built.
+        
+        # Copy the core binary to the correct location.
+        if(EXISTS ${PARSED_ARGS_CORE_BINARY})
+            file(COPY ${PARSED_ARGS_CORE_BINARY} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/exe)
+        endif()
+        
+        # EXPLAIN_DIR:  This is the directory for all explain generated files.
+        if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/airliner-symbols.sqlite)
+            file(MAKE_DIRECTORY ${EXPLAIN_DIR})
+            file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/airliner-symbols.sqlite DESTINATION ${EXPLAIN_DIR})
+        endif()
     endif()
-    
-    # Prepare the build to be ready to use the Explain utility.
-    explain_setup()
     
     # Setup commander
     execute_process(
@@ -141,19 +228,14 @@ function(psp_initialize_airliner_build)
         DATABASE_NAME  ${EXPLAIN_DIR}/airliner-symbols.sqlite
         OUTPUT_FILE    ${EXPLAIN_DIR}/explain-symbols.json
     )
-	
-    # Add the generic JSON override files
-    #CFE_MSG_OVERRIDES
 
-    # Add the custom JSON override files
-    if(PARSED_ARGS_MSG_OVERRIDES)
-        if(EXISTS ${PARSED_ARGS_MSG_OVERRIDES}) 
-            add_airliner_json_input(
-                INPUT_FILE ${PARSED_ARGS_MSG_OVERRIDES}
-                OUTPUT_DIR ${EXPLAIN_DIR}
-            )
-        endif()
-    endif()
+    # Add the common and custom JSON override files
+    foreach(override_file ${PARSED_ARGS_MSG_OVERRIDES})
+        add_airliner_json_input(
+           INPUT_FILE ${override_file}
+           OUTPUT_DIR ${EXPLAIN_DIR}
+        )
+    endforeach()
 
     generate_serialization_code(
         INPUT_FILE     ${EXPLAIN_DIR}/cookiecutter.json
@@ -169,7 +251,7 @@ function(psp_initialize_airliner_build)
 
         # Now copy the CFE platform independent Commander plugin
         get_filename_component(CFE_CMDR_PLUGIN_NAME ${CFE_CMDR_PLUGIN_DIR} NAME)
-	set(CFE_CMDR_PLUGIN_ORIG_PATH ${COMMANDER_WORKSPACE_PLUGINS_DIR}/${CFE_CMDR_PLUGIN_NAME})
+	    set(CFE_CMDR_PLUGIN_ORIG_PATH ${COMMANDER_WORKSPACE_PLUGINS_DIR}/${CFE_CMDR_PLUGIN_NAME})
         set(CFE_CMDR_PLUGIN_NEW_PATH ${COMMANDER_WORKSPACE_PLUGINS_DIR}/cfe)
         file(REMOVE_RECURSE ${CFE_CMDR_PLUGIN_NEW_PATH})
         file(COPY ${CFE_CMDR_PLUGIN_DIR} DESTINATION ${COMMANDER_WORKSPACE_PLUGINS_DIR})
@@ -554,16 +636,16 @@ function(psp_add_airliner_app_unit_test)
 		    ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_encode.h
 		)
 			
-                target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${NANOPB_SRC})
-                target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC ${NANOPB_SRC})
+        target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${NANOPB_SRC})
+        target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC ${NANOPB_SRC})
 
 		target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${PROJECT_SOURCE_DIR}/tools/nanopb/)
 		target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC ${PROJECT_SOURCE_DIR}/tools/nanopb/)
 	endif()
 	
 	if(EXISTS ${PARSED_ARGS_VALGRIND_SUPPRESSION_FILE})
-            set(MEMCHECK_COMMAND ${MEMCHECK_COMMAND} --suppressions=${PARSED_ARGS_VALGRIND_SUPPRESSION_FILE})
-            set(HELGRIND_COMMAND ${HELGRIND_COMMAND} --suppressions=${PARSED_ARGS_VALGRIND_SUPPRESSION_FILE})
+        set(MEMCHECK_COMMAND ${MEMCHECK_COMMAND} --suppressions=${PARSED_ARGS_VALGRIND_SUPPRESSION_FILE})
+        set(HELGRIND_COMMAND ${HELGRIND_COMMAND} --suppressions=${PARSED_ARGS_VALGRIND_SUPPRESSION_FILE})
 	endif()
     
     get_property(PUBLIC_APP_INCLUDES GLOBAL PROPERTY PUBLIC_APP_INCLUDES_PROPERTY)
@@ -639,12 +721,12 @@ function(psp_add_airliner_cfe_unit_test)
 
     add_executable(${AIRLINER_BUILD_PREFIX}${TEST_NAME} EXCLUDE_FROM_ALL
         ${PARSED_ARGS_SOURCES}
-        ${PROJECT_SOURCE_DIR}/psp/unit_test/bsp_ut.c
+        ${PSP_UNIT_TEST_SRC_DIR}/bsp_ut.c
     )
 
     add_executable(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov EXCLUDE_FROM_ALL
         ${PARSED_ARGS_SOURCES}
-        ${PROJECT_SOURCE_DIR}/psp/unit_test/bsp_ut.c
+        ${PSP_UNIT_TEST_SRC_DIR}/bsp_ut.c
     )
 
     target_include_directories(${AIRLINER_BUILD_PREFIX}${TEST_NAME} PUBLIC ${PARSED_ARGS_INCLUDES})
@@ -661,6 +743,8 @@ function(psp_add_airliner_cfe_unit_test)
         set(HELGRIND_COMMAND ${HELGRIND_COMMAND} --suppressions=${PARSED_ARGS_VALGRIND_SUPPRESSION_FILE})
     endif()
     
+    add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${TEST_NAME})
+    add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov)
     add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME} ${AIRLINER_BUILD_PREFIX}${TEST_NAME})
     add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov ${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov)
     add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-memcheck ${MEMCHECK_COMMAND} ${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${TEST_NAME})
@@ -742,4 +826,31 @@ function(psp_add_airliner_app_table)
         DEPENDS ${PARSED_ARGS_NAME}.tbl ${PARSED_ARGS_SOURCES}
     )
 endfunction(psp_add_airliner_app_table)
+
+
+
+function(add_airliner_app_unit_test_src)
+    set(PARSED_ARGS_TARGET ${ARGV0})
+    cmake_parse_arguments(PARSED_ARGS "" "" "SOURCES" ${ARGN})
+
+    if(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut)
+        target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut PRIVATE ${PARSED_ARGS_SOURCES})
+    endif(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut)
+
+    if(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-gcov)
+        target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-gcov PRIVATE ${PARSED_ARGS_SOURCES})
+    endif(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-gcov)
+
+    if(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-memcheck)
+        target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-memcheck PRIVATE ${PARSED_ARGS_SOURCES})
+    endif(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-memcheck)
+
+    if(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-helgrind)
+        target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-helgrind PRIVATE ${PARSED_ARGS_SOURCES})
+    endif(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-helgrind)
+
+    if(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-massif)
+        target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-massif PRIVATE ${PARSED_ARGS_SOURCES})
+    endif(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-massif)
+endfunction(add_airliner_app_unit_test_src)
 

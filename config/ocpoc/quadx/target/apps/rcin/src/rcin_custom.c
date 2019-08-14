@@ -829,7 +829,7 @@ boolean RCIN_Custom_Max_Events_Not_Reached(int32 ind)
 {
     boolean returnBool = FALSE;
 
-    if ((ind < CFE_EVS_MAX_EVENT_FILTERS) && (ind > 0))
+    if ((ind < RCIN_MAX_EVENT_FILTERS) && (ind > 0))
     {
         returnBool = TRUE;
     }

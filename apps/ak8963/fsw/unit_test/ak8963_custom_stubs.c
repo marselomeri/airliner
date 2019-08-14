@@ -62,7 +62,14 @@ int32 AK8963_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl)
 
 boolean AK8963_Read_Mag(int16 *X, int16 *Y, int16 *Z)
 {
-    return TRUE;
+	if((0 != X) && (0 != Y) && (0 != Z))
+	{
+		*X = AK8963_Custom_Returns.AK8963_Read_Mag_X_Value;
+		*Y = AK8963_Custom_Returns.AK8963_Read_Mag_Y_Value;
+		*Z = AK8963_Custom_Returns.AK8963_Read_Mag_Z_Value;
+	}
+
+    return AK8963_Custom_Returns.AK8963_Read_Mag_Return;
 }
 
 
@@ -75,13 +82,18 @@ boolean AK8963_Read_MagAdj(uint8 *X, uint8 *Y, uint8 *Z)
 
 boolean AK8963_Read_MagDeviceID(uint8 *Value)
 {
-    return TRUE;
+	if(0 != Value)
+	{
+		*Value = AK8963_Custom_Returns.AK8963_WhoAmI_Value;
+	}
+
+    return AK8963_Custom_Returns.AK8963_WhoAmI_Return;
 }
 
 
 boolean AK8963_Apply_Platform_Rotation(float *X, float *Y, float *Z)
 {
-    return TRUE;
+	return TRUE;
 }
 
 

@@ -925,7 +925,7 @@ DS_FilterTable_t DS_FilterTable =
     },
     /* Packet Index 072 */
     {
-      /* .MessageID = */ AE_HK_TLM_MID,
+      /* .MessageID = */ QAE_HK_TLM_MID,
       /* .Filter    = */
       {
         /* File table index, filter type, N, X, O */
@@ -1357,7 +1357,7 @@ DS_FilterTable_t DS_FilterTable =
     },
     /* Packet Index 108 */
     {
-      /* .MessageID = */ AE_CMD_MID,
+      /* .MessageID = */ QAE_CMD_MID,
       /* .Filter    = */
       {
         /* File table index, filter type, N, X, O */

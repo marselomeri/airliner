@@ -43,6 +43,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
+#include "px4lib.h"
 
 /************************************************************************
 ** Local Defines

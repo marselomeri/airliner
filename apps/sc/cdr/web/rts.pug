@@ -1,53 +1,19 @@
 table.table.table-condensed
   tbody
-    tr
-      th Num Rts Active
-      td
-        div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/NumRtsActive'}]}) ---
-    tr
-      th RTS Number
-      td
-        div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/RtsNumber'}]}) ---
-    tr
-      th RTS Active Counter
-      td
-        div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/RtsActiveCtr'}]}) ---
-    tr
-      th RTS Active Err Counter
-      td
-        div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/RtsActiveErrCtr'}]}) ---
-    tr
-      th RTS Cmd Counter
-      td
-        div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/RtsCmdCtr'}]}) ---
-    tr
-      th RTS Cmd Err Counter
-      td
-        div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/RtsCmdErrCtr'}]}) ---
-    tr
-      th Last RTS Err Seq
-      td
-        div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/LastRtsErrSeq'}]}) ---
-    tr
-      th Last RTS Err Cmd
-      td
-        div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/LastRtsErrCmd'}]}) ---
-    tr
-      th Next RTS Time
-      td
-        div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/NextRtsTime'}]}) ---
-  
-footer.btn-group(role="group")      
-  .btn-group.dropright
-    button.btn.cdr-primary.dropdown-toggle(type='button', data-toggle='dropdown')
-      | Group RTS Commands
-      span.caret
-    ul.dropdown-menu(role='menu')
-      li.cdr-dropdown-list-item
-        a(data-cdr={cmd:{name:'/SC/StartRtsGroup'}, indicator:'cmd'}, href='javascript:void(0);') Start RTS Group
-      li.cdr-dropdown-list-item
-        a(data-cdr={cmd:{name:'/SC/StopRtsGroup'}, indicator:'cmd'}, href='javascript:void(0);') Stop RTS Group
-      li.cdr-dropdown-list-item
-        a(data-cdr={cmd:{name:'/SC/DisableRtsGroup'}, indicator:'cmd'}, href='javascript:void(0);') Disable RTS Group
-      li.cdr-dropdown-list-item
-        a(data-cdr={cmd:{name:'/SC/EnableRtsGroup'}, indicator:'cmd'}, href='javascript:void(0);') Enable RTS Group
+    - for(var id = 1; id < 5; id++){
+      - var idx = id - 1 ;
+      tr
+        th(style='width: 50px;') #{id}
+        td(style='min-width:75px;')
+          div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/RtsExecutingStatus['+ idx +']'}]}) ---
+        td
+          .btn-group(role="group")   
+            button.btn.cdr-primary(data-cdr={cmd:{name:'/SC/StartAts', argument:[{name:'RtsId', value:id}]}}) Start  
+            button.btn.cdr-primary(data-cdr={cmd:{name:'/SC/StopAts', argument:[{name:'RtsId', value:id}]}}) Stop    
+        td
+          div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/RtsDisabledStatus['+ idx +']'}]}) ---  
+        td
+          .btn-group(role="group")   
+            button.btn.cdr-primary(data-cdr={cmd:{name:'/SC/EnableRts', argument:[{name:'RtsId', value:id}]}}) Enable  
+            button.btn.cdr-primary(data-cdr={cmd:{name:'/SC/DisableRts', argument:[{name:'RtsId', value:id}]}}) Disable    
+    -}

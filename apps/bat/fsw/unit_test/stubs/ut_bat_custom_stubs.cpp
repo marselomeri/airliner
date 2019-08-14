@@ -74,7 +74,7 @@ void Ut_BAT_Custom_SetReturnCode(uint32 Index, int32 RtnVal, uint32 CallCnt)
     }
 }
 
-boolean Ut_BAT_Custom_UseReturnCode(uint32 Index)
+osalbool Ut_BAT_Custom_UseReturnCode(uint32 Index)
 {
     if (Ut_BAT_Custom_ReturnCodeTable[Index].Count > 0)
     {

@@ -1,4 +1,5 @@
 - var appKeyName = query.appName;
+-
 - if(typeof appKeyName !== 'undefined') {
 -   if( query.appName == 'CFE_ES' || query.appName == 'CFE_EVS' || query.appName == 'CFE_SB' || query.appName == 'CFE_TBL' || query.appName == 'CFE_TIME') {
 -       appKeyName = 'CFE';
@@ -6,6 +7,7 @@
 -
 -   var queryString = '$.Airliner.apps.' + appKeyName + '.scheduler';
 -   global.COMMANDER.queryConfigDB(queryString, function (schedule) {
+-
 -       if(appKeyName != query.appName) {
 -           var re = new RegExp(query.appName + '.*');
 -       } else {
@@ -34,7 +36,7 @@
 -       });
 
 
-button.btn.cdr-primary(data-cdr={cmd:{name:'/SCH/SendDiag'}, indicator:'cmd'}) Telemeter Schedule
+button.btn.cdr-primary(data-cdr={cmd:{name:'/SCH/SendDiag'}}) Telemeter Schedule
 #app-sch-content 
               
 script.
@@ -47,11 +49,20 @@ script.
           }
                       
           var strAppSchedule = '#{strAppSchedule}';
-          var appSchedule = strAppSchedule.split(',');
-
+          var appSchedule = strAppSchedule.split(',');    
+          
+          /* Now query the server for message IDs so we can match them up with telemetry. */
+          var mySchedule = [];
+          for(var i = 0; i < appSchedule.length; ++i) {
+              var msgID = appSchedule[i];
+              session.sendCommand({ops_path:'/config-database/getMsgIDFromMacro', args: {'macro': appSchedule[i]}}, function(err, result) { 
+                  mySchedule.push({MsgID: result.MsgID, Macro: result.Macro});
+              });
+          }   
+          
           session.subscribe([{name:'/SCH/SCH_DiagPacket_t/EntryStates'}, {name:'/SCH/SCH_DiagPacket_t/MsgIDs'}], function(params) {
-            if(params.length == 2) {
-                session.callPlugin('sch', 'getMessageIDsAndMacros', {}, function(msgMacros) { 
+              if(params.length == 2) {
+            
                     if(params[0].opsPath === '/SCH/SCH_DiagPacket_t/EntryStates') {
                         var sampleCount = params[0].sample.length;
                         var EntryStates = params[0].sample[sampleCount-1].value;
@@ -75,11 +86,10 @@ script.
                         var entryState = 3 & (EntryStates[WordIndex] >> BitIndex);
                         var entry = {};
                         var msgID = MsgIDs[TblIndex];
-                        var msgMacro = msgID;
-                        
-                        for(var i = 0; i < msgMacros.length; i++) {
-                            if(msgMacros[i].msgID === msgID) {
-                                msgMacro = msgMacros[i].macro;
+                        var macro = '0x' + msgID.toString(16);
+                        for(var i = 0; i < mySchedule.length; i++) {
+                            if(mySchedule[i].MsgID == msgID) {
+                                macro = mySchedule[i].Macro;
                             }
                         }
                                 
@@ -93,32 +103,32 @@ script.
                             case 1:
                                 entry.State = 'ENABLED';
                                 entry.MsgID = msgID;
-                                entry.Macro = msgMacro;
+                                entry.Macro = macro;
                                 break;
                                 
                             case 2:
                                 entry.State = 'DISABLED';
                                 entry.MsgID = msgID;
-                                entry.Macro = msgMacro;
+                                entry.Macro = macro;
                                 break;
                                 
                             default:
                                 entry.State = 'UNDEFINED (' + entryState + ')';
                                 entry.MsgID = 0;
-                                entry.Macro = '';
+                                entry.Macro = '0x' + msgID.toString(16);
                                 break;
                         }   
                         SchTable[TblIndex] = entry;
                     }
                     
                     var Slots = [];
-                    
+
                     for(var SlotIndex=0; SlotIndex<SCH_TOTAL_SLOTS; SlotIndex++) {
                         var entryArray = new Array(SCH_ENTRIES_PER_SLOT);
                         for(var EntryIndex=0; EntryIndex<SCH_ENTRIES_PER_SLOT; EntryIndex++) {
                             var tblIndex = (SlotIndex * SCH_ENTRIES_PER_SLOT) + EntryIndex;
-                            for(var macroIdx in appSchedule) {
-                                if(appSchedule[macroIdx] === SchTable[tblIndex].Macro) {
+                            for(var macroIdx in mySchedule) {
+                                if(mySchedule[macroIdx].MsgID === SchTable[tblIndex].MsgID) {
                                     Slots.push({slotID: SlotIndex, activityID: EntryIndex, tblIndex: tblIndex, state: SchTable[tblIndex].State, macro: SchTable[tblIndex].Macro, msgID: SchTable[tblIndex].msgID});
                                 }
                             }
@@ -138,11 +148,10 @@ script.
         
                     // Add the compiled html to the page
                     $('#app-sch-content').html(theCompiledHtml);
-                });
-            }
+              }
           });
                               
-        script#app-sch-template(type='text/x-handlebars-template') 
+script#app-sch-template(type='text/x-handlebars-template') 
               table.table.table-condensed
                     thead
                       tr
@@ -156,12 +165,12 @@ script.
                       tr
                         td {{slotID}}
                         td {{activityID}}
-                        td {{macro}}
+                        td(class='msgid_{{macro}}') {{macro}}
                         td {{state}}
                         td
                           .btn-group(role="group")      
-                            button.btn.cdr-outline-primary(onClick='SendSchEnableCmd("{{slotID}}", "{{activityID}}")') Enable    
-                            button.btn.cdr-outline-primary(onClick='SendSchDisableCmd("{{slotID}}", "{{activityID}}")') Disable
+                            button.btn.cdr-primary(onClick='SendSchEnableCmd("{{slotID}}", "{{activityID}}")') Enable    
+                            button.btn.cdr-primary(onClick='SendSchDisableCmd("{{slotID}}", "{{activityID}}")') Disable
                       | {{/each}} 
 
 -   });

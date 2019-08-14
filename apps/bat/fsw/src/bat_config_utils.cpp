@@ -54,10 +54,10 @@ int32 BAT::InitConfigTbl()
 
     /* Register Config table */
     iStatus = CFE_TBL_Register(&ConfigTblHdl,
-		BAT_CONFIG_TABLENAME,
-		(sizeof(BAT_ConfigTbl_t)),
-		CFE_TBL_OPT_DEFAULT,
-		BAT::ValidateConfigTbl);
+                               BAT_CONFIG_TABLENAME,
+                               (sizeof(BAT_ConfigTbl_t)),
+                               CFE_TBL_OPT_DEFAULT,
+                               BAT::ValidateConfigTbl);
     if (iStatus != CFE_SUCCESS)
     {
         /* Note, a critical table could return another nominal code.  If this table is
@@ -71,7 +71,7 @@ int32 BAT::InitConfigTbl()
     /* Load Config table file */
     iStatus = CFE_TBL_Load(ConfigTblHdl,
                            CFE_TBL_SRC_FILE,
-						   BAT_CONFIG_TABLE_FILENAME);
+                           BAT_CONFIG_TABLE_FILENAME);
     if (iStatus != CFE_SUCCESS)
     {
         /* Note, CFE_SUCCESS is for a successful full table load.  If a partial table
@@ -96,11 +96,72 @@ BAT_InitConfigTbl_Exit_Tag:
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 BAT::ValidateConfigTbl(void* ConfigTblPtr)
 {
-    int32  iStatus=0;
+    int32  iStatus = CFE_SUCCESS;
     BAT_ConfigTbl_t* BAT_ConfigTblPtr = (BAT_ConfigTbl_t*)(ConfigTblPtr);
 
-    /* TODO:  Add validation code here. */
-
+    if (BAT_ConfigTblPtr->VEmpty < BAT_V_EMPTY_MIN ||
+        BAT_ConfigTblPtr->VEmpty > BAT_V_EMPTY_MAX)
+    {
+        iStatus = -1;
+        goto BAT_ValidateConfigTbl_Exit_Tag;
+    }
+    
+    if (BAT_ConfigTblPtr->VFull < BAT_V_CHARGED_MIN ||
+        BAT_ConfigTblPtr->VFull > BAT_V_CHARGED_MAX)
+    {
+        iStatus = -1;
+        goto BAT_ValidateConfigTbl_Exit_Tag;
+    }
+    
+    if (BAT_ConfigTblPtr->NumCells < BAT_N_CELLS_MIN ||
+        BAT_ConfigTblPtr->NumCells > BAT_N_CELLS_MAX)
+    {
+        iStatus = -1;
+        goto BAT_ValidateConfigTbl_Exit_Tag;
+    }
+    
+    if (BAT_ConfigTblPtr->Capacity < BAT_CAPACITY_MIN ||
+        BAT_ConfigTblPtr->Capacity > BAT_CAPACITY_MAX)
+    {
+        iStatus = -1;
+        goto BAT_ValidateConfigTbl_Exit_Tag;
+    }
+    
+    if (BAT_ConfigTblPtr->LowThreshold < BAT_LOW_THR_MIN ||
+        BAT_ConfigTblPtr->LowThreshold > BAT_LOW_THR_MAX)
+    {
+        iStatus = -1;
+        goto BAT_ValidateConfigTbl_Exit_Tag;
+    }
+    
+    if (BAT_ConfigTblPtr->CriticalThreshold < BAT_CRIT_THR_MIN ||
+        BAT_ConfigTblPtr->CriticalThreshold > BAT_CRIT_THR_MAX)
+    {
+        iStatus = -1;
+        goto BAT_ValidateConfigTbl_Exit_Tag;
+    }
+    
+    if (BAT_ConfigTblPtr->EmergencyThreshold < BAT_EMERGEN_THR_MIN ||
+        BAT_ConfigTblPtr->EmergencyThreshold > BAT_EMERGEN_THR_MAX)
+    {
+        iStatus = -1;
+        goto BAT_ValidateConfigTbl_Exit_Tag;
+    }
+    
+    if (BAT_ConfigTblPtr->VLoadDrop < BAT_V_LOAD_DROP_MIN ||
+        BAT_ConfigTblPtr->VLoadDrop > BAT_V_LOAD_DROP_MAX)
+    {
+        iStatus = -1;
+        goto BAT_ValidateConfigTbl_Exit_Tag;
+    }
+    
+    if (BAT_ConfigTblPtr->RInternal < BAT_R_INTERNAL_MIN ||
+        BAT_ConfigTblPtr->RInternal > BAT_R_INTERNAL_MAX)
+    {
+        iStatus = -1;
+        goto BAT_ValidateConfigTbl_Exit_Tag;
+    }
+    
 BAT_ValidateConfigTbl_Exit_Tag:
     return iStatus;
 }
@@ -115,14 +176,11 @@ int32 BAT::AcquireConfigPointers(void)
 {
     int32 iStatus = CFE_SUCCESS;
 
-    OS_MutSemTake(Mutex);
+    OS_MutSemTake(BatteryMutex);
 
     /*
     ** Release the table
     */
-    /* TODO: This return value can indicate success, error, or that the info has been 
-     * updated.  We ignore this return value in favor of checking CFE_TBL_Manage(), but
-     * be sure this is the behavior you want. */
     (void) CFE_TBL_ReleaseAddress(ConfigTblHdl);
 
     /*
@@ -147,14 +205,14 @@ int32 BAT::AcquireConfigPointers(void)
     }
     else if(iStatus != CFE_SUCCESS)
     {
-    	ConfigTblPtr = 0;
+        ConfigTblPtr = 0;
         (void) CFE_EVS_SendEvent(BAT_CFGTBL_GETADDR_ERR_EID, CFE_EVS_ERROR,
                                  "Failed to get Config table's address (0x%08lX)",
                                  iStatus);
     }
 
 BAT_AcquireConfigPointers_Exit_Tag:
-    OS_MutSemGive(Mutex);
+    OS_MutSemGive(BatteryMutex);
     return iStatus;
 }
 

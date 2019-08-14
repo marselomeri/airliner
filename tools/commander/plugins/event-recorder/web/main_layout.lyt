@@ -1,4 +1,4 @@
-﻿{
+{
  "settings": {
   "hasHeaders": true,
   "constrainDragToContainer": false,
@@ -54,7 +54,7 @@
        "title": "",
        "activeItemIndex": 0,
        "width": 25,
-       "height": 100,
+       "height": 34.53947368421053,
        "content": [
         {
          "title": "Housekeeping",
@@ -63,6 +63,28 @@
          "componentState": {
           "text": "text",
           "link": "/ground/event-recorder/hk?pluginName={{pluginName}}"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
+      },
+      {
+       "type": "stack",
+       "header": {},
+       "isClosable": true,
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "height": 65.46052631578947,
+       "content": [
+        {
+         "title": "Event Viewer",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/ground/event-recorder/viewer"
          },
          "isClosable": true,
          "reorderEnabled": true

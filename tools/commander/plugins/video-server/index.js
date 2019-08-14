@@ -60,7 +60,6 @@ class VideoServer extends CdrGroundPlugin {
     	autoBind(this);
     	
     	var self = this;
-    	this.events = [];
 
         /* Initialize the configuration. */
         this.initConfig(configObj.name, configObj.configFile);

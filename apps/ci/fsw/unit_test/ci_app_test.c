@@ -183,26 +183,6 @@ void Test_CI_InitPipe_Fail_SubscribeCMD(void)
 }
 
 
-/**
- * Test CI_InitPipe(), fail DATA CFE_SB_CreatePipe
- */
-void Test_CI_InitPipe_Fail_CreateDATAPipe(void)
-{
-    /* Set a fail result for SB */
-    int32 result = (CFE_SEVERITY_BITMASK & CFE_SEVERITY_ERROR)
-                   | CFE_SOFTWARE_BUS_SERVICE | CFE_SB_NOT_IMPLEMENTED;
-    int32 expected = CFE_SB_BAD_ARGUMENT;
-
-    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_CREATEPIPE_INDEX, expected, 3);
-
-    /* Execute the function being tested */
-    result = CI_InitPipe();
-
-    /* Verify results */
-    UtAssert_True (result == expected, "InitPipe, fail SB create DATA pipe");
-}
-
-
 /**************************************************************************
  * Tests for CI_InitData()
  **************************************************************************/
@@ -294,24 +274,6 @@ void Test_CI_InitApp_Fail_InitConfigTbl(void)
 
     /* Verify results */
     UtAssert_True (result == expected, "InitApp, fail init config table");
-}
-
-
-/**
- * Test CI_InitApp(), fail init CDS table
- */
-void Test_CI_InitApp_Fail_InitCDSTbl(void)
-{
-    int32 result = CFE_SUCCESS;
-    int32 expected = CFE_ES_CDS_INVALID_NAME;
-
-    Ut_CFE_ES_SetReturnCode(UT_CFE_ES_REGISTERCDS_INDEX, expected, 1);
-
-    /* Execute the function being tested */
-    result = CI_InitApp();
-
-    /* Verify results */
-    UtAssert_True (result == expected, "InitApp, fail init CDS table");
 }
 
 
@@ -457,34 +419,6 @@ void Test_CI_AppMain_Nominal_Wakeup(void)
 
 }
 
-
-/**
- * Test CI_AppMain(), ProcessNewData - InvalidMsgID
- */
-void Test_CI_AppMain_ProcessNewData_InvalidMsgID(void)
-{
-    CI_InData_t  InMsg;
-    int32 DataPipe;
-
-    /* The following will emulate behavior of receiving a SCH message to WAKEUP,
-       and gives it data to process. */
-    DataPipe = Ut_CFE_SB_CreatePipe("CI_DATA_PIPE");
-    CFE_SB_InitMsg (&InMsg, 0x0000, sizeof(CI_InData_t), TRUE);
-    Ut_CFE_SB_AddMsgToPipe(&InMsg, DataPipe);
-
-    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_RCVMSG_INDEX, CFE_SUCCESS, 1);
-    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_GETMSGID_INDEX, CI_WAKEUP_MID, 1);
-
-    Ut_CFE_ES_SetReturnCode(UT_CFE_ES_RUNLOOP_INDEX, FALSE, 2);
-
-    /* Execute the function being tested */
-    CI_AppMain();
-
-    /* Verify results */
-    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==4,"Event Count = 4");
-    UtAssert_EventSent(CI_MSGID_ERR_EID, CFE_EVS_ERROR, "", "Error Event Sent");
-}
-
 /**
  * Test CI_InitListenerTask(), Fail create child task
  */
@@ -598,18 +532,20 @@ void Test_CI_ListenerTaskMain_CI_Cmd(void)
  */
 void Test_CI_ListenerTaskMain_Ext_Cmd_Unauth(void)
 {
+	uint32 actualEventQueueDepth;
+
 	/* Prevent more than one loop */
 	CI_AppData.IngestActive = FALSE;
 
 	/* Set to cause to fail */
 	READ_MSG_RET = EXT_STEP_2;
-	CI_AppData.IngestBehavior = BHV_PESSIMISTIC;
 
 	/* Execute the function being tested */
 	CI_ListenerTaskMain();
 
 	/* Verify results */
-	UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 2");
+	actualEventQueueDepth = Ut_CFE_EVS_GetEventQueueDepth();
+	UtAssert_True(actualEventQueueDepth==2,"Event Count = 2");
 	UtAssert_EventSent(CI_CMD_UNAUTHORIZED_EID, CFE_EVS_ERROR, "", "Cmd not authorized");
 	UtAssert_True(CI_AppData.HkTlm.IngestErrorCount==1,"CmdErrCnt = 1");
 }
@@ -639,6 +575,7 @@ void Test_CI_ListenerTaskMain_Ext_Cmd_Auth_Step_1(void)
 void Test_CI_ListenerTaskMain_Ext_Cmd_Auth_Step_2(void)
 {
 	CI_CmdData_t		*CmdData = NULL;
+	uint32              i = CI_INVALID_VALUE;
 
 	/* Prevent more than one loop */
 	CI_AppData.IngestActive = FALSE;
@@ -650,7 +587,7 @@ void Test_CI_ListenerTaskMain_Ext_Cmd_Auth_Step_2(void)
 	CI_ListenerTaskMain();
 
 	/* Verify results */
-	CmdData = CI_GetRegisterdCmd(TEST_MSG_ID, TEST_CC);
+	CmdData = CI_GetRegisterdCmd(TEST_MSG_ID, TEST_CC, &i);
 	UtAssert_True(CI_AppData.HkTlm.IngestMsgCount==1,"Ingest count = 1");
 }
 
@@ -864,7 +801,7 @@ void Test_CI_GetCmdAuthorized_Unreg_Opt(void)
 	CmdMsgPtr = (CFE_SB_MsgPtr_t)&cmd;
 
 	/* Set to cause to pass */
-	CI_AppData.IngestBehavior = BHV_OPTIMISTIC;
+	//CI_AppData.IngestBehavior = BHV_OPTIMISTIC;
 
 	/* Execute the function being tested */
 	retCode = CI_GetCmdAuthorized(CmdMsgPtr);
@@ -888,13 +825,13 @@ void Test_CI_GetCmdAuthorized_Unreg_Pess(void)
 	CmdMsgPtr = (CFE_SB_MsgPtr_t)&cmd;
 
 	/* Set to cause to fail */
-	CI_AppData.IngestBehavior = BHV_PESSIMISTIC;
+	//CI_AppData.IngestBehavior = CI_BHV_PESSIMISTIC;
 
 	/* Execute the function being tested */
 	retCode = CI_GetCmdAuthorized(CmdMsgPtr);
 
 	/* Verify results */
-	UtAssert_True(retCode==FALSE,"Authorized = FALSE");
+	UtAssert_True(retCode==FALSE, "Authorized = FALSE");
 }
 
 /**
@@ -1538,6 +1475,7 @@ void Test_CI_UpdateCmdReg_2_Step_Nominal(void)
 	uint32  			MsgSize = sizeof(cmdReg);
 	CI_CmdData_t		*CmdData = NULL;
 	CFE_SB_MsgPtr_t 	CmdMsgPtr;
+	uint32              i = CI_INVALID_VALUE;
 
 	/* Register a new cmd */
 	CFE_SB_InitMsg(&cmdReg, TEST_MSG_ID, MsgSize, TRUE);
@@ -1558,7 +1496,7 @@ void Test_CI_UpdateCmdReg_2_Step_Nominal(void)
 	CI_UpdateCmdReg(CmdMsgPtr);
 
 	/* Verify results */
-	CmdData = CI_GetRegisterdCmd(TEST_MSG_ID, TEST_CC);
+	CmdData = CI_GetRegisterdCmd(TEST_MSG_ID, TEST_CC, &i);
 	UtAssert_EventSent(CI_CMD_REGISTERED_EID, CFE_EVS_INFORMATION, "", "Cmd registered");
 	UtAssert_EventSent(CI_CMD_UPDATE_REG_EID, CFE_EVS_INFORMATION, "", "Cmd updated");
 	UtAssert_True(CI_AppData.HkTlm.usCmdCnt==2,"CmdCnt = 2");
@@ -1620,6 +1558,7 @@ void Test_CI_UpdateCmdReg_1_Step_Nominal(void)
 	uint32  			MsgSize = sizeof(cmdReg);
 	CI_CmdData_t		*CmdData = NULL;
 	CFE_SB_MsgPtr_t 	CmdMsgPtr;
+	uint32              i = CI_INVALID_VALUE;
 
 	/* Register a new cmd */
 	CFE_SB_InitMsg(&cmdReg, TEST_MSG_ID, MsgSize, TRUE);
@@ -1639,7 +1578,7 @@ void Test_CI_UpdateCmdReg_1_Step_Nominal(void)
 	CI_UpdateCmdReg(CmdMsgPtr);
 
 	/* Verify results */
-	CmdData = CI_GetRegisterdCmd(TEST_MSG_ID, TEST_CC);
+	CmdData = CI_GetRegisterdCmd(TEST_MSG_ID, TEST_CC, &i);
 	UtAssert_EventSent(CI_CMD_REGISTERED_EID, CFE_EVS_INFORMATION, "", "Cmd registered");
 	UtAssert_EventSent(CI_CMD_UPDATE_REG_EID, CFE_EVS_INFORMATION, "", "Cmd updated");
 	UtAssert_True(CI_AppData.HkTlm.usCmdCnt==2,"CmdCnt = 2");
@@ -1680,7 +1619,7 @@ void Test_CI_ProcessTimeouts_Nominal(void)
 	CI_CmdAuthorize(CmdMsgPtr);
 
 	/* Get the current timeout for the authorized cmd */
-	i = CI_GetRegisterdCmdIdx(TEST_MSG_ID, TEST_CC);
+	CI_GetRegisterdCmd(TEST_MSG_ID, TEST_CC, &i);
 	timeout = CI_AppData.TimeoutTbl.time[i];
 
 	/* Execute the function being tested */
@@ -1723,7 +1662,7 @@ void Test_CI_ProcessTimeouts_Update(void)
 	CI_CmdAuthorize(CmdMsgPtr);
 
 	/* Set the current timeout for the authorized cmd to 1 */
-	i = CI_GetRegisterdCmdIdx(TEST_MSG_ID, TEST_CC);
+	CI_GetRegisterdCmd(TEST_MSG_ID, TEST_CC, &i);
 	CI_AppData.TimeoutTbl.time[i] = 1;
 
 	/* Execute the function being tested */
@@ -1971,8 +1910,6 @@ void CI_App_Test_AddTestCases(void)
                "Test_CI_InitPipe_Fail_CreateCMDPipe");
     UtTest_Add(Test_CI_InitPipe_Fail_SubscribeCMD, CI_Test_Setup, CI_Test_TearDown,
                "Test_CI_InitPipe_Fail_SubscribeCMD");
-    UtTest_Add(Test_CI_InitPipe_Fail_CreateDATAPipe, CI_Test_Setup, CI_Test_TearDown,
-               "Test_CI_InitPipe_Fail_CreateDATAPipe");
     UtTest_Add(Test_CI_InitData, CI_Test_Setup, CI_Test_TearDown,
                "Test_CI_InitData");
     UtTest_Add(Test_CI_InitApp_Fail_InitEvent, CI_Test_Setup, CI_Test_TearDown,
@@ -1983,8 +1920,6 @@ void CI_App_Test_AddTestCases(void)
                "Test_CI_InitApp_Fail_InitData");
     UtTest_Add(Test_CI_InitApp_Fail_InitConfigTbl, CI_Test_Setup, CI_Test_TearDown,
                "Test_CI_InitApp_Fail_InitConfigTbl");
-    UtTest_Add(Test_CI_InitApp_Fail_InitCDSTbl, CI_Test_Setup, CI_Test_TearDown,
-               "Test_CI_InitApp_Fail_InitCDSTbl");
     UtTest_Add(Test_CI_InitApp_Nominal, CI_Test_Setup, CI_Test_TearDown,
                "Test_CI_InitApp_Nominal");
     UtTest_Add(Test_CI_CleanupCallback, CI_Test_Setup, CI_Test_TearDown,
@@ -2001,8 +1936,6 @@ void CI_App_Test_AddTestCases(void)
                "Test_CI_AppMain_Nominal_SendHK");
     UtTest_Add(Test_CI_AppMain_Nominal_Wakeup, CI_Test_Setup, CI_Test_TearDown,
                "Test_CI_AppMain_Nominal_Wakeup");
-    UtTest_Add(Test_CI_AppMain_ProcessNewData_InvalidMsgID, CI_Test_Setup, CI_Test_TearDown,
-               "Test_CI_AppMain_ProcessNewData_InvalidMsgID");
     UtTest_Add(Test_CI_InitListenerTask_FailChild, CI_Test_Setup, CI_Test_TearDown,
                "Test_CI_InitListenerTask_FailChild");
     UtTest_Add(Test_CI_InitListenerTask_Nominal, CI_Test_Setup, CI_Test_TearDown,
@@ -2027,10 +1960,16 @@ void CI_App_Test_AddTestCases(void)
     			"Test_CI_ValidateCmd_No_Checksum_Go");
     UtTest_Add(Test_CI_ValidateCmd_No_Checksum_NoGo, CI_Test_Setup, CI_Test_TearDown,
     			"Test_CI_ValidateCmd_No_Checksum_NoGo");
-    UtTest_Add(Test_CI_GetCmdAuthorized_Unreg_Opt, CI_Test_Setup_InitTbls, CI_Test_TearDown,
+    if(CI_INGEST_MODE == CI_BHV_OPTIMISTIC)
+    {
+        UtTest_Add(Test_CI_GetCmdAuthorized_Unreg_Opt, CI_Test_Setup_InitTbls, CI_Test_TearDown,
     			"Test_CI_GetCmdAuthorized_Unreg_Opt");
-    UtTest_Add(Test_CI_GetCmdAuthorized_Unreg_Pess, CI_Test_Setup_InitTbls, CI_Test_TearDown,
+    }
+    else
+    {
+        UtTest_Add(Test_CI_GetCmdAuthorized_Unreg_Pess, CI_Test_Setup_InitTbls, CI_Test_TearDown,
     			"Test_CI_GetCmdAuthorized_Unreg_Pess");
+    }
     UtTest_Add(Test_CI_GetCmdAuthorized_1_Step, CI_Test_Setup_InitTbls, CI_Test_TearDown,
     			"Test_CI_GetCmdAuthorized_1_Step");
     UtTest_Add(Test_CI_GetCmdAuthorized_2_Step_Unauth, CI_Test_Setup_InitTbls, CI_Test_TearDown,
