@@ -114,7 +114,6 @@ public:
 
 
     /* Output Messages */
-
     /** \brief Housekeeping Telemetry for downlink */
     MPC_HkTlm_t HkTlm;
 
@@ -346,7 +345,6 @@ public:
 
     /** \brief Used for braking. */
     systemlib::Hysteresis m_ManualDirectionChangeHysteresis;
-
 
     /************************************************************************/
     /** \brief Multicopter Position Control (MPC) application entry point
@@ -888,10 +886,11 @@ public:
     float GetCruisingSpeedXY(void);
 
     /************************************************************************/
-    /** \brief
+    /** \brief Update internal parameters from table.
     **
     **  \par Description
-    **       This function
+    **       This function function will update some internal parameters
+    **       from the newly loaded CFE table.
     **
     **  \par Assumptions, External Events, and Notes:
     **       None

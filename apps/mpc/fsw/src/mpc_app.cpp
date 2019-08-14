@@ -341,16 +341,16 @@ void MPC::InitData()
     m_VelD.Zero();
 
     m_AccelerationStateLimitXY = 0.0f;
-    m_AccelerationStateLimitZ = 0.0f;
-    m_ManualJerkLimitXY = ConfigTblPtr->MPC_JERK_MAX;
-    m_ManualJerkLimitZ = (ConfigTblPtr->MPC_JERK_MAX > ConfigTblPtr->MPC_JERK_MIN) ? ConfigTblPtr->MPC_JERK_MAX: 1000000.0f;
-    m_VelMaxXy = 0.0f;
-    m_TakeoffVelLimit = 0.0f;
+    m_AccelerationStateLimitZ  = 0.0f;
+    m_ManualJerkLimitXY        = ConfigTblPtr->MPC_JERK_MAX;
+    m_ManualJerkLimitZ         = (ConfigTblPtr->MPC_JERK_MAX > ConfigTblPtr->MPC_JERK_MIN) ? ConfigTblPtr->MPC_JERK_MAX: 1000000.0f;
+    m_VelMaxXy                 = 0.0f;
+    m_TakeoffVelLimit          = 0.0f;
 
     /* Set trigger time for manual direction change detection */
     m_ManualDirectionChangeHysteresis.set_hysteresis_time_from(FALSE, DIRECTION_CHANGE_TRIGGER_TIME_US);
     m_UserIntentionXY = BRAKE; // NOTE: This needs to be initialized to BRAKE to work.
-    m_UserIntentionZ = NONE;
+    m_UserIntentionZ  = NONE;
     m_StickInputXyPrev.Zero();
 
     UpdateParamsFromTable();
@@ -405,7 +405,7 @@ MPC_InitApp_Exit_Tag:
     }
     else
     {
-        if (hasEvents == 1)
+        if (hasEvents != 1)
         {
             (void) CFE_ES_WriteToSysLog("MPC - Application failed to initialize\n");
         }
@@ -423,8 +423,8 @@ MPC_InitApp_Exit_Tag:
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 MPC::RcvSchPipeMsg(int32 iBlocking)
 {
-    int32           iStatus=CFE_SUCCESS;
-    CFE_SB_Msg_t*   MsgPtr=NULL;
+    int32           iStatus = CFE_SUCCESS;
+    CFE_SB_Msg_t*   MsgPtr  = NULL;
     CFE_SB_MsgId_t  MsgId;
 
     /* Stop Performance Log entry */
@@ -442,21 +442,27 @@ int32 MPC::RcvSchPipeMsg(int32 iBlocking)
         switch (MsgId)
         {
             case MPC_WAKEUP_MID:
+            {
                 /* If vehicle local position has been received begin
                  * cyclic ops. */
                 if(ProcessDataPipe() == true) {
                     Execute();
                 }
                 break;
+            }
 
             case MPC_SEND_HK_MID:
+            {
                 ProcessCmdPipe();
                 ReportHousekeeping();
                 break;
+            }
 
             default:
+            {
                 (void) CFE_EVS_SendEvent(MPC_MSGID_ERR_EID, CFE_EVS_ERROR,
                      "Recvd invalid SCH msgId (0x%04X)", MsgId);
+            }
         }
     }
     else if (iStatus == CFE_SB_NO_MESSAGE)
@@ -645,7 +651,7 @@ void MPC::ProcessCmdPipe()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 {
-    uint32  uiCmdCode=0;
+    uint32  uiCmdCode = 0;
 
     if (MsgPtr != NULL)
     {
@@ -864,7 +870,7 @@ void MPC::ReportDiagnostic()
     DiagTlm.XY_MAN_EXPO      = ConfigTblPtr->XY_MAN_EXPO;
     DiagTlm.Z_MAN_EXPO       = ConfigTblPtr->Z_MAN_EXPO;
     DiagTlm.TKO_RAMP_T       = ConfigTblPtr->TKO_RAMP_T;
-    
+
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&DiagTlm);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&DiagTlm);
 }
@@ -873,7 +879,7 @@ void MPC::ReportDiagnostic()
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* Publish Output Data                                             */
+/* Publish VehicleAttitudeSetpoint message                         */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::SendVehicleAttitudeSetpointMsg()
@@ -882,6 +888,13 @@ void MPC::SendVehicleAttitudeSetpointMsg()
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&m_VehicleAttitudeSetpointMsg);
 }
 
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Publish VehicleLocalPositionSetpoint message                    */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::SendVehicleLocalPositionSetpointMsg()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&m_VehicleLocalPositionSetpointMsg);
@@ -899,7 +912,7 @@ osalbool MPC::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
                            uint16 usExpectedLen)
 {
     osalbool bResult  = TRUE;
-    uint16  usMsgLen = 0;
+    uint16   usMsgLen = 0;
 
     if (MsgPtr != NULL)
     {
@@ -943,14 +956,14 @@ extern "C" void MPC_AppMain()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPC::AppMain()
 {
-    /* Register the application with Executive Services */
-    uiRunStatus = CFE_ES_APP_RUN;
-
     int32 iStatus = CFE_ES_RegisterApp();
     if (iStatus != CFE_SUCCESS)
     {
         (void) CFE_ES_WriteToSysLog("MPC - Failed to register the app (0x%08lX)\n", iStatus);
     }
+
+    /* Register the application with Executive Services */
+    uiRunStatus = CFE_ES_APP_RUN;
 
     /* Start Performance Log entry */
     CFE_ES_PerfLogEntry(MPC_MAIN_TASK_PERF_ID);
