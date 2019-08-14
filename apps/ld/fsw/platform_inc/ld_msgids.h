@@ -9,6 +9,7 @@ extern "C" {
 #define LD_SEND_HK_MID                              0x1c5e
 #define LD_WAKEUP_MID                               0x1c5f
 #define LD_CMD_MID                                  0x1c60
+#define LD_DIAG_TLM_MID                             0x1c61
 
 #ifdef __cplusplus
 }

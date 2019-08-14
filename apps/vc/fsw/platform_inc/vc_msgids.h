@@ -34,10 +34,10 @@
 #ifndef VC_MSGIDS_H
 #define VC_MSGIDS_H
 
-#define VC_HK_TLM_MID                               0x0c39
-#define VC_SEND_HK_MID                              0x1c3a
-#define VC_CMD_MID                                  0x1c3b
-#define VC_WAKEUP_MID                               0x1c3c
+#define VC_HK_TLM_MID                               0x0c39  /**< \brief VC Housekeeping telemetry message ID.    */
+#define VC_SEND_HK_MID                              0x1c3a  /**< \brief VC Send Housekeeping command message ID. */
+#define VC_CMD_MID                                  0x1c3b  /**< \brief VC ground command message ID.            */
+#define VC_PROCESS_CMDS_MID                         0x1c3c  /**< \brief VC Process Commands command message ID.  */
 
 #endif
 

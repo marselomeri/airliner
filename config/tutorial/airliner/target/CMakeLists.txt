@@ -2,8 +2,8 @@
 # cross toolchain or has target independent functions.
 
 initialize_airliner_build(
-    PSP ${PSP_TARGET_DIR}/pc-linux-nasa
-    OSAL ${OSAL_TARGET_DIR}/posix-nasa
+    PSP ${PSP_TARGET_DIR}/pc-linux-wh
+    OSAL ${OSAL_TARGET_DIR}/posix-wh
     CORE_BINARY ${CMAKE_CURRENT_SOURCE_DIR}/airliner
     CORE_TOOLS ${CMAKE_CURRENT_SOURCE_DIR}/tools
     CONFIG
@@ -42,7 +42,7 @@ initialize_airliner_build(
 
     MSG_OVERRIDES
         ${CMAKE_CURRENT_SOURCE_DIR}/cfe/cfe_msg_overrides.json
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/airliner_overrides.json
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/defs/airliner_overrides.json
 )
 
 
@@ -65,6 +65,8 @@ add_airliner_app(
 add_airliner_app(
     prmlib
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/prmlib/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/prm
+    MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/prm/prm_custom_overrides.json
 )
 
 add_airliner_app(
@@ -472,3 +474,4 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/lgc_perfids.h
     MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/lgc/lgc_msg_overrides.json
 )
+

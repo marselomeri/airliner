@@ -549,7 +549,7 @@ void Test_VC_AppMain_Nominal_Wakeup(void)
 {
     /* The following will emulate behavior of receiving a SCH message to WAKEUP */
     Ut_CFE_SB_SetReturnCode(UT_CFE_SB_RCVMSG_INDEX, CFE_SUCCESS, 1);
-    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_GETMSGID_INDEX, VC_WAKEUP_MID, 1);
+    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_GETMSGID_INDEX, VC_PROCESS_CMDS_MID, 1);
 
     Ut_CFE_ES_SetReturnCode(UT_CFE_ES_RUNLOOP_INDEX, FALSE, 2);
 
@@ -617,7 +617,7 @@ void Test_VC_ProcessNewAppCmds_Noop_InvalidSize(void)
     /* The following will emulate behavior of receiving a SCH message to WAKEUP,
        and gives it a command to process. */
     DataPipe = Ut_CFE_SB_CreatePipe("VC_SCH_PIPE");
-    CFE_SB_InitMsg (&InSchMsg, VC_WAKEUP_MID, sizeof(InSchMsg), TRUE);
+    CFE_SB_InitMsg (&InSchMsg, VC_PROCESS_CMDS_MID, sizeof(InSchMsg), TRUE);
     Ut_CFE_SB_AddMsgToPipe(&InSchMsg, DataPipe);
 
     CmdPipe = Ut_CFE_SB_CreatePipe("VC_CMD_PIPE");
@@ -650,7 +650,7 @@ void Test_VC_ProcessNewAppCmds_Noop_Nominal(void)
     /* The following will emulate behavior of receiving a SCH message to WAKEUP,
        and gives it a command to process. */
     DataPipe = Ut_CFE_SB_CreatePipe("VC_SCH_PIPE");
-    CFE_SB_InitMsg (&InSchMsg, VC_WAKEUP_MID, sizeof(InSchMsg), TRUE);
+    CFE_SB_InitMsg (&InSchMsg, VC_PROCESS_CMDS_MID, sizeof(InSchMsg), TRUE);
     Ut_CFE_SB_AddMsgToPipe(&InSchMsg, DataPipe);
 
     CmdPipe = Ut_CFE_SB_CreatePipe("VC_CMD_PIPE");
@@ -683,7 +683,7 @@ void Test_VC_ProcessNewAppCmds_Reset_Nominal(void)
     /* The following will emulate behavior of receiving a SCH message to WAKEUP,
        and gives it a command to process. */
     DataPipe = Ut_CFE_SB_CreatePipe("VC_SCH_PIPE");
-    CFE_SB_InitMsg (&InSchMsg, VC_WAKEUP_MID, sizeof(InSchMsg), TRUE);
+    CFE_SB_InitMsg (&InSchMsg, VC_PROCESS_CMDS_MID, sizeof(InSchMsg), TRUE);
     Ut_CFE_SB_AddMsgToPipe(&InSchMsg, DataPipe);
 
     CmdPipe = Ut_CFE_SB_CreatePipe("VC_CMD_PIPE");

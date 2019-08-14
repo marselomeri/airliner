@@ -591,11 +591,6 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 */
 	0,
 
-	/**
-	 * MIS_LTRMIN_ALT
-	 */
-	1.20000005f,
-
     /**
      * MPC_CRUISE_90
      * Cruise speed when angle prev-current/current-next setpoint
