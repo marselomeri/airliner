@@ -296,26 +296,6 @@ void Test_ULR_InitApp_Fail_InitData(void)
 
 
 /**
- * Test ULR_InitApp(), fail init config table
- */
-void Test_ULR_InitApp_Fail_InitConfigTbl(void)
-{
-    ULR oULR;
-
-    int32 result = CFE_SUCCESS;
-    int32 expected = CFE_TBL_ERR_INVALID_NAME;
-
-    Ut_CFE_TBL_SetReturnCode(UT_CFE_TBL_REGISTER_INDEX, expected, 1);
-
-    /* Execute the function being tested */
-    result = oULR.InitApp();
-
-    /* Verify results */
-    UtAssert_True (result == expected, "InitApp, fail init config table");
-}
-
-
-/**
  * Test ULR_InitApp(), Nominal
  */
 void Test_ULR_InitApp_Nominal(void)
@@ -361,21 +341,6 @@ void Test_ULR_AppMain_Fail_InitApp(void)
 
     /* fail the register app */
     Ut_CFE_EVS_SetReturnCode(UT_CFE_EVS_REGISTER_INDEX, CFE_EVS_APP_NOT_REGISTERED, 1);
-
-    /* Execute the function being tested */
-    oULR.AppMain();
-}
-
-
-/**
- * Test ULR_AppMain(), Fail AcquireConfigPtrs
- */
-void Test_ULR_AppMain_Fail_AcquireConfigPtrs(void)
-{
-    ULR oULR;
-
-    /* fail the register app */
-    Ut_CFE_TBL_SetReturnCode(UT_CFE_TBL_GETADDRESS_INDEX, CFE_TBL_ERR_INVALID_HANDLE, 2);
 
     /* Execute the function being tested */
     oULR.AppMain();
@@ -489,8 +454,6 @@ void ULR_App_Test_AddTestCases(void)
                "Test_ULR_InitApp_Fail_InitPipe");
     UtTest_Add(Test_ULR_InitApp_Fail_InitData, ULR_Test_Setup, ULR_Test_TearDown,
                "Test_ULR_InitApp_Fail_InitData");
-    UtTest_Add(Test_ULR_InitApp_Fail_InitConfigTbl, ULR_Test_Setup, ULR_Test_TearDown,
-               "Test_ULR_InitApp_Fail_InitConfigTbl");
     UtTest_Add(Test_ULR_InitApp_Nominal, ULR_Test_Setup, ULR_Test_TearDown,
                "Test_ULR_InitApp_Nominal");
 
@@ -498,8 +461,6 @@ void ULR_App_Test_AddTestCases(void)
                "Test_ULR_AppMain_Fail_RegisterApp");
     UtTest_Add(Test_ULR_AppMain_Fail_InitApp, ULR_Test_Setup, ULR_Test_TearDown,
                "Test_ULR_AppMain_Fail_InitApp");
-    UtTest_Add(Test_ULR_AppMain_Fail_AcquireConfigPtrs, ULR_Test_Setup, ULR_Test_TearDown,
-               "Test_ULR_AppMain_Fail_AcquireConfigPtrs");
     UtTest_Add(Test_ULR_AppMain_InvalidSchMessage, ULR_Test_Setup, ULR_Test_TearDown,
                "Test_ULR_AppMain_InvalidSchMessage");
     UtTest_Add(Test_ULR_AppMain_Nominal_SendHK, ULR_Test_Setup, ULR_Test_TearDown,

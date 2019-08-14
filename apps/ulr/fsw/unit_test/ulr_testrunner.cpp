@@ -34,13 +34,11 @@
 #include "uttest.h"
 #include "ulr_app_test.h"
 #include "ulr_cmds_test.h"
-#include "ulr_config_tbl_test.h"
 
 int main(void)
 {   
     ULR_App_Test_AddTestCases();
     ULR_Cmds_Test_AddTestCases();
-    ULR_Config_Tbl_Test_AddTestCases();
 
     return(UtTest_Run());
 

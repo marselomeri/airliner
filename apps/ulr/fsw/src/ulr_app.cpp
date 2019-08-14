@@ -42,6 +42,30 @@
 #include "px4lib_msgids.h"
 #include <string.h>
 
+
+/** \brief Messages from the device always start with 0xfe.  This is used
+ *         for synchronizing the stream style parser. */
+#define ULR_HEADER_SYNC_SYMBOL          (0xfe)
+
+/** \brief Size of the event filter structure passed when registering with
+ *         Event Services. */
+#define ULR_MAX_EVENT_FILTERS           (32)
+
+/** \brief Minimum valid distance from the device.  This is from the device
+ *         manufacturer. */
+#define ULR_MIN_DISTANCE                (0.36f)
+
+/** \brief Maximum valid distance from the device.  This is from the device
+ *         manufacturer. */
+#define ULR_MAX_DISTANCE                (30.0f)
+
+/** \brief This is used to denote an invalid distance reported by ULR. */
+#define ULR_INVALID_DISTANCE            (-1.0f)
+
+/** \brief This is merely to satisfy the PX4 message. */
+#define ULR_SENSOR_ID                   (0)
+
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Instantiate the application object.                             */
@@ -49,16 +73,20 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 ULR oULR;
 
+
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Default constructor.                                            */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 ULR::ULR() :
-    m_height_filter(250, 30)
+    HeightFilter(250, 30)
 {
 
 }
+
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -69,6 +97,8 @@ ULR::~ULR()
 {
 
 }
+
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -96,10 +126,6 @@ int32 ULR::InitEvent()
     EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
     EventTbl[  ind].EventID = ULR_PIPE_INIT_ERR_EID;
     EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
-    EventTbl[  ind].EventID = ULR_CFGTBL_MANAGE_ERR_EID;
-    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
-    EventTbl[  ind].EventID = ULR_CFGTBL_GETADDR_ERR_EID;
-    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
     EventTbl[  ind].EventID = ULR_RCVMSG_ERR_EID;
     EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
     EventTbl[  ind].EventID = ULR_MSGID_ERR_EID;
@@ -107,10 +133,6 @@ int32 ULR::InitEvent()
     EventTbl[  ind].EventID = ULR_CC_ERR_EID;
     EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
     EventTbl[  ind].EventID = ULR_MSGLEN_ERR_EID;
-    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
-    EventTbl[  ind].EventID = ULR_CFGTBL_REG_ERR_EID;
-    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
-    EventTbl[  ind].EventID = ULR_CFGTBL_LOAD_ERR_EID;
     EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
     EventTbl[  ind].EventID = ULR_CUSTOM_INIT_ERR_EID;
     EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
@@ -127,9 +149,6 @@ int32 ULR::InitEvent()
 
     /* Register the table with CFE */
     iStatus = CFE_EVS_Register(EventTbl, ind, CFE_EVS_BINARY_FILTER);
-
-    /* Register the table with CFE */
-    iStatus = CFE_EVS_Register(0, 0, CFE_EVS_BINARY_FILTER);
     if (iStatus != CFE_SUCCESS)
     {
         (void) CFE_ES_WriteToSysLog("ULR - Failed to register with EVS (0x%08lX)\n", iStatus);
@@ -137,6 +156,8 @@ int32 ULR::InitEvent()
 
     return iStatus;
 }
+
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -207,7 +228,9 @@ int32 ULR::InitPipe()
 ULR_InitPipe_Exit_Tag:
     return iStatus;
 }
-    
+
+
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Initialize Global Variables                                     */
@@ -243,6 +266,8 @@ void ULR::InitData()
     CFE_PSP_MemSet(ParserBuffer, 0, sizeof(ParserBuffer));
 }
 
+
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* ULR initialization                                              */
@@ -271,12 +296,6 @@ int32 ULR::InitApp()
     }
 
     InitData();
-
-    iStatus = InitConfigTbl();
-    if (iStatus != CFE_SUCCESS)
-    {
-        goto ULR_InitApp_Exit_Tag;
-    }
 
     iStatus = InitDevice();
     if (iStatus != CFE_SUCCESS)
@@ -310,6 +329,8 @@ ULR_InitApp_Exit_Tag:
 
     return iStatus;
 }
+
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -374,6 +395,8 @@ int32 ULR::RcvSchPipeMsg(int32 iBlocking)
     return iStatus;
 }
 
+
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Process Incoming Commands                                       */
@@ -425,6 +448,8 @@ void ULR::ProcessCmdPipe()
     }
 }
 
+
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Process ULR Commands                                            */
@@ -469,6 +494,8 @@ void ULR::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
     }
 }
 
+
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Send ULR Housekeeping                                           */
@@ -490,6 +517,8 @@ void ULR::ReportHousekeeping()
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&HkTlm);
 }
 
+
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Publish Output Data                                             */
@@ -503,16 +532,18 @@ void ULR::ReportDistance()
     OS_MutSemGive(Mutex);
 }
 
+
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Verify Command Length                                           */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-boolean ULR::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
-                           uint16 usExpectedLen)
+osalbool ULR::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
+                              uint16 usExpectedLen)
 {
-    boolean bResult  = TRUE;
-    uint16  usMsgLen = 0;
+    osalbool bResult  = TRUE;
+    uint16   usMsgLen = 0;
 
     if (MsgPtr != NULL)
     {
@@ -535,9 +566,11 @@ boolean ULR::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
     return bResult;
 }
 
+
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* ULR Application C style main entry point.                       */
+/* ULR Application C style main entry point                        */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 extern "C" void ULR_AppMain()
@@ -545,10 +578,19 @@ extern "C" void ULR_AppMain()
     oULR.AppMain();
 }
 
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Listener task C style entry point                               */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 extern "C" void ULR_ListenerTaskMain()
 {
     oULR.ListenerTaskMain();
 }
+
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -591,13 +633,6 @@ void ULR::AppMain()
     while (CFE_ES_RunLoop(&uiRunStatus) == TRUE)
     {
         RcvSchPipeMsg(ULR_SCH_PIPE_PEND_TIME);
-
-        iStatus = AcquireConfigPointers();
-        if(iStatus != CFE_SUCCESS)
-        {
-            /* We apparently tried to load a new table but failed.  Terminate the application. */
-            uiRunStatus = CFE_ES_APP_ERROR;
-        }
     }
 
     StopChild();
@@ -609,7 +644,14 @@ void ULR::AppMain()
     CFE_ES_ExitApp(uiRunStatus);
 }
 
-bool ULR::IsChecksumOk(void)
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Listener task C style entry point                               */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+osalbool ULR::IsChecksumOk(void)
 {
     uint8 checksum = 0;
 
@@ -630,9 +672,16 @@ bool ULR::IsChecksumOk(void)
     }
 }
 
-bool ULR::ChildContinueExec(void)
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* ChildContinueExec function                                      */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+osalbool ULR::ChildContinueExec(void)
 {
-    bool result;
+    osalbool result;
 
     OS_MutSemTake(Mutex);
     result = ChildContinueFlag;
@@ -641,6 +690,12 @@ bool ULR::ChildContinueExec(void)
     return result;
 }
 
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* StopChild function                                              */
+/*                                                                 */
 void ULR::StopChild(void)
 {
     OS_MutSemTake(Mutex);
@@ -648,17 +703,23 @@ void ULR::StopChild(void)
     OS_MutSemGive(Mutex);
 }
 
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Listener task main function                                     */
+/*                                                                 */
 void ULR::ListenerTaskMain(void)
 {
-    int32 iStatus = CFE_SUCCESS;
-    uint8 buf[ULR_BUF_LEN];
-    uint32 size = ULR_BUF_LEN;
 
     CFE_ES_RegisterChildTask();
 
     while(ChildContinueExec())
     {
-        iStatus = ReadDevice(buf, &size);
+        uint8 buf[ULR_BUF_LEN];
+        uint32 size = ULR_BUF_LEN;
+
+        int32 iStatus = ReadDevice(buf, &size);
         if(iStatus == CFE_SUCCESS)
         {
             for(uint32 i = 0; i < size; i++)
@@ -666,14 +727,17 @@ void ULR::ListenerTaskMain(void)
                 switch(ParserState)
                 {
                     case ULR_PARSER_STATE_UNINITIALIZED:
-                        if(buf[i] == 0xfe)
+                    {
+                        if(buf[i] == ULR_HEADER_SYNC_SYMBOL)
                         {
                             ParserState = ULR_PARSER_STATE_WAITING_FOR_VERSION_ID;
                         }
                         break;
+                    }
 
                     case ULR_PARSER_STATE_WAITING_FOR_HEADER:
-                        if(buf[i] == 0xfe)
+                    {
+                        if(buf[i] == ULR_HEADER_SYNC_SYMBOL)
                         {
                             ParserState = ULR_PARSER_STATE_WAITING_FOR_VERSION_ID;
                         }
@@ -684,8 +748,10 @@ void ULR::ListenerTaskMain(void)
                             ParserState = ULR_PARSER_STATE_UNINITIALIZED;
                         }
                         break;
+                    }
 
                     case ULR_PARSER_STATE_WAITING_FOR_VERSION_ID:
+                    {
                         if(buf[i] == 0x01)
                         {
                             UartMessage.VersionID = buf[i];
@@ -698,23 +764,31 @@ void ULR::ListenerTaskMain(void)
                             ParserState = ULR_PARSER_STATE_UNINITIALIZED;
                         }
                         break;
+                    }
 
                     case ULR_PARSER_STATE_WAITING_FOR_ALT_BYTE_1:
+                    {
                         UartMessage.AltitudeL = buf[i];
                         ParserState = ULR_PARSER_STATE_WAITING_FOR_ALT_BYTE_2;
                         break;
+                    }
 
                     case ULR_PARSER_STATE_WAITING_FOR_ALT_BYTE_2:
+                    {
                         UartMessage.AltitudeH = buf[i];
                         ParserState = ULR_PARSER_STATE_WAITING_FOR_SNR;
                         break;
+                    }
 
                     case ULR_PARSER_STATE_WAITING_FOR_SNR:
+                    {
                         UartMessage.SNR = buf[i];
                         ParserState = ULR_PARSER_STATE_WAITING_FOR_CHECKSUM;
                         break;
+                    }
 
                     case ULR_PARSER_STATE_WAITING_FOR_CHECKSUM:
+                    {
                         UartMessage.Checksum = buf[i];
                         if(IsChecksumOk())
                         {
@@ -722,7 +796,7 @@ void ULR::ListenerTaskMain(void)
                             DistanceSensor.Timestamp = PX4LIB_GetPX4TimeUs();
                             DistanceSensor.MinDistance = ULR_MIN_DISTANCE;
                             DistanceSensor.MaxDistance = ULR_MAX_DISTANCE;
-                            DistanceSensor.CurrentDistance = m_height_filter.apply( ((UartMessage.AltitudeH << 8) + UartMessage.AltitudeL) / 100.0f);
+                            DistanceSensor.CurrentDistance = HeightFilter.apply( ((UartMessage.AltitudeH << 8) + UartMessage.AltitudeL) / 100.0f);
                             DistanceSensor.Covariance = ULR_SENS_VARIANCE;
                             DistanceSensor.Type = PX4_DISTANCE_SENSOR_RADAR;
                             DistanceSensor.ID = 0;
@@ -731,19 +805,17 @@ void ULR::ListenerTaskMain(void)
                             
                             ReportDistance();
                         }
-                        else
-                        {
-                            (void) CFE_EVS_SendEvent(ULR_INVALID_CHECKSUM, CFE_EVS_ERROR,
-                                    "Invalid checksum.");
-                        }
                         ParserState = ULR_PARSER_STATE_WAITING_FOR_HEADER;
                         break;
+                    }
 
                     default:
+                    {
                         (void) CFE_EVS_SendEvent(ULR_INVALID_PARSER_STATE, CFE_EVS_ERROR,
                                 "Parser in invalid state.");
                         ParserState = ULR_PARSER_STATE_UNINITIALIZED;
                         break;
+                    }
                 }
             }
         }
@@ -752,6 +824,12 @@ void ULR::ListenerTaskMain(void)
     CFE_ES_ExitChildTask();
 }
 
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* InitListenerTask function                                       */
+/*                                                                 */
 int32 ULR::InitListenerTask(void)
 {
     int32 Status = CFE_SUCCESS;
@@ -777,7 +855,7 @@ int32 ULR::InitListenerTask(void)
         goto end_of_function;
     }
 
-    end_of_function:
+end_of_function:
     if (Status != CFE_SUCCESS)
     {
         CFE_EVS_SendEvent (ULR_LISTENER_CREATE_CHDTASK_ERR_EID,
