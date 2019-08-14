@@ -38,7 +38,7 @@ typedef enum
 {
     UT_ULR_CUSTOM_INITDEVICE_INDEX,
     UT_ULR_CUSTOM_READDEVICE_INDEX,
-	UT_ULR_PX4LIB_GETPX4TIMEUS_INDEX,
+    UT_ULR_PX4LIB_GETPX4TIMEUS_INDEX,
     UT_ULR_CUSTOM_MAX_INDEX
 } Ut_ULR_Custom_INDEX_t;
 
@@ -53,7 +53,7 @@ typedef struct
 {
     int32   Value;
     uint32  Count;
-    boolean ContinueReturnCodeAfterCountZero;
+    osalbool ContinueReturnCodeAfterCountZero;
 } Ut_ULR_Custom_ReturnCodeTable_t;
 
 void Ut_ULR_Custom_Reset(void);

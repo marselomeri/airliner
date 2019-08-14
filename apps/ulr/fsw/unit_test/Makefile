@@ -32,7 +32,6 @@ APPTARGET=ut_ulr
 # FLIGHT_OBJS specifies flight software object files under test
 #
 FLIGHT_OBJS := ulr_app.o
-FLIGHT_OBJS += ulr_config_utils.o
 FLIGHT_OBJS += ulr_cds_utils.o
 
 #
@@ -48,7 +47,6 @@ FLIGHT_INC := -I$(APPDIR)/fsw/src \
 UT_OBJS := ulr_testrunner.o
 UT_OBJS += ulr_app_test.o
 UT_OBJS += ulr_cmds_test.o
-UT_OBJS += ulr_config_tbl_test.o
 UT_OBJS += ulr_cds_tbl_test.o
 UT_OBJS += ulr_test_utils.o
 
@@ -159,7 +157,7 @@ LOPT = $(GCOV_LOPT) $(PLATFORMLFLAGS)
 $(FLIGHT_OBJS): WARNINGS=$(FLIGHT_WARNINGS)
 
 %.o: %.c
-	$(CC) -c $(CFLAGS) $(WARNINGS) $(FLIGHT_INC) $(FRAMEWORK_INC) $< -o $@
+    $(CC) -c $(CFLAGS) $(WARNINGS) $(FLIGHT_INC) $(FRAMEWORK_INC) $< -o $@
 
 #
 # The default "make" target
@@ -167,47 +165,47 @@ $(FLIGHT_OBJS): WARNINGS=$(FLIGHT_WARNINGS)
 all: $(UT_TEST_RUNNER)
 
 $(UT_TEST_RUNNER): $(UT_OBJS) $(UTA_OBJS) $(FLIGHT_OBJS)
-	$(LINKER) $(LOPT) $(UT_OBJS) $(UTA_OBJS) $(FLIGHT_OBJS) -o $(UT_TEST_RUNNER)
+    $(LINKER) $(LOPT) $(UT_OBJS) $(UTA_OBJS) $(FLIGHT_OBJS) -o $(UT_TEST_RUNNER)
 
 .PHONY: clean run clean_run gcov clean_gcov vg_mem vg_massif clean_vg
 
 clean: clean_gcov clean_run clean_vg
-	@rm -f *.o *.gcno *.c.gcov $(UT_TEST_RUNNER)
+    @rm -f *.o *.gcno *.c.gcov $(UT_TEST_RUNNER)
 
 run: $(UT_TEST_RUNNER)
-	-lcov --directory . --zerocounters
-	-rm -Rf coverage
-	-mkdir -p coverage
-	-./$(UT_TEST_RUNNER)
+    -lcov --directory . --zerocounters
+    -rm -Rf coverage
+    -mkdir -p coverage
+    -./$(UT_TEST_RUNNER)
 
 clean_run:
-	@rm -f gmon.out
+    @rm -f gmon.out
 
 # Present gcov metrics for FLIGHT_OBJS (assumes gcov installed)
 # Note, must build with "GCOV=1 make" to get an instrumented test runner.
 gcov: run 
-	@echo
-	@gcov $(FLIGHT_OBJS:.o=.gcda) | sed 'N;s/\n/ /' | \
-		sed -n '/File/p' | sed '/ads/d' | sed -e '/\.h/d'  | \
-		sed 's/ Lines executed:/ /; s/File/gcov:/; s/of// '
-	@echo
-	@lcov --directory . --capture --output-file ./coverage/ut.info
-	@genhtml -t $(UT_TEST_RUNNER) -o ./coverage ./coverage/ut.info
+    @echo
+    @gcov $(FLIGHT_OBJS:.o=.gcda) | sed 'N;s/\n/ /' | \
+        sed -n '/File/p' | sed '/ads/d' | sed -e '/\.h/d'  | \
+        sed 's/ Lines executed:/ /; s/File/gcov:/; s/of// '
+    @echo
+    @lcov --directory . --capture --output-file ./coverage/ut.info
+    @genhtml -t $(UT_TEST_RUNNER) -o ./coverage ./coverage/ut.info
 
 clean_gcov:
-	@rm -f *.gcda *.info
+    @rm -f *.gcda *.info
 
 # Valgrind memcheck (memory error detection)
 vg_mem: $(UT_TEST_RUNNER)
-	valgrind --tool=memcheck ./$(UT_TEST_RUNNER)
+    valgrind --tool=memcheck ./$(UT_TEST_RUNNER)
 
 # Valgrind massif (heap & stack profiler)
 vg_massif: $(UT_TEST_RUNNER)
-	valgrind --tool=massif --heap=yes --stacks=yes  --massif-out-file=massif.out ./$(UT_TEST_RUNNER)
-	ms_print massif.out
+    valgrind --tool=massif --heap=yes --stacks=yes  --massif-out-file=massif.out ./$(UT_TEST_RUNNER)
+    ms_print massif.out
 
 clean_vg:
-	@rm -f massif.out*
+    @rm -f massif.out*
 
 # Disable suffixes and get rid of archaic RCS and SCCS match-everything rules.
 # This is mostly for debugging. make -d spews without this.

@@ -96,14 +96,6 @@ extern "C" {
 */
 #define ULR_DATA_PIPE_NAME             ("ULR_DATA_PIPE")
 
-/** \brief The config table default filename
-**
-**  \par Limits:
-**       The length of each string, including the NULL terminator cannot exceed
-**       the #OS_MAX_PATH_LEN value.
-*/
-#define ULR_CONFIG_TABLE_FILENAME      ("/cf/apps/ulr_config.tbl")
-
 /** \brief The timeout value, in milliseconds, to wait for ES application startup sync.
 **
 **  \par Limits:
@@ -114,6 +106,12 @@ extern "C" {
 /* TODO:  Add Doxygen */
 #define ULR_CUSTOM_PORT_PATH 	"/dev/ttyS6"
 #define ULR_SENS_VARIANCE 		(0.045f * 0.045f)
+
+
+#define ULR_LISTENER_TASK_PRIORITY      (64)
+#define ULR_LISTENER_TASK_STACK_SIZE    (16000)
+#define ULR_LISTENER_TASK_NAME          "ULR_LISTENER"
+#define ULR_MUTEX_NAME                  "ULR_MUTEX"
 
 
 #ifdef __cplusplus
