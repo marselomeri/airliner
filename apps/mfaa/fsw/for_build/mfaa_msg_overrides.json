@@ -1,0 +1,46 @@
+{
+    "Airliner": {
+        "apps": {
+            "MFAA": {
+                "operations": {
+                    "Noop":             { "airliner_cc":  0, "macro": "MFAA_CMD_MID", "airliner_msg": "MFAA_NoArgCmd_t" },
+                    "Reset":            { "airliner_cc":  1, "macro": "MFAA_CMD_MID", "airliner_msg": "MFAA_NoArgCmd_t" },
+                    "MFAA_HkTlm_t":      {                    "macro": "MFAA_HK_TLM_MID", "airliner_msg": "MFAA_HkTlm_t" },
+                    "SendHk":           { "airliner_cc":  0, "macro": "MFAA_SEND_HK_MID", "airliner_msg": "MFAA_NoArgCmd_t"},
+                    "Wakeup":           { "airliner_cc":  0, "macro": "MFAA_WAKEUP_MID", "airliner_msg": "MFAA_NoArgCmd_t"},
+                    "SetGain":          { "airliner_cc":  2, "macro": "MFAA_CMD_MID", "airliner_msg": "MFAA_SetGainCmd_t" },
+                    "SetOffset":        { "airliner_cc":  3, "macro": "MFAA_CMD_MID", "airliner_msg": "MFAA_SetOffsetCmd_t" },
+                    "CalculateResult":  { "airliner_cc":  4, "macro": "MFAA_CMD_MID", "airliner_msg": "MFAA_CalculateResultCmd_t" },
+                    "SendConfig":       { "airliner_cc":  5, "macro": "MFAA_CMD_MID", "airliner_msg": "MFAA_NoArgCmd_t" }
+                },    
+                "scheduler": {
+                    "activities": [
+                        "MFAA_SEND_HK_MID",
+                        "MFAA_WAKEUP_MID"
+                    ]
+                },
+                "events": [
+                    {"macro": "MFAA_INF_EID",              "id": 1},
+                    {"macro": "MFAA_INIT_INF_EID",         "id": 2},
+                    {"macro": "MFAA_CONFIG_TABLE_INF_EID", "id": 3},
+                    {"macro": "MFAA_CDS_INF_EID",          "id": 4},
+                    {"macro": "MFAA_CMD_INF_EID",          "id": 5},
+                    {"macro": "MFAA_ERR_EID",              "id": 6},
+                    {"macro": "MFAA_INIT_ERR_EID",         "id": 7},
+                    {"macro": "MFAA_CONFIG_TABLE_ERR_EID", "id": 8},
+                    {"macro": "MFAA_CDS_ERR_EID",          "id": 9},
+                    {"macro": "MFAA_CMD_ERR_EID",          "id": 10},
+                    {"macro": "MFAA_PIPE_ERR_EID",         "id": 11},
+                    {"macro": "MFAA_MSGID_ERR_EID",        "id": 12},
+                    {"macro": "MFAA_MSGLEN_ERR_EID",       "id": 13},
+                    {"macro": "MFAA_CONFIG_INF_EID",       "id": 14}
+                ],
+                "config": {
+                },
+                "tables": [
+                    {"id": "CONFIG_TBL",  "title": "MFAA Configuration",  "isDumpTable": false}
+                ]
+            }
+        }
+    }
+}
