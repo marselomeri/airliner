@@ -167,6 +167,7 @@ typedef struct
     uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
 } RGBLED_NoArgCmd_t;
 
+
 /** 
 **  \brief RGBLED application housekeeping data
 */
@@ -184,6 +185,8 @@ typedef struct
     uint8              usCmdErrCnt; 
     /** \brief RGBLED App State */
     uint8                 State;
+    /** \brief RGBLED Color */
+    uint8                 Color;
 } RGBLED_HkTlm_t;
 
 

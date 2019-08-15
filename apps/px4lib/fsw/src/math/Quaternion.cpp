@@ -41,6 +41,27 @@ Quaternion::Quaternion(const Matrix3F3 &mat)
 	}
 }
 
+Quaternion::Quaternion(const Vector3F &aa)
+{
+    /* NOTE: This is for an AxisAngle - Not a normal Vector3F */
+    float angle = aa.Length();
+    Vector3F axis(aa[0], aa[1], aa[2]);
+    axis.Normalize();
+    if (angle < 1e-10)
+    {
+        data[0] = 1.0;
+        data[1] = data[2] = data[3] = 0;
+    }
+    else
+    {
+        float magnitude = sin(angle / 2.0f);
+        data[0] = cos(angle / 2.0f);
+        data[1] = axis[0] * magnitude;
+        data[2] = axis[1] * magnitude;
+        data[3] = axis[2] * magnitude;
+    }
+}
+
 
 Quaternion::Quaternion()
 {

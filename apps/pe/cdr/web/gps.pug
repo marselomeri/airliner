@@ -1,0 +1,31 @@
+table.table.table-condensed
+  tbody
+    tr
+      th Last Update
+      td
+        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/TimeLastGps'}]}) ---
+    tr
+      th Initialized
+      td
+        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/GpsInitialized', notext: true, class: [{eval: '==0', class: 'CDR-LED-RED'},{eval: '==1', class: 'CDR-LED-GREEN'}]}]})
+    tr
+      th Fault
+      td
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/GpsFault', notext: true, class: [{eval: '==0', class: 'CDR-LED-OFF'},{eval: '==1', class: 'CDR-LED-RED'}]}]})
+    tr
+      th Timeout
+      td
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/GpsTimeout', notext: true, class: [{eval: '==0', class: 'CDR-LED-OFF'},{eval: '==1', class: 'CDR-LED-RED'}]}]})
+    tr
+      th Alt Origin
+      td
+        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/GpsAltOrigin'}]}) ---
+    tr
+      th Fused
+      td
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/GpsFused', notext: true, class: [{eval: '==0', class: 'cdr-led-yellow'},{eval: '==1', class: 'cdr-led-green'}]}]})
+              
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/PE/EnableGPS'}}) Enable
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/PE/DisableGPS'}}) Disable 
+      

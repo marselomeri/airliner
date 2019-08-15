@@ -1,0 +1,105 @@
+{
+    "Airliner": {
+        "apps": {
+            "LC": {
+                "operations": {
+                    "Noop":                   { "airliner_cc":  0, "macro": "LC_CMD_MID", "airliner_msg": "" },
+                    "Reset":                  { "airliner_cc":  1, "macro": "LC_CMD_MID", "airliner_msg": "" },
+                    "SetLCState":             { "airliner_cc":  2, "macro": "LC_CMD_MID", "airliner_msg": "LC_SetLCState_t" },
+                    "SetAPState":             { "airliner_cc":  3, "macro": "LC_CMD_MID", "airliner_msg": "LC_SetAPState_t" },
+                    "SetAPPermOff":           { "airliner_cc":  4, "macro": "LC_CMD_MID", "airliner_msg": "LC_SetAPPermOff_t" },
+                    "ResetAPStats":           { "airliner_cc":  5, "macro": "LC_CMD_MID", "airliner_msg": "LC_ResetAPStats_t" },
+                    "ResetWPStats":           { "airliner_cc":  6, "macro": "LC_CMD_MID", "airliner_msg": "LC_ResetWPStats_t" },
+                    "LC_HkPacket_t":          { "airliner_cc":  -1, "macro": "LC_HK_TLM_MID", "airliner_msg": "LC_HkPacket_t" },
+                    "LC_SampleAP_t":          { "airliner_cc":  -1, "macro": "LC_SAMPLE_AP_MID", "airliner_msg": "LC_SampleAP_t"},
+                    "SendHk":                 { "airliner_cc":  0, "macro": "LC_SEND_HK_MID", "airliner_msg": ""}
+                },
+                "scheduler": {
+                    "activities": [
+                        "LC_SEND_HK_MID"
+                    ],
+                    "groups": [
+                        { "id": 1, "macro": "LC_SCH_GRP" }
+                    ]
+                },
+                "events": [
+                  {"macro": "LC_TASK_EXIT_EID", "id": 1},
+    	            {"macro": "LC_INIT_INF_EID", "id": 2},
+    	            {"macro": "LC_CR_PIPE_ERR_EID", "id": 3},
+    	            {"macro": "LC_SUB_HK_REQ_ERR_EID", "id": 4},
+    	            {"macro": "LC_SUB_GND_CMD_ERR_EID", "id": 5},
+    	            {"macro": "LC_SUB_SAMPLE_CMD_ERR_EID", "id": 6},
+    	            {"macro": "LC_WDT_REGISTER_ERR_EID", "id": 7},
+    	            {"macro": "LC_WDT_REREGISTER_ERR_EID", "id": 8},
+    	            {"macro": "LC_ADT_REGISTER_ERR_EID", "id": 9},
+    	            {"macro": "LC_WRT_REGISTER_ERR_EID", "id": 10},
+    	            {"macro": "LC_ART_REGISTER_ERR_EID", "id": 11},
+    	            {"macro": "LC_WRT_CDS_REGISTER_ERR_EID", "id": 12},
+    	            {"macro": "LC_ART_CDS_REGISTER_ERR_EID", "id": 13},
+    	            {"macro": "LC_APP_CDS_REGISTER_ERR_EID", "id": 14},
+    	            {"macro": "LC_WDT_LOAD_ERR_EID", "id": 15},
+    	            {"macro": "LC_ADT_LOAD_ERR_EID", "id": 16},
+    	            {"macro": "LC_WRT_GETADDR_ERR_EID", "id": 17},
+    	            {"macro": "LC_ART_GETADDR_ERR_EID", "id": 18},
+    	            {"macro": "LC_WDT_GETADDR_ERR_EID", "id": 19},
+    	            {"macro": "LC_ADT_GETADDR_ERR_EID", "id": 20},
+    	            {"macro": "LC_CDS_RESTORED_INF_EID", "id": 21},
+    	            {"macro": "LC_CDS_UPDATED_INF_EID", "id": 22},
+    	            {"macro": "LC_CDS_DISABLED_INF_EID", "id": 23},
+    	            {"macro": "LC_APSAMPLE_APNUM_ERR_EID", "id": 25},
+    	            {"macro": "LC_NOOP_INF_EID", "id": 26},
+    	            {"macro": "LC_RESET_DBG_EID", "id": 27},
+    	            {"macro": "LC_LCSTATE_INF_EID", "id": 28},
+    	            {"macro": "LC_LCSTATE_ERR_EID", "id": 29},
+    	            {"macro": "LC_APSTATE_NEW_ERR_EID", "id": 30},
+    	            {"macro": "LC_APSTATE_CURR_ERR_EID", "id": 31},
+    	            {"macro": "LC_APSTATE_APNUM_ERR_EID", "id": 32},
+    	            {"macro": "LC_APSTATE_INF_EID", "id": 33},
+    	            {"macro": "LC_APOFF_APNUM_ERR_EID", "id": 34},
+    	            {"macro": "LC_APOFF_CURR_ERR_EID", "id": 35},
+    	            {"macro": "LC_APOFF_INF_EID", "id": 36},
+    	            {"macro": "LC_APSTATS_APNUM_ERR_EID", "id": 37},
+    	            {"macro": "LC_APSTATS_INF_EID", "id": 38},
+    	            {"macro": "LC_WPSTATS_WPNUM_ERR_EID", "id": 39},
+    	            {"macro": "LC_WPSTATS_INF_EID", "id": 40},
+    	            {"macro": "LC_HKREQ_LEN_ERR_EID", "id": 41},
+    	            {"macro": "LC_APSAMPLE_LEN_ERR_EID", "id": 42},
+    	            {"macro": "LC_LEN_ERR_EID", "id": 43},
+    	            {"macro": "LC_UNSUB_WP_ERR_EID", "id": 44},
+    	            {"macro": "LC_SUB_WP_ERR_EID", "id": 45},
+    	            {"macro": "LC_WRT_NO_SAVE_ERR_EID", "id": 46},
+    	            {"macro": "LC_ART_NO_SAVE_ERR_EID", "id": 47},
+    	            {"macro": "LC_APP_NO_SAVE_START_ERR_EID", "id": 48},
+    	            {"macro": "LC_MID_INF_EID", "id": 49},
+    	            {"macro": "LC_WP_DATATYPE_ERR_EID", "id": 50},
+    	            {"macro": "LC_WP_OPERID_ERR_EID", "id": 51},
+    	            {"macro": "LC_WP_NAN_ERR_EID", "id": 52},
+    	            {"macro": "LC_WP_OFFSET_ERR_EID", "id": 53},
+    	            {"macro": "LC_WDTVAL_FPERR_EID", "id": 54},
+    	            {"macro": "LC_WDTVAL_ERR_EID", "id": 55},
+    	            {"macro": "LC_WDTVAL_INF_EID", "id": 56},
+    	            {"macro": "LC_APSAMPLE_CURR_ERR_EID", "id": 57},
+    	            {"macro": "LC_AP_PASSTOFAIL_INF_EID", "id": 58},
+    	            {"macro": "LC_PASSIVE_FAIL_DBG_EID", "id": 59},
+    	            {"macro": "LC_AP_PASSIVE_FAIL_INF_EID", "id": 60},
+    	            {"macro": "LC_AP_FAILTOPASS_INF_EID", "id": 61},
+    	            {"macro": "LC_ACTION_ERROR_ERR_EID", "id": 62},
+    	            {"macro": "LC_INVALID_RPN_ERR_EID", "id": 63},
+    	            {"macro": "LC_ADTVAL_RPNERR_EID", "id": 64},
+    	            {"macro": "LC_ADTVAL_ERR_EID", "id": 65},
+    	            {"macro": "LC_ADTVAL_INF_EID", "id": 66},
+    	            {"macro": "LC_CFCALL_ERR_EID", "id": 67},
+    	            {"macro": "LC_BASE_AP_EID", "id": 1000}
+                ],
+                "config": {
+                },
+                "tables": [
+                  {"id": "LC_WDT", "title": "Watch Point Definition", "isDumpTable": false},
+      		        {"id": "LC_ADT", "title": "Action Point Definition", "isDumpTable": false},
+      		        {"id": "LC_WRT", "title": "Watch Point Results", "isDumpTable": true},
+      		        {"id": "LC_ART", "title": "Action Point Results", "isDumpTable": true}
+                ]
+            }
+        }
+    }
+}

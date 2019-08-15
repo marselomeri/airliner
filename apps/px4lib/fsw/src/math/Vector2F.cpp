@@ -1,4 +1,5 @@
 #include <math/Vector2F.hpp>
+#include <math/Matrix1F2.hpp>
 #include <math.h>
 
 using namespace math;
@@ -54,6 +55,15 @@ void Vector2F::Zero()
     data[1] = 0.0f;
 }
 
+Vector2F Vector2F::pow(const float scalar) const
+{
+	Vector2F res;
+
+	res[0] = ::pow(data[0], scalar);
+	res[1] = ::pow(data[1], scalar);
+
+    return res;
+}
 
 // overload + operator to provide a vector addition
 Vector2F Vector2F::operator+(const Vector2F &vecIn)
@@ -84,6 +94,15 @@ Vector2F Vector2F::operator*(const float scalar)
     return vecOut;
 }
 
+// overload * operator to provide a vector scalar product
+Vector2F Vector2F::operator*(const float scalar) const
+{
+    Vector2F vecOut;
+    vecOut[0] = data[0] * scalar;
+    vecOut[1] = data[1] * scalar;
+    return vecOut;
+}
+
 
 // overload / operator to provide a vector scalar division
 Vector2F Vector2F::operator/(const float scalar)
@@ -97,6 +116,17 @@ Vector2F Vector2F::operator/(const float scalar)
 
 // overload dot product operator to provide a vector scalar product
 float Vector2F::operator*(const Vector2F &vecIn)
+{
+	float res = 0.0f;
+
+	res = data[0] * vecIn[0];
+	res += data[1] * vecIn[1];
+
+	return res;
+}
+
+// overload dot product operator to provide a vector scalar product
+float Vector2F::operator*(const Vector2F &vecIn) const
 {
 	float res = 0.0f;
 
@@ -154,3 +184,15 @@ Vector2F Vector2F::Normalized(void)
 
 	return res;
 }
+
+Matrix1F2 Vector2F::Transpose(void)
+{
+    Matrix1F2 matOut;
+    matOut.Zero();
+
+    matOut[0][0] = data[0];
+    matOut[0][1] = data[1];
+
+    return matOut; 
+}
+

@@ -1,0 +1,51 @@
+{
+    "Airliner": {
+        "apps": {
+            "MS5607": {
+              "operations": {
+                  "Noop":               { "airliner_cc":  0, "macro": "MS5607_CMD_MID", "airliner_msg": "" },
+                  "Reset":              { "airliner_cc":  1, "macro": "MS5607_CMD_MID", "airliner_msg": "" },
+                  "SendDiag":           { "airliner_cc":  2, "macro": "MS5607_CMD_MID", "airliner_msg": "" },
+                  "MS5607_HkTlm_t":     { "airliner_cc": -1, "macro": "MS5607_HK_TLM_MID", "airliner_msg": "MS5607_HkTlm_t" },
+                  "MS5607_DiagPacket_t":{ "airliner_cc": -1, "macro": "MS5607_DIAG_TLM_MID", "airliner_msg": "MS5607_DiagPacket_t" },
+                  "Measure":            { "airliner_cc":  0, "macro": "MS5607_MEASURE_MID", "airliner_msg": "" },
+                  "SendHk":             { "airliner_cc":  0, "macro": "MS5607_SEND_HK_MID", "airliner_msg": "" }
+              },
+              "scheduler": {
+                  "activities": [
+                      "MS5607_MEASURE_MID",
+                      "MS5607_SEND_HK_MID"
+                  ],
+                  "groups": [
+                      { "id": 1, "macro": "MS5607_SCH_GRP" }
+                  ]
+              },
+              "events": [
+                  {"macro": "MS5607_INIT_INF_EID", "id": 1},
+                  {"macro": "MS5607_CMD_NOOP_EID", "id": 2},
+                  {"macro": "MS5607_SUBSCRIBE_ERR_EID", "id": 3},
+                  {"macro": "MS5607_PIPE_INIT_ERR_EID", "id": 4},
+                  {"macro": "MS5607_CFGTBL_MANAGE_ERR_EID", "id": 5},
+                  {"macro": "MS5607_CFGTBL_REG_ERR_EID", "id": 6},
+                  {"macro": "MS5607_CFGTBL_GETADDR_ERR_EID", "id": 7},
+                  {"macro": "MS5607_RCVMSG_ERR_EID", "id": 8},
+                  {"macro": "MS5607_MSGID_ERR_EID", "id": 9},
+                  {"macro": "MS5607_CC_ERR_EID", "id": 10},
+                  {"macro": "MS5607_MSGLEN_ERR_EID", "id": 11},
+                  {"macro": "MS5607_CFGTBL_REG_ERR_EID", "id": 12},
+                  {"macro": "MS5607_CMD_ERR_EID", "id": 13},
+                  {"macro": "MS5607_UNINIT_ERR_EID", "id": 14},
+                  {"macro": "MS5607_CFGTBL_LOAD_ERR_EID", "id": 15},
+                  {"macro": "MS5607_INIT_ERR_EID", "id": 16},
+                  {"macro": "MS5607_READ_ERR_EID", "id": 17},
+                  {"macro": "MS5607_CFGTBL_VALIDATION_ERR_EID", "id": 18}
+              ],
+              "config": {
+              },
+              "tables": [
+                  {"id": "CONFIG_TBL",  "title": "MS5607 Configuration",  "isDumpTable": false}
+              ]
+            }
+        }
+    }
+}

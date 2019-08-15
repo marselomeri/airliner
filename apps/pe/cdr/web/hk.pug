@@ -1,0 +1,87 @@
+table.table.table-condensed
+  tbody
+    tr
+      th Cmd Count
+      td
+        div(data-cdr={tlm:[{name:'/PE/PE_HkTlm_t/usCmdCnt'}]}) ---
+    tr
+      th Error Count
+      td
+        div(data-cdr={tlm:[{name:'/PE/PE_HkTlm_t/usCmdErrCnt'}]}) ---
+    tr
+      th Timestamp
+      td
+        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/Timestamp'}]}) ---
+    tr
+      th Alt Origin
+      td
+        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/AltOrigin'}]}) ---
+    tr
+      th Estimator Global Initialized
+      td
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/EstimatorGlobalInitialized', notext: true, class: [{eval: '==0', class: 'CDR-LED-RED'},{eval: '==1', class: 'CDR-LED-GREEN'}]}]})
+    tr
+      th Alt Origin Initialized
+      td
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/AltOriginInitialized', notext: true, class: [{eval: '==0', class: 'CDR-LED-RED'},{eval: '==1', class: 'CDR-LED-GREEN'}]}]})
+    tr
+      th XY Est Valid
+      td
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/XyEstValid', notext: true, class: [{eval: '==0', class: 'CDR-LED-RED'},{eval: '==1', class: 'CDR-LED-GREEN'}]}]})
+    tr
+      th Z Est Valid
+      td
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/ZEstValid', notext: true, class: [{eval: '==0', class: 'CDR-LED-RED'},{eval: '==1', class: 'CDR-LED-GREEN'}]}]})
+    tr
+      th Terrain Z Est Valid
+      td
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/TzEstValid', notext: true, class: [{eval: '==0', class: 'CDR-LED-RED'},{eval: '==1', class: 'CDR-LED-GREEN'}]}]})
+    tr
+      th Estimator Local Initialized
+      td
+        .led-basic(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/EstimatorLocalInitialized', notext: true, class: [{eval: '==0', class: 'CDR-LED-RED'},{eval: '==1', class: 'CDR-LED-GREEN'}]}]})
+    tr
+      th Wakeup Count
+      td
+        div(data-cdr={tlm:[{name:'/PE/PE_HkTlm_t/WakeupCount'}]}) ---
+    tr
+      th Vehicle GPS Position Msg Count
+      td
+        div(data-cdr={tlm:[{name:'/PE/PE_HkTlm_t/VehicleGpsPositionMsgCount'}]}) ---
+    tr
+      th Vehicle Status Msg Count
+      td
+        div(data-cdr={tlm:[{name:'/PE/PE_HkTlm_t/VehicleStatusMsgCount'}]}) ---
+    tr
+      th Vehicle Land Detected Msg Count
+      td
+        div(data-cdr={tlm:[{name:'/PE/PE_HkTlm_t/VehicleLandDetectedMsgCount'}]}) ---
+    tr
+      th Actuator Armed Msg Count
+      td
+        div(data-cdr={tlm:[{name:'/PE/PE_HkTlm_t/ActuatorArmedMsgCount'}]}) ---
+    tr
+      th Vehicle Attitude Msg Count
+      td
+        div(data-cdr={tlm:[{name:'/PE/PE_HkTlm_t/VehicleAttitudeMsgCount'}]}) ---
+    tr
+      th Sensor Combined Msg Count
+      td
+        div(data-cdr={tlm:[{name:'/PE/PE_HkTlm_t/SensorCombinedMsgCount'}]}) ---
+    tr
+      th Vehicle Attitude Setpoint Msg Count
+      td
+        div(data-cdr={tlm:[{name:'/PE/PE_HkTlm_t/VehicleAttitudeSetpointMsgCount'}]}) ---
+    tr
+      th Distance Sensor Msg Count
+      td
+        div(data-cdr={tlm:[{name:'/PE/PE_HkTlm_t/DistanceSensorMsgCount'}]}) ---
+    tr
+      th Optical Flow Msg Count
+      td
+        div(data-cdr={tlm:[{name:'/PE/PE_HkTlm_t/OpticalFlowMsgCount'}]}) ---
+                     
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/PE/Noop'}}) No-Op    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/PE/Reset'}}) Reset  
+      

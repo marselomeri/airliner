@@ -298,7 +298,30 @@ typedef enum {
 **
 */
     MPU9250_VALIDATE_ERR_EID,
-
+/** \brief <tt> 'Calibration values updated' </tt>
+**  \event <tt> 'Calibration values updated' </tt>
+**
+**  \par Type: INFORMATION
+**
+**  \par Cause:
+**
+**  This event message is issued when the calibration values
+**  are successfully updated.
+**
+*/
+    MPU9250_CALIBRATE_INF_EID,
+/** \brief <tt> 'Calibration values failed to update' </tt>
+**  \event <tt> 'Calibration values failed to update' </tt>
+**
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when the calibration values
+**  failed to update.
+**
+*/
+    MPU9250_CALIBRATE_ERR_EID,
 /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
     MPU9250_EVT_CNT
 

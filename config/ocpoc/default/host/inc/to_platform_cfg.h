@@ -10,6 +10,9 @@ extern "C" {
 #define TO_CUSTOM_CHILD_TASK_FLAGS            OS_ENABLE_CORE_0
 #define TO_CUSTOM_TASK_STACK_SIZE             131072
 
+#define TO_CUSTOM_BINARY_CHANNEL_PRIORITY     119
+#define TO_CUSTOM_PROTOBUF_CHANNEL_PRIORITY   122
+
 /*
 ** to Platform Configuration Parameter Definitions
 */

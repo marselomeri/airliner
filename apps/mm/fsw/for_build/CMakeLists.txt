@@ -12,7 +12,7 @@
  #    notice, this list of conditions and the following disclaimer in
  #    the documentation and/or other materials provided with the
  #    distribution.
- # 3. Neither the name Windhover Labs nor the names of its contributors 
+ # 3. Neither the name Windhover Labs nor the names of its contributors
  #    may be used to endorse or promote products derived from this software
  #    without specific prior written permission.
  #
@@ -30,7 +30,7 @@
  # POSSIBILITY OF SUCH DAMAGE.
  #
  #############################################################################
- 
+
 add_airliner_app_def(mm
     FILE MM
     SOURCES
@@ -47,19 +47,30 @@ add_airliner_app_def(mm
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_mem8.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_mem8.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_utils.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_symbols.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_utils.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_verify.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_version.h
-   
+
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
 
     USER_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/user_doxy.in
     DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in
+
+
+    MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/mm_msg_overrides.json
+
+    COMMANDER_PLUGIN
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr
+    
+    REFERENCE_CONFIG
+        ${PROJECT_SOURCE_DIR}/apps/mm/fsw/mission_inc
+        ${PROJECT_SOURCE_DIR}/apps/mm/fsw/platform_inc
 )
 
 add_airliner_app_unit_test(mm-ut
-    UTASSERT 
+    UTASSERT
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mm_app_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mm_app_test.h
@@ -95,12 +106,11 @@ add_airliner_app_unit_test(mm-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_verify.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_version.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../cfs_lib/fsw/src/cfs_utils.c
-        
+
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
-        
+
     VALGRIND_SUPPRESSION_FILE
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mm-ut.supp
 )
-

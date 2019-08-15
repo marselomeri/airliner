@@ -154,6 +154,36 @@ extern "C" {
 */
 #define MPU9250_SEND_DIAG_CC            (2)
 
+/** \mpu9250cmd Set Calibration Values
+**  
+**  \par Description
+**       Sets the sensor calibrations 
+**
+**  \par Command Structure
+**       #MPU9250_SetCalibrationCmd_t
+**
+**  \par Command Verification
+**       Successful execution of this command may be verified with
+**       the following telemetry:
+**       - \b \c \MPU9250_CMDACTPCNT       - command counter will be incremented
+**       - The #MPU9250_CALIBRATE_INF_EID debug event message will be 
+**         generated when the command is executed
+** 
+**  \par Error Conditions
+**       This command may fail for the following reason(s):
+**       - Command packet length not as expected
+** 
+**  \par Evidence of failure may be found in the following telemetry: 
+**       - \b \c \MPU9250_CMDRJCTCNT - command error counter will increment
+**       - Error specific event message #MPU9250_CALIBRATE_ERR_EID
+**
+**  \par Criticality
+**       None
+**
+**  \sa #MPU9250_SET_CALIBRATION_CC
+*/
+#define MPU9250_SET_CALIBRATION_CC      (3)
+
 /************************************************************************
 ** Local Structure Declarations
 *************************************************************************/
@@ -279,6 +309,15 @@ typedef struct
     MPU9250_ConversionMsg_t           Conversion;
 } MPU9250_DiagPacket_t;
 
+/** 
+**  \brief MPU9250 application struct for calibration cmds
+*/
+typedef struct
+{
+    uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
+    /*! All calibration info */
+    MPU9250_CalibrationMsg_t Calibration;
+} MPU9250_SetCalibrationCmd_t;
 
 #ifdef __cplusplus
 }

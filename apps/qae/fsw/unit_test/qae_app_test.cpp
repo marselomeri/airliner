@@ -53,6 +53,7 @@
 #include <math/Vector3F.hpp>
 #include <math/Matrix3F3.hpp>
 #include <math/Matrix4F4.hpp>
+#include <float.h>
 
 int32 hookCalledCount = 0;
 
@@ -427,7 +428,7 @@ void Test_QAE_AppMain_Nominal_SendHK(void)
 
     /* The following will emulate behavior of receiving a SCH message to WAKEUP */
     Ut_CFE_SB_SetReturnCode(UT_CFE_SB_RCVMSG_INDEX, CFE_SUCCESS, 1);
-    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_GETMSGID_INDEX, AE_SEND_HK_MID, 1);
+    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_GETMSGID_INDEX, QAE_SEND_HK_MID, 1);
 
     Ut_CFE_ES_SetReturnCode(UT_CFE_ES_RUNLOOP_INDEX, FALSE, 2);
 
@@ -453,7 +454,7 @@ void Test_QAE_AppMain_Nominal_Wakeup(void)
 
     /* The following will emulate behavior of receiving a SCH message to WAKEUP */
     Ut_CFE_SB_SetReturnCode(UT_CFE_SB_RCVMSG_INDEX, CFE_SUCCESS, 1);
-    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_GETMSGID_INDEX, AE_WAKEUP_MID, 1);
+    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_GETMSGID_INDEX, QAE_WAKEUP_MID, 1);
 
     Ut_CFE_ES_SetReturnCode(UT_CFE_ES_RUNLOOP_INDEX, FALSE, 2);
 
@@ -499,24 +500,27 @@ void Test_QAE_InitEstimateAttitude_Nominal(void)
  */
 void Test_QAE_UpdateMagDeclination_InitialNominal(void)
 {
-    float new_declination = 10.0f;
-    float expected_declination = 10.0f;
+    float old_declination;
+    float new_declination;
 
     QAE oQAE;
     oQAE.InitApp();
+
+    new_declination = oQAE.ConfigTblPtr->ATT_MAG_DECL + 1.0f;
+
     /* Set estimator state to unintialized */
     oQAE.HkTlm.EstimatorState = QAE_EST_UNINITIALIZED;
     
     oQAE.UpdateMagDeclination(new_declination);
     
-    UtAssert_True(oQAE.m_Params.mag_declination == expected_declination, "oQAE.m_Params.mag_declination == expected_declination");
+    UtAssert_DoubleCmpAbs(oQAE.m_MagDeclination, new_declination, FLT_EPSILON, "oQAE.m_MagDeclination == expected_declination");
     
     /* Set estimator state to intialized */
     oQAE.HkTlm.EstimatorState = QAE_EST_INITIALIZED;
     
     oQAE.UpdateMagDeclination(new_declination);
     
-    UtAssert_True(oQAE.m_Params.mag_declination == expected_declination, "oQAE.m_Params.mag_declination == expected_declination");
+    UtAssert_True(oQAE.m_MagDeclination == new_declination, "oQAE.m_MagDeclination == expected_declination");
     
 }
 

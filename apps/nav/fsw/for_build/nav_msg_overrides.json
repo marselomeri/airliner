@@ -1,0 +1,56 @@
+{
+    "Airliner": {
+        "apps": {
+            "NAV": {
+              "operations": {
+                  "Noop":           { "airliner_cc":  0, "macro": "NAV_CMD_MID", "airliner_msg": "" },
+                  "Reset":          { "airliner_cc":  1, "macro": "NAV_CMD_MID", "airliner_msg": "" },
+                  "NAV_HkTlm_t":    { "airliner_cc": -1, "macro": "NAV_HK_TLM_MID", "airliner_msg": "NAV_HkTlm_t" },
+                  "Wakeup":         { "airliner_cc":  0, "macro": "NAV_WAKEUP_MID", "airliner_msg": "" },
+                  "SendHk":         { "airliner_cc":  0, "macro": "NAV_SEND_HK_MID", "airliner_msg": "" }
+              },
+              "scheduler": {
+                  "activities": [
+                      "NAV_WAKEUP_MID",
+                      "NAV_SEND_HK_MID"
+                  ],
+                  "groups": [
+                      { "id": 1, "macro": "NAV_SCH_GRP" }
+                  ]
+              },
+              "events": [
+                  {"macro": "NAV_INIT_INF_EID", "id": 1},
+                  {"macro": "NAV_CMD_NOOP_EID", "id": 2},
+                  {"macro": "NAV_SUBSCRIBE_ERR_EID", "id": 3},
+                  {"macro": "NAV_PIPE_INIT_ERR_EID", "id": 4},
+                  {"macro": "NAV_CFGTBL_MANAGE_ERR_EID", "id": 5},
+                  {"macro": "NAV_CFGTBL_GETADDR_ERR_EID", "id": 6},
+                  {"macro": "NAV_RCVMSG_ERR_EID", "id": 7},
+                  {"macro": "NAV_MSGID_ERR_EID", "id": 8},
+                  {"macro": "NAV_CC_ERR_EID", "id": 9},
+                  {"macro": "NAV_MSGLEN_ERR_EID", "id": 10},
+                  {"macro": "NAV_CFGTBL_REG_ERR_EID", "id": 11},
+                  {"macro": "NAV_CFGTBL_LOAD_ERR_EID", "id": 12},
+                  {"macro": "NAV_MSN_FAILED_ERR_EID", "id": 13},
+                  {"macro": "NAV_LOW_CLEARANCE_ALT_EID", "id": 14},
+                  {"macro": "NAV_HIGH_ALT_EID", "id": 15},
+                  {"macro": "NAV_ACTION_ST_EID", "id": 16},
+                  {"macro": "NAV_RTL_CLIMB_ST_EID", "id": 17},
+                  {"macro": "NAV_RTL_RETURN_ST_EID", "id": 18},
+                  {"macro": "NAV_RTL_DESCEND_ST_EID", "id": 19},
+                  {"macro": "NAV_RTL_LOITER_ST_EID", "id": 20},
+                  {"macro": "NAV_RTL_LOITER_EN_EID", "id": 21},
+                  {"macro": "NAV_RTL_LAND_ST_EID", "id": 22},
+                  {"macro": "NAV_RTL_LAND_EN_EID", "id": 23},
+                  {"macro": "NAV_RTL_LND_SFGA_EID", "id": 24},
+                  {"macro": "NAV_SUBSEQ_TAKEOFF_EID", "id": 25}
+              ],
+              "config": {
+              },
+              "tables": [
+                  {"id": "CONFIG_TBL",  "title": "NAV Configuration",  "isDumpTable": false}
+              ]
+            }
+        }
+    }
+}

@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-#define LGC_MAIN_TASK_PERF_ID      0
+#define LGC_MAIN_TASK_PERF_ID       112
 
 #ifdef __cplusplus
 }

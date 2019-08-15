@@ -34,8 +34,9 @@
 #ifndef VC_PERFIDS_H
 #define VC_PERFIDS_H
 
-#define VC_APPMAIN_PERF_ID      63
-#define VC_SOCKET_SEND_PERF_ID  64
+#define VC_MAIN_TASK_PERF_ID        63  /**< \brief VC Main Task performance ID.  This measures the execution time of the main loop. */
+#define VC_SOCKET_SEND_PERF_ID      64  /**< \brief VC Socket Send performance ID.  This measures the execution time of the socket send. */
+#define VC_DEVICE_GET_PERF_ID       65  /**< \brief VC Device Get performance ID.  This measures the execution time of the Device Get call. */
 
 #endif
 

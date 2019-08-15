@@ -68,14 +68,7 @@ LD_ConfigTbl_t LD_ConfigTbl =
 	     *  \par Limits:
 	     *  	Min > Max (incr.) 0.1 > 10 , default 2.0.
 	     */
-	    1.4,
-
-	    /** \brief Multicopter sub-hover throttle scaling.
-	     *
-	     *  \par Limits:
-	     *  	Min > Max (incr.) 0.05 > 0.5 , default 0.1.
-	     */
-	    0.5,
+	    2.0,
 
 	    /** \brief Multicopter free-fall trigger time.
 	     *
@@ -91,27 +84,6 @@ LD_ConfigTbl_t LD_ConfigTbl =
 	     */
 	    0.15,
 
-	    /** \brief Multicopter Flight stick up threshold for take off.
-	     *
-	     *  \par Limits:
-	     *  	default 0.65.
-	     */
-	    0.65,
-
-	    /** \brief Total flight time in ms, higher 32 bits of the value.
-	     *
-	     *  \par Limits:
-	     *  	default 0.
-	     */
-	    0,
-
-	    /** \brief Total flight time in ms, lower 32 bits of the value.
-	     *
-	     *  \par Limits:
-	     *  	default 60299599.
-	     */
-		60299599,
-
 	    /** \brief Multicopter maximum altitude.
 	     *
 	     *  \par Limits:
@@ -119,33 +91,19 @@ LD_ConfigTbl_t LD_ConfigTbl =
 	     */
 	    10000.0,
 
-	    /** \brief Multicopter minimum throttle.
+	    /** \brief Multicopter low throttle threshold.
 	     *
 	     *  \par Limits:
-	     *  	default 0.12.
+	     *  	default 0.3.
 	     */
-	    0.12,
-
-	    /** \brief Multicopter hover throttle.
-	     *
-	     *  \par Limits:
-	     *  	default 0.5.
-	     */
-	    0.5,
-
-	    /** \brief Multicopter throttle range.
-	     *
-	     *  \par Limits:
-	     *  	default 0.1.
-	     */
-	    0.1,
+	    0.38,
 
 	    /** \brief Multicopter minimum throttle in manual mode.
 	     *
 	     *  \par Limits:
 	     *  	default 0.08.
 	     */
-	   0.08,
+	    0.08,
 
 	    /** \brief Multicopter takeoff stick up threshold in position control mode.
 	     *
@@ -159,7 +117,21 @@ LD_ConfigTbl_t LD_ConfigTbl =
 	     *  \par Limits:
 	     *  	default 0.15.
 	     */
-	    0.15
+	    0.15,
+
+        /** \brief Landing descend rate.
+         *
+         *  \par Limits:
+         *      default 0.5.
+         */
+        0.3f,
+        
+        /** \brief Min Thust No Altitude Lock Land Timout.
+         *
+         *  \par Limits:
+         *      default 8000000.
+         */
+        8000000
 };
 
 /*
@@ -177,4 +149,3 @@ LD_ConfigTbl_t LD_ConfigTbl =
 /*=======================================================================================
 ** End of file ld_config.c
 **=====================================================================================*/
-    

@@ -1,0 +1,14 @@
+table.table.table-condensed
+  tbody
+    tr
+      th Cmd Count
+      td 
+        div(data-cdr={tlm:[{name:'/CFE/CFE_ES_HkPacket_t/Payload.CmdCounter'}]}) ---
+    tr
+      th Error Count
+      td
+        div(data-cdr={tlm:[{name:'/CFE/CFE_ES_HkPacket_t/Payload.ErrCounter'}]}) ---
+        
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_ES_NoopCmd'}}) No-Op    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_ES_ResetCmd'}}) Reset

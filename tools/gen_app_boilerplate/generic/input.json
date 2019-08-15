@@ -1,5 +1,5 @@
 {
-	"app_name": "MAVLINK",
-	"output_dir": "/home/vagrant/",
-	"app_full_name": "Mavlink"
+    "app_name": "MFA",
+    "output_dir": "/home/mbenson/git/airliner/apps",
+    "app_full_name": "My First App"
 }

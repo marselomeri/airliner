@@ -12,7 +12,7 @@
  #    notice, this list of conditions and the following disclaimer in
  #    the documentation and/or other materials provided with the
  #    distribution.
- # 3. Neither the name Windhover Labs nor the names of its contributors 
+ # 3. Neither the name Windhover Labs nor the names of its contributors
  #    may be used to endorse or promote products derived from this software
  #    without specific prior written permission.
  #
@@ -30,7 +30,7 @@
  # POSSIBILITY OF SUCH DAMAGE.
  #
  #############################################################################
- 
+
 add_airliner_app_def(sc
     FILE SC
     SOURCES
@@ -49,23 +49,33 @@ add_airliner_app_def(sc
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/sc_rtsrq.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/sc_state.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/sc_state.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/sc_symbols.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/sc_tbldefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/sc_utils.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/sc_utils.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/sc_verify.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/sc_version.h
-   
+
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
 
     USER_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/user_doxy.in
     DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in
+
+    MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/sc_msg_overrides.json
+
+    COMMANDER_PLUGIN
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr
+    
+    REFERENCE_CONFIG
+        ${PROJECT_SOURCE_DIR}/apps/sc/fsw/mission_inc
+        ${PROJECT_SOURCE_DIR}/apps/sc/fsw/platform_inc
 )
 
 
 
 add_airliner_app_unit_test(sc-ut
-    UTASSERT 
+    UTASSERT
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/sc_app_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/sc_app_test.h
@@ -106,13 +116,13 @@ add_airliner_app_unit_test(sc-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../platform_inc/sc_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../platform_inc/sc_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../platform_inc/sc_rts.h
-        
+
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
         ${CMAKE_CURRENT_SOURCE_DIR}/../mission_inc/
         ${CMAKE_CURRENT_SOURCE_DIR}/../platform_inc/
-        
+
     VALGRIND_SUPPRESSION_FILE
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/valgrind.supp
 )

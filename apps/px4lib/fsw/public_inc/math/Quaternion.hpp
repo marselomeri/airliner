@@ -71,6 +71,20 @@ public:
 	 **
 	 *************************************************************************/
 	Quaternion(const Matrix3F3 &mat);
+	
+	/************************************************************************/
+	/** \brief Quaternion Constructor
+	 **
+	 **  \par Description
+	 **       This function initializes the object from a axis angle.
+	 **
+	 **  \par Assumptions, External Events, and Notes:
+	 **       None
+	 **
+	 **  \param [in]   mat      A #Matrix3F3 used to initialize the Quaternion
+	 **
+	 *************************************************************************/
+	Quaternion(const Vector3F &aa);
 
 	/************************************************************************/
 	/** \brief Quaternion Destructor

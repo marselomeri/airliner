@@ -1,0 +1,80 @@
+{
+    "Airliner": {
+        "apps": {
+            "SCH": {
+                "operations": {
+                    "Noop":           { "airliner_cc":  0, "airliner_msg": "CFE_SB_CmdHdr_t" },
+                    "Reset":          { "airliner_cc":  1, "airliner_msg": "CFE_SB_CmdHdr_t" },
+                    "Enable":         { "airliner_cc":  2, "airliner_msg": "SCH_EntryCmd_t" },
+                    "Disable":        { "airliner_cc":  3, "airliner_msg": "SCH_EntryCmd_t" },
+                    "EnableGroup":    { "airliner_cc":  4, "airliner_msg": "SCH_GroupCmd_t" },
+                    "DisableGroup":   { "airliner_cc":  5, "airliner_msg": "SCH_GroupCmd_t" },
+                    "EnableSync":     { "airliner_cc":  6, "airliner_msg": "CFE_SB_CmdHdr_t" },
+                    "SendDiag":       { "airliner_cc":  7, "airliner_msg": "CFE_SB_CmdHdr_t" },
+                    "SCH_HkPacket_t": {                    "airliner_msg": "SCH_HkPacket_t" },
+                    "SCH_DiagPacket_t": {                  "airliner_msg": "SCH_DiagPacket_t" }
+                },
+                "events": [
+                    {"macro": "SCH_INITSTATS_INF_EID", "id": 1},
+                    {"macro": "SCH_APP_EXIT_EID", "id": 2},
+                    {"macro": "SCH_CR_PIPE_ERR_EID", "id": 3},
+                    {"macro": "SCH_SUB_HK_REQ_ERR_EID", "id": 4},
+                    {"macro": "SCH_SUB_GND_CMD_ERR_EID", "id": 5},
+                    {"macro": "SCH_SDT_REG_ERR_EID", "id": 7},
+                    {"macro": "SCH_MDT_REG_ERR_EID", "id": 8},
+                    {"macro": "SCH_SDT_LOAD_ERR", "id": 9},
+                    {"macro": "SCH_MDT_LOAD_ERR", "id": 10},
+                    {"macro": "SCH_ACQ_PTR_ERR", "id": 11},
+                    {"macro": "SCH_MINOR_FRAME_TIMER_CREATE_ERR", "id": 12},
+                    {"macro": "SCH_MINOR_FRAME_TIMER_ACC_WARN", "id": 13},
+                    {"macro": "SCH_MAJOR_FRAME_SUB_ERR", "id": 14},
+                    {"macro": "SCH_SEM_CREATE_ERR", "id": 15},
+                    {"macro": "SCH_SAME_SLOT", "id": 16},
+                    {"macro": "SCH_SKIPPED_SLOTS", "id": 17},
+                    {"macro": "SCH_MULTI_SLOTS", "id": 18},
+                    {"macro": "SCH_CORRUPTION", "id": 19},
+                    {"macro": "SCH_PACKET_SEND", "id": 20},
+                    {"macro": "SCH_NOISY_MAJOR_FRAME_ERR", "id": 21},
+                    {"macro": "SCH_SCHEDULE_TBL_ERR", "id": 30},
+                    {"macro": "SCH_SCHEDULE_TABLE", "id": 31},
+                    {"macro": "SCH_MESSAGE_TBL_ERR", "id": 32},
+                    {"macro": "SCH_MESSAGE_TABLE", "id": 33},
+                    {"macro": "SCH_NOOP_CMD", "id": 40},
+                    {"macro": "SCH_RESET_CMD", "id": 41},
+                    {"macro": "SCH_ENABLE_CMD", "id": 42},
+                    {"macro": "SCH_DISABLE_CMD", "id": 43},
+                    {"macro": "SCH_ENA_GRP_CMD", "id": 44},
+                    {"macro": "SCH_DIS_GRP_CMD", "id": 45},
+                    {"macro": "SCH_ENA_SYNC_CMD", "id": 46},
+                    {"macro": "SCH_SEND_DIAG_CMD", "id": 47},
+                    {"macro": "SCH_ENABLE_CMD_ARG_ERR", "id": 50},
+                    {"macro": "SCH_ENABLE_CMD_ENTRY_ERR", "id": 51},
+                    {"macro": "SCH_DISABLE_CMD_ARG_ERR", "id": 52},
+                    {"macro": "SCH_DISABLE_CMD_ENTRY_ERR", "id": 53},
+                    {"macro": "SCH_ENA_GRP_CMD_ERR", "id": 54},
+                    {"macro": "SCH_ENA_GRP_NOT_FOUND_ERR", "id": 55},
+                    {"macro": "SCH_DIS_GRP_CMD_ERR", "id": 56},
+                    {"macro": "SCH_DIS_GRP_NOT_FOUND_ERR", "id": 57},
+                    {"macro": "SCH_CC_ERR", "id": 58},
+                    {"macro": "SCH_MD_ERR", "id": 59},
+                    {"macro": "SCH_CMD_LEN_ERR", "id": 60},
+                    {"macro": "SCH_DEADLINE_REG_ERR_EID", "id": 61},
+                    {"macro": "SCH_SLOT_DEADLINE_FULL_ERR_EID", "id": 62},
+                    {"macro": "SCH_SUB_ACTIVITY_DONE_REQ_ERR_EID", "id": 63},
+                    {"macro": "SCH_UNEXPECTED_ACT_DONE_ERR_EID", "id": 64},
+                    {"macro": "SCH_MUTEX_CREATE_ERR_EID", "id": 65},
+                    {"macro": "SCH_AD_CHILD_TASK_CREATE_ERR", "id": 66},
+                    {"macro": "SCH_AD_RCVD_UNEXPECTED_MSG_ERR_EID", "id": 67}
+                ],
+                "config": {
+                  "SCH_TOTAL_SLOTS": -1,
+                  "SCH_ENTRIES_PER_SLOT": -1
+                },
+                "tables": [
+                    {"id": "MSG_DEFS",  "title": "Message Definitions",  "isDumpTable": false},
+                    {"id": "SCHED_DEF", "title": "Schedule Definitions", "isDumpTable": false, "ScheduleEntry": []}
+                ]
+            }
+        }
+    }
+}

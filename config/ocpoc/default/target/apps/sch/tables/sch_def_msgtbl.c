@@ -58,7 +58,7 @@ SCH_MessageEntry_t SCH_DefaultMessageTable[SCH_MAX_MESSAGES] =
    /* Command ID #8 */
    { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0,0), 0 } },
    /* Command ID #9 */
-   { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0,0), 0 } },
+   { { SCH_FIX_HEADER(LC_SAMPLE_AP_MID, 0xC000, 0x0007), 0x0000, 0x0000, 0x0001, 0x0001 } },
    /* Command ID #10 - Health and safety HK request*/
    { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0,0), 0 } },
    /* Command ID #11 - Limit checker HK request*/
@@ -124,13 +124,13 @@ SCH_MessageEntry_t SCH_DefaultMessageTable[SCH_MAX_MESSAGES] =
    /* Command ID #41 */
    { { SCH_FIX_HEADER(SC_SEND_HK_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #42 */
-   { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0, 0), 0 } },
+   { { SCH_FIX_HEADER(FLOW_WAKEUP_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #43 */
-   { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0, 0), 0 } },
+   { { SCH_FIX_HEADER(FLOW_SEND_HK_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #44 */
    { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0, 0), 0 } },
    /* Command ID #45 */
-   { { SCH_FIX_HEADER(VC_WAKEUP_MID, 0xC000, 0x0001), 0x0000 } },
+   { { SCH_FIX_HEADER(VC_PROCESS_CMDS_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #46 */
    { { SCH_FIX_HEADER(VC_SEND_HK_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #47 */
@@ -244,9 +244,9 @@ SCH_MessageEntry_t SCH_DefaultMessageTable[SCH_MAX_MESSAGES] =
    /* Command ID #101 */
    { { SCH_FIX_HEADER(PX4BR_SEND_HK_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #102 */
-   { { SCH_FIX_HEADER(AE_SEND_HK_MID, 0xC000, 0x0001), 0x0000 } },
+   { { SCH_FIX_HEADER(QAE_SEND_HK_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #103 */
-   { { SCH_FIX_HEADER(AE_WAKEUP_MID, 0xC000, 0x0001), 0x0000 } },
+   { { SCH_FIX_HEADER(QAE_WAKEUP_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #104 */
    { { SCH_FIX_HEADER(LD_SEND_HK_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #105 */

@@ -7,6 +7,7 @@ add_airliner_app_def(qae
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/qae_config_utils.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/qae_events.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/qae_msg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/qae_symbols.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/qae_tbldefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/qae_version.h
 
@@ -15,6 +16,15 @@ add_airliner_app_def(qae
 
     USER_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/user_doxy.in
     DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in
+    
+    MSG_OVERRIDES   ${CMAKE_CURRENT_SOURCE_DIR}/qae_msg_overrides.json 
+
+    COMMANDER_PLUGIN
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr
+    
+    REFERENCE_CONFIG
+        ${PROJECT_SOURCE_DIR}/apps/qae/fsw/mission_inc
+        ${PROJECT_SOURCE_DIR}/apps/qae/fsw/platform_inc
 )
 
 add_airliner_app_unit_test(qae-ut

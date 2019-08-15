@@ -39,6 +39,7 @@ add_airliner_app_def(hk
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/hk_events.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/hk_msg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/hk_msgdefs.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/hk_symbols.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/hk_tbldefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/hk_utils.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/hk_utils.h
@@ -50,6 +51,15 @@ add_airliner_app_def(hk
 
     USER_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/user_doxy.in
     DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in
+    
+    MSG_OVERRIDES   ${CMAKE_CURRENT_SOURCE_DIR}/hk_msg_overrides.json 
+
+    COMMANDER_PLUGIN
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr
+    
+    REFERENCE_CONFIG
+        ${PROJECT_SOURCE_DIR}/apps/hk/fsw/mission_inc
+        ${PROJECT_SOURCE_DIR}/apps/hk/fsw/platform_inc
 )
 
 add_airliner_app_unit_test(hk-ut

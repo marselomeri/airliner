@@ -225,6 +225,8 @@ void Test_MS5611_InitData(void)
     /* Set a fail result */
     int32 expected = CFE_SUCCESS;
 
+    (void) oMS5611.InitApp();
+
     /* Execute the function being tested */
     oMS5611.InitData();
 
@@ -284,14 +286,10 @@ void Test_MS5611_InitApp_Fail_InitData(void)
 {
     MS5611 oMS5611;
 
-    int32 result = 1;
-    int32 expected = CFE_SUCCESS;
+    (void) oMS5611.InitApp();
 
     /* Execute the function being tested */
-    result = oMS5611.InitApp();
-
-    /* Verify results */
-    UtAssert_True (result == expected, "InitApp, fail init data");
+    oMS5611.InitData();
 }
 
 
@@ -322,7 +320,7 @@ void Test_MS5611_InitApp_Nominal(void)
 {
     MS5611 oMS5611;
 
-    /* Set a fail result for SB */
+    /* Set a failed result. */
     int32 result = (CFE_SEVERITY_BITMASK & CFE_SEVERITY_ERROR)
                    | CFE_EXECUTIVE_SERVICE | CFE_ES_ERR_APP_REGISTER;
     int32 expected = CFE_SUCCESS;
@@ -435,7 +433,6 @@ void Test_MS5611_AppMain_Nominal_SendHK(void)
 
     /* Verify results */
     UtAssert_True (hookCalledCount == 1, "AppMain_Nominal_SendHK");
-
 }
 
 
@@ -455,21 +452,6 @@ void Test_MS5611_AppMain_Nominal_Wakeup(void)
     /* Execute the function being tested */
     //oMS5611.AppMain();
 
-}
-
-
-/**
- * Test UpdateParamsFromTable(), Nominal
- */
-void Test_MS5611_UpdateParamsFromTable_Nominal(void)
-{
-    MS5611 oMS5611;
-    
-    oMS5611.InitApp();
-    oMS5611.UpdateParamsFromTable();
-
-    /* Verify results */
-    UtAssert_True(oMS5611.m_Params.p1 == oMS5611.ConfigTblPtr->p1, "m_Param != ConfigTblPtr");
 }
 
 
@@ -530,8 +512,6 @@ void MS5611_App_Test_AddTestCases(void)
                "Test_MS5611_AppMain_Nominal_SendHK");
     UtTest_Add(Test_MS5611_AppMain_Nominal_Wakeup, MS5611_Test_Setup, MS5611_Test_TearDown,
                "Test_MS5611_AppMain_Nominal_Wakeup");
-    UtTest_Add(Test_MS5611_UpdateParamsFromTable_Nominal, MS5611_Test_Setup, MS5611_Test_TearDown,
-               "Test_MS5611_UpdateParamsFromTable_Nominal");
     UtTest_Add(Test_MS5611_CleanupCallback_Nominal, MS5611_Test_Setup, MS5611_Test_TearDown,
                "Test_MS5611_CleanupCallback_Nominal");
 }
