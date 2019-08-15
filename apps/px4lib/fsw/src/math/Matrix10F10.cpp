@@ -264,6 +264,28 @@ Matrix10F3 Matrix10F10::operator*(const Matrix10F3 &matIn)
     return matOut;
 }
 
+Matrix10F2 Matrix10F10::operator*(const Matrix10F2 &matIn)
+{
+    Matrix10F2 matOut;
+    matOut.Zero();
+    //matOut.Print();
+
+    // TODO: verify correct
+    for(int i = 0; i < 10; i++)
+    {
+    	for(int k = 0; k < 2; k++)
+		{
+
+    		for(int j = 0; j < 10; j++)
+			{
+    			matOut[i][k] += data[i][j] * matIn[j][k];
+			}
+		}
+    }
+
+    return matOut;
+}
+
 
 Matrix10F10 Matrix10F10::operator*(const float &scalar)
 {

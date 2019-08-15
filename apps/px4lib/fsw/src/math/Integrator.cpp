@@ -42,6 +42,31 @@
 
 #include "math/Integrator.hpp"
 //#include <drivers/drv_hrt.h>
+#include <time.h>
+#include <errno.h>
+
+
+/* TODO */
+uint64 PX4LIB_GetPX4TimeUs(void)
+{
+    struct timespec ts;
+    int returnCode = 0;
+    uint64 outTime = 0;
+
+    returnCode = clock_gettime(CLOCK_MONOTONIC, &ts);
+    if (-1 == returnCode)
+    {
+        OS_printf("PX4LIB_GetPX4Time clock_gettime errno: %i", errno);
+        goto end_of_function;
+    }
+
+    outTime = (uint64)(ts.tv_sec) * 1000000;
+    outTime += ts.tv_nsec / 1000;
+
+end_of_function:
+    return outTime;
+}
+
 
 Integrator::Integrator(uint64 auto_reset_interval, boolean coning_compensation) :
 	_auto_reset_interval(auto_reset_interval),
@@ -128,6 +153,27 @@ Integrator::put(uint64 timestamp, math::Vector3F &val, math::Vector3F &integral,
         return FALSE;
     }
 }
+
+boolean
+Integrator::put_with_interval(uint32 interval_us, math::Vector3F &val, math::Vector3F &integral,
+			      uint64 &integral_dt)
+{
+	if (_last_integration_time == 0) {
+		/* this is the first item in the integrator */
+		uint64 now = PX4LIB_GetPX4TimeUs();
+		_last_integration_time = now;
+		_last_reset_time = now;
+		_last_val = val;
+
+		return FALSE;
+	}
+
+	// Create the timestamp artifically.
+	uint64 timestamp = _last_integration_time + interval_us;
+
+	return put(timestamp, val, integral, integral_dt);
+}
+
 
 math::Vector3F
 Integrator::get(boolean reset, uint64 &integral_dt)

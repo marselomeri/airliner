@@ -41,12 +41,22 @@ add_airliner_app_def(gps
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/gps_msg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/gps_tbldefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/gps_version.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/gps_symbols.c
+    
+    MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/gps_msg_overrides.json
+
+    COMMANDER_PLUGIN
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr
    
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
 
     USER_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/user_doxy.in
     DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in
+    
+    REFERENCE_CONFIG
+        ${PROJECT_SOURCE_DIR}/apps/gps/fsw/mission_inc
+        ${PROJECT_SOURCE_DIR}/apps/gps/fsw/platform_inc
 )
 
 add_airliner_app_unit_test(gps-ut

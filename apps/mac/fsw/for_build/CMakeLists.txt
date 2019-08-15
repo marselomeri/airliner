@@ -12,8 +12,8 @@
 #    notice, this list of conditions and the following disclaimer in
 #    the documentation and/or other materials provided with the
 #    distribution.
-# 3. Neither the name Windhover Labs nor the names of its 
-#    contributors may be used to endorse or promote products derived 
+# 3. Neither the name Windhover Labs nor the names of its
+#    contributors may be used to endorse or promote products derived
 #    from this software without specific prior written permission.
 #
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
@@ -30,27 +30,37 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 #############################################################################
- 
- 
+
+
 add_airliner_app_def(mac
-    FILE MAC
+    FILE mac
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_app.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_app.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_config_utils.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_events.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_msg.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_private_ids.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_private_types.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_tbldefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_version.h
-   
+
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${PX4_MSGS_DIR}
+
+    USER_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/user_doxy.in
+    DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in
+
+    MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/mac_msg_overrides.json
+
+    COMMANDER_PLUGIN
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr
+    
+    REFERENCE_CONFIG
+        ${PROJECT_SOURCE_DIR}/apps/mac/fsw/mission_inc
+        ${PROJECT_SOURCE_DIR}/apps/mac/fsw/platform_inc
 )
 
-add_airliner_app_unit_test(MAC-UT
+add_airliner_app_unit_test(mac-ut
     UTASSERT
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mac_app_test.cpp
@@ -67,16 +77,15 @@ add_airliner_app_unit_test(MAC-UT
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_app.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_events.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_msg.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_private_types.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_tbldefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_version.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_config_utils.cpp
         ${PX4LIB_LIB_SOURCES}
-        
+
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
-        
+
     VALGRIND_SUPPRESSION_FILE
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mac-ut.supp
 )

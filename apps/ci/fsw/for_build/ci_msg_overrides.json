@@ -1,0 +1,75 @@
+{
+    "Airliner": {
+        "apps": {
+            "CI": {
+                "operations": {
+                    "Noop":             { "airliner_cc":  0, "macro": "CI_CMD_MID", "airliner_msg": "CI_NoArgCmd_t" },
+                    "Reset":            { "airliner_cc":  1, "macro": "CI_CMD_MID", "airliner_msg": "CI_NoArgCmd_t" },
+                    "AuthorizeCmd":     { "airliner_cc":  2, "macro": "CI_CMD_MID", "airliner_msg": "CI_CmdAuthData_t" },
+                    "DeauthorizeCmd":   { "airliner_cc":  3, "macro": "CI_CMD_MID", "airliner_msg": "CI_CmdAuthData_t" },
+                    "RegisterCmd":      { "airliner_cc":  4, "macro": "CI_CMD_MID", "airliner_msg": "CI_CmdRegData_t" },
+                    "DeregisterCmd":    { "airliner_cc":  5, "macro": "CI_CMD_MID", "airliner_msg": "CI_CmdRegData_t" },
+                    "CI_CmdRegData_t":  { "airliner_cc":  6, "macro": "CI_CMD_MID", "airliner_msg": "CI_CmdRegData_t" },
+                    "CI_HkTlm_t":       {                    "macro": "CI_HK_TLM_MID", "airliner_msg": "CI_HkTlm_t" },
+                    "CI_SendHk":        { "airliner_cc":  0, "macro": "CI_SEND_HK_MID", "airliner_msg": "CI_NoArgCmd_t"},
+                    "ProcessTimeouts":  { "airliner_cc":  0, "macro": "CI_PROCESS_TIMEOUTS_MID", "airliner_msg": "CI_NoArgCmd_t"}
+                },    
+                "scheduler": {
+                    "activities": [
+                        "CI_SEND_HK_MID",
+                        "CI_WAKEUP_MID",
+                        "CI_PROCESS_TIMEOUTS_MID"
+                    ],
+                    "groups": [
+                        { "id": 1, "macro": "CI_SCH_GRP" }
+                    ]
+                },
+                "events": [
+                    {"macro": "CI_INF_EID", "id": 1},
+                    {"macro": "CI_INIT_INF_EID", "id": 2},
+                    {"macro": "CI_CONFIG_TABLE_INF_EID", "id": 3},
+                    {"macro": "CI_CDS_INF_EID", "id": 4},
+                    {"macro": "CI_CMD_INF_EID", "id": 5},
+                    {"macro": "CI_ERR_EID", "id": 6},
+                    {"macro": "CI_INIT_ERR_EID", "id": 7},
+                    {"macro": "CI_CONFIG_TABLE_ERR_EID", "id": 8},
+                    {"macro": "CI_TIMEOUT_TABLE_ERR_EID", "id": 9},
+                    {"macro": "CI_CDS_ERR_EID", "id": 10},
+                    {"macro": "CI_CMD_ERR_EID", "id": 11},
+                    {"macro": "CI_PIPE_ERR_EID", "id": 12},
+                    {"macro": "CI_MSGID_ERR_EID", "id": 13},
+                    {"macro": "CI_MSGLEN_ERR_EID", "id": 14},
+                    {"macro": "CI_LISTENER_CREATE_CHDTASK_ERR_EID", "id": 15},
+                    {"macro": "CI_CMD_INGEST_ERR_EID", "id": 16},
+                    {"macro": "CI_SOCKET_ERR_EID", "id": 17},
+                    {"macro": "CI_ENA_INF_EID", "id": 18},
+                    {"macro": "CI_CMD_INVALID_EID", "id": 19},
+                    {"macro": "CI_CMD_UNAUTHORIZED_EID", "id": 20},
+                    {"macro": "CI_CMD_AUTH_TIMEOUT_EID", "id": 21},
+                    {"macro": "CI_CMD_AUTH_NOT_REG_EID", "id": 22},
+                    {"macro": "CI_CMD_AUTH_INV_MODE_EID", "id": 23},
+                    {"macro": "CI_CMD_AUTH_INV_STATE_EID", "id": 24},
+                    {"macro": "CI_CMD_AUTHORIZED_EID", "id": 25},
+                    {"macro": "CI_CMD_DEAUTH_NOT_REG_EID", "id": 26},
+                    {"macro": "CI_CMD_DEAUTH_INV_MODE_EID", "id": 27},
+                    {"macro": "CI_CMD_DEAUTH_INV_STATE_EID", "id": 28},
+                    {"macro": "CI_CMD_DEAUTHORIZED_EID", "id": 29},
+                    {"macro": "CI_CMD_REGISTERED_EID", "id": 30},
+                    {"macro": "CI_CMD_ALREADY_REGISTERED_EID", "id": 31},
+                    {"macro": "CI_CMD_DEREGISTERED_EID", "id": 32},
+                    {"macro": "CI_CMD_NOT_REGISTERED_EID", "id": 33},
+                    {"macro": "CI_CMD_REG_ERR_EID", "id": 34},
+                    {"macro": "CI_CMD_UPDT_REG_INVLD_STATE_EID", "id": 35},
+                    {"macro": "CI_CMD_UPDATE_REG_EID", "id": 36},
+                    {"macro": "CI_NO_DECODE_FUNC_EID", "id": 37}
+                ],
+                "config": {
+                },
+                "tables": [
+                    {"id": "CI_CONFIG_TABLENAME",  "title": "Configuration",  "isDumpTable": false},
+                    {"id": "TIMEOUT_TBL", "title": "Command Timeout", "isDumpTable": true}
+                ]
+            }
+        }
+    }
+}

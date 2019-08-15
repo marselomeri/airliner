@@ -20,3 +20,17 @@ add_airliner_app_table(
     SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/sc_rts002.c
     INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/src/
 )
+
+add_airliner_app_table(
+    ${APP_NAME}
+    NAME sc_rts003
+    SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/sc_rts003.c
+    INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/src/
+)
+
+add_airliner_app_table(
+    ${APP_NAME}
+    NAME sc_rts004
+    SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/sc_rts004.c
+    INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/src/
+)

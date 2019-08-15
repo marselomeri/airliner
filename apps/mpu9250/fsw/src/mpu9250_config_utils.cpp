@@ -85,7 +85,7 @@ int32 MPU9250::InitConfigTbl()
     iStatus = AcquireConfigPointers();
 
 MPU9250_InitConfigTbl_Exit_Tag:
-    return iStatus;
+    return (iStatus);
 }
 
 
@@ -102,7 +102,7 @@ int32 MPU9250::ValidateConfigTbl(void* ConfigTblPtr)
     /* TODO:  Add validation code here. */
 
 MPU9250_ValidateConfigTbl_Exit_Tag:
-    return iStatus;
+    return (iStatus);
 }
 
 
@@ -152,7 +152,7 @@ int32 MPU9250::AcquireConfigPointers(void)
     }
 
 MPU9250_AcquireConfigPointers_Exit_Tag:
-    return iStatus;
+    return (iStatus);
 }
 
 

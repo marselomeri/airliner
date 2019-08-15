@@ -5,7 +5,9 @@
 extern "C" {
 #endif
 
-#define HMC5883_MAIN_TASK_PERF_ID      0
+#define HMC5883_MAIN_TASK_PERF_ID   87
+#define HMC5883_RECEIVE_PERF_ID     88
+#define HMC5883_SEND_PERF_ID        89
 
 #ifdef __cplusplus
 }

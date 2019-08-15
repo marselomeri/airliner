@@ -1,0 +1,83 @@
+- var pluginName = query.pluginName;
+table.table.table-condensed
+  tbody
+    tr
+      th Commands Accepted 
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/cmdAcceptCount'}]}) ---
+      td
+    tr
+      th Commands Rejected
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/cmdRejectCount'}]}) ---
+      td
+    tr
+      th Messages Received
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/msgRecvCount'}]}) ---
+      td
+    tr
+      th Messages Per Second
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/msgRecvPerSecond'}]}) ---
+      td
+    tr
+      th Parameters Updated
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/paramsUpdated'}]}) ---
+      td
+    tr
+      th Parameters Per Second
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/paramsUpdatedPerSecond'}]}) ---
+      td
+    tr
+      th Parameters Forwarded
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/paramsForwarded'}]}) ---
+      td
+    tr
+      th Params Forwarded Per Second
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/paramsForwardedPerSecond'}]}) ---
+      td
+    tr
+      th Subscribers
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/subscribers'}]}) ---
+      td
+    tr
+      th Subscriptions
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/subscriptions'}]}) ---
+      td
+    tr
+      th Input Stream
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/inputStreamID'}]}) ---
+      td
+    tr
+      th Output Event Stream
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/outputEventsStreamID'}]}) ---
+      td
+    tr
+      th Variable Def Request Stream
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/varDefReqStreamID'}]}) ---
+      td
+    tr
+      th Telemetry Def Request Stream
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/tlmDefReqStreamID'}]}) ---
+      td
+    tr
+      th Subscription Request Stream
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/reqSubscribeStreamID'}]}) ---
+      td
+
+              
+footer.btn-group(role="group")       
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/' + pluginName + '/reset'}}) Reset
+  

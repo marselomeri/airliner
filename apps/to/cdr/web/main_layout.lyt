@@ -1,0 +1,204 @@
+{
+ "settings": {
+  "hasHeaders": true,
+  "constrainDragToContainer": false,
+  "reorderEnabled": true,
+  "selectionEnabled": true,
+  "popoutWholeStack": false,
+  "blockedPopoutsThrowError": true,
+  "closePopoutsOnUnload": true,
+  "showPopoutIcon": false,
+  "showMaximiseIcon": true,
+  "showCloseIcon": true,
+  "responsiveMode": "onload",
+  "tabOverlapAllowance": 0,
+  "reorderOnTabMenuClick": true,
+  "tabControlOffset": 10
+ },
+ "dimensions": {
+  "borderWidth": 5,
+  "borderGrabWidth": 15,
+  "minItemHeight": 10,
+  "minItemWidth": 10,
+  "headerHeight": 20,
+  "dragProxyWidth": 300,
+  "dragProxyHeight": 200
+ },
+ "labels": {
+  "close": "close",
+  "maximise": "maximise",
+  "minimise": "minimise",
+  "popout": "open in new window",
+  "popin": "pop in",
+  "tabDropdown": "additional tabs"
+ },
+ "content": [
+  {
+   "type": "row",
+   "isClosable": true,
+   "reorderEnabled": true,
+   "title": "",
+   "content": [
+    {
+     "type": "column",
+     "isClosable": true,
+     "reorderEnabled": true,
+     "title": "",
+     "width": 50,
+     "content": [
+      {
+       "type": "stack",
+       "header": {},
+       "isClosable": true,
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "width": 50,
+       "height": 37.35498839907193,
+       "content": [
+        {
+         "title": "HK",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "flight/apps/to/hk"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
+      },
+      {
+       "type": "stack",
+       "header": {},
+       "isClosable": true,
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "height": 62.64501160092808,
+       "content": [
+        {
+         "title": "Events",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/core/evs/efltr?appName=TO"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        },
+        {
+         "title": "App Ctrl",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/core/es/appctrl?appName=TO"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        },
+        {
+         "title": "Scheduling",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/apps/sch/app_sch?appName=TO"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        },
+        {
+         "title": "Telemetry",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "flight/apps/to/tlm_app?appName=TO"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        },
+        {
+         "title": "Tables",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "/flight/core/tbl/tbl_ctl?appName=TO"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "stack",
+     "header": {},
+     "isClosable": true,
+     "reorderEnabled": true,
+     "title": "",
+     "activeItemIndex": 0,
+     "width": 50,
+     "content": [
+      {
+       "title": "Diag",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "flight/apps/to/diag"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "Diag - Message Flows",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "flight/apps/to/diag_msg_flow"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "Diag - Priority Queues",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "flight/apps/to/diag_pqueue"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "Diag - Output Queue",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "flight/apps/to/diag_oqueue"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "isClosable": true,
+ "reorderEnabled": true,
+ "title": "",
+ "openPopouts": [],
+ "maximisedItemId": null,
+ "database": {}
+}

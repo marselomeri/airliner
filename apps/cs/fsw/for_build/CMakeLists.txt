@@ -49,6 +49,7 @@ add_airliner_app_def(cs
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_memory_cmds.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_msg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_msgdefs.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_symbols.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_table_cmds.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_table_cmds.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_table_processing.c
@@ -62,7 +63,16 @@ add_airliner_app_def(cs
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
 
     USER_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/user_doxy.in
-    DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in
+    DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in    
+    
+    MSG_OVERRIDES   ${CMAKE_CURRENT_SOURCE_DIR}/cs_msg_overrides.json 
+
+    COMMANDER_PLUGIN
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr
+    
+    REFERENCE_CONFIG
+        ${PROJECT_SOURCE_DIR}/apps/cs/fsw/mission_inc
+        ${PROJECT_SOURCE_DIR}/apps/cs/fsw/platform_inc
 )
 
 

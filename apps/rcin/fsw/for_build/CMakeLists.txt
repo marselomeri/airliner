@@ -12,8 +12,8 @@
 #    notice, this list of conditions and the following disclaimer in
 #    the documentation and/or other materials provided with the
 #    distribution.
-# 3. Neither the name Windhover Labs nor the names of its 
-#    contributors may be used to endorse or promote products derived 
+# 3. Neither the name Windhover Labs nor the names of its
+#    contributors may be used to endorse or promote products derived
 #    from this software without specific prior written permission.
 #
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
@@ -37,6 +37,7 @@ add_airliner_app_def(rcin
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/rcin_app.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/rcin_events.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/rcin_msg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/rcin_symbols.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/rcin_version.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/rcin_custom.h
 
@@ -45,6 +46,15 @@ add_airliner_app_def(rcin
 
     USER_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/user_doxy.in
     DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in
+
+    MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/rcin_msg_overrides.json
+
+    COMMANDER_PLUGIN
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr
+    
+    REFERENCE_CONFIG
+        ${PROJECT_SOURCE_DIR}/apps/rcin/fsw/mission_inc
+        ${PROJECT_SOURCE_DIR}/apps/rcin/fsw/platform_inc
 )
 
 add_airliner_app_unit_test(rcin-ut
@@ -64,11 +74,11 @@ add_airliner_app_unit_test(rcin-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/rcin_events.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/rcin_msg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/rcin_version.h
-        
+
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
-        
+
     VALGRIND_SUPPRESSION_FILE
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/valgrind.supp
 )

@@ -156,7 +156,7 @@ extern "C" {
 **  \par Limits:
 **       0 to MAX_PRIORITY (usually 255)
 */
-#define VC_STREAMING_TASK_PRIORITY      (150)
+#define VC_STREAMING_TASK_PRIORITY      (91)
 
 /** \brief Streaming task name
 **
@@ -247,7 +247,7 @@ extern "C" {
 **  \par Limits:
 **       V4L specific.
 */
-#define VC_V4L_VIDEO_FORMAT             V4L2_PIX_FMT_MJPEG 
+#define VC_V4L_VIDEO_FORMAT             V4L2_PIX_FMT_MJPEG
 
 /** \brief V4L field order
 **

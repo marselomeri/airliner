@@ -1,6 +1,7 @@
 add_subdirectory(math math)
 add_subdirectory(geo geo)
 add_subdirectory(geo_lookup geo_lookup)
+add_subdirectory(systemlib systemlib)
 
 set(PX4LIB_SOURCES 
     ${PX4LIB_LIB_SOURCES}

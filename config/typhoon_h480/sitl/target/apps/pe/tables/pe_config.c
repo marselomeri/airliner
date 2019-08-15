@@ -42,9 +42,6 @@ static OS_USED CFE_TBL_FileDef_t CFE_TBL_FileDef =
 /* Default ULR config table data */
 PE_ConfigTbl_t PE_ConfigTbl =
 {
-	/* TODO:  Define table. */
-    //FUSION
-    145,
 	//VXY_PUB_THRESH
     .3f,
 	//Z_PUB_THRESH
@@ -53,8 +50,12 @@ PE_ConfigTbl_t PE_ConfigTbl =
     .012f,
 	//ACCEL_Z_STDDEV
     .02f,
+	//BARO_FUSE
+    1,
 	//BARO_STDDEV
     3.0f,
+	//GPS_FUSE
+    1,
 	//GPS_DELAY
     .29f,
 	//GPS_XY_STDDEV
@@ -69,6 +70,8 @@ PE_ConfigTbl_t PE_ConfigTbl =
     3.0f,
 	//GPS_EPV_MAX
     5.0f,
+	//LAND_FUSE
+    1,
 	//LAND_Z_STDDEV
     .03f,
 	//LAND_VXY_STDDEV
@@ -82,13 +85,72 @@ PE_ConfigTbl_t PE_ConfigTbl =
 	//PN_T_NOISE_DENSITY
     .001f,
 	//T_MAX_GRADE
-    1.0f,
+    0.0f,
 	//FAKE_ORIGIN
     0,
 	//INIT_ORIGIN_LAT
     29.562144f,
 	//INIT_ORIGIN_LON
-    -95.144554
+    -95.144554,
+    //ULR_FUSE
+    TRUE,
+    //ULR_STDDEV
+    .05f,
+    //ULR_OFF_Z
+    0.0f,
+    // FLOW_FUSE
+    FALSE,
+    /**
+     * Optical flow scale
+     *
+     * @group Local Position Estimator
+     * @unit m
+     * @min 0.1
+     * @max 10.0
+     * @decimal 3
+     */
+    1.3f,
+    /**
+     * Optical flow rotation (roll/pitch) noise gain
+     *
+     * @group Local Position Estimator
+     * @unit m/s / (rad)
+     * @min 0.1
+     * @max 10.0
+     * @decimal 3
+     */
+    7.0f,
+
+    /**
+     * Optical flow angular velocity noise gain
+     *
+     * @group Local Position Estimator
+     * @unit m/s / (rad/s)
+     * @min 0.0
+     * @max 10.0
+     * @decimal 3
+     */
+    7.0f,
+
+    /**
+     * Optical flow minimum quality threshold
+     *
+     * @group Local Position Estimator
+     * @min 0
+     * @max 255
+     * @decimal 0
+     */
+    150,
+    
+    /**
+     * Optical flow minimum AGL
+     *
+     * @group Local Position Estimator
+     * @min 0.0
+     * @max 10.0
+     * @decimal 3
+     */
+    0.5f
 };
 
 /*

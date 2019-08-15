@@ -58,15 +58,31 @@ extern "C" {
 /************************************************************************
  ** Local Defines
  *************************************************************************/
+/** \brief Pipe depth for the data pipe
+**
+**  \par Limits:
+**       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
+*/
+#define BAT_DATA_PIPE_DEPTH            (2)
+
+/** \brief Pipe name for the Scheduler pipe
+**
+**  \par Limits:
+**       Note, this name must fit in OS_MAX_API_NAME.
+*/
+#define BAT_DATA_PIPE_NAME             ("BAT_DATA_PIPE")
+
 
 /************************************************************************
  ** Local Structure Definitions
  *************************************************************************/
 
-#define BAT_LISTENER_TASK_NAME  		"BAT_LISTENER"
-#define BAT_LISTENER_TASK_STACK_SIZE	16000
-#define BAT_LISTENER_TASK_PRIORITY		100
-#define BAT_MUTEX_NAME 					"BAT_MUTEX"
+#define BAT_LISTENER_TASK_NAME          ("BAT_LISTENER")
+#define BAT_LISTENER_TASK_PRIORITY      (103)
+#define BAT_MUTEX_NAME                  ("BAT_MUTEX")
+#define BAT_CURRENT_FILTER_INIT_VALUE   (-1.0f)
+#define BAT_VOLTAGE_FILTER_INIT_VALUE   (-1.0f)
+#define BAT_THROTTLE_FILTER_INIT_VALUE  (-1.0f)
 
 extern "C" void BAT_ListenerTaskMain();
 
@@ -85,11 +101,17 @@ public:
     BAT();
     ~BAT();
 
+    /** \brief CFE Event Table */
+    CFE_EVS_BinFilter_t  EventTbl[BAT_EVT_CNT];
+
     /**\brief Scheduling Pipe ID */
     CFE_SB_PipeId_t SchPipeId;
 
     /** \brief Command Pipe ID */
     CFE_SB_PipeId_t CmdPipeId;
+
+    /** \brief Data Pipe ID */
+    CFE_SB_PipeId_t DataPipeId;
 
     /* Task-related */
 
@@ -113,16 +135,28 @@ public:
     /** \brief ID of listener child task */
     uint32 ListenerTaskID;
 
-    uint32 Mutex;
+    /** \brief Mutex for publishing and modifying data */
+    uint32 BatteryMutex;
 
-    bool ChildContinueFlag;
+    /** \brief Flag for continueing listener thread execution */
+    osalbool m_ChildContinueFlag;
 
-    CFE_TIME_SysTime_t SampleTime;
+    /** \brief CFE time for comparision */
+    CFE_TIME_SysTime_t m_SampleTime;
 
-    float RemainingVoltage;
-    float RemainingCapacity;
-    float Discharged;
+    /** \brief Remaining voltage estimate */
+    float m_RemainingVoltage;
+    
+    /** \brief Remaining capacity estimate */
+    float m_RemainingCapacity;
+    
+    /** \brief Discharged current estimate */
+    float m_Discharged;
+    
+    /** \brief Filtered throttle value */
+    float m_ThrottleFiltered;
 
+    /** \brief Current value table for subscribed messages */
     BAT_CurrentValueTable_t CVT;
 
     /************************************************************************/
@@ -255,6 +289,19 @@ public:
     void ProcessCmdPipe(void);
 
     /************************************************************************/
+    /** \brief Battery Monitor Task incoming data processing
+     **
+     **  \par Description
+     **       This function processes incoming data subscribed
+     **       by BAT application
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
+    void ProcessDataPipe(void);
+
+    /************************************************************************/
     /** \brief Battery Monitor Task application commands
      **
      **  \par Description
@@ -283,19 +330,6 @@ public:
     void ReportHousekeeping(void);
 
     /************************************************************************/
-    /** \brief Sends the BatteryStatusMsg message.
-     **
-     **  \par Description
-     **       This function publishes the BatteryStatusMsg message containing
-     **       <TODO>
-     **
-     **  \par Assumptions, External Events, and Notes:
-     **       None
-     **
-     *************************************************************************/
-    void SendBatteryStatusMsg(void);
-
-    /************************************************************************/
     /** \brief Verify Command Length
      **
      **  \par Description
@@ -313,15 +347,14 @@ public:
      **  \endreturns
      **
      *************************************************************************/
-    boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
+    osalbool VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
 
 private:
     /************************************************************************/
     /** \brief Initialize the BAT configuration tables.
     **
     **  \par Description
-    **       This function initializes BAT's configuration tables.  This
-    **       includes <TODO>.
+    **       This function initializes BAT's configuration table.
     **
     **  \par Assumptions, External Events, and Notes:
     **       None
@@ -352,21 +385,240 @@ private:
     **
     *************************************************************************/
     int32 AcquireConfigPointers(void);
-    bool  ChildContinueExec(void);
+    
+    /************************************************************************/
+    /** \brief Child Continue Execution
+    **
+    **  \par Description
+    **       This function is evaluated in the child task loop to determine
+    **       if the child task should continue cycling
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \returns
+    **  \retcode #TRUE if yes #FALSE if not  \endcode
+    **  \endreturns
+    **
+    *************************************************************************/
+    osalbool  ChildContinueExec(void);
+    
+    /************************************************************************/
+    /** \brief Stop Child Task Execution
+    **
+    **  \par Description
+    **       This function stops execution of the child task by setting the
+    **       continue execution flag to false
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    *************************************************************************/
     void  StopChild(void);
+    
+    /************************************************************************/
+    /** \brief Initialize Listener Task
+    **
+    **  \par Description
+    **       This function intitializes the child task with CFE
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \returns
+    **  \retcode #CFE_SUCCESS  if success, error code otherwise  \endcode
+    **  \endreturns
+    **
+    *************************************************************************/
     int32 InitListenerTask(void);
+    
+    /************************************************************************/
+    /** \brief Get Filtered Voltage
+    **
+    **  \par Description
+    **       This function returns the filtered voltage value
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \param [in]   Voltage        #float of current voltage
+    **
+    **  \returns
+    **  Filtered voltage
+    **  \endreturns
+    **
+    *************************************************************************/
     float GetFilteredVoltage(float Voltage);
+    
+    /************************************************************************/
+    /** \brief Get Filtered Current
+    **
+    **  \par Description
+    **       This function returns the filtered current value
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \param [in]   Current        #float of current value
+    **
+    **  \returns
+    **  Filtered Current
+    **  \endreturns
+    **
+    *************************************************************************/
     float GetFilteredCurrent(float Current);
+    
+    /************************************************************************/
+    /** \brief Get Filtered Throttle
+    **
+    **  \par Description
+    **       This function returns the filtered throttle vlaue
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \param [in]   Throttle        #float of current throttle
+    **
+    **  \returns
+    **  Filtered thottle
+    **  \endreturns
+    **
+    *************************************************************************/
+    float GetFilteredThrottle(float Throttle);
+    
+    /************************************************************************/
+    /** \brief Get Discharged Amount
+    **
+    **  \par Description
+    **       This function returns amount of mAh discharged from the battery
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \param [in]   Current        #float of current value
+    **
+    **  \returns
+    **  Discharged amount
+    **  \endreturns
+    **
+    *************************************************************************/
     float GetDischarged(float Current);
-    float GetRemaining(float Voltage, float Current, float ThrottleNormalized, bool Armed);
+    
+    /************************************************************************/
+    /** \brief Get Charge Remaining
+    **
+    **  \par Description
+    **       This function returns the amount of charge remaining.
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \param [in]   Voltage                   #float of current voltage
+    **  \param [in]   Current                   #float of current value
+    **  \param [in]   ThrottleNormalized        #float of current filtered throttle
+    **  \param [in]   Armed                     #osalbool of current voltage
+    **
+    **  \returns
+    **  Percentage of battery remaining
+    **  \endreturns
+    **
+    *************************************************************************/
+    float GetRemaining(float Voltage, float Current, float ThrottleNormalized, osalbool Armed);
+    
+    /************************************************************************/
+    /** \brief Get Warning Severity
+    **
+    **  \par Description
+    **       This function returns the current severity of battery level
+    **       based on configured values
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \returns
+    **  #PX4_BatteryWarningSeverity_t for current severity level
+    **  \endreturns
+    **
+    *************************************************************************/
     PX4_BatteryWarningSeverity_t GetWarningSeverity(float Remaining);
+    
+    /************************************************************************/
+    /** \brief Get Voltage Scale
+    **
+    **  \par Description
+    **       This function returns the voltage scale
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \returns
+    **  #float of voltage scale
+    **  \endreturns
+    **
+    *************************************************************************/
     float GetScale(void);
 
-
+    /************************************************************************/
+    /** \brief Publish Battery Status
+    **
+    **  \par Description
+    **       This function publishes the battery status message to the CFE SB
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \returns
+    **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
+    **  \endreturns
+    **
+    *************************************************************************/
     void  PublishBatteryStatus(void);
 
+    /************************************************************************/
+    /** \brief Initialize Device
+    **
+    **  \par Description
+    **       This function intializes the custom layer for the battery driver
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \returns
+    **  #CFE_SUCCESS if success, error code otherwise \endcode
+    **  \endreturns
+    **
+    *************************************************************************/
     int32 InitDevice(void);
+    
+    /************************************************************************/
+    /** \brief Close Device
+    **
+    **  \par Description
+    **       This function closes the custom layer driver
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    *************************************************************************/
     void  CloseDevice(void);
+    
+    /************************************************************************/
+    /** \brief Read Device
+    **
+    **  \par Description
+    **       This function reads the battery information from the connected device
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \param [in/out]   Voltage         Pointer to #float of voltage
+    **  \param [in/out]   Current         Pointer to #float of current
+    **
+    **  \returns
+    **  #CFE_SUCCESS if success, error code otherwise \endcode
+    **  \endreturns
+    **
+    *************************************************************************/
     int32 ReadDevice(float &Voltage, float &Current);
 
 public:
@@ -388,6 +640,16 @@ public:
     *************************************************************************/
     static int32  ValidateConfigTbl(void*);
 
+    /************************************************************************/
+    /** \brief Listener Task Main
+    **
+    **  \par Description
+    **       This is the executing function of the child task
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    *************************************************************************/
     void  ListenerTaskMain(void);
 };
 

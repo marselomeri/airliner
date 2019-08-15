@@ -162,6 +162,7 @@ private:
 	/** \brief Buffered sample -1 */
 	float           _delay_element_1;
 
+
 	/** \brief Buffered sample -2*/
 	float           _delay_element_2;
 };

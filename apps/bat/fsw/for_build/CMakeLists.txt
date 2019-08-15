@@ -5,16 +5,26 @@ add_airliner_app_def(bat
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/bat_app.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/bat_app.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/bat_config_utils.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/bat_symbols.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/bat_events.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/bat_msg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/bat_tbldefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/bat_version.h
-   
+
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
 
     USER_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/user_doxy.in
     DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in
+
+    COMMANDER_PLUGIN
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr
+    MSG_OVERRIDES 
+        ${CMAKE_CURRENT_SOURCE_DIR}/bat_msg_overrides.json
+    
+    REFERENCE_CONFIG
+        ${PROJECT_SOURCE_DIR}/apps/bat/fsw/mission_inc
+        ${PROJECT_SOURCE_DIR}/apps/bat/fsw/platform_inc
 )
 
 add_airliner_app_unit_test(bat-ut
@@ -40,11 +50,11 @@ add_airliner_app_unit_test(bat-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/bat_msg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/bat_tbldefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/bat_version.h
-        
+
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
-        
+
     VALGRIND_SUPPRESSION_FILE
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/valgrind.supp
 )

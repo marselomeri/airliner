@@ -1,0 +1,47 @@
+- var pluginName = query.pluginName;
+table.table.table-condensed
+  tbody
+    tr
+      th Plugin Commands Accepted 
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/cmdAcceptCount'}]}) ---
+      td
+    tr
+      th Plugin Commands Rejected
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/cmdRejectCount'}]}) ---
+      td
+    tr
+      th Commands Sent
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/msgSentCount'}]}) ---
+      td
+    tr
+      th Arguments Encoded
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/argsEncoded'}]}) ---
+      td
+    tr
+      th Command Def Request Count
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/cmdDefReqCount'}]}) ---
+      td
+    tr
+      th Binary Output Stream ID
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/binaryOutputStreamID'}]}) ---
+      td
+    tr
+      th Command Def Request Stream ID
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/cmdDefReqStreamID'}]}) ---
+      td
+    tr
+      th Command Send Stream ID
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/cmdSendStreamID'}]}) ---
+      td
+
+              
+footer.btn-group(role="group")       
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/' + pluginName + '/reset'}}) Reset

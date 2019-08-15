@@ -1,0 +1,23 @@
+table.table.table-condensed
+  tbody
+    tr
+      th State
+      td
+        div(data-cdr={tlm:[{name:'/CS/CS_HkPacket_t/OSCSState'}]}) ---
+      td
+        .btn-group(role="group")
+           button.btn.cdr-primary(data-cdr={cmd:{name:'/CS/EnableOS'}}) Enable 
+           button.btn.cdr-primary(data-cdr={cmd:{name:'/CS/DisableOS'}}) Disable
+    tr
+      th Error Count
+      td
+        span(data-cdr={tlm: [{name:'/CS/CS_HkPacket_t/OSCSErrCounter'}]}) ---
+      td
+    tr
+      th Baseline
+      td
+        span(data-cdr={tlm: [{name:'/CS/CS_HkPacket_t/OSBaseline'}]}) ---
+      td
+        .btn-group(role="group")
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/CS/ReportBaselineOS'}}) Report 
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/CS/RecomputeBaselineOS'}}) Recompute

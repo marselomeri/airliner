@@ -42,6 +42,7 @@
 ** Includes
 *************************************************************************/
 #include "cfe.h"
+#include "ea_platform_cfg.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -206,7 +207,7 @@ extern "C" {
 **       - Error parsing proc tree
 **
 **  \par Evidence of failure may be found in the following telemetry:
-**       - ActiveAppUtil will not be a valid number TODO
+**       - ActiveAppUtil will not be a valid number
 **
 **  \par Criticality
 **       None
@@ -237,38 +238,16 @@ typedef struct
 */
 typedef struct
 {
-    uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
-    char   interpreter[OS_MAX_PATH_LEN];
-    char   script[OS_MAX_PATH_LEN];
+    /** \brief cFE SB Cmd Msg Hdr */
+    uint8  CmdHeader[CFE_SB_CMD_HDR_SIZE];
+
+    /** \brief Command to execute */
+    char   Cmd[EA_MAX_PATH_LEN];
+
+    /** \brief Arguments for the command */
+    char   Args[EA_MAX_PATH_LEN];
 
 } EA_StartCmd_t;
-
-/** 
-**  \brief 
-**  Boilerplate example of application-specific incoming data
-*/
-typedef struct
-{
-    uint8   TlmHeader[CFE_SB_TLM_HDR_SIZE];
-    uint32  counter;
-
-    /*        Add input data to this application here, such as raw data read from I/O
-    **        devices.
-    **        Option: for data that is already defined by another app, include
-    **        that app's message header above.
-    */
-
-} EA_InData_t;
-
-/** 
-**  \brief 
-**  Boilerplate example of application-specific outgoing data
-*/
-typedef struct
-{
-    uint8   ucTlmHeader[CFE_SB_TLM_HDR_SIZE];
-    uint32  uiCounter;
-} EA_OutData_t;
 
 /** 
 **  \brief EA application housekeeping data
@@ -279,16 +258,16 @@ typedef struct
     uint8              TlmHeader[CFE_SB_TLM_HDR_SIZE];
 
     /** \eatlmmnemonic \EA_CMDACPTCNT
-        \brief Count of accepted commands */
+    \brief Count of accepted commands */
     uint8              usCmdCnt;   
 
     /** \eatlmmnemonic \EA_CMDRJCTCNT
-        \brief Count of failed commands */
+    \brief Count of failed commands */
     uint8              usCmdErrCnt; 
 
     /** \eatlmmnemonic \EA_
-            \brief Name of current running application */
-    char			   ActiveApp[OS_MAX_PATH_LEN];
+    \brief Name of current running application */
+    char			   ActiveApp[EA_MAX_PATH_LEN];
 
     /** \eatlmmnemonic \EA_
 		\brief CPU utilization of current running application */
@@ -299,11 +278,11 @@ typedef struct
     int32			   ActiveAppPID;
 
     /** \eatlmmnemonic \EA_
-		\brief Name of last run application */
-    char			   LastAppRun[OS_MAX_PATH_LEN];
+	\brief Name of last run application */
+    char			   LastAppRun[EA_MAX_PATH_LEN];
 
     /** \eatlmmnemonic \EA_
-		\brief Last run application return code */
+	\brief Last run application return code */
     int32			   LastAppStatus;
 
 } EA_HkTlm_t;
@@ -315,9 +294,14 @@ typedef struct
 */
 typedef struct
 {
-    uint8   ucTlmHeader[CFE_SB_TLM_HDR_SIZE];
-    char	AppInterpreter[OS_MAX_PATH_LEN];
-    char	AppScript[OS_MAX_PATH_LEN];
+    /** \brief cFE SB Tlm Msg Hdr */
+    uint8   TlmHeader[CFE_SB_TLM_HDR_SIZE];
+    
+    /** \brief Command being executed */
+    char	Cmd[EA_MAX_PATH_LEN];
+    
+    /** \brief Arguments for the command */
+    char	Args[EA_MAX_PATH_LEN];
 
 } EA_ChildData_t;
 

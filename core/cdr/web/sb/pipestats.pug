@@ -1,0 +1,25 @@
+button.btn.cdr-primary.cdr-in-panel-header(data-cdr={cmd:{name:'/CFE/CFE_SB_SendStats'}}) Send
+div.widget-body.table-responsive
+        table.table.table-bordered.table-condensed
+          thead
+            tr
+              th Pipe ID
+              th Depth
+              th In Use
+              th Peak In Use
+          tbody
+            - for (var i = 0; i < 64; ++i) {
+              - var PipeId = '/CFE/CFE_SB_StatMsg_t/Payload.PipeDepthStats[' + i + '].PipeId'
+              - var Depth = '/CFE/CFE_SB_StatMsg_t/Payload.PipeDepthStats[' + i + '].Depth'
+              - var InUse = '/CFE/CFE_SB_StatMsg_t/Payload.PipeDepthStats[' + i + '].InUse'
+              - var PeakInUse = '/CFE/CFE_SB_StatMsg_t/Payload.PipeDepthStats[' + i + '].PeakInUse'
+              tr
+                td 
+                  span(data-cdr={tlm:[{name:PipeId}]}) ---
+                td 
+                  span(data-cdr={tlm:[{name:Depth}]}) ---
+                td
+                  span(data-cdr={tlm:[{name:InUse}]}) ---
+                td
+                  span(data-cdr={tlm:[{name:PeakInUse}]}) ---
+            - }  

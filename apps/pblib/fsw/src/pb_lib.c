@@ -41,6 +41,11 @@
 PBLIB_AppData_t PBLIB_AppData;
 
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Register CFE ES serialization functions                         */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 uint32 CFE_ES_RegisterSerializationFuncs()
 {
 	int32 Status = CFE_SUCCESS;
@@ -213,6 +218,12 @@ uint32 CFE_ES_RegisterSerializationFuncs()
 	{
 		goto CFE_ES_RegisterSerializationFuncs_Exit_Tag;
 	}
+	
+    Status = PBLIB_RegisterTlmMessage(0x0a50, "PX4_VehicleGlobalPositionMsg_t");
+	if (Status != CFE_SUCCESS)
+	{
+		goto CFE_ES_RegisterSerializationFuncs_Exit_Tag;
+	}
 
 CFE_ES_RegisterSerializationFuncs_Exit_Tag:
     return Status;
@@ -254,6 +265,7 @@ PBLIB_LibInit_Exit_Tag:
     return Status;
  
 }/* End PBLIB_LibInit */
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -334,6 +346,7 @@ PBLIB_RegisterTlmMessage_Exit_Tag:
     return status;
 }/* End PBLIB_RegisterTlmMessage */
 
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Deregister Message		                                       */
@@ -373,6 +386,7 @@ PBLIB_DeregisterCmdMessage_Exit_Tag:
     return status;
 }/* End PBLIB_DeregisterCmdMessage */
 
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Deregister Telemetry Message		                               */
@@ -411,6 +425,7 @@ int32 PBLIB_DeregisterTlmMessage(CFE_SB_MsgId_t msgId)
 PBLIB_DeregisterTlmMessage_Exit_Tag:
     return status;
 }/* End PBLIB_DeregisterCmdMessage */
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -492,6 +507,7 @@ PBLIB_GetTlmSerializationFunc_Exit_Tag:
     return funcAddr;
 }/* End PBLIB_GetCmdSerializationFunc */
 
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Get Command Deserialization Function Address                    */
@@ -530,6 +546,7 @@ PBLib_DecodeFuncPtr_t PBLIB_GetCmdDeserializationFunc(CFE_SB_MsgId_t msgId, uint
 PBLIB_GetCmdDeserializationFunc_Exit_Tag:
     return funcAddr;
 }/* End PBLIB_GetCmdSerializationFunc */
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */

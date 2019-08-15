@@ -6,6 +6,9 @@
 #include "lgc_app.h"
 #include "lgc_msg.h"
 #include "lgc_version.h"
+#include "px4lib.h"
+#include "px4lib_msgids.h"
+#include "prm_ids.h"
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -141,7 +144,7 @@ int32 LGC::InitPipe()
     }
 
 LGC_InitPipe_Exit_Tag:
-    return iStatus;
+    return (iStatus);
 }
     
 
@@ -232,7 +235,6 @@ LGC_InitApp_Exit_Tag:
 /* Receive and Process Messages                                    */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 int32 LGC::RcvSchPipeMsg(int32 iBlocking)
 {
     int32           iStatus = CFE_SUCCESS;
@@ -254,36 +256,44 @@ int32 LGC::RcvSchPipeMsg(int32 iBlocking)
         switch (MsgId)
         {
             case LGC_WAKEUP_MID:
+            {
                 CheckSwitchPosition();
                 break;
-
+            }
             case LGC_SEND_HK_MID:
+            {
                 ProcessCmdPipe();
                 ReportHousekeeping();
                 break;
+            }
             case PX4_MANUAL_CONTROL_SETPOINT_MID:
+            {
                 memcpy(&CVT.m_ManualControlSetpointMsg, MsgPtr, sizeof(CVT.m_ManualControlSetpointMsg));
                 break;
+            }
             case PX4_VEHICLE_STATUS_MID:
+            {
                 memcpy(&CVT.m_VehicleStatusMsg, MsgPtr, sizeof(CVT.m_VehicleStatusMsg));
                 break;
-
+            }
             default:
+            {
                 (void) CFE_EVS_SendEvent(LGC_MSGID_ERR_EID, CFE_EVS_ERROR,
                      "Recvd invalid SCH msgId (0x%04X)", MsgId);
+            }
         }
     }
     else if (iStatus == CFE_SB_NO_MESSAGE)
     {
-        /* TODO: If there's no incoming message, you can do something here, or 
-         * nothing.  Note, this section is dead code only if the iBlocking arg
+        /* If there's no incoming message, do nothing here. 
+         * Note, this section is dead code only if the iBlocking arg
          * is CFE_SB_PEND_FOREVER. */
         iStatus = CFE_SUCCESS;
     }
     else if (iStatus == CFE_SB_TIME_OUT)
     {
-        /* TODO: If there's no incoming message within a specified time (via the
-         * iBlocking arg, you can do something here, or nothing.  
+        /* If there's no incoming message within a specified time (via the
+         * iBlocking arg, you can do nothing here.  
          * Note, this section is dead code only if the iBlocking arg
          * is CFE_SB_PEND_FOREVER. */
         iStatus = CFE_SUCCESS;
@@ -303,10 +313,9 @@ int32 LGC::RcvSchPipeMsg(int32 iBlocking)
 /* Process Incoming Commands                                       */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void LGC::ProcessCmdPipe()
 {
-    int32 iStatus = CFE_SUCCESS;
+    int32 iStatus             = CFE_SUCCESS;
     CFE_SB_Msg_t*   CmdMsgPtr = NULL;
     CFE_SB_MsgId_t  CmdMsgId  = 0;
 
@@ -320,10 +329,12 @@ void LGC::ProcessCmdPipe()
             switch (CmdMsgId)
             {
                 case LGC_CMD_MID:
+                {
                     ProcessAppCmds(CmdMsgPtr);
                     break;
-
+                }
                 default:
+                {
                     /* Bump the command error counter for an unknown command.
                      * (This should only occur if it was subscribed to with this
                      *  pipe, but not handled in this switch-case.) */
@@ -331,6 +342,7 @@ void LGC::ProcessCmdPipe()
                     (void) CFE_EVS_SendEvent(LGC_MSGID_ERR_EID, CFE_EVS_ERROR,
                                       "Recvd invalid CMD msgId (0x%04X)", (unsigned short)CmdMsgId);
                     break;
+                }
             }
         }
         else if (iStatus == CFE_SB_NO_MESSAGE)
@@ -344,6 +356,7 @@ void LGC::ProcessCmdPipe()
             break;
         }
     }
+    return;
 }
 
 
@@ -363,6 +376,7 @@ void LGC::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
         switch (uiCmdCode)
         {
             case LGC_NOOP_CC:
+            {
                 HkTlm.usCmdCnt++;
                 (void) CFE_EVS_SendEvent(LGC_CMD_NOOP_EID, CFE_EVS_INFORMATION,
                     "Recvd NOOP. Version %d.%d.%d.%d",
@@ -371,19 +385,23 @@ void LGC::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
                     LGC_REVISION,
                     LGC_MISSION_REV);
                 break;
-
+            }
             case LGC_RESET_CC:
+            {
                 HkTlm.usCmdCnt = 0;
                 HkTlm.usCmdErrCnt = 0;
                 break;
-
+            }
             default:
+            {
                 HkTlm.usCmdErrCnt++;
                 (void) CFE_EVS_SendEvent(LGC_CC_ERR_EID, CFE_EVS_ERROR,
                                   "Recvd invalid command code (%u)", (unsigned int)uiCmdCode);
                 break;
+            }
         }
     }
+    return;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -391,19 +409,12 @@ void LGC::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 /* Send LGC Housekeeping                                           */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void LGC::ReportHousekeeping()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&HkTlm);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&HkTlm);
+    return;
 }
-
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/*                                                                 */
-/* Publish Output Data                                             */
-/*                                                                 */
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -435,7 +446,7 @@ boolean LGC::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
         }
     }
 
-    return bResult;
+    return (bResult);
 }
 
 
@@ -522,6 +533,8 @@ void LGC::ExtendGear(void)
     }
 
     SetMotorOutputs(min_pwm);
+
+    return;
 }
 
 
@@ -540,6 +553,8 @@ void LGC::RetractGear(void)
     }
 
     SetMotorOutputs(max_pwm);
+
+    return;
 }
 
 

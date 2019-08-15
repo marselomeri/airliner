@@ -55,6 +55,7 @@
 #define PX4_SAT_INFO_MAX_SATELLITES		20
 #define PX4_NUM_MOTOR_OUTPUTS			8
 #define PX4_ADSB_CALLSIGN_LEN			8
+#define PX4_OPTICAL_FLOW_FRAME_SIZE     4096
 
 #define PX4_RELATIVE_TIMESTAMP_INVALID  0x7fffffff
 
@@ -266,7 +267,8 @@ typedef enum
 	PX4_RC_CHANNELS_FUNCTION_ARMSWITCH  = 23,
 	PX4_RC_CHANNELS_FUNCTION_STAB       = 24,
 	PX4_RC_CHANNELS_FUNCTION_MAN        = 25,
-	PX4_RC_CHANNELS_FUNCTION_COUNT      = 26
+	PX4_RC_CHANNELS_FUNCTION_ALTCTL     = 26,
+	PX4_RC_CHANNELS_FUNCTION_COUNT      = 27
 } PX4_RcChannelFunction_t;
 
 typedef enum
@@ -1114,6 +1116,7 @@ typedef struct
 	PX4_SwitchPos_t ManSwitch;
 	PX4_ModeSlot_t ModeSlot;
 	PX4_ManualControlDataSource_t DataSource;
+	PX4_SwitchPos_t AltctlSwitch;
 } PX4_ManualControlSetpointMsg_t;
 
 typedef struct
@@ -1942,6 +1945,14 @@ typedef struct
     uint8 NumBlinks;
     uint8 Priority;
 } PX4_LedControlMsg_t;
+
+typedef struct
+{
+    uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
+    uint64 Timestamp;
+    uint8 Frame[4096];
+} PX4_OpticalFlowFrameMsg_t;
+
 
 #endif
 

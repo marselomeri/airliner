@@ -1,129 +1,0 @@
-Script started on Fri 15 Dec 2017 11:37:01 PM UTC
-]0;vagrant@vagrant: ~/git/airliner/tools/commandervagrant@vagrant:~/git/airliner/tools/commander$ bin/yamcs-server.sh [K[K[K[K[K[Kcd /opt/yamcs/[5Pbin/yamcs-serve[Kbin/yamcs-serve[K[K[K[K[K[K[K[K[K[Kgit status
-On branch commander
-Your branch is up-to-date with 'origin/commander'.
-Changes to be committed:
-  (use "git reset HEAD <file>..." to unstage)
-
-	[32mmodified:   scripts/launch_config.json[m
-	[32mmodified:   static/css/windhover.css[m
-
-Changes not staged for commit:
-  (use "git add <file>..." to update what will be committed)
-  (use "git checkout -- <file>..." to discard changes in working directory)
-
-	[31mmodified:   .idea/workspace.xml[m
-	[31mmodified:   art/commander[m
-
-Untracked files:
-  (use "git add <file>..." to include in what will be committed)
-
-	[31mstatus[m
-
-]0;vagrant@vagrant: ~/git/airliner/tools/commandervagrant@vagrant:~/git/airliner/tools/commander$ got [K[Kit [K[K[K[Kit commit -m 'side bar fix'
-[commander 94944b0] side bar fix
- 2 files changed, 2 insertions(+), 2 deletions(-)
-]0;vagrant@vagrant: ~/git/airliner/tools/commandervagrant@vagrant:~/git/airliner/tools/commander$ git push
-Password for 'https://karthikbibireddy@bitbucket.org': 
-Counting objects: 9, done.
-Delta compression using up to 4 threads.
-Compressing objects:  11% (1/9)   Compressing objects:  22% (2/9)   Compressing objects:  33% (3/9)   Compressing objects:  44% (4/9)   Compressing objects:  55% (5/9)   Compressing objects:  66% (6/9)   Compressing objects:  77% (7/9)   Compressing objects:  88% (8/9)   Compressing objects: 100% (9/9)   Compressing objects: 100% (9/9), done.
-Writing objects:  11% (1/9)   Writing objects:  22% (2/9)   Writing objects:  33% (3/9)   Writing objects:  44% (4/9)   Writing objects:  55% (5/9)   Writing objects:  66% (6/9)   Writing objects:  77% (7/9)   Writing objects:  88% (8/9)   Writing objects: 100% (9/9)   Writing objects: 100% (9/9), 680 bytes | 0 bytes/s, done.
-Total 9 (delta 8), reused 0 (delta 0)
-remote: 
-remote: Create pull request for commander:[K
-remote:   https://bitbucket.org/windhoverlabs/airliner/pull-requests/new?source=commander&t=1[K
-remote: 
-To https://karthikbibireddy@bitbucket.org/windhoverlabs/airliner.git
-   6bb5e5a..94944b0  commander -> commander
-]0;vagrant@vagrant: ~/git/airliner/tools/commandervagrant@vagrant:~/git/airliner/tools/commander$ ll
-total 248
-drwxrwxr-x 11 vagrant vagrant   4096 Dec 15 23:37 [0m[01;34m.[0m/
-drwxrwxr-x 21 vagrant vagrant   4096 Dec  1 22:59 [01;34m..[0m/
-drwxrwxr-x  2 vagrant vagrant   4096 Dec 15 23:09 [01;34mart[0m/
-drwxrwxr-x  2 vagrant vagrant   4096 Dec 12 17:31 [01;34mbackup[0m/
--rwx------  1 vagrant vagrant      0 Nov 16 18:59 [01;32m.cdskeyfile[0m*
-drwxrwxr-x  2 vagrant vagrant   4096 Dec  5 18:13 [01;34mcommander[0m/
--rw-rw-r--  1 vagrant vagrant  38912 Nov 28 19:44 db.sqlite3
--rw-rw-r--  1 vagrant vagrant    454 Nov 19 03:21 dump.rdb
--rw-rw-r--  1 vagrant vagrant  14581 Dec 15 20:38 geckodriver.log
-drwxrwxr-x 10 vagrant vagrant   4096 Dec 15 23:16 [01;34mgroundcontrol[0m/
-drwxrwxr-x  3 vagrant vagrant   4096 Dec 15 23:34 [01;34m.idea[0m/
-drwxrwxr-x  2 vagrant vagrant   4096 Dec 12 16:12 [01;34mlogs[0m/
--rwxrwxr-x  1 vagrant vagrant    807 Nov 30 18:13 [01;32mmanage.py[0m*
--rwx------  1 vagrant vagrant      0 Nov 16 18:59 [01;32m.reservedkeyfile[0m*
--rwx------  1 vagrant vagrant      0 Nov 16 18:59 [01;32m.resetkeyfile[0m*
-drwxrwxr-x  2 vagrant vagrant   4096 Dec 15 23:34 [01;34mscripts[0m/
-drwxrwxr-x  7 vagrant vagrant   4096 Nov 16 16:34 [01;34mstatic[0m/
-drwxrwxr-x  3 vagrant vagrant   4096 Nov 16 16:34 [01;34mstatic_cdn[0m/
--rw-rw-r--  1 vagrant vagrant      0 Dec 15 23:37 status
--rw-r--r--  1 vagrant vagrant 133120 Dec 15 20:12 test_database
-]0;vagrant@vagrant: ~/git/airliner/tools/commandervagrant@vagrant:~/git/airliner/tools/commander$ npm test
-[?25h[0G[K[?25h[0G[K[37m[40mnpm[0m [0m[31m[40mERR![0m[35m[0m Linux 4.4.0-31-generic
-[0m[37m[40mnpm[0m [0m[31m[40mERR![0m [0m[35margv[0m "/usr/bin/nodejs" "/usr/bin/npm" "test"
-[0m[37m[40mnpm[0m [0m[31m[40mERR![0m [0m[35mnode[0m v4.2.6
-[0m[37m[40mnpm[0m [0m[31m[40mERR![0m [0m[35mnpm [0m v3.5.2
-[0m[37m[40mnpm[0m [0m[31m[40mERR![0m [0m[35mpath[0m /home/vagrant/git/airliner/tools/commander/package.json
-[0m[37m[40mnpm[0m [0m[31m[40mERR![0m [0m[35mcode[0m ENOENT
-[0m[37m[40mnpm[0m [0m[31m[40mERR![0m [0m[35merrno[0m -2
-[0m[37m[40mnpm[0m [0m[31m[40mERR![0m [0m[35msyscall[0m open
-[0m
-[37m[40mnpm[0m [0m[31m[40mERR![0m [0m[35menoent[0m ENOENT: no such file or directory, open '/home/vagrant/git/airliner/tools/commander/package.json'
-[0m[37m[40mnpm[0m [0m[31m[40mERR![0m [0m[35menoent[0m ENOENT: no such file or directory, open '/home/vagrant/git/airliner/tools/commander/package.json'
-[0m[37m[40mnpm[0m [0m[31m[40mERR![0m [0m[35menoent[0m This is most likely not a problem with npm itself
-[0m[37m[40mnpm[0m [0m[31m[40mERR![0m [0m[35menoent[0m and is related to npm not being able to find a file.
-[0m[37m[40mnpm[0m [0m[31m[40mERR![0m [0m[35menoent[0m 
-[0m
-[37m[40mnpm[0m [0m[31m[40mERR![0m[35m[0m Please include the following file with any support request:
-[0m[37m[40mnpm[0m [0m[31m[40mERR![0m[35m[0m     /home/vagrant/git/airliner/tools/commander/npm-debug.log
-[0m]0;vagrant@vagrant: ~/git/airliner/tools/commandervagrant@vagrant:~/git/airliner/tools/commander$ cd groundcontrol/
-]0;vagrant@vagrant: ~/git/airliner/tools/commander/groundcontrolvagrant@vagrant:~/git/airliner/tools/commander/groundcontrol$ cd groundcontrol/[9Pnpm test
-[?25h[0G[K
-> commander@1.0.0 test /home/vagrant/git/airliner/tools/commander/groundcontrol
-> mocha
-
-[?25l[0G▀ ╢░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░╟
-[?25h[?25h[1A[0G[K[?25h[0G[K
-[0m[0m
-[0m  Replace function[0m
-  [32m  ✓[0m[90m Replace all given x's in a string with all given y's[0m
-
-[0m  Print date[0m
-  [32m  ✓[0m[90m Should print correct datetime[0m
-
-[0m  Introspect specific objects - specially tlm & cmd[0m
-  [32m  ✓[0m[90m Should error out on malicious inputs.[0m
-
-[0m  Array iterator[0m
-  [32m  ✓[0m[90m should increment index pointer[0m
-  [32m  ✓[0m[90m should hit end of array[0m
-  [32m  ✓[0m[90m set pointer to a particular index[0m
-  [32m  ✓[0m[90m should throw a error[0m
-
-[0m  Instance-client[0m
-DEBUG - Connection open. - [ getInstanceList ]
-INFO - Invoke Sent. - [ getInstanceList ]
-DEBUG - Connection open. - [ transmitCurrentInstance ]
-INFO - NON Invoke Sent. - [ transmitCurrentInstance ]
-INFO - Message received. - [ getInstanceList ]
-INFO - Message sent. - [ transmitCurrentInstance ]
-  [32m  ✓[0m[90m should connect with this mock server for INSTANCE specific data[0m[31m (225ms)[0m
-
-[0m  Directory-client[0m
-DEBUG - Connection open. - [ getDirectoryList ]
-INFO - Message Sent. - [ getDirectoryList ]
-INFO - Message sent. - [ getDirectoryList ]
-INFO - Message received. - [ getDirectoryList ]
-  [32m  ✓[0m[90m should request data based on getdirectiorylisting function call[0m[31m (202ms)[0m
-
-[0m  Telemetry-client[0m
-DEBUG - Connection open. - [ subscribeTelemetry ]
-INFO - Message sent. - [ subscribeTelemetry ]
-DEBUG - Unsubscribed to telemetry. - [ count0 ]
-INFO - Message received. - [ subscribeTelemetry ]
-INFO - Message received. - [ subscribeTelemetry ]
-INFO - Message received. - [ subscribeTelemetry ]
-  [32m  ✓[0m[90m should request data from this mockserver upon function call[0m[31m (301ms)[0m
-
-[0m  Command-client[0m
-DEBUG - Connection ope

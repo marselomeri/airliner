@@ -451,35 +451,12 @@ void Test_VC_RcvMsg_Fail_BadArg(void)
  **************************************************************************/
 /**
  * Test VC_CleanupCallback()
- * NOTE: empty function, so nothing to assert
+ * NOTE: no way to fail cleanup callback.
  */
 void Test_VC_CleanupCallback(void)
 {
-    /* Fail VC_Transmit_Uninit and assert that an event was raised */
-    VC_Transmit_Test_Returns.VC_Transmit_Uninit_Return = FALSE;
-    
-    /* Fail VC_Devices_Stop and assert that an event was raised */
-    VC_Device_Test_Returns.VC_Devices_Stop_Return = FALSE;
-    
-    /* Fail VC_Devices_Uninit and assert that an event was raised */
-    VC_Device_Test_Returns.VC_Devices_Uninit_Return = FALSE;
-    
     /* Execute the function being tested */
     VC_CleanupCallback();
-    
-    /* Set stub return back to original state */
-    /* TODO reset this during teardown */
-    VC_Transmit_Test_Returns.VC_Transmit_Uninit_Return = TRUE;
-    VC_Device_Test_Returns.VC_Devices_Stop_Return = TRUE;
-    VC_Device_Test_Returns.VC_Devices_Uninit_Return = TRUE;
-    
-    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==3,"Event Count = 3");
-    UtAssert_EventSent(VC_UNINIT_ERR_EID, CFE_EVS_ERROR, "VC_Transmit_Uninit failed", 
-                        "VC_Transmit_Uninit failed to raise an event");
-    UtAssert_EventSent(VC_UNINIT_ERR_EID, CFE_EVS_ERROR, "VC_Devices_Stop failed", 
-                        "VC_Transmit_Uninit failed to raise an event");
-    UtAssert_EventSent(VC_UNINIT_ERR_EID, CFE_EVS_ERROR, "VC_Devices_Uninit failed", 
-                        "VC_Transmit_Uninit failed to raise an event");
 }
 
 
@@ -572,7 +549,7 @@ void Test_VC_AppMain_Nominal_Wakeup(void)
 {
     /* The following will emulate behavior of receiving a SCH message to WAKEUP */
     Ut_CFE_SB_SetReturnCode(UT_CFE_SB_RCVMSG_INDEX, CFE_SUCCESS, 1);
-    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_GETMSGID_INDEX, VC_WAKEUP_MID, 1);
+    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_GETMSGID_INDEX, VC_PROCESS_CMDS_MID, 1);
 
     Ut_CFE_ES_SetReturnCode(UT_CFE_ES_RUNLOOP_INDEX, FALSE, 2);
 
@@ -640,7 +617,7 @@ void Test_VC_ProcessNewAppCmds_Noop_InvalidSize(void)
     /* The following will emulate behavior of receiving a SCH message to WAKEUP,
        and gives it a command to process. */
     DataPipe = Ut_CFE_SB_CreatePipe("VC_SCH_PIPE");
-    CFE_SB_InitMsg (&InSchMsg, VC_WAKEUP_MID, sizeof(InSchMsg), TRUE);
+    CFE_SB_InitMsg (&InSchMsg, VC_PROCESS_CMDS_MID, sizeof(InSchMsg), TRUE);
     Ut_CFE_SB_AddMsgToPipe(&InSchMsg, DataPipe);
 
     CmdPipe = Ut_CFE_SB_CreatePipe("VC_CMD_PIPE");
@@ -673,7 +650,7 @@ void Test_VC_ProcessNewAppCmds_Noop_Nominal(void)
     /* The following will emulate behavior of receiving a SCH message to WAKEUP,
        and gives it a command to process. */
     DataPipe = Ut_CFE_SB_CreatePipe("VC_SCH_PIPE");
-    CFE_SB_InitMsg (&InSchMsg, VC_WAKEUP_MID, sizeof(InSchMsg), TRUE);
+    CFE_SB_InitMsg (&InSchMsg, VC_PROCESS_CMDS_MID, sizeof(InSchMsg), TRUE);
     Ut_CFE_SB_AddMsgToPipe(&InSchMsg, DataPipe);
 
     CmdPipe = Ut_CFE_SB_CreatePipe("VC_CMD_PIPE");
@@ -706,7 +683,7 @@ void Test_VC_ProcessNewAppCmds_Reset_Nominal(void)
     /* The following will emulate behavior of receiving a SCH message to WAKEUP,
        and gives it a command to process. */
     DataPipe = Ut_CFE_SB_CreatePipe("VC_SCH_PIPE");
-    CFE_SB_InitMsg (&InSchMsg, VC_WAKEUP_MID, sizeof(InSchMsg), TRUE);
+    CFE_SB_InitMsg (&InSchMsg, VC_PROCESS_CMDS_MID, sizeof(InSchMsg), TRUE);
     Ut_CFE_SB_AddMsgToPipe(&InSchMsg, DataPipe);
 
     CmdPipe = Ut_CFE_SB_CreatePipe("VC_CMD_PIPE");

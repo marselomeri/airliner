@@ -1,0 +1,82 @@
+-   var queryString = '$.Airliner.apps.TO.config';
+-
+-   global.COMMANDER.queryConfigDB(queryString, function (config) {
+-       var msgs = [];
+-       var queryString = '$.Airliner.apps';
+-       global.COMMANDER.queryConfigDB(queryString, function (apps) {
+-           for(var appName in apps[0]) {
+-               var operations = apps[0][appName].operations;
+-               for(var msgName in operations) {
+-                   var msg = operations[msgName];
+-                   if(msg.hasOwnProperty('macro')) {
+-                       if(msg.hasOwnProperty('airliner_mid')) {
+-                           var msgID = parseInt(msg.airliner_mid);
+-                           var duplicate = false;
+-                                                     
+-                           for(var i = 0; i < msgs.length; ++i) {
+-                               if(msgs[i].msgID === msgID) {
+-                                   duplicate = true;
+-                               }
+-                           }
+-                             
+-                           if(!duplicate) {
+-                               msgs.push({msgID: msgID, macro: msg.macro});
+-                           }
+-                       }
+-                   }
+-               }
+-           }
+
+table.table.table-condensed
+  tbody
+    tr
+      th Index
+      td
+        div(data-cdr={tlm:[{name:'/TO/TO_ChannelDiagTlm_t/Index'}]}) ---
+    tr
+      th Channel Name
+      td
+        div(data-cdr={tlm:[{name:'/TO/TO_ChannelDiagTlm_t/ChannelName'}]}) ---
+    tr
+      th Priority Queue ID
+      th State
+      th Message Limit
+      th Queue Type
+      th Queue Limit
+      th Dropped 
+      th Queued 
+      th Current
+      th Highwater
+          -  for (var PQIndex=0; PQIndex < config[0].TO_MAX_PRIORITY_QUEUES; PQIndex++) {
+          -      var tlmStateObj = {tlm:[{name:'/TO/TO_ChannelDiagTlm_t/PQueue[' + PQIndex +'].State'}]}
+          -      var tlmMsgLimitObj = {tlm:[{name:'/TO/TO_ChannelDiagTlm_t/PQueue[' + PQIndex +'].MsgLimit'}]}
+          -      var tlmQTypeObj = {tlm:[{name:'/TO/TO_ChannelDiagTlm_t/PQueue[' + PQIndex +'].QType'}]}
+          -      var tlmDroppedMsgCntObj = {tlm:[{name:'/TO/TO_ChannelDiagTlm_t/PQueue[' + PQIndex +'].DroppedMsgCnt'}]}
+          -      var tlmQueuedMsgCntObj = {tlm:[{name:'/TO/TO_ChannelDiagTlm_t/PQueue[' + PQIndex +'].QueuedMsgCnt'}]}
+          -      var tlmCurrentlyQueuedCntObj = {tlm:[{name:'/TO/TO_ChannelDiagTlm_t/PQueue[' + PQIndex +'].CurrentlyQueuedCnt'}]}
+          -      var tlmHighwaterMarkObj = {tlm:[{name:'/TO/TO_ChannelDiagTlm_t/PQueue[' + PQIndex +'].HighwaterMark'}]}
+
+    tr
+      th
+        div #{PQIndex}
+      td
+        div(data-cdr= tlmStateObj) ---
+      td
+        div(data-cdr= tlmMsgLimitObj) ---
+      td
+        div(data-cdr= tlmQTypeObj) ---
+      td
+        div(data-cdr= tlmDroppedMsgCntObj) ---
+      td
+        div(data-cdr= tlmQueuedMsgCntObj) ---
+      td
+        div(data-cdr= tlmCurrentlyQueuedCntObj) ---
+      td
+        div(data-cdr= tlmHighwaterMarkObj) ---
+          -  }
+                        
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/TO_SendDiagCmd_t'}}) Send Diagnostics
+
+-     });  
+- });
