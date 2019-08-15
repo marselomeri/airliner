@@ -17,7 +17,25 @@ addons:
       - graphviz
       - libeigen3-dev
       - libopencv-dev
+      - valgrind
+      - libimage-exiftool-perl
+      - catkin
+      - python-jinja2
+      - python-empy
+      - python-pip
+      - python-dev
+      - build-essential
+      - python-dev
+      - flex
+      - bison
+      - libncurses5-dev
+      - gstreamer1.0-plugin* 
+      - libgstreamer1.0-*
+      - libimage-exiftool-perl
 before_install:
+  - sudo -H pip install --upgrade pip 
+  - sudo -H pip install --upgrade virtualenv 
+  - sudo -H pip install catkin_pkg
   - sudo sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'
   - wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
   - sudo apt-get update
