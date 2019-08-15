@@ -15,6 +15,9 @@ addons:
       - g++-multilib 
       - gcc-multilib
       - graphviz
+      - gazebo8
+      - libgazebo8
+      - libgazebo8-dev
 script:
   - cd tools/commander; 
   - npm install
