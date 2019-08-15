@@ -30,6 +30,8 @@ addons:
       - bison
       - libncurses5-dev
       - libimage-exiftool-perl
+      - libc6-dbg 
+      - libc6-dbg:i386
 before_install:
   - sudo -H pip install --upgrade pip 
   - sudo -H pip install --upgrade virtualenv 
