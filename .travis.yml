@@ -1,7 +1,8 @@
 language: cpp
 compiler: 
-  - gcc
+  - g++
 os: linux
+dist: xenial
 addons:
   apt:
     packages:
@@ -9,5 +10,8 @@ addons:
       - protobuf-compiler
       - python-protobuf
       - doxygen
+      - g++-multilib 
+      - gcc-multilib
+      - graphviz
 script:
   - cd tools/commander; npm install; cd ../../; make bebop2/sitl
