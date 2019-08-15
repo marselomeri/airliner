@@ -112,8 +112,6 @@ extern TO_AppData_t TO_AppData;
 *************************************************************************/
 
 
-int32 TO_OutputChannel_Send(uint32 ChannelID, const char* Buffer, uint32 Size);
-
 int32 TO_OutputChannel_Enable(uint8 ChannelID, const char *DestinationAddress, uint16 DestinationPort);
 int32 TO_OutputChannel_Disable(uint8 ChannelID);
 void  TO_OutputChannel_BinaryChannelTask(void);

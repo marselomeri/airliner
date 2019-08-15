@@ -12,8 +12,8 @@
 #    notice, this list of conditions and the following disclaimer in
 #    the documentation and/or other materials provided with the
 #    distribution.
-# 3. Neither the name Windhover Labs nor the names of its 
-#    contributors may be used to endorse or promote products derived 
+# 3. Neither the name Windhover Labs nor the names of its
+#    contributors may be used to endorse or promote products derived
 #    from this software without specific prior written permission.
 #
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
@@ -30,7 +30,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 #############################################################################
- 
+
 add_airliner_app_def(vc
     FILE VC
     SOURCES
@@ -41,15 +41,25 @@ add_airliner_app_def(vc
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/vc_dev_io.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/vc_events.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/vc_msg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/vc_symbols.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/vc_transmit.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/vc_custom.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/vc_version.h
-   
+
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
 
     USER_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/user_doxy.in
     DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in
+
+    MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/vc_msg_overrides.json
+
+    COMMANDER_PLUGIN
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr
+    
+    REFERENCE_CONFIG
+        ${PROJECT_SOURCE_DIR}/apps/vc/fsw/mission_inc
+        ${PROJECT_SOURCE_DIR}/apps/vc/fsw/platform_inc
 )
 
 add_airliner_app_unit_test(vc-ut
@@ -78,11 +88,11 @@ add_airliner_app_unit_test(vc-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/vc_transmit.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/vc_custom.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/vc_version.h
-        
+
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
-        
+
     VALGRIND_SUPPRESSION_FILE
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/valgrind.supp
 )

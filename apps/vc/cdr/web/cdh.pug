@@ -1,0 +1,32 @@
+table.table.table-condensed
+  tbody
+    tr
+      th Cmd Count
+      td
+        div(data-cdr={tlm:[{name:'/VC/VC_HkTlm_t/usCmdCnt'}]}) ---
+    tr
+      th Error Count
+      td
+        div(data-cdr={tlm:[{name:'/VC/VC_HkTlm_t/usCmdErrCnt'}]}) ---
+    tr
+      th Server Enabled (Ground)
+      td
+        div(data-cdr={tlm:[{name:'/VC/gnd/serverEnabled'}]}) ---
+    tr
+      th Frames Received (Ground)
+      td
+        div(data-cdr={tlm:[{name:'/VC/gnd/framesReceived'}]}) ---
+    tr
+      th State
+      td
+        div(data-cdr={tlm:[{name:'/VC/VC_HkTlm_t/State',calibration:{type:'enumeration',
+          enumerations:[
+            { value:0, name:'UNINITIALIZED' },
+            { value:1, name:'INITIALIZED' },
+            { value:2, name:'STREAMING' }
+            ]}}]}) ---
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/VC/Noop'}}) No-Op    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/VC/Reset'}}) Reset
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/VC/StartStreaming'}}) Start Streaming    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/VC/StopStreaming'}}) Stop Streaming

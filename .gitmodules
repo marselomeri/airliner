@@ -1,6 +1,9 @@
 [submodule "tools/sitl_gazebo"]
 	path = tools/sitl_gazebo
-	url = git@bitbucket.org:windhoverlabs/sitl_gazebo.git
+	url = https://github.com/WindhoverLabs/sitl_gazebo.git
 [submodule "tools/pygazebo"]
 	path = tools/pygazebo
-	url = git@bitbucket.org:windhoverlabs/pygazebo.git
+	url = https://github.com/WindhoverLabs/pygazebo.git
+[submodule "tools/jmavsim"]
+	path = tools/jmavsim
+	url = https://github.com/WindhoverLabs/jMAVSim.git

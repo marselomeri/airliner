@@ -1,0 +1,78 @@
+{
+    "Airliner": {
+        "apps": {
+            "MD": {
+              "operations": {
+                  "Noop":           { "airliner_cc":  0, "macro": "MD_CMD_MID", "airliner_msg": "" },
+                  "Reset":          { "airliner_cc":  1, "macro": "MD_CMD_MID", "airliner_msg": "" },
+                  "Start":          { "airliner_cc":  2, "macro": "MD_CMD_MID", "airliner_msg": "MD_CmdStartStop_t" },
+                  "Stop":           { "airliner_cc":  3, "macro": "MD_CMD_MID", "airliner_msg": "MD_CmdStartStop_t" },
+                  "Jam":            { "airliner_cc":  4, "macro": "MD_CMD_MID", "airliner_msg": "MD_CmdJam_t" },
+                  "SetSignature":   { "airliner_cc":  5, "macro": "MD_CMD_MID", "airliner_msg": "MD_CmdSetSignature_t" },
+                  "MD_HkTlm_t":     { "airliner_cc": -1, "macro": "MD_HK_TLM_MID", "airliner_msg": "MD_HkTlm_t" },
+                  "Wakeup":         { "airliner_cc":  0, "macro": "MD_WAKEUP_MID", "airliner_msg": "" },
+                  "SendHk":         { "airliner_cc":  0, "macro": "MD_SEND_HK_MID", "airliner_msg": "" }
+              },
+              "scheduler": {
+                  "activities": [
+                      "MD_WAKEUP_MID",
+                      "MD_SEND_HK_MID"
+                  ],
+                  "groups": [
+                      { "id": 1, "macro": "MD_SCH_GRP" }
+                  ]
+              },
+              "events": [
+                {"macro": "MM_INIT_INF_EID", "id": 1},
+                {"macro": "MD_PIPE_ERR_EID", "id": 2},
+                {"macro": "MD_RECOVERED_TBL_VALID_INF_EID", "id": 3},
+                {"macro": "MD_RECOVERED_TBL_NOT_VALID_ERR_EID", "id": 4},
+                {"macro": "MD_DWELL_TBL_TOO_LARGE_CRIT_EID", "id": 5},
+                {"macro": "MD_TBL_REGISTER_CRIT_EID", "id": 6},
+                {"macro": "MD_TBL_INIT_INF_EID", "id": 7},
+                {"macro": "MD_NOOP_INF_EID", "id": 10},
+                {"macro": "MD_RESET_CNTRS_DBG_EID", "id": 11},
+                {"macro": "MD_START_DWELL_INF_EID", "id": 12},
+                {"macro": "MD_STOP_DWELL_INF_EID", "id": 13},
+                {"macro": "MD_EMPTY_TBLMASK_ERR_EID", "id": 14},
+                {"macro": "MD_MID_ERR_EID", "id": 15},
+                {"macro": "MD_CC_NOT_IN_TBL_ERR_EID", "id": 16},
+                {"macro": "MD_CC_NOT_IN_LOOP_ERR_EID", "id": 17},
+                {"macro": "MD_TBL_STATUS_ERR_EID", "id": 20},
+                {"macro": "MD_CMD_LEN_ERR_EID", "id": 21},
+                {"macro": "MD_MSG_LEN_ERR_EID", "id": 22},
+                {"macro": "MD_JAM_DWELL_INF_EID", "id": 30},
+                {"macro": "MD_JAM_NULL_DWELL_INF_EID", "id": 31},
+                {"macro": "MD_INVALID_JAM_TABLE_ERR_EID", "id": 32},
+                {"macro": "MD_INVALID_ENTRY_ARG_ERR_EID", "id": 33},
+                {"macro": "MD_INVALID_LEN_ARG_ERR_EID", "id": 34},
+                {"macro": "MD_CANT_RESOLVE_JAM_ADDR_ERR_EID", "id": 35},
+                {"macro": "MD_INVALID_JAM_ADDR_ERR_EID", "id": 36},
+                {"macro": "MD_JAM_ADDR_NOT_32BIT_ERR_EID", "id": 37},
+                {"macro": "MD_JAM_ADDR_NOT_16BIT_ERR_EID", "id": 38},
+                {"macro": "MD_NO_TBL_COPY_ERR_EID", "id": 39},
+                {"macro": "MD_ZERO_RATE_TBL_INF_EID", "id": 40},
+                {"macro": "MD_RESOLVE_ERR_EID", "id": 41},
+                {"macro": "MD_RANGE_ERR_EID", "id": 42},
+                {"macro": "MD_TBL_HAS_LEN_ERR_EID", "id": 43},
+                {"macro": "MD_TBL_ENA_FLAG_EID", "id": 44},
+                {"macro": "MD_TBL_ALIGN_ERR_EID", "id": 45},
+                {"macro": "MD_SET_SIGNATURE_INF_EID", "id": 46},
+                {"macro": "MD_INVALID_SIGNATURE_TABLE_ERR_EID", "id": 47},
+                {"macro": "MD_INVALID_SIGNATURE_LENGTH_ERR_EID", "id": 49},
+                {"macro": "MD_TBL_SIG_LEN_ERR_EID", "id": 50},
+                {"macro": "MD_ZERO_RATE_CMD_INF_EID", "id": 51},
+                {"macro": "MD_DWELL_TBL_INF_EID", "id": 52}
+              ],
+              "config": {
+              },
+              "tables": [
+                {"id": "DWELL_TABLE1", "title": "Dwell #1", "isDumpTable": false},
+                {"id": "DWELL_TABLE2", "title": "Dwell #2", "isDumpTable": false},
+                {"id": "DWELL_TABLE3", "title": "Dwell #3", "isDumpTable": false},
+                {"id": "DWELL_TABLE4", "title": "Dwell #4", "isDumpTable": false}
+              ]
+            }
+        }
+    }
+}

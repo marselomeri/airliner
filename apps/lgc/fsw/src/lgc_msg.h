@@ -121,6 +121,70 @@ extern "C" {
 */
 #define LGC_RESET_CC                (1)
 
+/** \lgccmd Extend Landing Gear.
+**  
+**  \par Description
+**       Extends the landing gear.
+**
+**  \lgccmdmnemonic \LGC_EXTEND
+**
+**  \par Command Structure
+**       #LGC_NoArgCmd_t
+**
+**  \par Command Verification
+**       Successful execution of this command may be verified with
+**       the following telemetry:
+**       - \b \c \LGC_CMDACPTCNT - command counter will increment
+**       - The #LGC_CMD_INF_EID informational event message will be 
+**         generated when the command is received
+** 
+**  \par Error Conditions
+**       This command may fail for the following reason(s):
+**       - Command packet length not as expected
+** 
+**  \par Evidence of failure may be found in the following telemetry: 
+**       - \b \c \LGC_CMDRJCTCNT - command error counter will increment
+**       - Error specific event message #LGC_MSGID_ERR_EID
+**
+**  \par Criticality
+**       None
+**
+**  \sa #LGC_EXTEND_CC
+*/
+#define LGC_EXTEND_CC                (2)
+
+/** \lgccmd Retract Landing Gear.
+**  
+**  \par Description
+**       Retracts the landing gear.
+**
+**  \lgccmdmnemonic \LGC_RETRACT
+**
+**  \par Command Structure
+**       #LGC_NoArgCmd_t
+**
+**  \par Command Verification
+**       Successful execution of this command may be verified with
+**       the following telemetry:
+**       - \b \c \LGC_CMDACPTCNT - command counter will increment
+**       - The #LGC_CMD_INF_EID informational event message will be 
+**         generated when the command is received
+** 
+**  \par Error Conditions
+**       This command may fail for the following reason(s):
+**       - Command packet length not as expected
+** 
+**  \par Evidence of failure may be found in the following telemetry: 
+**       - \b \c \LGC_CMDRJCTCNT - command error counter will increment
+**       - Error specific event message #LGC_MSGID_ERR_EID
+**
+**  \par Criticality
+**       None
+**
+**  \sa #LGC_RETRACT_CC
+*/
+#define LGC_RETRACT_CC                (3)
+
 /************************************************************************
 ** Local Structure Declarations
 *************************************************************************/

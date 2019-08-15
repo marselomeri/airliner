@@ -1,43 +1,15 @@
-/****************************************************************************
+/*
+ * px4br_serialization.h
  *
- *   Copyright (c) 2016-2017 Windhover Labs, L.L.C. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- * 3. Neither the name Windhover Labs nor the names of its contributors 
- *    may be used to endorse or promote products derived from this software
- *    without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
- * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
- * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- *
- ****************************************************************************/
+ *  Created on: Oct 22, 2016
+ *      Author: mbenson
+ */
 
 #ifndef SRC_PX4BR_SERIALIZATION_H_
 #define SRC_PX4BR_SERIALIZATION_H_
 
 #include "cfe.h"
 #include "px4_msgs.h"
-
-void PX4_DisplayBuffer(const char* inBuffer, int inSize);
 
 /* Serialization Functions */
 uint32 PX4BR_ActuatorArmed_Enc(const PX4_ActuatorArmedMsg_t *inObject, char *inOutBuffer, uint32 inSize);
@@ -97,7 +69,6 @@ uint32 PX4BR_SatelliteInfo_Enc(const PX4_SatelliteInfoMsg_t *inObject, char *inO
 uint32 PX4BR_SensorAccel_Enc(const PX4_SensorAccelMsg_t *inObject, char *inOutBuffer, uint32 inSize);
 uint32 PX4BR_SensorBaro_Enc(const PX4_SensorBaroMsg_t *inObject, char *inOutBuffer, uint32 inSize);
 uint32 PX4BR_SensorCombined_Enc(const PX4_SensorCombinedMsg_t *inObject, char *inOutBuffer, uint32 inSize);
-uint32 PX4BR_SensorCorrection_Enc(const PX4_SensorCorrectionMsg_t *inObject, char *inOutBuffer, uint32 inSize);
 uint32 PX4BR_SensorGyro_Enc(const PX4_SensorGyroMsg_t *inObject, char *inOutBuffer, uint32 inSize);
 uint32 PX4BR_SensorMag_Enc(const PX4_SensorMagMsg_t *inObject, char *inOutBuffer, uint32 inSize);
 uint32 PX4BR_ServorailStatus_Enc(const PX4_ServorailStatusMsg_t *inObject, char *inOutBuffer, uint32 inSize);
@@ -127,7 +98,6 @@ uint32 PX4BR_VehicleStatus_Enc(const PX4_VehicleStatusMsg_t *inObject, char *inO
 uint32 PX4BR_VisionPositionEstimate_Enc(const PX4_VisionPositionEstimateMsg_t *inObject, char *inOutBuffer, uint32 inSize);
 uint32 PX4BR_VtolVehicleStatus_Enc(const PX4_VtolVehicleStatusMsg_t *inObject, char *inOutBuffer, uint32 inSize);
 uint32 PX4BR_WindEstimate_Enc(const PX4_WindEstimateMsg_t *inObject, char *inOutBuffer, uint32 inSize);
-uint32 PX4BR_LedControl_Enc(const PX4_LedControlMsg_t *inObject, char *inOutBuffer, uint32 inSize);
 
 /* Deserialization Functions */
 uint32 PX4BR_ActuatorArmed_Dec(const char *inBuffer, uint32 inSize, PX4_ActuatorArmedMsg_t *inOutObject);
@@ -187,7 +157,6 @@ uint32 PX4BR_SatelliteInfo_Dec(const char *inBuffer, uint32 inSize, PX4_Satellit
 uint32 PX4BR_SensorAccel_Dec(const char *inBuffer, uint32 inSize, PX4_SensorAccelMsg_t *inOutObject);
 uint32 PX4BR_SensorBaro_Dec(const char *inBuffer, uint32 inSize, PX4_SensorBaroMsg_t *inOutObject);
 uint32 PX4BR_SensorCombined_Dec(const char *inBuffer, uint32 inSize, PX4_SensorCombinedMsg_t *inOutObject);
-uint32 PX4BR_SensorCorrection_Dec(const char *inBuffer, uint32 inSize, PX4_SensorCorrectionMsg_t *inOutObject);
 uint32 PX4BR_SensorGyro_Dec(const char *inBuffer, uint32 inSize, PX4_SensorGyroMsg_t *inOutObject);
 uint32 PX4BR_SensorMag_Dec(const char *inBuffer, uint32 inSize, PX4_SensorMagMsg_t *inOutObject);
 uint32 PX4BR_ServorailStatus_Dec(const char *inBuffer, uint32 inSize, PX4_ServorailStatusMsg_t *inOutObject);
@@ -217,6 +186,6 @@ uint32 PX4BR_VehicleStatus_Dec(const char *inBuffer, uint32 inSize, PX4_VehicleS
 uint32 PX4BR_VisionPositionEstimate_Dec(const char *inBuffer, uint32 inSize, PX4_VisionPositionEstimateMsg_t *inOutObject);
 uint32 PX4BR_VtolVehicleStatus_Dec(const char *inBuffer, uint32 inSize, PX4_VtolVehicleStatusMsg_t *inOutObject);
 uint32 PX4BR_WindEstimate_Dec(const char *inBuffer, uint32 inSize, PX4_WindEstimateMsg_t *inOutObject);
-uint32 PX4BR_LedControl_Dec(const char *inBuffer, uint32 inSize, PX4_LedControlMsg_t *inOutObject);
+
 
 #endif /* SRC_PX4BR_SERIALIZATION_H_ */

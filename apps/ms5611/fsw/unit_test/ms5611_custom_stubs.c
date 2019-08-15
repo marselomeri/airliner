@@ -35,23 +35,29 @@
 
 void MS5611_Custom_InitData(void)
 {
-    
+    return;
 }
 
 
-boolean MS5611_Custom_Init(void)
+osalbool MS5611_Custom_Init(void)
 {
     return TRUE;
 }
 
 
-boolean MS5611_Custom_Uninit(void)
+osalbool MS5611_Custom_Uninit(void)
 {
     return TRUE;
 }
 
 
-boolean MS5611_ReadPROM(uint8 Addr, uint16 *returnVal)
+void MS5611_Critical_Cleanup(void)
+{
+    return;
+}
+
+
+osalbool MS5611_ReadPROM(uint8 Addr, uint16 *returnVal)
 {
     /* Example values from MS5611 data sheet */
     switch(Addr)
@@ -91,32 +97,39 @@ boolean MS5611_ReadPROM(uint8 Addr, uint16 *returnVal)
             *returnVal = 9;
             break;
         }
+        case 7:
+        {
+            *returnVal = 2053;
+            break;
+        }
     }
     return TRUE;
 }
 
 
-boolean MS5611_D1Conversion(void)
+osalbool MS5611_D1Conversion(void)
 {
     return TRUE;
 }
 
 
-boolean MS5611_D2Conversion(void)
+osalbool MS5611_D2Conversion(void)
 {
     return TRUE;
 }
 
 
-boolean MS5611_ReadADCResult(uint32 *returnVal)
+osalbool MS5611_ReadADCResult(uint32 *returnVal)
 {
     return TRUE;
 }
+
 
 int32 MS5611_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl)
 {
     return 0;
 }
+
 
 uint64 PX4LIB_GetPX4TimeUs(void)
 {

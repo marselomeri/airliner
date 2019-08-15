@@ -121,6 +121,246 @@ extern "C" {
 */
 #define PE_RESET_CC                (1)
 
+/** \pecmd Fuse Distance Sensor
+**  
+**  \par Description
+**       Fuses distance sensor
+**
+**  \par Command Structure
+**       #PE_NoArgCmd_t
+**
+**  \par Command Verification
+**       Successful execution of this command may be verified with
+**       the following telemetry:
+**       - The #PE_CMD_INF_EID debug event message will be 
+**         generated when the command is executed
+**       - The Dist Fused HK tlm will be set to true
+** 
+**  \par Error Conditions
+**       This command may fail for the following reason(s):
+**       - Already enabled
+** 
+**  \par Criticality
+**       May impact flight performance
+*/
+#define PE_FUSE_DIST_SENS_CC                (2)
+
+/** \pecmd Disable Distance Sensor
+**  
+**  \par Description
+**       Disables distance sensor fusion
+**
+**  \par Command Structure
+**       #PE_NoArgCmd_t
+**
+**  \par Command Verification
+**       Successful execution of this command may be verified with
+**       the following telemetry:
+**       - The #PE_CMD_INF_EID debug event message will be 
+**         generated when the command is executed
+**       - The Dist Fused HK tlm will be set to false
+** 
+**  \par Error Conditions
+**       This command may fail for the following reason(s):
+**       - Already disabled
+** 
+**  \par Criticality
+**       May impact flight performance
+*/
+#define PE_DISABLE_DIST_SENS_CC            (3)
+
+/** \pecmd Fuse GPS
+**
+**  \par Description
+**       Fuses GPS
+**
+**  \par Command Structure
+**       #PE_NoArgCmd_t
+**
+**  \par Command Verification
+**       Successful execution of this command may be verified with
+**       the following telemetry:
+**       - The #PE_CMD_INF_EID debug event message will be
+**         generated when the command is executed
+**       - The GPS Fused HK tlm will be set to true
+**
+**  \par Error Conditions
+**       This command may fail for the following reason(s):
+**       - Already enabled
+**
+**  \par Criticality
+**       May impact flight performance
+*/
+#define PE_FUSE_GPS_CC                (4)
+
+/** \pecmd Disable GPS
+**
+**  \par Description
+**       Disables GPS fusion
+**
+**  \par Command Structure
+**       #PE_NoArgCmd_t
+**
+**  \par Command Verification
+**       Successful execution of this command may be verified with
+**       the following telemetry:
+**       - The #PE_CMD_INF_EID debug event message will be
+**         generated when the command is executed
+**       - The GPS Fused HK tlm will be set to false
+**
+**  \par Error Conditions
+**       This command may fail for the following reason(s):
+**       - Already disabled
+**
+**  \par Criticality
+**       May impact flight performance
+*/
+#define PE_DISABLE_GPS_CC            (5)
+
+/** \pecmd Fuse Baro
+**
+**  \par Description
+**       Fuses Baro
+**
+**  \par Command Structure
+**       #PE_NoArgCmd_t
+**
+**  \par Command Verification
+**       Successful execution of this command may be verified with
+**       the following telemetry:
+**       - The #PE_CMD_INF_EID debug event message will be
+**         generated when the command is executed
+**       - The Baro Fused HK tlm will be set to true
+**
+**  \par Error Conditions
+**       This command may fail for the following reason(s):
+**       - Already enabled
+**
+**  \par Criticality
+**       May impact flight performance
+*/
+#define PE_FUSE_BARO_CC                (6)
+
+/** \pecmd Disable Baro
+**
+**  \par Description
+**       Disables Baro fusion
+**
+**  \par Command Structure
+**       #PE_NoArgCmd_t
+**
+**  \par Command Verification
+**       Successful execution of this command may be verified with
+**       the following telemetry:
+**       - The #PE_CMD_INF_EID debug event message will be
+**         generated when the command is executed
+**       - The Baro Fused HK tlm will be set to false
+**
+**  \par Error Conditions
+**       This command may fail for the following reason(s):
+**       - Already disabled
+**
+**  \par Criticality
+**       May impact flight performance
+*/
+#define PE_DISABLE_BARO_CC            (7)
+
+/** \pecmd Fuse Land
+**
+**  \par Description
+**       Fuses Land
+**
+**  \par Command Structure
+**       #PE_NoArgCmd_t
+**
+**  \par Command Verification
+**       Successful execution of this command may be verified with
+**       the following telemetry:
+**       - The #PE_CMD_INF_EID debug event message will be
+**         generated when the command is executed
+**       - The Land Fused HK tlm will be set to true
+**
+**  \par Error Conditions
+**       This command may fail for the following reason(s):
+**       - Already enabled
+**
+**  \par Criticality
+**       May impact flight performance
+*/
+#define PE_FUSE_LAND_CC                (8)
+
+/** \pecmd Disable Land
+**
+**  \par Description
+**       Disables Land fusion
+**
+**  \par Command Structure
+**       #PE_NoArgCmd_t
+**
+**  \par Command Verification
+**       Successful execution of this command may be verified with
+**       the following telemetry:
+**       - The #PE_CMD_INF_EID debug event message will be
+**         generated when the command is executed
+**       - The Land Fused HK tlm will be set to false
+**
+**  \par Error Conditions
+**       This command may fail for the following reason(s):
+**       - Already disabled
+**
+**  \par Criticality
+**       May impact flight performance
+*/
+#define PE_DISABLE_LAND_CC            (9)
+
+/** \pecmd Fuse Flow
+**
+**  \par Description
+**       Fuses Flow
+**
+**  \par Command Structure
+**       #PE_NoArgCmd_t
+**
+**  \par Command Verification
+**       Successful execution of this command may be verified with
+**       the following telemetry:
+**       - The #PE_CMD_INF_EID debug event message will be
+**         generated when the command is executed
+**       - The Flow Fused HK tlm will be set to true
+**
+**  \par Error Conditions
+**       This command may fail for the following reason(s):
+**       - Already enabled
+**
+**  \par Criticality
+**       May impact flight performance
+*/
+#define PE_FUSE_FLOW_CC                (10)
+
+/** \pecmd Disable Flow
+**
+**  \par Description
+**       Disables Flow fusion
+**
+**  \par Command Structure
+**       #PE_NoArgCmd_t
+**
+**  \par Command Verification
+**       Successful execution of this command may be verified with
+**       the following telemetry:
+**       - The #PE_CMD_INF_EID debug event message will be
+**         generated when the command is executed
+**       - The Flow Fused HK tlm will be set to false
+**
+**  \par Error Conditions
+**       This command may fail for the following reason(s):
+**       - Already disabled
+**
+**  \par Criticality
+**       May impact flight performance
+*/
+#define PE_DISABLE_FLOW_CC            (11)
+
 /************************************************************************
 ** Local Structure Declarations
 *************************************************************************/
@@ -162,6 +402,12 @@ typedef struct
 
 	/** \brief Timestamp of last landing read */
 	uint64 TimeLastLand;
+
+	/** \brief Timestamp of last dist read */
+	uint64 TimeLastDist;
+
+	/** \brief Timestamp of last flow read */
+	uint64 TimeLastFlow;
 
 	/** \brief Origin altitude */
 	float AltOrigin;
@@ -208,6 +454,9 @@ typedef struct
     /** \brief Flag for XY estimation validity */
     boolean XyEstValid;
 
+    /** \brief Origin altitude of DIST */
+    float m_DistAltOrigin;
+
     /** \brief Flag for Z estimation validity */
 	boolean ZEstValid;
 
@@ -217,6 +466,49 @@ typedef struct
 	/** \brief Flag for if local estimator is initialized */
 	boolean EstimatorLocalInitialized;
 
+	/** \brief Flag for if Dist is initialized */
+    boolean DistInitialized;
+
+	/** \brief Flag for Dist fault */
+	boolean DistFault;
+
+	/** \brief Flag for Dist timeout */
+	boolean DistTimeout;
+
+    /** \brief Flag for if Dist is being integrated into estimation */
+    boolean DistFused;
+
+    /** \brief Flag for if Gps is being integrated into estimation */
+    boolean GpsFused;
+
+    /** \brief Flag for if Baro is being integrated into estimation */
+    boolean BaroFused;
+
+    /** \brief Flag for if Land is being integrated into estimation */
+    boolean LandFused;
+
+    /** \brief Flag for if Flow is being integrated into estimation */
+	boolean FlowFused;
+
+	/** \brief Flag for if Flow is initialized */
+    boolean FlowInitialized;
+
+	/** \brief Flag for Flow fault */
+	boolean FlowFault;
+
+	/** \brief Flag for Flow timeout */
+	boolean FlowTimeout;
+
+	uint32 WakeupCount;
+    uint32 VehicleGpsPositionMsgCount;
+    uint32 VehicleStatusMsgCount;
+    uint32 VehicleLandDetectedMsgCount;
+    uint32 ActuatorArmedMsgCount;
+    uint32 VehicleAttitudeMsgCount;
+    uint32 SensorCombinedMsgCount;
+    uint32 VehicleAttitudeSetpointMsgCount;
+    uint32 DistanceSensorMsgCount;
+    uint32 OpticalFlowMsgCount;
 } PE_HkTlm_t;
 
 

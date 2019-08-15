@@ -67,7 +67,6 @@ MAC_ParamTbl_t MAC_ParamTbl =
 		0.30,       /* MC_YR_INT_LIM   */
 		0.0,		/* MC_YAWRATE_D    */
 		0.0,		/* MC_YAWRATE_FF   */
-		0.75,		/* MC_YAW_FF       */
 		220.0,		/* MC_ROLLRATE_MAX */
 		220.0,		/* MC_PITCHRATE_MAX */
 		200.0,		/* MC_YAWRATE_MAX   */
@@ -76,11 +75,8 @@ MAC_ParamTbl_t MAC_ParamTbl =
 		360.0,		/* MC_ACRO_P_MAX    */
         360.0,		/* MC_ACRO_Y_MAX    */
 		0.8,		/* MC_RATT_TH	    */
-		0,			/* VT_TYPE          */
 		0.2,		/* MC_ROLL_TC		*/
 		0.2,		/* MC_PITCH_TC      */
-		0,			/* VT_OPT_RECOV_EN  */
-		0.15,		/* VT_WV_YAWR_SCL   */
 		0,			/* MC_BAT_SCALE_EN  */
 		0,			/* SENS_BOARD_ROT   */
 		0.0,		/* SENS_BOARD_X_OFF */

@@ -4,6 +4,7 @@
 #include "cfe.h"
 #include "Vector10F.hpp"
 #include "Matrix10F1.hpp"
+#include "Matrix10F2.hpp"
 #include "Matrix10F3.hpp"
 #include "Matrix10F6.hpp"
 
@@ -12,10 +13,10 @@
 namespace math
 {
 
-/* Forward declare 10F1 */
+/* Forward declares */
 class Matrix10F1;
+class Matrix10F2;
 class Matrix10F3;
-
 class Matrix10F6;
 
 class Matrix10F10
@@ -202,6 +203,24 @@ public:
 	 **
 	 *************************************************************************/
     Matrix10F3 operator*(const Matrix10F3 &matIn);
+
+	/************************************************************************/
+	/** \brief Multiplication Operator Override Matrix10F2
+	 **
+	 **  \par Description
+	 **       This function overrides the multiplication behavior when used on this object.
+	 **
+	 **  \par Assumptions, External Events, and Notes:
+	 **       None
+	 **
+	 **  \param [in]   matIn      A #Matrix10F2 to perform this operation on
+	 **
+	 **  \returns
+	 **  Result of the multiplication as #Matrix10F2
+	 **  \endreturns
+	 **
+	 *************************************************************************/
+    Matrix10F2 operator*(const Matrix10F2 &matIn);
 
 	/************************************************************************/
 	/** \brief Multiplication Operator Override Matrix10F6

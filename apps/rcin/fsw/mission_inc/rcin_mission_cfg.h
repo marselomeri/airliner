@@ -1,4 +1,4 @@
-    
+
 #ifndef RCIN_MISSION_CFG_H
 #define RCIN_MISSION_CFG_H
 
@@ -10,9 +10,9 @@ extern "C" {
 ** RCIN Mission Configuration Parameter Definitions
 */
 
-/* TODO:  Add mission configuration parameter definitions here, if necessary. */
-
-#define RCIN_SB_TIMEOUT         CFE_SB_PEND_FOREVER  /* Can be a value in milliseconds */
+/** \brief This defines how long the application waits for a SCH message.  This
+ *         should normally be #CFE_SB_PEND_FOREVER, but can be a value in milliseconds. */
+#define RCIN_SB_TIMEOUT         CFE_SB_PEND_FOREVER
 
 #ifdef __cplusplus
 }

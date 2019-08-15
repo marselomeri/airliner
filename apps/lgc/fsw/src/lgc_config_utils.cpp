@@ -50,14 +50,14 @@ extern "C" {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 LGC::InitConfigTbl()
 {
-    int32  iStatus=0;
+    int32  iStatus = 0;
 
     /* Register Config table */
     iStatus = CFE_TBL_Register(&ConfigTblHdl,
-		LGC_CONFIG_TABLENAME,
-		(sizeof(LGC_ConfigTbl_t)),
-		CFE_TBL_OPT_DEFAULT,
-		LGC::ValidateConfigTbl);
+        LGC_CONFIG_TABLENAME,
+        (sizeof(LGC_ConfigTbl_t)),
+        CFE_TBL_OPT_DEFAULT,
+        LGC::ValidateConfigTbl);
     if (iStatus != CFE_SUCCESS)
     {
         /* Note, a critical table could return another nominal code.  If this table is
@@ -71,7 +71,7 @@ int32 LGC::InitConfigTbl()
     /* Load Config table file */
     iStatus = CFE_TBL_Load(ConfigTblHdl,
                            CFE_TBL_SRC_FILE,
-						   LGC_CONFIG_TABLE_FILENAME);
+                           LGC_CONFIG_TABLE_FILENAME);
     if (iStatus != CFE_SUCCESS)
     {
         /* Note, CFE_SUCCESS is for a successful full table load.  If a partial table
@@ -85,7 +85,7 @@ int32 LGC::InitConfigTbl()
     iStatus = AcquireConfigPointers();
 
 LGC_InitConfigTbl_Exit_Tag:
-    return iStatus;
+    return (iStatus);
 }
 
 
@@ -96,7 +96,7 @@ LGC_InitConfigTbl_Exit_Tag:
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 LGC::ValidateConfigTbl(void* ConfigTblPtr)
 {
-    int32  iStatus=0;
+    int32  iStatus = 0;
     LGC_ConfigTbl_t* LGC_ConfigTblPtr = (LGC_ConfigTbl_t*)(ConfigTblPtr);
 
 
@@ -165,14 +165,14 @@ int32 LGC::AcquireConfigPointers(void)
     }
     else if(iStatus != CFE_SUCCESS)
     {
-    	ConfigTblPtr = 0;
+        ConfigTblPtr = 0;
         (void) CFE_EVS_SendEvent(LGC_CFGTBL_GETADDR_ERR_EID, CFE_EVS_ERROR,
                                  "Failed to get Config table's address (0x%08lX)",
                                  iStatus);
     }
 
 LGC_AcquireConfigPointers_Exit_Tag:
-    return iStatus;
+    return (iStatus);
 }
 
 

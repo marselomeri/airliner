@@ -46,7 +46,6 @@ public:
 	 *************************************************************************/
 	float Update(float value, float dt, float cutoff);
 
-private:
 	/** \brief Initialization flag */
 	bool m_Initialized;
 

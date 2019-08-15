@@ -34,6 +34,8 @@
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+#define FM_CHILD_TASK_FLAGS            OS_ENABLE_CORE_0
+
 /** \fmcfg File Manager Application Name
 **
 **  \par Description:

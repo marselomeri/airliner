@@ -70,9 +70,14 @@ int32 HK_UTILS_TEST_CFE_TBL_GetAddressHook( void **TblPtr, CFE_TBL_Handle_t TblH
 void HK_ProcessIncomingHkData_Test_Nominal(void)
 {
     HK_Send_Out_Msg_t   CmdPacket;
+    char buffer[1] = {0};
 
-    hk_copy_table_entry_t    CopyTable;
-    hk_runtime_tbl_entry_t   RuntimeTable;
+    /* Initialize to zero to not act on garbage values. */
+    hk_copy_table_entry_t    CopyTable = {0};
+    hk_runtime_tbl_entry_t   RuntimeTable = {0};
+
+    /* Set a buffer for the memcpy*/
+    RuntimeTable.OutputPktAddr = (CFE_SB_MsgPtr_t) &buffer;
     
     HK_AppData.CopyTablePtr = &CopyTable;
     HK_AppData.RuntimeTablePtr = &RuntimeTable;
@@ -103,6 +108,9 @@ void HK_ProcessIncomingHkData_Test_MessageError(void)
 
     memset(&CopyTable, 0, sizeof(CopyTable));
     memset(&RuntimeTable, 0, sizeof(RuntimeTable));
+
+    /* Set if message length >= last byte acccessed to fail. */
+    CopyTable.InputOffset = sizeof(HK_Send_Out_Msg_t) + 1;
 
     HK_AppData.CopyTablePtr = &CopyTable;
     HK_AppData.RuntimeTablePtr = &RuntimeTable;
@@ -290,11 +298,15 @@ void HK_SendCombinedHkPacket_Test_MissingData(void)
     HK_Send_Out_Msg_t   CmdPacket;
     char ExpectedEventText[CFE_EVS_MAX_MESSAGE_LENGTH];
 
-    hk_copy_table_entry_t    CopyTable[HK_COPY_TABLE_ENTRIES];
-    hk_runtime_tbl_entry_t   RuntimeTable[HK_COPY_TABLE_ENTRIES];
+    hk_copy_table_entry_t    CopyTable[HK_COPY_TABLE_ENTRIES] = {0};
+    hk_runtime_tbl_entry_t   RuntimeTable[HK_COPY_TABLE_ENTRIES] = {0};
     
     HK_AppData.CopyTablePtr = &CopyTable[0];
     HK_AppData.RuntimeTablePtr = &RuntimeTable[0];
+
+    /* Set the output mid of one field to allow data missing check
+     * to find a matching field to check. */
+    CopyTable[0].OutputMid = HK_SEND_COMBINED_PKT_MID;
 
     CFE_SB_InitMsg (&CmdPacket, HK_SEND_COMBINED_PKT_MID, sizeof(HK_Send_Out_Msg_t), TRUE);
 

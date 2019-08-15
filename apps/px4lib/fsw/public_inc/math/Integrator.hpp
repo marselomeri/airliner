@@ -97,6 +97,20 @@ public:
 	 *************************************************************************/
 	boolean put(uint64 timestamp, math::Vector3F &val, math::Vector3F &integral, uint64 &integral_dt);
 
+	/**
+	 * Put an item into the integral but provide an interval instead of a timestamp.
+	 *
+	 * @param interval_us	Interval in us since last integration.
+	 * @param val		Item to put.
+	 * @param integral	Current integral in case the integrator did reset, else the value will not be modified
+	 * @param integral_dt	Get the dt in us of the current integration (only if reset). Note that this
+	 *			values might not be accurate vs. hrt_absolute_time because it is just the sum of the
+	 *			supplied intervals.
+	 * @return		true if putting the item triggered an integral reset and the integral should be
+	 *			published.
+	 */
+	boolean put_with_interval(uint32 interval_us, math::Vector3F &val, math::Vector3F &integral, uint64 &integral_dt);
+
 	/************************************************************************/
 	/** \brief Get Value
 	 **

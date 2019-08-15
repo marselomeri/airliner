@@ -1,0 +1,24 @@
+-var STARTING_POINT = 0
+-var POINTS_PER_DISPLAY = 25
+-var ENDING_POINT = STARTING_POINT + POINTS_PER_DISPLAY - 1
+table.table.table-condensed
+  tbody
+    tr 
+      th(style='width: 50px;') #
+      th(style='min-width:75px;') Watch Result
+      th(style='min-width:75px;') Action Result
+      th(style='min-width:500px;') Commands
+    - for (var iPoint = STARTING_POINT; iPoint < ENDING_POINT; ++iPoint) {   
+    tr
+      th(style='width: 50px;') #{iPoint}
+      td
+        div(data-cdr={tlm:[{name:'/LC/LC_HkPacket_t/WPResults['+iPoint+']'}]}) ---
+      td
+        div(data-cdr={tlm:[{name:'/LC/LC_HkPacket_t/APResults['+iPoint+']'}]}) ---
+      td
+        .btn-group
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/LC/SetAPState',   args:{'APNumber': iPoint}}}) Set AP State
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/LC/SetAPPermOff', args:{'APNumber': iPoint}}}) Set AP Perm Off
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/LC/ResetAPStats', args:{'APNumber': iPoint}}}) Reset AP Stats 
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/LC/ResetWPStats', args:{'APNumber': iPoint}}}) Reset WP Stats 
+    - }

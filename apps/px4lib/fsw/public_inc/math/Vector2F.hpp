@@ -6,6 +6,8 @@
 namespace math
 {
 
+class Matrix1F2;
+
 class Vector2F
 {
 private:
@@ -125,6 +127,24 @@ public:
 	void Zero(void);
 
 	/************************************************************************/
+	/** \brief Vector Power
+	 **
+	 **  \par Description
+	 **       This function raises the vector to the passed power.
+	 **
+	 **  \par Assumptions, External Events, and Notes:
+	 **       None
+	 **
+	 **  \param [in]   scalar      A #float to perform this operation on
+	 **
+	 **  \returns
+	 **  Result of the power
+	 **  \endreturnsv
+	 **
+	 *************************************************************************/
+    Vector2F pow(const float scalar) const;
+
+	/************************************************************************/
 	/** \brief Addition Operator Override
 	 **
 	 **  \par Description
@@ -179,6 +199,24 @@ public:
 	Vector2F operator*(const float scalar);
 
 	/************************************************************************/
+	/** \brief Scalar Multiplication Operator Override
+	 **
+	 **  \par Description
+	 **       This function overrides the scalar multiplication behavior when used on this object.
+	 **
+	 **  \par Assumptions, External Events, and Notes:
+	 **       None
+	 **
+	 **  \param [in]   scalar      A #float to perform this operation on
+	 **
+	 **  \returns
+	 **  Result of the multiplication
+	 **  \endreturns
+	 **
+	 *************************************************************************/
+	Vector2F operator*(const float scalar) const;
+
+	/************************************************************************/
 	/** \brief Scalar Division Operator Override
 	 **
 	 **  \par Description
@@ -213,6 +251,24 @@ public:
 	 **
 	 *************************************************************************/
 	float operator*(const Vector2F &vecIn);
+
+	/************************************************************************/
+	/** \brief Vector Multiplication Operator Override
+	 **
+	 **  \par Description
+	 **       This function overrides the vector multiplication behavior when used on this object.
+	 **
+	 **  \par Assumptions, External Events, and Notes:
+	 **       None
+	 **
+	 **  \param [in]   vecIn      A #Vector2F to perform this operation on
+	 **
+	 **  \returns
+	 **  Result of the multiplication
+	 **  \endreturns
+	 **
+	 *************************************************************************/
+	float operator*(const Vector2F &vecIn) const;
 
 	/************************************************************************/
 	/** \brief Negative Operator Override
@@ -279,6 +335,22 @@ public:
 	 **
 	 *************************************************************************/
 	Vector2F Normalized(void);
+	
+	/************************************************************************/
+	/** \brief Transpose Vector
+	 **
+	 **  \par Description
+	 **       This function returns this vector transposed.
+	 **
+	 **  \par Assumptions, External Events, and Notes:
+	 **       None
+	 **
+	 **  \returns
+	 **  Transposed vector as #Matrix1F2
+	 **  \endreturns
+	 **
+	 *************************************************************************/
+    Matrix1F2 Transpose(void);
 
 protected:
 

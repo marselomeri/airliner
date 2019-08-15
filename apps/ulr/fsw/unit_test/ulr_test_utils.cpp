@@ -49,14 +49,6 @@
 #include <time.h>
 
 /*
- * Config table for testing
- */
-ULR_ConfigTbl_t ConfigTbl = {
-        /* TODO:  Define table */
-		0
-};
-
-/*
  * Function Definitions
  */
 
@@ -72,8 +64,6 @@ void ULR_Test_Setup(void)
     Ut_CFE_ES_Reset();
     Ut_OSAPI_Reset();
     Ut_OSFILEAPI_Reset();
-
-    Ut_CFE_TBL_AddTable(ULR_CONFIG_TABLE_FILENAME, (void *) &ConfigTbl);
 }
 
 void ULR_Test_TearDown(void) {

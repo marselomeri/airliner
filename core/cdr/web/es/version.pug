@@ -1,0 +1,29 @@
+table.table.table-condensed
+  tbody
+    tr
+    th CFE Version:
+      td 
+        span.span-inline-block(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.CFEMajorVersion'}]}) -
+        span.span-inline-block .
+        span.span-inline-block(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.CFEMinorVersion'}]}) -
+        span.span-inline-block .
+        span.span-inline-block(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.CFERevision'}]}) -
+        span.span-inline-block .
+        span.span-inline-block(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.CFEMissionRevision'}]}) -
+      td
+    tr
+      th OSAL Version:
+      td 
+        span.span-inline-block(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.OSALMajorVersion'}]}) -
+        span.span-inline-block .
+        span.span-inline-block(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.OSALMinorVersion'}]}) -
+        span.span-inline-block .
+        span.span-inline-block(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.OSALRevision'}]}) -
+        span.span-inline-block .
+        span.span-inline-block(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.OSALMissionRevision'}]}) -
+      td
+    tr
+      th Checksum:
+      td
+        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.CFECoreChecksum', format:'0x%04x'}]}) ---
+      td
