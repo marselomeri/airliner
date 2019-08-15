@@ -1,10 +1,13 @@
 language: cpp
 compiler: 
-- gcc
+  - gcc
 os: linux
 addons:
   apt:
     packages:
       - cmake
+before_install:
+  - sudo apt-get install -y protobuf-compiler python-protobuf
+  - sudo apt-get install -y doxygen
 script:
-- cd tools/commander; npm install; cd ../../; make bebop2/sitl
+  - cd tools/commander; npm install; cd ../../; make bebop2/sitl
