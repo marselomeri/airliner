@@ -1,6 +1,8 @@
 language: cpp
 compiler: 
   - g++
+node_js: 
+  - 6.17.1
 os: linux
 dist: xenial
 addons:
@@ -14,4 +16,4 @@ addons:
       - gcc-multilib
       - graphviz
 script:
-  - cd tools/commander; npm install; cd ../../; make bebop2/sitl
+  - ls -la; cd tools/commander; npm install; cd ../../; make bebop2/sitl
