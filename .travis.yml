@@ -15,9 +15,12 @@ addons:
       - g++-multilib 
       - gcc-multilib
       - graphviz
-      - gazebo8
-      - libgazebo8
-      - libgazebo8-dev
+before_install:
+  - sudo sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'
+  - wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
+  - gazebo8
+  - libgazebo8
+  - libgazebo8-dev
 script:
   - cd tools/commander; 
   - npm install
