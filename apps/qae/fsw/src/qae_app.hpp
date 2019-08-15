@@ -63,9 +63,21 @@ extern "C" {
  ** Local Defines
  *************************************************************************/
  /** \brief Max delta time between iterations */
-#define QAE_DELTA_TIME_MAX (0.02f)
+#define QAE_DELTA_TIME_MAX              (0.02f)
  /** \brief 50 degrees per second (rad/s) */
-#define QAE_FIFTY_DPS      (0.873f)
+#define QAE_FIFTY_DPS                   (0.873f)
+ /** \brief Max number of registered event filters */
+#define QAE_MAX_EVENT_FILTERS           (32)
+ /** \brief GPS max delta time of 1 second (in microseconds) */
+#define QAE_GPS_DT_MAX                  (1000000)
+ /** \brief GPS delta time of .02 seconds (in microseconds) */
+#define QAE_GPS_DT_THRES                (20000)
+ /** \brief GPS EpH max allowed */
+#define QAE_GPS_EPH_MAX                 (20.0f)
+ /** \brief GPS EpH threshold for fusing data */
+#define QAE_GPS_EPH_THRES               (5.0f)
+ /** \brief Microseconds in second */
+#define USEC_IN_SEC_F                   (1000000.0f)
 
 /************************************************************************
  ** Local Structure Definitions
@@ -78,8 +90,10 @@ typedef enum
 {
     /*! App status uninitialized */
     QAE_UNINITIALIZED      = 0,
+    
     /*! App status uninitialized */
     QAE_INITIALIZED        = 1,
+    
     /*! App status sensor data received */
     QAE_SENSOR_DATA_RCVD   = 2
 } QAE_Status_t;
@@ -92,6 +106,7 @@ typedef enum
 {
     /*! Estimator status uninitialized */
     QAE_EST_UNINITIALIZED      = 0,
+    
     /*! Estimator status uninitialized */
     QAE_EST_INITIALIZED        = 1
 } QAE_Estimator_Status_t;
@@ -104,38 +119,16 @@ typedef struct
 {
     /** \brief The sensor combined message */
     PX4_SensorCombinedMsg_t        SensorCombinedMsg;
+    
     /** \brief The last sensor combined message timestamp */
     uint64                         LastSensorCombinedTime;
+    
     /** \brief The vehicle global position message */
     PX4_VehicleGlobalPositionMsg_t VehicleGlobalPositionMsg;
+    
     /** \brief The last vehicle global position timestamp */
     uint64                         LastGlobalPositionTime;
 } QAE_CurrentValueTable_t;
-
-
-/**
- * \brief application parameters
- */
-typedef struct
-{
-    /** \brief magnetometer declination */
-    float mag_declination;
-    /** \brief magnetometer automatic GPS declination compensation */
-    boolean mag_declination_auto;
-    /** \brief acceleration compensation based on GPS velocity */
-    boolean acc_compensation;
-    /** \brief complimentary filter magnetometer weight */
-    float mag_weight;
-    /** \brief complimentary filter gyroscope bias weight */
-    float gyro_weight;
-    /** \brief complimentary filter accelerometer weight */
-    float acc_weight;
-    /** \brief gyro bias limit */
-    float gyro_bias_max;
-    /** \brief airspeed mode */
-    int32 airspeed_mode;
-} QAE_Params_t;
-
 
 /**
  **  \brief QAE Application Class
@@ -173,8 +166,6 @@ public:
     QAE_HkTlm_t HkTlm;
     /** \brief Current Value Table */
     QAE_CurrentValueTable_t CVT;
-    /** \brief QAE parameters Table */
-    QAE_Params_t m_Params;
     /** \brief The current quaternion */
     math::Quaternion m_Quaternion;
     /** \brief The current gyro values */
@@ -195,6 +186,8 @@ public:
     math::Vector3F m_Rates;
     /** \brief The last estimator update time */
     uint64 m_TimeLast;
+    /** \brief Magnetic declination */    
+    float m_MagDeclination;
 
     /************************************************************************/
     /** \brief Q Attitude Estimator (QAE) application entry point
@@ -357,8 +350,7 @@ public:
     /** \brief Sends the VehicleAttitudeMsg message.
      **
      **  \par Description
-     **       This function publishes the VehicleAttitudeMsg message containing
-     **       <TODO>
+     **       This function publishes the VehicleAttitudeMsg message.
      **
      **  \par Assumptions, External Events, and Notes:
      **       None
@@ -370,8 +362,7 @@ public:
     /** \brief Sends the ControlStateMsg message.
      **
      **  \par Description
-     **       This function publishes the ControlStateMsg message containing
-     **       <TODO>
+     **       This function publishes the ControlStateMsg message.
      **
      **  \par Assumptions, External Events, and Notes:
      **       None
@@ -397,7 +388,7 @@ public:
      **  \endreturns
      **
      *************************************************************************/
-    boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
+    osalbool VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
     
     /************************************************************************/
     /** \brief The main attitude estimator task.
@@ -425,7 +416,7 @@ public:
      **  \endreturns
      **
      *************************************************************************/
-    boolean InitEstimateAttitude(void);
+    osalbool InitEstimateAttitude(void);
 
     /************************************************************************/
     /** \brief Update the attitude estimate.
@@ -444,7 +435,7 @@ public:
      **  \endreturns
      **
      *************************************************************************/
-    boolean UpdateEstimateAttitude(float dt);
+    osalbool UpdateEstimateAttitude(float dt);
 
     /************************************************************************/
     /** \brief Update magnetic declination.
@@ -462,24 +453,12 @@ public:
      *************************************************************************/
     void UpdateMagDeclination(const float new_declination);
 
-    /************************************************************************/
-    /** \brief Update parameters from the configuration table.
-     **
-     **  \par Description
-     **       This function updates the current paramamters from the 
-     **       currently loaded configuration table.
-     **
-     *************************************************************************/
-    void UpdateParamsFromTable(void);
-
-
 private:
     /************************************************************************/
     /** \brief Initialize the QAE configuration tables.
     **
     **  \par Description
-    **       This function initializes QAE's configuration tables.  This
-    **       includes <TODO>.
+    **       This function initializes QAE's configuration tables.
     **
     **  \par Assumptions, External Events, and Notes:
     **       None

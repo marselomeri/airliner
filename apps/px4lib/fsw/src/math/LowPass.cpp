@@ -21,9 +21,10 @@ float LowPass::Update(float input, float dt, float cutoff)
 
 	if (m_Initialized)
 	{
-        b = 2 * float(M_PI_F) * cutoff * dt;
-        a = b / (1 + b);
-    	output = a * input + (1 - a) * m_State;
+        b = 2.0f * float(M_PI_F) * cutoff * dt;
+        a = b / (1.0f + b);
+    	output = a * input + (1.0f - a) * m_State;
+        m_State = output;
 	}
 	else
 	{

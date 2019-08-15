@@ -55,6 +55,7 @@ add_airliner_app_def(to
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/to_private_types.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/to_scheduler.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/to_scheduler.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/to_symbols.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/to_tbldefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/to_version.h
         
@@ -62,7 +63,16 @@ add_airliner_app_def(to
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         
     USER_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/user_doxy.in   
-    DESIGN_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in      
+    DESIGN_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in       
+    
+    MSG_OVERRIDES   ${CMAKE_CURRENT_SOURCE_DIR}/to_msg_overrides.json 
+
+    COMMANDER_PLUGIN
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr   
+    
+    REFERENCE_CONFIG
+        ${PROJECT_SOURCE_DIR}/apps/to/fsw/mission_inc
+        ${PROJECT_SOURCE_DIR}/apps/to/fsw/platform_inc
 )
 
 
@@ -114,6 +124,11 @@ add_airliner_app_unit_test(to-ut
 		PBLIB_GetTlmSerializationFunc
         
     VALGRIND_SUPPRESSION_FILE
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/valgrind.supp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/valgrind.supp    
+    
+    MSG_OVERRIDES   ${CMAKE_CURRENT_SOURCE_DIR}/to_msg_overrides.json 
+
+    COMMANDER_PLUGIN
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr
 )
 

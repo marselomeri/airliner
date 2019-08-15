@@ -1,0 +1,100 @@
+table.table.table-condensed
+  tbody
+    tr
+      th Cmd Count
+      td
+        div(data-cdr={tlm:[{name:'/SCH/SCH_HkPacket_t/CmdCounter'}]}) ---
+    tr
+     th Error Count
+     td
+       div(data-cdr={tlm:[{name:'/SCH/SCH_HkPacket_t/ErrCounter'}]}) ---
+    tr
+     th Sync to MET
+     td
+       div(data-cdr={tlm:[{name:'/SCH/SCH_HkPacket_t/SyncToMET'}]}) ---
+    tr
+     th Major Frame Source
+     td
+       div(data-cdr={tlm:[{name:'/SCH/SCH_HkPacket_t/MajorFrameSource'}]}) ---
+    tr
+     th Schedule Activity Success Count
+     td
+       div(data-cdr={tlm:[{name:'/SCH/SCH_HkPacket_t/ScheduleActivitySuccessCount'}]}) ---
+    tr
+     th Schedule Activity Failure Count
+     td
+       div(data-cdr={tlm:[{name:'/SCH/SCH_HkPacket_t/ScheduleActivityFailureCount'}]}) ---
+    tr
+     th Slots Processed Count
+     td
+       div(data-cdr={tlm:[{name:'/SCH/SCH_HkPacket_t/SlotsProcessedCount'}]}) ---
+    tr
+     th Skipped Slots Count
+     td
+       div(data-cdr={tlm:[{name:'/SCH/SCH_HkPacket_t/SkippedSlotsCount'}]}) ---
+    tr
+     th Multiple Slots Count
+     td
+       div(data-cdr={tlm:[{name:'/SCH/SCH_HkPacket_t/MultipleSlotsCount'}]}) ---
+    tr
+     th Same Slot Count
+     td
+       div(data-cdr={tlm:[{name:'/SCH/SCH_HkPacket_t/SameSlotCount'}]}) ---
+    tr
+     th Bad Table Data Count
+     td
+       div(data-cdr={tlm:[{name:'/SCH/SCH_HkPacket_t/BadTableDataCount'}]}) ---
+    tr
+     th Table Verify Success Count
+     td
+       div(data-cdr={tlm:[{name:'/SCH/SCH_HkPacket_t/TableVerifySuccessCount'}]}) ---
+    tr
+     th Table Verify Failure Count
+     td
+       div(data-cdr={tlm:[{name:'/SCH/SCH_HkPacket_t/TableVerifyFailureCount'}]}) ---
+    tr
+     th Table Pass Count
+     td
+       div(data-cdr={tlm:[{name:'/SCH/SCH_HkPacket_t/TablePassCount'}]}) ---
+    tr
+     th Valid Major Frame Count
+     td
+       div(data-cdr={tlm:[{name:'/SCH/SCH_HkPacket_t/ValidMajorFrameCount'}]}) ---
+    tr
+     th Missed Major Frame Count
+     td
+       div(data-cdr={tlm:[{name:'/SCH/SCH_HkPacket_t/MissedMajorFrameCount'}]}) ---
+    tr
+     th Unexpected Major Frame Count
+     td
+       div(data-cdr={tlm:[{name:'/SCH/SCH_HkPacket_t/UnexpectedMajorFrameCount'}]}) ---
+    tr
+     th Minor Frames Since Tone
+     td
+       div(data-cdr={tlm:[{name:'/SCH/SCH_HkPacket_t/MinorFramesSinceTone'}]}) ---
+    tr
+     th Next Slot Number
+     td
+       div(data-cdr={tlm:[{name:'/SCH/SCH_HkPacket_t/NextSlotNumber'}]}) ---
+    tr
+     th Last Sync MET Slot
+     td
+       div(data-cdr={tlm:[{name:'/SCH/SCH_HkPacket_t/LastSyncMETSlot'}]}) ---
+    tr
+     th Ignore Major Frame
+     td
+       div(data-cdr={tlm:[{name:'/SCH/SCH_HkPacket_t/IgnoreMajorFrame'}]}) ---
+    tr
+     th Unexpected Major Frame
+     td
+       div(data-cdr={tlm:[{name:'/SCH/SCH_HkPacket_t/UnexpectedMajorFrame'}]}) ---
+       
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/SCH/Noop'}}) No-Op    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/SCH/Reset'}}) Reset   
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/SCH/Enable'}}) Enable
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/SCH/Disable'}}) Disable
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/SCH/EnableGroup'}}) Enable Group
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/SCH/DisableGroup'}}) Disable Group
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/SCH/EnableSync'}})  Enable Sync
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/SCH/SendDiag'}}) Send Diag

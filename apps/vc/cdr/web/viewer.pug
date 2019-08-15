@@ -1,0 +1,63 @@
+style.
+  .left{
+    float:left;
+  }
+  .right{
+    float:right;
+  }
+  .cdr-button-container {
+    display: inline-table;
+    width: 100%;
+  }
+  .cdr-button-container >div {
+    margin: 5px 10px;
+  }
+  .cdr-button-container >div >button {
+    margin: 2px;
+  }
+
+.cdr-display-container 
+  img#cdr-video.cdr-display-container-item.cdr-video  
+  #cdr-image.cdr-display-container-item.cdr-image  
+  #cdr-empty.cdr-display-container-item.cdr-empty
+  
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/VC/StartServer'}}) Start Server
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/VC/StopServer'}}) Stop Server
+
+script.
+  var displayClass = $('.cdr-display-class');
+  
+  displayClass.each((e)=>{
+    var displayClassObj = $(displayClass[e]);
+    
+    if (displayClassObj.attr('id') == undefined) {
+      /* new display is loaded */
+      var randomKey = cu.makeKey();
+      var viewControlObjs = displayClassObj.find('button[data-info]');
+      displayClassObj.attr('id',randomKey);
+  
+      viewControlObjs.each((itm)=>{
+        $(viewControlObjs[itm]).data('key',randomKey);
+      });
+      viewControlObjs = displayClassObj.find('.cdr-display-container-item');
+  
+      viewControlObjs.each((itm)=>{
+        var id = $(viewControlObjs[itm]).attr('id');
+        $(viewControlObjs[itm]).attr('id',id+'-'+randomKey);
+      });
+  
+      display_controllers[randomKey] = new CommanderDisplay($('#'+randomKey));
+      display_controllers[randomKey].Subscriptions();
+      display_controllers[randomKey].updateCesiumGroundHeight();
+    }
+  });
+  
+
+
+
+
+  
+
+  
+  

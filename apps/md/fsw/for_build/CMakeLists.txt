@@ -12,7 +12,7 @@
  #    notice, this list of conditions and the following disclaimer in
  #    the documentation and/or other materials provided with the
  #    distribution.
- # 3. Neither the name Windhover Labs nor the names of its contributors 
+ # 3. Neither the name Windhover Labs nor the names of its contributors
  #    may be used to endorse or promote products derived from this software
  #    without specific prior written permission.
  #
@@ -30,7 +30,7 @@
  # POSSIBILITY OF SUCH DAMAGE.
  #
  #############################################################################
- 
+
 add_airliner_app_def(md
     FILE MD
     SOURCES
@@ -45,23 +45,33 @@ add_airliner_app_def(md
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_events.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_msg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_msgdefs.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_symbols.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_tbldefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_utils.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_utils.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_verify.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_version.h
-   
+
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
 
     USER_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/user_doxy.in
     DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in
+
+    MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/md_msg_overrides.json
+
+    COMMANDER_PLUGIN
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr
+    
+    REFERENCE_CONFIG
+        ${PROJECT_SOURCE_DIR}/apps/md/fsw/mission_inc
+        ${PROJECT_SOURCE_DIR}/apps/md/fsw/platform_inc
 )
 
 
-add_airliner_app_unit_test(md-ut 
+add_airliner_app_unit_test(md-ut
     UTASSERT
-        
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_app.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_app.h
@@ -94,11 +104,11 @@ add_airliner_app_unit_test(md-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/md_utils_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/md_utils_test.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../cfs_lib/fsw/src/cfs_utils.c
-        
+
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
-        
+
     VALGRIND_SUPPRESSION_FILE
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/md-ut.supp
 )

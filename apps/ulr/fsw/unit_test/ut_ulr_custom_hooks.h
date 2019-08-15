@@ -38,7 +38,7 @@ void        Ut_CFE_ES_ClearSysLogQueue(void);
 uint32      Ut_CFE_EVS_GetEventQueueDepth(void);
 int32       Ut_CFE_ES_RunLoopHook(uint32 *ExitStatus);
 int32       Ut_CFE_ES_WriteToSysLog(const char *SysLogEntryText);
-boolean     Ut_CFE_ES_SysLogWritten(const char *ExpectedSysLogEntryText);
+osalbool     Ut_CFE_ES_SysLogWritten(const char *ExpectedSysLogEntryText);
 uint32      Ut_CFE_ES_GetSysLogQueueDepth(void);
 
 

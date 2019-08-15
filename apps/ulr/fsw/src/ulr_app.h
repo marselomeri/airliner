@@ -46,40 +46,49 @@ extern "C" {
  ** Includes
  *************************************************************************/
 #include "cfe.h"
-
 #include "ulr_platform_cfg.h"
 #include "ulr_mission_cfg.h"
 #include "ulr_perfids.h"
 #include "ulr_msgids.h"
 #include "ulr_msg.h"
 #include "ulr_events.h"
-#include "ulr_tbldefs.h"
 #include "px4_msgs.h"
+#include "math/filters/LowPassFilter2p.hpp"
 
 
 /************************************************************************
  ** Local Defines
  *************************************************************************/
-#define ULR_BUF_LEN 	(6)
+
+/** \brief This is the size of the buffer exchanged by the platform
+ *         independent and custom layer. */
+#define ULR_BUF_LEN                     (6)
 
 
 /************************************************************************
  ** Local Structure Definitions
  *************************************************************************/
+
+/** \brief These are the states of the stream style message parser.  The
+ *         state machine design makes the parser resilient to drop out and
+ *         noise. */
 typedef enum
 {
-	ULR_PARSER_STATE_UNINITIALIZED           = 0,
-	ULR_PARSER_STATE_WAITING_FOR_HEADER      = 1,
-	ULR_PARSER_STATE_WAITING_FOR_VERSION_ID  = 2,
-	ULR_PARSER_STATE_WAITING_FOR_ALT_BYTE_1  = 3,
-	ULR_PARSER_STATE_WAITING_FOR_ALT_BYTE_2  = 4,
-	ULR_PARSER_STATE_WAITING_FOR_SNR         = 5,
-	ULR_PARSER_STATE_WAITING_FOR_CHECKSUM    = 6
+    ULR_PARSER_STATE_UNINITIALIZED           = 0,
+    ULR_PARSER_STATE_WAITING_FOR_HEADER      = 1,
+    ULR_PARSER_STATE_WAITING_FOR_VERSION_ID  = 2,
+    ULR_PARSER_STATE_WAITING_FOR_ALT_BYTE_1  = 3,
+    ULR_PARSER_STATE_WAITING_FOR_ALT_BYTE_2  = 4,
+    ULR_PARSER_STATE_WAITING_FOR_SNR         = 5,
+    ULR_PARSER_STATE_WAITING_FOR_CHECKSUM    = 6
 } ULR_ParserState_t;
 
+
+/** \brief This is the structure passed from the custom layer to the platform
+ *         independent layer. */
 typedef struct
 {
-	uint8  VersionID;
+    uint8  VersionID;
     uint8  AltitudeH;
     uint8  AltitudeL;
     uint8  SNR;
@@ -87,11 +96,7 @@ typedef struct
 } ULR_UartMessage_t;
 
 
-#define ULR_LISTENER_TASK_NAME  		"ULR_LISTENER"
-#define ULR_LISTENER_TASK_STACK_SIZE	16000
-#define ULR_LISTENER_TASK_PRIORITY		100
-#define ULR_MUTEX_NAME 					"ULR_MUTEX"
-
+/** \brief Listener task C style entry point. */
 extern "C" void ULR_ListenerTaskMain();
 
 
@@ -101,7 +106,10 @@ extern "C" void ULR_ListenerTaskMain();
 class ULR
 {
 public:
+    /** \brief Default constructor. */
     ULR();
+
+    /** \brief Destructor. */
     ~ULR();
 
     /**\brief Scheduling Pipe ID */
@@ -111,21 +119,25 @@ public:
     CFE_SB_PipeId_t CmdPipeId;
 
     /* Task-related */
-
+    /** \brief This variable contains the current state of the message
+     *        parser. */
     ULR_ParserState_t ParserState;
+
+    /** \brief This is the buffer passed from the custom layer to the platform
+     *        independent layer.  Having this as a member attribute allows us
+     *        to possibly debug certain errors by using MM to read the
+     *        contents of this variable.  We can't do that with variables
+     *        allocated on the stack. */
     uint8             ParserBuffer[ULR_BUF_LEN];
+
+    /** \brief This is the fully assembled message.  Again, having this as a
+     *         member attribute allows us to possibly debug certain errors by
+     *         using MM to read the contents of this variable.  We can't do
+     *         that with variables allocated on the stack. */
     ULR_UartMessage_t UartMessage;
 
     /** \brief Task Run Status */
     uint32 uiRunStatus;
-
-    /* Config table-related */
-
-    /** \brief Config Table Handle */
-    CFE_TBL_Handle_t ConfigTblHdl;
-
-    /** \brief Config Table Pointer */
-    ULR_ConfigTbl_t* ConfigTblPtr;
 
     /** \brief Output Data published at the end of cycle */
     PX4_DistanceSensorMsg_t DistanceSensor;
@@ -136,9 +148,17 @@ public:
     /** \brief ID of listener child task */
     uint32 ListenerTaskID;
 
+    /** \brief ID of the mutex used to protect data shared between the parent
+     *         and the child task. */
     uint32 Mutex;
+    
+    /** \brief Low pass filter. */
+    math::LowPassFilter2p   HeightFilter;
 
-    bool ChildContinueFlag;
+    /** \brief This flag is used by an internal function to signal whether the
+     *         child task should continue looping or terminate.
+     */
+    osalbool ChildContinueFlag;
 
     /************************************************************************/
     /** \brief Aerotenna uLanding Radar (ULR) application entry point
@@ -155,9 +175,29 @@ public:
      *************************************************************************/
     void AppMain(void);
 
+    /************************************************************************/
+    /** \brief Listener task entry point
+     **
+     **  \par Description
+     **       This function waits for device messages from the custom layer.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
     void ListenerTaskMain(void);
-    int32 InitListenerTask(void);
 
+    /************************************************************************/
+    /** \brief Listener task entry point
+     **
+     **  \par Description
+     **       This function initializes the listener task.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
+    int32 InitListenerTask(void);
 
     /************************************************************************/
     /** \brief Initialize the Aerotenna uLanding Radar (ULR) application
@@ -305,8 +345,7 @@ public:
     /** \brief Sends the DistanceSensor message.
      **
      **  \par Description
-     **       This function publishes the DistanceSensor message containing
-     **       <TODO>
+     **       This function publishes the DistanceSensor message.
      **
      **  \par Assumptions, External Events, and Notes:
      **       None
@@ -332,46 +371,9 @@ public:
      **  \endreturns
      **
      *************************************************************************/
-    boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
+    osalbool VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
 
 private:
-    /************************************************************************/
-    /** \brief Initialize the ULR configuration tables.
-    **
-    **  \par Description
-    **       This function initializes ULR's configuration tables.  This
-    **       includes <TODO>.
-    **
-    **  \par Assumptions, External Events, and Notes:
-    **       None
-    **
-    **  \returns
-    **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
-    **  \retstmt Return codes from #CFE_TBL_Register          \endcode
-    **  \retstmt Return codes from #CFE_TBL_Load              \endcode
-    **  \retstmt Return codes from #ULR_AcquireConfigPointers \endcode
-    **  \endreturns
-    **
-    *************************************************************************/
-    int32  InitConfigTbl(void);
-
-    /************************************************************************/
-    /** \brief Obtain ULR configuration tables data pointers.
-    **
-    **  \par Description
-    **       This function manages the configuration tables
-    **       and obtains a pointer to their data.
-    **
-    **  \par Assumptions, External Events, and Notes:
-    **       None
-    **
-    **  \returns
-    **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
-    **  \endreturns
-    **
-    *************************************************************************/
-    int32  AcquireConfigPointers(void);
-
     /************************************************************************/
     /** \brief Initialize device
      **
@@ -401,16 +403,38 @@ private:
      **  \par Assumptions, External Events, and Notes:
      **       None
      **
+     *************************************************************************/
+    void     ReportDistance(void);
+
+    /************************************************************************/
+    /** \brief Determines if child task should continue.
+     **
+     **  \par Description
+     **       This function determines if the child task should continue or
+     **       if it should terminate.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
      **  \returns
-     **  Returns 0 if successful.  Returns a negative number if unsuccessful.
+     **  TRUE if the child task should continue, FALSE if it should not.
      **  \endreturns
      **
      *************************************************************************/
-    void  ReportDistance(void);
+    osalbool ChildContinueExec(void);
 
-    bool  ChildContinueExec(void);
-    void  StopChild(void);
-
+    /************************************************************************/
+    /** \brief Signal the child task to terminate.
+     **
+     **  \par Description
+     **       This function is called by the parent task to signal the child
+     **       task to terminate execution.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
+    void     StopChild(void);
 
     /************************************************************************/
     /** \brief Get the distance measurements.
@@ -428,8 +452,6 @@ private:
      **
      *************************************************************************/
     int32  GetDistance(void);
-
-
 
     /************************************************************************/
     /** \brief Read a measurement from the device.
@@ -452,8 +474,16 @@ private:
      *************************************************************************/
     int32 ReadDevice(uint8 *Buffer, uint32 *Size);
 
-
-    /* TODO - Add doxygen */
+    /************************************************************************/
+    /** \brief Close the uLanding Radar device.
+     **
+     **  \par Description
+     **       This function is called when shutdown to close the device.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
     void  CloseDevice(void);
 
 public:
@@ -474,7 +504,24 @@ public:
     **
     *************************************************************************/
     static int32  ValidateConfigTbl(void*);
-    bool   IsChecksumOk(void);
+
+    /************************************************************************/
+    /** \brief Verifies device message checksum
+     **
+     **  \par Description
+     **       This function verifies the message from the device by checking
+     **       the actual reported checksum against the expected echecksum..
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \returns
+     **  TRUE if the actual and expected checksums match, FALSE if they do
+     **  not.
+     **  \endreturns
+     **
+     *************************************************************************/
+    osalbool IsChecksumOk(void);
 };
 
 #ifdef __cplusplus

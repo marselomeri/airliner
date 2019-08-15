@@ -1,0 +1,22 @@
+table.table.table-condensed
+  tbody
+    tr
+      th Cmd Count
+      td
+        div(data-cdr={tlm:[{name:'/MD/MD_HkTlm_t/ValidCmdCntr'}]}) ---
+    tr
+      th Error Count
+      td
+        div(data-cdr={tlm:[{name:'/MD/MD_HkTlm_t/InvalidCmdCntr'}]}) ---
+    tr
+      th State
+      td
+        div(data-cdr={tlm:[{name:'/MD/MD_HkTlm_t/DwellEnabledMask'}]}) ---
+
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MD/Noop'}}) No-Op    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MD/Reset'}}) Reset
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MD/Start'}}) Start
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MD/Stop'}}) Stop
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MD/Jam'}}) Jam   
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/MD/SetSignature'}}) Set Signature

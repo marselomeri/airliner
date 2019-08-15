@@ -1,0 +1,100 @@
+table.table.table-condensed
+  tbody
+    tr
+      th(style={width:'250px'}) Wakeup for File Proc
+      td
+        span(data-cdr={tlm: [{name: '/CF/CF_HkPacket_t/App.WakeupForFileProc'}]}) ---
+    tr
+      th Engine Cycle Count
+      td
+        span(data-cdr={tlm: [{name: '/CF/CF_HkPacket_t/App.EngineCycleCount'}]}) ---
+    tr
+      th Memory In Use
+      td
+        span(data-cdr={tlm: [{name: '/CF/CF_HkPacket_t/App.MemInUse'}]}) ---
+    tr
+      th Peak Mem In Use
+      td
+        span(data-cdr={tlm: [{name: '/CF/CF_HkPacket_t/App.PeakMemInUse'}]}) ---
+    tr
+      th Low Memory Mark
+      td
+        span(data-cdr={tlm: [{name: '/CF/CF_HkPacket_t/App.LowMemoryMark'}]}) ---
+    tr
+      th Max Mem Needed
+      td
+        span(data-cdr={tlm: [{name: '/CF/CF_HkPacket_t/App.MaxMemNeeded'}]}) ---
+    tr
+      th Mem Allocated
+      td
+        span(data-cdr={tlm: [{name: '/CF/CF_HkPacket_t/App.MemAllocated'}]}) ---
+    tr
+      th Buffer Pool Handle
+      td
+        span(data-cdr={tlm: [{name: '/CF/CF_HkPacket_t/App.BufferPoolHandle'}]}) ---
+    tr
+      th Q Nodes Allocated
+      td
+        span(data-cdr={tlm: [{name: '/CF/CF_HkPacket_t/App.QNodesAllocated'}]}) ---
+    tr
+      th Q Nodes Deallocated
+      td
+        span(data-cdr={tlm: [{name: '/CF/CF_HkPacket_t/App.QNodesDeallocated'}]}) ---
+    tr
+      th PDUs Received
+      td
+        span(data-cdr={tlm: [{name: '/CF/CF_HkPacket_t/App.PDUsReceived'}]}) ---
+    tr
+      th PDUs Rejected
+      td
+        span(data-cdr={tlm: [{name: '/CF/CF_HkPacket_t/App.PDUsRejected'}]}) ---
+    tr
+      th Total In Prog Trans
+      td
+        span(data-cdr={tlm: [{name: '/CF/CF_HkPacket_t/App.TotalInProgTrans'}]}) ---
+    tr
+      th Total Failed Trans
+      td
+        span(data-cdr={tlm: [{name: '/CF/CF_HkPacket_t/App.TotalFailedTrans'}]}) ---
+    tr
+      th Total Abandon Trans
+      td
+        span(data-cdr={tlm: [{name: '/CF/CF_HkPacket_t/App.TotalAbandonTrans'}]}) ---
+    tr
+      th Total Success Trans
+      td
+        span(data-cdr={tlm: [{name: '/CF/CF_HkPacket_t/App.TotalSuccessTrans'}]}) ---
+    tr
+      th Total Completed Trans
+      td
+        span(data-cdr={tlm: [{name: '/CF/CF_HkPacket_t/App.TotalCompletedTrans'}]}) ---
+    tr
+      th Last Failed Trans
+      td
+        span(data-cdr={tlm: [{name: '/CF/CF_HkPacket_t/App.LastFailedTrans'}]}) ---
+
+button.btn.cdr-primary(data-cdr={cmd:{name:'/CF/CF_PlaybackFileCmd_t'}}) Playback File
+button.btn.cdr-primary(data-cdr={cmd:{name:'/CF/CF_PlaybackDirCmd_t'}}) Playback Dir
+button.btn.cdr-primary(data-cdr={cmd:{name:'/CF/Freeze'}}) Freeze
+button.btn.cdr-primary(data-cdr={cmd:{name:'/CF/Thaw'}}) Thaw
+button.btn.cdr-primary(data-cdr={cmd:{name:'/CF/Suspend'}}) Suspend
+button.btn.cdr-primary(data-cdr={cmd:{name:'/CF/Resume'}}) Resume
+button.btn.cdr-primary(data-cdr={cmd:{name:'/CF/Cancel'}}) Cancel
+button.btn.cdr-primary(data-cdr={cmd:{name:'/CF/Abandon'}}) Abandon
+button.btn.cdr-primary(data-cdr={cmd:{name:'/CF/CF_SetMibParam_t'}}) Set MIB Param
+button.btn.cdr-primary(data-cdr={cmd:{name:'/CF/CF_GetMibParam_t'}}) Get MIB Param
+button.btn.cdr-primary(data-cdr={cmd:{name:'/CF/CF_SendTransCmd_t'}}) Send Trans Diag Data
+button.btn.cdr-primary(data-cdr={cmd:{name:'/CF/CF_SetPollParamCmd_t'}}) Set Poll Param
+button.btn.cdr-primary(data-cdr={cmd:{name:'/CF/SendCfgParams'}}) Send Cfg Params
+button.btn.cdr-primary(data-cdr={cmd:{name:'/CF/CF_WriteQueueCmd_t'}}) Write Queue Info
+button.btn.cdr-primary(data-cdr={cmd:{name:'/CF/EnableDequeue'}}) Enable Dequeue
+button.btn.cdr-primary(data-cdr={cmd:{name:'/CF/DisableDequeue'}}) Disable Dequeue
+button.btn.cdr-primary(data-cdr={cmd:{name:'/CF/EnableDirPolling'}}) Enable Dir Polling
+button.btn.cdr-primary(data-cdr={cmd:{name:'/CF/DisableDirPolling'}}) Disable Dir Polling
+button.btn.cdr-primary(data-cdr={cmd:{name:'/CF/CF_DequeueNodeCmd_t'}}) Delete Queue Node
+button.btn.cdr-primary(data-cdr={cmd:{name:'/CF/CF_PurgeQueueCmd_t'}}) Purge Queue
+button.btn.cdr-primary(data-cdr={cmd:{name:'/CF/CF_WriteActiveTransCmd_t'}}) Write Active Trans
+button.btn.cdr-primary(data-cdr={cmd:{name:'/CF/CF_KickstartCmd_t'}}) Kickstart
+button.btn.cdr-primary(data-cdr={cmd:{name:'/CF/CF_QuickStatCmd_t'}}) Quick Status
+button.btn.cdr-primary(data-cdr={cmd:{name:'/CF/CF_GiveTakeCmd_t'}}) Give / Take
+button.btn.cdr-primary(data-cdr={cmd:{name:'/CF/CF_AutoSuspendEnCmd_t'}}) Ena/Dis Auto Suspend

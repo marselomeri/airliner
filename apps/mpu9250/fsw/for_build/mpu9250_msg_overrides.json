@@ -1,0 +1,52 @@
+{
+    "Airliner": {
+        "apps": {
+            "MPU9250": {
+              "operations": {
+                  "Noop":                 { "airliner_cc":  0, "macro": "MPU9250_CMD_MID", "airliner_msg": "" },
+                  "Reset":                { "airliner_cc":  1, "macro": "MPU9250_CMD_MID", "airliner_msg": "" },
+                  "SendDiag":             { "airliner_cc":  2, "macro": "MPU9250_CMD_MID", "airliner_msg": "" },
+                  "SetCalibration":       { "airliner_cc":  3, "macro": "MPU9250_CMD_MID", "airliner_msg": "" },
+                  "MPU9250_DiagPacket_t": { "airliner_cc": -1, "macro": "MPU9250_DIAG_TLM_MID", "airliner_msg": "MPU9250_DiagPacket_t" },
+                  "MPU9250_HkTlm_t":      { "airliner_cc": -1, "macro": "MPU9250_HK_TLM_MID", "airliner_msg": "MPU9250_HkTlm_t" },
+                  "Measure":              { "airliner_cc":  0, "macro": "MPU9250_MEASURE_MID", "airliner_msg": "" },
+                  "SendHk":               { "airliner_cc":  0, "macro": "MPU9250_SEND_HK_MID", "airliner_msg": "" }
+              },
+              "scheduler": {
+                  "activities": [
+                      "MPU9250_MEASURE_MID",
+                      "MPU9250_SEND_HK_MID"
+                  ],
+                  "groups": [
+                      { "id": 1, "macro": "MPU9250_SCH_GRP" }
+                  ]
+              },
+              "events": [
+                  {"macro": "MPU9250_INIT_INF_EID", "id": 1},
+                  {"macro": "MPU9250_CMD_NOOP_EID", "id": 2},
+                  {"macro": "MPU9250_SUBSCRIBE_ERR_EID", "id": 3},
+                  {"macro": "MPU9250_PIPE_INIT_ERR_EID", "id": 4},
+                  {"macro": "MPU9250_CFGTBL_MANAGE_ERR_EID", "id": 5},
+                  {"macro": "MPU9250_CFGTBL_GETADDR_ERR_EID", "id": 6},
+                  {"macro": "MPU9250_RCVMSG_ERR_EID", "id": 7},
+                  {"macro": "MPU9250_MSGID_ERR_EID", "id": 8},
+                  {"macro": "MPU9250_CC_ERR_EID", "id": 9},
+                  {"macro": "MPU9250_MSGLEN_ERR_EID", "id": 10},
+                  {"macro": "MPU9250_CFGTBL_REG_ERR_EID", "id": 11},
+                  {"macro": "MPU9250_CFGTBL_LOAD_ERR_EID", "id": 12},
+                  {"macro": "MPU9250_UNINIT_ERR_EID", "id": 13},
+                  {"macro": "MPU9250_INIT_ERR_EID", "id": 14},
+                  {"macro": "MPU9250_READ_ERR_EID", "id": 15},
+                  {"macro": "MPU9250_VALIDATE_ERR_EID", "id": 16},
+                  {"macro": "MPU9250_CALIBRATE_INF_EID", "id": 17},
+                  {"macro": "MPU9250_CALIBRATE_ERR_EID", "id": 18}
+              ],
+              "config": {
+              },
+              "tables": [
+                  {"id": "CONFIG_TBL",  "title": "MPU9250 Configuration",  "isDumpTable": false}
+              ]
+            }
+        }
+    }
+}

@@ -1,8 +1,0 @@
-syntax = "proto2";
-import "nanopb.proto";
-
-message px4br_camera_trigger_pb 
-{
-	required uint64 timestamp = 1;
-	required uint32	seq = 2;
-}

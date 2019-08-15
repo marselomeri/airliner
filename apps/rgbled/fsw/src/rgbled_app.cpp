@@ -32,10 +32,6 @@
 *****************************************************************************/
 
 /************************************************************************
-** Pragmas
-*************************************************************************/
-
-/************************************************************************
 ** Includes
 *************************************************************************/
 #include <string.h>
@@ -44,6 +40,7 @@
 #include "rgbled_msg.h"
 #include "rgbled_version.h"
 #include "rgbled_custom.h"
+#include "px4lib_msgids.h"
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -51,8 +48,6 @@
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 RGBLED oRGBLED;
-
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -63,7 +58,6 @@ RGBLED::RGBLED()
 {
 
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -82,16 +76,46 @@ RGBLED::~RGBLED()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 RGBLED::InitEvent()
 {
-    int32  iStatus=CFE_SUCCESS;
+    int32  iStatus         = CFE_SUCCESS;
+    int32  ind             = 0;
+    
+    CFE_EVS_BinFilter_t   EventTbl[CFE_EVS_MAX_EVENT_FILTERS];
 
+    /* Initialize the event filter table.
+     * Note: 0 is the CFE_EVS_NO_FILTER mask and event 0 is reserved (not used) */
+    CFE_PSP_MemSet(EventTbl, 0x00, sizeof(EventTbl));
+
+    EventTbl[  ind].EventID = RGBLED_RESERVED_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = RGBLED_INIT_INF_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = RGBLED_CMD_NOOP_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = RGBLED_SUBSCRIBE_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = RGBLED_PIPE_INIT_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = RGBLED_RCVMSG_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = RGBLED_MSGID_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = RGBLED_CC_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = RGBLED_MSGLEN_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = RGBLED_CMD_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = RGBLED_INIT_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
     /* Register the table with CFE */
-    iStatus = CFE_EVS_Register(0, 0, CFE_EVS_BINARY_FILTER);
+    iStatus = CFE_EVS_Register(EventTbl, ind, CFE_EVS_BINARY_FILTER);
     if (iStatus != CFE_SUCCESS)
     {
         (void) CFE_ES_WriteToSysLog("RGBLED - Failed to register with EVS (0x%08lX)\n", iStatus);
     }
 
-    return iStatus;
+    return (iStatus);
 }
 
 
@@ -102,12 +126,12 @@ int32 RGBLED::InitEvent()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 RGBLED::InitPipe()
 {
-    int32  iStatus=CFE_SUCCESS;
+    int32  iStatus = CFE_SUCCESS;
 
     /* Init schedule pipe and subscribe to wakeup messages */
     iStatus = CFE_SB_CreatePipe(&SchPipeId,
-            RGBLED_SCH_PIPE_DEPTH,
-            RGBLED_SCH_PIPE_NAME);
+                                RGBLED_SCH_PIPE_DEPTH,
+                                RGBLED_SCH_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
         iStatus = CFE_SB_SubscribeEx(RGBLED_WAKEUP_MID, SchPipeId, CFE_SB_Default_Qos, RGBLED_WAKEUP_MID_MAX_MSG_COUNT);
@@ -146,8 +170,8 @@ int32 RGBLED::InitPipe()
 
     /* Init command pipe and subscribe to command messages */
     iStatus = CFE_SB_CreatePipe(&CmdPipeId,
-            RGBLED_CMD_PIPE_DEPTH,
-            RGBLED_CMD_PIPE_NAME);
+                                RGBLED_CMD_PIPE_DEPTH,
+                                RGBLED_CMD_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
         /* Subscribe to command messages */
@@ -170,9 +194,8 @@ int32 RGBLED::InitPipe()
     }
 
 RGBLED_InitPipe_Exit_Tag:
-    return iStatus;
+    return (iStatus);
 }
-    
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -183,10 +206,12 @@ void RGBLED::InitData()
 {
     /* Init housekeeping message. */
     CFE_SB_InitMsg(&HkTlm, RGBLED_HK_TLM_MID, sizeof(HkTlm), TRUE);
+    
     /* Init custom data */
     RGBLED_Custom_InitData();
+    
+    return;
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -195,9 +220,9 @@ void RGBLED::InitData()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 RGBLED::InitApp()
 {
-    int32  iStatus   = CFE_SUCCESS;
+    int32  iStatus     = CFE_SUCCESS;
     boolean returnBool = FALSE;
-    int8   hasEvents = 0;
+    int8   hasEvents   = 0;
 
     iStatus = InitEvent();
     if (iStatus != CFE_SUCCESS)
@@ -230,12 +255,11 @@ int32 RGBLED::InitApp()
     iStatus = OS_TaskInstallDeleteHandler(&RGBLED_CleanupCallback);
     if (iStatus != CFE_SUCCESS)
     {
-        CFE_EVS_SendEvent(RGBLED_INIT_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(RGBLED_INIT_ERR_EID, CFE_EVS_ERROR,
                                  "Failed to init register cleanup callback (0x%08X)",
                                  (unsigned int)iStatus);
         goto RGBLED_InitApp_Exit_Tag;
     }
-    
 
 RGBLED_InitApp_Exit_Tag:
     if (iStatus == CFE_SUCCESS)
@@ -255,7 +279,7 @@ RGBLED_InitApp_Exit_Tag:
         }
     }
 
-    return iStatus;
+    return (iStatus);
 }
 
 
@@ -266,10 +290,10 @@ RGBLED_InitApp_Exit_Tag:
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 RGBLED::RcvSchPipeMsg(int32 iBlocking)
 {
-    int32           iStatus=CFE_SUCCESS;
-    CFE_SB_Msg_t*   MsgPtr=NULL;
+    int32           iStatus = CFE_SUCCESS;
+    CFE_SB_Msg_t*   MsgPtr  = NULL;
     CFE_SB_MsgId_t  MsgId;
-    static uint8 lastColor = 0;
+    static uint8 lastColor  = 0;
 
     /* Stop Performance Log entry */
     CFE_ES_PerfLogExit(RGBLED_MAIN_TASK_PERF_ID);
@@ -286,84 +310,115 @@ int32 RGBLED::RcvSchPipeMsg(int32 iBlocking)
         switch (MsgId)
         {
             case RGBLED_WAKEUP_MID:
+            {
                 ProcessCmdPipe();
-                if(HkTlm.State != RGBLED_SELFTEST)
+                
+                /* If not in self test mode and the last color is not the 
+                 * current value update */
+                if(HkTlm.State != RGBLED_SELFTEST && 
+                   lastColor != CVT.RGBLEDControl.Color)
                 {
-                    /* If the same color is not the current value update */
-                    if (lastColor != CVT.RGBLEDControl.Color)
+                    HkTlm.State = RGBLED_ON;
+                    lastColor = CVT.RGBLEDControl.Color;
+                    switch (CVT.RGBLEDControl.Color)
                     {
-                        HkTlm.State = RGBLED_ON;
-                        lastColor = CVT.RGBLEDControl.Color;
-                        switch (CVT.RGBLEDControl.Color)
+                        case RGBLED_COLOR_RED:
                         {
-                            case RGBLED_COLOR_RED:
                             RGBLED_Custom_SetColor(255, 0, 0);
+                            HkTlm.Color = RGBLED_COLOR_RED;
                             break;
-        
-                            case RGBLED_COLOR_GREEN:
+                        }
+    
+                        case RGBLED_COLOR_GREEN:
+                        {
                             RGBLED_Custom_SetColor(0, 255, 0);
+                            HkTlm.Color = RGBLED_COLOR_GREEN;
                             break;
-        
-                            case RGBLED_COLOR_BLUE:
+                        }
+    
+                        case RGBLED_COLOR_BLUE:
+                        {
                             RGBLED_Custom_SetColor(0, 0, 255);
+                            HkTlm.Color = RGBLED_COLOR_BLUE;
                             break;
-        
-                            case RGBLED_COLOR_AMBER: 
+                        }
+    
+                        case RGBLED_COLOR_AMBER:
+                        {
                             RGBLED_Custom_SetColor(255, 255, 0);
+                            HkTlm.Color = RGBLED_COLOR_AMBER;
                             break;
-                            
-                            case RGBLED_COLOR_YELLOW:
+                        }
+                        
+                        case RGBLED_COLOR_YELLOW:
+                        {
                             RGBLED_Custom_SetColor(255, 255, 0);
+                            HkTlm.Color = RGBLED_COLOR_YELLOW;
                             break;
-        
-                            case RGBLED_COLOR_PURPLE:
+                        }
+    
+                        case RGBLED_COLOR_PURPLE:
+                        {
                             RGBLED_Custom_SetColor(255, 0, 255);
+                            HkTlm.Color = RGBLED_COLOR_PURPLE;
                             break;
-        
-                            case RGBLED_COLOR_CYAN:
+                        }
+    
+                        case RGBLED_COLOR_CYAN:
+                        {
                             RGBLED_Custom_SetColor(0, 255, 255);
+                            HkTlm.Color = RGBLED_COLOR_CYAN;
                             break;
-        
-                            case RGBLED_COLOR_WHITE:
+                        }
+    
+                        case RGBLED_COLOR_WHITE:
+                        {
                             RGBLED_Custom_SetColor(255, 255, 255);
+                            HkTlm.Color = RGBLED_COLOR_WHITE;
                             break;
-        
-                            default: /* COLOR_OFF */
+                        }
+    
+                        default: /* COLOR_OFF */
+                        {
                             RGBLED_Custom_SetColor(0, 0, 0);
+                            HkTlm.Color = RGBLED_COLOR_OFF;
                             HkTlm.State = RGBLED_INITIALIZED;
                             break;
                         }
                     }
-                    /* if the color is still the same break */
-                    else
-                    {
-                        break;
-                    }
                 }
+                
+                break;
+            }
             case RGBLED_SEND_HK_MID:
+            {
                 ReportHousekeeping();
                 break;
-
+            }
             case PX4_LED_CONTROL_MID:
-                memcpy(&CVT.RGBLEDControl, MsgPtr, sizeof(CVT.RGBLEDControl));
+            {
+                CFE_PSP_MemCpy(&CVT.RGBLEDControl, MsgPtr, sizeof(CVT.RGBLEDControl));
                 break;
-
+            }
             default:
+            {
                 (void) CFE_EVS_SendEvent(RGBLED_MSGID_ERR_EID, CFE_EVS_ERROR,
                      "Recvd invalid SCH msgId (0x%04X)", MsgId);
+                break;
+            }
         }
     }
     else if (iStatus == CFE_SB_NO_MESSAGE)
     {
-        /* TODO: If there's no incoming message, you can do something here, or 
-         * nothing.  Note, this section is dead code only if the iBlocking arg
+        /* If there's no incoming message, do nothing here.
+         * Note, this section is dead code only if the iBlocking arg
          * is CFE_SB_PEND_FOREVER. */
         iStatus = CFE_SUCCESS;
     }
     else if (iStatus == CFE_SB_TIME_OUT)
     {
-        /* TODO: If there's no incoming message within a specified time (via the
-         * iBlocking arg, you can do something here, or nothing.  
+        /* If there's no incoming message within a specified time (via the
+         * iBlocking arg, do nothing here. 
          * Note, this section is dead code only if the iBlocking arg
          * is CFE_SB_PEND_FOREVER. */
         iStatus = CFE_SUCCESS;
@@ -374,7 +429,7 @@ int32 RGBLED::RcvSchPipeMsg(int32 iBlocking)
               "SCH pipe read error (0x%08lX).", iStatus);
     }
 
-    return iStatus;
+    return (iStatus);
 }
 
 
@@ -385,8 +440,8 @@ int32 RGBLED::RcvSchPipeMsg(int32 iBlocking)
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void RGBLED::ProcessCmdPipe()
 {
-    int32 iStatus = CFE_SUCCESS;
-    CFE_SB_Msg_t*   CmdMsgPtr=NULL;
+    int32 iStatus             = CFE_SUCCESS;
+    CFE_SB_Msg_t*   CmdMsgPtr = NULL;
     CFE_SB_MsgId_t  CmdMsgId;
 
     /* Process command messages until the pipe is empty */
@@ -399,10 +454,12 @@ void RGBLED::ProcessCmdPipe()
             switch (CmdMsgId)
             {
                 case RGBLED_CMD_MID:
+                {
                     ProcessAppCmds(CmdMsgPtr);
                     break;
-
+                }
                 default:
+                {
                     /* Bump the command error counter for an unknown command.
                      * (This should only occur if it was subscribed to with this
                      *  pipe, but not handled in this switch-case.) */
@@ -410,6 +467,7 @@ void RGBLED::ProcessCmdPipe()
                     (void) CFE_EVS_SendEvent(RGBLED_MSGID_ERR_EID, CFE_EVS_ERROR,
                                       "Recvd invalid CMD msgId (0x%04X)", (unsigned short)CmdMsgId);
                     break;
+                }
             }
         }
         else if (iStatus == CFE_SB_NO_MESSAGE)
@@ -423,6 +481,7 @@ void RGBLED::ProcessCmdPipe()
             break;
         }
     }
+    return;
 }
 
 
@@ -433,7 +492,7 @@ void RGBLED::ProcessCmdPipe()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void RGBLED::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 {
-    uint32  uiCmdCode=0;
+    uint32  uiCmdCode = 0;
 
     if (MsgPtr != NULL)
     {
@@ -446,6 +505,7 @@ void RGBLED::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
             switch (uiCmdCode)
             {
                 case RGBLED_NOOP_CC:
+                {
                     HkTlm.usCmdCnt++;
                     (void) CFE_EVS_SendEvent(RGBLED_CMD_NOOP_EID, CFE_EVS_INFORMATION,
                         "Recvd NOOP. Version %d.%d.%d.%d",
@@ -454,13 +514,15 @@ void RGBLED::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
                         RGBLED_REVISION,
                         RGBLED_MISSION_REV);
                     break;
-    
+                }
                 case RGBLED_RESET_CC:
+                {
                     HkTlm.usCmdCnt = 0;
                     HkTlm.usCmdErrCnt = 0;
                     break;
-    
+                }
                 case RGBLED_SELFTEST_CC:
+                {
                     if(HkTlm.State != RGBLED_SELFTEST)
                     {
                         HkTlm.usCmdCnt++;
@@ -475,15 +537,18 @@ void RGBLED::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
                                 "RGBLED is already running self-test");
                     }
                     break;
-    
+                }
                 default:
+                {
                     HkTlm.usCmdErrCnt++;
                     (void) CFE_EVS_SendEvent(RGBLED_CC_ERR_EID, CFE_EVS_ERROR,
                                       "Recvd invalid command code (%u)", (unsigned int)uiCmdCode);
                     break;
+                }
             }
         }
     }
+    return;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -495,6 +560,7 @@ void RGBLED::ReportHousekeeping()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&HkTlm);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&HkTlm);
+    return;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -526,7 +592,7 @@ boolean RGBLED::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
         }
     }
 
-    return bResult;
+    return (bResult);
 }
 
 
@@ -608,10 +674,7 @@ void RGBLED_SelfTest_Complete(void)
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void RGBLED_CleanupCallback(void)
 {
-    if(RGBLED_Custom_Uninit() != TRUE)
-    {
-        CFE_EVS_SendEvent(RGBLED_UNINIT_ERR_EID, CFE_EVS_ERROR,"RGBLED_Uninit failed");
-    }
+    RGBLED_Custom_Uninit();
 }
 
 

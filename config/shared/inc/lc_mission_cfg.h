@@ -1,6 +1,8 @@
 #ifndef LC_MISSION_CFG_H
 #define LC_MISSION_CFG_H
 
+#include "msg_ids.h"
+
 /** \lccfg RTS Request Message ID
 **  
 **  \par Description:
@@ -20,7 +22,7 @@
 **       This parameter shouldn't be larger than the value set for 
 **       #CFE_SB_HIGHEST_VALID_MSGID.
 */
-#define LC_RTS_REQ_MID                    0x18A9
+#define LC_RTS_REQ_MID                    SC_CMD_MID
 
 /** \lccfg RTS Request Command Code
 **  

@@ -63,7 +63,7 @@ extern "C" {
  *************************************************************************/
 
 /** \brief Params mutex name. */
-#define MPU9250_MUTEX_PARAMS                ("MPU9250_MUTEX_PARAMS")
+#define MPU9250_MUTEX_PARAMS    ("MPU9250_MUTEX_PARAMS")
 
 /************************************************************************
  ** Local Structure Definitions
@@ -486,6 +486,24 @@ public:
      **
      *************************************************************************/
     void UpdateParamsFromTable(void);
+
+    /************************************************************************/
+    /** \brief Set sensor calibation values
+    **
+    **  \par Description
+    **       Updates the sensor calibration table with passed values.
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \param [in]   CalibrationMsgPtr   A pointer to the calibration messsage
+    **
+    **  \returns
+    **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
+    **  \endreturns
+    **
+    *************************************************************************/
+    int32 UpdateCalibrationValues(MPU9250_SetCalibrationCmd_t* CalibrationMsgPtr);
 
 };
 

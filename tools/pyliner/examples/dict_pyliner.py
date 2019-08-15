@@ -20,7 +20,7 @@ airliner.subscribe({'tlm': ['/Airliner/ES/HK/CmdCounter',
 # Perform 15 batches of sending commands and receiving telemetry
 for i in range(15):
     # Get entire telemetry data dictionary for CmdCounter
-    cmd_count_data = airliner.get_tlm('/Airliner/ES/HK/CmdCounter')
+    cmd_count_data = airliner.tlm('/Airliner/ES/HK/CmdCounter')
     
     # Print all data for CmdCounter
     print "Telemetry: %s   Value: %s   Timestamp: %s" % (cmd_count_data['name'],
@@ -28,10 +28,10 @@ for i in range(15):
                                                          cmd_count_data['time'])
     
     # Get just the value of other subscribed items
-    log_mode = airliner.get_tlm_value('/Airliner/ES/HK/SysLogMode')
-    max_proc_resets = airliner.get_tlm_value('/Airliner/ES/HK/MaxProcessorResets')
-    log_size = airliner.get_tlm_value('/Airliner/ES/HK/SysLogBytesUsed')
-    log_entries = airliner.get_tlm_value('/Airliner/ES/HK/SysLogEntries')
+    log_mode = airliner.tlm_value('/Airliner/ES/HK/SysLogMode')
+    max_proc_resets = airliner.tlm_value('/Airliner/ES/HK/MaxProcessorResets')
+    log_size = airliner.tlm_value('/Airliner/ES/HK/SysLogBytesUsed')
+    log_entries = airliner.tlm_value('/Airliner/ES/HK/SysLogEntries')
 
     # Print the fresh telemetry values
     print "Log mode: " + str(log_mode)

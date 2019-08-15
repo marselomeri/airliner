@@ -41,38 +41,50 @@
 
 #include "ld_state_history.h"
 
-void StateHistory::update() {
-    if (requested_state != state) {
+void StateHistory::update()
+{
+    if (requested_state != state)
+    {
         if ((PX4LIB_GetPX4TimeUs() - time_since_state_change)
-                >= (state ? time_since_true_state : time_since_false_state)) {
+                >= (state ? time_since_true_state : time_since_false_state))
+        {
             state = requested_state;
         }
     }
 }
 
-void StateHistory::setState(const bool new_state) {
-    if (new_state != state) {
-        if (new_state != requested_state) {
+void StateHistory::setState(const bool new_state)
+{
+    if (new_state != state)
+    {
+        if (new_state != requested_state)
+        {
             requested_state = new_state;
             time_since_state_change = PX4LIB_GetPX4TimeUs();
         }
-    } else {
+    }
+    else
+    {
         requested_state = state;
     }
     update();
 }
 
-void StateHistory::setTimeSince(const bool from_state, const uint64 new_time) {
-
-    if (from_state) {
+void StateHistory::setTimeSince(const bool from_state, const uint64 new_time)
+{
+    if (from_state)
+    {
         time_since_true_state = new_time;
-    } else {
+    }
+    else
+    {
         time_since_false_state = new_time;
     }
 
 }
 
-bool StateHistory::getState() const {
+bool StateHistory::getState() const
+{
     return state;
 }
 

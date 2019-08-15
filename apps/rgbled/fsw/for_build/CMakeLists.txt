@@ -12,8 +12,8 @@
 #    notice, this list of conditions and the following disclaimer in
 #    the documentation and/or other materials provided with the
 #    distribution.
-# 3. Neither the name Windhover Labs nor the names of its 
-#    contributors may be used to endorse or promote products derived 
+# 3. Neither the name Windhover Labs nor the names of its
+#    contributors may be used to endorse or promote products derived
 #    from this software without specific prior written permission.
 #
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
@@ -38,14 +38,24 @@ add_airliner_app_def(rgbled
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/rgbled_app.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/rgbled_events.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/rgbled_msg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/rgbled_symbols.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/rgbled_version.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/rgbled_custom.h
-   
+
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
 
     USER_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/user_doxy.in
     DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in
+
+    MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/rgbled_msg_overrides.json
+
+    COMMANDER_PLUGIN
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr
+    
+    REFERENCE_CONFIG
+        ${PROJECT_SOURCE_DIR}/apps/rgbled/fsw/mission_inc
+        ${PROJECT_SOURCE_DIR}/apps/rgbled/fsw/platform_inc
 )
 
 add_airliner_app_unit_test(rgbled-ut
@@ -66,11 +76,11 @@ add_airliner_app_unit_test(rgbled-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/rgbled_msg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/rgbled_version.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/rgbled_custom.h
-        
+
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
-        
+
     VALGRIND_SUPPRESSION_FILE
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/valgrind.supp
 )

@@ -5,10 +5,10 @@ add_airliner_app_def(appname
 	NANOPB
     SOURCES
 		[Your already sourced items]
-        ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/{{cookiecutter.app_name|lower}}_serialization.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/{{cookiecutter.app_name|lower}}_serialization.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/{{cookiecutter.app_name|lower}}_registration.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/{{cookiecutter.app_name|lower}}_registration.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/{{cookiecutter.app_name_lower}}_serialization.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/{{cookiecutter.app_name_lower}}_serialization.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/{{cookiecutter.app_name_lower}}_registration.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/{{cookiecutter.app_name_lower}}_registration.c
 {%- for proto_msg, proto_data in cookiecutter.proto_msgs.iteritems() %}
         ${ {{-cookiecutter.app_name}}_PROTOBUF_MSGS_DIR}/{{proto_data.proto_msg[:-3]}}.pb.h
         ${ {{-cookiecutter.app_name}}_PROTOBUF_MSGS_DIR}/{{proto_data.proto_msg[:-3]}}.pb.c

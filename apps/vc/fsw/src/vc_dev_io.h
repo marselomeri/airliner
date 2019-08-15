@@ -162,7 +162,7 @@ boolean VC_Devices_Uninit(void);
 
 /************************************************************************/
 /** \brief Custom function to perform any critical cleanup after a 
-**         failuse.
+**         failure.
 **
 **  \par Description
 **       This function is called in cleanup to close and uninitialize

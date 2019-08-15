@@ -1,0 +1,43 @@
+{
+    "Airliner": {
+        "apps": {
+            "SENS": {
+              "operations": {
+                  "Noop":           { "airliner_cc":  0, "macro": "SENS_CMD_MID", "airliner_msg": "" },
+                  "Reset":          { "airliner_cc":  1, "macro": "SENS_CMD_MID", "airliner_msg": "" },
+                  "SENS_HkTlm_t":   { "airliner_cc": -1, "macro": "SENS_HK_TLM_MID", "airliner_msg": "SENS_HkTlm_t" },
+                  "Wakeup":         { "airliner_cc":  0, "macro": "SENS_WAKEUP_MID", "airliner_msg": "" },
+                  "SendHk":         { "airliner_cc":  0, "macro": "SENS_SEND_HK_MID", "airliner_msg": "" }
+              },
+              "scheduler": {
+                  "activities": [
+                      "SENS_WAKEUP_MID",
+                      "SENS_SEND_HK_MID"
+                  ],
+                  "groups": [
+                      { "id": 1, "macro": "SENS_SCH_GRP" }
+                  ]
+              },
+              "events": [
+                  {"macro": "SENS_INIT_INF_EID", "id": 1},
+                  {"macro": "SENS_CMD_NOOP_EID", "id": 2},
+                  {"macro": "SENS_SUBSCRIBE_ERR_EID", "id": 3},
+                  {"macro": "SENS_PIPE_INIT_ERR_EID", "id": 4},
+                  {"macro": "SENS_CFGTBL_MANAGE_ERR_EID", "id": 5},
+                  {"macro": "SENS_CFGTBL_GETADDR_ERR_EID", "id": 6},
+                  {"macro": "SENS_RCVMSG_ERR_EID", "id": 7},
+                  {"macro": "SENS_MSGID_ERR_EID", "id": 8},
+                  {"macro": "SENS_CC_ERR_EID", "id": 9},
+                  {"macro": "SENS_MSGLEN_ERR_EID", "id": 10},
+                  {"macro": "SENS_CFGTBL_REG_ERR_EID", "id": 11},
+                  {"macro": "SENS_CFGTBL_LOAD_ERR_EID", "id": 12}
+              ],
+              "config": {
+              },
+              "tables": [
+                  {"id": "CONFIG_TBL",  "title": "SENS Configuration",  "isDumpTable": false}
+              ]
+            }
+        }
+    }
+}

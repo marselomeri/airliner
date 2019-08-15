@@ -1,0 +1,42 @@
+{
+    "Airliner": {
+        "apps": {
+            "ULR": {
+              "operations": {
+                  "Noop":           { "airliner_cc":  0, "macro": "ULR_CMD_MID",     "airliner_msg": "" },
+                  "Reset":          { "airliner_cc":  1, "macro": "ULR_CMD_MID",     "airliner_msg": "" },
+                  "ULR_HkTlm_t":    { "airliner_cc": -1, "macro": "ULR_HK_TLM_MID",  "airliner_msg": "ULR_HkTlm_t" },
+                  "Measure":        { "airliner_cc":  0, "macro": "ULR_MEASURE_MID", "airliner_msg": "" },
+                  "SendHk":         { "airliner_cc":  0, "macro": "ULR_SEND_HK_MID", "airliner_msg": "" }
+              },
+              "scheduler": {
+                  "activities": [
+                      "ULR_MEASURE_MID",
+                      "ULR_SEND_HK_MID"
+                  ],
+                  "groups": [
+                      { "id": 1, "macro": "ULR_SCH_GRP" }
+                  ]
+              },
+              "events": [
+                  {"macro": "ULR_INIT_INF_EID",                      "id":  1},
+                  {"macro": "ULR_CMD_NOOP_EID",                      "id":  2},
+                  {"macro": "ULR_SUBSCRIBE_ERR_EID",                 "id":  3},
+                  {"macro": "ULR_PIPE_INIT_ERR_EID",                 "id":  4},
+                  {"macro": "ULR_RCVMSG_ERR_EID",                    "id":  5},
+                  {"macro": "ULR_MSGID_ERR_EID",                     "id":  6},
+                  {"macro": "ULR_CC_ERR_EID",                        "id":  7},
+                  {"macro": "ULR_MSGLEN_ERR_EID",                    "id":  8},
+                  {"macro": "ULR_CUSTOM_INIT_ERR_EID",               "id":  9},
+                  {"macro": "ULR_UNEXPECTED_DATA_BEFORE_VERSION_ID", "id": 10},
+                  {"macro": "ULR_UNEXPECTED_DATA_BEFORE_HEADER",     "id": 11},
+                  {"macro": "ULR_INVALID_CHECKSUM",                  "id": 12},
+                  {"macro": "ULR_INVALID_PARSER_STATE",              "id": 13},
+                  {"macro": "ULR_LISTENER_CREATE_CHDTASK_ERR_EID",   "id": 14}
+              ],
+              "config": {
+              }
+            }
+        }
+    }
+}

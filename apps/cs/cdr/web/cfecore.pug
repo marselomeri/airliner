@@ -1,0 +1,23 @@
+table.table.table-condensed
+  tbody
+    tr
+      th State
+      td
+        div(data-cdr={tlm:[{name:'/CS/CS_HkPacket_t/CfeCoreCSState'}]}) ---
+      td
+        .btn-group(role="group")
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/CS/EnableCfeCore'}}) Enable 
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/CS/DisableCfeCore'}}) Disable
+    tr
+      th Error Count
+      td
+        span(data-cdr={tlm: [{name:'/CS/CS_HkPacket_t/CfeCoreCSErrCounter'}]}) ---
+      td
+    tr
+      th Baseline
+      td
+        span(data-cdr={tlm: [{name:'/CS/CS_HkPacket_t/CfeCoreBaseline'}]}) ---
+      td
+        .btn-group(role="group")
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/CS/ReportBaselineCfeCore'}}) Report 
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/CS/RecomputeBaselineCfeCore'}}) Recompute

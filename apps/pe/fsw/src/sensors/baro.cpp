@@ -1,11 +1,37 @@
-#include "../pe_app.h"
-#include <math/Matrix1F10.hpp>
-#include <math/Matrix1F1.hpp>
+/****************************************************************************
+*
+*   Copyright (c) 2017 Windhover Labs, L.L.C. All rights reserved.
+*
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions
+* are met:
+*
+* 1. Redistributions of source code must retain the above copyright
+*    notice, this list of conditions and the following disclaimer.
+* 2. Redistributions in binary form must reproduce the above copyright
+*    notice, this list of conditions and the following disclaimer in
+*    the documentation and/or other materials provided with the
+*    distribution.
+* 3. Neither the name Windhover Labs nor the names of its
+*    contributors may be used to endorse or promote products derived
+*    from this software without specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+* FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+* COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+* INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+* BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+* OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+* AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+* LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+* ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+* POSSIBILITY OF SUCH DAMAGE.
+*
+*****************************************************************************/
 
-/* required number of samples for sensor to initialize */
-#define REQ_BARO_INIT_COUNT   (100)
-/* 0.1 s */
-#define BARO_TIMEOUT          (100000)
+#include "../pe_app.h"
 
 void PE::baroInit()
 {
@@ -15,7 +41,7 @@ void PE::baroInit()
 	if (baroMeasure(y) != CFE_SUCCESS)
 	{
 		m_BaroStats.reset();
-		return;
+		goto baroInit_Exit_Tag;
 	}
 
 	/* If finished */
@@ -36,6 +62,9 @@ void PE::baroInit()
 			m_AltOrigin = m_BaroAltOrigin;
 		}
 	}
+	
+baroInit_Exit_Tag:
+    return;
 }
 
 
@@ -45,6 +74,7 @@ int32 PE::baroMeasure(math::Vector1F &y)
 	y.Zero();
 	y[0] = m_SensorCombinedMsg.BaroAlt;
 	m_BaroStats.update(y);
+	
 	return CFE_SUCCESS;
 }
 
@@ -64,7 +94,7 @@ void PE::baroCorrect()
     /* measured altitude, negative down dir */
     m_Baro.C[Y_baro_z][X_z] = -1.0f;
 
-    m_Baro.R[0][0] = m_Params.BARO_STDDEV * m_Params.BARO_STDDEV;
+    m_Baro.R[0][0] = ConfigTblPtr->BARO_STDDEV * ConfigTblPtr->BARO_STDDEV;
 
     /* residual */
     /* ((1x10 * 10x10) * 10x1) + 1x1) */
@@ -92,19 +122,22 @@ void PE::baroCorrect()
         }
 
     }
-    else if (m_BaroFault)
+    else
     {
-    	m_BaroFault = FALSE;
-        (void) CFE_EVS_SendEvent(PE_BARO_OK_INF_EID, CFE_EVS_INFORMATION,
-                "Baro OK");
+        if (m_BaroFault)
+        {
+        	m_BaroFault = FALSE;
+            (void) CFE_EVS_SendEvent(PE_BARO_OK_INF_EID, CFE_EVS_INFORMATION,
+                    "Baro OK");
 
-        m_BaroInitialized = TRUE;
+            m_BaroInitialized = TRUE;
+        }
     }
 
     /* kalman filter correction */
 
 	/* 10x10 * 10x1 * 1x1 */
-	m_Baro.K = m_StateCov * m_Baro.C.Transpose() * m_Baro.S_I;
+	m_Baro.K = (m_StateCov * m_Baro.C.Transpose()) * m_Baro.S_I;
 
 	/* 10x1 * 1x1 */
 	m_Baro.temp = m_Baro.K * m_Baro.r;
@@ -133,6 +166,10 @@ void PE::baroCheckTimeout()
 	else if (m_Timestamp < m_TimeLastBaro)
 	{
         Timestamp = m_TimeLastBaro - m_Timestamp;
+    }
+    else
+    {
+        Timestamp = 0;
     }
 
 	if (Timestamp > BARO_TIMEOUT)

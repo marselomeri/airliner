@@ -46,7 +46,6 @@ extern "C" {
  ** Includes
  *************************************************************************/
 #include "cfe.h"
-
 #include "lgc_platform_cfg.h"
 #include "lgc_mission_cfg.h"
 #include "lgc_perfids.h"
@@ -55,7 +54,7 @@ extern "C" {
 #include "lgc_events.h"
 #include "lgc_tbldefs.h"
 #include "px4_msgs.h"
-#include "px4_msgs.h"
+
 /************************************************************************
  ** Local Defines
  *************************************************************************/
@@ -114,6 +113,7 @@ public:
 
     /** \brief Housekeeping Telemetry for downlink */
     LGC_HkTlm_t HkTlm;
+
     /** \brief Current Value Table */
     LGC_CurrentValueTable_t CVT;
 
