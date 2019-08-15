@@ -16,4 +16,7 @@ addons:
       - gcc-multilib
       - graphviz
 script:
-  - ls -la; cd tools/commander; npm install; cd ../../; make bebop2/sitl
+  - cd tools/commander; 
+  - npm install
+  - cd ../../
+  - make bebop2/sitl
