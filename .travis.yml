@@ -29,8 +29,6 @@ addons:
       - flex
       - bison
       - libncurses5-dev
-      - gstreamer1.0-plugin* 
-      - libgstreamer1.0-*
       - libimage-exiftool-perl
 before_install:
   - sudo -H pip install --upgrade pip 
@@ -40,8 +38,15 @@ before_install:
   - wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
   - sudo apt-get update
   - sudo apt-get install -y gazebo8 libgazebo8 libgazebo8-dev
+  - sudo apt-get install -y gstreamer1.0-plugin* libgstreamer1.0-*
 script:
   - cd tools/commander; 
   - npm install
   - cd ../../
   - make bebop2/sitl
+  - cd build/bebop2/sitl
+  - ctest
+after_success:
+  - cd build/bebop2/sitl
+  - make docs
+  
