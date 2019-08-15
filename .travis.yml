@@ -1,0 +1,10 @@
+language: cpp
+compiler: 
+- gcc
+os: linux
+addons:
+  apt:
+    packages:
+      - cmake
+script:
+- make bebop2/sitl
