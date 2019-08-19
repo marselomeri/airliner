@@ -33,7 +33,7 @@
 
 
 add_airliner_app_def(mac
-    FILE mac
+    FILE MAC
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_app.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_app.hpp
