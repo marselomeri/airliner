@@ -41,6 +41,8 @@ addons:
       - libgstreamer1.0-dev
       - libgstreamer-plugins-base1.0-dev
       - libglib2.0-dev
+      - g++-multilib 
+      - gcc-multilib
 before_install:
   - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
   - sudo -H pip install --upgrade pip 
