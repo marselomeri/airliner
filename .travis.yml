@@ -41,8 +41,14 @@ addons:
       - libgstreamer1.0-dev
       - libgstreamer-plugins-base1.0-dev
       - libglib2.0-dev
-      - g++-multilib 
-      - gcc-multilib
+  coverity_scan:
+    project:
+      name: "WindhoverLabs/airliner"
+      description: "Mission critical UAS autopilot"
+    notification_email: mbenson@windhoverlabs.com
+    build_command_prepend: ""
+    build_command: "make bebop/sitl"
+    branch_pattern: integration/WINDEV-758-flight-test-12
 before_install:
   - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
   - sudo -H pip install --upgrade pip 
@@ -64,13 +70,4 @@ script:
 after_success:
   - cd build/bebop2/sitl
   - make docs
-addons:
-  coverity_scan:
-    project:
-      name: "WindhoverLabs/airliner"
-      description: "Mission critical UAS autopilot"
-    notification_email: mbenson@windhoverlabs.com
-    build_command_prepend: ""
-    build_command: "make bebop/sitl"
-    branch_pattern: integration/WINDEV-758-flight-test-12
 
