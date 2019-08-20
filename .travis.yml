@@ -47,10 +47,6 @@ script:
   - cd tools/commander; 
   - npm install
   - cd ../../
-  - make bebop2/sitl
-  - sudo apt-get install -y apt-file
-  - sudo apt-file update
-  - sudo apt-file search glib.h
   - sudo updatedb
   - locate glib.h
   
