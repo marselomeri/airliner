@@ -41,6 +41,7 @@ before_install:
   - sudo apt-get update
   - sudo apt-get install -y gazebo8 libgazebo8 libgazebo8-dev
   - sudo apt-get install -y gstreamer1.0-plugin* libgstreamer1.0-*
+  - sudo apt-get install -y libglib2.0-dev
 script:
   - cd tools/commander; 
   - npm install
