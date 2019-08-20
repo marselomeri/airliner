@@ -34,7 +34,6 @@ addons:
       - libc6-dbg:i386
       - libgstreamer1.0-dev
       - libgstreamer-plugins-base1.0-dev
-      - libdbus-glib-1-dev
 before_install:
   - sudo -H pip install --upgrade pip 
   - sudo -H pip install --upgrade virtualenv 
@@ -43,6 +42,7 @@ before_install:
   - wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
   - sudo apt-get update
   - sudo apt-get install -y gazebo8 libgazebo8 libgazebo8-dev
+  - sudo apt-get install -y libglib2.0-dev libglib2.0-dev:i386
 script:
   - cd tools/commander; 
   - npm install
