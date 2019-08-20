@@ -8,6 +8,7 @@ set(JMAVSIM_DIR ${PROJECT_SOURCE_DIR}/tools/jmavsim)
 target_include_directories(gazebo_gst_camera_plugin PRIVATE "/usr/include/gstreamer-1.0")
 target_include_directories(gazebo_gst_camera_plugin PRIVATE "/usr/include/glib-2.0")
 target_include_directories(gazebo_gst_camera_plugin PRIVATE "/usr/lib/x86_64-linux-gnu/glib-2.0/include")
+target_include_directories(gazebo_gst_camera_plugin PRIVATE "/usr/lib/x86_64-linux-gnu/gstreamer-1.0/include")
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/start-gazebo.in ${CMAKE_CURRENT_BINARY_DIR}/start-gazebo @ONLY)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/start-jmavsim.in ${CMAKE_CURRENT_BINARY_DIR}/start-jmavsim @ONLY)
