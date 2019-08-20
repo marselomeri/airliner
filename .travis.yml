@@ -47,8 +47,7 @@ script:
   - cd tools/commander; 
   - npm install
   - cd ../../
-  - sudo updatedb
-  - locate glib.h
+  - make bebop2/sitl
   
 
   
