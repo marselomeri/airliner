@@ -48,6 +48,11 @@ script:
   - npm install
   - cd ../../
   - make bebop2/sitl
-  - cd build/bebop2/sitl
-  - ctest -E ea-perf
+  - sudo apt-get install -y apt-file
+  - sudo apt-file update
+  - sudo apt-file search glib.h
+  - sudo updatedb
+  - locate glib.h
+  
+
   
