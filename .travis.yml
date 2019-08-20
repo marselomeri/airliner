@@ -32,6 +32,8 @@ addons:
       - libimage-exiftool-perl
       - libc6-dbg 
       - libc6-dbg:i386
+      - libgstreamer1.0-dev
+      - libgstreamer-plugins-base1.0-dev
 before_install:
   - sudo -H pip install --upgrade pip 
   - sudo -H pip install --upgrade virtualenv 
@@ -40,7 +42,6 @@ before_install:
   - wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
   - sudo apt-get update
   - sudo apt-get install -y gazebo8 libgazebo8 libgazebo8-dev
-  - sudo -E apt-get -yq --no-install-suggests --no-install-recommends --force-yes install gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
 script:
   - cd tools/commander; 
   - npm install
