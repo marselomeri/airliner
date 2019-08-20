@@ -23,9 +23,9 @@ from pyliner.util import read_json
 rky = Vehicle(
     vehicle_id='rocky',
     communication=Communication(
-        airliner_map=read_json("airliner.json"),
-        ci_port=5109,
-        to_port=5112)
+        airliner_map=read_json("/home/ldoman/git/airliner/tools/pyliner/airliner.json"),
+        ci_port=5009,
+        to_port=5012)
 )
 
 with ScriptingWrapper(rky) as rocky:
