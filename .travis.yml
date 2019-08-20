@@ -38,6 +38,9 @@ addons:
       - libimage-exiftool-perl
       - libc6-dbg 
       - libc6-dbg:i386
+      - libgstreamer1.0-dev
+      - libgstreamer-plugins-base1.0-dev
+      - libglib2.0-dev
 before_install:
   - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
   - sudo -H pip install --upgrade pip 
@@ -47,7 +50,6 @@ before_install:
   - wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
   - sudo apt-get update
   - sudo apt-get install -y gazebo8 libgazebo8 libgazebo8-dev
-  - sudo apt-get install -y gstreamer1.0-plugin* libgstreamer1.0-*
   - cd tools/commander; 
   - npm install
   - cd ../../
