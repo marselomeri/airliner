@@ -5,6 +5,7 @@ set(GAZEBO_PLUGIN_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/gazebo)
 set(GAZEBO_WORLDS_DIR ${PROJECT_SOURCE_DIR}/tools/sitl_gazebo/worlds)
 set(GAZEBO_MODELS_DIR ${PROJECT_SOURCE_DIR}/tools/sitl_gazebo/models)
 set(JMAVSIM_DIR ${PROJECT_SOURCE_DIR}/tools/jmavsim)
+target_include_directories(gazebo_gst_camera_plugin PRIVATE ${GST_INCLUDE_DIRS})
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/start-gazebo.in ${CMAKE_CURRENT_BINARY_DIR}/start-gazebo @ONLY)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/start-jmavsim.in ${CMAKE_CURRENT_BINARY_DIR}/start-jmavsim @ONLY)
