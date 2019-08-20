@@ -50,6 +50,7 @@ before_install:
   - wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
   - sudo apt-get update
   - sudo apt-get install -y gazebo8 libgazebo8 libgazebo8-dev
+  - sudo apt-get install -y gstreamer1.0-plugin* libgstreamer1.0-*
   - cd tools/commander; 
   - npm install
   - cd ../../
