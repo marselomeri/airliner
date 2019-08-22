@@ -3,5 +3,6 @@ enum34
 future
 geographiclib
 junit_xml
-protobuf
+protobuf==2.6.1
 sortedcontainers
+flufl.enum

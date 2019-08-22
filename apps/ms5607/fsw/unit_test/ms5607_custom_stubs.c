@@ -64,37 +64,49 @@ boolean MS5607_ReadPROM(uint8 Addr, uint16 *returnVal)
     {
         case 0:
         {
+    	    *returnVal = 777;
+    	    break;
+        }
+
+        case 1:
+        {
             *returnVal = 40127;
             break;
         }
-        case 1:
+
+        case 2:
         {
             *returnVal = 36924;
             break;
         }
-        case 2:
+
+        case 3:
         {
             *returnVal = 23317;
             break;
         }
-        case 3:
+
+        case 4:
         {
             *returnVal = 23282;
             break;
         }
-        case 4:
+
+        case 5:
         {
             *returnVal = 33464;
             break;
         }
-        case 5:
+
+        case 6:
         {
             *returnVal = 28312;
             break;
         }
-        case 6:
+
+        case 7:
         {
-            *returnVal = 9;
+            *returnVal = 5;
             break;
         }
     }

@@ -32,7 +32,8 @@
  *****************************************************************************/
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include "nav_app.h"
@@ -49,42 +50,42 @@ extern "C" {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 NAV::InitConfigTbl()
 {
-    int32 iStatus=0;
+    int32 iStatus = CFE_SUCCESS;
 
     /* Register Config table */
     iStatus = CFE_TBL_Register(&ConfigTblHdl,
-            NAV_CONFIG_TABLENAME,
-            (sizeof(NAV_ConfigTbl_t)),
-            CFE_TBL_OPT_DEFAULT,
-            NAV::ValidateConfigTbl);
+                               NAV_CONFIG_TABLENAME,
+                               (sizeof(NAV_ConfigTbl_t)),
+                               CFE_TBL_OPT_DEFAULT,
+                               NAV::ValidateConfigTbl);
     if (iStatus != CFE_SUCCESS)
     {
         /* Note, a critical table could return another nominal code.  If this table is
          * made critical this logic would have to change. */
         (void) CFE_EVS_SendEvent(NAV_CFGTBL_REG_ERR_EID, CFE_EVS_ERROR,
-                "Failed to register config table (0x%08lX)",
-                iStatus);
+                                 "Failed to register config table (0x%08lX)",
+                                 iStatus);
         goto NAV_InitConfigTbl_Exit_Tag;
     }
 
     /* Load Config table file */
     iStatus = CFE_TBL_Load(ConfigTblHdl,
-            CFE_TBL_SRC_FILE,
-            NAV_CONFIG_TABLE_FILENAME);
+                           CFE_TBL_SRC_FILE,
+                           NAV_CONFIG_TABLE_FILENAME);
     if (iStatus != CFE_SUCCESS)
     {
         /* Note, CFE_SUCCESS is for a successful full table load.  If a partial table
          load is desired then this logic would have to change. */
         (void) CFE_EVS_SendEvent(NAV_CFGTBL_LOAD_ERR_EID, CFE_EVS_ERROR,
-                "Failed to load Config Table (0x%08lX)",
-                iStatus);
+                                 "Failed to load Config Table (0x%08lX)",
+                                 iStatus);
         goto NAV_InitConfigTbl_Exit_Tag;
     }
 
     iStatus = AcquireConfigPointers();
 
-    NAV_InitConfigTbl_Exit_Tag:
-    return iStatus;
+NAV_InitConfigTbl_Exit_Tag:
+    return (iStatus);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -94,12 +95,87 @@ int32 NAV::InitConfigTbl()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 NAV::ValidateConfigTbl(void* ConfigTblPtr)
 {
-    int32 iStatus=0;
+    int32 iStatus = CFE_SUCCESS;
     NAV_ConfigTbl_t* NAV_ConfigTblPtr = (NAV_ConfigTbl_t*)(ConfigTblPtr);
 
-    /* TODO:  Add validation code here. */
+    if (NAV_ConfigTblPtr->NAV_ACC_RAD < NAV_ACC_RAD_MIN || 
+        NAV_ConfigTblPtr->NAV_ACC_RAD > NAV_ACC_RAD_MAX)
+    {
+        iStatus = -1;
+        goto NAV_ValidateConfigTbl_Exit_Tag;
+    }
+    
+    if (NAV_ConfigTblPtr->NAV_ALT_RAD < NAV_ALT_RAD_MIN || 
+        NAV_ConfigTblPtr->NAV_ALT_RAD > NAV_ALT_RAD_MAX)
+    {
+        iStatus = -1;
+        goto NAV_ValidateConfigTbl_Exit_Tag;
+    }
 
-    NAV_ValidateConfigTbl_Exit_Tag:
+    if (NAV_ConfigTblPtr->NAV_LOITER_RAD < NAV_LOITER_RAD_MIN || 
+        NAV_ConfigTblPtr->NAV_LOITER_RAD > NAV_LOITER_RAD_MAX)
+    {
+        iStatus = -1;
+        goto NAV_ValidateConfigTbl_Exit_Tag;
+    }
+    
+    if (NAV_ConfigTblPtr->NAV_MIS_TAKEOFF_ALT < NAV_MIS_TAKEOFF_ALT_MIN || 
+        NAV_ConfigTblPtr->NAV_MIS_TAKEOFF_ALT > NAV_MIS_TAKEOFF_ALT_MAX)
+    {
+        iStatus = -1;
+        goto NAV_ValidateConfigTbl_Exit_Tag;
+    }
+    
+    if (NAV_ConfigTblPtr->NAV_MIS_YAW_ERR < NAV_MIS_YAW_ERR_MIN || 
+        NAV_ConfigTblPtr->NAV_MIS_YAW_ERR > NAV_MIS_YAW_ERR_MAX)
+    {
+        iStatus = -1;
+        goto NAV_ValidateConfigTbl_Exit_Tag;
+    }
+    
+    if (NAV_ConfigTblPtr->NAV_MIS_YAW_TMT < NAV_MIS_YAW_TMT_MIN || 
+        NAV_ConfigTblPtr->NAV_MIS_YAW_TMT > NAV_MIS_YAW_TMT_MAX)
+    {
+        iStatus = -1;
+        goto NAV_ValidateConfigTbl_Exit_Tag;
+    }
+    
+    if (NAV_ConfigTblPtr->NAV_MIS_LTRMIN_ALT < NAV_MIS_LTRMIN_ALT_MIN || 
+        NAV_ConfigTblPtr->NAV_MIS_LTRMIN_ALT > NAV_MIS_LTRMIN_ALT_MAX)
+    {
+        iStatus = -1;
+        goto NAV_ValidateConfigTbl_Exit_Tag;
+    }
+    
+    if (NAV_ConfigTblPtr->NAV_RTL_RETURN_ALT < NAV_RTL_RETURN_ALT_MIN || 
+        NAV_ConfigTblPtr->NAV_RTL_RETURN_ALT > NAV_RTL_RETURN_ALT_MAX)
+    {
+        iStatus = -1;
+        goto NAV_ValidateConfigTbl_Exit_Tag;
+    }
+    
+    if (NAV_ConfigTblPtr->NAV_RTL_DESCEND_ALT < NAV_RTL_DESCEND_ALT_MIN || 
+        NAV_ConfigTblPtr->NAV_RTL_DESCEND_ALT > NAV_RTL_DESCEND_ALT_MAX)
+    {
+        iStatus = -1;
+        goto NAV_ValidateConfigTbl_Exit_Tag;
+    }
+    
+    if (NAV_ConfigTblPtr->NAV_RTL_LAND_DELAY < NAV_RTL_LAND_DELAY_MIN || 
+        NAV_ConfigTblPtr->NAV_RTL_LAND_DELAY > NAV_RTL_LAND_DELAY_MAX)
+    {
+        iStatus = -1;
+        goto NAV_ValidateConfigTbl_Exit_Tag;
+    }
+    
+    if (NAV_ConfigTblPtr->NAV_RTL_MIN_DIST < NAV_RTL_MIN_DIST_MIN || 
+        NAV_ConfigTblPtr->NAV_RTL_MIN_DIST > NAV_RTL_MIN_DIST_MAX)
+    {
+        iStatus = -1;
+        goto NAV_ValidateConfigTbl_Exit_Tag;
+    }
+
+NAV_ValidateConfigTbl_Exit_Tag:
     return iStatus;
 }
 
@@ -115,9 +191,6 @@ int32 NAV::AcquireConfigPointers(void)
     /*
      ** Release the table
      */
-    /* TODO: This return value can indicate success, error, or that the info has been 
-     * updated.  We ignore this return value in favor of checking CFE_TBL_Manage(), but
-     * be sure this is the behavior you want. */
     (void) CFE_TBL_ReleaseAddress(ConfigTblHdl);
 
     /*
@@ -127,8 +200,8 @@ int32 NAV::AcquireConfigPointers(void)
     if ((iStatus != CFE_SUCCESS) && (iStatus != CFE_TBL_INFO_UPDATED))
     {
         (void) CFE_EVS_SendEvent(NAV_CFGTBL_MANAGE_ERR_EID, CFE_EVS_ERROR,
-                "Failed to manage NAV Config table (0x%08lX)",
-                iStatus);
+                                 "Failed to manage NAV Config table (0x%08lX)",
+                                 iStatus);
         goto NAV_AcquireConfigPointers_Exit_Tag;
     }
 
@@ -144,11 +217,11 @@ int32 NAV::AcquireConfigPointers(void)
     {
         ConfigTblPtr = 0;
         (void) CFE_EVS_SendEvent(NAV_CFGTBL_GETADDR_ERR_EID, CFE_EVS_ERROR,
-                "Failed to get Config table's address (0x%08lX)",
-                iStatus);
+                                 "Failed to get Config table's address (0x%08lX)",
+                                 iStatus);
     }
 
-    NAV_AcquireConfigPointers_Exit_Tag:
+NAV_AcquireConfigPointers_Exit_Tag:
     return iStatus;
 }
 

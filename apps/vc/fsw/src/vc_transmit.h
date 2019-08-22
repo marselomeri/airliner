@@ -31,29 +31,8 @@
 *
 *****************************************************************************/
 
-
 #ifndef VC_TRANSMIT_H
 #define VC_TRANSMIT_H
-
-/************************************************************************
-** Pragmas
-*************************************************************************/
-
-/************************************************************************
-** Includes
-*************************************************************************/
-
-/************************************************************************
-** Defines
-*************************************************************************/
-
-/************************************************************************
-** Structure Definitions
-*************************************************************************/
-
-/************************************************************************
-** External Global Variables
-*************************************************************************/
 
 /************************************************************************
 ** Function Prototypes
@@ -170,6 +149,8 @@ void VC_Transmit_Critical_Cleanup(void);
 **       This function must be defined, but not all custom
 **       layers will do anything in this function.
 **
+**  \param [in] Address the pointer to the address to verify.
+**
 **  \returns
 **  TRUE if successful, FALSE otherwise.
 **  \endreturns
@@ -187,7 +168,8 @@ boolean VC_Address_Verification(const char *Address);
 **  \par Assumptions, External Events, and Notes:
 **       Uninit must be called before the destination can be updated.
 **
-**  \param [in] Address the pointer to the address to verify.
+**  \param [in] Address the pointer to the address of destination.
+**  \param [in] Port the port number to send to.
 **
 **  \returns
 **  TRUE if successful, FALSE otherwise.
@@ -207,7 +189,6 @@ boolean VC_Update_Destination(const char *Address, uint16 Port);
 **       None.
 **
 **  \param [in] Buffer points to a buffer containing the data to be sent.
-**
 **  \param [in] Size specifies the size of the data in bytes.
 **
 **  \returns

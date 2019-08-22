@@ -51,6 +51,7 @@
 #include <errno.h>
 #include <time.h>
 #include <arpa/inet.h>
+#include <sys/ioctl.h>
 
 /************************************************************************
 ** Local Defines

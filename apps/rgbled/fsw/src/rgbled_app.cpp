@@ -32,10 +32,6 @@
 *****************************************************************************/
 
 /************************************************************************
-** Pragmas
-*************************************************************************/
-
-/************************************************************************
 ** Includes
 *************************************************************************/
 #include <string.h>
@@ -53,8 +49,6 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 RGBLED oRGBLED;
 
-
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Default constructor.                                            */
@@ -64,7 +58,6 @@ RGBLED::RGBLED()
 {
 
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -83,10 +76,40 @@ RGBLED::~RGBLED()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 RGBLED::InitEvent()
 {
-    int32  iStatus=CFE_SUCCESS;
+    int32  iStatus         = CFE_SUCCESS;
+    int32  ind             = 0;
+    
+    CFE_EVS_BinFilter_t   EventTbl[CFE_EVS_MAX_EVENT_FILTERS];
 
+    /* Initialize the event filter table.
+     * Note: 0 is the CFE_EVS_NO_FILTER mask and event 0 is reserved (not used) */
+    CFE_PSP_MemSet(EventTbl, 0x00, sizeof(EventTbl));
+
+    EventTbl[  ind].EventID = RGBLED_RESERVED_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = RGBLED_INIT_INF_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = RGBLED_CMD_NOOP_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = RGBLED_SUBSCRIBE_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = RGBLED_PIPE_INIT_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = RGBLED_RCVMSG_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = RGBLED_MSGID_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = RGBLED_CC_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = RGBLED_MSGLEN_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = RGBLED_CMD_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = RGBLED_INIT_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
     /* Register the table with CFE */
-    iStatus = CFE_EVS_Register(0, 0, CFE_EVS_BINARY_FILTER);
+    iStatus = CFE_EVS_Register(EventTbl, ind, CFE_EVS_BINARY_FILTER);
     if (iStatus != CFE_SUCCESS)
     {
         (void) CFE_ES_WriteToSysLog("RGBLED - Failed to register with EVS (0x%08lX)\n", iStatus);
@@ -107,8 +130,8 @@ int32 RGBLED::InitPipe()
 
     /* Init schedule pipe and subscribe to wakeup messages */
     iStatus = CFE_SB_CreatePipe(&SchPipeId,
-            RGBLED_SCH_PIPE_DEPTH,
-            RGBLED_SCH_PIPE_NAME);
+                                RGBLED_SCH_PIPE_DEPTH,
+                                RGBLED_SCH_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
         iStatus = CFE_SB_SubscribeEx(RGBLED_WAKEUP_MID, SchPipeId, CFE_SB_Default_Qos, RGBLED_WAKEUP_MID_MAX_MSG_COUNT);
@@ -147,8 +170,8 @@ int32 RGBLED::InitPipe()
 
     /* Init command pipe and subscribe to command messages */
     iStatus = CFE_SB_CreatePipe(&CmdPipeId,
-            RGBLED_CMD_PIPE_DEPTH,
-            RGBLED_CMD_PIPE_NAME);
+                                RGBLED_CMD_PIPE_DEPTH,
+                                RGBLED_CMD_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
         /* Subscribe to command messages */
@@ -173,7 +196,6 @@ int32 RGBLED::InitPipe()
 RGBLED_InitPipe_Exit_Tag:
     return (iStatus);
 }
-    
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -184,11 +206,12 @@ void RGBLED::InitData()
 {
     /* Init housekeeping message. */
     CFE_SB_InitMsg(&HkTlm, RGBLED_HK_TLM_MID, sizeof(HkTlm), TRUE);
+    
     /* Init custom data */
     RGBLED_Custom_InitData();
+    
     return;
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -237,7 +260,6 @@ int32 RGBLED::InitApp()
                                  (unsigned int)iStatus);
         goto RGBLED_InitApp_Exit_Tag;
     }
-    
 
 RGBLED_InitApp_Exit_Tag:
     if (iStatus == CFE_SUCCESS)
@@ -290,86 +312,83 @@ int32 RGBLED::RcvSchPipeMsg(int32 iBlocking)
             case RGBLED_WAKEUP_MID:
             {
                 ProcessCmdPipe();
-                if(HkTlm.State != RGBLED_SELFTEST)
+                
+                /* If not in self test mode and the last color is not the 
+                 * current value update */
+                if(HkTlm.State != RGBLED_SELFTEST && 
+                   lastColor != CVT.RGBLEDControl.Color)
                 {
-                    /* If the same color is not the current value update */
-                    if (lastColor != CVT.RGBLEDControl.Color)
+                    HkTlm.State = RGBLED_ON;
+                    lastColor = CVT.RGBLEDControl.Color;
+                    switch (CVT.RGBLEDControl.Color)
                     {
-                        HkTlm.State = RGBLED_ON;
-                        lastColor = CVT.RGBLEDControl.Color;
-                        switch (CVT.RGBLEDControl.Color)
+                        case RGBLED_COLOR_RED:
                         {
-                            case RGBLED_COLOR_RED:
-                            {
-                                RGBLED_Custom_SetColor(255, 0, 0);
-                                HkTlm.Color = RGBLED_COLOR_RED;
-                            }
+                            RGBLED_Custom_SetColor(255, 0, 0);
+                            HkTlm.Color = RGBLED_COLOR_RED;
                             break;
-        
-                            case RGBLED_COLOR_GREEN:
-                            {
-                                RGBLED_Custom_SetColor(0, 255, 0);
-                                HkTlm.Color = RGBLED_COLOR_GREEN;
-                            }
+                        }
+    
+                        case RGBLED_COLOR_GREEN:
+                        {
+                            RGBLED_Custom_SetColor(0, 255, 0);
+                            HkTlm.Color = RGBLED_COLOR_GREEN;
                             break;
-        
-                            case RGBLED_COLOR_BLUE:
-                            {
-                                RGBLED_Custom_SetColor(0, 0, 255);
-                                HkTlm.Color = RGBLED_COLOR_BLUE;
-                            }
+                        }
+    
+                        case RGBLED_COLOR_BLUE:
+                        {
+                            RGBLED_Custom_SetColor(0, 0, 255);
+                            HkTlm.Color = RGBLED_COLOR_BLUE;
                             break;
-        
-                            case RGBLED_COLOR_AMBER:
-                            {
-                                RGBLED_Custom_SetColor(255, 255, 0);
-                                HkTlm.Color = RGBLED_COLOR_AMBER;
-                            }
+                        }
+    
+                        case RGBLED_COLOR_AMBER:
+                        {
+                            RGBLED_Custom_SetColor(255, 255, 0);
+                            HkTlm.Color = RGBLED_COLOR_AMBER;
                             break;
-                            
-                            case RGBLED_COLOR_YELLOW:
-                            {
-                                RGBLED_Custom_SetColor(255, 255, 0);
-                                HkTlm.Color = RGBLED_COLOR_YELLOW;
-                            }
+                        }
+                        
+                        case RGBLED_COLOR_YELLOW:
+                        {
+                            RGBLED_Custom_SetColor(255, 255, 0);
+                            HkTlm.Color = RGBLED_COLOR_YELLOW;
                             break;
-        
-                            case RGBLED_COLOR_PURPLE:
-                            {
-                                RGBLED_Custom_SetColor(255, 0, 255);
-                                HkTlm.Color = RGBLED_COLOR_PURPLE;
-                            }
+                        }
+    
+                        case RGBLED_COLOR_PURPLE:
+                        {
+                            RGBLED_Custom_SetColor(255, 0, 255);
+                            HkTlm.Color = RGBLED_COLOR_PURPLE;
                             break;
-        
-                            case RGBLED_COLOR_CYAN:
-                            {
-                                RGBLED_Custom_SetColor(0, 255, 255);
-                                HkTlm.Color = RGBLED_COLOR_CYAN;
-                            }
+                        }
+    
+                        case RGBLED_COLOR_CYAN:
+                        {
+                            RGBLED_Custom_SetColor(0, 255, 255);
+                            HkTlm.Color = RGBLED_COLOR_CYAN;
                             break;
-        
-                            case RGBLED_COLOR_WHITE:
-                            {
-                                RGBLED_Custom_SetColor(255, 255, 255);
-                                HkTlm.Color = RGBLED_COLOR_WHITE;
-                            }
+                        }
+    
+                        case RGBLED_COLOR_WHITE:
+                        {
+                            RGBLED_Custom_SetColor(255, 255, 255);
+                            HkTlm.Color = RGBLED_COLOR_WHITE;
                             break;
-        
-                            default: /* COLOR_OFF */
-                            {
-                                RGBLED_Custom_SetColor(0, 0, 0);
-                                HkTlm.Color = RGBLED_COLOR_OFF;
-                                HkTlm.State = RGBLED_INITIALIZED;
-                            }
+                        }
+    
+                        default: /* COLOR_OFF */
+                        {
+                            RGBLED_Custom_SetColor(0, 0, 0);
+                            HkTlm.Color = RGBLED_COLOR_OFF;
+                            HkTlm.State = RGBLED_INITIALIZED;
                             break;
                         }
                     }
-                    /* if the color is still the same break */
-                    else
-                    {
-                        break;
-                    }
                 }
+                
+                break;
             }
             case RGBLED_SEND_HK_MID:
             {
@@ -378,13 +397,14 @@ int32 RGBLED::RcvSchPipeMsg(int32 iBlocking)
             }
             case PX4_LED_CONTROL_MID:
             {
-                memcpy(&CVT.RGBLEDControl, MsgPtr, sizeof(CVT.RGBLEDControl));
+                CFE_PSP_MemCpy(&CVT.RGBLEDControl, MsgPtr, sizeof(CVT.RGBLEDControl));
                 break;
             }
             default:
             {
                 (void) CFE_EVS_SendEvent(RGBLED_MSGID_ERR_EID, CFE_EVS_ERROR,
                      "Recvd invalid SCH msgId (0x%04X)", MsgId);
+                break;
             }
         }
     }
@@ -654,11 +674,7 @@ void RGBLED_SelfTest_Complete(void)
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void RGBLED_CleanupCallback(void)
 {
-    if(RGBLED_Custom_Uninit() != TRUE)
-    {
-        CFE_EVS_SendEvent(RGBLED_UNINIT_ERR_EID, CFE_EVS_ERROR,"RGBLED_Uninit failed");
-    }
-    return;
+    RGBLED_Custom_Uninit();
 }
 
 
