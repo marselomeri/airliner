@@ -24,7 +24,7 @@ cf_config_table_t     CF_ConfigTable =
 
     "CF Default Table",/* TableIdString */
     2,      /* TableVersion (integer)   */    
-    20,     /* NumEngCyclesPerWakeup    */
+    4,      /* NumEngCyclesPerWakeup    */
     2,      /* NumWakeupsPerQueueChk    */
     4,      /* NumWakeupsPerPollDirChk  */
     100,    /* UplinkHistoryQDepth      */
@@ -35,7 +35,7 @@ cf_config_table_t     CF_ConfigTable =
     "5",    /* NakTimeout (secs, string)            */
     "3",    /* NakLimit (max timeouts, string)      */
     "20",   /* InactivityTimeout (secs, string)     */
-    "1000",  /* OutgoingFileChunkSize (bytes, string)*/
+    "200",  /* OutgoingFileChunkSize (bytes, string)*/
     "no",   /* SaveIncompleteFiles (yes,no, string) */
     "0.24", /* Flight EntityId - 2 byte dotted-decimal string eg. "0.255"*/
 
@@ -66,7 +66,7 @@ cf_config_table_t     CF_ConfigTable =
                 
                 { /* Polling Directory 0 */
                     CF_ENTRY_IN_USE,/* Poll Directory In Use or Not */
-                    CF_ENABLED,    /* Enable State */
+                    CF_DISABLED,    /* Enable State */
                     1,              /* Class (1 or 2)*/
                     5,              /* Priority */                  
                     CF_KEEP_FILE, /* Preserve files after successful transfer? */                    
@@ -74,7 +74,7 @@ cf_config_table_t     CF_ConfigTable =
                     0,              /* Reserved2 */
                     0,              /* Reserved3 */
                     "0.23",         /* Gnd EntityId - 2 byte dotted-decimal string eg. "0.255"*/
-                    "/cf/log/", /* SrcPath, no spaces, fwd slash at end */
+                    "/cf/ch0poll0/", /* SrcPath, no spaces, fwd slash at end */
                     "cftesting/",    /* DstPath, no spaces */
                 },/* End Polling Directory 0 */
                 

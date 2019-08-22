@@ -137,6 +137,7 @@ typedef struct
     uint16 ChecksumA;
 } GPS_ParserStatus_t;
 
+
 /**
  * \brief GPS device status
  */

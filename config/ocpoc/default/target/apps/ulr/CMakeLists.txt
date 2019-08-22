@@ -5,4 +5,3 @@ set(APP_NAME ulr)
 #    SOURCES
 #        ${CMAKE_CURRENT_SOURCE_DIR}/ulr_custom.cpp
 #)
-

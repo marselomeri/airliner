@@ -105,24 +105,7 @@ void GPS_Ack_ParseChar_ACK(uint8 byte, GPS_DeviceMessage_t* message)
         GPS_ACK_ACK_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
         switch(GPS_AppCustomData.ParserStatus.PayloadCursor)
         {
-        case 0:
-        {
-            CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppCustomData.ParserStatus.ClassID, GPS_AppCustomData.ParserStatus.MsgID);
-            uint16 sbHdrSize = CFE_SB_MsgHdrSize(sbMsgID);
-            uint16 sbTotalMsgSize = sbHdrSize + GPS_AppCustomData.ParserStatus.MsgLength;
-            CFE_SB_InitMsg(message, sbMsgID, sbTotalMsgSize, TRUE);
-
-            payload->clsID = byte;
-            GPS_AppCustomData.AckRcvdMsgCls = byte;
-            break;
-        }
-
-        case 1:
-            payload->msgID = byte;
-            
-            checkMsg = ((GPS_AppCustomData.AckRcvdMsgCls) | byte << 8);
-                    
-            if(GPS_ACK_WAITING == GPS_AppCustomData.AckState)
+            case 0:
             {
                 if(checkMsg == GPS_AppCustomData.AckWaitingMsg)
                 {                

@@ -147,141 +147,169 @@ void GPS_Mon_ParseChar_HW(uint8 byte, GPS_DeviceMessage_t* message)
                 payload->pinSel = byte;
                 break;
             }
+
             case 1:
             {
                 payload->pinSel += byte << 8;
                 break;
             }
+
             case 2:
             {
                 payload->pinSel += byte << 16;
                 break;
             }
+
             case 3:
             {
                 payload->pinSel += byte << 24;
                 break;
             }
+
             case 4:
             {
                 payload->pinBank = byte;
                 break;
             }
+
             case 5:
             {
                 payload->pinBank += byte << 8;
                 break;
             }
+
             case 6:
             {
                 payload->pinBank += byte << 16;
                 break;
             }
+
             case 7:
             {
                 payload->pinBank += byte << 24;
                 break;
             }
+
             case 8:
             {
                 payload->pinDir = byte;
                 break;
             }
+
             case 9:
             {
                 payload->pinDir += byte << 8;
                 break;
             }
+
             case 10:
             {
                 payload->pinDir += byte << 16;
                 break;
             }
+
             case 11:
             {
                 payload->pinDir += byte << 24;
                 break;
             }
+
             case 12:
             {
                 payload->pinVal = byte;
                 break;
             }
+
             case 13:
             {
                 payload->pinVal += byte << 8;
                 break;
             }
+
             case 14:
             {
                 payload->pinVal += byte << 16;
                 break;
             }
+
             case 15:
             {
                 payload->pinVal += byte << 24;
                 break;
             }
+
             case 16:
             {
                 payload->noisePerMS = byte;
                 break;
             }
+
             case 17:
             {
                 payload->noisePerMS += byte << 8;
                 break;
             }
+
             case 18:
             {
                 payload->agcCnt = byte;
                 break;
             }
+
             case 19:
             {
                 payload->agcCnt += byte << 8;
                 break;
             }
+
             case 20:
             {
                 payload->aStatus = byte;
                 break;
             }
+
             case 21:
             {
                 payload->aPower = byte;
                 break;
             }
+
             case 22:
             {
                 payload->flags = byte;
                 break;
             }
+
             case 23:
             {
                 /* Reserved byte */
                 break;
             }
+
             case 24:
             {
                 payload->usedMask = byte;
                 break;
             }
+
             case 25:
             {
                 payload->usedMask += byte << 8;
                 break;
             }
+
             case 26:
             {
                 payload->usedMask += byte << 16;
                 break;
             }
+
             case 27:
             {
                 payload->usedMask += byte << 24;
                 break;
             }
+
             /*  Fall Through.  These are the 17 elements of an array. */
             case 28:
             /* Fall Through */
@@ -320,11 +348,13 @@ void GPS_Mon_ParseChar_HW(uint8 byte, GPS_DeviceMessage_t* message)
                 payload->vp[GPS_AppCustomData.ParserStatus.PayloadCursor - 28] = byte;
                 break;
             }
+
             case 45:
             {
                 payload->jamInd = byte;
                 break;
             }
+
             case 46:
             /* Fall Through */
             case 47:
@@ -332,67 +362,80 @@ void GPS_Mon_ParseChar_HW(uint8 byte, GPS_DeviceMessage_t* message)
                 /* Reserved bytes */
                 break;
             }
+
             case 48:
             {
                 payload->pinIrq = byte;
                 break;
             }
+
             case 49:
             {
                 payload->pinIrq += byte << 8;
                 break;
             }
+
             case 50:
             {
                 payload->pinIrq += byte << 16;
                 break;
             }
+
             case 51:
             {
                 payload->pinIrq += byte << 24;
                 break;
             }
+
             case 52:
             {
                 payload->pullH = byte;
                 break;
             }
+
             case 53:
             {
                 payload->pullH += byte << 8;
                 break;
             }
+
             case 54:
             {
                 payload->pullH += byte << 16;
                 break;
             }
+
             case 55:
             {
                 payload->pullH += byte << 24;
                 break;
             }
+
             case 56:
             {
                 payload->pullL = byte;
                 break;
             }
+
             case 57:
             {
                 payload->pullL += byte << 8;
                 break;
             }
+
             case 58:
             {
                 payload->pullL += byte << 16;
                 break;
             }
+
             case 59:
             {
                 payload->pullL += byte << 24;
                 GPS_Parser_StateChange(GPS_PARSE_STATE_GOT_PAYLOAD);
                 break;
             }
+
             default:
             {
                 GPS_Parser_Reset();
