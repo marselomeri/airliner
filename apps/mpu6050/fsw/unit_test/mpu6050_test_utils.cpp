@@ -49,36 +49,9 @@
 
 #include <time.h>
 
-/*
- * Config table for testing
- */
-MPU6050_ConfigTbl_t ConfigTbl = {
-        /* User calibration params */
-        /* AccXScale */
-        1.0f,
-        /* AccYScale */
-        1.0f,
-        /* AccZScale */
-        1.0f,
-        /* AccXOffset */
-        0.0f,
-        /* AccYOffset */
-        0.0f,
-        /* AccZOffset */
-        0.0f,
-        /* GyroXScale */
-        1.0f,
-        /* GyroYScale */
-        1.0f,
-        /* GyroZScale */
-        1.0f,
-        /* GyroXOffset */
-        0.0f,
-        /* GyroYOffset */
-        0.0f,
-        /* GyroZOffset */
-        0.0f
-};
+
+extern MPU6050_ConfigTbl_t MPU6050_ConfigTbl;
+
 
 /*
  * Function Definitions
@@ -98,7 +71,7 @@ void MPU6050_Test_Setup(void)
     Ut_OSFILEAPI_Reset();
     memset(&MPU6050_Custom_Returns, 0, sizeof(MPU6050_Custom_Returns));
 
-    Ut_CFE_TBL_AddTable(MPU6050_CONFIG_TABLE_FILENAME, (void *) &ConfigTbl);
+    Ut_CFE_TBL_AddTable(MPU6050_CONFIG_TABLE_FILENAME, (void *) &MPU6050_ConfigTbl);
 }
 
 void MPU6050_Test_TearDown(void) {

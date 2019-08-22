@@ -47,22 +47,11 @@ extern "C" {
  * events and should always be last.  Events can be added before _EVT_CNT.
  * For long-term maintenance, consider not removing an event but replacing it
  * with an unused, reserved, enum to preserve the IDs later in the list. */
-typedef enum {
+typedef enum
+{
 
 /** \brief <tt> Value of zero is reserved, and should not be used. </tt> */
-    VC_RESERVED_EID = 0,  /* Do not use this event ID */
-
-/** \brief <tt> 'VC - ' </tt>
-**  \event <tt> 'VC - ' </tt>
-**  
-**  \par Type: INFORMATION
-**
-**  \par Cause:
-**
-**  TODO fill this in
-**
-*/
-    VC_INF_EID,
+    VC_RESERVED_EID                              = 0,  /* Do not use this event ID */
 
 /** \brief <tt> 'VC Initialized. Version \%d.\%d.\%d' </tt>
 **  \event <tt> 'VC Initialized. Version \%d.\%d.\%d' </tt>
@@ -78,22 +67,10 @@ typedef enum {
 **  The second \c %d field contains the Application's Minor Version Number
 **  The third \c %d field contains the Application's Revision Number
 */
-    VC_INIT_INF_EID,
+    VC_INIT_INF_EID                              = 1,
 
-/** \brief <tt> 'VC - ' </tt>
-**  \event <tt> 'VC - ' </tt>
-**  
-**  \par Type: INFORMATION
-**
-**  \par Cause:
-**
-**  This message is generated when a table is initialized.
-**
-*/
-    VC_CONFIG_TABLE_INF_EID,
-
-/** \brief <tt> 'VC - ' </tt>
-**  \event <tt> 'VC - ' </tt>
+/** \brief <tt> 'Recvd NOOP cmd, Version %d.%d.%d.%d' </tt>
+**  \event <tt> 'Recvd NOOP cmd, Version %d.%d.%d.%d' </tt>
 **  
 **  \par Type: INFORMATION
 **
@@ -102,10 +79,10 @@ typedef enum {
 **  This event message is issued when a NOOP command is received.
 **
 */
-    VC_NOOP_INF_EID,
+    VC_NOOP_INF_EID                              = 2,
 
-    /** \brief <tt> 'VC - ' </tt>
-**  \event <tt> 'VC - ' </tt>
+/** \brief <tt> 'Recvd RESET cmd' </tt>
+**  \event <tt> 'Recvd RESET cmd' </tt>
 **  
 **  \par Type: INFORMATION
 **
@@ -114,7 +91,7 @@ typedef enum {
 **  This event message is issued when a RESET command is received.
 **
 */
-    VC_RESET_INF_EID,
+    VC_RESET_INF_EID                             = 3,
 
 /** \brief <tt> 'VC - Recvd $x cmd (%us)' </tt>
 **  \event <tt> 'VC - Recvd $x cmd (%us)' </tt>
@@ -127,7 +104,7 @@ typedef enum {
 **  received and processed a command.
 **
 */
-    VC_CMD_INF_EID,
+    VC_CMD_INF_EID                               = 4,
     
 /** \brief <tt> 'VC - Recvd $x cmd (%us)' </tt>
 **  \event <tt> 'VC - Recvd $x cmd (%us)' </tt>
@@ -140,7 +117,7 @@ typedef enum {
 **  has been created.
 **
 */
-    VC_DEV_INF_EID,
+    VC_DEV_INF_EID                               = 5,
 
 /** \brief <tt> 'VC - Recvd $x cmd (%us)' </tt>
 **  \event <tt> 'VC - Recvd $x cmd (%us)' </tt>
@@ -153,21 +130,10 @@ typedef enum {
 **  has been created.
 **
 */
-    VC_CHA_INF_EID,
-/** \brief <tt> 'VC - ' </tt>
-**  \event <tt> 'VC - ' </tt>
-**  
-**  \par Type: ERROR
-**
-**  \par Cause:
-**
-**  This event message is issued when TBD
-**
-*/
-    VC_ERR_EID,
-
-/** \brief <tt> 'VC - ' </tt>
-**  \event <tt> 'VC - ' </tt>
+    VC_CHA_INF_EID                               = 6,
+    
+/** \brief <tt> 'Pipe failed to subscribe to MID. (0x%08X)' </tt>
+**  \event <tt> 'Pipe failed to subscribe to MID. (0x%08X)' </tt>
 **  
 **  \par Type: ERROR
 **
@@ -177,11 +143,11 @@ typedef enum {
 **  had an error in initialization.
 **
 */
-    VC_INIT_ERR_EID,
+    VC_INIT_ERR_EID                              = 7,
     
     
-/** \brief <tt> 'VC - ' </tt>
-**  \event <tt> 'VC - ' </tt>
+/** \brief <tt> 'VC_Devices_Function failed' </tt>
+**  \event <tt> 'VC_Devices_Function failed' </tt>
 **  
 **  \par Type: ERROR
 **
@@ -191,23 +157,10 @@ typedef enum {
 **  had an error in uninitialization.
 **
 */
-    VC_UNINIT_ERR_EID,
+    VC_UNINIT_ERR_EID                            = 8,
 
-/** \brief <tt> 'VC - ' </tt>
-**  \event <tt> 'VC - ' </tt>
-**  
-**  \par Type: ERROR
-**
-**  \par Cause:
-**
-**  This event message is issued when the CFS VC Task has
-**  had an error with the configuration table.
-**
-*/
-    VC_CONFIG_TABLE_ERR_EID,
-
-/** \brief <tt> 'VC - $commandError' </tt>
-**  \event <tt> 'VC - $commandError' </tt>
+/** \brief <tt> 'VC is already streaming' </tt>
+**  \event <tt> 'VC is already streaming' </tt>
 **  
 **  \par Type: ERROR
 **
@@ -217,7 +170,7 @@ typedef enum {
 **  had an error processing a command.
 **
 */
-    VC_CMD_ERR_EID,
+    VC_CMD_ERR_EID                               = 9,
 
 /** \brief <tt> 'VC: SB pipe read error (0x%08X), app will exit' </tt>
 **  \event <tt> 'VC: SB pipe read error (0x%08X), app will exit' </tt>
@@ -230,7 +183,7 @@ typedef enum {
 **  had an error reading from a pipe.
 **
 */
-    VC_PIPE_ERR_EID,
+    VC_PIPE_ERR_EID                              = 10,
 
 /** \brief <tt> 'VC - Recvd invalid $type msgId (0x%04x)' </tt>
 **  \event <tt> 'VC - Recvd invalid $type msgId (0x%04x)' </tt>
@@ -243,7 +196,7 @@ typedef enum {
 **  received an invalid message ID.
 **
 */
-    VC_MSGID_ERR_EID,
+    VC_MSGID_ERR_EID                             = 11,
 
 /** \brief <tt> 'VC - Rcvd invalid msgLen: msgId=0x%08X, cmdCode=%d, msgLen=%d, expectedLen=%d" </tt>
 **  \event <tt> 'VC - Rcvd invalid msgLen: msgId=0x%08X, cmdCode=%d, msgLen=%d, expectedLen=%d" </tt>
@@ -256,7 +209,7 @@ typedef enum {
 **  received a message with a bad length.
 **
 */
-    VC_MSGLEN_ERR_EID,
+    VC_MSGLEN_ERR_EID                            = 12,
 
 /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
     VC_EVT_CNT

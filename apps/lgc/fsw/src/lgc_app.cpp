@@ -6,6 +6,9 @@
 #include "lgc_app.h"
 #include "lgc_msg.h"
 #include "lgc_version.h"
+#include "px4lib.h"
+#include "px4lib_msgids.h"
+#include "prm_ids.h"
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

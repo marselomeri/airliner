@@ -40,7 +40,7 @@ int READ_MSG_RET;
 
 uint8 ci_noop_buf[CI_MAX_CMD_INGEST] = {25,5,192,0,0,1,0,0};
 uint8 ext_buf[CI_MAX_CMD_INGEST] = {28,41,192,0,0,1,0,0};
-int TEST_MSG_ID = 1065;
+int TEST_MSG_ID = 0x1900;
 int TEST_CC = 0;
 
 int32 CI_InitCustom(void)
@@ -65,7 +65,7 @@ int32 CI_InitCustom(void)
 	return Status;
 }
 
-int32 CI_ReadMessage(char* buffer, uint32* size)
+void CI_ReadMessage(char* buffer, uint32* size)
 {
 	if(READ_MSG_RET == CI_CMD)
 	{
@@ -82,74 +82,40 @@ int32 CI_ReadMessage(char* buffer, uint32* size)
 	}
 	else if(READ_MSG_RET == EXT_STEP_1)
 	{
-		CI_CmdRegData_t 	cmd;
-		CI_CmdRegData_t 	*regDataPtr;
-		uint32  			MsgSize = sizeof(cmd);
-		CFE_SB_MsgPtr_t 	CmdMsgPtr;
+		CI_CmdRegData_t 	*regDataPtr = (CI_CmdRegData_t*)buffer;
 		int32 i = 0;
+		*size = sizeof(CI_CmdRegData_t);
 
-		CFE_SB_InitMsg(&cmd, TEST_MSG_ID, MsgSize, TRUE);
-		regDataPtr = ((CI_CmdRegData_t *) &cmd);
+		CFE_SB_InitMsg(regDataPtr, TEST_MSG_ID, *size, TRUE);
 		regDataPtr->msgID = TEST_MSG_ID;
 		regDataPtr->step = STEP_1;
-		CmdMsgPtr = (CFE_SB_MsgPtr_t)&cmd;
-		CI_CmdRegister(CmdMsgPtr);
-
-		MsgSize = sizeof(CI_NoArgCmd_t);
-		*size = MsgSize;
-		for (i = 0; i < MsgSize; i++)
-		{
-			CI_AppData.IngestBuffer[i] = ext_buf[i];
-		}
+		CI_CmdRegister((CFE_SB_MsgPtr_t)regDataPtr);
 	}
 	else if(READ_MSG_RET == EXT_STEP_2)
 	{
-		CI_CmdRegData_t 	cmd;
-		CI_CmdRegData_t 	*regDataPtr;
-		CI_CmdData_t		*CmdData = NULL;
-		uint32  			MsgSize = sizeof(cmd);
-		CFE_SB_MsgPtr_t 	CmdMsgPtr;
+		CI_CmdRegData_t 	*regDataPtr = (CI_CmdRegData_t*)buffer;
 		int32 i = 0;
+		*size = sizeof(CI_CmdRegData_t);
 
-		CFE_SB_InitMsg(&cmd, TEST_MSG_ID, MsgSize, TRUE);
-		regDataPtr = ((CI_CmdRegData_t *) &cmd);
+		CFE_SB_InitMsg(regDataPtr, TEST_MSG_ID, *size, TRUE);
 		regDataPtr->msgID = TEST_MSG_ID;
 		regDataPtr->step = STEP_2;
-		CmdMsgPtr = (CFE_SB_MsgPtr_t)&cmd;
-		CI_CmdRegister(CmdMsgPtr);
-
-		MsgSize = sizeof(CI_NoArgCmd_t);
-		*size = MsgSize;
-		for (i = 0; i < MsgSize; i++)
-		{
-			CI_AppData.IngestBuffer[i] = ext_buf[i];
-		}
+		CI_CmdRegister((CFE_SB_MsgPtr_t)regDataPtr);
 	}
 	else if(READ_MSG_RET == EXT_STEP_2_AUTH)
 	{
-		CI_CmdRegData_t 	cmd;
-		CI_CmdRegData_t 	*regDataPtr;
 		CI_CmdData_t		*CmdData = NULL;
-		uint32  			MsgSize = sizeof(cmd);
-		CFE_SB_MsgPtr_t 	CmdMsgPtr;
+		CI_CmdRegData_t 	*regDataPtr = (CI_CmdRegData_t*)buffer;
 		int32 i = 0;
+		*size = sizeof(CI_CmdRegData_t);
 
-		CFE_SB_InitMsg(&cmd, TEST_MSG_ID, MsgSize, TRUE);
-		regDataPtr = ((CI_CmdRegData_t *) &cmd);
+		CFE_SB_InitMsg(regDataPtr, TEST_MSG_ID, *size, TRUE);
 		regDataPtr->msgID = TEST_MSG_ID;
 		regDataPtr->step = STEP_2;
-		CmdMsgPtr = (CFE_SB_MsgPtr_t)&cmd;
-		CI_CmdRegister(CmdMsgPtr);
+		CI_CmdRegister((CFE_SB_MsgPtr_t)regDataPtr);
 
-		CmdData = CI_GetRegisterdCmd(TEST_MSG_ID, TEST_CC);
+		CmdData = CI_GetRegisterdCmd(TEST_MSG_ID, TEST_CC, &i);
 		CmdData->state = AUTHORIZED;
-
-		MsgSize = sizeof(CI_NoArgCmd_t);
-		*size = MsgSize;
-		for (i = 0; i < MsgSize; i++)
-		{
-			CI_AppData.IngestBuffer[i] = ext_buf[i];
-		}
 	}
 	else if(READ_MSG_RET == LONG_CMD)
 	{
@@ -168,11 +134,9 @@ int32 CI_ReadMessage(char* buffer, uint32* size)
 		*size = MsgSize;
 		buffer = (char *)&cmd;
 	}
-
-	return 0;
 }
 
-int32 CI_ReadSerializedMessage(char* buffer, uint32* size)
+void CI_ReadSerializedMessage(char* buffer, uint32* size)
 {
 	if(READ_MSG_RET == CI_CMD)
 	{
@@ -239,7 +203,7 @@ int32 CI_ReadSerializedMessage(char* buffer, uint32* size)
 		CI_CmdData_t		*CmdData = NULL;
 		uint32  			MsgSize = sizeof(cmd);
 		CFE_SB_MsgPtr_t 	CmdMsgPtr;
-		int32 i = 0;
+		int32               i = 0;
 
 		CFE_SB_InitMsg(&cmd, TEST_MSG_ID, MsgSize, TRUE);
 		regDataPtr = ((CI_CmdRegData_t *) &cmd);
@@ -248,7 +212,7 @@ int32 CI_ReadSerializedMessage(char* buffer, uint32* size)
 		CmdMsgPtr = (CFE_SB_MsgPtr_t)&cmd;
 		CI_CmdRegister(CmdMsgPtr);
 
-		CmdData = CI_GetRegisterdCmd(TEST_MSG_ID, TEST_CC);
+		CmdData = CI_GetRegisterdCmd(TEST_MSG_ID, TEST_CC, &i);
 		CmdData->state = AUTHORIZED;
 
 		MsgSize = sizeof(CI_NoArgCmd_t);
@@ -311,14 +275,11 @@ int32 CI_ReadSerializedMessage(char* buffer, uint32* size)
 		*size = MsgSize;
 		buffer = (char *)CmdMsgPtr;
 	}
-
-	return 0;
 }
 
 
-int32 CI_CleanupCustom(void)
+void CI_CleanupCustom(void)
 {
-    return 0;
 }
 
 

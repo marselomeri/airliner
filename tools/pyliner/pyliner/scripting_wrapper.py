@@ -1,3 +1,4 @@
+from datetime import datetime
 from threading import Event
 
 from pyliner.action import ACTION_RTL, ACTION_TELEM
@@ -80,7 +81,7 @@ class ScriptingWrapper(object):
     def app_by_qualified_name(self, qualified_name):
         return self._vehicle.apps[qualified_name].app
 
-    def await_change(self, tlm, out=None, poll=1.0):
+    def await_change(self, tlm, out=None, poll=1.0, timeout=30):
         """Block until the telemetry gets a new value.
 
         The new value does not have to be different than the old value.
@@ -95,12 +96,17 @@ class ScriptingWrapper(object):
         change = Event()
         telemetry.add_listener(lambda t: change.set())
         change.wait(poll)
+        start_time = datetime.now()
         while not change.is_set():
+            if (datetime.now() - start_time).seconds > timeout:
+                return False
             if callable(out):
                 out()
             elif isinstance(out, str):
                 print(out)
             change.wait(poll)
+        
+        return True
 
     def telemetry(self, op_path):
         return self._vehicle.broadcast(Intent(

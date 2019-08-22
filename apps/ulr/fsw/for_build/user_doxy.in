@@ -94,7 +94,6 @@ WARN_LOGFILE           =
 INPUT                  = @APP_DEFINITION_DIR@/../../docs/dox_src/users_guide/cfs_ulr.dox
 INPUT                 += @APP_DEFINITION_DIR@/../src/ulr_events.h
 INPUT                 += @APP_DEFINITION_DIR@/../src/ulr_msg.h 
-INPUT                 += @APP_DEFINITION_DIR@/../src/ulr_tbldefs.h
 INPUT                 += @CONFIG_SOURCES@
 
 #INPUT_ENCODING         = UTF-8

@@ -42,8 +42,6 @@ static OS_USED CFE_TBL_FileDef_t CFE_TBL_FileDef =
 /* Default ULR config table data */
 PE_ConfigTbl_t PE_ConfigTbl =
 {
-    //FUSION
-    145,
 	//VXY_PUB_THRESH
     .3f,
 	//Z_PUB_THRESH
@@ -65,7 +63,7 @@ PE_ConfigTbl_t PE_ConfigTbl =
 	//GPS_Z_STDDEV
     3.0f,
 	//GPS_VXY_STDDEV
-    .5f,
+    .25f,
 	//GPS_VZ_STDDEV
     .25f,
 	//GPS_EPH_MAX

@@ -166,13 +166,7 @@ endfunction(add_airliner_app_src)
 
 
 function(add_airliner_app_unit_test_src)
-    set(PARSED_ARGS_TARGET ${ARGV0})
-    cmake_parse_arguments(PARSED_ARGS "" "" "SOURCES" ${ARGN})
-
-    get_property(AIRLINER_BUILD_PREFIX GLOBAL PROPERTY AIRLINER_BUILD_PREFIX_PROPERTY)
-    target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${PARSED_ARGS_SOURCES})
-    target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC ${PARSED_ARGS_SOURCES})
-
+    add_airliner_app_unit_test_src(${ARGN})
 endfunction(add_airliner_app_unit_test_src)
 
 

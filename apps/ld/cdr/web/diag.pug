@@ -3,62 +3,62 @@ table.table.table-condensed
     tr
       th GC_MinThrust
       td
-        div(data-cdr={tlm:[{name:'/LD/LD_Diag_t/GC_MinThrust'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/LD/LD_Diag_t/GC_MinThrust', notext: true, class: [{eval: '==0', class: 'CDR-LED-RED'},{eval: '==1', class: 'CDR-LED-GREEN'}]}]})
     tr
       th OR
     tr
       th GC_HitGround
       td
-        div(data-cdr={tlm:[{name:'/LD/LD_Diag_t/GC_HitGround'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/LD/LD_Diag_t/GC_HitGround', notext: true, class: [{eval: '==0', class: 'CDR-LED-RED'},{eval: '==1', class: 'CDR-LED-GREEN'}]}]})
     tr
-      th ...
+      th ---
     tr
       th AND
     tr
-      th ...
+      th ---
     tr
       th NOT GC_HorMovement
       td
-        div(data-cdr={tlm:[{name:'/LD/LD_Diag_t/GC_HorMovement'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/LD/LD_Diag_t/GC_HorMovement', notext: true, class: [{eval: '==0', class: 'CDR-LED-GREEN'},{eval: '==1', class: 'CDR-LED-RED'}]}]})
     tr
       th OR
     tr
       th NOT GC_PositionLock
       td
-        div(data-cdr={tlm:[{name:'/LD/LD_Diag_t/GC_PositionLock'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/LD/LD_Diag_t/GC_PositionLock', notext: true, class: [{eval: '==0', class: 'CDR-LED-GREEN'},{eval: '==1', class: 'CDR-LED-RED'}]}]})
 
     tr
-      th ...
+      th ---
     tr
       th AND
     tr
-      th ...
+      th ---
     
     tr
       th NOT GC_VertMovement
       td
-        div(data-cdr={tlm:[{name:'/LD/LD_Diag_t/GC_VertMovement'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/LD/LD_Diag_t/GC_VertMovement', notext: true, class: [{eval: '==0', class: 'CDR-LED-GREEN'},{eval: '==1', class: 'CDR-LED-RED'}]}]})
     tr
       th OR
     tr
       th NOT GC_AltitudeLock
       td
-        div(data-cdr={tlm:[{name:'/LD/LD_Diag_t/GC_AltitudeLock'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/LD/LD_Diag_t/GC_AltitudeLock', notext: true, class: [{eval: '==0', class: 'CDR-LED-GREEN'},{eval: '==1', class: 'CDR-LED-RED'}]}]})
 
     tr
-      th ...
+      th ---
     tr
       th AND
     tr
-      th ...
+      th ---
 
     tr
       th GC_ManualControlIdlingOrAutomatic
       td
-        div(data-cdr={tlm:[{name:'/LD/LD_Diag_t/GC_ManualControlIdlingOrAutomatic'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/LD/LD_Diag_t/GC_ManualControlIdlingOrAutomatic', notext: true, class: [{eval: '==0', class: 'CDR-LED-RED'},{eval: '==1', class: 'CDR-LED-GREEN'}]}]})
 
     tr
-      th ...
+      th ---
 
     tr
       th Result
@@ -66,17 +66,30 @@ table.table.table-condensed
     tr
       th GroundContact
       td
-        div(data-cdr={tlm:[{name:'/LD/LD_Diag_t/GroundContact'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/LD/LD_Diag_t/GroundContact', notext: true, class: [{eval: '==0', class: 'CDR-LED-RED'},{eval: '==1', class: 'CDR-LED-GREEN'}]}]})
+
+    tr
+      th ---
+
+    tr
+      th Debug data:
 
     tr
       th GC_InDescent
       td
-        div(data-cdr={tlm:[{name:'/LD/LD_Diag_t/GC_InDescent'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/LD/LD_Diag_t/GC_InDescent', notext: true, class: [{eval: '==0', class: 'CDR-LED-RED'},{eval: '==1', class: 'CDR-LED-GREEN'}]}]})
+
+    tr
+      th ---
+    tr
+      th Landed Checks
+    tr
+      th ---
 
     tr
       th LD_GC_history_state
       td
-        div(data-cdr={tlm:[{name:'/LD/LD_Diag_t/LD_GC_history_state'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/LD/LD_Diag_t/LD_GC_history_state', notext: true, class: [{eval: '==0', class: 'CDR-LED-RED'},{eval: '==1', class: 'CDR-LED-GREEN'}]}]})
 
     tr
       th AND
@@ -84,7 +97,7 @@ table.table.table-condensed
     tr
       th LD_MinThrust
       td
-        div(data-cdr={tlm:[{name:'/LD/LD_Diag_t/LD_MinThrust'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/LD/LD_Diag_t/LD_MinThrust', notext: true, class: [{eval: '==0', class: 'CDR-LED-RED'},{eval: '==1', class: 'CDR-LED-GREEN'}]}]})
 
     tr
       th AND
@@ -92,19 +105,19 @@ table.table.table-condensed
     tr
       th NOT LD_Rotation
       td
-        div(data-cdr={tlm:[{name:'/LD/LD_Diag_t/LD_Rotation'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/LD/LD_Diag_t/LD_Rotation', notext: true, class: [{eval: '==0', class: 'CDR-LED-GREEN'},{eval: '==1', class: 'CDR-LED-RED'}]}]})
 
     tr
-      th ...
+      th ---
     tr
       th AND
     tr
-      th ...
+      th ---
 
     tr
       th NOT LD_HorMovement
       td
-        div(data-cdr={tlm:[{name:'/LD/LD_Diag_t/LD_HorMovement'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/LD/LD_Diag_t/LD_HorMovement', notext: true, class: [{eval: '==0', class: 'CDR-LED-GREEN'},{eval: '==1', class: 'CDR-LED-RED'}]}]})
 
     tr
       th OR
@@ -112,7 +125,10 @@ table.table.table-condensed
     tr
       th NOT LD_PositionLock
       td
-        div(data-cdr={tlm:[{name:'/LD/LD_Diag_t/LD_PositionLock'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/LD/LD_Diag_t/LD_PositionLock', notext: true, class: [{eval: '==0', class: 'CDR-LED-GREEN'},{eval: '==1', class: 'CDR-LED-RED'}]}]})
+
+    tr
+      th ---
 
     tr
       th Result
@@ -120,5 +136,5 @@ table.table.table-condensed
     tr
       th Landed
       td
-        div(data-cdr={tlm:[{name:'/LD/LD_Diag_t/Landed'}]}) ---
+        .led-basic(data-cdr={tlm: [{name:'/LD/LD_Diag_t/Landed', notext: true, class: [{eval: '==0', class: 'CDR-LED-RED'},{eval: '==1', class: 'CDR-LED-GREEN'}]}]})
 
