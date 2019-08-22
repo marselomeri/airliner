@@ -16,7 +16,7 @@
                   "SymTblToFile":       { "airliner_mid":    "0x19c0" },
                   "EnableEEPROMWrite":  { "airliner_mid":    "0x19c0" },
                   "DisableEEPROMWrite": { "airliner_mid":    "0x19c0" },
-                  "MM_HkTlm_t":         { "airliner_mid":    "0x09c2" },
+                  "MM_HkPacket_t":      { "airliner_mid":    "0x09c2" },
                   "SendHk":             { "airliner_mid":    "0x19c1" }
                 },
                 "config": {

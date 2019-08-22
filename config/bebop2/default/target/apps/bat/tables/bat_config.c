@@ -42,19 +42,19 @@ static OS_USED CFE_TBL_FileDef_t CFE_TBL_FileDef =
 /* Default MPC config table data */
 BAT_ConfigTbl_t BAT_ConfigTbl =
 {
-	/* V_EMPTY       */  3.4f,
+    /* V_EMPTY       */   3.4f,
     /* Bebop power 4.35V. */
     /* Bebop normal 4.05V. */
-    /* V_CHARGED     */  4.05f,
-	/* N_CELLS       */  3,
-	/* CAPACITY      */  -1.0f,
-	/* V_LOAD_DROP   */  0.3f,
-	/* R_INTERNAL    */  -1.0f,
-	/* LOW_THR       */  0.15f,
-	/* CRIT_THR      */  0.07f,
-	/* EMERGEN_THR   */  0.05f,
-	/* Voltage Scale */  1.0f,
-	/* Current Scale */  1.0f,
+    /* V_CHARGED     */   4.05f,
+    /* N_CELLS       */   3,
+    /* CAPACITY      */  -1.0f,
+    /* V_LOAD_DROP   */   0.3f,
+    /* R_INTERNAL    */  -1.0f,
+    /* LOW_THR       */   0.15f,
+    /* CRIT_THR      */   0.07f,
+    /* EMERGEN_THR   */   0.05f,
+    /* Voltage Scale */   1.0f,
+    /* Current Scale */   1.0f,
 };
 
 /*

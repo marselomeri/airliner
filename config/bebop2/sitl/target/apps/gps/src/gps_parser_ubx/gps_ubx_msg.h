@@ -34,15 +34,14 @@
 #ifndef _GPS_UBX_MSG_H_
 #define _GPS_UBX_MSG_H_
 
-#include "common_types.h"
-#include "px4_msgs.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+#include "common_types.h"
+#include "px4_msgs.h"
 
-#define GPS_COEF_SIZE 8
+#define GPS_COEF_SIZE                      (8)
 
 /* RX NAV-PVT message content details */
 /*   Bitfield "valid" masks */

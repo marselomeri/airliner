@@ -108,7 +108,6 @@ extern "C" {
 */
 #define VM_PARAM_PIPE_NAME              ("VM_PARAM_PIPE")
 
-
 /** \brief The config table default filename
 **
 **  \par Limits:

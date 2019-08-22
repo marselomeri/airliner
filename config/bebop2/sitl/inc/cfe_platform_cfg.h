@@ -1354,7 +1354,7 @@
 **  \par Limits
 **       There is an upper limit of 32767 on this configuration paramater.
 */
-#define CFE_EVS_MAX_EVENT_FILTERS     255
+#define CFE_EVS_MAX_EVENT_FILTERS     256
 
 
 /**

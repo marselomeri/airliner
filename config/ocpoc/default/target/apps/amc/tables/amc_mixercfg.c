@@ -50,7 +50,7 @@ MultirotorMixer_ConfigTable_t AMC_MixerCfgTbl =
     0.2,          /* Idle Speed     */
     1.0,          /* Delta Out Max  */
     8,            /* Rotor Count    */
-	MIXER_OCTA_X, /* Rotor Geometry */
+    MIXER_OCTA_X, /* Rotor Geometry */
     {
         /* Rotor # | Roll Scale  |  Pitch Scale  |  Yaw Scale  |  Output Scale */
         /*  0  */  { -0.382683,      0.923880,      -1.000000,     1.000000 },
