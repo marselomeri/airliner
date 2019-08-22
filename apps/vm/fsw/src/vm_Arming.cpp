@@ -222,9 +222,7 @@ osalbool VM_Arming::PreFlightCheckCleared()
     /* Warn about global position */
     if (App.VehicleGlobalPositionMsg.Timestamp == 0)
     {
-        (void) CFE_EVS_SendEvent(VM_NOPE_ERR_EID, CFE_EVS_ERROR, "Position estimator not initialized");
-        cleared = false;
-        goto end_of_function;
+        (void) CFE_EVS_SendEvent(VM_NOPE_ERR_EID, CFE_EVS_INFORMATION, "Warning: Position estimator not initialized");
     }
 
     /* Battery warning check */
