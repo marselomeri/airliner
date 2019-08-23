@@ -25,7 +25,7 @@
 ** Global Variables
 *************************************************************************/
 
-#define TO_PQUEUE_SINGLE_PASS_IDX		        0
+#define TO_PQUEUE_SINGLE_PASS_IDX		0
 #define TO_PQUEUE_HIGH_OPS_RSRVD_IDX	        1
 #define TO_PQUEUE_HIGH_IDX                      2
 #define TO_PQUEUE_MEDIUM_IDX                    3
@@ -40,8 +40,8 @@ TO_ChannelTbl_t TO_ConfigTbl =
 	1,
 	TO_OUTPUT_TYPE_BINARY,
 	{
-		/* Message Flows */
-		/* Ground Queues */
+	    /* Message Flows */
+	    /* General housekeeping telemetry */
 	    {AMC_HK_TLM_MID,			      1,	TO_PQUEUE_HIGH_IDX},
 	    {MAC_HK_TLM_MID,			      1,	TO_PQUEUE_HIGH_IDX},
 	    {MPC_HK_TLM_MID,			      1,	TO_PQUEUE_HIGH_IDX},
@@ -55,21 +55,21 @@ TO_ChannelTbl_t TO_ConfigTbl =
 	    {VM_HK_TLM_MID,			      1,	TO_PQUEUE_HIGH_IDX},
 	    {BAT_HK_TLM_MID,			      1,	TO_PQUEUE_HIGH_IDX},
 	    {PE_HK_TLM_MID,			      1,	TO_PQUEUE_HIGH_IDX},
-	    {AK8963_HK_TLM_MID,		      1,	TO_PQUEUE_HIGH_IDX},
+	    {AK8963_HK_TLM_MID,		              1,	TO_PQUEUE_HIGH_IDX},
 	    {AK8963_DIAG_TLM_MID,		      1,	TO_PQUEUE_HIGH_IDX},
-        {MS5611_HK_TLM_MID,			      1,	TO_PQUEUE_HIGH_IDX},
-        {MS5611_DIAG_TLM_MID,                     1,        TO_PQUEUE_HIGH_IDX},
-        {MPU6050_HK_TLM_MID,			      1,	TO_PQUEUE_HIGH_IDX},
-        {MPU6050_DIAG_TLM_MID,                     1,        TO_PQUEUE_HIGH_IDX},
-        {TO_HK_TLM_MID,			      1,	TO_PQUEUE_HIGH_IDX},
-        {TO_DATA_TYPE_MID,			      1,	TO_PQUEUE_HIGH_IDX},
-        {EA_HK_TLM_MID,			      1,	TO_PQUEUE_HIGH_IDX},
-        {VC_HK_TLM_MID,			      1,	TO_PQUEUE_HIGH_IDX},
-        {TO_DIAG_TLM_MID,			      1,	TO_PQUEUE_HIGH_IDX},
-        {GPS_HK_TLM_MID,			      1,        TO_PQUEUE_HIGH_IDX},
-        {MAVLINK_HK_TLM_MID,                      1,        TO_PQUEUE_HIGH_IDX},
-        {CFE_ES_HK_TLM_MID,			      1,	TO_PQUEUE_MEDIUM_IDX},
-        {CFE_EVS_HK_TLM_MID,		      1,	TO_PQUEUE_MEDIUM_IDX},
+            {MS5611_HK_TLM_MID,			      1,	TO_PQUEUE_HIGH_IDX},
+            {MS5611_DIAG_TLM_MID,                     1,        TO_PQUEUE_HIGH_IDX},
+            {MPU6050_HK_TLM_MID,		      1,	TO_PQUEUE_HIGH_IDX},
+            {MPU6050_DIAG_TLM_MID,                    1,        TO_PQUEUE_HIGH_IDX},
+            {TO_HK_TLM_MID,			      1,	TO_PQUEUE_HIGH_IDX},
+            {TO_DATA_TYPE_MID,			      1,	TO_PQUEUE_HIGH_IDX},
+            {EA_HK_TLM_MID,			      1,	TO_PQUEUE_HIGH_IDX},
+            {VC_HK_TLM_MID,			      1,	TO_PQUEUE_HIGH_IDX},
+            {TO_DIAG_TLM_MID,			      1,	TO_PQUEUE_HIGH_IDX},
+            {GPS_HK_TLM_MID,			      1,        TO_PQUEUE_HIGH_IDX},
+            {MAVLINK_HK_TLM_MID,                      1,        TO_PQUEUE_HIGH_IDX},
+            {CFE_ES_HK_TLM_MID,			      1,	TO_PQUEUE_MEDIUM_IDX},
+            {CFE_EVS_HK_TLM_MID,		      1,	TO_PQUEUE_MEDIUM_IDX},
 	    {CFE_SB_HK_TLM_MID,			      1,	TO_PQUEUE_MEDIUM_IDX},
 	    {CFE_TBL_HK_TLM_MID,		      1,	TO_PQUEUE_MEDIUM_IDX},
 	    {CFE_TIME_HK_TLM_MID,		      1,	TO_PQUEUE_MEDIUM_IDX},
@@ -102,12 +102,12 @@ TO_ChannelTbl_t TO_ConfigTbl =
 	    {SCH_DIAG_TLM_MID,			      1,	TO_PQUEUE_MEDIUM_IDX},
 	    {CI_HK_TLM_MID,			      1,	TO_PQUEUE_MEDIUM_IDX},
 	    {QAE_HK_TLM_MID,			      1,	TO_PQUEUE_MEDIUM_IDX},
-		{FLOW_HK_TLM_MID,			      1,	TO_PQUEUE_MEDIUM_IDX},
-		{FLOW_DIAG_TLM_MID,			      1,	TO_PQUEUE_MEDIUM_IDX},
-	    {MPC_DIAG_TLM_MID,		      1,	TO_PQUEUE_MEDIUM_IDX},
-	    {LD_DIAG_TLM_MID,		      1,	TO_PQUEUE_MEDIUM_IDX},
-	    {PRM_HK_TLM_MID,		      1,	TO_PQUEUE_MEDIUM_IDX},
-	    {VM_CONFIG_TLM_MID,		      1,	TO_PQUEUE_MEDIUM_IDX},
+	    {FLOW_HK_TLM_MID,			      1,	TO_PQUEUE_MEDIUM_IDX},
+	    {FLOW_DIAG_TLM_MID,			      1,	TO_PQUEUE_MEDIUM_IDX},
+	    {MPC_DIAG_TLM_MID,		              1,	TO_PQUEUE_MEDIUM_IDX},
+	    {LD_DIAG_TLM_MID,		              1,	TO_PQUEUE_MEDIUM_IDX},
+	    {PRM_HK_TLM_MID,		              1,	TO_PQUEUE_MEDIUM_IDX},
+	    {VM_CONFIG_TLM_MID,		              1,	TO_PQUEUE_MEDIUM_IDX},
 
 
 //        {PX4_ACTUATOR_ARMED_MID,               1,     TO_PQUEUE_LOW_IDX},

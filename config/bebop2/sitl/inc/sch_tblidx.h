@@ -47,6 +47,7 @@
 #define SC_SEND_HK_MIDX               41
 #define FLOW_WAKEUP_MIDX              42
 #define FLOW_SEND_HK_MIDX             43
+
 #define VC_SEND_HK_MIDX               45
 #define VC_PROCESS_CMDS_MIDX          46
 #define RGBLED_WAKEUP_MIDX            47
@@ -94,8 +95,6 @@
 #define PRM_SEND_HK_MIDX              96
 #define PRM_WAKEUP_MIDX               97
 
-#define PX4BR_PROC_CMD_MIDX          100
-#define PX4BR_SEND_HK_MIDX           101
 #define QAE_SEND_HK_MIDX             102
 #define QAE_WAKEUP_MIDX              103
 #define LD_SEND_HK_MIDX              104

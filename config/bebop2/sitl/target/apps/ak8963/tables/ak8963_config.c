@@ -39,22 +39,22 @@ static OS_USED CFE_TBL_FileDef_t CFE_TBL_FileDef =
 ** Global Variables
 */
 
-/* Default MPU9250 config table data */
+/* Default AK8963 config table data */
 AK8963_ConfigTbl_t AK8963_ConfigTbl =
 {
-    /* User calibration params */
-    /* x_scale */
-    1.0f,
-    /* y_scale */
-    1.0f,
-    /* z_scale */
-    1.0f,
-    /* x_offset */
-    0.0f,
-    /* y_offset */
-    0.0f,
-    /* z_offset */
-    0.0f
+        /* User calibration params */
+        /* MagXScale */
+        1.0f,
+        /* MagYScale */
+        1.0f,
+        /* MagZScale */
+        1.0f,
+        /* MagXOffset */
+        0.0f,
+        /* MagYOffset */
+        0.0f,
+        /* MagZOffset */
+        0.0f
 };
 
 /*
