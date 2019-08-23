@@ -69,8 +69,6 @@ before_install:
   - cd ../../
 script:
   - make bebop2/sitl
-  - #cd build/bebop2/sitl
-  - #ctest -E ea-perf
 after_success:
   - export GH_REPO_ORG=`echo $TRAVIS_REPO_SLUG | cut -d "/" -f 1`
   - export GH_REPO_NAME=`echo $TRAVIS_REPO_SLUG | cut -d "/" -f 2`
@@ -81,28 +79,13 @@ after_success:
   - make docs
   - git clone -b gh-pages git@github.com:$GH_REPO_ORG/$GH_REPO_NAME.git code_docs
   - cd code_docs
-  - ##### Configure git.
-  - # Set the push default to simple i.e. push only the current branch.
   - git config --global push.default simple
-  - # Pretend to be an user called Travis CI.
   - git config user.name "Travis CI"
   - git config user.email "travis@travis-ci.org"
-  - # go back to first commit
   - git reset --hard `git rev-list --max-parents=0 --abbrev-commit HEAD`
-  - # Need to create a .nojekyll file to allow filenames starting with an underscore
-  - # to be seen on the gh-pages site. Therefore creating an empty .nojekyll file.
-  - # Presumably this is only needed when the SHORT_NAMES option in Doxygen is set
-  - # to NO, which it is by default. So creating the file just in case.
   - echo "" > .nojekyll
-  - ################################################################################
-  - ##### Upload the documentation to the gh-pages branch of the repository.   #####
   - cp -R ../docs/* .
   - git add --all
-  - # Commit the added files with a title and description containing the Travis CI
-  - # build number and the GitHub commit reference that issued this build.
   - git commit -m "Deploy code docs to GitHub Pages Travis build: ${TRAVIS_BUILD_NUMBER}" -m "Commit: ${TRAVIS_COMMIT}"
-  - # Force push to the remote gh-pages branch.
-  - # The ouput is redirected to /dev/null to hide any sensitive credential data
-  - # that might otherwise be exposed.
   - git push --force "git@github.com:$GH_REPO_ORG/$GH_REPO_NAME.git" > /dev/null 2>&1
   
