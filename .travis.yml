@@ -18,6 +18,10 @@ addons:
       - protobuf-compiler
       - python-protobuf
       - doxygen
+      - doxygen-doc
+      - doxygen-latex
+      - doxygen-gui
+      - graphviz
       - g++-multilib 
       - gcc-multilib
       - graphviz
