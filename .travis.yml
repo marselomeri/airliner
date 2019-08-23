@@ -71,5 +71,10 @@ script:
   - make bebop2/sitl
 after_success:
   - export GH_REPO_ORG=`echo $TRAVIS_REPO_SLUG | cut -d "/" -f 1`
-
+  - export GH_REPO_NAME=`echo $TRAVIS_REPO_SLUG | cut -d "/" -f 2`
+  - export GH_REPO_REF="github.com/$GH_REPO_ORG/$GH_REPO_NAME.git"
+  - mkdir -p build/reference/default
+  - cd build/reference/default
+  - cmake -DBUILDNAME:STRING=reference/default
+  - make docs
   
