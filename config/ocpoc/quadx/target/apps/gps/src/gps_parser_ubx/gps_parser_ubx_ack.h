@@ -38,10 +38,6 @@
 #ifndef _GPS_PARSER_UBX_ACK_H_
 #define _GPS_PARSER_UBX_ACK_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "cfe.h"
 #include "../gps_custom_shared.h"
 //#include "GPS_events.h"
@@ -49,6 +45,9 @@ extern "C" {
 #include "gps_parser_ubx_common.h"
 #include "gps_ubx_msg.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*************************************************************************
 **

@@ -18,9 +18,10 @@
                     "Rattitude":              { "airliner_mid": "0x1c70" },
                     "Stabilized":             { "airliner_mid": "0x1c70" },
                     "VM_HkTlm_t":             { "airliner_mid": "0x0c6d" },
+                    "VM_ConfigTlm_t":         { "airliner_mid": "0x0cec" },
                     "Wakeup":                 { "airliner_mid": "0x1c6f" },
                     "SendHk":                 { "airliner_mid": "0x1c6e" },
-                    "SetBatteryFailsafeMode": { "airliner_mid": "0x1c70" }
+                    "SendConfig":             { "airliner_mid": "0x1c70" }
                 }
             }
         }

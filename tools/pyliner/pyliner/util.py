@@ -36,7 +36,8 @@ import threading
 import time
 from collections import Iterator, Iterable
 from datetime import datetime
-from os.path import join
+from os import mkdir
+from os.path import join, isdir, exists
 
 from orderedset import OrderedSet
 import queue
@@ -266,6 +267,9 @@ def enable_logging(log_dir=None, log_file=None, script=None, level=logging.INFO,
         log_file = '{}_pyliner_{}.log'.format(time_str, script)
 
     log_path = join(log_dir, log_file)
+    if not isdir(log_dir):
+        mkdir(log_dir)
+        
     print('Log at {}'.format(log_path))
     logging.basicConfig(
         level=level,

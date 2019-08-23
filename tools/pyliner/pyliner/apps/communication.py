@@ -51,6 +51,7 @@ class _Telemetry(object):
         self.name = name
         self.time = time
         self.value = value
+        self.obj = None
 
         self._listener = set()
 
@@ -62,9 +63,10 @@ class _Telemetry(object):
     def remove_listener(self, listener):
         self._listener.remove(listener)
 
-    def update(self, value, time=None):
+    def update(self, value, time=None, obj=None):
         self.time = time
         self.value = value
+        self.obj = obj
         for listener in self._listener:
             listener(self)
 
@@ -392,6 +394,26 @@ class Communication(App):
 
         return get_app(ops_names[1])['operations'][ops_names[2]]
 
+    def get_op_mid(self, op_path):
+        """
+        Receive a ops path and returns the message ID for that op defined in
+        the input file.
+
+        Args:
+            op_path (str): Operational path of command to retrieve. Leading "/"
+                is required. "/Airliner/CNTL/ManualSetpoint"
+
+        Returns:
+            int: Message ID of op if found
+            None: If op does not exist
+        """
+        try:
+            op = self._get_airliner_op(op_path)
+        except KeyError:
+            return None
+
+        return int(op["airliner_mid"], 0)
+
     @staticmethod
     def _get_ccsds_msg(op):
         """Receive a ops dict and returns a ccsds msg
@@ -430,6 +452,9 @@ class Communication(App):
         """
         op = self._get_airliner_op(op_path)
         ops_names = op_path.split('/')[1:]
+        if len(ops_names) == 3:
+            return None
+            
         for fsw, fsw_data in self.airliner_map.items():
             if fsw == ops_names[0]:
                 for app, app_data in fsw_data["apps"].items():
@@ -492,6 +517,8 @@ class Communication(App):
             # TODO: Python3 would be str not basestring
             if isinstance(arg["value"], basestring):
                 stmt = "pb_obj.{} = \"{}\"".format(arg_path, arg["value"])
+            elif isinstance(arg["value"], list):
+                stmt = "pb_obj.{}.extend({})".format(arg_path, arg["value"])
             else:
                 stmt = "pb_obj.{} = {}".format(arg_path, arg["value"])
             try:
@@ -558,7 +585,7 @@ class Communication(App):
                 telemItem = subscribed_tlm['telemItem']
                 
                 telemItem.update(
-                    value=self._get_pb_value(pb_msg, op_path), time=tlm_time)
+                    value=self._get_pb_value(pb_msg, op_path), time=tlm_time, obj=pb_msg)
 
                 # Update telemetry dictionary with fresh data
                 self._telemetry[op_path].update(
@@ -649,6 +676,13 @@ class Communication(App):
         if not op:
             err_msg = "Invalid telemetry operational name received. " \
                       "Operation (%s) not defined." % tlm_item
+            self.vehicle.error(err_msg)
+            raise InvalidOperationException(err_msg)
+
+        if not self._get_op_attr(tlm_item) and len(tlm_item.split('/')) == 5:
+            err_msg = "Invalid telemetry operational name received. " \
+                      "Symbol: {} exists, but attribute: {} does not.".format(
+                      tlm_item.split('/')[-2], tlm_item.split('/')[-1])
             self.vehicle.error(err_msg)
             raise InvalidOperationException(err_msg)
 

@@ -1,3 +1,9 @@
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "JebOdbnvXHkjT0n/k94FrRSYL4Mwu2sFT0TtHSX5bMQRzlc0RAgbffiaHS4V/GIlZ8Bh34U+FuVddZEAl+Qn6I2YtI8j9R/o4FldByvV/rgXGosuQlTbHdTKZh2m+i9AtOVpwUGbguSqcYvVcPIPnm3GshYrlIOmLDxdfsp7nIEq2S04Yf7TC26hoDjTV6VdqoMBKkryQIQr+150wbC84NmzrQFbWhuQJ+UHr3Nf8fithSLECEMPDep0cxKpRw9fCqH3iNQ6Ic5Ul/0HMFPoa58Dz0/4lXnh3mHaen6K5OUPhmGN/hmzxDucw8/I/jRw7lyKI8wEpGvBx+oXtafwqtF+ao04TILnbI3WCDDmZvtU5wj01KxBY9qkECNTsXPJJuwiZ9DIm2mox9uvCYe2sJST9mAvGGh95oVPoqOuRRCrbs14/4+FYAeweNHHo7BFyOdCChPfTbyNAHSHYNCfOP/QNN2Wjmm9+7Y7xkGyz0FyOdaLtYAg9QyWUfo9mEq5INkquCVfA8WXBdmSu8rVFhU5+m5GgZSElZK5Smfew3Xrm/YP1VHQ2Ju+xSvyjV1GbQj8YVOONeWdJAP/l1UALeKY4i8pgd1M+P6YWisR7EstCgDgEBHFLF5RuzHJYsI+ZcEVt3uXje1IhHu0ku//UkUE4n8AN2uLRIGsC4VAsGo="
+
 language: cpp
 compiler: 
   - g++
@@ -12,6 +18,10 @@ addons:
       - protobuf-compiler
       - python-protobuf
       - doxygen
+      - doxygen-doc
+      - doxygen-latex
+      - doxygen-gui
+      - graphviz
       - g++-multilib 
       - gcc-multilib
       - graphviz
@@ -35,7 +45,16 @@ addons:
       - libgstreamer1.0-dev
       - libgstreamer-plugins-base1.0-dev
       - libglib2.0-dev
+  coverity_scan:
+    project:
+      name: "WindhoverLabs/airliner"
+      description: "Mission critical UAS autopilot"
+    notification_email: mbenson@windhoverlabs.com
+    build_command_prepend: ""
+    build_command: "make bebop/sitl"
+    branch_pattern: integration/WINDEV-758-flight-test-12
 before_install:
+  - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
   - sudo -H pip install --upgrade pip 
   - sudo -H pip install --upgrade virtualenv 
   - sudo -H pip install catkin_pkg
@@ -43,13 +62,13 @@ before_install:
   - wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
   - sudo apt-get update
   - sudo apt-get install -y gazebo8 libgazebo8 libgazebo8-dev
-script:
-  - cd tools/commander; 
+  - sudo apt-get install -y libeigen3-dev libopencv-dev
+  - sudo apt-get install -y valgrind gcovr lcov xsltproc graphviz
+  - cd tools/commander
   - npm install
   - cd ../../
-  - make bebop2/sitl
-  - cd build/bebop2/sitl
-  - ctest -E ea-perf
-  
-
+script:
+  - ls -la
+after_success:
+  - ./generateDoxy.sh
   
