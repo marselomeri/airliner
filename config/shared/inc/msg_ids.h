@@ -331,14 +331,6 @@
 #define ETA_SEND_TLM_MID                             (0x0bc4)
 
 
-/* PX4BR                                                   */
-/* Range: 0x900 - 0x90f                                    */
-#define PX4BR_CMD_MID                                (0x1bd0)
-#define PX4BR_SEND_HK_MID                            (0x1bd1)
-#define PX4BR_HK_TLM_MID                             (0x0bd2)
-#define PX4BR_PROC_CMD_MID                           (0x1bd3)
-
-
 /* PX4UORB                                                 */
 /* Range: 0x900 - 0x90f                                    */
 #define PX4UORB_CMD_MID                              (0x1bd4)

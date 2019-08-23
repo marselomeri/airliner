@@ -47,7 +47,6 @@
 	            "VC_MAIN_TASK_PERF_ID":          { "perf_id":  63 },
 	            "VC_SOCKET_SEND_PERF_ID":        { "perf_id":  64 },
 	            "VC_DEVICE_GET_PERF_ID":         { "perf_id":  65 },
-	            "PX4BR_MAIN_TASK_PERF_ID":       { "perf_id":  66 },
 	            "AMC_MAIN_TASK_PERF_ID":         { "perf_id":  67 },
 	            "MAC_MAIN_TASK_PERF_ID":         { "perf_id":  68 },
 	            "EA_MAIN_TASK_PERF_ID":          { "perf_id":  69 },
@@ -393,11 +392,6 @@
 	            "ETA_DATA_TYPES_MID":            { "msg_id": "0x0bc2" },
 	            "ETA_HK_TLM_MID":                { "msg_id": "0x0bc3" },
 	            "ETA_SEND_TLM_MID":              { "msg_id": "0x0bc4" },
-	            "PX4BR_CMD_MID":                 { "msg_id": "0x1bd0" },
-	            
-	            "PX4BR_SEND_HK_MID":             { "msg_id": "0x1bd1" },
-	            "PX4BR_HK_TLM_MID":              { "msg_id": "0x0bd2" },
-	            "PX4BR_PROC_CMD_MID":            { "msg_id": "0x1bd3" },
 	            
 	            "PX4UORB_CMD_MID":               { "msg_id": "0x1bd4" },
 	            "PX4UORB_SEND_HK_MID":           { "msg_id": "0x1bd5" },
