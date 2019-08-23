@@ -35,7 +35,7 @@
 {
     inPort:  5011,
     outPort: 5010,
-    outAddress: '192.168.1.66',
+    outAddress: '192.168.1.150',
     inputStreamID: 'bin-cmd-stream',
     outputStreamID: 'bin-tlm-stream'
 }
