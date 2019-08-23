@@ -77,8 +77,8 @@
 #define MS5607_SEND_HK_MIDX           76
 #define MS5607_MEASURE_MIDX           77
 
-#define SONAR_MEASURE_MIDX            80
-#define SONAR_SEND_HK_MIDX            81
+#define ULR_MEASURE_MIDX              80
+#define ULR_SEND_HK_MIDX              81
 
 #define AK8963_SEND_HK_MIDX           83
 #define AK8963_WAKEUP_MIDX            84
