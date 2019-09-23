@@ -1,0 +1,25 @@
+{
+    "modules": {
+        "sch": {
+            "commands": {
+                "SCH_CMD_MID":     { "msgid": "0x19e4"},
+                "SCH_SEND_HK_MID": { "msgid": "0x19e5"},
+                "SCH_UNUSED_MID":  { "msgid": "0"}
+            },
+            "telemetry": { 
+                "HK":         { "msgid": "0x09e8"},
+                "Diagnostic": { "msgid": "0x09e7"}
+            },
+            "perfids": {
+                "SCH_APPMAIN_PERF_ID": {"value": "61"}
+            },
+            "config": {
+                "SCH_PIPE_DEPTH":             { "value": "2"   },
+                "SCH_TOTAL_SLOTS":            { "value": "250" },
+                "SCH_ENTRIES_PER_SLOT":       { "value": "15"  },
+                "SCH_SYNC_SLOT_DRIFT_WINDOW": { "value": "500" },
+                "SCH_MISSION_REV":            { "value": "1"   }
+            }
+        }
+    }
+}

@@ -1,0 +1,175 @@
+{
+    "modules": {
+        "sch": {
+            "short_name": "SCH",
+            "long_name": "Scheduler",
+            "commands": {
+                "SCH_CMD_MID": { "msgid": "", "commands": {
+                    "Noop":         { "cc":  0, "struct": "CFE_SB_CmdHdr_t" },
+                    "Reset":        { "cc":  1, "struct": "CFE_SB_CmdHdr_t" },
+                    "Enable":       { "cc":  2, "struct": "SCH_EntryCmd_t"  },
+                    "Disable":      { "cc":  3, "struct": "SCH_EntryCmd_t"  },
+                    "EnableGroup":  { "cc":  4, "struct": "SCH_GroupCmd_t"  },
+                    "DisableGroup": { "cc":  5, "struct": "SCH_GroupCmd_t"  },
+                    "EnableSync":   { "cc":  6, "struct": "CFE_SB_CmdHdr_t" },
+                    "SendDiag":     { "cc":  7, "struct": "CFE_SB_CmdHdr_t" }
+                }},
+                "SCH_SEND_HK_MID": { "msgid": "", "commands": {
+                    "SendHK": { "cc":  0, "struct": "CFE_SB_CmdHdr_t" }
+                }},
+                "SCH_UNUSED_MID": { "msgid": "", "commands": {
+                    "Unused": { "cc":  0, "struct": "CFE_SB_CmdHdr_t" }
+                }}
+            },
+            "telemetry": { 
+                "HK":         { "msgid_macro": "SCH_HK_TLM_MID",   "msgid": "", "struct": "SCH_HkPacket_t"   },
+                "Diagnostic": { "msgid_macro": "SCH_DIAG_TLM_MID", "msgid": "", "struct": "SCH_DiagPacket_t" }
+            },
+            "perfids": {
+                "SCH_APPMAIN_PERF_ID": {"value": ""}
+            },
+            "tables": {
+                "MSG_DEFS": {"title": "Message Definitions",  "isDumpTable": false, "default": "sch_def_msgtbl.tbl"}},
+                "SCHED_DEF": {"title": "Schedule Definitions", "isDumpTable": false, "default": "sch_def_schtbl.tbl"}}
+            },
+            "config": {
+                "SCH_PIPE_DEPTH": { 
+                    "title":        "Software Bus Command Pipe Depth",
+                    "description":  "Dictates the number of messages to SCH that can be queued while awaiting processing by the SCH Application.",
+                    "limits":       "Must be greater than zero.",
+                    "value":        "12"
+                },
+                "SCH_TOTAL_SLOTS": { 
+                    "title":        "Minor Frame Frequency (in Hz)",
+                    "description":  "Dictates the number of minor frame slots within each Major Frame.",
+                    "limits":       "Must be 2 or more and less than 65536",
+                    "value":        "100"
+                },
+                "SCH_ENTRIES_PER_SLOT": { 
+                    "title":        "Maximum number of Activities per Minor Frame",
+                    "description":  "Dictates the number of activities that can be defined for each Minor Frame.",
+                    "limits":       "Must be at least one.",
+                    "value":        "5"
+                },
+                "SCH_MAX_MESSAGES": { 
+                    "title":        "Maximum Number of Message Definitions in Message Definition Table",
+                    "description":  "Dictates the number of messages that can be defined in Message Definition Table.",
+                    "limits":       "Must be at least one.",
+                    "value":        "128"
+                },
+                "SCH_MDT_MIN_MSG_ID": { 
+                    "title":        "Minimum Message ID allowed in Message Definition Table",
+                    "description":  "Dictates the minimum message ID that can be used in the Message Definition Table.",
+                    "limits":       "Must be less than or equal to SCH_MDT_MAX_MSG_ID and greater than or equal to 0.",
+                    "value":        "0"
+                },
+                "SCH_MDT_MAX_MSG_ID": { 
+                    "title":        "Maximum Message ID allowed in Message Definition Table",
+                    "description":  "Dictates the maximum message ID that can be used in the Message Definition Table.",
+                    "limits":       "Must be less than or equal to #CFE_SB_HIGHEST_VALID_MSGID and greater than SCH_MDT_MIN_MSG_ID.",
+                    "value":        "CFE_SB_HIGHEST_VALID_MSGID"
+                },
+                "SCH_MAX_MSG_WORDS": { 
+                    "title":        "Maximum Length, in Words, of a Message",
+                    "description":  "Dictates the maximum number of words that can be assigned to a particular message in the Message Definition Table.",
+                    "limits":       "Must be at least large enough to hold the smallest possible message header (see #CFE_SB_TLM_HDR_SIZE and #CFE_SB_CMD_HDR_SIZE).",
+                    "value":        "64"
+                },
+                "SCH_MAX_LAG_COUNT": { 
+                    "title":        "Maximum Number of slots allowed for catch-up before skipping",
+                    "description":  "Dictates the number of Minor Frames that will be processed in \"Catch Up\" mode before giving up and skipping ahead.",
+                    "limits":       "",
+                    "value":        "(SCH_TOTAL_SLOTS / 2)"
+                },
+                "SCH_MAX_SLOTS_PER_WAKEUP": { 
+                    "title":        "Maximum Number of Slots to be processed when in \"Catch Up\" mode",
+                    "description":  "Dictates the maximum number of slots SCH will process when trying to \"Catch Up\" to the correct slot for the current time.",
+                    "limits":       "Must be at least one.",
+                    "value":        "5"
+                },
+                "SCH_MICROS_PER_MAJOR_FRAME": { 
+                    "title":        "Major Frame Period (in microseconds)",
+                    "description":  "Dictates the number microseconds in a Major Frame.",
+                    "limits":       "Must be greater than zero.",
+                    "value":        "1000000"
+                },
+                "SCH_SYNC_SLOT_DRIFT_WINDOW": { 
+                    "title":        "Additional time allowed in Sync Slot to wait for Major Frame Sync (in microseconds)",
+                    "description":  "Dictates the additional time allowed in the Syncronization Slot to allow the Major Frame Sync signal to be received and re-synchronize processing.",
+                    "limits":       "Must be less than the normal slot period.",
+                    "value":        "5000"
+                },
+                "SCH_STARTUP_SYNC_TIMEOUT": { 
+                    "title":        "Time, in milliseconds, to wait for all applications to be started and ready to run",
+                    "description":  "Dictates the timeout for the #CFE_ES_WaitForStartupSync call that SCH uses to wait for all of the Applications specified in the startup script to finish initialization.  SCH will wait this amount of time before assuming all startup script applications have been started and will then begin nominal schedule processing.",
+                    "limits":       "None",
+                    "value":        "50000"
+                },
+                "SCH_STARTUP_PERIOD": { 
+                    "title":        "Time, in microseconds, to wait for first Major Frame Sync to arrive",
+                    "description":  "Dictates the time allowed for the first Major Frame sync signal to arrive before assuming it is not going to occur and switching to a freewheeling mode.",
+                    "limits":       "Must be greater than or equal to the Major Frame Period.",
+                    "value":        "(5*SCH_MICROS_PER_MAJOR_FRAME)"
+                },
+                "SCH_MAX_NOISY_MAJORF": { 
+                    "title":        "Maximum Number of consecutive Noisy Major Frame signals before they are ignored",
+                    "description":  "Dictates the number of consecutive \"Noisy\" Major Frame Signals (i.e. - signals that occur outside the expected window of their occurence) until the Major Frame signal is automatically ignored and the Minor Frame Timer is used instead.",
+                    "limits":       "This value should never be set to less than two because a single \"noisy\" Major Frame signal is likely when turning on or switching the 1 Hz signal on the spacecraft.",
+                    "value":        "2"
+                },
+                "SCH_LIB_PRESENCE": { 
+                    "title":        "Scheduler API Library Usage Status",
+                    "description":  "Determines whether or not the Scheduler application is using the API library allowing for external tasks to disable and enable schedule processing. Note that if the library is to be used it must be generated as a separate object, and loaded prior to the appplication.",
+                    "limits":       "This value must either be 0 when not using or including the library, or 1 if the library is going to be used.",
+                    "value":        "1"
+                },
+                "SCH_LIB_DIS_CTR": { 
+                    "title":        "Scheduler API Library Initial Inhibition Count",
+                    "description":  "Sets the number of times the scheduler must be enabled following library initialization. This allows the scheduler to come up either enabled (set to 0) or disabled (set to a value greater than or equal to 1)",
+                    "limits":       "This value must be an unsigned 32 bit integer.",
+                    "value":        "0"
+                },
+                "SCH_SCHEDULE_FILENAME": { 
+                    "title": "Default SCH Schedule Definition Table Filename",
+                    "description":  "The value of this constant defines the default filename of the SCH Schedule Definition Table",
+                    "limits":       "The length of each string, including the NULL terminator cannot exceed the #OS_MAX_PATH_LEN value.",
+                    "value":        "\"/cf/apps/sch_def_schtbl.tbl\""
+                },
+                "SCH_MESSAGE_FILENAME": { 
+                    "title":        "Default SCH Message Definition Table Filename",
+                    "description":  "The value of this constant defines the default filename of the SCH Message Definition Table",
+                    "limits":       "The length of each string, including the NULL terminator cannot exceed the #OS_MAX_PATH_LEN value.",
+                    "value":        "\"/cf/apps/sch_def_msgtbl.tbl\""
+                },
+                "SCH_MISSION_REV": { 
+                    "title":        "Mission specific version number for SCH application",
+                    "description":  "An application version number consists of four parts: major version number, minor version number, revision number and mission specific revision number. The mission specific revision number is defined here and the other parts are defined in \"sch_version.h\".",
+                    "limits":       "Must be defined as a numeric value that is greater than or equal to zero.",
+                    "value":        ""
+                },
+                "SCH_AD_PIPE_DEPTH": { 
+                    "title":        "",
+                    "description":  "",
+                    "limits":       "",
+                    "value":        "3"
+                },
+                "SCH_AD_CHILD_TASK_PRIORITY": { 
+                    "title":        "",
+                    "description":  "",
+                    "limits":       "",
+                    "value":        "10"
+                },
+                "SCH_DEADLINES_PER_SLOT": { 
+                    "title":        "",
+                    "description":  "",
+                    "limits":       "",
+                    "value":        "5"
+                },
+                "SCH_AD_CHILD_TASK_FLAGS": { 
+                    "title":        "",
+                    "description":  "",
+                    "limits":       "",
+                    "value":        "OS_ENABLE_CORE_0"
+                }
+            ]
+}
