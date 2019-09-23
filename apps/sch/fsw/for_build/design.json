@@ -20,7 +20,7 @@
         }}
     },
     "telemetry": { 
-        "HK":         { "msgid_macro": "SCH_HK_TLM_MID",   "msgid": "", "struct": "SCH_HkPacket_t"   },
+        "HK":         { "msgid_macro": "SCH_HK_TLM_MID",   "msgid": "", "struct": "SCH_HkPacket_t"},
         "Diagnostic": { "msgid_macro": "SCH_DIAG_TLM_MID", "msgid": "", "struct": "SCH_DiagPacket_t" }
     },
     "events": {
@@ -79,8 +79,12 @@
         "SCH_APPMAIN_PERF_ID": {"value": ""}
     },
     "tables": {
-        "MSG_DEFS": {"title": "Message Definitions",  "isDumpTable": false, "default": "sch_def_msgtbl.tbl"}},
-        "SCHED_DEF": {"title": "Schedule Definitions", "isDumpTable": false, "default": "sch_def_schtbl.tbl"}}
+        "MSG_DEFS": {"title": "Message Definitions",  "isDumpTable": false, "default": "sch_def_msgtbl.tbl", "_config_wizard": {
+            "class": "com.windhoverlabs.airliner.apps.sch.UISchMsgDefTableWizard"
+        }},
+        "SCHED_DEF": {"title": "Schedule Definitions", "isDumpTable": false, "default": "sch_def_schtbl.tbl", "_config_wizard": {
+            "class": "com.windhoverlabs.airliner.apps.sch.UISchSchDefTableWizard"
+        }}
     },
     "config": {
         "SCH_PIPE_DEPTH": { 

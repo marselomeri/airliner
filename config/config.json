@@ -13,6 +13,10 @@
             "perfids": {
                 "SCH_APPMAIN_PERF_ID": {"value": "61"}
             },
+            "tables": {
+                "MSG_DEFS": {"content": {}},
+                "SCHED_DEF": {"content": {}}
+            },
             "config": {
                 "SCH_PIPE_DEPTH":             { "value": "2"   },
                 "SCH_TOTAL_SLOTS":            { "value": "250" },
