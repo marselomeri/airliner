@@ -66,6 +66,9 @@ add_airliner_app_def(sch
         ${PROJECT_SOURCE_DIR}/apps/sch/fsw/platform_inc
 )
 
+register_table_template(SCH.MSG_DEFS ${CMAKE_CURRENT_SOURCE_DIR}/../tables/sch_def_msgtbl.j2)
+register_table_template(SCH.SCH_DEFS ${CMAKE_CURRENT_SOURCE_DIR}/../tables/sch_def_msgtbl.j2)
+
 add_airliner_app_unit_test(sch-ut
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/sch_api.c

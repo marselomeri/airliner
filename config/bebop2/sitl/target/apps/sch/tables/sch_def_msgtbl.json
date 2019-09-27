@@ -1,8 +1,8 @@
 {
     "table_name":  "SCH.MSG_DEFS",
     "description": "SCH message definitions table",
-    "file_name":   "sch_def_msgtbl.tbl",
-    "content": [
+    "file_name":   "sch_def_msgtbl",
+    "content": {"msg_list": [
         {"msgid": "CFE_ES_SEND_HK_MID"},
         {"msgid": "CFE_EVS_SEND_HK_MID"},
         {"msgid": "CFE_SB_SEND_HK_MID"},
@@ -130,5 +130,5 @@
         {"msgid": "EA_WAKEUP_MID"},
         {"msgid": "EA_PERFMON_MID"},
         {"msgid": "EA_SEND_HK_MID"}
-    ]
+    ]}
 }

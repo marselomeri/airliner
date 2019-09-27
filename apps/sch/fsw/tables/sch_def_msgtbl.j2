@@ -1,0 +1,48 @@
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/*
+** Include Files
+*/
+#include "cfe.h"
+#include "cfe_tbl_filedef.h"
+#include "sch_platform_cfg.h"
+#include "sch_tbldefs.h"
+#include "msg_ids.h"
+
+
+
+#define SCH_FIX_HEADER(a, b, c) CFE_MAKE_BIG16(a), CFE_MAKE_BIG16(b), CFE_MAKE_BIG16(c) 
+
+/* Message table entry map */
+SCH_MessageEntry_t SCH_DefaultMessageTable[SCH_MAX_MESSAGES] =
+{
+    /* **  DO NOT USE -- entry #0 reserved for "unused" command ID - DO NOT USE */
+    { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0xC000, 0x0001), 0x0000 } },
+    {%- for msg in content.msg_list %}
+    {%- if 'payload' in msg %}
+    { { SCH_FIX_HEADER({{ msg.msgid }}, 0xC000, {{ "0x{0:04x}".format((msg.payload_size | int) + 1)}}), {% for word in msg.payload -%}{{- ", " if not loop.last else "" -}}
+           {{ word }}
+       {%- endfor %} } }
+    {%- else %}
+    { { SCH_FIX_HEADER({{ msg.msgid }}, 0xC000, 0x0001), 0x0000 } }
+    {%- endif %}
+    {{- "," if not loop.last else "" -}}
+    {%- endfor %}
+};
+
+
+/* Table file header */
+CFE_TBL_FILEDEF(SCH_DefaultMessageTable, SCH.MSG_DEFS, {{description}}, {{file_name}}.tbl )
+
+
+
+#ifdef __cplusplus
+}
+#endif
+
+/*=======================================================================================
+** End of file {{file_name}}.c
+**=====================================================================================*/
+    

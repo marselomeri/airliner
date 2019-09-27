@@ -205,3 +205,8 @@ function(add_airliner_app_table)
 
 endfunction(add_airliner_app_table)
 
+
+
+function(register_table_template)
+    psp_register_table_template(${ARGN})
+endfunction(register_table_template)

@@ -203,7 +203,7 @@ SCH_MessageEntry_t SCH_DefaultMessageTable[SCH_MAX_MESSAGES] =
   { { CFE_MAKE_BIG16(SCH_UNUSED_MID) } },
     /* command ID #38 */
   { { CFE_MAKE_BIG16(SCH_UNUSED_MID) } },
-    /* command ID #39 */
+    /* command ID #39 */sch_def_msgtbl.tbl
   { { CFE_MAKE_BIG16(SCH_UNUSED_MID) } },
   
     /* command ID #40 */

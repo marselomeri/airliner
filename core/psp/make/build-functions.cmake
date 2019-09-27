@@ -813,10 +813,24 @@ function(psp_add_airliner_app_table)
     get_property(AIRLINER_CORE_TOOLS GLOBAL PROPERTY AIRLINER_CORE_TOOLS_PROPERTY)
 
     psp_get_app_cflags(${PARSED_ARGS_TARGET} TBL_CFLAGS ${CMAKE_C_FLAGS})
+    
+    # Determine if this is building the table from .c or if we're going to 
+    # autogenerate it first from a .json file.
+    get_filename_component(table_src_ext ${PARSED_ARGS_SOURCES} EXT)
+    
+    
+    if(table_src_ext STREQUAL ".json")
+        execute_process(
+            COMMAND python ${PROJECT_SOURCE_DIR}/core/psp/make/get_table_name.py ${PARSED_ARGS_SOURCES}
+            OUTPUT_VARIABLE table_name
+        )
+    else()
+        set(table_src_file ${PARSED_ARGS_SOURCES})
+    endif()
 
     add_custom_command(
         OUTPUT ${PARSED_ARGS_NAME}.tbl
-        COMMAND ${CMAKE_C_COMPILER} ${TBL_CFLAGS} -c -o ${PARSED_ARGS_NAME}.o ${PARSED_ARGS_SOURCES}
+        COMMAND ${CMAKE_C_COMPILER} ${TBL_CFLAGS} -c -o ${PARSED_ARGS_NAME}.o ${table_src_file}
         COMMAND ${AIRLINER_CORE_TOOLS}/elf2cfetbl ${PARSED_ARGS_NAME}.o
         COMMAND cp ${PARSED_ARGS_NAME}.tbl ${INSTALL_DIR}
         BYPRODUCTS ${PARSED_ARGS_NAME}.tbl
@@ -854,3 +868,11 @@ function(add_airliner_app_unit_test_src)
     endif(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-massif)
 endfunction(add_airliner_app_unit_test_src)
 
+
+
+function(psp_register_table_template)
+    set(table_name ${ARGV0})
+    set(table_template ${ARGV1})
+    
+    set("tbl_tmplt_map_${table_name}" "${table_template}")
+endfunction(psp_register_table_template)
