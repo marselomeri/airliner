@@ -2,6 +2,18 @@
 extern "C" {
 #endif
 
+{% set GRPIDX_NAME_WIDTH  = 30 %}
+{% set MSGIDX_NAME_WIDTH  = 30 %}
+{% set ENABLE_STATE_WIDTH = 13 %}
+{% set TYPE_WIDTH         = 21 %}
+
+{%- set counter = { 'idx': 0 } -%}
+{%- macro increment(dct, key, inc=1) -%}
+    {%- if dct.update({key: dct[key] + inc}) -%} {%- endif -%}
+{%- endmacro -%}
+
+
+
 /*
 ** Pragmas
 */
@@ -18,35 +30,35 @@ extern "C" {
 
 /* Group IDs */
 {%- for group in content.groups %}
-#define {{ "%-*s" % (40, group.name) }} ({{ group.value }})
+#define {{ "%-*s" % (GRPIDX_NAME_WIDTH, group.name) }} ({{ group.value }})
 {%- endfor %}
 
 
 /* Message Indices */
 {%- for msg_idx in content.msg_idx %}
-#define {{ "%-*s" % (40, msg_idx.name) }} ({{ msg_idx.value }})
+#define {{ "%-*s" % (MSGIDX_NAME_WIDTH, msg_idx.name) }} ({{ msg_idx.value }})
 {%- endfor %}
 
 
 SCH_ScheduleEntry_t SCH_DefaultScheduleTable[SCH_TABLE_ENTRIES] = 
 {
-    {%- for slot in content.schedule -%}
+    {%- for slot in content.schedule %}
     /* Slot #{{ loop.index0 }} */
     {%- for activity in slot %}
-    { {{ "%-*s" % (13, activity.EnableState) }}, {{ "%-*s" % (21, activity.Type) }}, {{ activity.Frequency }}, {{ activity.Remainder }}, {{ "%-*s" % (30, activity.MessageIndex) }}, {{ "%-*s" % (30, activity.GroupData) }} 
+    { {{ "%-*s" % (ENABLE_STATE_WIDTH, activity.EnableState) }}, {{ "%-*s" % (TYPE_WIDTH, activity.Type) }}, {{ activity.Frequency }}, {{ activity.Remainder }}, {{ "%-*s" % (MSGIDX_NAME_WIDTH, activity.MessageIndex) }}, {{ "%-*s" % (GRPIDX_NAME_WIDTH, activity.GroupData) }} 
+        {{- increment(counter, 'idx') -}}
         {%- if 'Deadline' in activity -%}
             , {{ activity.Deadline }}
         {%- endif %} }
-    {{- "," if not loop.last else "" }}
-    {%- endfor %}
-    {{- "," if not loop.last else "" }}
-
+    {{- ", /* idx: {} */".format(counter['idx']-1) if not loop.last else "" }}
+    {%- endfor -%}
+    {{- ", /* idx: {} */".format(counter['idx']-1) if not loop.last else "  /* idx: {} */".format(counter['idx']-1) }}
     {% endfor %}
 };
 
 
 /* Table file header */
-CFE_TBL_FILEDEF(SCH_DefaultScheduleTable, SCH.SCHED_DEF, {{description}}, {{file_name}}.tbl )
+CFE_TBL_FILEDEF(SCH_DefaultScheduleTable, SCH.SCHED_DEF, {{description}}, {{file_name}} )
 
 
 #ifdef __cplusplus

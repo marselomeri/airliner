@@ -11,6 +11,7 @@ extern "C" {
 #include "sch_tbldefs.h"
 #include "msg_ids.h"
 
+{% set COL_WIDTH = 40 %}
 
 
 #define SCH_FIX_HEADER(a, b, c) CFE_MAKE_BIG16(a), CFE_MAKE_BIG16(b), CFE_MAKE_BIG16(c) 
@@ -19,22 +20,23 @@ extern "C" {
 SCH_MessageEntry_t SCH_DefaultMessageTable[SCH_MAX_MESSAGES] =
 {
     /* **  DO NOT USE -- entry #0 reserved for "unused" command ID - DO NOT USE */
-    { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0xC000, 0x0001), 0x0000 } },
+    { { SCH_FIX_HEADER({{ "%-*s," % (COL_WIDTH, "SCH_UNUSED_MID")}} 0xC000, 0x0001), 0x0000 } },
     {%- for msg in content.msg_list %}
     {%- if 'payload' in msg %}
-    { { SCH_FIX_HEADER({{ "%-*s," % (40, msg.msgid)}} 0xC000, {{ "0x{0:04x}".format((msg.payload_size | int) + 1)}}), {% for word in msg.payload -%}{{- ", " if not loop.last else "" -}}
-           {{ word }}
+    { { SCH_FIX_HEADER({{ "%-*s," % (COL_WIDTH, msg.msgid)}} 0xC000, {{ "0x{0:04x}".format(((msg.payload | length) * 2) + 1)}}), 0x0000 {% for word in msg.payload -%}
+           , {{ word }}
        {%- endfor %} } }
     {%- else %}
-    { { SCH_FIX_HEADER({{ "%-*s," % (40, msg.msgid)}} 0xC000, 0x0001), 0x0000 } }
+    { { SCH_FIX_HEADER({{ "%-*s," % (COL_WIDTH, msg.msgid)}} 0xC000, 0x0001), 0x0000 } }
     {%- endif %}
     {{- "," if not loop.last else "" -}}
     {%- endfor %}
+
 };
 
 
 /* Table file header */
-CFE_TBL_FILEDEF(SCH_DefaultMessageTable, SCH.MSG_DEFS, {{description}}, {{file_name}}.tbl )
+CFE_TBL_FILEDEF(SCH_DefaultMessageTable, SCH.MSG_DEFS, {{description}}, {{file_name}} )
 
 
 

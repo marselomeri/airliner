@@ -747,7 +747,7 @@
                 {"EnableState": "SCH_ENABLED", "Type": "SCH_ACTIVITY_SEND_MSG", "Frequency": 1, "Remainder": 0, "MessageIndex": "PE_WAKEUP_MIDX", "GroupData": "SCH_GROUP_NONE", "Deadline": 0},
                 {"EnableState": "SCH_ENABLED", "Type": "SCH_ACTIVITY_SEND_MSG", "Frequency": 1, "Remainder": 0, "MessageIndex": "SENS_WAKEUP_MIDX", "GroupData": "SCH_GROUP_NONE", "Deadline": 0},
                 {"EnableState": "SCH_ENABLED", "Type": "SCH_ACTIVITY_SEND_MSG", "Frequency": 1, "Remainder": 0, "MessageIndex": "ULR_MEASURE_MIDX", "GroupData": "SCH_GROUP_NONE", "Deadline": 0},
-                {"EnableState": "SCH_ENABLED", "Type": "SCH_ACTIVITY_SEND_MSG", "Frequency": 1, "Remainder": 0, "MessageIndex": "0", "GroupData": "SCH_GROUP_NONE", "Deadline": 0},
+                {"EnableState": "SCH_UNUSED", "Type": "SCH_ACTIVITY_NONE", "Frequency": 0, "Remainder": 0, "MessageIndex": "0", "GroupData": "SCH_GROUP_NONE", "Deadline": 0},
                 {"EnableState": "SCH_UNUSED", "Type": "SCH_ACTIVITY_NONE", "Frequency": 0, "Remainder": 0, "MessageIndex": "0", "GroupData": "SCH_GROUP_NONE", "Deadline": 0},
                 {"EnableState": "SCH_UNUSED", "Type": "SCH_ACTIVITY_NONE", "Frequency": 0, "Remainder": 0, "MessageIndex": "0", "GroupData": "SCH_GROUP_NONE", "Deadline": 0},
                 {"EnableState": "SCH_ENABLED", "Type": "SCH_ACTIVITY_SEND_MSG", "Frequency": 1, "Remainder": 0, "MessageIndex": "VM_WAKEUP_MIDX", "GroupData": "SCH_GROUP_NONE", "Deadline": 0}

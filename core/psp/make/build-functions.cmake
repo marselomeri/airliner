@@ -817,7 +817,7 @@ function(psp_add_airliner_app_table)
     # Determine if this is building the table from .c or if we're going to 
     # autogenerate it first from a .json file.
     get_filename_component(table_src_ext ${PARSED_ARGS_SOURCES} EXT)
-    
+    get_filename_component(table_src_name ${PARSED_ARGS_SOURCES} NAME_WE)
     
     if(table_src_ext STREQUAL ".json")
         execute_process(
@@ -829,29 +829,32 @@ function(psp_add_airliner_app_table)
             message(FATAL_ERROR "${PARSED_ARGS_TARGET} failed to generate.  Table ${table_name} template not registered.")
         else()
             add_custom_command(
-                OUTPUT ${PARSED_ARGS_NAME}.c
-                COMMENT Generating ${PARSED_ARGS_NAME}.c 
-                COMMAND j2 -f json ${table_template} ${PARSED_ARGS_SOURCES} > ${CMAKE_CURRENT_BINARY_DIR}/${PARSED_ARGS_NAME}.c
+                OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${table_src_name}.c
+                COMMENT Generating ${table_src_name}.c 
+                COMMAND j2 -f json ${table_template} ${PARSED_ARGS_SOURCES} > ${CMAKE_CURRENT_BINARY_DIR}/${table_src_name}.c
+                BYPRODUCTS ${CMAKE_CURRENT_BINARY_DIR}/${table_src_name}.c
                 DEPENDS ${PARSED_ARGS_SOURCES} ${table_template}
             )
-            add_custom_target(${PARSED_ARGS_NAME}.c ALL
-                DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${PARSED_ARGS_NAME}.c ${PARSED_ARGS_SOURCES}
+            add_custom_target(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_NAME}_c ALL
+                DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${table_src_name}.c ${table_template} ${PARSED_ARGS_SOURCES}
             )
+            set(table_src_file ${CMAKE_CURRENT_BINARY_DIR}/${table_src_name}.c)
         endif()
     else()
         set(table_src_file ${PARSED_ARGS_SOURCES})
     endif()
-
+    
     add_custom_command(
         OUTPUT ${PARSED_ARGS_NAME}.tbl
+        COMMENT Building ${table_src_name}.tbl
         COMMAND ${CMAKE_C_COMPILER} ${TBL_CFLAGS} -c -o ${PARSED_ARGS_NAME}.o ${table_src_file}
         COMMAND ${AIRLINER_CORE_TOOLS}/elf2cfetbl ${PARSED_ARGS_NAME}.o
         COMMAND cp ${PARSED_ARGS_NAME}.tbl ${INSTALL_DIR}
         BYPRODUCTS ${PARSED_ARGS_NAME}.tbl
-        DEPENDS ${PARSED_ARGS_SOURCES}
+        DEPENDS ${table_src_file}
     )
     add_custom_target(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_NAME} ALL
-        DEPENDS ${PARSED_ARGS_NAME}.tbl ${PARSED_ARGS_SOURCES}
+        DEPENDS ${PARSED_ARGS_NAME}.tbl ${table_src_file}
     )
 endfunction(psp_add_airliner_app_table)
 
