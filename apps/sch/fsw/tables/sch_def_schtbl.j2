@@ -18,13 +18,13 @@ extern "C" {
 
 /* Group IDs */
 {%- for group in content.groups %}
-#define {{ group.name }}  ({{ group.value }})
+#define {{ "%-*s" % (40, group.name) }} ({{ group.value }})
 {%- endfor %}
 
 
 /* Message Indices */
 {%- for msg_idx in content.msg_idx %}
-#define {{ msg_idx.name }} ({{ msg_idx.value }})
+#define {{ "%-*s" % (40, msg_idx.name) }} ({{ msg_idx.value }})
 {%- endfor %}
 
 
@@ -33,7 +33,7 @@ SCH_ScheduleEntry_t SCH_DefaultScheduleTable[SCH_TABLE_ENTRIES] =
     {%- for slot in content.schedule -%}
     /* Slot #{{ loop.index0 }} */
     {%- for activity in slot %}
-    { {{ activity.EnableState }}, {{ activity.Type }}, {{ activity.Frequency }}, {{ activity.Remainder }}, {{ activity.MessageIndex }}, {{ activity.GroupData }} 
+    { {{ "%-*s" % (13, activity.EnableState) }}, {{ "%-*s" % (21, activity.Type) }}, {{ activity.Frequency }}, {{ activity.Remainder }}, {{ "%-*s" % (30, activity.MessageIndex) }}, {{ "%-*s" % (30, activity.GroupData) }} 
         {%- if 'Deadline' in activity -%}
             , {{ activity.Deadline }}
         {%- endif %} }

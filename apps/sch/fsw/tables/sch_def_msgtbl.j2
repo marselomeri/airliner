@@ -22,11 +22,11 @@ SCH_MessageEntry_t SCH_DefaultMessageTable[SCH_MAX_MESSAGES] =
     { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0xC000, 0x0001), 0x0000 } },
     {%- for msg in content.msg_list %}
     {%- if 'payload' in msg %}
-    { { SCH_FIX_HEADER({{ msg.msgid }}, 0xC000, {{ "0x{0:04x}".format((msg.payload_size | int) + 1)}}), {% for word in msg.payload -%}{{- ", " if not loop.last else "" -}}
+    { { SCH_FIX_HEADER({{ "%-*s," % (40, msg.msgid)}} 0xC000, {{ "0x{0:04x}".format((msg.payload_size | int) + 1)}}), {% for word in msg.payload -%}{{- ", " if not loop.last else "" -}}
            {{ word }}
        {%- endfor %} } }
     {%- else %}
-    { { SCH_FIX_HEADER({{ msg.msgid }}, 0xC000, 0x0001), 0x0000 } }
+    { { SCH_FIX_HEADER({{ "%-*s," % (40, msg.msgid)}} 0xC000, 0x0001), 0x0000 } }
     {%- endif %}
     {{- "," if not loop.last else "" -}}
     {%- endfor %}

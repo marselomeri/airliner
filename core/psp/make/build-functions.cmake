@@ -824,6 +824,20 @@ function(psp_add_airliner_app_table)
             COMMAND python ${PROJECT_SOURCE_DIR}/core/psp/make/get_table_name.py ${PARSED_ARGS_SOURCES}
             OUTPUT_VARIABLE table_name
         )
+        psp_get_table_template(table_template ${table_name})
+        if(table_template STREQUAL "")
+            message(FATAL_ERROR "${PARSED_ARGS_TARGET} failed to generate.  Table ${table_name} template not registered.")
+        else()
+            add_custom_command(
+                OUTPUT ${PARSED_ARGS_NAME}.c
+                COMMENT Generating ${PARSED_ARGS_NAME}.c 
+                COMMAND j2 -f json ${table_template} ${PARSED_ARGS_SOURCES} > ${CMAKE_CURRENT_BINARY_DIR}/${PARSED_ARGS_NAME}.c
+                DEPENDS ${PARSED_ARGS_SOURCES} ${table_template}
+            )
+            add_custom_target(${PARSED_ARGS_NAME}.c ALL
+                DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${PARSED_ARGS_NAME}.c ${PARSED_ARGS_SOURCES}
+            )
+        endif()
     else()
         set(table_src_file ${PARSED_ARGS_SOURCES})
     endif()
@@ -874,5 +888,23 @@ function(psp_register_table_template)
     set(table_name ${ARGV0})
     set(table_template ${ARGV1})
     
-    set("tbl_tmplt_map_${table_name}" "${table_template}")
+    get_property(table_templates GLOBAL PROPERTY table_templates_property)
+    list(APPEND table_templates "${table_name}:${table_template}")
+    set_property(GLOBAL PROPERTY table_templates_property ${table_templates})
 endfunction(psp_register_table_template)
+
+
+
+function(psp_get_table_template table_template table_name)
+    string(STRIP ${table_name} table_name)
+    set(${table_template} "" PARENT_SCOPE)
+    get_property(table_templates GLOBAL PROPERTY table_templates_property)
+    foreach(template_registration IN LISTS table_templates)
+        string(REPLACE ":" ";" template_registration_list ${template_registration})
+        list(GET template_registration_list 0 possible_name)
+        list(GET template_registration_list 1 possible_path)
+        if("${table_name}" STREQUAL "${possible_name}")
+            set(${table_template} ${possible_path} PARENT_SCOPE)
+        endif()
+    endforeach(template_registration)
+endfunction(psp_get_table_template)
