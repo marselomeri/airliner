@@ -65,7 +65,9 @@ def mergeParentConfig(mergedConfig, absConfigBase, absCurrentDir):
             cfgCurrent = json.load(cfgFileCurrent)
             
             # Iterate through the module objects, so we only merge in what the 
-            # local configuration file defined as being part of the build.
+            # local configuration file defined as being part of the build.  In other
+            # words, if this current configuration file defines module 'xyz', but
+            # the local configuration file does not, don't merge that module in.
             for module_name in mergedConfig['modules']:
                 # Is this module in the configuration file we're about to merge?
                 if module_name in cfgCurrent['modules']:
