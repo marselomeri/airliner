@@ -68,6 +68,25 @@ function(psp_initialize_airliner_build)
 
     set(PSP_UNIT_TEST_WRAPPER target/${PARSED_ARGS_UNIT_TEST_WRAPPER})
     
+    # Is a config.json file present?
+    if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/config.json)
+        # Yes, a config.json file is present.  Generate a merged configuration file.
+        
+        add_custom_command(
+            OUTPUT 
+                ${CMAKE_CURRENT_BINARY_DIR}/_config.json       # Fake! This ensures we always run.
+            BYPRODUCTS
+                ${CMAKE_CURRENT_BINARY_DIR}/config.json
+            COMMENT "Generating templated code"
+            COMMAND python ${PROJECT_SOURCE_DIR}/core/psp/make/merge_config.py ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}/config.json
+            COMMAND ${CMAKE_COMMAND} -E make_directory generated_code
+            COMMAND python ${PROJECT_SOURCE_DIR}/core/psp/make/generate_templated_code.py ${CMAKE_CURRENT_BINARY_DIR}/config.json generated_code
+        )
+        add_custom_target(config_json ALL
+            DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/_config.json   # Fake! This ensures we always run.
+        )
+    endif()
+    
     # Create all the target directories the caller requested.
     foreach(dir ${PARSED_ARGS_FILESYS})
         file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/exe/${dir})
@@ -271,22 +290,22 @@ function(psp_add_test)
         file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${dir})
     endforeach()
 
-    add_executable(${AIRLINER_BUILD_PREFIX}${TEST_NAME} EXCLUDE_FROM_ALL
+    add_executable(${TEST_NAME} EXCLUDE_FROM_ALL
         ${PARSED_ARGS_SOURCES}
     )
 
-    add_executable(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov EXCLUDE_FROM_ALL
+    add_executable(${TEST_NAME}-gcov EXCLUDE_FROM_ALL
         ${PARSED_ARGS_SOURCES}
     )
     
     foreach(FUNCTION ${PARSED_ARGS_WRAPPERS})
-        set_property(TARGET ${AIRLINER_BUILD_PREFIX}${TEST_NAME}
+        set_property(TARGET ${TEST_NAME}
             APPEND_STRING
             PROPERTY
             LINK_FLAGS
             "-Wl,--wrap=${FUNCTION} "
         )
-        set_property(TARGET ${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov
+        set_property(TARGET ${TEST_NAME}-gcov
             APPEND_STRING
             PROPERTY
             LINK_FLAGS
@@ -294,31 +313,31 @@ function(psp_add_test)
         )
     endforeach()
  
-    target_compile_definitions(${AIRLINER_BUILD_PREFIX}${TEST_NAME}
+    target_compile_definitions(${TEST_NAME}
         PUBLIC
         UT_VERBOSE
     )
-    target_compile_definitions(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov
+    target_compile_definitions(${TEST_NAME}-gcov
         PUBLIC
         UT_VERBOSE
     )
     
-    target_include_directories(${AIRLINER_BUILD_PREFIX}${TEST_NAME} PUBLIC ${PARSED_ARGS_INCLUDES})
-    target_include_directories(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov PUBLIC ${PARSED_ARGS_INCLUDES})
+    target_include_directories(${TEST_NAME} PUBLIC ${PARSED_ARGS_INCLUDES})
+    target_include_directories(${TEST_NAME}-gcov PUBLIC ${PARSED_ARGS_INCLUDES})
 
-    target_link_libraries(${AIRLINER_BUILD_PREFIX}${TEST_NAME} -ldl -lrt ${CMAKE_THREAD_LIBS_INIT})
-    target_link_libraries(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov -fprofile-arcs gcov -ldl -lrt ${CMAKE_THREAD_LIBS_INIT})
+    target_link_libraries(${TEST_NAME} -ldl -lrt ${CMAKE_THREAD_LIBS_INIT})
+    target_link_libraries(${TEST_NAME}-gcov -fprofile-arcs gcov -ldl -lrt ${CMAKE_THREAD_LIBS_INIT})
 
-    set_target_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME} PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast")
-    set_target_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast -fprofile-arcs -ftest-coverage")
+    set_target_properties(${TEST_NAME} PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast")
+    set_target_properties(${TEST_NAME}-gcov PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast -fprofile-arcs -ftest-coverage")
 
-    add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${TEST_NAME})
-    add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME} ${AIRLINER_BUILD_PREFIX}${TEST_NAME})
-    set_tests_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME} PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${TEST_NAME}-ctest-build)
+    add_test(${TEST_NAME}-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${TEST_NAME})
+    add_test(${TEST_NAME} ${TEST_NAME})
+    set_tests_properties(${TEST_NAME} PROPERTIES DEPENDS ${TEST_NAME}-ctest-build)
     
-    add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov)
-    add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov ${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov)
-    set_tests_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov-ctest-build)
+    add_test(${TEST_NAME}-gcov-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${TEST_NAME}-gcov)
+    add_test(${TEST_NAME}-gcov ${TEST_NAME}-gcov)
+    set_tests_properties(${TEST_NAME}-gcov PROPERTIES DEPENDS ${TEST_NAME}-gcov-ctest-build)
 
     if(EXISTS ${PARSED_ARGS_VALGRIND_SUPPRESSION_FILE})
         set(MEMCHECK_COMMAND ${MEMCHECK_COMMAND} --suppressions=${PARSED_ARGS_VALGRIND_SUPPRESSION_FILE})
@@ -326,21 +345,21 @@ function(psp_add_test)
     endif()
     
     if(NOT PARSED_ARGS_NO_MEMCHECK)
-        add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-memcheck-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${TEST_NAME})
-        add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-memcheck ${MEMCHECK_COMMAND} ${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${TEST_NAME})
-        set_tests_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-memcheck PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${TEST_NAME}-memcheck-ctest-build)
+        add_test(${TEST_NAME}-memcheck-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${TEST_NAME})
+        add_test(${TEST_NAME}-memcheck ${MEMCHECK_COMMAND} ${CMAKE_CURRENT_BINARY_DIR}/${TEST_NAME})
+        set_tests_properties(${TEST_NAME}-memcheck PROPERTIES DEPENDS ${TEST_NAME}-memcheck-ctest-build)
     endif()
     
     if(NOT PARSED_ARGS_NO_HELGRIND)
-        add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-helgrind-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${TEST_NAME})
-        add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-helgrind ${HELGRIND_COMMAND} ${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${TEST_NAME})
-        set_tests_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-helgrind PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${TEST_NAME}-helgrind-ctest-build)
+        add_test(${TEST_NAME}-helgrind-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${TEST_NAME})
+        add_test(${TEST_NAME}-helgrind ${HELGRIND_COMMAND} ${CMAKE_CURRENT_BINARY_DIR}/${TEST_NAME})
+        set_tests_properties(${TEST_NAME}-helgrind PROPERTIES DEPENDS ${TEST_NAME}-helgrind-ctest-build)
     endif()
     
     if(NOT PARSED_ARGS_NO_MASSIF)
-        add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-massif-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${TEST_NAME})
-        add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-massif ${MASSIF_COMMAND} ${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${TEST_NAME})
-        set_tests_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-massif PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${TEST_NAME}-massif-ctest-build)
+        add_test(${TEST_NAME}-massif-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${TEST_NAME})
+        add_test(${TEST_NAME}-massif ${MASSIF_COMMAND} ${CMAKE_CURRENT_BINARY_DIR}/${TEST_NAME})
+        set_tests_properties(${TEST_NAME}-massif PROPERTIES DEPENDS ${TEST_NAME}-massif-ctest-build)
     endif()
 endfunction(psp_add_test)
 
@@ -369,13 +388,13 @@ function(psp_add_airliner_app)
 
     get_property(AIRLINER_BUILD_PREFIX GLOBAL PROPERTY AIRLINER_BUILD_PREFIX_PROPERTY)
     
-    target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME} PUBLIC ${PARSED_ARGS_CONFIG_SOURCES})
+    target_sources(${PARSED_ARGS_APP_NAME} PUBLIC ${PARSED_ARGS_CONFIG_SOURCES})
     
-    get_property(USER_DOCS_INPUT TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME} PROPERTY USER_DOCS_INPUT)
-    get_property(DESIGN_DOCS_INPUT TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME} PROPERTY DESIGN_DOCS_INPUT)  
-    get_property(APP_DEFINITION_DIR TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME} PROPERTY APP_DEFINITION_DIR)   
-    get_property(DEFINITION_SOURCES_LIST TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME} PROPERTY APP_DEFINITION_SRC) 
-    get_property(PROTOBUF_MSGS TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME} PROPERTY PROTOBUF_MSGS) 
+    get_property(USER_DOCS_INPUT TARGET ${PARSED_ARGS_APP_NAME} PROPERTY USER_DOCS_INPUT)
+    get_property(DESIGN_DOCS_INPUT TARGET ${PARSED_ARGS_APP_NAME} PROPERTY DESIGN_DOCS_INPUT)  
+    get_property(APP_DEFINITION_DIR TARGET ${PARSED_ARGS_APP_NAME} PROPERTY APP_DEFINITION_DIR)   
+    get_property(DEFINITION_SOURCES_LIST TARGET ${PARSED_ARGS_APP_NAME} PROPERTY APP_DEFINITION_SRC) 
+    get_property(PROTOBUF_MSGS TARGET ${PARSED_ARGS_APP_NAME} PROPERTY PROTOBUF_MSGS) 
     
     string (REPLACE ";" " " CONFIG_SOURCES "${PARSED_ARGS_CONFIG_SOURCES}")
     string (REPLACE ";" " " DEFINITION_SOURCES "${DEFINITION_SOURCES_LIST}")
@@ -384,31 +403,31 @@ function(psp_add_airliner_app)
     find_package(Doxygen)
     if(DOXYGEN_FOUND) 
         if(USER_DOCS_INPUT)
-            if(NOT TARGET ${AIRLINER_BUILD_PREFIX}docs)
-                add_custom_target(${AIRLINER_BUILD_PREFIX}docs)
+            if(NOT TARGET docs)
+                add_custom_target(docs)
             endif()
-            add_custom_target(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-docs)
-            add_dependencies(${AIRLINER_BUILD_PREFIX}docs ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-docs)
+            add_custom_target(${PARSED_ARGS_APP_NAME}-docs)
+            add_dependencies(docs ${PARSED_ARGS_APP_NAME}-docs)
             configure_file(${USER_DOCS_INPUT} ${CMAKE_CURRENT_BINARY_DIR}/target/config/apps/${PARSED_ARGS_APP_NAME}/user_doxy @ONLY)
-            add_custom_target(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-user-docs
+            add_custom_target(${PARSED_ARGS_APP_NAME}-user-docs
                 COMMAND mkdir -p ${CFS_DOCS_HTML_DIR}/apps/${PARSED_ARGS_APP_NAME}/users_guide
                 COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/target/config/apps/${PARSED_ARGS_APP_NAME}/user_doxy
                 WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/target/config/apps/${PARSED_ARGS_APP_NAME}
             )
-            add_dependencies(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-docs ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-user-docs)
+            add_dependencies(${PARSED_ARGS_APP_NAME}-docs ${PARSED_ARGS_APP_NAME}-user-docs)
         endif(USER_DOCS_INPUT)
         if(DESIGN_DOCS_INPUT)
-            if(NOT TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-docs)
-                add_custom_target(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-docs)
-                add_dependencies(${AIRLINER_BUILD_PREFIX}docs ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-docs)
+            if(NOT TARGET ${PARSED_ARGS_APP_NAME}-docs)
+                add_custom_target(${PARSED_ARGS_APP_NAME}-docs)
+                add_dependencies(docs ${PARSED_ARGS_APP_NAME}-docs)
             endif()
             configure_file(${DESIGN_DOCS_INPUT} ${CMAKE_CURRENT_BINARY_DIR}/target/config/apps/${PARSED_ARGS_APP_NAME}/detail_doxy @ONLY)
-            add_custom_target(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-design-docs
+            add_custom_target(${PARSED_ARGS_APP_NAME}-design-docs
                 COMMAND mkdir -p ${CFS_DOCS_HTML_DIR}/apps/${PARSED_ARGS_APP_NAME}/detailed_design/
                 COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/target/config/apps/${PARSED_ARGS_APP_NAME}/detail_doxy
                 WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/target/config/apps/${PARSED_ARGS_APP_NAME}
             )
-            add_dependencies(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-docs ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-design-docs)
+            add_dependencies(${PARSED_ARGS_APP_NAME}-docs ${PARSED_ARGS_APP_NAME}-design-docs)
         endif(DESIGN_DOCS_INPUT)
     endif(DOXYGEN_FOUND)
     
@@ -425,7 +444,7 @@ function(psp_add_airliner_app)
             list(APPEND SOURCE_LIST ${FILE})
         endforeach()
 
-        add_custom_target(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-rsm
+        add_custom_target(${PARSED_ARGS_APP_NAME}-rsm
             COMMAND mkdir -p '${CMAKE_CURRENT_BINARY_DIR}/rsm/apps/${PARSED_ARGS_APP_NAME}'
             COMMAND ${CMAKE_COMMAND} 
                 -DRSM_EXEC:STRING='${RSM_EXEC}'
@@ -434,12 +453,12 @@ function(psp_add_airliner_app)
                 -DOUTPUT_FILE:STRING='${CMAKE_CURRENT_BINARY_DIR}/rsm/apps/${PARSED_ARGS_APP_NAME}/index.html'
                 -P ${PROJECT_SOURCE_DIR}/psp/make/run-rsm.cmake
         )
-        add_dependencies(rsm ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-rsm)
+        add_dependencies(rsm ${PARSED_ARGS_APP_NAME}-rsm)
     endif()
     
     # Add include directories, if provided.
     if(PARSED_ARGS_INCLUDES)
-        target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME} PUBLIC ${PARSED_ARGS_INCLUDES})
+        target_include_directories(${PARSED_ARGS_APP_NAME} PUBLIC ${PARSED_ARGS_INCLUDES})
     endif()
     
     # Add the msg and ops_name Pyliner JSON override files
@@ -498,32 +517,32 @@ function(psp_add_airliner_app_def)
     get_property(AIRLINER_BUILD_PREFIX GLOBAL PROPERTY AIRLINER_BUILD_PREFIX_PROPERTY)
     separate_arguments(PUBLIC_APP_INCLUDES)
 
-    add_library(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} MODULE ${PARSED_ARGS_SOURCES})
-    set_target_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${INSTALL_DIR})
-    target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${PARSED_ARGS_INCLUDES})
-    target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${PUBLIC_APP_INCLUDES})
-    target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${CFE_INC_DIRS})
-    target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${OSAL_INC_DIRS})
-    target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${PSP_INC_DIRS})
+    add_library(${PARSED_ARGS_TARGET} MODULE ${PARSED_ARGS_SOURCES})
+    set_target_properties(${PARSED_ARGS_TARGET} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${INSTALL_DIR})
+    target_include_directories(${PARSED_ARGS_TARGET} PUBLIC ${PARSED_ARGS_INCLUDES})
+    target_include_directories(${PARSED_ARGS_TARGET} PUBLIC ${PUBLIC_APP_INCLUDES})
+    target_include_directories(${PARSED_ARGS_TARGET} PUBLIC ${CFE_INC_DIRS})
+    target_include_directories(${PARSED_ARGS_TARGET} PUBLIC ${OSAL_INC_DIRS})
+    target_include_directories(${PARSED_ARGS_TARGET} PUBLIC ${PSP_INC_DIRS})
 
-    set_target_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PROPERTIES PREFIX "")
+    set_target_properties(${PARSED_ARGS_TARGET} PROPERTIES PREFIX "")
     if(NOT ${PARSED_ARGS_FILE} EQUAL "")
-        set_target_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PROPERTIES OUTPUT_NAME ${PARSED_ARGS_FILE})
+        set_target_properties(${PARSED_ARGS_TARGET} PROPERTIES OUTPUT_NAME ${PARSED_ARGS_FILE})
     endif()
     
     if(PARSED_ARGS_SOURCES)
-        set_target_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PROPERTIES APP_DEFINITION_SRC "${PARSED_ARGS_SOURCES}")
+        set_target_properties(${PARSED_ARGS_TARGET} PROPERTIES APP_DEFINITION_SRC "${PARSED_ARGS_SOURCES}")
     endif()
     
     if(NOT ${PARSED_ARGS_USER_DOCS} EQUAL "")
-        set_target_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PROPERTIES USER_DOCS_INPUT "${PARSED_ARGS_USER_DOCS}")
+        set_target_properties(${PARSED_ARGS_TARGET} PROPERTIES USER_DOCS_INPUT "${PARSED_ARGS_USER_DOCS}")
     endif()
     
     if(NOT ${PARSED_ARGS_DESIGN_DOCS} EQUAL "")
-        set_target_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PROPERTIES DESIGN_DOCS_INPUT "${PARSED_ARGS_DESIGN_DOCS}")
+        set_target_properties(${PARSED_ARGS_TARGET} PROPERTIES DESIGN_DOCS_INPUT "${PARSED_ARGS_DESIGN_DOCS}")
     endif()
     
-    set_target_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PROPERTIES APP_DEFINITION_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+    set_target_properties(${PARSED_ARGS_TARGET} PROPERTIES APP_DEFINITION_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
        
     if(PARSED_ARGS_PROTOBUF_DEFS)
         set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE BOTH)
@@ -532,11 +551,11 @@ function(psp_add_airliner_app_def)
         find_package(Nanopb REQUIRED)
         include_directories(${NANOPB_INCLUDE_DIRS})
         file(MAKE_DIRECTORY ${PARSED_ARGS_PROTOBUF_MSGS_DIR})
-        nanopb_generate_cpp(PROTO_SRCS PROTO_HDRS ${PARSED_ARGS_PROTOBUF_MSGS_DIR} ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} ${PARSED_ARGS_PROTOBUF_DEFS})
+        nanopb_generate_cpp(PROTO_SRCS PROTO_HDRS ${PARSED_ARGS_PROTOBUF_MSGS_DIR} ${PARSED_ARGS_TARGET} ${PARSED_ARGS_PROTOBUF_DEFS})
     endif()
     
     # Generate the Explain symbol maps
-	explain_read_elf(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}
+	explain_read_elf(${PARSED_ARGS_TARGET}
 	    INPUT_PATH     ${INSTALL_DIR}/${PARSED_ARGS_FILE}.so
 	    DATABASE_NAME  ${EXPLAIN_DB}
 	)
@@ -553,7 +572,7 @@ function(psp_add_airliner_app_def)
     get_property(IS_REFERENCE_BUILD GLOBAL PROPERTY IS_REFERENCE_BUILD)
     if(IS_REFERENCE_BUILD)
         if(PARSED_ARGS_REFERENCE_CONFIG)
-            target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC 
+            target_include_directories(${PARSED_ARGS_TARGET} PUBLIC 
                 ${PARSED_ARGS_REFERENCE_CONFIG})
         endif()
     endif()
@@ -583,14 +602,14 @@ function(psp_add_airliner_app_unit_test)
     
     get_property(AIRLINER_BUILD_PREFIX GLOBAL PROPERTY AIRLINER_BUILD_PREFIX_PROPERTY)
     
-    add_executable(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} EXCLUDE_FROM_ALL ${PARSED_ARGS_SOURCES})
-    add_executable(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov EXCLUDE_FROM_ALL ${PARSED_ARGS_SOURCES})
+    add_executable(${PARSED_ARGS_TARGET} EXCLUDE_FROM_ALL ${PARSED_ARGS_SOURCES})
+    add_executable(${PARSED_ARGS_TARGET}-gcov EXCLUDE_FROM_ALL ${PARSED_ARGS_SOURCES})
     
-    target_link_libraries(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} ${CMAKE_THREAD_LIBS_INIT})
-    target_link_libraries(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov -fprofile-arcs gcov ${CMAKE_THREAD_LIBS_INIT})
+    target_link_libraries(${PARSED_ARGS_TARGET} ${CMAKE_THREAD_LIBS_INIT})
+    target_link_libraries(${PARSED_ARGS_TARGET}-gcov -fprofile-arcs gcov ${CMAKE_THREAD_LIBS_INIT})
     
-    set_target_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast")
-    set_target_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast -fprofile-arcs -ftest-coverage")
+    set_target_properties(${PARSED_ARGS_TARGET} PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast")
+    set_target_properties(${PARSED_ARGS_TARGET}-gcov PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast -fprofile-arcs -ftest-coverage")
     
     if(PARSED_ARGS_UTASSERT)
         set(UTASSERT_SRC
@@ -618,11 +637,11 @@ function(psp_add_airliner_app_unit_test)
             ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/uttest.c
             ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/uttools.c)
         
-        target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${UTASSERT_SRC})
-        target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC ${UTASSERT_SRC})
+        target_sources(${PARSED_ARGS_TARGET} PUBLIC ${UTASSERT_SRC})
+        target_sources(${PARSED_ARGS_TARGET}-gcov PUBLIC ${UTASSERT_SRC})
         
-        target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${PROJECT_SOURCE_DIR}/tools/ut_assert/inc/)
-        target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC ${PROJECT_SOURCE_DIR}/tools/ut_assert/inc/)
+        target_include_directories(${PARSED_ARGS_TARGET} PUBLIC ${PROJECT_SOURCE_DIR}/tools/ut_assert/inc/)
+        target_include_directories(${PARSED_ARGS_TARGET}-gcov PUBLIC ${PROJECT_SOURCE_DIR}/tools/ut_assert/inc/)
     endif()
 
 	if(PARSED_ARGS_NANOPB)
@@ -636,11 +655,11 @@ function(psp_add_airliner_app_unit_test)
 		    ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_encode.h
 		)
 			
-        target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${NANOPB_SRC})
-        target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC ${NANOPB_SRC})
+        target_sources(${PARSED_ARGS_TARGET} PUBLIC ${NANOPB_SRC})
+        target_sources(${PARSED_ARGS_TARGET}-gcov PUBLIC ${NANOPB_SRC})
 
-		target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${PROJECT_SOURCE_DIR}/tools/nanopb/)
-		target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC ${PROJECT_SOURCE_DIR}/tools/nanopb/)
+		target_include_directories(${PARSED_ARGS_TARGET} PUBLIC ${PROJECT_SOURCE_DIR}/tools/nanopb/)
+		target_include_directories(${PARSED_ARGS_TARGET}-gcov PUBLIC ${PROJECT_SOURCE_DIR}/tools/nanopb/)
 	endif()
 	
 	if(EXISTS ${PARSED_ARGS_VALGRIND_SUPPRESSION_FILE})
@@ -650,25 +669,25 @@ function(psp_add_airliner_app_unit_test)
     
     get_property(PUBLIC_APP_INCLUDES GLOBAL PROPERTY PUBLIC_APP_INCLUDES_PROPERTY)
     separate_arguments(PUBLIC_APP_INCLUDES)
-    target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${PUBLIC_APP_INCLUDES})
-    target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC ${PUBLIC_APP_INCLUDES})
-    target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} BEFORE PUBLIC ${PARSED_ARGS_INCLUDES})
-    target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov BEFORE PUBLIC ${PARSED_ARGS_INCLUDES})
-    target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${CFE_INC_DIRS})
-    target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC ${CFE_INC_DIRS})
-    target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${OSAL_INC_DIRS})
-    target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC ${OSAL_INC_DIRS})
-    target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${PSP_INC_DIRS})
-    target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC ${PSP_INC_DIRS})
+    target_include_directories(${PARSED_ARGS_TARGET} PUBLIC ${PUBLIC_APP_INCLUDES})
+    target_include_directories(${PARSED_ARGS_TARGET}-gcov PUBLIC ${PUBLIC_APP_INCLUDES})
+    target_include_directories(${PARSED_ARGS_TARGET} BEFORE PUBLIC ${PARSED_ARGS_INCLUDES})
+    target_include_directories(${PARSED_ARGS_TARGET}-gcov BEFORE PUBLIC ${PARSED_ARGS_INCLUDES})
+    target_include_directories(${PARSED_ARGS_TARGET} PUBLIC ${CFE_INC_DIRS})
+    target_include_directories(${PARSED_ARGS_TARGET}-gcov PUBLIC ${CFE_INC_DIRS})
+    target_include_directories(${PARSED_ARGS_TARGET} PUBLIC ${OSAL_INC_DIRS})
+    target_include_directories(${PARSED_ARGS_TARGET}-gcov PUBLIC ${OSAL_INC_DIRS})
+    target_include_directories(${PARSED_ARGS_TARGET} PUBLIC ${PSP_INC_DIRS})
+    target_include_directories(${PARSED_ARGS_TARGET}-gcov PUBLIC ${PSP_INC_DIRS})
     
     foreach(FUNCTION ${PARSED_ARGS_WRAPPERS})
-        set_property(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}
+        set_property(TARGET ${PARSED_ARGS_TARGET}
             APPEND_STRING
             PROPERTY
             LINK_FLAGS
             "-Wl,--wrap=${FUNCTION} "
         )
-        set_property(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov
+        set_property(TARGET ${PARSED_ARGS_TARGET}-gcov
             APPEND_STRING
             PROPERTY
             LINK_FLAGS
@@ -677,36 +696,37 @@ function(psp_add_airliner_app_unit_test)
     endforeach()
     
     # Add all the tests
-    add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET})
-    add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET})
-    set_tests_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ctest-build)
+    add_test(${PARSED_ARGS_TARGET}-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${PARSED_ARGS_TARGET})
+    add_test(${PARSED_ARGS_TARGET} ${PARSED_ARGS_TARGET})
+    set_tests_properties(${PARSED_ARGS_TARGET} PROPERTIES DEPENDS ${PARSED_ARGS_TARGET}-ctest-build)
             
-    add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov)
-    add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov)
-    set_tests_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov-ctest-build)
+    add_test(${PARSED_ARGS_TARGET}-gcov-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${PARSED_ARGS_TARGET}-gcov)
+    add_test(${PARSED_ARGS_TARGET}-gcov ${PARSED_ARGS_TARGET}-gcov)
+    set_tests_properties(${PARSED_ARGS_TARGET}-gcov PROPERTIES DEPENDS ${PARSED_ARGS_TARGET}-gcov-ctest-build)
 
     if(NOT PARSED_ARGS_NO_MEMCHECK)
-        add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-memcheck-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET})
-        add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-memcheck ${MEMCHECK_COMMAND} ${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET})
-        set_tests_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-memcheck PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-memcheck-ctest-build)
+        add_test(${PARSED_ARGS_TARGET}-memcheck-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${PARSED_ARGS_TARGET})
+        add_test(${PARSED_ARGS_TARGET}-memcheck ${MEMCHECK_COMMAND} ${CMAKE_CURRENT_BINARY_DIR}/${PARSED_ARGS_TARGET})
+        set_tests_properties(${PARSED_ARGS_TARGET}-memcheck PROPERTIES DEPENDS ${PARSED_ARGS_TARGET}-memcheck-ctest-build)
     endif()
 
     if(NOT PARSED_ARGS_NO_HELGRIND)
-        add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-helgrind-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET})
-        add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-helgrind ${HELGRIND_COMMAND} ${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET})
-        set_tests_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-helgrind-ctest-build)
+        add_test(${PARSED_ARGS_TARGET}-helgrind-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${PARSED_ARGS_TARGET})
+        add_test(${PARSED_ARGS_TARGET}-helgrind ${HELGRIND_COMMAND} ${CMAKE_CURRENT_BINARY_DIR}/${PARSED_ARGS_TARGET})
+        set_tests_properties(${PARSED_ARGS_TARGET} PROPERTIES DEPENDS ${PARSED_ARGS_TARGET}-helgrind-ctest-build)
     endif()
 
     if(NOT PARSED_ARGS_NO_MASSIF)
-        add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-massif-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET})
-        add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-massif ${MASSIF_COMMAND} ${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET})
-        set_tests_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-massif-ctest-build)
+        add_test(${PARSED_ARGS_TARGET}-massif-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${PARSED_ARGS_TARGET})
+        add_test(${PARSED_ARGS_TARGET}-massif ${MASSIF_COMMAND} ${CMAKE_CURRENT_BINARY_DIR}/${PARSED_ARGS_TARGET})
+        set_tests_properties(${PARSED_ARGS_TARGET} PROPERTIES DEPENDS ${PARSED_ARGS_TARGET}-massif-ctest-build)
     endif()
 endfunction(psp_add_airliner_app_unit_test)
 
 
 
 function(set_global_airliner_includes)
+    include_directories(${CMAKE_CURRENT_BINARY_DIR}/generated_code)
     include_directories(${CFE_INC_DIRS})
     include_directories(${OSAL_INC_DIRS})
     include_directories(${PSP_INC_DIRS})
@@ -719,37 +739,37 @@ function(psp_add_airliner_cfe_unit_test)
     
     get_property(AIRLINER_BUILD_PREFIX GLOBAL PROPERTY AIRLINER_BUILD_PREFIX_PROPERTY)
 
-    add_executable(${AIRLINER_BUILD_PREFIX}${TEST_NAME} EXCLUDE_FROM_ALL
+    add_executable(${TEST_NAME} EXCLUDE_FROM_ALL
         ${PARSED_ARGS_SOURCES}
         ${PSP_UNIT_TEST_SRC_DIR}/bsp_ut.c
     )
 
-    add_executable(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov EXCLUDE_FROM_ALL
+    add_executable(${TEST_NAME}-gcov EXCLUDE_FROM_ALL
         ${PARSED_ARGS_SOURCES}
         ${PSP_UNIT_TEST_SRC_DIR}/bsp_ut.c
     )
 
-    target_include_directories(${AIRLINER_BUILD_PREFIX}${TEST_NAME} PUBLIC ${PARSED_ARGS_INCLUDES})
-    target_include_directories(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov PUBLIC ${PARSED_ARGS_INCLUDES})
+    target_include_directories(${TEST_NAME} PUBLIC ${PARSED_ARGS_INCLUDES})
+    target_include_directories(${TEST_NAME}-gcov PUBLIC ${PARSED_ARGS_INCLUDES})
 
-    target_link_libraries(${AIRLINER_BUILD_PREFIX}${TEST_NAME} -ldl -lrt ${CMAKE_THREAD_LIBS_INIT})
-    target_link_libraries(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov -fprofile-arcs gcov -ldl -lrt ${CMAKE_THREAD_LIBS_INIT})
+    target_link_libraries(${TEST_NAME} -ldl -lrt ${CMAKE_THREAD_LIBS_INIT})
+    target_link_libraries(${TEST_NAME}-gcov -fprofile-arcs gcov -ldl -lrt ${CMAKE_THREAD_LIBS_INIT})
 
-    set_target_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME} PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast")
-    set_target_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast -fprofile-arcs -ftest-coverage")
+    set_target_properties(${TEST_NAME} PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast")
+    set_target_properties(${TEST_NAME}-gcov PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast -fprofile-arcs -ftest-coverage")
 
     if(EXISTS ${PARSED_ARGS_VALGRIND_SUPPRESSION_FILE})
         set(MEMCHECK_COMMAND ${MEMCHECK_COMMAND} --suppressions=${PARSED_ARGS_VALGRIND_SUPPRESSION_FILE})
         set(HELGRIND_COMMAND ${HELGRIND_COMMAND} --suppressions=${PARSED_ARGS_VALGRIND_SUPPRESSION_FILE})
     endif()
     
-    add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${TEST_NAME})
-    add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov)
-    add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME} ${AIRLINER_BUILD_PREFIX}${TEST_NAME})
-    add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov ${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov)
-    add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-memcheck ${MEMCHECK_COMMAND} ${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${TEST_NAME})
-    add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-helgrind ${HELGRIND_COMMAND} ${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${TEST_NAME})
-    add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-massif ${MASSIF_COMMAND} ${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${TEST_NAME})
+    add_test(${TEST_NAME}-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${TEST_NAME})
+    add_test(${TEST_NAME}-gcov-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${TEST_NAME}-gcov)
+    add_test(${TEST_NAME} ${TEST_NAME})
+    add_test(${TEST_NAME}-gcov ${TEST_NAME}-gcov)
+    add_test(${TEST_NAME}-memcheck ${MEMCHECK_COMMAND} ${CMAKE_CURRENT_BINARY_DIR}/${TEST_NAME})
+    add_test(${TEST_NAME}-helgrind ${HELGRIND_COMMAND} ${CMAKE_CURRENT_BINARY_DIR}/${TEST_NAME})
+    add_test(${TEST_NAME}-massif ${MASSIF_COMMAND} ${CMAKE_CURRENT_BINARY_DIR}/${TEST_NAME})
 endfunction(psp_add_airliner_cfe_unit_test)
 
 
@@ -789,7 +809,7 @@ function(psp_get_app_cflags APP_NAME OUTPUT_LIST INPUT_FLAGS)
 
     # Append any include directories from the directory properties
     get_property(AIRLINER_BUILD_PREFIX GLOBAL PROPERTY AIRLINER_BUILD_PREFIX_PROPERTY)
-    get_target_property(APP_INCS ${AIRLINER_BUILD_PREFIX}${APP_NAME} INCLUDE_DIRECTORIES)
+    get_target_property(APP_INCS ${APP_NAME} INCLUDE_DIRECTORIES)
     foreach(INC ${APP_INCS})
         list(APPEND FLAGLIST "-I${INC}")
     endforeach(INC ${APP_INCS})
@@ -835,7 +855,7 @@ function(psp_add_airliner_app_table)
                 BYPRODUCTS ${CMAKE_CURRENT_BINARY_DIR}/${table_src_name}.c
                 DEPENDS ${PARSED_ARGS_SOURCES} ${table_template}
             )
-            add_custom_target(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_NAME}_c ALL
+            add_custom_target(${PARSED_ARGS_NAME}_c ALL
                 DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${table_src_name}.c ${table_template} ${PARSED_ARGS_SOURCES}
             )
             set(table_src_file ${CMAKE_CURRENT_BINARY_DIR}/${table_src_name}.c)
@@ -853,7 +873,7 @@ function(psp_add_airliner_app_table)
         BYPRODUCTS ${PARSED_ARGS_NAME}.tbl
         DEPENDS ${table_src_file}
     )
-    add_custom_target(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_NAME} ALL
+    add_custom_target(${PARSED_ARGS_NAME} ALL
         DEPENDS ${PARSED_ARGS_NAME}.tbl ${table_src_file}
     )
 endfunction(psp_add_airliner_app_table)
@@ -864,25 +884,25 @@ function(add_airliner_app_unit_test_src)
     set(PARSED_ARGS_TARGET ${ARGV0})
     cmake_parse_arguments(PARSED_ARGS "" "" "SOURCES" ${ARGN})
 
-    if(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut)
-        target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut PRIVATE ${PARSED_ARGS_SOURCES})
-    endif(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut)
+    if(TARGET ${PARSED_ARGS_TARGET}-ut)
+        target_sources(${PARSED_ARGS_TARGET}-ut PRIVATE ${PARSED_ARGS_SOURCES})
+    endif(TARGET ${PARSED_ARGS_TARGET}-ut)
 
-    if(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-gcov)
-        target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-gcov PRIVATE ${PARSED_ARGS_SOURCES})
-    endif(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-gcov)
+    if(TARGET ${PARSED_ARGS_TARGET}-ut-gcov)
+        target_sources(${PARSED_ARGS_TARGET}-ut-gcov PRIVATE ${PARSED_ARGS_SOURCES})
+    endif(TARGET ${PARSED_ARGS_TARGET}-ut-gcov)
 
-    if(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-memcheck)
-        target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-memcheck PRIVATE ${PARSED_ARGS_SOURCES})
-    endif(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-memcheck)
+    if(TARGET ${PARSED_ARGS_TARGET}-ut-memcheck)
+        target_sources(${PARSED_ARGS_TARGET}-ut-memcheck PRIVATE ${PARSED_ARGS_SOURCES})
+    endif(TARGET ${PARSED_ARGS_TARGET}-ut-memcheck)
 
-    if(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-helgrind)
-        target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-helgrind PRIVATE ${PARSED_ARGS_SOURCES})
-    endif(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-helgrind)
+    if(TARGET ${PARSED_ARGS_TARGET}-ut-helgrind)
+        target_sources(${PARSED_ARGS_TARGET}-ut-helgrind PRIVATE ${PARSED_ARGS_SOURCES})
+    endif(TARGET ${PARSED_ARGS_TARGET}-ut-helgrind)
 
-    if(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-massif)
-        target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-massif PRIVATE ${PARSED_ARGS_SOURCES})
-    endif(TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ut-massif)
+    if(TARGET ${PARSED_ARGS_TARGET}-ut-massif)
+        target_sources(${PARSED_ARGS_TARGET}-ut-massif PRIVATE ${PARSED_ARGS_SOURCES})
+    endif(TARGET ${PARSED_ARGS_TARGET}-ut-massif)
 endfunction(add_airliner_app_unit_test_src)
 
 

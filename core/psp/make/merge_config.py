@@ -30,6 +30,7 @@
   POSSIBILITY OF SUCH DAMAGE.
 
 """
+from __builtin__ import False
 
 __author__ = 'Mathew Benson'
 
@@ -43,6 +44,7 @@ python get_table_name.py [path to json file]
 import sys
 import json
 import os
+from collections import OrderedDict
 
 CONFIG_FILE_NAME = 'config.json'
 
@@ -62,7 +64,7 @@ def mergeParentConfig(mergedConfig, absConfigBase, absCurrentDir):
         # It does exist.  Now load it.
         with open(cfgFileNameCurrent, 'r') as cfgFileCurrent:
             # Load the JSON object.
-            cfgCurrent = json.load(cfgFileCurrent)
+            cfgCurrent = json.load(cfgFileCurrent, object_pairs_hook=OrderedDict)
             
             # Iterate through the module objects, so we only merge in what the 
             # local configuration file defined as being part of the build.  In other
@@ -89,20 +91,21 @@ def merge(source, destination):
     for key, value in source.items():
         if isinstance(value, dict):
             # get node or create one
-            node = destination.setdefault(key, {})
+            node = destination.setdefault(key, OrderedDict())
             merge(value, node)
         else:
             destination[key] = value
-
     return destination
 
 
 # Load the local configuration file
-if len(sys.argv) == 2:
-    localConfigFileName = sys.argv[1]
+if len(sys.argv) == 3:
+    localConfigPath = sys.argv[1]
+    outFileName = sys.argv[2]
+    localConfigFileName = os.path.join(localConfigPath, CONFIG_FILE_NAME)
     with open(localConfigFileName, 'r') as localConfigFile:
-        localConfig = json.load(localConfigFile)
-    
+        localConfig = json.load(localConfigFile, object_pairs_hook=OrderedDict)
+        
         # Iterate through the modules
         for module_name in localConfig['modules']:
             objModule = localConfig['modules'][module_name]
@@ -112,10 +115,11 @@ if len(sys.argv) == 2:
         
             # Open the definition file for this module
             with open(defPath, 'r') as defFile:
-                defObj = json.load(defFile)
+                defObj = json.load(defFile, object_pairs_hook=OrderedDict)
             
                 # Deep merge this definition object into the 'module/<name>/' object of the local config.
                 merge(defObj, objModule)
+                
     
         # Get the base directory, i.e. "../../../.."
         configBase = localConfig['config_base']
@@ -130,4 +134,21 @@ if len(sys.argv) == 2:
         # Recursively merge config files from the parent, starting with the config base
         localConfig = mergeParentConfig(localConfig, absConfigBase, absLocalDir)
         
-        print json.dumps(localConfig, indent=4)
+        # We don't want to write the configuration to the file system if there is a file
+        # already there that contains an identical configuration.  See if there's a file
+        # there already.
+        writeFile = True
+        if os.path.exists(outFileName):
+            # It does exist.  Now load it.
+            with open(outFileName, 'r') as outFile:
+                oldObject = json.load(outFile, object_pairs_hook=OrderedDict)
+                
+                if oldObject == localConfig:
+                    writeFile = False
+                
+                outFile.close()
+        
+        if writeFile:
+            with open(outFileName, 'w') as outFile:
+                json.dump(localConfig, outFile, indent=4, sort_keys=False)
+                

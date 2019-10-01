@@ -30,6 +30,7 @@
   POSSIBILITY OF SUCH DAMAGE.
 
 """
+from __builtin__ import False
 
 __author__ = 'Mathew Benson'
 
@@ -44,6 +45,7 @@ import sys
 import json
 import os
 import jinja2
+import filecmp
 
 # Load the local configuration file
 if len(sys.argv) == 3:
@@ -73,7 +75,18 @@ if len(sys.argv) == 3:
                 
                 output = j2_env.get_template(fileNameTemplate).render(objModule)
                 
-                # Save the results
-                with open(os.path.join(outputPath, objCodeTemplate['output'] ), "w") as outputFile:
-                    outputFile.write(output)
+                # If there is an existing file, only write the file if the contents have changed.
+                writeFile = True
+                outFileName = os.path.join(outputPath, objCodeTemplate['output'] )
+                if os.path.exists(outFileName):
+                    # It does exist.  Now load it.
+                    with open(outFileName, 'r') as outFile:
+                        oldData = outFile.read()
+                        if oldData == output:
+                            writeFile = False
+                            
+                if writeFile:
+                    # Save the results
+                    with open(outFileName, "w") as outputFile:
+                        outputFile.write(output)
                     
