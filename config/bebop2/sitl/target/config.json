@@ -1,0 +1,8 @@
+{
+    "config_base": "../../../..",
+    "modules": {
+        "sch": {
+            "definition": "../../../../apps/sch/fsw/for_build/definition.json"
+        }
+    }
+}

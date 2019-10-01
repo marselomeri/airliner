@@ -2,20 +2,16 @@
     "modules": {
         "sch": {
             "commands": {
-                "SCH_CMD_MID":     { "msgid": "0x19e4"},
-                "SCH_SEND_HK_MID": { "msgid": "0x19e5"},
-                "SCH_UNUSED_MID":  { "msgid": "0"}
+                "SCH_CMD_MID":      { "msgid": "0x19e4"},
+                "SCH_SEND_HK_MID":  { "msgid": "0x19e5"},
+                "SCH_UNUSED_MID":   { "msgid": "0"}
             },
             "telemetry": { 
-                "HK":         { "msgid": "0x09e8"},
-                "Diagnostic": { "msgid": "0x09e7"}
+                "SCH_HK_TLM_MID":   { "msgid": "0x09e8"},
+                "SCH_DIAG_TLM_MID": { "msgid": "0x09e7"}
             },
             "perfids": {
                 "SCH_APPMAIN_PERF_ID": {"value": "61"}
-            },
-            "tables": {
-                "MSG_DEFS": {"content": {}},
-                "SCHED_DEF": {"content": {}}
             },
             "config": {
                 "SCH_PIPE_DEPTH":             { "value": "2"   },
