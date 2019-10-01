@@ -48,45 +48,35 @@ import jinja2
 import filecmp
 
 # Load the local configuration file
-if len(sys.argv) == 3:
-    configFileName = sys.argv[1]
-    outputPath = sys.argv[2]
-    with open(configFileName, 'r') as configFile:
-        config = json.load(configFile)
+if len(sys.argv) == 4:
+    templateFileName = sys.argv[1]
+    inFileName = sys.argv[2]
+    outFileName = sys.argv[3]
+    
+    with open(inFileName, 'r') as inFile:
+        inData = json.load(inFile)
         
-        # Iterate through the modules
-        for module_name in config['modules']:
-            objModule = config['modules'][module_name]
-            
-            # Get the base directory of the definition file
-            dirBase = os.path.abspath(os.path.dirname(objModule['definition']))
-            
-            # Iterate through the code_templates 
-            for code_template_name in objModule['code_templates']:
-                objCodeTemplate = objModule['code_templates'][code_template_name]
-                
-                # Get the template directory
-                dirTemplate = os.path.dirname(os.path.join(dirBase, objCodeTemplate['template']))
-                
-                # Get the template filename
-                fileNameTemplate = os.path.basename(objCodeTemplate['template'])
-                
-                j2_env = jinja2.Environment(loader=jinja2.FileSystemLoader(dirTemplate), trim_blocks=True)
-                
-                output = j2_env.get_template(fileNameTemplate).render(objModule)
-                
-                # If there is an existing file, only write the file if the contents have changed.
-                writeFile = True
-                outFileName = os.path.join(outputPath, objCodeTemplate['output'] )
-                if os.path.exists(outFileName):
-                    # It does exist.  Now load it.
-                    with open(outFileName, 'r') as outFile:
-                        oldData = outFile.read()
-                        if oldData == output:
-                            writeFile = False
-                            
-                if writeFile:
-                    # Save the results
-                    with open(outFileName, "w") as outputFile:
-                        outputFile.write(output)
+        # Get the template directory
+        dirTemplate = os.path.dirname(templateFileName)
+        
+        # Get the template filename
+        fileNameTemplate = os.path.basename(templateFileName)
+        
+        j2_env = jinja2.Environment(loader=jinja2.FileSystemLoader(dirTemplate))
+        
+        output = j2_env.get_template(fileNameTemplate).render(inData)
+        
+        # If there is an existing file, only write the file if the contents have changed.
+        writeFile = True
+        if os.path.exists(outFileName):
+            # It does exist.  Now load it.
+            with open(outFileName, 'r') as outFile:
+                oldData = outFile.read()
+                if oldData == output:
+                    writeFile = False
+                    
+        if writeFile:
+            # Save the results
+            with open(outFileName, "w") as outFile:
+                outFile.write(output)
                     

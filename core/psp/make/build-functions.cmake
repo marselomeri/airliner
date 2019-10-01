@@ -80,7 +80,7 @@ function(psp_initialize_airliner_build)
             COMMENT "Generating templated code"
             COMMAND python ${PROJECT_SOURCE_DIR}/core/psp/make/merge_config.py ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}/config.json
             COMMAND ${CMAKE_COMMAND} -E make_directory generated_code
-            COMMAND python ${PROJECT_SOURCE_DIR}/core/psp/make/generate_templated_code.py ${CMAKE_CURRENT_BINARY_DIR}/config.json generated_code
+            COMMAND python ${PROJECT_SOURCE_DIR}/core/psp/make/parse_configuration.py ${CMAKE_CURRENT_BINARY_DIR}/config.json generated_code
         )
         add_custom_target(config_json ALL
             DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/_config.json   # Fake! This ensures we always run.
@@ -851,7 +851,7 @@ function(psp_add_airliner_app_table)
             add_custom_command(
                 OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${table_src_name}.c
                 COMMENT Generating ${table_src_name}.c 
-                COMMAND j2 -f json ${table_template} ${PARSED_ARGS_SOURCES} > ${CMAKE_CURRENT_BINARY_DIR}/${table_src_name}.c
+                COMMAND python ${PROJECT_SOURCE_DIR}/core/psp/make/generate_templated_code.py ${table_template} ${PARSED_ARGS_SOURCES} ${CMAKE_CURRENT_BINARY_DIR}/${table_src_name}.c
                 BYPRODUCTS ${CMAKE_CURRENT_BINARY_DIR}/${table_src_name}.c
                 DEPENDS ${PARSED_ARGS_SOURCES} ${table_template}
             )
