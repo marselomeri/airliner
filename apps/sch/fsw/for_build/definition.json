@@ -86,8 +86,8 @@
         "SCH_SLOT_DEADLINE_FULL_ERR_EID":     {"id": 62},
         "SCH_SUB_ACTIVITY_DONE_REQ_ERR_EID":  {"id": 63},
         "SCH_UNEXPECTED_ACT_DONE_ERR_EID":    {"id": 64},
-        "SCH_AD_CHILD_TASK_CREATE_ERR":       {"id": 66},
         "SCH_MUTEX_CREATE_ERR_EID":           {"id": 65},
+        "SCH_AD_CHILD_TASK_CREATE_ERR":       {"id": 66},
         "SCH_AD_RCVD_UNEXPECTED_MSG_ERR_EID": {"id": 67}
     },
     "perfids": {

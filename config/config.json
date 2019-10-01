@@ -1,6 +1,8 @@
 {
+    "config_base": "..",
     "modules": {
         "sch": {
+            "definition": "../apps/sch/fsw/for_build/definition.json",
             "commands": {
                 "SCH_CMD_MID":      { "msgid": "0x19e4"},
                 "SCH_SEND_HK_MID":  { "msgid": "0x19e5"},

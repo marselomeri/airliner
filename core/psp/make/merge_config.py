@@ -117,13 +117,14 @@ if len(sys.argv) == 2:
                 # Deep merge this definition object into the 'module/<name>/' object of the local config.
                 merge(defObj, objModule)
     
-        # Get the base directory
+        # Get the base directory, i.e. "../../../.."
         configBase = localConfig['config_base']
         
-        # Get the absolute path of the base directory
+        # Get the absolute path of the base directory, i.e. "/home/mbenson/git/airliner"
         absConfigBase = os.path.abspath(configBase)
     
-        # Get absolute directory of the local config file
+        # Get absolute directory of the local config file, 
+        # i.e. "/home/mbenson/git/airliner/config/bebop2/sitl/target"
         absLocalDir = os.path.dirname(os.path.abspath(localConfigFileName))
     
         # Recursively merge config files from the parent, starting with the config base
