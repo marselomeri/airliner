@@ -65,6 +65,7 @@ before_install:
   - sudo apt-get install -y gazebo8 libgazebo8 libgazebo8-dev
   - sudo apt-get install -y libeigen3-dev libopencv-dev
   - sudo apt-get install -y valgrind gcovr lcov xsltproc graphviz
+  - pip install --user cpp-coveralls
   - cd tools/commander
   - npm install
   - cd ../../
@@ -73,6 +74,6 @@ script:
   - cd build/bebop2/sitl
   - ctest -E ea-perf
 after_success:
-  - cd build/bebop2/sitl
+  - coveralls --exclude lib --exclude tests --gcov-options '\-lp'
 
   
