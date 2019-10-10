@@ -5,6 +5,7 @@ env:
    - secure: "JebOdbnvXHkjT0n/k94FrRSYL4Mwu2sFT0TtHSX5bMQRzlc0RAgbffiaHS4V/GIlZ8Bh34U+FuVddZEAl+Qn6I2YtI8j9R/o4FldByvV/rgXGosuQlTbHdTKZh2m+i9AtOVpwUGbguSqcYvVcPIPnm3GshYrlIOmLDxdfsp7nIEq2S04Yf7TC26hoDjTV6VdqoMBKkryQIQr+150wbC84NmzrQFbWhuQJ+UHr3Nf8fithSLECEMPDep0cxKpRw9fCqH3iNQ6Ic5Ul/0HMFPoa58Dz0/4lXnh3mHaen6K5OUPhmGN/hmzxDucw8/I/jRw7lyKI8wEpGvBx+oXtafwqtF+ao04TILnbI3WCDDmZvtU5wj01KxBY9qkECNTsXPJJuwiZ9DIm2mox9uvCYe2sJST9mAvGGh95oVPoqOuRRCrbs14/4+FYAeweNHHo7BFyOdCChPfTbyNAHSHYNCfOP/QNN2Wjmm9+7Y7xkGyz0FyOdaLtYAg9QyWUfo9mEq5INkquCVfA8WXBdmSu8rVFhU5+m5GgZSElZK5Smfew3Xrm/YP1VHQ2Ju+xSvyjV1GbQj8YVOONeWdJAP/l1UALeKY4i8pgd1M+P6YWisR7EstCgDgEBHFLF5RuzHJYsI+ZcEVt3uXje1IhHu0ku//UkUE4n8AN2uLRIGsC4VAsGo="
 
 language: cpp
+
 compiler: 
   - g++
 node_js: 
@@ -68,7 +69,10 @@ before_install:
   - npm install
   - cd ../../
 script:
-  - ls -la
+  - make bebop2/sitl
+  - cd build/bebop2/sitl
+  - ctest -E ea-perf
 after_success:
-  - ./generateDoxy.sh
+  - cd build/bebop2/sitl
+  - make docs
   
