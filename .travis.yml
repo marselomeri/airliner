@@ -74,5 +74,5 @@ script:
   - ctest -E ea-perf
 after_success:
   - cd build/bebop2/sitl
-  - make docs
+
   
