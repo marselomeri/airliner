@@ -75,6 +75,6 @@ script:
   - ctest -E ea-perf
   - cd ../../..
 after_success:
-  - coveralls --root . -E ".*CMakeFiles.*"
+  - coveralls --root . 
 
   
