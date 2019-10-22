@@ -94,24 +94,18 @@
         "SCH_APPMAIN_PERF_ID": {"value": ""}
     },
     "tables": {
+        "_config_wizard": {
+            "class": "com.windhoverlabs.airliner.apps.sch.UISchMsgDefTableWizard"
+        },
         "MSG_DEFS": {
-            "title": "Message Definitions",  
-            "isDumpTable": false, 
+            "title": "Message Definitions", 
             "default": "sch_def_msgtbl.tbl", 
-            "template": "../tables/sch_def_msgtbl.j2", 
-            "_config_wizard": {
-                "class": "com.windhoverlabs.airliner.apps.sch.UISchMsgDefTableWizard"
-            }
+            "template": "../tables/sch_def_msgtbl.j2" 
         },
         "SCHED_DEF": {
             "title": "Schedule Definitions", 
-            "isDumpTable": false, 
             "default": "sch_def_schtbl.tbl", 
-            "template": "../tables/sch_def_schtbl.j2", 
-            "_config_wizard": 
-            {
-                "class": "com.windhoverlabs.airliner.apps.sch.UISchSchDefTableWizard"
-            }
+            "template": "../tables/sch_def_schtbl.j2"
         }
     },
     "config": {
