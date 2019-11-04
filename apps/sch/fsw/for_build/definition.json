@@ -1,6 +1,15 @@
 {
     "short_name": "SCH",
     "long_name": "Scheduler",
+    "ide": {
+        "plugin": "plugin.jar",
+        "view" : {
+            "0": {
+                "path": "tables",
+                "view": "com.windhoverlabs.ide.sch.SchTableEditor"
+            }
+        }
+    },
     "code_templates": {
         "msgids": {
             "template": "../platform_inc/sch_msgids.j2",
@@ -94,15 +103,12 @@
         "SCH_APPMAIN_PERF_ID": {"value": ""}
     },
     "tables": {
-        "_config_wizard": {
-            "class": "com.windhoverlabs.airliner.apps.sch.UISchMsgDefTableWizard"
-        },
-        "MSG_DEFS": {
+        "_MSG_DEFS": {
             "title": "Message Definitions", 
             "default": "sch_def_msgtbl.tbl", 
             "template": "../tables/sch_def_msgtbl.j2" 
         },
-        "SCHED_DEF": {
+        "_SCHED_DEF": {
             "title": "Schedule Definitions", 
             "default": "sch_def_schtbl.tbl", 
             "template": "../tables/sch_def_schtbl.j2"
