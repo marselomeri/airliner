@@ -1,0 +1,424 @@
+{
+    "short_name": "CF",
+    "long_name": "CFDP File Delivery",
+    "code_templates": {
+    },
+    "commands": {
+        "CF_CMD_MID": { "msgid": "", "commands": {
+            "Noop":              { "cc":  0, "struct": "CF_NoArgsCmd_t" },
+            "ResetCtrs":         { "cc":  1, "struct": "CF_ResetCtrsCmd_t" },
+            "PlaybackFile":      { "cc":  2, "struct": "CF_PlaybackFileCmd_t"  },
+            "PlaybackDir":       { "cc":  3, "struct": "CF_PlaybackDirCmd_t"  },
+            "Freeze":            { "cc":  4, "struct": "CF_NoArgsCmd_t"  },
+            "Thaw":              { "cc":  5, "struct": "CF_NoArgsCmd_t"  },
+            "Suspend":           { "cc":  6, "struct": "CF_CARSCmd_t" },
+            "Resume":            { "cc":  7, "struct": "CF_CARSCmd_t" },
+            "Cancel":            { "cc":  8, "struct": "CF_CARSCmd_t" },
+            "Abandon":           { "cc":  9, "struct": "CF_CARSCmd_t" },
+            "SetMibParam":       { "cc": 10, "struct": "CF_SetMibParam_t" },
+            "GetMibParam":       { "cc": 11, "struct": "CF_GetMibParam_t" },
+            "SendTrans":         { "cc": 12, "struct": "CF_SendTransCmd_t" },
+            "SetPollParam":      { "cc": 13, "struct": "CF_SetPollParamCmd_t" },
+            "SendCfgParams":     { "cc": 14, "struct": "CF_NoArgsCmd_t" },
+            "WriteQueue":        { "cc": 15, "struct": "CF_WriteQueueCmd_t" },
+            "EnableDequeue":     { "cc": 16, "struct": "CF_EnDisDequeueCmd_t" },
+            "DisableDequeue":    { "cc": 17, "struct": "CF_EnDisDequeueCmd_t" },
+            "EnableDirPolling":  { "cc": 18, "struct": "CF_EnDisPollCmd_t" },
+            "DisableDirPolling": { "cc": 19, "struct": "CF_EnDisPollCmd_t" },
+            "DequeueNode":       { "cc": 20, "struct": "CF_DequeueNodeCmd_t" },
+            "PurgeQueue":        { "cc": 21, "struct": "CF_PurgeQueueCmd_t" },
+            "WriteActiveTrans":  { "cc": 22, "struct": "CF_WriteActiveTransCmd_t" },
+            "Kickstart":         { "cc": 23, "struct": "CF_KickstartCmd_t" },
+            "QuickStat":         { "cc": 24, "struct": "CF_QuickStatCmd_t" },
+            "GiveTake":          { "cc": 25, "struct": "CF_GiveTakeCmd_t" },
+            "AutoSuspendEn":     { "cc": 26, "struct": "CF_AutoSuspendEnCmd_t" },
+            "CyclesPerWakeup":   { "cc": 27, "struct": "CF_CyclesPerWakeupCmd_t" }
+        }},
+        "CF_SEND_HK_MID": { "msgid": "", "commands": {
+            "SendHK": { "cc":  0, "struct": "CF_NoArgsCmd_t" }
+        }},
+        "CF_WAKE_UP_REQ_CMD_MID": { "msgid": "", "commands": {
+            "WakeUp": { "cc":  0, "struct": "CF_NoArgsCmd_t" }
+        }}
+    },
+    "telemetry": { 
+        "CF_HK_TLM_MID":     { "msgid": "", "struct": "CF_HkPacket_t"},
+        "CF_TRANS_TLM_MID":  { "msgid": "", "struct": "CF_TransPacket_t" },
+        "CF_CONFIG_TLM_MID": { "msgid": "", "struct": "CF_ConfigPacket_t" }
+    },
+    "events": {
+        "CF_INIT_EID":                 {"id": 1},
+        "CF_CC_ERR_EID":               {"id": 2},
+        "CF_MID_ERR_EID":              {"id": 3},
+        "CF_CMD_LEN_ERR_EID":          {"id": 4},
+        "CF_NOOP_CMD_EID":             {"id": 5},
+        "CF_RESET_CMD_EID":            {"id": 6},
+        "CF_FILE_IO_ERR1_EID":         {"id": 7},
+        "CF_CR_PIPE_ERR_EID":          {"id": 8},
+        "CF_SUB_REQ_ERR_EID":          {"id": 9},
+        "CF_SUB_CMD_ERR_EID":          {"id": 10},
+        "CF_RCV_MSG_ERR_EID":          {"id": 11},
+        "CF_FILE_IO_ERR2_EID":         {"id": 12},
+        "CF_REMOVE_ERR1_EID":          {"id": 13},
+        "CF_LOGIC_NAME_ERR_EID":       {"id": 14},
+        "CF_CFDP_ENGINE_DEB_EID":      {"id": 15},
+        "CF_CFDP_ENGINE_INFO_EID":     {"id": 16},
+        "CF_CFDP_ENGINE_WARN_EID":     {"id": 17},
+        "CF_CFDP_ENGINE_ERR_EID":      {"id": 18},
+        "CF_FILE_IO_ERR3_EID":         {"id": 19},
+        "CF_IN_TRANS_OK_EID":          {"id": 20},
+        "CF_OUT_TRANS_OK_EID":         {"id": 21},
+        "CF_IN_TRANS_FAILED_EID":      {"id": 22},
+        "CF_OUT_TRANS_FAILED_EID":     {"id": 23},
+        "CF_MV_UP_NODE_EID":           {"id": 24},
+        "CF_ENDIS_AUTO_SUS_CMD_EID":   {"id": 25},
+        "CF_IND_XACT_SUS_EID":         {"id": 26},
+        "CF_IND_XACT_RES_EID":         {"id": 27},
+        "CF_IND_XACT_FAU_EID":         {"id": 28},
+        "CF_IND_XACT_ABA_EID":         {"id": 29},
+        "CF_KICKSTART_CMD_EID":        {"id": 30},
+        "CF_REMOVE_ERR2_EID":          {"id": 31},
+        "IND_ACK_TIM_EXP_EID":         {"id": 32},
+        "CF_IND_INA_TIM_EXP_EID":      {"id": 33},
+        "CF_IND_NACK_TIM_EXP_EID":     {"id": 34},
+        "CF_IND_UNEXP_TYPE_EID":       {"id": 35},
+        "CF_FILE_CLOSE_ERR_EID":       {"id": 36},
+        "CF_MACH_ALLOC_ERR_EID":       {"id": 37},
+        "CF_PLAYBACK_FILE_EID":        {"id": 38},
+        "CF_PUT_REQ_ERR1_EID":         {"id": 39},
+        "CF_PUT_REQ_ERR2_EID":         {"id": 40},
+        "CF_CFGTBL_REG_ERR_EID":       {"id": 41},
+        "CF_CFGTBL_LD_ERR_EID":        {"id": 42},
+        "CF_CFGTBL_MNG_ERR_EID":       {"id": 43},
+        "CF_CFGTBL_GADR_ERR_EID":      {"id": 44},
+        "CF_TRANS_SUSPEND_OVRFLW_EID": {"id": 45},
+        "CF_FREEZE_CMD_EID":           {"id": 46},
+        "CF_THAW_CMD_EID":             {"id": 47},
+        "CF_CARS_CMD_EID":             {"id": 48},
+        "CF_CARS_ERR1_EID":            {"id": 49},
+        "CF_SET_MIB_CMD_EID":          {"id": 50},
+        "CF_GET_MIB_CMD_EID":          {"id": 51},
+        "CF_SUB_PDUS_ERR_EID":         {"id": 52},
+        "CF_SND_Q_INFO_EID":           {"id": 53},
+        "CF_FILEWRITE_ERR_EID":        {"id": 54},
+        "CF_SUB_WAKE_ERR_EID":         {"id": 55},
+        "CF_KICKSTART_ERR1_EID":       {"id": 56},
+        "CF_WR_CMD_ERR1_EID":          {"id": 57},
+        "CF_WR_CMD_ERR2_EID":          {"id": 58},
+        "CF_WR_CMD_ERR3_EID":          {"id": 59},
+        "CF_SND_QUE_ERR1_EID":         {"id": 60},
+        "CF_SND_TRANS_ERR_EID":        {"id": 61},
+        "CF_DEQ_NODE_ERR1_EID":        {"id": 62},
+        "CF_DEQ_NODE_ERR2_EID":        {"id": 63},
+        "CF_DEQ_NODE_ERR3_EID":        {"id": 64},
+        "CF_DEQ_NODE_ERR4_EID":        {"id": 65},
+        "CF_WR_CMD_ERR4_EID":          {"id": 66},
+                    
+        "CF_DEQ_NODE1_EID":            {"id": 68},
+        "CF_DEQ_NODE2_EID":            {"id": 69},
+        "CF_PDU_RCV_ERR1_EID":         {"id": 70},
+        "CF_PDU_RCV_ERR2_EID":         {"id": 71},
+        "CF_PDU_RCV_ERR3_EID":         {"id": 72},
+        "CF_HANDSHAKE_ERR1_EID":       {"id": 73},
+        "CF_SND_TRANS_CMD_EID":        {"id": 74},
+        "CF_IND_FAU_UNEX_EID":         {"id": 75},
+        "CF_PB_FILE_ERR1_EID":         {"id": 76},
+        "CF_PB_FILE_ERR2_EID":         {"id": 77},
+        "CF_PB_FILE_ERR3_EID":         {"id": 78},
+        "CF_PB_FILE_ERR4_EID":         {"id": 79},
+        "CF_PB_FILE_ERR5_EID":         {"id": 80},
+        "CF_PB_FILE_ERR6_EID":         {"id": 81},
+        "CF_QDIR_INV_NAME1_EID":       {"id": 82},
+        "CF_QDIR_INV_NAME2_EID":       {"id": 83},
+        "CF_MEM_ALLOC_ERR_EID":        {"id": 84},
+        "CF_MEM_DEALLOC_ERR_EID":      {"id": 85},
+        "CF_ENA_DQ_CMD_EID":           {"id": 86},
+        "CF_DQ_CMD_ERR1_EID":          {"id": 87},
+        "CF_DIS_DQ_CMD_EID":           {"id": 88},
+        "CF_DQ_CMD_ERR2_EID":          {"id": 89},
+        "CF_ENA_POLL_CMD1_EID":        {"id": 90},
+        "CF_ENA_POLL_CMD2_EID":        {"id": 91},
+        "CF_ENA_POLL_ERR1_EID":        {"id": 92},
+        "CF_ENA_POLL_ERR2_EID":        {"id": 93},
+        "CF_DIS_POLL_CMD1_EID":        {"id": 94},
+        "CF_DIS_POLL_CMD2_EID":        {"id": 95},
+        "CF_DIS_POLL_ERR1_EID":        {"id": 96},
+        "CF_DIS_POLL_ERR2_EID":        {"id": 97},
+        "CF_OPEN_DIR_ERR_EID":         {"id": 98},
+        "CF_QDIR_NOMEM1_EID":          {"id": 99},
+        "CF_QDIR_NOMEM2_EID":          {"id": 100},
+        "CF_QDIR_PQFUL_EID":           {"id": 101},
+        "CF_IN_TRANS_START_EID":       {"id": 102},
+        "CF_OUT_TRANS_START_EID":      {"id": 103},
+        "CF_SET_MIB_CMD_ERR1_EID":     {"id": 104},
+        "CF_SET_MIB_CMD_ERR2_EID":     {"id": 105},
+        "CF_TBL_VAL_ERR1_EID":         {"id": 106},
+        "CF_TBL_VAL_ERR2_EID":         {"id": 107},
+        "CF_TBL_VAL_ERR3_EID":         {"id": 108},
+        "CF_TBL_VAL_ERR4_EID":         {"id": 109},
+        "CF_TBL_VAL_ERR5_EID":         {"id": 110},
+        "CF_TBL_VAL_ERR6_EID":         {"id": 111},
+        "CF_TBL_VAL_ERR7_EID":         {"id": 112},
+        "CF_TBL_VAL_ERR8_EID":         {"id": 113},
+        "CF_TBL_VAL_ERR9_EID":         {"id": 114},
+        "CF_TBL_VAL_ERR10_EID":        {"id": 115},
+        "CF_TBL_VAL_ERR11_EID":        {"id": 116},
+        "CF_TBL_VAL_ERR12_EID":        {"id": 117},
+        "CF_TBL_VAL_ERR12_EID":        {"id": 118},
+        "CF_TBL_VAL_ERR14_EID":        {"id": 119},
+        "CF_NO_TERM_ERR_EID":          {"id": 120},
+        "CF_SET_POLL_PARAM_ERR1_EID":  {"id": 121},
+        "CF_SET_POLL_PARAM_ERR2_EID":  {"id": 122},
+        "CF_SET_POLL_PARAM_ERR3_EID":  {"id": 123},
+        "CF_SET_POLL_PARAM_ERR4_EID":  {"id": 124},
+        "CF_SET_POLL_PARAM_ERR5_EID":  {"id": 125},
+        "CF_SET_POLL_PARAM_ERR6_EID":  {"id": 126},
+        "CF_SET_POLL_PARAM_ERR7_EID":  {"id": 127},
+        "CF_SET_POLL_PARAM1_EID":      {"id": 128},
+        "CF_SND_CFG_CMD_EID":          {"id": 129},
+        "CF_GIVETAKE_ERR1_EID":        {"id": 130},
+        "CF_GIVETAKE_ERR2_EID":        {"id": 131},
+        "CF_GIVETAKE_ERR3_EID":        {"id": 132},
+        "CF_GIVETAKE_ERR4_EID":        {"id": 133},
+        "CF_PLAYBACK_DIR_EID":         {"id": 134},
+        "CF_PB_DIR_ERR1_EID":          {"id": 135},
+        "CF_PB_DIR_ERR2_EID":          {"id": 136},
+        "CF_PB_DIR_ERR3_EID":          {"id": 137},
+        "CF_PB_DIR_ERR4_EID":          {"id": 138},
+        "CF_PB_DIR_ERR5_EID":          {"id": 139},
+        "CF_PURGEQ_ERR1_EID":          {"id": 140},
+        "CF_PURGEQ_ERR2_EID":          {"id": 141},
+        "CF_PURGEQ_ERR3_EID":          {"id": 142},
+        "CF_PURGEQ_ERR4_EID":          {"id": 143},
+        "CF_PURGEQ_ERR5_EID":          {"id": 144},
+        "CF_PURGEQ_ERR6_EID":          {"id": 145},
+        "CF_PURGEQ1_EID":              {"id": 146},
+        "CF_PURGEQ2_EID":              {"id": 147},
+        "CF_WRACT_ERR1_EID":           {"id": 148},
+        "CF_WRACT_ERR2_EID":           {"id": 149},
+        "CF_WRACT_TRANS_EID":          {"id": 150},
+        "CF_TBL_LD_ATTEMPT_EID":       {"id": 151},
+        "CF_OUT_SND_ERR1_EID":         {"id": 152},
+        "CF_OUT_SND_ERR2_EID":         {"id": 153},
+        "CF_OUT_SND_ERR3_EID":         {"id": 154},
+        "CF_QDIR_ACTIVEFILE_EID":      {"id": 155},
+        "CF_QDIR_OPENFILE_EID":        {"id": 156},
+        "CF_INV_FILENAME_EID":         {"id": 157},
+        "CF_GIVETAKE_CMD_EID":         {"id": 158},
+        "CF_QUICK_ERR1_EID":           {"id": 159},
+        "CF_QUICK_CMD_EID":            {"id": 160}
+    },
+    "perfids": {
+        "CF_APPMAIN_PERF_ID":   {"value": ""},
+        "CF_FILESIZE_PERF_ID":  {"value": ""},
+        "CF_FOPEN_PERF_ID":     {"value": ""},
+        "CF_FCLOSE_PERF_ID":    {"value": ""},
+        "CF_FREAD_PERF_ID":     {"value": ""},
+        "CF_FWRITE_PERF_ID":    {"value": ""},
+        "CF_REDLIGHT_PERF_ID":  {"value": ""},
+        "CF_CYCLE_ENG_PERF_ID": {"value": ""},
+        "CF_QDIRFILES_PERF_ID": {"value": ""}
+    },
+    "tables": {
+    },
+    "config": {
+        "CF_PIPE_DEPTH": { 
+            "title":        "Application Pipe Depth",
+            "description":  "Dictates the pipe depth of the cf command pipe.",
+            "limits":       "The minimum size of this paramater is 1. The maximum size dictated by cFE platform configuration parameter is CFE_SB_MAX_PIPE_DEPTH",
+            "value":        "40"
+        },
+        "CF_PIPE_NAME": { 
+            "title":        "Application Pipe Name",
+            "description":  "Dictates the pipe name of the cf command pipe.",
+            "limits":       "",
+            "value":        "CF_CMD_PIPE"
+        },
+        "CF_MAX_SIMULTANEOUS_TRANSACTIONS": { 
+            "title":        "Maximum Simulataneous Transactions",
+            "description":  "Dictates max number of transactions (uplink and downlink) that can be in progress at any given time.",
+            "limits":       "",
+            "value":        "100"
+        },
+        "CF_INCOMING_PDU_BUF_SIZE": { 
+            "title":        "Uplink PDU Data Buffer Size",
+            "description":  "This parameter sets the statically allocated size (in bytes) of the incoming PDU buffer. This buffer will be used to hold the pdu hdr and data portion of the incoming PDUs. Incoming PDUs are enclosed in a CCSDS packet. This parameter should not include the size of the CCSDS pkt hdr.",
+            "limits":       "Must be greater than or equal to the sum of the ground engine parameter outgoing-file-chunk-size, pdu hdr size and the 4 bytes of 'offset' in file-data pdus. Upper limit of 64K derived from 16 bit PDU header field named 'PDU Data Field Length'. This parameter must be less-than or equal-to the outgoing pdu buffer.",
+            "value":        "512"
+        },
+        "CF_OUTGOING_PDU_BUF_SIZE": { 
+            "title":        "Outgoing PDU Data Buffer Size",
+            "description":  "This parameter sets the statically allocated size (in bytes) of the outgoing PDU buffer. This buffer will be used to hold the pdu hdr and data portion of the outgoing PDUs. Outgoing PDUs are enclosed in a CCSDS packet. This parameter should not include the size of the CCSDS pkt hdr.",
+            "limits":       "This parameter will put an upper limit on the table parameter 'outgoing_file_chunk_size'. The max 'outgoing_file_chunk_size' allowed will be CF_OUTGOING_PDU_BUF_SIZE - (12 + 4) The 12 and 4 are pdu hdr size and offset field in file-data pdu, respectively. This parameter has an upper limit of 64K derived from 16 bit PDU header field named 'PDU Data Field Length'. This parameter must be greater-than or equal-to the incoming pdu buffer.",
+            "value":        "2048"
+        },
+        "CF_ENGINE_TEMP_FILE_PREFIX": { 
+            "title":        "Path name and file prefix of the engine temp files",
+            "description":  "The receiving engine constructs all files in a temporary file. This parameter specifies the path and base filename of the temporary files. The engine appends a sequence number to this parameter to get a complete filename.",
+            "limits":       "The length of this string, including the NULL terminator cannot exceed the #OS_MAX_PATH_LEN value. The last character should not be a slash.",
+            "value":        "/ram/cftmp"
+        },
+        "CF_CONFIG_TABLE_NAME": { 
+            "title":        "Name of the CF Configuration Table",
+            "description":  "This parameter defines the name of the CF Configuration Table.",
+            "limits":       "The length of this string, including the NULL terminator cannot exceed the #OS_MAX_PATH_LEN value.",
+            "value":        "ConfigTable"
+        },
+        "CF_CONFIG_TABLE_FILENAME": { 
+            "title":        "CF Configuration Table Filename",
+            "description":  "The value of this constant defines the filename of the CF Config Table.",
+            "limits":       "The length of this string, including the NULL terminator cannot exceed the #OS_MAX_PATH_LEN value.",
+            "value":        "/cf/cf_cfgtable.tbl"
+        },
+        "CF_NUM_INPUT_CHANNELS": { 
+            "title":        "Number of Input Channels",
+            "description":  "Defines the number of input channels defined in the configuration table. Input channels were added to the design to support class 2 file receives from multiple peers. It is necessary for the code to know what output channel should be used for responses (ACK-EOF,NAK, etc) of incoming, class 2 transactions. Each input channel has a dedicated MsgId for incoming PDUs and an output channel for responses of class 2, file-receive transactions.",
+            "limits":       "Lower Limit of 1, Upper limit of 255.",
+            "value":        "1"
+        },
+        "CF_MAX_PLAYBACK_CHANNELS": { 
+            "title":        "Max Number of Playback Output Channels",
+            "description":  "Defines the max number of playback output channels that may ever be defined in the configuration table. Refer to the configuration table for more details about playback output channels. The CF configuration table must have an entry for this number of playback channels, but some may be marked as not-in-use. This saves having to recompile and reload a new CF Application when a playback channel is added. ",
+            "limits":       "Lower Limit of 1, Upper limit of 255.",
+            "value":        "2"
+        },
+        "CF_MAX_POLLING_DIRS_PER_CHAN": { 
+            "title":        "Max Number of Polling(Hot) Directories per Playback Output Channel",
+            "description":  "Defines the max number of polling directories that may ever be defined in the configuration table. A polling directory is a directory that is periodically checked for playback files. Files found in the polling directory are immediately placed on the playback pending queue for downlink. The CF configuration table must have an entry for this number of polling directories, but some may be marked as not-in-use. This saves having to recompile and reload a new CF Application when a polling directory is added.",
+            "limits":       "Lower limit of 1, Upper limit of 255.",
+            "value":        "8"
+        },
+        "CF_MEMORY_POOL_BYTES": { 
+            "title":        "Number of bytes in the CF Memory Pool",
+            "description":  "The CF memory pool contains the memory needed to hold information for each transaction. The info for each transaction is defined by a CF_QueueEntry_t. The number of CF_QueueEntry_t's needed is based on:\n UplinkHistoryQDepth + CF_MAX_SIMULTANEOUS_TRANSACTIONS + ((CF_MAX_PLAYBACK_CHANNELS * (PendingQDepth + HistoryQDepth))\nLower case variables are defined in config table, upper case params are defined in platform config file (cf_platform_cfg.h).\nSee CF Housekeeping page for memory utilization details",
+            "limits":       "Lower Limit of 256, Upper limit of 4 Gigabytes",
+            "value":        "32768"
+        },
+        "CF_DEFAULT_QUEUE_INFO_FILENAME": { 
+            "title":        "Default Queue Information Filename",
+            "description":  "The value of this constant defines the filename used to store the CF queue information.  This filename is used only when no filename is specified in the command.",
+            "limits":       "The length of each string, including the NULL terminator cannot exceed the OS_MAX_PATH_LEN value.",
+            "value":        "/ram/cf_queue_info.dat"
+        },
+        "CF_FILTERED_EVENT1": { 
+            "title":        "CF Event Filtering",
+            "description":  "This group of configuration parameters dictates what CF events will be filtered through EVS. The filtering will begin after the CF app initializes and stay in effect until changed via EVS command. Mark all unused event Id values and mask values to zero\neg.    #define CF_FILTERED_EVENT1          0\n       #define CF_FILTER_MASK1             0\nTo filter the event, set the mask value to CFE_EVS_FIRST_ONE_STOP. To disable filtering of the event, set mask value to CFE_EVS_NO_FILTER",
+            "limits":       "These parameters have a lower limit of 0 and an upper limit of 65535.",
+            "value":        "CF_IN_TRANS_START_EID"
+        },
+        "CF_FILTER_MASK1": { 
+            "title":        "CF Event Filtering",
+            "description":  "This group of configuration parameters dictates what CF events will be filtered through EVS. The filtering will begin after the CF app initializes and stay in effect until changed via EVS command. Mark all unused event Id values and mask values to zero\neg.    #define CF_FILTERED_EVENT1          0\n       #define CF_FILTER_MASK1             0\nTo filter the event, set the mask value to CFE_EVS_FIRST_ONE_STOP. To disable filtering of the event, set mask value to CFE_EVS_NO_FILTER",
+            "limits":       "These parameters have a lower limit of 0 and an upper limit of 65535.",
+            "value":        "CFE_EVS_NO_FILTER"
+        },
+        "CF_FILTERED_EVENT2": { 
+            "title":        "CF Event Filtering",
+            "description":  "This group of configuration parameters dictates what CF events will be filtered through EVS. The filtering will begin after the CF app initializes and stay in effect until changed via EVS command. Mark all unused event Id values and mask values to zero\neg.    #define CF_FILTERED_EVENT1          0\n       #define CF_FILTER_MASK1             0\nTo filter the event, set the mask value to CFE_EVS_FIRST_ONE_STOP. To disable filtering of the event, set mask value to CFE_EVS_NO_FILTER",
+            "limits":       "These parameters have a lower limit of 0 and an upper limit of 65535.",
+            "value":        "CF_IN_TRANS_OK_EID"
+        },
+        "CF_FILTER_MASK2": { 
+            "title":        "CF Event Filtering",
+            "description":  "This group of configuration parameters dictates what CF events will be filtered through EVS. The filtering will begin after the CF app initializes and stay in effect until changed via EVS command. Mark all unused event Id values and mask values to zero\neg.    #define CF_FILTERED_EVENT1          0\n       #define CF_FILTER_MASK1             0\nTo filter the event, set the mask value to CFE_EVS_FIRST_ONE_STOP. To disable filtering of the event, set mask value to CFE_EVS_NO_FILTER",
+            "limits":       "These parameters have a lower limit of 0 and an upper limit of 65535.",
+            "value":        "CFE_EVS_NO_FILTER"
+        },
+        "CF_FILTERED_EVENT3": { 
+            "title":        "CF Event Filtering",
+            "description":  "This group of configuration parameters dictates what CF events will be filtered through EVS. The filtering will begin after the CF app initializes and stay in effect until changed via EVS command. Mark all unused event Id values and mask values to zero\neg.    #define CF_FILTERED_EVENT1          0\n       #define CF_FILTER_MASK1             0\nTo filter the event, set the mask value to CFE_EVS_FIRST_ONE_STOP. To disable filtering of the event, set mask value to CFE_EVS_NO_FILTER",
+            "limits":       "These parameters have a lower limit of 0 and an upper limit of 65535.",
+            "value":        "CF_OUT_TRANS_START_EID"
+        },
+        "CF_FILTER_MASK3": { 
+            "title":        "CF Event Filtering",
+            "description":  "This group of configuration parameters dictates what CF events will be filtered through EVS. The filtering will begin after the CF app initializes and stay in effect until changed via EVS command. Mark all unused event Id values and mask values to zero\neg.    #define CF_FILTERED_EVENT1          0\n       #define CF_FILTER_MASK1             0\nTo filter the event, set the mask value to CFE_EVS_FIRST_ONE_STOP. To disable filtering of the event, set mask value to CFE_EVS_NO_FILTER",
+            "limits":       "These parameters have a lower limit of 0 and an upper limit of 65535.",
+            "value":        "CFE_EVS_NO_FILTER"
+        },
+        "CF_FILTERED_EVENT4": { 
+            "title":        "CF Event Filtering",
+            "description":  "This group of configuration parameters dictates what CF events will be filtered through EVS. The filtering will begin after the CF app initializes and stay in effect until changed via EVS command. Mark all unused event Id values and mask values to zero\neg.    #define CF_FILTERED_EVENT1          0\n       #define CF_FILTER_MASK1             0\nTo filter the event, set the mask value to CFE_EVS_FIRST_ONE_STOP. To disable filtering of the event, set mask value to CFE_EVS_NO_FILTER",
+            "limits":       "These parameters have a lower limit of 0 and an upper limit of 65535.",
+            "value":        "CF_OUT_TRANS_OK_EID"
+        },
+        "CF_FILTER_MASK4": { 
+            "title":        "CF Event Filtering",
+            "description":  "This group of configuration parameters dictates what CF events will be filtered through EVS. The filtering will begin after the CF app initializes and stay in effect until changed via EVS command. Mark all unused event Id values and mask values to zero\neg.    #define CF_FILTERED_EVENT1          0\n       #define CF_FILTER_MASK1             0\nTo filter the event, set the mask value to CFE_EVS_FIRST_ONE_STOP. To disable filtering of the event, set mask value to CFE_EVS_NO_FILTER",
+            "limits":       "These parameters have a lower limit of 0 and an upper limit of 65535.",
+            "value":        "CFE_EVS_NO_FILTER"
+        },
+        "CF_FILTERED_EVENT5": { 
+            "title":        "CF Event Filtering",
+            "description":  "This group of configuration parameters dictates what CF events will be filtered through EVS. The filtering will begin after the CF app initializes and stay in effect until changed via EVS command. Mark all unused event Id values and mask values to zero\neg.    #define CF_FILTERED_EVENT1          0\n       #define CF_FILTER_MASK1             0\nTo filter the event, set the mask value to CFE_EVS_FIRST_ONE_STOP. To disable filtering of the event, set mask value to CFE_EVS_NO_FILTER",
+            "limits":       "These parameters have a lower limit of 0 and an upper limit of 65535.",
+            "value":        "0"
+        },
+        "CF_FILTER_MASK5": { 
+            "title":        "CF Event Filtering",
+            "description":  "This group of configuration parameters dictates what CF events will be filtered through EVS. The filtering will begin after the CF app initializes and stay in effect until changed via EVS command. Mark all unused event Id values and mask values to zero\neg.    #define CF_FILTERED_EVENT1          0\n       #define CF_FILTER_MASK1             0\nTo filter the event, set the mask value to CFE_EVS_FIRST_ONE_STOP. To disable filtering of the event, set mask value to CFE_EVS_NO_FILTER",
+            "limits":       "These parameters have a lower limit of 0 and an upper limit of 65535.",
+            "value":        "CFE_EVS_NO_FILTER"
+        },
+        "CF_FILTERED_EVENT6": { 
+            "title":        "CF Event Filtering",
+            "description":  "This group of configuration parameters dictates what CF events will be filtered through EVS. The filtering will begin after the CF app initializes and stay in effect until changed via EVS command. Mark all unused event Id values and mask values to zero\neg.    #define CF_FILTERED_EVENT1          0\n       #define CF_FILTER_MASK1             0\nTo filter the event, set the mask value to CFE_EVS_FIRST_ONE_STOP. To disable filtering of the event, set mask value to CFE_EVS_NO_FILTER",
+            "limits":       "These parameters have a lower limit of 0 and an upper limit of 65535.",
+            "value":        "0"
+        },
+        "CF_FILTER_MASK6": { 
+            "title":        "CF Event Filtering",
+            "description":  "This group of configuration parameters dictates what CF events will be filtered through EVS. The filtering will begin after the CF app initializes and stay in effect until changed via EVS command. Mark all unused event Id values and mask values to zero\neg.    #define CF_FILTERED_EVENT1          0\n       #define CF_FILTER_MASK1             0\nTo filter the event, set the mask value to CFE_EVS_FIRST_ONE_STOP. To disable filtering of the event, set mask value to CFE_EVS_NO_FILTER",
+            "limits":       "These parameters have a lower limit of 0 and an upper limit of 65535.",
+            "value":        "CFE_EVS_NO_FILTER"
+        },
+        "CF_FILTERED_EVENT7": { 
+            "title":        "CF Event Filtering",
+            "description":  "This group of configuration parameters dictates what CF events will be filtered through EVS. The filtering will begin after the CF app initializes and stay in effect until changed via EVS command. Mark all unused event Id values and mask values to zero\neg.    #define CF_FILTERED_EVENT1          0\n       #define CF_FILTER_MASK1             0\nTo filter the event, set the mask value to CFE_EVS_FIRST_ONE_STOP. To disable filtering of the event, set mask value to CFE_EVS_NO_FILTER",
+            "limits":       "These parameters have a lower limit of 0 and an upper limit of 65535.",
+            "value":        "0"
+        },
+        "CF_FILTER_MASK7": { 
+            "title":        "CF Event Filtering",
+            "description":  "This group of configuration parameters dictates what CF events will be filtered through EVS. The filtering will begin after the CF app initializes and stay in effect until changed via EVS command. Mark all unused event Id values and mask values to zero\neg.    #define CF_FILTERED_EVENT1          0\n       #define CF_FILTER_MASK1             0\nTo filter the event, set the mask value to CFE_EVS_FIRST_ONE_STOP. To disable filtering of the event, set mask value to CFE_EVS_NO_FILTER",
+            "limits":       "These parameters have a lower limit of 0 and an upper limit of 65535.",
+            "value":        "CFE_EVS_NO_FILTER"
+        },
+        "CF_FILTERED_EVENT8": { 
+            "title":        "CF Event Filtering",
+            "description":  "This group of configuration parameters dictates what CF events will be filtered through EVS. The filtering will begin after the CF app initializes and stay in effect until changed via EVS command. Mark all unused event Id values and mask values to zero\neg.    #define CF_FILTERED_EVENT1          0\n       #define CF_FILTER_MASK1             0\nTo filter the event, set the mask value to CFE_EVS_FIRST_ONE_STOP. To disable filtering of the event, set mask value to CFE_EVS_NO_FILTER",
+            "limits":       "These parameters have a lower limit of 0 and an upper limit of 65535.",
+            "value":        "0"
+        },
+        "CF_FILTER_MASK8": { 
+            "title":        "CF Event Filtering",
+            "description":  "This group of configuration parameters dictates what CF events will be filtered through EVS. The filtering will begin after the CF app initializes and stay in effect until changed via EVS command. Mark all unused event Id values and mask values to zero\neg.    #define CF_FILTERED_EVENT1          0\n       #define CF_FILTER_MASK1             0\nTo filter the event, set the mask value to CFE_EVS_FIRST_ONE_STOP. To disable filtering of the event, set mask value to CFE_EVS_NO_FILTER",
+            "limits":       "These parameters have a lower limit of 0 and an upper limit of 65535.",
+            "value":        "CFE_EVS_NO_FILTER"
+        },
+        "CF_STARTUP_SYNC_TIMEOUT": { 
+            "title":        "Time to wait for all apps to be started (in milliseconds)",
+            "description":  "Dictates the timeout for the #CFE_ES_WaitForStartupSync call that CF uses to ensure that TO or the downlink App has completed it's initialization which includes creating the semaphore needed by CF.",
+            "limits":       "This parameter can't be larger than an unsigned 32 bit integer (4294967295).\nThis should be greater than or equal to the Startup Sync timeout for any application in the Application Monitor Table.",
+            "value":        "65000"
+        },
+        "CF_SEND_FIXED_SIZE_PKTS": { 
+            "title":        "Use fixed size packets (for outgoing PDUs) or not.",
+            "description":  "When sending PDUs, CF can be configured to place the PDUs in fixed-size pkts or let the PDU size determine the pkt size. The value defined must correspond to the CCSDS Total Message size which includes the PDU header, the CCSDS header and data. Set this value to 0 for variable pkt sizes.",
+            "limits":       "This parameter can't be larger than CFE_SB_MAX_SB_MSG_SIZE (typically set to 32K or 64K bytes).\nIf non-zero, this should be greater than or equal to the size needed to hold the largest PDU expected to be sent by the engine (typically a file data PDU which is derived from the CF table cfg param 'OutgoingFileChunkSize').",
+            "value":        "0"
+        },
+        "CF_AUTOSUSPEND_MAX_TRANS": { 
+            "title":        "Auto-Suspend, max transactions to suspend",
+            "description":  "When auto suspend is enabled, after EOF is sent the transaction number is logged in a buffer. The buffer size is defined in this parameter. After the following wakeup cmd is received, cF will check this buffer for transactions to suspend. They cannot be suspended at the time the EOF is sent because the engine is not designed to re-entrant.",
+            "limits":       "This parameter must be greater than zero and can't be larger than an unsigned 32 bit integer (4294967295).",
+            "value":        "1"
+        },
+        "CF_MISSION_REV": { 
+            "title":        "Mission specific version number for CF application",
+            "description":  "An application version number consists of four parts: major version number, minor version number, revision number and mission specific revision number. The mission specific revision number is defined here and the other parts are defined in 'cf_version.h'.",
+            "limits":       "Must be defined as a numeric value that is greater than or equal to zero.",
+            "value":        "0"
+        }
+    }
+}

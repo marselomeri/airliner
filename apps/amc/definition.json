@@ -1,6 +1,20 @@
 {
     "short_name": "SCH",
     "long_name": "Scheduler",
+    "code_templates": {
+        "msgids": {
+            "template": "../platform_inc/sch_msgids.j2",
+            "output": "sch_msgids.h"
+        },
+        "perfids": {
+            "template": "../mission_inc/sch_perfids.j2",
+            "output": "sch_perfids.h"
+        },
+        "platform_cfg": {
+            "template": "../platform_inc/sch_platform_cfg.j2",
+            "output": "sch_platform_cfg.h"
+        }
+    },
     "commands": {
         "SCH_CMD_MID": { "msgid": "", "commands": {
             "Noop":         { "cc":  0, "struct": "CFE_SB_CmdHdr_t" },
@@ -20,8 +34,9 @@
         }}
     },
     "telemetry": { 
-        "HK":         { "msgid_macro": "SCH_HK_TLM_MID",   "msgid": "", "struct": "SCH_HkPacket_t"},
-        "Diagnostic": { "msgid_macro": "SCH_DIAG_TLM_MID", "msgid": "", "struct": "SCH_DiagPacket_t" }
+        "SCH_HK_TLM_MID":        { "msgid": "", "struct": "SCH_HkPacket_t"},
+        "SCH_DIAG_TLM_MID":      { "msgid": "", "struct": "SCH_DiagPacket_t" },
+        "SCH_ACTIVITY_DONE_MID": { "msgid": "", "struct": "CFE_SB_TlmHdr_t" }
     },
     "events": {
         "SCH_INITSTATS_INF_EID":              {"id":  1},
@@ -79,12 +94,19 @@
         "SCH_APPMAIN_PERF_ID": {"value": ""}
     },
     "tables": {
-        "MSG_DEFS": {"title": "Message Definitions",  "isDumpTable": false, "default": "sch_def_msgtbl.tbl", "_config_wizard": {
+        "_config_wizard": {
             "class": "com.windhoverlabs.airliner.apps.sch.UISchMsgDefTableWizard"
-        }},
-        "SCHED_DEF": {"title": "Schedule Definitions", "isDumpTable": false, "default": "sch_def_schtbl.tbl", "_config_wizard": {
-            "class": "com.windhoverlabs.airliner.apps.sch.UISchSchDefTableWizard"
-        }}
+        },
+        "MSG_DEFS": {
+            "title": "Message Definitions", 
+            "default": "sch_def_msgtbl.tbl", 
+            "template": "../tables/sch_def_msgtbl.j2" 
+        },
+        "SCHED_DEF": {
+            "title": "Schedule Definitions", 
+            "default": "sch_def_schtbl.tbl", 
+            "template": "../tables/sch_def_schtbl.j2"
+        }
     },
     "config": {
         "SCH_PIPE_DEPTH": { 

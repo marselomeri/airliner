@@ -1,8 +1,38 @@
 {
   "config_base": "../../../..",
   "modules": {
+    "ak8963": {
+      "definition": "../../../../apps/ak8963/definition.json"
+    },
+    "cf": {
+      "definition": "../../../../apps/cf/definition.json"
+    },
+    "cs": {
+      "definition": "../../../../apps/cs/definition.json"
+    },
+    "ds": {
+      "definition": "../../../../apps/ds/definition.json"
+    },
+    "fm": {
+      "definition": "../../../../apps/fm/definition.json"
+    },
+    "hk": {
+      "definition": "../../../../apps/hk/definition.json"
+    },
+    "lc": {
+      "definition": "../../../../apps/lc/definition.json"
+    },
+    "md": {
+      "definition": "../../../../apps/md/definition.json"
+    },
+    "mm": {
+      "definition": "../../../../apps/mm/definition.json"
+    },
+    "sc": {
+      "definition": "../../../../apps/sc/definition.json"
+    },
     "sch": {
-      "definition": "../../../../apps/sch/fsw/for_build/definition.json",
+      "definition": "../../../../apps/sch/definition.json",
       "tables": {
         "_SCHED_DEF": {
           "0": {

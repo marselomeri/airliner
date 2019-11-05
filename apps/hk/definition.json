@@ -1,0 +1,112 @@
+{
+    "short_name": "HK",
+    "long_name": "Housekeeping",
+    "code_templates": {
+    },
+    "commands": {
+        "HK_CMD_MID": { "msgid": "", "commands": {
+            "Noop":         { "cc":  0, "struct": "CFE_SB_CmdHdr_t" },
+            "Reset":        { "cc":  1, "struct": "CFE_SB_CmdHdr_t" }
+        }},
+        "HK_SEND_HK_MID": { "msgid": "", "commands": {
+            "SendHK": { "cc":  0, "struct": "CFE_SB_CmdHdr_t" }
+        }},
+        "HK_SEND_COMBINED_PKT_MID": { "msgid": "", "commands": {
+            "Unused": { "cc":  0, "struct": "HK_Send_Out_Msg_t" }
+        }}
+    },
+    "telemetry": { 
+        "HK_HK_TLM_MID":         { "msgid": "", "struct": "HK_HkPacket_t"},
+        "HK_COMBINED_PKT1_MID":  { "msgid": ""},
+        "HK_COMBINED_PKT2_MID":  { "msgid": ""},
+        "HK_COMBINED_PKT3_MID":  { "msgid": ""},
+        "HK_COMBINED_PKT4_MID":  { "msgid": ""},
+        "HK_COMBINED_PKT5_MID":  { "msgid": ""},
+        "HK_COMBINED_PKT6_MID":  { "msgid": ""},
+        "HK_COMBINED_PKT7_MID":  { "msgid": ""},
+        "HK_COMBINED_PKT8_MID":  { "msgid": ""},
+        "HK_COMBINED_PKT9_MID":  { "msgid": ""},
+        "HK_COMBINED_PKT10_MID": { "msgid": ""}
+    },
+    "events": {
+        "HK_INIT_EID":                      {"id":  1},
+        "HK_CC_ERR_EID":                    {"id":  2},
+        "HK_CMD_LEN_ERR_EID":               {"id":  3},
+        "HK_NOOP_CMD_EID":                  {"id":  4},
+        "HK_RESET_CNTRS_CMD_EID":           {"id":  5},
+        "HK_ACCESSING_PAST_PACKET_END_EID": {"id":  6},
+        "HK_MEM_POOL_MALLOC_FAILED_EID":    {"id":  7},
+        "HK_CANT_SUBSCRIBE_TO_SB_PKT_EID":  {"id":  8},
+        "HK_MEM_POOL_FREE_FAILED_EID":      {"id":  9},
+        "HK_UNEXPECTED_GETSTAT_RET_EID":    {"id": 10},
+        "HK_UNKNOWN_COMBINED_PACKET_EID":   {"id": 11},
+        "HK_OUTPKT_MISSING_DATA_EID":       {"id": 12},
+        "HK_CR_PIPE_ERR_EID":               {"id": 14},
+        "HK_SUB_CMB_ERR_EID":               {"id": 15},
+        "HK_SUB_REQ_ERR_EID":               {"id": 16},
+        "HK_SUB_CMD_ERR_EID":               {"id": 17},
+        "HK_CR_POOL_ERR_EID":               {"id": 18},
+        "HK_CPTBL_REG_ERR_EID":             {"id": 19},
+        "HK_RTTBL_REG_ERR_EID":             {"id": 20},
+        "HK_CPTBL_LD_ERR_EID":              {"id": 21},
+        "HK_CPTBL_MNG_ERR_EID":             {"id": 22},
+        "HK_RTTBL_MNG_ERR_EID":             {"id": 23},
+        "HK_CPTBL_GADR_ERR_EID":            {"id": 24},
+        "HK_RTTBL_GADR_ERR_EID":            {"id": 25}
+    },
+    "perfids": {
+        "HK_APPMAIN_PERF_ID": {"value": ""}
+    },
+    "tables": {
+    },
+    "config": {
+        "HK_PIPE_DEPTH": { 
+            "title":        "Application Pipe Depth",
+            "description":  "Dictates the pipe depth of the hk command pipe.",
+            "limits":       "The minimum size of this paramater is 1. The maximum size dictated by cFE platform configuration parameter  CFE_SB_MAX_PIPE_DEPTH",
+            "value":        "40"
+        },
+        "HK_DISCARD_INCOMPLETE_COMBO": { 
+            "title":        "Discard Incomplete Combo Packets",
+            "description":  "Dictates whether combo packets that have not had all data contents updated since last requested will be discarded (YES = 1) or sent anyway (NO = 0).",
+            "limits":       "This parameter can be set to 0 or 1 only.",
+            "value":        "0"
+        },
+        "HK_COPY_TABLE_ENTRIES": { 
+            "title":        "Maximum Number of HK Copy Table Entries",
+            "description":  "Dictates the number of elements in the hk copy table.",
+            "limits":       "The maximum size of this paramEter is 8192.",
+            "value":        "128"
+        },
+        "HK_NUM_BYTES_IN_MEM_POOL": { 
+            "title":        "Number of bytes in the HK Memory Pool",
+            "description":  "The HK memory pool contains the memory needed for the output packets. The output packets are dynamically allocated from this pool when the HK copy table is initially processed or loaded with new data.",
+            "limits":       "The Housekeeping app does not place a limit on this parameter, but there is an overhead cost in the memory pool.  The value must be larger than what is needed.",
+            "value":        "6 * 1024"
+        },
+        "HK_COPY_TABLE_NAME": { 
+            "title":        "Name of the HK Copy Table",
+            "description":  "This parameter defines the name of the HK Copy Table.",
+            "limits":       "The Housekeeping app does not place a limit on this parameter.",
+            "value":        "CopyTable"
+        },
+        "HK_RUNTIME_TABLE_NAME": { 
+            "title":        "Name of the HK Run-time Table",
+            "description":  "This parameter defines the name of the HK Run-time Table.",
+            "limits":       "The Housekeeping app does not place a limit on this parameter.",
+            "value":        "RuntimeTable"
+        },
+        "HK_COPY_TABLE_FILENAME": { 
+            "title":        "HK Copy Table Filename",
+            "description":  "The value of this constant defines the filename of the HK Copy Table",
+            "limits":       "The length of each string, including the NULL terminator cannot exceed the #OS_MAX_PATH_LEN value.",
+            "value":        "/cf/apps/hk_cpy_tbl.tbl"
+        },
+        "HK_MISSION_REV": { 
+            "title":        "Mission specific version number for HK application",
+            "description":  "An application version number consists of four parts: major version number, minor version number, revision number and mission specific revision number. The mission specific revision number is defined here and the other parts are defined in 'hk_version.h'.",
+            "limits":       "Must be defined as a numeric value that is greater than or equal to zero.",
+            "value":        "0"
+        }
+    }
+}
