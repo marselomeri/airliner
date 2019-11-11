@@ -6,7 +6,7 @@
         "view" : {
             "0": {
                 "dbPath": "tables",
-                "viewClass": "com.windhoverlabs.ide.sch.SchTableEditor"
+                "viewClass": "com.windhoverlabs.ide.module.sch.SchTableEditor"
             }
         }
     },
