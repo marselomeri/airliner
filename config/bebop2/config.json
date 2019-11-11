@@ -2,7 +2,7 @@
     "config_base": "../..",
     "modules": {
         "sch": {
-            "definition": "../../apps/sch/fsw/for_build/definition.json",
+            "definition": "../../apps/sch/definition.json",
             "commands": {
                 "SCH_CMD_MID":      { "msgid": "0x123d"}
             },

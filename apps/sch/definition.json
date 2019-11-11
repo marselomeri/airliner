@@ -1,12 +1,12 @@
 {
-    "short_name": "SCH",
+    "short_name": "sch",
     "long_name": "Scheduler",
     "ide": {
-        "plugin": "plugin.jar",
+        "plugin": "ide/SchPlugin.jar",
         "view" : {
             "0": {
-                "path": "tables",
-                "view": "com.windhoverlabs.ide.sch.SchTableEditor"
+                "dbPath": "tables",
+                "viewClass": "com.windhoverlabs.ide.sch.SchTableEditor"
             }
         }
     },
