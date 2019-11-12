@@ -1,6 +1,14 @@
 {
-    "short_name": "HK",
+    "short_name": "hk",
     "long_name": "Housekeeping",
+    "ide": {
+        "view" : {
+            "0": {
+                "dbPath": "tables",
+                "viewClass": "com.windhoverlabs.ide.dialogs.GenericTableEditor"
+            }
+        }
+    },
     "code_templates": {
     },
     "commands": {

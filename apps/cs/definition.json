@@ -1,13 +1,33 @@
 {
-    "short_name": "CS",
+    "short_name": "cs",
     "long_name": "Checksum",
+    "ide": {
+        "view" : {
+            "0": {
+                "dbPath": "tables.CS_EEPROM_TABLE",
+                "viewClass": "com.windhoverlabs.ide.dialogs.GenericTableEditor"
+            },
+            "1": {
+                "dbPath": "tables.CS_MEMORY_TABLE",
+                "viewClass": "com.windhoverlabs.ide.dialogs.GenericTableEditor"
+            },
+            "2": {
+                "dbPath": "tables.CS_APP_TABLE",
+                "viewClass": "com.windhoverlabs.ide.dialogs.GenericTableEditor"
+            },
+            "3": {
+                "dbPath": "tables.CS_TABLES_TABLE",
+                "viewClass": "com.windhoverlabs.ide.dialogs.GenericTableEditor"
+            }
+        }
+    },
     "code_templates": {
     },
     "commands": {
         "CS_CMD_MID": { "msgid": "", "commands": {
             "Noop":                     { "cc":  0, "struct": "CS_NoArgsCmd_t" },
             "Reset":                    { "cc":  1, "struct": "CS_NoArgsCmd_t" },
-            "OneShot":                  { "cc":  2, "struct": "CS_OneShotCmd_t"  },
+            "OneShot":                  { "cc":  2, "struct": "CS_OneShotCmd_t" },
             "CancelOneShot":            { "cc":  3, "struct": "CS_NoArgsCmd_t"  },
             "EnableAllCS":              { "cc":  4, "struct": "CS_NoArgsCmd_t"  },
             "DisableAllCS":             { "cc":  5, "struct": "CS_NoArgsCmd_t"  },
@@ -207,6 +227,10 @@
         "CS_APPMAIN_PERF_ID": {"value": ""}
     },
     "tables": {
+        "CS_EEPROM_TABLE": {},
+        "CS_MEMORY_TABLE": {},
+        "CS_APP_TABLE":    {},
+        "CS_TABLES_TABLE": {}
     },
     "config": {
         "CS_CHILD_TASK_FLAGS": { 

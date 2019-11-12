@@ -1,6 +1,14 @@
 {
-    "short_name": "FM",
+    "short_name": "fm",
     "long_name": "File Manager",
+    "ide": {
+        "view" : {
+            "0": {
+                "dbPath": "tables",
+                "viewClass": "com.windhoverlabs.ide.dialogs.GenericTableEditor"
+            }
+        }
+    },
     "code_templates": {
     },
     "commands": {

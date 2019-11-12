@@ -1,6 +1,14 @@
 {
-    "short_name": "DS",
+    "short_name": "ds",
     "long_name": "Data Storage",
+    "ide": {
+        "view" : {
+            "0": {
+                "dbPath": "tables",
+                "viewClass": "com.windhoverlabs.ide.dialogs.GenericTableEditor"
+            }
+        }
+    },
     "code_templates": {
     },
     "commands": {

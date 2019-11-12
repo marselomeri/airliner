@@ -1,6 +1,14 @@
 {
-    "short_name": "CF",
+    "short_name": "cf",
     "long_name": "CFDP File Delivery",
+    "ide": {
+        "view" : {
+            "0": {
+                "dbPath": "tables",
+                "viewClass": "com.windhoverlabs.ide.dialogs.GenericTableEditor"
+            }
+        }
+    },
     "code_templates": {
     },
     "commands": {

@@ -1,6 +1,14 @@
 {
-    "short_name": "LC",
+    "short_name": "lc",
     "long_name": "Limit Checker",
+    "ide": {
+        "view" : {
+            "0": {
+                "dbPath": "tables",
+                "viewClass": "com.windhoverlabs.ide.dialogs.GenericTableEditor"
+            }
+        }
+    },
     "code_templates": {
     },
     "commands": {

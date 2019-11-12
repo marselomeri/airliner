@@ -1,6 +1,14 @@
 {
-    "short_name": "MM",
+    "short_name": "mm",
     "long_name": "Memory Manager",
+    "ide": {
+        "view" : {
+            "0": {
+                "dbPath": "tables",
+                "viewClass": "com.windhoverlabs.ide.dialogs.GenericTableEditor"
+            }
+        }
+    },
     "code_templates": {
     },
     "commands": {

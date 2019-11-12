@@ -1,6 +1,14 @@
 {
-    "short_name": "SC",
+    "short_name": "sc",
     "long_name": "Stored Command",
+    "ide": {
+        "view" : {
+            "0": {
+                "dbPath": "tables",
+                "viewClass": "com.windhoverlabs.ide.dialogs.GenericTableEditor"
+            }
+        }
+    },
     "code_templates": {
     },
     "commands": {

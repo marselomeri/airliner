@@ -1,6 +1,14 @@
 {
-    "short_name": "MD",
+    "short_name": "md",
     "long_name": "Memory Dwell",
+    "ide": {
+        "view" : {
+            "0": {
+                "dbPath": "tables",
+                "viewClass": "com.windhoverlabs.ide.dialogs.GenericTableEditor"
+            }
+        }
+    },
     "code_templates": {
     },
     "commands": {

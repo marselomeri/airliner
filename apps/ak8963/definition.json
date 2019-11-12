@@ -1,6 +1,14 @@
 {
-    "short_name": "AK8963",
+    "short_name": "ak8963",
     "long_name": "AK8963 Driver",
+    "ide": {
+        "view" : {
+            "0": {
+                "dbPath": "tables",
+                "viewClass": "com.windhoverlabs.ide.dialogs.GenericTableEditor"
+            }
+        }
+    },
     "code_templates": {
     },
     "commands": {
