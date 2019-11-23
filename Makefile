@@ -37,6 +37,8 @@ TARGET_PATHS := $(shell find config -maxdepth 2 -mindepth 2 -type d -path 'confi
 TARGET_NAMES := $(shell echo ${TARGET_PATHS} )
 
 
+
+
 help::
 	@echo $(TARGET_PATHS)
 	@echo 'Specify a target to build.  Available targets are:'
@@ -59,7 +61,34 @@ $(TARGET_NAMES)::
 	TARGET_PATH=$$(echo ${TARGET_PATHS} | cut -d " " -f $$idx); \
 	mkdir -p build/$$TARGET_PATH; \
 	(cd build/$$TARGET_PATH; cmake -DBUILDNAME:STRING=$$TARGET_PATH -G"Eclipse CDT4 - Unix Makefiles" -DCMAKE_ECLIPSE_GENERATE_SOURCE_PROJECT=TRUE CMAKE_BUILD_TYPE=Debug ../../..; $(MAKE) --no-print-directory);
-	
+
+rtems/tools/bin/arm-rtems5-gcc::
+rtems-toolchain::
+	@echo 'Building RTEMS ARM toolchain'
+	cd rtems/rtems-source-builder/rtems; \
+	  ../source-builder/sb-check; \
+	  ../source-builder/sb-set-builder --source-only-download 5/rtems-all; \
+	  ../source-builder/sb-set-builder --without-rtems --prefix=../../tools 5/rtems-arm
+
+
+rtems/rtems/cpukit/configure::
+rtems-bootstrap:: rtems/tools/bin/arm-rtems5-gcc
+	@echo 'Bootstrapping RTEMS'
+	export PATH=${PWD}/rtems/tools/bin:${PATH}; \
+	  cd rtems/rtems; \
+	  ./rtems-bootstrap
+
+rtems-bsp-snickerdoodle:: rtems/rtems/cpukit/configure
+	@echo 'Building Snickerdoodle Kernel'
+	export PATH=${PWD}/rtems/tools/bin:${PATH}; \
+	  cd rtems; \
+	  mkdir -p snickerdoodle/kernel; \
+	  cd snickerdoodle; \
+	  ../rtems/configure --target=arm-rtems5 --enable-rtemsbsp=snickerdoodle --enable-tests=samples --prefix=${PWD}/kernel; \
+	  make; \
+	  make install
+
+rtems:: rtems-bsp-snickerdoodle
 
 clean::
 	rm -rf build
