@@ -78,13 +78,13 @@ rtems-bootstrap:: rtems/tools/bin/arm-rtems5-gcc
 	  cd rtems/rtems; \
 	  ./rtems-bootstrap
 
-rtems-bsp-snickerdoodle:: rtems/rtems/cpukit/configure
+rtems-bsp-snickerdoodle:: 
 	@echo 'Building Snickerdoodle Kernel'
 	export PATH=${PWD}/rtems/tools/bin:${PATH}; \
 	  cd rtems; \
 	  mkdir -p snickerdoodle/kernel; \
 	  cd snickerdoodle; \
-	  ../rtems/configure --target=arm-rtems5 --enable-rtemsbsp=snickerdoodle --enable-tests=samples --prefix=${PWD}/kernel; \
+	  ../rtems/configure --target=arm-rtems5 --enable-rtemsbsp=snickerdoodle --enable-tests=samples --prefix=${PWD}/rtems/snickerdoodle/kernel; \
 	  make; \
 	  make install
 
