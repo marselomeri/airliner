@@ -88,7 +88,22 @@ rtems-bsp-snickerdoodle::
 	  make; \
 	  make install
 
-rtems:: rtems-bsp-snickerdoodle
+rtems-bsp-ocpoc:: 
+	@echo 'Building Ocpoc Kernel'
+	export PATH=${PWD}/rtems/tools/bin:${PATH}; \
+	  cd rtems; \
+	  mkdir -p ocpoc/kernel; \
+	  cd ocpoc; \
+	  ../rtems/configure --target=arm-rtems5 --enable-rtemsbsp=ocpoc --enable-tests=samples --prefix=${PWD}/rtems/ocpoc/kernel; \
+	  make; \
+	  make install
+
+rtems:: rtems-bsp-snickerdoodle rtems-bsp-ocpoc
+	export PATH=${PWD}/rtems/tools/bin:${PATH}; \
+	  cd rtems; \
+	  arm-rtems5-objcopy -R -S --strip-debug -O binary snickerdoodle/arm-rtems5/c/snickerdoodle/testsuites/samples/hello.exe hello.bin; \
+	  arm-rtems5-objcopy -R -S --strip-debug -O binary ocpoc/arm-rtems5/c/ocpoc/testsuites/samples/hello.exe hello.bin;
 
 clean::
 	rm -rf build
+
