@@ -1,0 +1,130 @@
+{
+    "config": {
+        "OS_MAX_QUEUE_WIDTH": { 
+            "title":        "",
+            "description":  "",
+            "limits":       "",
+            "value":        "8"
+        },
+        "OS_MAX_QUEUE_DEPTH": { 
+            "title":        "",
+            "description":  "",
+            "limits":       "",
+            "value":        "256"
+        },
+        "OS_MAX_TASKS": { 
+            "title":        "",
+            "description":  "",
+            "limits":       "",
+            "value":        "100"
+        },
+        "OS_MAX_QUEUES": { 
+            "title":        "",
+            "description":  "",
+            "limits":       "",
+            "value":        "255"
+        },
+        "OS_MAX_COUNT_SEMAPHORES": { 
+            "title":        "",
+            "description":  "",
+            "limits":       "",
+            "value":        "100"
+        },
+        "OS_MAX_BIN_SEMAPHORES": { 
+            "title":        "",
+            "description":  "",
+            "limits":       "",
+            "value":        "100"
+        },
+        "OS_MAX_MUTEXES": { 
+            "title":        "",
+            "description":  "",
+            "limits":       "",
+            "value":        "100"
+        },
+        "OS_MAX_PATH_LEN": { 
+            "title":        "",
+            "description":  "",
+            "limits":       "",
+            "value":        "64"
+        },
+        "OS_MAX_LOCAL_PATH_LEN": { 
+            "title":        "",
+            "description":  "",
+            "limits":       "",
+            "value":        "(OS_MAX_PATH_LEN + OS_FS_PHYS_NAME_LEN)"
+        },
+        "OS_MAX_API_NAME": { 
+            "title":        "",
+            "description":  "",
+            "limits":       "",
+            "value":        "40"
+        },
+        "OS_MAX_FILE_NAME": { 
+            "title":        "",
+            "description":  "",
+            "limits":       "",
+            "value":        "20"
+        },
+        "OS_BUFFER_SIZE": { 
+            "title":        "",
+            "description":  "",
+            "limits":       "",
+            "value":        "4000"
+        },
+        "OS_BUFFER_MSG_DEPTH": { 
+            "title":        "",
+            "description":  "",
+            "limits":       "",
+            "value":        "100"
+        },
+        "OS_MAX_CMD_LEN": { 
+            "title":        "",
+            "description":  "",
+            "limits":       "",
+            "value":        "1000"
+        },
+        "OS_INCLUDE_NETWORK": { 
+            "title":        "",
+            "description":  "",
+            "limits":       "",
+            "value":        "TRUE"
+        },
+        "OS_MAX_NUM_OPEN_FILES": { 
+            "title":        "",
+            "description":  "",
+            "limits":       "",
+            "value":        "50"
+        },
+        "OS_SHELL_CMD_INPUT_FILE_NAME": { 
+            "title":        "",
+            "description":  "",
+            "limits":       "",
+            "value":        "/ram/OS_ShellCmd.in"
+        },
+        "OS_INCLUDE_MODULE_LOADER": { 
+            "title":        "",
+            "description":  "",
+            "limits":       "",
+            "value":        "TRUE"
+        },
+        "OS_MAX_MODULES": { 
+            "title":        "",
+            "description":  "",
+            "limits":       "",
+            "value":        "64"
+        },
+        "OS_MAX_SYM_LEN": { 
+            "title":        "",
+            "description":  "",
+            "limits":       "",
+            "value":        "64"
+        },
+        "OS_MAX_TIMERS": { 
+            "title":        "",
+            "description":  "",
+            "limits":       "",
+            "value":        "5"
+        }
+    }
+}

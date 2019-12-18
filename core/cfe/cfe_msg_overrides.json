@@ -111,7 +111,7 @@
                     "CFE_TIME_FakeToneCmd_t":        { "airliner_cc":  0, "macro": "CFE_TIME_FAKE_CMD_MID", "airliner_msg": "CFE_TIME_FakeToneCmd_t"},
                     "CFE_TIME_1HzCmd_t":             { "airliner_cc":  0, "macro": "CFE_TIME_1HZ_CMD_MID",  "airliner_msg": "CFE_TIME_1HzCmd_t"},
                     "CFE_TIME_SendCmd":              { "airliner_cc":  0, "macro": "CFE_TIME_SEND_CMD_MID", "airliner_msg": "CFE_TIME_NoArgsCmd_t"},
-                    "CFE_TIME_HkPacket_t":           {                    "macro": "CFE_TIME_SEND_HK_MID",  "airliner_msg": "CFE_TIME_HkPacket_t"},
+                    "CFE_TIME_HkPacket_t":           {                    "macro": "CFE_TIME_HK_TLM_MID",   "airliner_msg": "CFE_TIME_HkPacket_t"},
                     "CFE_TIME_DiagPacket_t":         {                    "macro": "CFE_TIME_DIAG_TLM_MID", "airliner_msg": "CFE_TIME_DiagPacket_t"}
                 },  
                 
