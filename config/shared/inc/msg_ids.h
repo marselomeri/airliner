@@ -629,11 +629,11 @@
 #define LGC_CMD_MID                                  (0x1cb3)
 
 /* MS5607                                                  */
-#define MS5607_SEND_HK_MID                           (0x0cb5)
+#define MS5607_SEND_HK_MID                           (0x1cb5)
 #define MS5607_HK_TLM_MID                            (0x0cb6)
 #define MS5607_DIAG_TLM_MID                          (0x0cb7)
-#define MS5607_CMD_MID                               (0x0cb8)
-#define MS5607_MEASURE_MID                           (0x0cb9)
+#define MS5607_CMD_MID                               (0x1cb8)
+#define MS5607_MEASURE_MID                           (0x1cb9)
 
 /* AK8963                                                  */
 #define AK8963_HK_TLM_MID                            (0x0cc1)

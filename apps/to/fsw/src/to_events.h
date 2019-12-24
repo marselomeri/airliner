@@ -63,7 +63,7 @@ typedef enum {
 **  TODO fill this in
 **
 */
-    TO_INF_EID,
+    TO_INF_EID = 1,
 
 /** \brief <tt> 'TO Initialized. Version \%d.\%d.\%d' </tt>
 **  \event <tt> 'TO Initialized. Version \%d.\%d.\%d' </tt>
@@ -79,7 +79,7 @@ typedef enum {
 **  The second \c %d field contains the Application's Minor Version Number
 **  The third \c %d field contains the Application's Revision Number
 */
-    TO_INIT_INF_EID,
+    TO_INIT_INF_EID = 2,
 
 /** \brief <tt> 'TO - ' </tt>
 **  \event <tt> 'TO - ' </tt>
@@ -91,7 +91,7 @@ typedef enum {
 **  This message is generated when a table is initialized.
 **
 */
-    TO_CONFIG_TABLE_INF_EID,
+    TO_CONFIG_TABLE_INF_EID = 3,
 
 /** \brief <tt> 'TO - ' </tt>
 **  \event <tt> 'TO - ' </tt>
@@ -103,7 +103,7 @@ typedef enum {
 **  This event message is issued when TBD
 **
 */
-    TO_CDS_INF_EID,
+    TO_CDS_INF_EID = 4,
 
 /** \brief <tt> 'TO - Recvd $x cmd (%us)' </tt>
 **  \event <tt> 'TO - Recvd $x cmd (%us)' </tt>
@@ -116,7 +116,7 @@ typedef enum {
 **  received and processed a command.
 **
 */
-    TO_CMD_INF_EID,
+    TO_CMD_INF_EID = 5,
 
 /** \brief <tt> 'TO - ' </tt>
 **  \event <tt> 'TO - ' </tt>
@@ -128,7 +128,7 @@ typedef enum {
 **  This event message is issued when TBD
 **
 */
-    TO_ERR_EID,
+    TO_ERR_EID = 6,
 
 /** \brief <tt> 'TO - ' </tt>
 **  \event <tt> 'TO - ' </tt>
@@ -141,7 +141,7 @@ typedef enum {
 **  had an error in initialization.
 **
 */
-    TO_INIT_ERR_EID,
+    TO_INIT_ERR_EID = 7,
 
 /** \brief <tt> 'TO - ' </tt>
 **  \event <tt> 'TO - ' </tt>
@@ -154,7 +154,7 @@ typedef enum {
 **  had an error with the configuration table.
 **
 */
-    TO_CONFIG_TABLE_ERR_EID,
+    TO_CONFIG_TABLE_ERR_EID = 8,
 
 /** \brief <tt> 'TO - ' </tt>
 **  \event <tt> 'TO - ' </tt>
@@ -167,7 +167,7 @@ typedef enum {
 **  had an error in CDS.
 **
 */
-    TO_CDS_ERR_EID,
+    TO_CDS_ERR_EID = 9,
 
 /** \brief <tt> 'TO - $commandError' </tt>
 **  \event <tt> 'TO - $commandError' </tt>
@@ -180,7 +180,7 @@ typedef enum {
 **  had an error processing a command.
 **
 */
-    TO_CMD_ERR_EID,
+    TO_CMD_ERR_EID = 10,
 
 /** \brief <tt> 'TO: SB pipe read error (0x%08X), app will exit' </tt>
 **  \event <tt> 'TO: SB pipe read error (0x%08X), app will exit' </tt>
@@ -193,7 +193,7 @@ typedef enum {
 **  had an error reading from a pipe.
 **
 */
-    TO_PIPE_ERR_EID,
+    TO_PIPE_ERR_EID = 11,
 
 /** \brief <tt> 'TO - Recvd invalid $type msgId (0x%04x)' </tt>
 **  \event <tt> 'TO - Recvd invalid $type msgId (0x%04x)' </tt>
@@ -206,7 +206,7 @@ typedef enum {
 **  received an invalid message ID.
 **
 */
-    TO_MSGID_ERR_EID,
+    TO_MSGID_ERR_EID = 12,
 
 /** \brief <tt> 'TO - Rcvd invalid msgLen: msgId=0x%08X, cmdCode=%d, msgLen=%d, expectedLen=%d" </tt>
 **  \event <tt> 'TO - Rcvd invalid msgLen: msgId=0x%08X, cmdCode=%d, msgLen=%d, expectedLen=%d" </tt>
@@ -219,27 +219,27 @@ typedef enum {
 **  received a message with a bad length.
 **
 */
-    TO_MSGLEN_ERR_EID,
+    TO_MSGLEN_ERR_EID = 13,
 
     /* TODO:  Add Doxygen markup. */
-    TO_MSG_WRITE_ERR_EID,
-	TO_MSG_UNSUB_DBG_EID,
-	TO_MSG_DROP_FROM_FLOW_DBG_EID,
-	TO_CR_POOL_ERR_EID,
-	TO_GET_POOL_ERR_EID,
-	TO_TLM_LISTEN_ERR_EID,
-	TO_MSG_FLOW_INFO_EID,
-	TO_PQUEUE_INFO_EID,
-	TO_OUT_CH_INFO_EID,
-	TO_CMD_NOOP_EID,
-	TO_CMD_RESET_EID,
-	TO_CMD_ADD_MSG_FLOW_EID,
-	TO_CMD_REMOVE_MSG_FLOW_EID,
-	TO_CMD_SEND_DIAG_EID,
-	TO_NO_ENCODE_FUNC_EID,
+    TO_MSG_WRITE_ERR_EID = 14,
+	TO_MSG_UNSUB_DBG_EID = 15,
+	TO_MSG_DROP_FROM_FLOW_DBG_EID = 16,
+	TO_CR_POOL_ERR_EID = 17,
+	TO_GET_POOL_ERR_EID = 18,
+	TO_TLM_LISTEN_ERR_EID = 19,
+	TO_MSG_FLOW_INFO_EID = 20,
+	TO_PQUEUE_INFO_EID = 21,
+	TO_OUT_CH_INFO_EID = 22,
+	TO_CMD_NOOP_EID = 23,
+	TO_CMD_RESET_EID = 24,
+	TO_CMD_ADD_MSG_FLOW_EID = 25,
+	TO_CMD_REMOVE_MSG_FLOW_EID = 26,
+	TO_CMD_SEND_DIAG_EID = 27,
+	TO_NO_ENCODE_FUNC_EID = 28,
 
 /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
-    TO_EVT_CNT
+    TO_EVT_CNT = 29
 } TO_EventIds_t;
 
 
