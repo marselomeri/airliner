@@ -1,273 +1,431 @@
 {
     "short_name": "ds",
     "long_name": "Data Storage",
-    "ide": {
-        "view" : {
-            "0": {
-                "dbPath": "tables",
-                "viewClass": "com.windhoverlabs.ide.dialogs.GenericTableEditor"
+    "events": {
+        "DS_INIT_EID": {
+            "id": 1,
+            "type": "INFORMATION"
+        },
+        "DS_INIT_ERR_EID": {
+            "id": 2,
+            "type": "ERROR"
+        },
+        "DS_EXIT_ERR_EID": {
+            "id": 3,
+            "type": "CRITICAL"
+        },
+        "DS_INIT_CDS_ERR_EID": {
+            "id": 6,
+            "type": "ERROR"
+        },
+        "DS_INIT_TBL_CDS_EID": {
+            "id": 7,
+            "type": "DEBUG"
+        },
+        "DS_INIT_TBL_ERR_EID": {
+            "id": 8,
+            "type": "ERROR"
+        },
+        "DS_FIL_TBL_EID": {
+            "id": 10,
+            "type": "INFORMATION"
+        },
+        "DS_FIL_TBL_ERR_EID": {
+            "id": 11,
+            "type": "ERROR"
+        },
+        "DS_FLT_TBL_EID": {
+            "id": 12,
+            "type": "INFORMATION"
+        },
+        "DS_FLT_TBL_ERR_EID": {
+            "id": 13,
+            "type": "ERROR"
+        },
+        "DS_FILE_NAME_ERR_EID": {
+            "id": 14,
+            "type": "ERROR"
+        },
+        "DS_CREATE_FILE_ERR_EID": {
+            "id": 15,
+            "type": "ERROR"
+        },
+        "DS_WRITE_FILE_ERR_EID": {
+            "id": 16,
+            "type": "ERROR"
+        },
+        "DS_CMD_CODE_ERR_EID": {
+            "id": 21,
+            "type": "ERROR"
+        },
+        "DS_HK_REQUEST_ERR_EID": {
+            "id": 22,
+            "type": "ERROR"
+        },
+        "DS_NOOP_CMD_EID": {
+            "id": 31,
+            "type": "INFORMATION"
+        },
+        "DS_NOOP_CMD_ERR_EID": {
+            "id": 32,
+            "type": "ERROR"
+        },
+        "DS_RESET_CMD_EID": {
+            "id": 33,
+            "type": "DEBUG"
+        },
+        "DS_RESET_CMD_ERR_EID": {
+            "id": 34,
+            "type": "ERROR"
+        },
+        "DS_ENADIS_CMD_EID": {
+            "id": 35,
+            "type": "DEBUG"
+        },
+        "DS_ENADIS_CMD_ERR_EID": {
+            "id": 36,
+            "type": "ERROR"
+        },
+        "DS_FILE_CMD_EID": {
+            "id": 37,
+            "type": "DEBUG"
+        },
+        "DS_FILE_CMD_ERR_EID": {
+            "id": 38,
+            "type": "ERROR"
+        },
+        "DS_FTYPE_CMD_EID": {
+            "id": 39,
+            "type": "DEBUG"
+        },
+        "DS_FTYPE_CMD_ERR_EID": {
+            "id": 40,
+            "type": "ERROR"
+        },
+        "DS_PARMS_CMD_EID": {
+            "id": 41,
+            "type": "DEBUG"
+        },
+        " DS_PARMS_CMD_ERR_EID": {
+            "id": 42,
+            "type": "ERROR"
+        },
+        "DS_NTYPE_CMD_EID": {
+            "id": 43,
+            "type": "DEBUG"
+        },
+        "DS_NTYPE_CMD_ERR_EID": {
+            "id": 44,
+            "type": "ERROR"
+        },
+        "DS_STATE_CMD_EID": {
+            "id": 45,
+            "type": "DEBUG"
+        },
+        "DS_STATE_CMD_ERR_EID": {
+            "id": 46,
+            "type": "ERROR"
+        },
+        "DS_PATH_CMD_EID": {
+            "id": 47,
+            "type": "DEBUG"
+        },
+        "DS_PATH_CMD_ERR_EID": {
+            "id": 48,
+            "type": "ERROR"
+        },
+        "DS_BASE_CMD_EID": {
+            "id": 49,
+            "type": "DEBUG"
+        },
+        "DS_BASE_CMD_ERR_EID": {
+            "id": 50,
+            "type": "ERROR"
+        },
+        "DS_EXT_CMD_EI": {
+            "id": 51,
+            "type": "DEBUG"
+        },
+        "DS_EXT_CMD_ERR_EID": {
+            "id": 52,
+            "type": "ERROR"
+        },
+        "DS_SIZE_CMD_EID": {
+            "id": 53,
+            "type": "DEBUG"
+        },
+        "DS_SIZE_CMD_ERR_EID": {
+            "id": 54,
+            "type": "ERROR"
+        },
+        "DS_AGE_CMD_EID": {
+            "id": 55,
+            "type": "DEBUG"
+        },
+        "DS_AGE_CMD_ERR_EID": {
+            "id": 56,
+            "type": "ERROR"
+        },
+        "DS_SEQ_CMD_EID": {
+            "id": 57,
+            "type": "DEBUG"
+        },
+        "DS_SEQ_CMD_ERR_EID": {
+            "id": 58,
+            "type": "ERROR"
+        },
+        "DS_CLOSE_CMD_EID": {
+            "id": 59,
+            "type": "DEBUG"
+        },
+        "DS_CLOSE_CMD_ERR_EID": {
+            "id": 60,
+            "type": "ERROR"
+        },
+        "DS_MOVE_FILE_ERR_EID": {
+            "id": 61,
+            "type": "ERROR"
+        },
+        "DS_GET_FILE_INFO_CMD_EID": {
+            "id": 62,
+            "type": "DEBUG"
+        },
+        "DS_GET_FILE_INFO_CMD_ERR_EID": {
+            "id": 63,
+            "type": "ERROR"
+        },
+        "DS_ADD_MID_CMD_EID": {
+            "id": 64,
+            "type": "DEBUG"
+        },
+        "DS_ADD_MID_CMD_ERR_EID": {
+            "id": 65,
+            "type": "ERROR"
+        },
+        "DS_CLOSE_ALL_CMD_EID": {
+            "id": 66,
+            "type": "DEBUG"
+        },
+        "DS_CLOSE_ALL_CMD_ERR_EID": {
+            "id": 67,
+            "type": "ERROR"
+        }
+    },
+    "telemetry": {
+        "DS_HK_TLM_MID": {
+            "msgID": "",
+            "struct": "DS_HkPacket_t"
+        },
+        "DS_DIAG_TLM_MID": {
+            "msgID": "",
+            "struct": "DS_FileInfoPkt_t"
+        }
+    },
+    "commands": {
+        "DS_CMD_MID": {
+            "msgid": "",
+            "commands": {
+                "Noop": {
+                    "cc": 0,
+                    "struct": "DS_NoopCmd_t"
+                },
+                "Reset": {
+                    "cc": 1,
+                    "struct": "DS_ResetCmd_t"
+                },
+                "SetAppState\n": {
+                    "cc": 2,
+                    "struct": "DS_AppStateCmd_t"
+                },
+                "SetFilterFile": {
+                    "cc": 3,
+                    "struct": "DS_FilterFileCmd_t"
+                },
+                "SetFilterType": {
+                    "cc": 4,
+                    "struct": "DS_FilterTypeCmd_t"
+                },
+                "SetFilterParams": {
+                    "cc": 5,
+                    "struct": "DS_FilterParmsCmd_t"
+                },
+                "SetDestType": {
+                    "cc": 6,
+                    "struct": "DS_DestTypeCmd_t"
+                },
+                "SetDestState": {
+                    "cc": 7,
+                    "struct": "DS_DestStateCmd_t"
+                },
+                "SetDestPath": {
+                    "cc": 8,
+                    "struct": "DS_DestPathCmd_t"
+                },
+                "SetDestBase": {
+                    "cc": 9,
+                    "struct": "DS_DestBaseCmd_t"
+                },
+                "SetDestExt": {
+                    "cc": 10,
+                    "struct": "DS_DestExtCmd_t"
+                },
+                "SetDestSize": {
+                    "cc": 11,
+                    "struct": "DS_DestSizeCmd_t"
+                },
+                "SetDestAge\n": {
+                    "cc": 12,
+                    "struct": "DS_DestAgeCmd_t"
+                },
+                "SetDestCount": {
+                    "cc": 13,
+                    "struct": "DS_DestCountCmd_t"
+                },
+                "CloseFile\n": {
+                    "cc": 14,
+                    "struct": "DS_CloseFileCmd_t"
+                },
+                "GetFileInfo": {
+                    "cc": 15,
+                    "struct": "DS_GetFileInfoCmd_t"
+                },
+                "AddMessage": {
+                    "cc": 16,
+                    "struct": "DS_AddMidCmd_t"
+                },
+                "CloseAll": {
+                    "cc": 17,
+                    "struct": "DS_CloseAllCmd_t"
+                }
+            }
+        },
+        "DS_SEND_HK_MID": {
+            "msgid": "",
+            "commands": {
+                "SendHK": {
+                    "cc": 0,
+                    "struct": "DS_NoopCmd_t"
+                }
             }
         }
     },
-    "code_templates": {
-    },
-    "commands": {
-        "DS_CMD_MID": { "msgid": "", "commands": {
-            "Noop":        { "cc":  0, "struct": "DS_NoopCmd_t" },
-            "Reset":       { "cc":  1, "struct": "DS_ResetCmd_t" },
-            "AppState":    { "cc":  2, "struct": "DS_AppStateCmd_t"  },
-            "FilterFile":  { "cc":  3, "struct": "DS_FilterFileCmd_t"  },
-            "FilterType":  { "cc":  4, "struct": "DS_FilterTypeCmd_t"  },
-            "FilterParms": { "cc":  5, "struct": "DS_FilterParmsCmd_t"  },
-            "DestType":    { "cc":  6, "struct": "DS_DestTypeCmd_t" },
-            "DestState":   { "cc":  7, "struct": "DS_DestStateCmd_t" },
-            "DestPath":    { "cc":  8, "struct": "DS_DestPathCmd_t" },
-            "DestBase":    { "cc":  9, "struct": "DS_DestBaseCmd_t" },
-            "DestExt":     { "cc": 10, "struct": "DS_DestExtCmd_t" },
-            "DestSize":    { "cc": 11, "struct": "DS_DestSizeCmd_t" },
-            "DestAge":     { "cc": 12, "struct": "DS_DestAgeCmd_t" },
-            "DestCount":   { "cc": 13, "struct": "DS_DestCountCmd_t" },
-            "CloseFile":   { "cc": 14, "struct": "DS_CloseFileCmd_t" },
-            "GetFileInfo": { "cc": 15, "struct": "DS_GetFileInfoCmd_t" },
-            "AddMid":      { "cc": 16, "struct": "DS_AddMidCmd_t" },
-            "CloseAll":    { "cc": 17, "struct": "DS_CloseAllCmd_t" }
-        }},
-        "DS_SEND_HK_MID": { "msgid": "", "commands": {
-            "SendHK": { "cc":  0, "struct": "CFE_SB_CmdHdr_t" }
-        }}
-    },
-    "telemetry": { 
-        "DS_HK_TLM_MID":         { "msgid": "", "struct": "DS_HkPacket_t"},
-        "DS_DIAG_TLM_MID":       { "msgid": "", "struct": "DS_FileInfoPkt_t" }
-    },
-    "events": {
-        "DS_INIT_EID":                  {"id": 1},
-        "DS_INIT_ERR_EID":              {"id": 2},
-        "DS_EXIT_ERR_EID":              {"id": 3},
-        "DS_INIT_CDS_ERR_EID":          {"id": 6},
-        "DS_INIT_TBL_CDS_EID":          {"id": 7},
-        "DS_INIT_TBL_ERR_EID":          {"id": 8},
-        "DS_FIL_TBL_EID":               {"id": 10},
-        "DS_FIL_TBL_ERR_EID":           {"id": 11},
-        "DS_FLT_TBL_EID":               {"id": 12},
-        "DS_FLT_TBL_ERR_EID":           {"id": 13},
-        "DS_FILE_NAME_ERR_EID":         {"id": 14},
-        "DS_CREATE_FILE_ERR_EID":       {"id": 15},
-        "DS_WRITE_FILE_ERR_EID":        {"id": 16},
-        "DS_CMD_CODE_ERR_EID":          {"id": 21},
-        "DS_HK_REQUEST_ERR_EID":        {"id": 22},
-        "DS_NOOP_CMD_EID":              {"id": 31},
-        "DS_NOOP_CMD_ERR_EID":          {"id": 32},
-        "DS_RESET_CMD_EID":             {"id": 33},
-        "DS_RESET_CMD_ERR_EID":         {"id": 34},
-        "DS_ENADIS_CMD_EID":            {"id": 35},
-        "DS_ENADIS_CMD_ERR_EID":        {"id": 36},
-        "DS_FILE_CMD_EID":              {"id": 37},
-        "DS_FILE_CMD_ERR_EID":          {"id": 38},
-        "DS_FTYPE_CMD_EID":             {"id": 39},
-        "DS_FTYPE_CMD_ERR_EID":         {"id": 40},
-        "DS_PARMS_CMD_EID":             {"id": 41},
-        "DS_PARMS_CMD_ERR_EID":         {"id": 42},
-        "DS_NTYPE_CMD_EID":             {"id": 43},
-        "DS_NTYPE_CMD_ERR_EID":         {"id": 44},
-        "DS_STATE_CMD_EID":             {"id": 45},
-        "DS_STATE_CMD_ERR_EID":         {"id": 46},
-        "DS_PATH_CMD_EID":              {"id": 47},
-        "DS_PATH_CMD_ERR_EID":          {"id": 48},
-        "DS_BASE_CMD_EID":              {"id": 49},
-        "DS_BASE_CMD_ERR_EID":          {"id": 50},
-        "DS_EXT_CMD_EID":               {"id": 51},
-        "DS_EXT_CMD_ERR_EID":           {"id": 52},
-        "DS_SIZE_CMD_EID":              {"id": 53},
-        "DS_SIZE_CMD_ERR_EID":          {"id": 54},
-        "DS_AGE_CMD_EID":               {"id": 55},
-        "DS_AGE_CMD_ERR_EID":           {"id": 56},
-        "DS_SEQ_CMD_EID":               {"id": 57},
-        "DS_SEQ_CMD_ERR_EID":           {"id": 58},
-        "DS_CLOSE_CMD_EID":             {"id": 59},
-        "DS_CLOSE_CMD_ERR_EID":         {"id": 60},
-        "DS_MOVE_FILE_ERR_EID":         {"id": 61},
-        "DS_GET_FILE_INFO_CMD_EID":     {"id": 62},
-        "DS_GET_FILE_INFO_CMD_ERR_EID": {"id": 63},
-        "DS_ADD_MID_CMD_EID":           {"id": 64},
-        "DS_ADD_MID_CMD_ERR_EID":       {"id": 65},
-        "DS_CLOSE_ALL_CMD_EID":         {"id": 66},
-        "DS_CLOSE_ALL_CMD_ERR_EID":     {"id": 67}
-                    
-    },
     "perfids": {
-        "DS_APPMAIN_PERF_ID": {"value": ""}
-    },
-    "tables": {
+        "DS_APPMAIN_PERF_ID": {
+            "id": ""
+        }
     },
     "config": {
-        "DS_DESTINATION_TBL_NAME": { 
-            "title":        "Destination File Table -- logical table name",
-            "description":  "This parameter defines the name of the DS Destination File Table when referenced via cFE Table Services.  Note that this parameter is not a filename, it is the table specific portion of the logical name.  The entire logical name for this table is 'DS.FILE_TBL'.",
-            "limits":       "The string length (including string terminator) cannot exceed #CFE_TBL_MAX_NAME_LENGTH.  (limit is not verified)",
-            "value":        "FILE_TBL"
+        "DS_DESTINATION_TBL_NAME": {
+            "name": "DS_DESTINATION_TBL_NAME",
+            "value": "FILE_TBL"
         },
-        "DS_DEF_DEST_FILENAME": { 
-            "title":        "Destination File Table -- default table filename",
-            "description":  "This parameter defines the default filename for the Destination File Table.",
-            "limits":       "The string length (including string terminator) cannot exceed #OS_MAX_PATH_LEN.  (limit is not verified)",
-            "value":        "/cf/apps/ds_file_tbl.tbl"
+        "DS_DEF_DEST_FILENAME": {
+            "name": "DS_DEF_DEST_FILENAME",
+            "value": "/cf/apps/ds_file_tbl.tbl"
         },
-        "DS_DEST_FILE_CNT": { 
-            "title":        "Destination File Table -- number of files",
-            "description":  "This parameter defines the size of the DS Destination File Table by setting the number of file entries in the table.  The number should be large enough to provide an entry for all the destination files defined for the project.  Maintenance will be simplified if file index 'n' always describes the same file - even if that file is not in use at the present time.",
-            "limits":       "The number must be greater than zero but there is no upper enforced limit for this parameter.",
-            "value":        "16"
+        "DS_DEST_FILE_CNT": {
+            "name": "DS_DEST_FILE_CNT",
+            "value": 16
         },
-        "DS_PATHNAME_BUFSIZE": { 
-            "title":        "Destination File Table -- pathname buffer size",
-            "description":  "This parameter further defines the size of the Destination File Table by setting the size of the pathname buffer for each file entry.  Note that the buffer must contain both the string and the string terminator - so the max string length is one less than the buffer size.",
-            "limits":       "The buffer size must be greater than zero and a multiple of four bytes for alignment.  The value cannot exceed the maximum filename size allowed by the OS (#OS_MAX_PATH_LEN).",
-            "value":        "OS_MAX_PATH_LEN"
+        "DS_PATHNAME_BUFSIZE": {
+            "name": "DS_PATHNAME_BUFSIZE",
+            "value": "OS_MAX_PATH_LEN"
         },
-        "DS_BASENAME_BUFSIZE": { 
-            "title":        "Destination File Table -- basename buffer size",
-            "description":  "This parameter further defines the size of the Destination File Table by setting the size of the basename buffer for each file entry.  Note that the buffer must contain both the string and the string terminator - so the max string length is one less than the buffer size.",
-            "limits":       "The buffer size must be greater than zero and a multiple of four bytes for alignment.  The value cannot exceed the maximum filename size allowed by the OS (#OS_MAX_PATH_LEN).",
-            "value":        "OS_MAX_PATH_LEN"
+        "DS_BASENAME_BUFSIZE": {
+            "name": "DS_BASENAME_BUFSIZE",
+            "value": "OS_MAX_PATH_LEN"
         },
-        "DS_EXTENSION_BUFSIZE": { 
-            "title":        "Destination File Table -- extension buffer size",
-            "description":  "This parameter further defines the size of the Destination File Table by setting the size of the extension buffer for each file entry.  Note that the buffer must contain both the string and the string terminator - so the max string length is one less than the buffer size.",
-            "limits":       "The buffer size must be greater than zero and a multiple of four bytes for alignment.  The value cannot exceed the maximum filename size allowed by the OS (#OS_MAX_PATH_LEN).",
-            "value":        "8"
+        "DS_EXTENSION_BUFSIZE": {
+            "name": "DS_EXTENSION_BUFSIZE",
+            "value": 8
         },
-        "DS_FILTER_TBL_NAME": { 
-            "title":        "Packet Filter Table -- logical table name",
-            "description":  "This parameter defines the name of the DS Packet Filter Table when referenced via cFE Table Services.  Note that this parameter is not a filename, it is the table specific portion of the logical name.  The entire logical name for this table is 'DS.FILTER_TBL'.",
-            "limits":       "The string length (including string terminator) cannot exceed #CFE_TBL_MAX_NAME_LENGTH.  (limit is not verified)",
-            "value":        "FILTER_TBL"
+        "DS_FILTER_TBL_NAME": {
+            "name": "DS_FILTER_TBL_NAME",
+            "value": "FILTER_TBL"
         },
-        "DS_DEF_FILTER_FILENAME": { 
-            "title":        "Packet Filter Table -- default table filename",
-            "description":  "This parameter defines the default filename for the Packet Filter Table.",
-            "limits":       "The string length (including string terminator) cannot exceed #OS_MAX_PATH_LEN.  (limit is not verified)",
-            "value":        "/cf/apps/ds_filter_tbl.tbl"
+        "DS_DEF_FILTER_FILENAME": {
+            "name": "DS_DEF_FILTER_FILENAME",
+            "value": "cf/apps/ds_filter_tbl.tbl"
         },
-        "DS_PACKETS_IN_FILTER_TABLE": { 
-            "title":        "Packet Filter Table -- number of packets",
-            "description":  "This parameter defines the size of the DS Packet Filter Table by setting the number of packet entries in the table.  The number should be large enough to provide an entry for each command and telemetry packet subject to data storage.",
-            "limits":       "The number must be greater than zero but there is no upper enforced limit for this parameter.  However, setting the size equal to the number of packets that might be subject to data storage, rather than the total number of packets defined for this project, will reduce the table file size, possibly significantly.",
-            "value":        "256"
+        "DS_PACKETS_IN_FILTER_TABLE": {
+            "name": "DS_PACKETS_IN_FILTER_TABLE",
+            "value": 256
         },
-        "DS_FILTERS_PER_PACKET": { 
-            "title":        "Packet Filter Table -- filters per packet",
-            "description":  "This parameter further defines the size of the DS Packet Filter Table by setting the number of filters per packet entry.  This is the maximum number of destination files to which a single packet can be written (at one time).",
-            "limits":       "The number of filters per packet must be greater than zero and not greater than #DS_DEST_FILE_CNT.",
-            "value":        "4"
+        "DS_FILTERS_PER_PACKET": {
+            "name": "DS_FILTERS_PER_PACKET",
+            "value": 4
         },
-        "DS_DESCRIPTOR_BUFSIZE": { 
-            "title":        "Common Table File -- descriptor text buffer size",
-            "description":  "This parameter defines the size of the Descriptor Text fields in both the Destination File Table and the Packet Filter Table.  The buffer includes the string terminator.",
-            "limits":       "The buffer size must be greater than zero and a multiple of four bytes for alignment.  There is no upper limit.",
-            "value":        "32"
+        "DS_DESCRIPTOR_BUFSIZE": {
+            "name": "DS_DESCRIPTOR_BUFSIZE",
+            "value": 32
         },
-        "DS_SEQUENCE_DIGITS": { 
-            "title":        "Filename Sequence Count -- number of digits",
-            "description":  "This parameter defines the number of filename sequence count digits used when the filename type has been set to 'count' rather than 'time'.  Sequence counts are padded with leading zero's to create fixed length strings.",
-            "limits":       "The number of sequence count digits must be greater than zero - even if there is no intention of later setting the filename type to 'count'.  This value should match the definition for #DS_MAX_SEQUENCE_COUNT, below.",
-            "value":        "8"
+        "DS_SEQUENCE_DIGITS": {
+            "name": "DS_SEQUENCE_DIGITS",
+            "value": 8
         },
-        "DS_MAX_SEQUENCE_COUNT": { 
-            "title":        "Filename Sequence Count -- max counter value",
-            "description":  "This parameter defines the maximum value a file sequence count will reach before rollover.",
-            "limits":       "The value must be greater than zero and should not have more digits than the number of sequence count digits defined for #DS_SEQUENCE_DIGITS, above.",
-            "value":        "99999999"
+        "DS_MAX_SEQUENCE_COUNT": {
+            "name": "DS_MAX_SEQUENCE_COUNT",
+            "value": 99999999
         },
-        "DS_TOTAL_FNAME_BUFSIZE": { 
-            "title":        "Data Storage File -- total filename size",
-            "description":  "This parameter defines the maximum size of a filename after combining the pathname, basename, sequence and extension.",
-            "limits":       "The buffer size must be greater than zero and a multiple of four bytes for alignment.  The buffer size (including string terminator) cannot exceed #OS_MAX_PATH_LEN.",
-            "value":        "OS_MAX_PATH_LEN"
+        "DS_TOTAL_FNAME_BUFSIZE": {
+            "name": "DS_TOTAL_FNAME_BUFSIZE",
+            "value": "OS_MAX_PATH_LEN"
         },
-        "DS_FILE_HDR_SUBTYPE": { 
-            "title":        "Data Storage File -- cFE file header sub-type",
-            "description":  "This parameter defines a mission-specific value that is used to identify a Data Storage file.",
-            "limits":       "The file header data type for the value is 32 bits unsigned, thus the value can be anything from zero to 4,294,967,295. (limit is not verified)",
-            "value":        "12345"
+        "DS_FILE_HDR_SUBTYPE": {
+            "name": "DS_FILE_HDR_SUBTYPE",
+            "value": 12345
         },
-        "DS_FILE_HDR_DESCRIPTION": { 
-            "title":        "Data Storage File -- cFE file header description",
-            "description":  "This parameter defines a mission-specific text string that may be used to identify Data Storage files.",
-            "limits":       "The string length (including string terminator) cannot exceed #CFE_FS_HDR_DESC_MAX_LEN.  (limit is not verified)",
-            "value":        "DS data storage file"
+        "DS_FILE_HDR_DESCRIPTION": {
+            "name": "DS_FILE_HDR_DESCRIPTION",
+            "value": "DS data storage file"
         },
-        "DS_FILE_MIN_SIZE_LIMIT": { 
-            "title":        "Data Storage File -- minimum size limit",
-            "description":  "This parameter defines the lower limit for commands and table entries that define the size (in bytes) when a data storage file is automatically closed.",
-            "limits":       "None -- however, the user should be cautioned that a very small value will allow an size limit that closes files too frequently, while a very large value will effectively prevent files from ever being closed due to size.",
-            "value":        "1024"
+        "DS_FILE_MIN_SIZE_LIMIT": {
+            "name": "DS_FILE_MIN_SIZE_LIMIT",
+            "value": 1024
         },
-        "DS_FILE_MIN_AGE_LIMIT": { 
-            "title":        "Data Storage File -- minimum age limit",
-            "description":  "This parameter defines the lower limit for commands and table entries that define the age (in seconds) when a data storage file is automatically closed.",
-            "limits":       "None -- however, the user should be cautioned that a very small value will allow an age limit that closes files too frequently, while a very large value will effectively prevent files from ever being closed due to age.",
-            "value":        "60"
+        "DS_FILE_MIN_AGE_LIMIT": {
+            "name": "DS_FILE_MIN_AGE_LIMIT",
+            "value": 60
         },
-        "DS_APP_PIPE_NAME": { 
-            "title":        "Application Pipe Name",
-            "description":  "This parameter defines a portion of the logical name used during the creation of the DS input pipe.  The logical name may also be used as an identifier when accessing status for the pipe via cFE Software Bus Services.  The entire logical name is 'DS.DS_CMD_PIPE'.",
-            "limits":       "The string length (including string terminator) cannot exceed #OS_MAX_API_NAME.  (limit is not verified)",
-            "value":        "DS_CMD_PIPE"
+        "DS_APP_PIPE_NAME": {
+            "name": "DS_APP_PIPE_NAME",
+            "value": "DS_CMD_PIPE"
         },
-        "DS_APP_PIPE_DEPTH": { 
-            "title":        "Application Pipe Depth",
-            "description":  "This parameter defines the depth of the DS input pipe.  The depth should be deep enough to accommodate all of the DS command packets and all of the subscribed telemetry packets that might be generated by applications with a priority higher than the DS application.",
-            "limits":       "The value must be greater than zero and cannot exceed the definition of #CFE_SB_MAX_PIPE_DEPTH.",
-            "value":        "256"
+        "DS_APP_PIPE_DEPTH": {
+            "name": "DS_APP_PIPE_DEPTH",
+            "value": 256
         },
-        "DS_MAKE_TABLES_CRITICAL": { 
-            "title":        "Make DS Tables Critical",
-            "description":  "Set this parameter to a value of one to make the DS tables critical, otherwise set to zero.",
-            "limits":       "This parameter must be set to zero or one.",
-            "value":        "0"
+        "DS_MAKE_TABLES_CRITICAL": {
+            "name": "DS_MAKE_TABLES_CRITICAL",
+            "value": 0
         },
-        "DS_SECS_PER_HK_CYCLE": { 
-            "title":        "Housekeeping Request Frequency",
-            "description":  "Set this parameter equal to the number of seconds between housekeeping request commands.  This number is mission specific and must match the frequency used by the source of the command - often the scheduler task.  The value is used by the DS application to measure file age and also as a factor in the calculation of file growth rates.",
-            "limits":       "This parameter must be greater than zero.",
-            "value":        "4"
+        "DS_SECS_PER_HK_CYCLE": {
+            "name": "DS_SECS_PER_HK_CYCLE",
+            "value": 4
         },
-        "DS_DEF_ENABLE_STATE": { 
-            "title":        "Default DS Packet Processor State",
-            "description":  "Set this parameter to a value of one and DS will begin to process packets immediately on startup.  Set the value to zero and DS will ignore data storage packets until receipt of a valid #DS_ENABLE command.",
-            "limits":       "This parameter must be set to zero or one.",
-            "value":        "1"
+        "DS_DEF_ENABLE_STATE": {
+            "name": "DS_DEF_ENABLE_STATE",
+            "value": 1
         },
-        "DS_CDS_ENABLE_STATE": { 
-            "title":        "Save DS Packet Processor State in Critical Data Store",
-            "description":  "Set this parameter to a value of one and DS will restore the previous Packet Processor enable/disable state after a processor reset.  This setting does not affect the Packet Processor enable/disable state set at power-on which is controlled by #DS_DEF_ENABLE_STATE.  Set the value to zero and DS will set the enable/disable state as described for #DS_DEF_ENABLE_STATE following any reset.",
-            "limits":       "This parameter must be set to zero or one.",
-            "value":        "1"
+        "DS_CDS_ENABLE_STATE": {
+            "name": "DS_CDS_ENABLE_STATE",
+            "value": 1
         },
-        "DS_MISSION_REV": { 
-            "title":        "Mission specific version number for DS application",
-            "description":  "An application version number consists of four parts: major version number, minor version number, revision number and mission specific revision number. The mission specific revision number is defined here and the other parts are defined in 'ds_version.h'.",
-            "limits":       "Must be defined as a numeric value that is greater than or equal to zero.",
-            "value":        "0"
+        "DS_MISSION_REV": {
+            "name": "DS_MISSION_REV",
+            "value": 0
         },
-        "DS_FILE_HEADER_TYPE": { 
-            "title":        "File Header Type Selection",
-            "description":  "Set this parameter to select the type of file header that will be the first record written to each Data Storage File.",
-            "limits":       "This parameter must be set to one of the following:\n0 = none -- set this value to have no file header\n1 = CFE -- set this value to use CFE file headers\n2 = GPM -- set this value to use GPM file headers",
-            "value":        "1"
+        "DS_FILE_HEADER_TYPE": {
+            "name": "DS_FILE_HEADER_TYPE",
+            "value": 1
         },
-        "DS_MOVE_FILES": { 
-            "title":        "Move Files to Downlink Directory After Close Selection",
-            "description":  "Set this parameter to enable the code and structures to automatically move DS files to another directory after closing the files.  The intended use for this setting is to move files from a working directory into a directory from which the files can be downlinked.  Note that even after enabling this feature, files will not be moved if the move pathname in the Destination File Table is null.",
-            "limits":       "This parameter must be set to one of the following:\nTRUE  = add move pathname field to Destination File Table\nFALSE = do not add move pathname to Destination File Table",
-            "value":        "FALSE"
+        "DS_MOVE_FILES": {
+            "name": "DS_MOVE_FILES",
+            "value": 50
         },
-        "DS_PER_PACKET_PIPE_LIMIT": { 
-            "title":        "Application Per Packet Pipe Limit",
-            "description":  "This parameter defines the per packet pipe limit.  This is the max number of packets with the same Message ID that may be in the DS input pipe at any one time.  This value should be large enough to accommodate a burst of packets (usually event packets) plus a suitable margin.",
-            "limits":       "The value must be greater than zero and cannot exceed the definition of #DS_APP_PIPE_DEPTH.",
-            "value":        "50"
+        "DS_PER_PACKET_PIPE_LIMIT": {
+            "name": "DS_PER_PACKET_PIPE_LIMIT",
+            "value": ""
         }
     }
 }

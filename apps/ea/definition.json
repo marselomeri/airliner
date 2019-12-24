@@ -1,251 +1,195 @@
 {
-    "short_name": "SCH",
-    "long_name": "Scheduler",
-    "code_templates": {
-        "msgids": {
-            "template": "../platform_inc/sch_msgids.j2",
-            "output": "sch_msgids.h"
+    "short_name": "ea",
+    "long_name": "External Application",
+    "events": {
+        "EA_INF_EID": {
+            "id": 1,
+            "type": "INFORMATION"
         },
-        "perfids": {
-            "template": "../mission_inc/sch_perfids.j2",
-            "output": "sch_perfids.h"
+        "EA_INIT_INF_EID": {
+            "id": 2,
+            "type": "INFORMATION"
         },
-        "platform_cfg": {
-            "template": "../platform_inc/sch_platform_cfg.j2",
-            "output": "sch_platform_cfg.h"
+        "EA_CMD_INF_EID": {
+            "id": 3,
+            "type": "INFORMATION"
+        },
+        "EA_INF_APP_START_EID": {
+            "id": 4,
+            "type": "INFORMATION"
+        },
+        "EA_INF_APP_TERM_EID": {
+            "id": 5,
+            "type": "INFORMATION"
+        },
+        "EA_APP_ERR_EID": {
+            "id": 6,
+            "type": "ERROR"
+        },
+        "EA_WARN_APP_UTIL_EID": {
+            "id": 7,
+            "type": "INFORMATION"
+        },
+        "EA_ERR_EID": {
+            "id": 8,
+            "type": "ERROR"
+        },
+        "EA_INIT_ERR_EID": {
+            "id": 9,
+            "type": "ERROR"
+        },
+        "EA_CMD_ERR_EID": {
+            "id": 10,
+            "type": "ERROR"
+        },
+        "EA_PIPE_ERR_EID": {
+            "id": 11,
+            "type": "ERROR"
+        },
+        "EA_MSGID_ERR_EID": {
+            "id": 12,
+            "type": "ERROR"
+        },
+        "EA_MSGLEN_ERR_EID": {
+            "id": 13,
+            "type": "ERROR"
+        },
+        "EA_CHILD_TASK_START_EID": {
+            "id": 14,
+            "type": "INFORMATION"
+        },
+        "EA_CHILD_TASK_START_ERR_EID": {
+            "id": 15,
+            "type": "ERROR"
+        },
+        "EA_CMD_NOOP_EID": {
+            "id": 16,
+            "type": "INFORMATION"
+        },
+        "EA_CMD_RESET_EID": {
+            "id": 17,
+            "type": "INFORMATION"
+        },
+        "EA_CC_ERR_EID": {
+            "id": 18,
+            "type": "ERROR"
+        }
+    },
+    "telemetry": {
+        "EA_HK_TLM_MID": {
+            "msgID": "",
+            "struct": "EA_HkTlm_t"
         }
     },
     "commands": {
-        "SCH_CMD_MID": { "msgid": "", "commands": {
-            "Noop":         { "cc":  0, "struct": "CFE_SB_CmdHdr_t" },
-            "Reset":        { "cc":  1, "struct": "CFE_SB_CmdHdr_t" },
-            "Enable":       { "cc":  2, "struct": "SCH_EntryCmd_t"  },
-            "Disable":      { "cc":  3, "struct": "SCH_EntryCmd_t"  },
-            "EnableGroup":  { "cc":  4, "struct": "SCH_GroupCmd_t"  },
-            "DisableGroup": { "cc":  5, "struct": "SCH_GroupCmd_t"  },
-            "EnableSync":   { "cc":  6, "struct": "CFE_SB_CmdHdr_t" },
-            "SendDiag":     { "cc":  7, "struct": "CFE_SB_CmdHdr_t" }
-        }},
-        "SCH_SEND_HK_MID": { "msgid": "", "commands": {
-            "SendHK": { "cc":  0, "struct": "CFE_SB_CmdHdr_t" }
-        }},
-        "SCH_UNUSED_MID": { "msgid": "", "commands": {
-            "Unused": { "cc":  0, "struct": "CFE_SB_CmdHdr_t" }
-        }}
-    },
-    "telemetry": { 
-        "SCH_HK_TLM_MID":        { "msgid": "", "struct": "SCH_HkPacket_t"},
-        "SCH_DIAG_TLM_MID":      { "msgid": "", "struct": "SCH_DiagPacket_t" },
-        "SCH_ACTIVITY_DONE_MID": { "msgid": "", "struct": "CFE_SB_TlmHdr_t" }
-    },
-    "events": {
-        "SCH_INITSTATS_INF_EID":              {"id":  1},
-        "SCH_APP_EXIT_EID":                   {"id":  2},
-        "SCH_CR_PIPE_ERR_EID":                {"id":  3},
-        "SCH_SUB_HK_REQ_ERR_EID":             {"id":  4},
-        "SCH_SUB_GND_CMD_ERR_EID":            {"id":  5},
-        "SCH_SDT_REG_ERR_EID":                {"id":  7},
-        "SCH_MDT_REG_ERR_EID":                {"id":  8},
-        "SCH_SDT_LOAD_ERR":                   {"id":  9},
-        "SCH_MDT_LOAD_ERR":                   {"id": 10},
-        "SCH_ACQ_PTR_ERR":                    {"id": 11},
-        "SCH_MINOR_FRAME_TIMER_CREATE_ERR":   {"id": 12},
-        "SCH_MINOR_FRAME_TIMER_ACC_WARN":     {"id": 13},
-        "SCH_MAJOR_FRAME_SUB_ERR":            {"id": 14},
-        "SCH_SEM_CREATE_ERR":                 {"id": 15},
-        "SCH_SAME_SLOT":                      {"id": 16},
-        "SCH_SKIPPED_SLOTS":                  {"id": 17},
-        "SCH_MULTI_SLOTS":                    {"id": 18},
-        "SCH_CORRUPTION":                     {"id": 19},
-        "SCH_PACKET_SEND":                    {"id": 20},
-        "SCH_NOISY_MAJOR_FRAME_ERR":          {"id": 21},
-        "SCH_SCHEDULE_TBL_ERR":               {"id": 30},
-        "SCH_SCHEDULE_TABLE":                 {"id": 31},
-        "SCH_MESSAGE_TBL_ERR":                {"id": 32},
-        "SCH_MESSAGE_TABLE":                  {"id": 33},
-        "SCH_NOOP_CMD":                       {"id": 40},
-        "SCH_RESET_CMD":                      {"id": 41},
-        "SCH_ENABLE_CMD":                     {"id": 42},
-        "SCH_DISABLE_CMD":                    {"id": 43},
-        "SCH_ENA_GRP_CMD":                    {"id": 44},
-        "SCH_DIS_GRP_CMD":                    {"id": 45},
-        "SCH_ENA_SYNC_CMD":                   {"id": 46},
-        "SCH_SEND_DIAG_CMD":                  {"id": 47},
-        "SCH_ENABLE_CMD_ARG_ERR":             {"id": 50},
-        "SCH_ENABLE_CMD_ENTRY_ERR":           {"id": 51},
-        "SCH_DISABLE_CMD_ARG_ERR":            {"id": 52},
-        "SCH_DISABLE_CMD_ENTRY_ERR":          {"id": 53},
-        "SCH_ENA_GRP_CMD_ERR":                {"id": 54},
-        "SCH_ENA_GRP_NOT_FOUND_ERR":          {"id": 55},
-        "SCH_DIS_GRP_CMD_ERR":                {"id": 56},
-        "SCH_DIS_GRP_NOT_FOUND_ERR":          {"id": 57},
-        "SCH_CC_ERR":                         {"id": 58},
-        "SCH_MD_ERR":                         {"id": 59},
-        "SCH_CMD_LEN_ERR":                    {"id": 60},
-        "SCH_DEADLINE_REG_ERR_EID":           {"id": 61},
-        "SCH_SLOT_DEADLINE_FULL_ERR_EID":     {"id": 62},
-        "SCH_SUB_ACTIVITY_DONE_REQ_ERR_EID":  {"id": 63},
-        "SCH_UNEXPECTED_ACT_DONE_ERR_EID":    {"id": 64},
-        "SCH_MUTEX_CREATE_ERR_EID":           {"id": 65},
-        "SCH_AD_CHILD_TASK_CREATE_ERR":       {"id": 66},
-        "SCH_AD_RCVD_UNEXPECTED_MSG_ERR_EID": {"id": 67}
+        "EA_CMD_MID": {
+            "msgid": "",
+            "commands": {
+                "Noop": {
+                    "cc": 0,
+                    "struct": "EA_NoArgCmd_t"
+                },
+                "Reset": {
+                    "cc": 1,
+                    "struct": "EA_NoArgCmd_t"
+                },
+                "Start": {
+                    "cc": 2,
+                    "struct": "EA_StartCmd_t"
+                },
+                "Terminate": {
+                    "cc": 3,
+                    "struct": "EA_NoArgCmd_t"
+                }
+            }
+        },
+        "EA_WAKEUP_MID": {
+            "msgid": "",
+            "commands": {
+                "WakeUp": {
+                    "cc": 0,
+                    "struct": "EA_NoArgCmd_t"
+                }
+            }
+        }
     },
     "perfids": {
-        "SCH_APPMAIN_PERF_ID": {"value": ""}
-    },
-    "tables": {
-        "_config_wizard": {
-            "class": "com.windhoverlabs.airliner.apps.sch.UISchMsgDefTableWizard"
-        },
-        "MSG_DEFS": {
-            "title": "Message Definitions", 
-            "default": "sch_def_msgtbl.tbl", 
-            "template": "../tables/sch_def_msgtbl.j2" 
-        },
-        "SCHED_DEF": {
-            "title": "Schedule Definitions", 
-            "default": "sch_def_schtbl.tbl", 
-            "template": "../tables/sch_def_schtbl.j2"
+        "EA_MAIN_TASK_PERF_ID": {
+            "id": ""
         }
     },
     "config": {
-        "SCH_PIPE_DEPTH": { 
-            "title":        "Software Bus Command Pipe Depth",
-            "description":  "Dictates the number of messages to SCH that can be queued while awaiting processing by the SCH Application.",
-            "limits":       "Must be greater than zero.",
-            "value":        "12"
+        "EA_SB_TIMEOUT": {
+            "name": "EA_SB_TIMEOUT",
+            "value": "CFE_SB_PEND_FOREVER"
         },
-        "SCH_TOTAL_SLOTS": { 
-            "title":        "Minor Frame Frequency (in Hz)",
-            "description":  "Dictates the number of minor frame slots within each Major Frame.",
-            "limits":       "Must be 2 or more and less than 65536",
-            "value":        "100"
+        "EA_CHILD_TASK_FLAGS": {
+            "name": "EA_CHILD_TASK_FLAGS",
+            "value": "OS_ENABLE_CORE_0"
         },
-        "SCH_ENTRIES_PER_SLOT": { 
-            "title":        "Maximum number of Activities per Minor Frame",
-            "description":  "Dictates the number of activities that can be defined for each Minor Frame.",
-            "limits":       "Must be at least one.",
-            "value":        "5"
+        "EA_MISSION_REV": {
+            "name": "EA_MISSION_REV",
+            "value": 0
         },
-        "SCH_MAX_MESSAGES": { 
-            "title":        "Maximum Number of Message Definitions in Message Definition Table",
-            "description":  "Dictates the number of messages that can be defined in Message Definition Table.",
-            "limits":       "Must be at least one.",
-            "value":        "128"
+        "EA_SCH_PIPE_DEPTH": {
+            "name": "EA_SCH_PIPE_DEPTH",
+            "value": 2
         },
-        "SCH_MDT_MIN_MSG_ID": { 
-            "title":        "Minimum Message ID allowed in Message Definition Table",
-            "description":  "Dictates the minimum message ID that can be used in the Message Definition Table.",
-            "limits":       "Must be less than or equal to SCH_MDT_MAX_MSG_ID and greater than or equal to 0.",
-            "value":        "0"
+        "EA_SCH_PIPE_NAME": {
+            "name": "EA_SCH_PIPE_NAME",
+            "value": "EA_SCH_PIPE"
         },
-        "SCH_MDT_MAX_MSG_ID": { 
-            "title":        "Maximum Message ID allowed in Message Definition Table",
-            "description":  "Dictates the maximum message ID that can be used in the Message Definition Table.",
-            "limits":       "Must be less than or equal to #CFE_SB_HIGHEST_VALID_MSGID and greater than SCH_MDT_MIN_MSG_ID.",
-            "value":        "CFE_SB_HIGHEST_VALID_MSGID"
+        "EA_SCH_PIPE_PEND_TIME": {
+            "name": "EA_SCH_PIPE_PEND_TIME",
+            "value": 2000
         },
-        "SCH_MAX_MSG_WORDS": { 
-            "title":        "Maximum Length, in Words, of a Message",
-            "description":  "Dictates the maximum number of words that can be assigned to a particular message in the Message Definition Table.",
-            "limits":       "Must be at least large enough to hold the smallest possible message header (see #CFE_SB_TLM_HDR_SIZE and #CFE_SB_CMD_HDR_SIZE).",
-            "value":        "64"
+        "EA_SCH_PIPE_WAKEUP_RESERVED": {
+            "name": "EA_SCH_PIPE_WAKEUP_RESERVED",
+            "value": 1
         },
-        "SCH_MAX_LAG_COUNT": { 
-            "title":        "Maximum Number of slots allowed for catch-up before skipping",
-            "description":  "Dictates the number of Minor Frames that will be processed in \"Catch Up\" mode before giving up and skipping ahead.",
-            "limits":       "",
-            "value":        "(SCH_TOTAL_SLOTS / 2)"
+        "EA_SCH_PIPE_SEND_HK_RESERVED": {
+            "name": "EA_SCH_PIPE_SEND_HK_RESERVED",
+            "value": 1
         },
-        "SCH_MAX_SLOTS_PER_WAKEUP": { 
-            "title":        "Maximum Number of Slots to be processed when in \"Catch Up\" mode",
-            "description":  "Dictates the maximum number of slots SCH will process when trying to \"Catch Up\" to the correct slot for the current time.",
-            "limits":       "Must be at least one.",
-            "value":        "5"
+        "EA_CMD_PIPE_DEPTH": {
+            "name": "EA_CMD_PIPE_DEPTH",
+            "value": 4
         },
-        "SCH_MICROS_PER_MAJOR_FRAME": { 
-            "title":        "Major Frame Period (in microseconds)",
-            "description":  "Dictates the number microseconds in a Major Frame.",
-            "limits":       "Must be greater than zero.",
-            "value":        "1000000"
+        "EA_CMD_PIPE_NAME": {
+            "name": "EA_CMD_PIPE_NAME",
+            "value": "EA_CMD_PIPE"
         },
-        "SCH_SYNC_SLOT_DRIFT_WINDOW": { 
-            "title":        "Additional time allowed in Sync Slot to wait for Major Frame Sync (in microseconds)",
-            "description":  "Dictates the additional time allowed in the Syncronization Slot to allow the Major Frame Sync signal to be received and re-synchronize processing.",
-            "limits":       "Must be less than the normal slot period.",
-            "value":        "5000"
+        "EA_DATA_PIPE_DEPTH": {
+            "name": "EA_DATA_PIPE_DEPTH",
+            "value": 4
         },
-        "SCH_STARTUP_SYNC_TIMEOUT": { 
-            "title":        "Time, in milliseconds, to wait for all applications to be started and ready to run",
-            "description":  "Dictates the timeout for the #CFE_ES_WaitForStartupSync call that SCH uses to wait for all of the Applications specified in the startup script to finish initialization.  SCH will wait this amount of time before assuming all startup script applications have been started and will then begin nominal schedule processing.",
-            "limits":       "None",
-            "value":        "50000"
+        "EA_DATA_PIPE_NAME": {
+            "name": "EA_DATA_PIPE_NAME",
+            "value": "EA_DATA_PIPE"
         },
-        "SCH_STARTUP_PERIOD": { 
-            "title":        "Time, in microseconds, to wait for first Major Frame Sync to arrive",
-            "description":  "Dictates the time allowed for the first Major Frame sync signal to arrive before assuming it is not going to occur and switching to a freewheeling mode.",
-            "limits":       "Must be greater than or equal to the Major Frame Period.",
-            "value":        "(5*SCH_MICROS_PER_MAJOR_FRAME)"
+        "EA_CONFIG_TABLE_FILENAME": {
+            "name": "EA_CONFIG_TABLE_FILENAME",
+            "value": "/cf/apps/ea_config.tbl"
         },
-        "SCH_MAX_NOISY_MAJORF": { 
-            "title":        "Maximum Number of consecutive Noisy Major Frame signals before they are ignored",
-            "description":  "Dictates the number of consecutive \"Noisy\" Major Frame Signals (i.e. - signals that occur outside the expected window of their occurence) until the Major Frame signal is automatically ignored and the Minor Frame Timer is used instead.",
-            "limits":       "This value should never be set to less than two because a single \"noisy\" Major Frame signal is likely when turning on or switching the 1 Hz signal on the spacecraft.",
-            "value":        "2"
+        "EA_STARTUP_TIMEOUT_MSEC": {
+            "name": "EA_STARTUP_TIMEOUT_MSEC",
+            "value": 1000
         },
-        "SCH_LIB_PRESENCE": { 
-            "title":        "Scheduler API Library Usage Status",
-            "description":  "Determines whether or not the Scheduler application is using the API library allowing for external tasks to disable and enable schedule processing. Note that if the library is to be used it must be generated as a separate object, and loaded prior to the appplication.",
-            "limits":       "This value must either be 0 when not using or including the library, or 1 if the library is going to be used.",
-            "value":        "1"
+        "EA_CHILD_TASK_PRIORITY": {
+            "name": "EA_CHILD_TASK_PRIORITY",
+            "value": 187
         },
-        "SCH_LIB_DIS_CTR": { 
-            "title":        "Scheduler API Library Initial Inhibition Count",
-            "description":  "Sets the number of times the scheduler must be enabled following library initialization. This allows the scheduler to come up either enabled (set to 0) or disabled (set to a value greater than or equal to 1)",
-            "limits":       "This value must be an unsigned 32 bit integer.",
-            "value":        "0"
+        "EA_APP_UTIL_THRESHOLD": {
+            "name": "EA_APP_UTIL_THRESHOLD",
+            "value": 70
         },
-        "SCH_SCHEDULE_FILENAME": { 
-            "title": "Default SCH Schedule Definition Table Filename",
-            "description":  "The value of this constant defines the default filename of the SCH Schedule Definition Table",
-            "limits":       "The length of each string, including the NULL terminator cannot exceed the #OS_MAX_PATH_LEN value.",
-            "value":        "\"/cf/apps/sch_def_schtbl.tbl\""
+        "EA_APP_NUM_THREADS": {
+            "name": "EA_APP_NUM_THREADS",
+            "value": 4
         },
-        "SCH_MESSAGE_FILENAME": { 
-            "title":        "Default SCH Message Definition Table Filename",
-            "description":  "The value of this constant defines the default filename of the SCH Message Definition Table",
-            "limits":       "The length of each string, including the NULL terminator cannot exceed the #OS_MAX_PATH_LEN value.",
-            "value":        "\"/cf/apps/sch_def_msgtbl.tbl\""
-        },
-        "SCH_MISSION_REV": { 
-            "title":        "Mission specific version number for SCH application",
-            "description":  "An application version number consists of four parts: major version number, minor version number, revision number and mission specific revision number. The mission specific revision number is defined here and the other parts are defined in \"sch_version.h\".",
-            "limits":       "Must be defined as a numeric value that is greater than or equal to zero.",
-            "value":        ""
-        },
-        "SCH_AD_PIPE_DEPTH": { 
-            "title":        "",
-            "description":  "",
-            "limits":       "",
-            "value":        "3"
-        },
-        "SCH_AD_CHILD_TASK_PRIORITY": { 
-            "title":        "",
-            "description":  "",
-            "limits":       "",
-            "value":        "10"
-        },
-        "SCH_DEADLINES_PER_SLOT": { 
-            "title":        "",
-            "description":  "",
-            "limits":       "",
-            "value":        "5"
-        },
-        "SCH_AD_CHILD_TASK_FLAGS": { 
-            "title":        "",
-            "description":  "",
-            "limits":       "",
-            "value":        "OS_ENABLE_CORE_0"
+        "EA_MAX_PATH_LEN": {
+            "name": "EA_MAX_PATH_LEN",
+            "value": 96
         }
     }
 }
