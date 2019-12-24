@@ -1,6 +1,41 @@
 {
     "short_name": "sch",
     "long_name": "Scheduler",
+    "ide": {
+        "plugin": "ide/SchPlugin.jar",
+        "view" : {
+            "0": {
+                "dbPath": "tables",
+                "viewClass": "com.windhoverlabs.ide.module.sch.SchTableEditor"
+            }
+        }
+    },
+    "code_templates": {
+        "msgids": {
+            "template": "../platform_inc/sch_msgids.j2",
+            "output": "sch_msgids.h"
+        },
+        "perfids": {
+            "template": "../mission_inc/sch_perfids.j2",
+            "output": "sch_perfids.h"
+        },
+        "platform_cfg": {
+            "template": "../platform_inc/sch_platform_cfg.j2",
+            "output": "sch_platform_cfg.h"
+        }
+    },
+    "tables": {
+        "_MSG_DEFS": {
+            "title": "Message Definitions", 
+            "default": "sch_def_msgtbl.tbl", 
+            "template": "../tables/sch_def_msgtbl.j2" 
+        },
+        "_SCHED_DEF": {
+            "title": "Schedule Definitions", 
+            "default": "sch_def_schtbl.tbl", 
+            "template": "../tables/sch_def_schtbl.j2"
+        }
+    },
     "events": {
         "SCH_INITSTATS_INF_EID": {
             "id": 1,
