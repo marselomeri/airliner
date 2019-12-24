@@ -71,7 +71,7 @@
         "MAC_RUN_CONTROLLER_MID": {
             "msgid": "",
             "commands": {
-                "RunController\n": {
+                "RunController": {
                     "cc": 0,
                     "struct": "CFE_SB_CmdHdr_t"
                 }

@@ -308,6 +308,9 @@
                 },
                 "CI_PROCESS_TIMEOUTS_MID": {
                     "msgid": "0x190a"
+                },
+                "CI_SEND_HK_MID": {
+                    "msgid": "0x1906"
                 }
             },
             "perfids": {

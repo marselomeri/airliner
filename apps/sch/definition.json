@@ -293,8 +293,8 @@
         "SCH_SEND_HK_MID": {
             "msgid": "",
             "commands": {
-                "": {
-                    "cc": "",
+                "SendHK": {
+                    "cc": "0",
                     "struct": "CFE_SB_CmdHdr_t"
                 }
             }

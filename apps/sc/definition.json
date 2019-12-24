@@ -511,7 +511,7 @@
         "SC_1HZ_WAKEUP_MID": {
             "msgid": "",
             "commands": {
-                "1HzWakeUp\n": {
+                "1HzWakeUp": {
                     "cc": 0,
                     "struct": "SC_NoArgsCmd_t"
                 }

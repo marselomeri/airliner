@@ -188,6 +188,15 @@
                 }
             }
         },
+        "CI_SEND_HK_MID": {
+            "msgid": "",
+            "commands": {
+                "SendHK": {
+                    "cc": 0,
+                    "struct": "CI_NoArgCmd_t"
+                }
+            }
+        },
         "CI_PROCESS_TIMEOUTS_MID": {
             "msgid": "",
             "commands": {

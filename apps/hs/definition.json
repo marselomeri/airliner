@@ -346,7 +346,7 @@
         "HS_SEND_HK_MID": {
             "msgid": "",
             "commands": {
-                "SendHK\n": {
+                "SendHK": {
                     "cc": 0,
                     "struct": "CFE_SB_CmdHdr_t"
                 }
@@ -377,7 +377,7 @@
         },
         "HS_IDLE_TASK_NAME": {
             "name": "HS_IDLE_TASK_NAME",
-            "value": "\"HS_IDLE_TASK"
+            "value": "HS_IDLE_TASK"
         },
         "HS_IDLE_TASK_STACK_PTR": {
             "name": "HS_IDLE_TASK_STACK_PTR",
