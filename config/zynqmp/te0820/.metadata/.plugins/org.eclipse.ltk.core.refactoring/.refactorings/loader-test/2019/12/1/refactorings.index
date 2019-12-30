@@ -1,0 +1,8 @@
+1577590092323	Move 2 resources to 'dl'
+1577591606481	Rename resource 'libxx_cxa_guard.cxx'
+1577591629851	Rename resource 'libxx_cxapurevirtual.cxx'
+1577591661211	Rename resource 'libxx_deletea_sized.cxx'
+1577591678508	Rename resource 'libxx_delete_sized.cxx'
+1577593613456	Move 'CFS_LIB.c' to 'ut_src'
+1577593960201	Rename resource 'CFS_LIB.c'
+1577594069186	Rename resource 'CFS_LIB._c'

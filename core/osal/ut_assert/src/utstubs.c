@@ -88,7 +88,7 @@ typedef struct
     UT_EntryData_t  Data;
 } UT_StubTableEntry_t;
 
-static UT_StubTableEntry_t UT_StubTable[UT_MAX_FUNC_STUBS] = {{ 0 }};
+static UT_StubTableEntry_t UT_StubTable[UT_MAX_FUNC_STUBS] = {{ (UT_EntryType_t)0 }};
 
 /**
  * Helper function to clear an entry in the stub table.
@@ -308,7 +308,7 @@ void UT_SetDataBuffer(UT_EntryKey_t FuncKey, void *DataBuffer, uint32 BufferSize
             StubPtr->EntryType = UT_ENTRYTYPE_DATA_BUFFER;
             if (AllocateCopy)
             {
-                StubPtr->Data.Buff.BasePtr = malloc(BufferSize);
+                StubPtr->Data.Buff.BasePtr = (uint8*)malloc(BufferSize);
                 if (StubPtr->Data.Buff.BasePtr == NULL)
                 {
                     UtAssert_Abort("Cannot allocate data buffer - malloc() failed!");
@@ -322,7 +322,7 @@ void UT_SetDataBuffer(UT_EntryKey_t FuncKey, void *DataBuffer, uint32 BufferSize
             else
             {
                 /* Use buffer directly */
-                StubPtr->Data.Buff.BasePtr = DataBuffer;
+                StubPtr->Data.Buff.BasePtr = (uint8*)DataBuffer;
             }
             StubPtr->Data.Buff.TotalSize = BufferSize;
             StubPtr->Data.Buff.Position = 0;

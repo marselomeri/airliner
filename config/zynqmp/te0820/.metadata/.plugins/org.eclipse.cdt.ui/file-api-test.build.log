@@ -1,0 +1,95 @@
+20:16:57 **** Auto Build of configuration Debug for project file-api-test ****
+make all 
+Building file: /home/mbenson/git/airliner/core/psp/fsw/zynqmp_r5/ut_bsp/bsp_ut.c
+Invoking: ARM R5 g++ compiler
+armr5-none-eabi-g++ -DARMR5 -Wall -O0 -g3 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -I"/home/mbenson/git/airliner/core/osal/inc" -I"/home/mbenson/git/airliner/core/osal/ut_assert/inc" -I"/home/mbenson/git/airliner/config/zynqmp/inc" -I"/home/mbenson/git/airliner/config/shared/inc" -c -fmessage-length=0 -MT"core/psp/ut_bsp/bsp_ut.o" -mcpu=cortex-r5 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -MMD -MP -MF"core/psp/ut_bsp/bsp_ut.d" -MT"core/psp/ut_bsp/bsp_ut.o" -o "core/psp/ut_bsp/bsp_ut.o" "/home/mbenson/git/airliner/core/psp/fsw/zynqmp_r5/ut_bsp/bsp_ut.c"
+Finished building: /home/mbenson/git/airliner/core/psp/fsw/zynqmp_r5/ut_bsp/bsp_ut.c
+ 
+Building file: /home/mbenson/git/airliner/core/psp/fsw/zynqmp_r5/src/cfe_psp_voltab.c
+Invoking: ARM R5 g++ compiler
+armr5-none-eabi-g++ -DARMR5 -Wall -O0 -g3 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -I"/home/mbenson/git/airliner/core/osal/inc" -I"/home/mbenson/git/airliner/core/osal/ut_assert/inc" -I"/home/mbenson/git/airliner/config/zynqmp/inc" -I"/home/mbenson/git/airliner/config/shared/inc" -c -fmessage-length=0 -MT"core/psp/src/cfe_psp_voltab.o" -mcpu=cortex-r5 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -MMD -MP -MF"core/psp/src/cfe_psp_voltab.d" -MT"core/psp/src/cfe_psp_voltab.o" -o "core/psp/src/cfe_psp_voltab.o" "/home/mbenson/git/airliner/core/psp/fsw/zynqmp_r5/src/cfe_psp_voltab.c"
+Finished building: /home/mbenson/git/airliner/core/psp/fsw/zynqmp_r5/src/cfe_psp_voltab.c
+ 
+Building file: /home/mbenson/git/airliner/core/osal/src/tests/file-api-test/file-api-test.c
+Invoking: ARM R5 g++ compiler
+armr5-none-eabi-g++ -DARMR5 -Wall -O0 -g3 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -I"/home/mbenson/git/airliner/core/osal/inc" -I"/home/mbenson/git/airliner/core/osal/ut_assert/inc" -I"/home/mbenson/git/airliner/config/zynqmp/inc" -I"/home/mbenson/git/airliner/config/shared/inc" -c -fmessage-length=0 -MT"core/osal/ut_src/file-api-test.o" -mcpu=cortex-r5 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -MMD -MP -MF"core/osal/ut_src/file-api-test.d" -MT"core/osal/ut_src/file-api-test.o" -o "core/osal/ut_src/file-api-test.o" "/home/mbenson/git/airliner/core/osal/src/tests/file-api-test/file-api-test.c"
+Finished building: /home/mbenson/git/airliner/core/osal/src/tests/file-api-test/file-api-test.c
+ 
+Building file: /home/mbenson/git/airliner/core/osal/ut_assert/src/utassert.c
+Invoking: ARM R5 g++ compiler
+armr5-none-eabi-g++ -DARMR5 -Wall -O0 -g3 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -I"/home/mbenson/git/airliner/core/osal/inc" -I"/home/mbenson/git/airliner/core/osal/ut_assert/inc" -I"/home/mbenson/git/airliner/config/zynqmp/inc" -I"/home/mbenson/git/airliner/config/shared/inc" -c -fmessage-length=0 -MT"core/osal/ut_assert/src/utassert.o" -mcpu=cortex-r5 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -MMD -MP -MF"core/osal/ut_assert/src/utassert.d" -MT"core/osal/ut_assert/src/utassert.o" -o "core/osal/ut_assert/src/utassert.o" "/home/mbenson/git/airliner/core/osal/ut_assert/src/utassert.c"
+Finished building: /home/mbenson/git/airliner/core/osal/ut_assert/src/utassert.c
+ 
+Building file: /home/mbenson/git/airliner/core/osal/ut_assert/src/uttest.c
+Invoking: ARM R5 g++ compiler
+armr5-none-eabi-g++ -DARMR5 -Wall -O0 -g3 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -I"/home/mbenson/git/airliner/core/osal/inc" -I"/home/mbenson/git/airliner/core/osal/ut_assert/inc" -I"/home/mbenson/git/airliner/config/zynqmp/inc" -I"/home/mbenson/git/airliner/config/shared/inc" -c -fmessage-length=0 -MT"core/osal/ut_assert/src/uttest.o" -mcpu=cortex-r5 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -MMD -MP -MF"core/osal/ut_assert/src/uttest.d" -MT"core/osal/ut_assert/src/uttest.o" -o "core/osal/ut_assert/src/uttest.o" "/home/mbenson/git/airliner/core/osal/ut_assert/src/uttest.c"
+Finished building: /home/mbenson/git/airliner/core/osal/ut_assert/src/uttest.c
+ 
+Building file: /home/mbenson/git/airliner/core/osal/src/os/freertos/osapi.c
+Invoking: ARM R5 g++ compiler
+armr5-none-eabi-g++ -DARMR5 -Wall -O0 -g3 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -I"/home/mbenson/git/airliner/core/osal/inc" -I"/home/mbenson/git/airliner/core/osal/ut_assert/inc" -I"/home/mbenson/git/airliner/config/zynqmp/inc" -I"/home/mbenson/git/airliner/config/shared/inc" -c -fmessage-length=0 -MT"core/osal/src/osapi.o" -mcpu=cortex-r5 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -MMD -MP -MF"core/osal/src/osapi.d" -MT"core/osal/src/osapi.o" -o "core/osal/src/osapi.o" "/home/mbenson/git/airliner/core/osal/src/os/freertos/osapi.c"
+Finished building: /home/mbenson/git/airliner/core/osal/src/os/freertos/osapi.c
+ 
+Building file: /home/mbenson/git/airliner/core/osal/src/os/freertos/osfileapi.c
+Invoking: ARM R5 g++ compiler
+armr5-none-eabi-g++ -DARMR5 -Wall -O0 -g3 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -I"/home/mbenson/git/airliner/core/osal/inc" -I"/home/mbenson/git/airliner/core/osal/ut_assert/inc" -I"/home/mbenson/git/airliner/config/zynqmp/inc" -I"/home/mbenson/git/airliner/config/shared/inc" -c -fmessage-length=0 -MT"core/osal/src/osfileapi.o" -mcpu=cortex-r5 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -MMD -MP -MF"core/osal/src/osfileapi.d" -MT"core/osal/src/osfileapi.o" -o "core/osal/src/osfileapi.o" "/home/mbenson/git/airliner/core/osal/src/os/freertos/osfileapi.c"
+Finished building: /home/mbenson/git/airliner/core/osal/src/os/freertos/osfileapi.c
+ 
+Building file: /home/mbenson/git/airliner/core/osal/src/os/freertos/osfilesys.c
+Invoking: ARM R5 g++ compiler
+armr5-none-eabi-g++ -DARMR5 -Wall -O0 -g3 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -I"/home/mbenson/git/airliner/core/osal/inc" -I"/home/mbenson/git/airliner/core/osal/ut_assert/inc" -I"/home/mbenson/git/airliner/config/zynqmp/inc" -I"/home/mbenson/git/airliner/config/shared/inc" -c -fmessage-length=0 -MT"core/osal/src/osfilesys.o" -mcpu=cortex-r5 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -MMD -MP -MF"core/osal/src/osfilesys.d" -MT"core/osal/src/osfilesys.o" -o "core/osal/src/osfilesys.o" "/home/mbenson/git/airliner/core/osal/src/os/freertos/osfilesys.c"
+/home/mbenson/git/airliner/core/osal/src/os/freertos/osfilesys.c: In function 'int32 OS_TranslatePath(const char*, char*)':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/osfilesys.c:540:22: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+     while ((NumChars <= strlen(VirtualPath)) && (VirtualPath[NumChars] != '/'))
+             ~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/osfilesys.c:549:18: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+     if (NumChars > strlen(VirtualPath))
+         ~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/osfilesys.c:495:10: warning: variable 'FilenameLen' set but not used [-Wunused-but-set-variable]
+     int  FilenameLen;
+          ^~~~~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/osfilesys.c:497:7: warning: unused variable 'physDevPath' [-Wunused-variable]
+  char physDevPath[10] = {0};
+       ^~~~~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/osfilesys.c: In function 'int32 OS_GetPhysDeviceFromPath(const char*, char*)':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/osfilesys.c:731:22: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+     while ((NumChars <= strlen(VirtualPath)) && (VirtualPath[NumChars] != '/'))
+             ~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/osfilesys.c:740:18: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+     if (NumChars > strlen(VirtualPath))
+         ~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/osfilesys.c: In function 'int32 OS_mkfs(char*, const char*, const char*, uint32, uint32)':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/osfilesys.c:77:7: warning: '%s' directive writing up to 63 bytes into a region of size 10 [-Wformat-overflow=]
+ int32 OS_mkfs(char *address, const char *devname, const char * volname, uint32 blocksize,
+       ^~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/osfilesys.c:124:13: note: 'sprintf' output between 3 and 66 bytes into a destination of size 10
+      sprintf(physDevPath, "%s:\\", OS_VolumeTable[i].PhysDevName);
+      ~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/osfilesys.c: In function 'int32 OS_mount(const char*, const char*)':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/osfilesys.c:271:7: warning: ':\' directive writing 2 bytes into a region of size between 1 and 64 [-Wformat-overflow=]
+ int32 OS_mount(const char *devname, const char* mountpoint)
+       ^~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/osfilesys.c:307:9: note: 'sprintf' output between 3 and 66 bytes into a destination of size 64
+  sprintf(physDevPath, "%s:\\", OS_VolumeTable[i].PhysDevName);
+  ~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/osfilesys.c: In function 'int32 OS_unmount(const char*)':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/osfilesys.c:327:7: warning: ':\' directive writing 2 bytes into a region of size between 1 and 64 [-Wformat-overflow=]
+ int32 OS_unmount(const char *mountpoint)
+       ^~~~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/osfilesys.c:356:9: note: 'sprintf' output between 3 and 66 bytes into a destination of size 64
+  sprintf(physDevPath, "%s:\\", OS_VolumeTable[i].PhysDevName);
+  ~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Finished building: /home/mbenson/git/airliner/core/osal/src/os/freertos/osfilesys.c
+ 
+Building file: /home/mbenson/git/airliner/core/osal/src/os/freertos/osloader.c
+Invoking: ARM R5 g++ compiler
+armr5-none-eabi-g++ -DARMR5 -Wall -O0 -g3 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -I"/home/mbenson/git/airliner/core/osal/inc" -I"/home/mbenson/git/airliner/core/osal/ut_assert/inc" -I"/home/mbenson/git/airliner/config/zynqmp/inc" -I"/home/mbenson/git/airliner/config/shared/inc" -c -fmessage-length=0 -MT"core/osal/src/osloader.o" -mcpu=cortex-r5 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -MMD -MP -MF"core/osal/src/osloader.d" -MT"core/osal/src/osloader.o" -o "core/osal/src/osloader.o" "/home/mbenson/git/airliner/core/osal/src/os/freertos/osloader.c"
+/home/mbenson/git/airliner/core/osal/src/os/freertos/osloader.c:34:10: fatal error: nuttx/symtab.h: No such file or directory
+ #include <nuttx/symtab.h>
+          ^~~~~~~~~~~~~~~~
+compilation terminated.
+make: *** [core/osal/src/osloader.o] Error 1
+core/osal/src/subdir.mk:60: recipe for target 'core/osal/src/osloader.o' failed
+
+20:16:58 Build Finished (took 1s.119ms)
+

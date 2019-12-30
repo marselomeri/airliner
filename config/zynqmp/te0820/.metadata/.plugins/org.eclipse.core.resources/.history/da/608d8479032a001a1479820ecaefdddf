@@ -1,0 +1,9 @@
+#include <stdlib.h>
+
+
+#define kumm_malloc(s)          malloc(s)
+#define kmm_malloc(s)           malloc(s)
+#define kumm_free(s)            free(s)
+#define kmm_free(s)             free(s)
+#define kumm_realloc(s, b)      realloc(s, b)
+#define kmm_realloc(s, b)       realloc(s, b)

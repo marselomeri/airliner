@@ -1,0 +1,116 @@
+#include <untar.h>
+#include <stdio.h>
+#include <string.h>
+#include <strings.h>
+#include <stdlib.h>
+
+#include "common_types.h"
+#include "osapi.h"
+#include "utassert.h"
+#include "uttest.h"
+#include "utbsp.h"
+#include <nuttx/binfmt/binfmt.h>
+
+
+void TestUntar(void);
+void TestDynamicLoader(void);
+
+os_fs_err_name_t errname;
+
+extern unsigned char testDir1[];
+extern unsigned int testDir1Size;
+
+
+
+
+/* *************************************** MAIN ************************************** */
+
+void OS_Application_Startup(void)
+{
+    errname[0] = 0;
+
+    if (OS_API_Init() != OS_SUCCESS)
+    {
+        UtAssert_Abort("OS_API_Init() failed");
+    }
+
+    /*
+     * Register the test setup and check routines in UT assert
+     *
+     * It is done this way so that the output is logically grouped,
+     * otherwise the entire thing would be lumped together
+     * as a single test case.
+     */
+    UtTest_Add(TestUntar, NULL, NULL, "TestUntar");
+    UtTest_Add(TestDynamicLoader, NULL, NULL, "TestDynamicLoader");
+}
+
+void TestUntar(void)
+{
+    int       status;
+    os_dirp_t dirp0;
+    char      dir0[OS_MAX_PATH_LEN];
+    os_dirent_t   *dirent_ptr0;
+    int size = 0;
+    int fd = 0;
+    char buffer [30] = "";
+
+    strcpy(dir0,"/drive0");
+
+    /* Make the file system */
+    status = OS_mkfs(0,"/ramdev0","RAM",512,200);
+    UtAssert_True(status == OS_SUCCESS, "status after mkfs = %d",(int)status);
+
+    status = OS_mount("/ramdev0","/drive0");
+    UtAssert_True(status == OS_SUCCESS, "status after mount = %d",(int)status);
+
+	untar((char*)testDir1, testDir1Size, "0:/");
+
+    dirp0 = OS_opendir(dir0);
+    UtAssert_True(dirp0 != NULL, "OS_opendir not null");
+
+    /* try to read the two folders that are in the "/" */
+    /* Have to make it a loop to see if we can find the directories in question */
+
+    dirent_ptr0 = OS_readdir (dirp0);
+    while (dirent_ptr0 != NULL)
+    {
+        if ( strncmp(dirent_ptr0 -> d_name,"DIR_ONE",strlen("DIR_ONE")) == 0)
+        {
+            break;
+        }
+        else
+            dirent_ptr0 = OS_readdir(dirp0);
+    }
+    UtAssert_True(dirent_ptr0 != NULL, "DIR_ONE found");
+
+    dirent_ptr0 = OS_readdir (dirp0);
+    while (dirent_ptr0 != NULL)
+    {
+        if ( strncmp(dirent_ptr0 -> d_name,"helloWorld.txt",strlen("helloWorld.txt")) == 0)
+        {
+            break;
+        }
+        else
+            dirent_ptr0 = OS_readdir(dirp0);
+    }
+    UtAssert_True(dirent_ptr0 != NULL, "helloWorld.txt found");
+
+    status = OS_open("/drive0/helloWorld.txt", OS_READ_ONLY, 0);
+    UtAssert_True(status == OS_SUCCESS, "status after reopen = %d",(int)status);
+
+    fd = status;
+
+    size = sizeof(buffer);
+    status = OS_read(fd,(void*)buffer, size);
+    UtAssert_True(status > OS_SUCCESS, "status after read = %d",(int)status);
+    UtAssert_StrCmp(buffer, "Hello world.\n", "File contents are incorrect");
+}
+
+
+
+void TestDynamicLoader(void)
+{
+	//int load_module(FAR struct binary_s *bin);
+}
+}

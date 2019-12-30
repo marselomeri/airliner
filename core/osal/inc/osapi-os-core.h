@@ -38,8 +38,13 @@
 #ifndef _osapi_core_
 #define _osapi_core_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdarg.h>   /* for va_list */
 #include "osapi-os-rtm.h" 
+#include "osconfig.h"
 
 /* Defines constants for OS_BinSemCreate for state of semaphore  */
 #define OS_SEM_FULL     1
@@ -1412,5 +1417,9 @@ void OS_printf_enable(void);
 **
 *************************************************************************/
 void OS_ApplicationExit(int32 Status);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -223,7 +223,6 @@ uint32 bin_7, bin_8, bin_9, bin_10;
 
 uint32 mut_0, mut_1, mut_2, mut_3, mut_4,mut_5, mut_6;
 uint32 mut_7, mut_8 ,mut_9, mut_10;
-uint32 mutex_id;
 
 uint32 shared_resource_x;
 

@@ -1,0 +1,32 @@
+The target system is: FreeRTOS -  - arm
+The host system is: Linux - 4.15.0-50-generic - x86_64
+Determining if files stdatomic.h exist passed with the following output:
+Change Dir: /home/mbenson/git/airliner/config/zynqmp/te0820/freertos10_r5_0_bsp/psu_cortexr5_0/libsrc/openamp_v1_5/build_openamp/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_94f8f/fast"
+/usr/bin/make -f CMakeFiles/cmTC_94f8f.dir/build.make CMakeFiles/cmTC_94f8f.dir/build
+make[1]: Entering directory '/home/mbenson/git/airliner/config/zynqmp/te0820/freertos10_r5_0_bsp/psu_cortexr5_0/libsrc/openamp_v1_5/build_openamp/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_94f8f.dir/CheckIncludeFiles.c.obj
+/opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/bin/armr5-none-eabi-gcc   -O2 -c -mcpu=cortex-r5 -g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS -I/home/mbenson/git/airliner/config/zynqmp/te0820/freertos10_r5_0_bsp/psu_cortexr5_0/include -Wall -Wextra -c   -o CMakeFiles/cmTC_94f8f.dir/CheckIncludeFiles.c.obj   -c /home/mbenson/git/airliner/config/zynqmp/te0820/freertos10_r5_0_bsp/psu_cortexr5_0/libsrc/openamp_v1_5/build_openamp/CMakeFiles/CMakeTmp/CheckIncludeFiles.c
+Linking C executable cmTC_94f8f
+/opt/Xilinx/SDK/2018.3/tps/lnx64/cmake-3.3.2/bin/cmake -E cmake_link_script CMakeFiles/cmTC_94f8f.dir/link.txt --verbose=1
+/opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/bin/armr5-none-eabi-gcc  -O2 -c -mcpu=cortex-r5 -g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS -I/home/mbenson/git/airliner/config/zynqmp/te0820/freertos10_r5_0_bsp/psu_cortexr5_0/include -Wall -Wextra -c    CMakeFiles/cmTC_94f8f.dir/CheckIncludeFiles.c.obj  -o cmTC_94f8f  
+armr5-none-eabi-gcc: warning: CMakeFiles/cmTC_94f8f.dir/CheckIncludeFiles.c.obj: linker input file unused because linking not done
+make[1]: Leaving directory '/home/mbenson/git/airliner/config/zynqmp/te0820/freertos10_r5_0_bsp/psu_cortexr5_0/libsrc/openamp_v1_5/build_openamp/CMakeFiles/CMakeTmp'
+
+
+Determining if files fcntl.h exist passed with the following output:
+Change Dir: /home/mbenson/git/airliner/config/zynqmp/te0820/freertos10_r5_0_bsp/psu_cortexr5_0/libsrc/openamp_v1_5/build_openamp/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_81525/fast"
+/usr/bin/make -f CMakeFiles/cmTC_81525.dir/build.make CMakeFiles/cmTC_81525.dir/build
+make[1]: Entering directory '/home/mbenson/git/airliner/config/zynqmp/te0820/freertos10_r5_0_bsp/psu_cortexr5_0/libsrc/openamp_v1_5/build_openamp/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_81525.dir/CheckIncludeFiles.c.obj
+/opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/bin/armr5-none-eabi-gcc   -O2 -c -mcpu=cortex-r5 -g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS -I/home/mbenson/git/airliner/config/zynqmp/te0820/freertos10_r5_0_bsp/psu_cortexr5_0/include -Wall -Wextra -c   -o CMakeFiles/cmTC_81525.dir/CheckIncludeFiles.c.obj   -c /home/mbenson/git/airliner/config/zynqmp/te0820/freertos10_r5_0_bsp/psu_cortexr5_0/libsrc/openamp_v1_5/build_openamp/CMakeFiles/CMakeTmp/CheckIncludeFiles.c
+Linking C executable cmTC_81525
+/opt/Xilinx/SDK/2018.3/tps/lnx64/cmake-3.3.2/bin/cmake -E cmake_link_script CMakeFiles/cmTC_81525.dir/link.txt --verbose=1
+/opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/bin/armr5-none-eabi-gcc  -O2 -c -mcpu=cortex-r5 -g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS -I/home/mbenson/git/airliner/config/zynqmp/te0820/freertos10_r5_0_bsp/psu_cortexr5_0/include -Wall -Wextra -c    CMakeFiles/cmTC_81525.dir/CheckIncludeFiles.c.obj  -o cmTC_81525  
+armr5-none-eabi-gcc: warning: CMakeFiles/cmTC_81525.dir/CheckIncludeFiles.c.obj: linker input file unused because linking not done
+make[1]: Leaving directory '/home/mbenson/git/airliner/config/zynqmp/te0820/freertos10_r5_0_bsp/psu_cortexr5_0/libsrc/openamp_v1_5/build_openamp/CMakeFiles/CMakeTmp'
+
+

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete resource &apos;loader-test/core/osal/ut_src/tmp&apos;" deleteContents="false" description="Delete resource &apos;loader-test/core/osal/ut_src/tmp&apos;" element1="/loader-test/core/osal/ut_src/tmp" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1577593803334"/>
+</session>

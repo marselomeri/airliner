@@ -131,7 +131,7 @@ osalbool UtMem2HexFile(const void *Memory, const char *Filename, uint32 Length)
 void UtMemFill(void *Memory, uint32 Length)
 {
     uint32 i;
-    uint8  *Byte_ptr = Memory;
+    uint8  *Byte_ptr = (uint8*)Memory;
 
     for(i=0; i < Length; i++) {
         Byte_ptr[i] = i;
@@ -170,7 +170,7 @@ void UtPrintx(const void *Memory, uint32 Length)
 {
     uint32 i;
     uint32 j;
-    const uint8  *Byte_ptr = Memory;
+    const uint8  *Byte_ptr = (const uint8*)Memory;
     char OutputLine[50];
     char *OutPtr;
 
@@ -189,7 +189,7 @@ void UtPrintx(const void *Memory, uint32 Length)
 osalbool UtMemCmpValue(const void *Memory, uint8 Value, uint32 Length)
 {
     uint32 i;
-    const uint8  *Byte_ptr = Memory;
+    const uint8  *Byte_ptr = (const uint8*)Memory;
 
     for (i=0; i < Length; i++) {
         if (Byte_ptr[i] != Value) {
@@ -202,7 +202,7 @@ osalbool UtMemCmpValue(const void *Memory, uint8 Value, uint32 Length)
 osalbool UtMemCmpCount(const void *Memory, uint32 Length)
 {
     uint32 i;
-    const uint8  *Byte_ptr = Memory;
+    const uint8  *Byte_ptr = (const uint8*)Memory;
 
     for (i=0; i < Length; i++) {
         if (Byte_ptr[i] != (i & 0xFF)) {
@@ -215,7 +215,7 @@ osalbool UtMemCmpCount(const void *Memory, uint32 Length)
 osalbool UtMem2BinFileCmp(const void *Memory, const char *Filename)
 {
     FILE   *fp;
-    const uint8  *MemByte = Memory;
+    const uint8  *MemByte = (const uint8*)Memory;
     int     FileByte;
     osalbool Success;
     uint32  i;

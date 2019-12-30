@@ -1,0 +1,21 @@
+18:16:58 **** Auto Build of configuration Debug for project osal-core-test ****
+make all 
+Building file: /home/mbenson/git/airliner/core/osal/src/os/freertos/unit_tests/testDir1.c
+Invoking: ARM R5 g++ compiler
+armr5-none-eabi-g++ -DARMR5 -Wall -O0 -g3 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -I"/home/mbenson/git/airliner/core/osal/inc" -I"/home/mbenson/git/airliner/core/osal/ut_assert/inc" -I"/home/mbenson/git/airliner/config/zynqmp/inc" -I"/home/mbenson/git/airliner/config/shared/inc" -c -fmessage-length=0 -MT"core/osal/src/unit_tests/testDir1.o" -mcpu=cortex-r5 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -MMD -MP -MF"core/osal/src/unit_tests/testDir1.d" -MT"core/osal/src/unit_tests/testDir1.o" -o "core/osal/src/unit_tests/testDir1.o" "/home/mbenson/git/airliner/core/osal/src/os/freertos/unit_tests/testDir1.c"
+Finished building: /home/mbenson/git/airliner/core/osal/src/os/freertos/unit_tests/testDir1.c
+ 
+Building target: osal-core-test.elf
+Invoking: ARM R5 g++ linker
+armr5-none-eabi-g++ -Wl,-T -Wl,../../../../../core/psp/fsw/zynqmp_r5/src/lscript.ld -L../../freertos10_r5_0_bsp/psu_cortexr5_0/lib -o "osal-core-test.elf"  ./core/psp/ut_bsp/bsp_ut.o  ./core/psp/src/cfe_psp_voltab.o  ./core/osal/ut_src/osal-core-test.o  ./core/osal/ut_assert/src/utassert.o ./core/osal/ut_assert/src/utlist.o ./core/osal/ut_assert/src/utstubs.o ./core/osal/ut_assert/src/uttest.o ./core/osal/ut_assert/src/uttools.o  ./core/osal/src/unit_tests/testDir1.o  ./core/osal/src/osapi.o ./core/osal/src/osfileapi.o ./core/osal/src/osfilesys.o ./core/osal/src/osloader.o ./core/osal/src/osnetwork.o ./core/osal/src/osrtm.o ./core/osal/src/ostimer.o   -Wl,--start-group,-lxil,-lfreertos,-lgcc,-lc,-lstdc++,--end-group -Wl,--start-group,-lxil,-lmetal,-lgcc,-lc,--end-group -Wl,--start-group,-lxil,-lmetal,-lopen_amp,-lgcc,-lc,--end-group -Wl,--start-group,-lxilffs,-lxil,-lgcc,-lc,--end-group -lxilflash -Wl,--start-group,-lxilfpga,-lxil,-lxilsecure,-lgcc,-lc,--end-group -Wl,--start-group,-lxilpm,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilsecure,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilskey,-lxil,-lgcc,-lc,--end-group
+Finished building target: osal-core-test.elf
+ 
+Invoking: ARM R5 Print Size
+armr5-none-eabi-size osal-core-test.elf  |tee "osal-core-test.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 260216	  17396	1646656	1924268	 1d5cac	osal-core-test.elf
+Finished building: osal-core-test.elf.size
+ 
+
+18:16:58 Build Finished (took 514ms)
+

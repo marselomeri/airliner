@@ -1,0 +1,201 @@
+!SESSION 2019-12-28 22:36:52.750 -----------------------------------------------
+eclipse.buildId=2018.3
+java.version=1.8.0_112
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+This is a continuation of log file /home/mbenson/git/airliner/config/zynqmp/te0820/.metadata/.bak_1.log
+Created Time: 2019-12-29 23:40:56.880
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:40:56.880
+!MESSAGE XSCT Command: [dow /home/mbenson/git/airliner/config/zynqmp/te0820/loader-test/Debug/loader-test.elf], Thread: Worker-174
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:40:56.915
+!MESSAGE XSCT command with result: [dow /home/mbenson/git/airliner/config/zynqmp/te0820/loader-test/Debug/loader-test.elf], Result: [null, ]. Thread: Worker-174
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:40:56.915
+!MESSAGE XSCT Command: [mask_write 0xff5e023c [expr (1 << 0) | 0x14] 0], Thread: Worker-174
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:40:56.917
+!MESSAGE XSCT command with result: [mask_write 0xff5e023c [expr (1 << 0) | 0x14] 0], Result: [null, ]. Thread: Worker-174
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:40:56.918
+!MESSAGE XSCT Command: [mwr 0xff9a0000 0x80000218], Thread: Worker-174
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:40:56.937
+!MESSAGE XSCT command with result: [mwr 0xff9a0000 0x80000218], Result: [null, ]. Thread: Worker-174
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:40:56.948
+!MESSAGE XSCT Command: [targets 8], Thread: Worker-174
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:40:56.950
+!MESSAGE XSCT command with result: [targets 8], Result: [null, ]. Thread: Worker-174
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:40:56.950
+!MESSAGE XSCT Command: [con], Thread: Worker-174
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:40:57.087
+!MESSAGE XSCT command with result: [con], Result: [null, ]. Thread: Worker-174
+
+!ENTRY com.xilinx.sdk.utils 1 0 2019-12-29 23:54:02.617
+!MESSAGE Updating toolusage
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:54:04.394
+!MESSAGE XSCT Command: [connect -url tcp:localhost:1138], Thread: ModalContext
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:54:04.397
+!MESSAGE XSCT command with result: [connect -url tcp:localhost:1138], Result: [null, tcfchan#80]. Thread: ModalContext
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:54:04.398
+!MESSAGE XSCT Command: [jtag targets -filter {level == 0}], Thread: ModalContext
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:54:07.401
+!MESSAGE XSCT command with result: [jtag targets -filter {level == 0}], Result: [null, ]. Thread: ModalContext
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:54:10.401
+!MESSAGE XSCT Command: [jtag targets -filter {level == 0}], Thread: ModalContext
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:54:13.416
+!MESSAGE XSCT command with result: [jtag targets -filter {level == 0}], Result: [null, ]. Thread: ModalContext
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:54:13.416
+!MESSAGE XSCT Command: [tcf send_command tcfchan#80 GdbClient connect "o{host s port s}" eA {{host localhost port 1137 architecture aarch64}}], Thread: ModalContext
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:54:13.420
+!MESSAGE XSCT command with result: [tcf send_command tcfchan#80 GdbClient connect "o{host s port s}" eA {{host localhost port 1137 architecture aarch64}}], Result: [null, {} GdbClient0]. Thread: ModalContext
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:54:13.423
+!MESSAGE XSCT Command: [connect -url tcp:localhost:1138], Thread: Worker-160
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:54:13.424
+!MESSAGE XSCT command with result: [connect -url tcp:localhost:1138], Result: [null, tcfchan#80]. Thread: Worker-160
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:54:13.425
+!MESSAGE XSCT Command: [jtag targets -filter {level == 0}], Thread: Worker-160
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:54:16.428
+!MESSAGE XSCT command with result: [jtag targets -filter {level == 0}], Result: [null, ]. Thread: Worker-160
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:54:19.428
+!MESSAGE XSCT Command: [jtag targets -filter {level == 0}], Thread: Worker-160
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:54:22.437
+!MESSAGE XSCT command with result: [jtag targets -filter {level == 0}], Result: [null, ]. Thread: Worker-160
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:54:22.437
+!MESSAGE XSCT Command: [targets 8], Thread: Worker-160
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:54:22.438
+!MESSAGE XSCT command with result: [targets 8], Result: [null, ]. Thread: Worker-160
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:54:22.438
+!MESSAGE XSCT Command: [dow /home/mbenson/git/airliner/config/zynqmp/te0820/loader-test/Debug/loader-test.elf], Thread: Worker-160
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:54:22.472
+!MESSAGE XSCT command with result: [dow /home/mbenson/git/airliner/config/zynqmp/te0820/loader-test/Debug/loader-test.elf], Result: [null, ]. Thread: Worker-160
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:54:22.472
+!MESSAGE XSCT Command: [mask_write 0xff5e023c [expr (1 << 0) | 0x14] 0], Thread: Worker-160
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:54:22.474
+!MESSAGE XSCT command with result: [mask_write 0xff5e023c [expr (1 << 0) | 0x14] 0], Result: [null, ]. Thread: Worker-160
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:54:22.475
+!MESSAGE XSCT Command: [mwr 0xff9a0000 0x80000218], Thread: Worker-160
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:54:22.495
+!MESSAGE XSCT command with result: [mwr 0xff9a0000 0x80000218], Result: [null, ]. Thread: Worker-160
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:54:22.507
+!MESSAGE XSCT Command: [targets 8], Thread: Worker-160
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:54:22.508
+!MESSAGE XSCT command with result: [targets 8], Result: [null, ]. Thread: Worker-160
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:54:22.509
+!MESSAGE XSCT Command: [con], Thread: Worker-160
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:54:22.649
+!MESSAGE XSCT command with result: [con], Result: [null, ]. Thread: Worker-160
+
+!ENTRY com.xilinx.sdk.utils 1 0 2019-12-29 23:54:53.736
+!MESSAGE Updating toolusage
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:54:55.536
+!MESSAGE XSCT Command: [connect -url tcp:localhost:1138], Thread: ModalContext
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:54:55.539
+!MESSAGE XSCT command with result: [connect -url tcp:localhost:1138], Result: [null, tcfchan#81]. Thread: ModalContext
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:54:55.539
+!MESSAGE XSCT Command: [jtag targets -filter {level == 0}], Thread: ModalContext
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:54:58.542
+!MESSAGE XSCT command with result: [jtag targets -filter {level == 0}], Result: [null, ]. Thread: ModalContext
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:55:01.542
+!MESSAGE XSCT Command: [jtag targets -filter {level == 0}], Thread: ModalContext
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:55:04.558
+!MESSAGE XSCT command with result: [jtag targets -filter {level == 0}], Result: [null, ]. Thread: ModalContext
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:55:04.558
+!MESSAGE XSCT Command: [tcf send_command tcfchan#81 GdbClient connect "o{host s port s}" eA {{host localhost port 1137 architecture aarch64}}], Thread: ModalContext
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:55:04.563
+!MESSAGE XSCT command with result: [tcf send_command tcfchan#81 GdbClient connect "o{host s port s}" eA {{host localhost port 1137 architecture aarch64}}], Result: [null, {} GdbClient0]. Thread: ModalContext
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:55:04.579
+!MESSAGE XSCT Command: [connect -url tcp:localhost:1138], Thread: Worker-175
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:55:04.580
+!MESSAGE XSCT command with result: [connect -url tcp:localhost:1138], Result: [null, tcfchan#81]. Thread: Worker-175
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:55:04.580
+!MESSAGE XSCT Command: [jtag targets -filter {level == 0}], Thread: Worker-175
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:55:07.586
+!MESSAGE XSCT command with result: [jtag targets -filter {level == 0}], Result: [null, ]. Thread: Worker-175
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:55:10.586
+!MESSAGE XSCT Command: [jtag targets -filter {level == 0}], Thread: Worker-175
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:55:13.603
+!MESSAGE XSCT command with result: [jtag targets -filter {level == 0}], Result: [null, ]. Thread: Worker-175
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:55:13.603
+!MESSAGE XSCT Command: [targets 8], Thread: Worker-175
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:55:13.604
+!MESSAGE XSCT command with result: [targets 8], Result: [null, ]. Thread: Worker-175
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:55:13.604
+!MESSAGE XSCT Command: [dow /home/mbenson/git/airliner/config/zynqmp/te0820/loader-test/Debug/loader-test.elf], Thread: Worker-175
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:55:13.641
+!MESSAGE XSCT command with result: [dow /home/mbenson/git/airliner/config/zynqmp/te0820/loader-test/Debug/loader-test.elf], Result: [null, ]. Thread: Worker-175
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:55:13.641
+!MESSAGE XSCT Command: [mask_write 0xff5e023c [expr (1 << 0) | 0x14] 0], Thread: Worker-175
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:55:13.643
+!MESSAGE XSCT command with result: [mask_write 0xff5e023c [expr (1 << 0) | 0x14] 0], Result: [null, ]. Thread: Worker-175
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:55:13.644
+!MESSAGE XSCT Command: [mwr 0xff9a0000 0x80000218], Thread: Worker-175
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:55:13.662
+!MESSAGE XSCT command with result: [mwr 0xff9a0000 0x80000218], Result: [null, ]. Thread: Worker-175
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:55:13.674
+!MESSAGE XSCT Command: [targets 8], Thread: Worker-175
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:55:13.676
+!MESSAGE XSCT command with result: [targets 8], Result: [null, ]. Thread: Worker-175
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:55:13.676
+!MESSAGE XSCT Command: [con], Thread: Worker-175
+
+!ENTRY com.xilinx.sdk.utils 0 0 2019-12-29 23:55:13.815
+!MESSAGE XSCT command with result: [con], Result: [null, ]. Thread: Worker-175

@@ -42,7 +42,7 @@ UtListHead_t *UtList_Create(void)
 {
     UtListHead_t *NewList;
 
-    NewList = malloc(sizeof(UtListHead_t));
+    NewList = (UtListHead_t*)malloc(sizeof(UtListHead_t));
     NewList->First = NULL;
     NewList->Last = NULL;
     NewList->NumberOfEntries = 0;
@@ -66,7 +66,7 @@ void UtList_Add(UtListHead_t *ListHead, void *Data, uint32 DataSize, uint32 Tag)
 {
     UtListNode_t *NewNode = NULL;
     
-    NewNode = malloc(sizeof(UtListNode_t));
+    NewNode = (UtListNode_t*)malloc(sizeof(UtListNode_t));
     if (ListHead->NumberOfEntries == 0) {
 
         ListHead->First = NewNode;

@@ -157,7 +157,7 @@ void SenderTaskPart1Main(void)
             for(iReceiver = 0; iReceiver < RECEIVER_TASK_COUNT; ++iReceiver)
             {
             	testMsg.taskID = iReceiver;
-            	TestMsg_t *testMsgOut = malloc(sizeof(testMsg));
+            	TestMsg_t *testMsgOut = (TestMsg_t*)malloc(sizeof(testMsg));
             	memcpy(testMsgOut, &testMsg, sizeof(testMsg));
             	status = OS_QueuePut(SenderTaskData.Queue[iReceiver], &testMsgOut, sizeof(testMsgOut), 0);
             	if((status != OS_SUCCESS) && (status != OS_QUEUE_FULL))
@@ -282,7 +282,7 @@ void SenderTaskPart2Main(void)
 			for(iReceiver = 0; iReceiver < RECEIVER_TASK_COUNT; ++iReceiver)
 			{
 				testMsg.taskID = iReceiver;
-				TestMsg_t *testMsgOut = malloc(sizeof(testMsg));
+				TestMsg_t *testMsgOut = (TestMsg_t*)malloc(sizeof(testMsg));
 				memcpy(testMsgOut, &testMsg, sizeof(testMsg));
 				status = OS_QueuePut(SenderTaskData.Queue[iReceiver], &testMsgOut, sizeof(testMsgOut), 0);
 				if((status != OS_SUCCESS) && (status != OS_QUEUE_FULL))

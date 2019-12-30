@@ -1,0 +1,1 @@
+/home/mbenson/git/airliner/config/zynqmp/te0820/freertos10_r5_0_bsp/psu_cortexr5_0/libsrc/openamp_v1_5/build_openamp/lib/CMakeFiles/open_amp-static.dir

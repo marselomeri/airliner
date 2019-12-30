@@ -33,6 +33,11 @@
 #ifndef _uttest_
 #define	_uttest_
 
+#if defined(__cplusplus)
+extern "C"
+{
+#endif
+
 /*
  * Exported Functions
  */
@@ -45,6 +50,10 @@ void    UtTest_Add(void (*Test)(void), void (*Setup)(void), void (*Teardown)(voi
  * returns a boolean status indicating if any of the tests failed. (TRUE = at least one test failure 
  * has occurred, FALSE = all tests passed) */
 int     UtTest_Run(void);
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif
 

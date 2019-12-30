@@ -21,6 +21,8 @@
 #include "utstubs.h"
 #include "utassert.h"
 #include "uttools.h"
+#include "osconfig.h"
+
 
 /*
 ** Standard File system API

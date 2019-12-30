@@ -31,6 +31,11 @@
  * Includes
  */
 
+#if defined(__cplusplus)
+extern "C"
+{
+#endif
+
 #include "common_types.h"
 #include "utassert.h"
 #include "utlist.h"
@@ -80,7 +85,7 @@ int UtTest_Run(void)
         UtListNode = UtTestDataBase.First;
         for (i=0; i < UtTestDataBase.NumberOfEntries; i++) {
             
-            UtTestDataBaseEntry = UtListNode->Data;
+            UtTestDataBaseEntry = (UtTestDataBaseEntry_t*)UtListNode->Data;
 
             UtAssert_BeginTest(UtTestDataBaseEntry->TestName);
 
@@ -101,3 +106,7 @@ int UtTest_Run(void)
 
     return (UtAssert_GetFailCount() > 0);
 }
+
+#if defined(__cplusplus)
+}
+#endif
