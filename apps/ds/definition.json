@@ -233,7 +233,7 @@
                     "cc": 1,
                     "struct": "DS_ResetCmd_t"
                 },
-                "SetAppState\n": {
+                "SetAppState": {
                     "cc": 2,
                     "struct": "DS_AppStateCmd_t"
                 },
@@ -273,7 +273,7 @@
                     "cc": 11,
                     "struct": "DS_DestSizeCmd_t"
                 },
-                "SetDestAge\n": {
+                "SetDestAge": {
                     "cc": 12,
                     "struct": "DS_DestAgeCmd_t"
                 },
@@ -281,7 +281,7 @@
                     "cc": 13,
                     "struct": "DS_DestCountCmd_t"
                 },
-                "CloseFile\n": {
+                "CloseFile": {
                     "cc": 14,
                     "struct": "DS_CloseFileCmd_t"
                 },

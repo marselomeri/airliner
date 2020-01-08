@@ -111,6 +111,24 @@
                     "struct": "EA_NoArgCmd_t"
                 }
             }
+        },
+        "EA_PERFMON_MID": {
+            "msgid": "",
+            "commands": {
+                "MonitorPerformance": {
+                    "cc": 0,
+                    "struct": "EA_NoArgCmd_t"
+                }
+            }
+        },
+        "EA_SEND_HK_MID": {
+            "msgid": "",
+            "commands": {
+                "SendHK": {
+                    "cc": 0,
+                    "struct": "EA_NoArgCmd_t"
+                }
+            }
         }
     },
     "perfids": {

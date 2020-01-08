@@ -77,7 +77,26 @@
             "struct": "MAVLINK_HkTlm_t"
         }
     },
-    "commands": {},
+    "commands": {
+        "MAVLINK_WAKEUP_MID": {
+            "msgID": "",
+            "commands": {
+                "WakeUp": {
+                    "cc": 0,
+                    "struct": "MAVLINK_NoArgCmd_t"
+                }
+            }
+        },
+        "MAVLINK_SEND_HK_MID": {
+            "msgID": "",
+            "commands": {
+                "SendHK": {
+                    "cc": 0,
+                    "struct": "MAVLINK_NoArgCmd_t"
+                }
+            }
+        }
+    },
     "perfids": {
         "MAVLINK_MAIN_TASK_PERF_ID": {
             "id": ""

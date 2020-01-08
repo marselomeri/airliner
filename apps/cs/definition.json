@@ -605,7 +605,7 @@
                     "cc": 1,
                     "struct": "CS_NoArgsCmd_t"
                 },
-                "OneShot\n": {
+                "OneShot": {
                     "cc": 2,
                     "struct": "CS_OneShotCmd_t"
                 },
@@ -705,7 +705,7 @@
                     "cc": 26,
                     "struct": "CS_EntryCmd_t"
                 },
-                "GetEntryIDMemory\n": {
+                "GetEntryIDMemory": {
                     "cc": 27,
                     "struct": "CS_GetEntryIDCmd_t"
                 },

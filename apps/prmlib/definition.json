@@ -1,6 +1,6 @@
 {
     "short_name": "param",
-    "long_name": "Parameters\n",
+    "long_name": "Parameters",
     "events": {},
     "telemetry": {
         "PRMLIB_PARAM_UPDATED_MID": {

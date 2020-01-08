@@ -677,7 +677,7 @@
                     "cc": 0,
                     "struct": "CF_NoArgsCmd_t"
                 },
-                "ResetCounters\n": {
+                "ResetCounters": {
                     "cc": 1,
                     "struct": "CF_ResetCtrsCmd_t"
                 },
@@ -737,7 +737,7 @@
                     "cc": 15,
                     "struct": "CF_WriteQueueCmd_t"
                 },
-                "EnableDequeue\n": {
+                "EnableDequeue": {
                     "cc": 16,
                     "struct": "CF_EnDisDequeueCmd_t"
                 },

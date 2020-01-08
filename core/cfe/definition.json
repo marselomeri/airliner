@@ -1,6 +1,6 @@
 {
     "short_name": "core",
-    "long_name": "CORE\n",
+    "long_name": "CORE",
     "events": {},
     "telemetry": {
         "CFE_ES_HK_TLM_MID": {
@@ -198,7 +198,7 @@
                     "cc": 4,
                     "struct": "CFE_EVS_ModeCmd_t"
                 },
-                "EnableAppEventType\n": {
+                "EnableAppEventType": {
                     "cc": 5,
                     "struct": "CFE_EVS_AppNameBitMaskCmd_t"
                 },

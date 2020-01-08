@@ -86,7 +86,7 @@
         "GPS_SEND_HK_MID": {
             "msgid": "",
             "commands": {
-                "SendHK\n": {
+                "SendHK": {
                     "cc": 0,
                     "struct": "GPS_NoArgCmd_t"
                 }

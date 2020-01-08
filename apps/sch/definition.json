@@ -284,7 +284,7 @@
                     "cc": 6,
                     "struct": "CFE_SB_CmdHdr_t"
                 },
-                "SendDiag\n": {
+                "SendDiag": {
                     "cc": 7,
                     "struct": "CFE_SB_CmdHdr_t"
                 }

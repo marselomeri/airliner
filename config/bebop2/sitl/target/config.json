@@ -96,6 +96,9 @@
     "pe": {
       "definition": "../../../../apps/pe/definition.json"
     },
+    "px4lib": {
+      "definition": "../../../../apps/px4lib/definition.json"
+    },
     "qae": {
       "definition": "../../../../apps/qae/definition.json"
     },
@@ -34561,37 +34564,86 @@
           "63": {},
           "64": {},
           "65": {
-            "msgid": "AMC_UPDATE_MOTORS_MID"
+            "msgid": "AMC_UPDATE_MOTORS_MID",
+            "cc": "0"
           },
-          "66": {},
+          "66": {
+            "msgid": "AMC_SEND_HK_MID",
+            "cc": "0"
+          },
           "67": {},
           "68": {},
           "69": {},
-          "70": {},
+          "70": {
+            "msgid": "MM_SEND_HK_MID",
+            "cc": "0"
+          },
           "71": {},
-          "72": {},
-          "73": {},
-          "74": {},
-          "75": {},
-          "76": {},
-          "77": {},
+          "72": {
+            "msgid": "MPU6050_SEND_HK_MID",
+            "cc": "0"
+          },
+          "73": {
+            "msgid": "MPU6050_MEASURE_MID",
+            "cc": "0"
+          },
+          "74": {
+            "msgid": "PE_SEND_HK_MID",
+            "cc": "0"
+          },
+          "75": {
+            "msgid": "PE_WAKEUP_MID",
+            "cc": "0"
+          },
+          "76": {
+            "msgid": "MS5607_SEND_HK_MID",
+            "cc": "0"
+          },
+          "77": {
+            "msgid": "MS5607_MEASURE_MID",
+            "cc": "0"
+          },
           "78": {},
           "79": {},
-          "80": {},
-          "81": {},
+          "80": {
+            "msgid": "SONAR_MEASURE_MID",
+            "cc": "0"
+          },
+          "81": {
+            "msgid": "SONAR_SEND_HK_MID",
+            "cc": "0"
+          },
           "82": {},
-          "83": {},
-          "84": {},
+          "83": {
+            "msgid": "AK8963_SEND_HK_MID",
+            "cc": "0"
+          },
+          "84": {
+            "msgid": "AK8963_WAKEUP_MID",
+            "cc": "0"
+          },
           "85": {},
           "86": {},
           "87": {},
           "88": {},
           "89": {},
-          "90": {},
-          "91": {},
+          "90": {
+            "msgid": "SENS_SEND_HK_MID",
+            "cc": "0"
+          },
+          "91": {
+            "msgid": "SENS_WAKEUP_MID",
+            "cc": "0"
+          },
           "92": {},
-          "93": {},
-          "94": {},
+          "93": {
+            "msgid": "LGC_WAKEUP_MID",
+            "cc": "0"
+          },
+          "94": {
+            "msgid": "LGC_SEND_HK_MID",
+            "cc": "0"
+          },
           "95": {},
           "96": {},
           "97": {},
@@ -34599,32 +34651,103 @@
           "99": {},
           "100": {},
           "101": {},
-          "102": {},
-          "103": {},
-          "104": {},
-          "105": {},
-          "106": {},
-          "107": {},
-          "108": {},
-          "109": {},
-          "110": {},
-          "111": {},
-          "112": {},
-          "113": {},
-          "114": {},
-          "115": {},
+          "102": {
+            "msgid": "QAE_SEND_HK_MID",
+            "cc": "0"
+          },
+          "103": {
+            "msgid": "QAE_WAKEUP_MID",
+            "cc": "0"
+          },
+          "104": {
+            "msgid": "LD_SEND_HK_MID",
+            "cc": "0"
+          },
+          "105": {
+            "msgid": "LD_WAKEUP_MID",
+            "cc": "0"
+          },
+          "106": {
+            "msgid": "MPC_SEND_HK_MID",
+            "cc": "0"
+          },
+          "107": {
+            "msgid": "MPC_WAKEUP_MID",
+            "cc": "0"
+          },
+          "108": {
+            "msgid": "NAV_SEND_HK_MID",
+            "cc": "0"
+          },
+          "109": {
+            "msgid": "NAV_WAKEUP_MID",
+            "cc": "0"
+          },
+          "110": {
+            "msgid": "CFE_TIME_TONE_CMD_MID",
+            "cc": "0"
+          },
+          "111": {
+            "msgid": "CFE_TIME_1HZ_CMD_MID",
+            "cc": "0"
+          },
+          "112": {
+            "msgid": "RCIN_SEND_HK_MID",
+            "cc": "0"
+          },
+          "113": {
+            "msgid": "RCIN_WAKEUP_MID",
+            "cc": "0"
+          },
+          "114": {
+            "msgid": "VM_SEND_HK_MID",
+            "cc": "0"
+          },
+          "115": {
+            "msgid": "VM_WAKEUP_MID",
+            "cc": "0"
+          },
           "116": {},
-          "117": {},
-          "118": {},
-          "119": {},
-          "120": {},
+          "117": {
+            "msgid": "BAT_SEND_HK_MID",
+            "cc": "0"
+          },
+          "118": {
+            "msgid": "BAT_WAKEUP_MID",
+            "cc": "0"
+          },
+          "119": {
+            "msgid": "MAVLINK_WAKEUP_MID",
+            "cc": "0"
+          },
+          "120": {
+            "msgid": "MAVLINK_SEND_HK_MID",
+            "cc": "0"
+          },
           "121": {},
-          "122": {},
-          "123": {},
-          "124": {},
-          "125": {},
-          "126": {},
-          "127": {},
+          "122": {
+            "msgid": "GPS_READ_SENSOR_MID",
+            "cc": "0"
+          },
+          "123": {
+            "msgid": "GPS_SEND_HK_MID",
+            "cc": "0"
+          },
+          "124": {
+            "msgid": ""
+          },
+          "125": {
+            "msgid": "EA_WAKEUP_MID",
+            "cc": "0"
+          },
+          "126": {
+            "msgid": "EA_PERFMON_MID",
+            "cc": "0"
+          },
+          "127": {
+            "msgid": "EA_SEND_HK_MID",
+            "cc": "0"
+          },
           "128": {}
         }
       }

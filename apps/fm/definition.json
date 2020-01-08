@@ -521,7 +521,7 @@
                     "cc": 16,
                     "struct": "FM_GetFreeSpaceCmd_t"
                 },
-                "SetTableState\n": {
+                "SetTableState": {
                     "cc": 17,
                     "struct": "FM_SetTableStateCmd_t"
                 },

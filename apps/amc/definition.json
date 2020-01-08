@@ -113,7 +113,7 @@
         "AMC_CMD_MID": {
             "msgid": "",
             "commands": {
-                "Noop\n": {
+                "Noop": {
                     "cc": 0,
                     "struct": "AMC_NoArgCmd_t"
                 },
@@ -126,7 +126,7 @@
         "AMC_SEND_HK_MID": {
             "msgid": "",
             "commands": {
-                "SendHK\n": {
+                "SendHK": {
                     "cc": 0,
                     "struct": "AMC_NoArgCmd_t"
                 }
@@ -135,7 +135,7 @@
         "AMC_UPDATE_MOTORS_MID": {
             "msgid": "",
             "commands": {
-                "UpdateMotors\n": {
+                "UpdateMotors": {
                     "cc": 0,
                     "struct": "AMC_NoArgCmd_t"
                 }

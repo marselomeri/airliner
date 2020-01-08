@@ -241,7 +241,7 @@
                     "cc": 2,
                     "struct": "PE_NoArgCmd_t"
                 },
-                "DisableDistanceSensor\n": {
+                "DisableDistanceSensor": {
                     "cc": 3,
                     "struct": "PE_NoArgCmd_t"
                 },

@@ -2,20 +2,18 @@
     "config_base": "..",
     "core": {
         "cfe": {
-            "short_name": "core",
-            "long_name": "CORE\n",
             "telemetry": {
                 "CFE_ES_HK_TLM_MID": {
                     "msgID": "0x0800"
                 },
                 "CFE_ES_APP_TLM_MID": {
-                    "msgID": "0x080B"
+                    "msgID": "0x080b"
                 },
                 "CFE_ES_MEMSTATS_TLM_MID": {
                     "msgID": "0x0810"
                 },
                 "CFE_ES_SHELL_TLM_MID": {
-                    "msgID": "0x080F"
+                    "msgID": "0x080b"
                 },
                 "CFE_EVS_HK_TLM_MID": {
                     "msgID": "0x0801"
@@ -27,13 +25,13 @@
                     "msgID": "0x0803"
                 },
                 "CFE_SB_STATS_TLM_MID": {
-                    "msgID": "0x080A"
+                    "msgID": "0x080a"
                 },
                 "CFE_SB_ALLSUBS_TLM_MID": {
-                    "msgID": "0x080D"
+                    "msgID": "0x080d"
                 },
                 "CFE_SB_ONESUB_TLM_MID": {
-                    "msgID": "0x080E"
+                    "msgID": "0x080e"
                 },
                 "CFE_TIME_DIAG_TLM_MID": {
                     "msgID": "0x0806"
@@ -45,7 +43,7 @@
                     "msgID": "0x0804"
                 },
                 "CFE_TBL_REG_TLM_MID": {
-                    "msgID": "0x080C"
+                    "msgID": "0x080c"
                 }
             },
             "commands": {
@@ -65,13 +63,13 @@
                     "msgid": "0x1803"
                 },
                 "CFE_SB_SEND_HK_MID": {
-                    "msgid": "0x180B"
+                    "msgid": "0x180b"
                 },
                 "CFE_TBL_CMD_MID": {
                     "msgid": "0x1804"
                 },
                 "CFE_TBL_SEND_HK_MID": {
-                    "msgid": "0x180C"
+                    "msgid": "0x180c"
                 },
                 "CFE_TIME_CMD_MID": {
                     "msgid": "0x1805"
@@ -129,13 +127,18 @@
                 "CFE_SB_PIPE_OFLOW_PERF_ID": {
                     "id": 27
                 }
-            }
+            },
+            "definition": "../core/cfe"
+        },
+        "osal": {
+            "definition": "../core/osal/src/os/posix-nasa"
+        },
+        "psp": {
+            "definition": "../core/psp/fsw/pc-linux-wh"
         }
     },
     "modules": {
         "ak8963": {
-            "short_name": "ak8963",
-            "long_name": "TBD",
             "telemetry": {
                 "AK8963_HK_TLM_MID": {
                     "msgID": "0x0cc1"
@@ -169,8 +172,6 @@
             "definition": "../apps/ak8963"
         },
         "amc": {
-            "short_name": "amc",
-            "long_name": "Actuator Motor Control",
             "telemetry": {
                 "AMC_HK_TLM_MID": {
                     "msgID": "0x0c41"
@@ -201,8 +202,6 @@
             "definition": "../apps/amc"
         },
         "bat": {
-            "short_name": "bat",
-            "long_name": "Battery Manager",
             "telemetry": {
                 "BAT_HK_TLM_MID": {
                     "msgID": "0x0c71"
@@ -227,8 +226,6 @@
             "definition": "../apps/bat"
         },
         "cf": {
-            "short_name": "cf",
-            "long_name": "CFDP File Delivery",
             "telemetry": {
                 "CF_CONFIG_TLM_MID": {
                     "msgID": "0x0919"
@@ -292,8 +289,6 @@
             "definition": "../apps/cf"
         },
         "ci": {
-            "short_name": "ci",
-            "long_name": "Command Ingest",
             "telemetry": {
                 "CI_HK_TLM_MID": {
                     "msgID": "0x0907"
@@ -327,8 +322,6 @@
             "definition": "../apps/ci"
         },
         "cs": {
-            "short_name": "cs",
-            "long_name": "Checksum Services",
             "telemetry": {
                 "CS_HK_TLM_MID": {
                     "msgID": "0x0933"
@@ -353,8 +346,6 @@
             "definition": "../apps/cs"
         },
         "ds": {
-            "short_name": "ds",
-            "long_name": "Data Storage",
             "telemetry": {
                 "DS_HK_TLM_MID": {
                     "msgID": "0x0942"
@@ -379,8 +370,6 @@
             "definition": "../apps/ds"
         },
         "ea": {
-            "short_name": "ea",
-            "long_name": "External Application",
             "telemetry": {
                 "EA_HK_TLM_MID": {
                     "msgID": "0x0c2b"
@@ -392,6 +381,12 @@
                 },
                 "EA_WAKEUP_MID": {
                     "msgid": "0x1c2c"
+                },
+                "EA_PERFMON_MID": {
+                    "msgid": "0x1c2e"
+                },
+                "EA_SEND_HK_MID": {
+                    "msgid": "0x1c2a"
                 }
             },
             "perfids": {
@@ -402,8 +397,6 @@
             "definition": "../apps/ea"
         },
         "flow": {
-            "short_name": "flow",
-            "long_name": "Optical Flow",
             "telemetry": {
                 "FLOW_HK_TLM_MID": {
                     "msgID": "0x0ce1"
@@ -434,8 +427,6 @@
             "definition": "../apps/flow"
         },
         "fm": {
-            "short_name": "fm",
-            "long_name": "File Management",
             "telemetry": {
                 "FM_HK_TLM_MID": {
                     "msgID": "0x0982"
@@ -472,8 +463,6 @@
             "definition": "../apps/fm"
         },
         "gps": {
-            "short_name": "gps",
-            "long_name": "GPS Driver",
             "telemetry": {
                 "GPS_HK_TLM_MID": {
                     "msgID": "0x0c54"
@@ -494,8 +483,6 @@
             "definition": "../apps/gps"
         },
         "hk": {
-            "short_name": "hk",
-            "long_name": "Housekeeping",
             "telemetry": {
                 "HK_HK_TLM_MID": {
                     "msgID": "0x0993"
@@ -550,8 +537,6 @@
             "definition": "../apps/hk"
         },
         "hmc5883": {
-            "short_name": "hmc5883",
-            "long_name": "",
             "telemetry": {
                 "HMC5883_HK_TLM_MID": {
                     "msgID": "0x0ca1"
@@ -585,8 +570,6 @@
             "definition": "../apps/hmc5883"
         },
         "hs": {
-            "short_name": "hs",
-            "long_name": "Heath Services",
             "telemetry": {
                 "HS_HK_TLM_MID": {
                     "msgID": "0x09a3"
@@ -617,8 +600,6 @@
             "definition": "../apps/hs"
         },
         "lc": {
-            "short_name": "lc",
-            "long_name": "Limits Checker",
             "telemetry": {
                 "LC_HK_TLM_MID": {
                     "msgID": "0x09b0"
@@ -646,8 +627,6 @@
             "definition": "../apps/lc"
         },
         "ld": {
-            "short_name": "ld",
-            "long_name": "Landing Determination",
             "telemetry": {
                 "LD_HK_TLM_MID": {
                     "msgID": "0x0c5d"
@@ -675,8 +654,6 @@
             "definition": "../apps/ld"
         },
         "lgc": {
-            "short_name": "lgc",
-            "long_name": "Landing Gear Control",
             "telemetry": {
                 "LGC_HK_TLM_MID": {
                     "msgID": "0x0cb0"
@@ -701,8 +678,6 @@
             "definition": "../apps/lgc"
         },
         "mac": {
-            "short_name": "mac",
-            "long_name": "Multicopter Attitude Controller",
             "telemetry": {
                 "MAC_HK_TLM_MID": {
                     "msgID": "0x0c46"
@@ -727,14 +702,19 @@
             "definition": "../apps/mac"
         },
         "mavlink": {
-            "short_name": "mavlink",
-            "long_name": "Mavlink Interface",
             "telemetry": {
                 "MAVLINK_HK_TLM_MID": {
                     "msgID": "0x0c83"
                 }
             },
-            "commands": {},
+            "commands": {
+                "MAVLINK_WAKEUP_MID": {
+                    "msgID": "0x18d0",
+                 },
+                "MAVLINK_SEND_HK_MID": {
+                    "msgID": "0x1c82",
+                 }
+            },
             "perfids": {
                 "MAVLINK_MAIN_TASK_PERF_ID": {
                     "id": 86
@@ -743,8 +723,6 @@
             "definition": "../apps/mavlink"
         },
         "md": {
-            "short_name": "md",
-            "long_name": "Memory Dwell",
             "telemetry": {
                 "MD_HK_TLM_MID": {
                     "msgID": "0x09c6"
@@ -772,8 +750,6 @@
             "definition": "../apps/md"
         },
         "mm": {
-            "short_name": "mm",
-            "long_name": "Memory Manager",
             "telemetry": {
                 "MM_HK_TLM_MID": {
                     "msgID": "0x09c2"
@@ -807,8 +783,6 @@
             "definition": "../apps/mm"
         },
         "mpc": {
-            "short_name": "mpc",
-            "long_name": "Multicopter Position Controller",
             "telemetry": {
                 "MPC_HK_TLM_MID": {
                     "msgID": "0x0c61"
@@ -836,8 +810,6 @@
             "definition": "../apps/mpc"
         },
         "mpu6050": {
-            "short_name": "mpu6050",
-            "long_name": "",
             "telemetry": {
                 "MPU6050_HK_TLM_MID": {
                     "msgID": "0x0cd1"
@@ -871,8 +843,6 @@
             "definition": "../apps/mpu6050"
         },
         "mpu9250": {
-            "short_name": "mpu9250",
-            "long_name": "",
             "telemetry": {
                 "MPU9250_HK_TLM_MID": {
                     "msgID": "0x0b51"
@@ -900,8 +870,6 @@
             "definition": "../apps/mpu9250"
         },
         "ms5607": {
-            "short_name": "ms5607",
-            "long_name": "",
             "telemetry": {
                 "MS5607_HK_TLM_MID": {
                     "msgID": "0x0cb6"
@@ -935,8 +903,6 @@
             "definition": "../apps/ms5607"
         },
         "ms5611": {
-            "short_name": "ms5611",
-            "long_name": "",
             "telemetry": {
                 "MS5611_HK_TLM_MID": {
                     "msgID": "0x0b61"
@@ -964,8 +930,6 @@
             "definition": "../apps/ms5611"
         },
         "nav": {
-            "short_name": "nav",
-            "long_name": "Navigation",
             "telemetry": {
                 "NAV_HK_TLM_MID": {
                     "msgID": "0x0c65"
@@ -989,9 +953,7 @@
             },
             "definition": "../apps/nav"
         },
-        "param": {
-            "short_name": "param",
-            "long_name": "Parameters\n",
+        "prmlib": {
             "telemetry": {
                 "PRMLIB_PARAM_UPDATED_MID": {
                     "msgID": "0x0ca6"
@@ -1019,11 +981,9 @@
                     "id": 115
                 }
             },
-            "definition": "../apps/param"
+            "definition": "../apps/prmlib"
         },
         "pe": {
-            "short_name": "pe",
-            "long_name": "Position Estimator",
             "telemetry": {
                 "PE_HK_TLM_MID": {
                     "msgID": "0x0c79"
@@ -1069,8 +1029,6 @@
             "definition": "../apps/pe"
         },
         "qae": {
-            "short_name": "qae",
-            "long_name": "Attitude Estimator",
             "telemetry": {
                 "QAE_HK_TLM_MID": {
                     "msgID": "0x0c59"
@@ -1098,8 +1056,6 @@
             "definition": "../apps/qae"
         },
         "rcin": {
-            "short_name": "rcin",
-            "long_name": "Radio Control Input",
             "telemetry": {
                 "RCIN_HK_TLM_MID": {
                     "msgID": "0x0c69"
@@ -1127,8 +1083,6 @@
             "definition": "../apps/rcin"
         },
         "rgbled": {
-            "short_name": "rgbled",
-            "long_name": "RGB LED Control",
             "telemetry": {
                 "RGBLED_HK_TLM_MID": {
                     "msgID": "0x0c4f"
@@ -1159,8 +1113,6 @@
             "definition": "../apps/rgbled"
         },
         "sbn": {
-            "short_name": "sbn",
-            "long_name": "Software Bus Network",
             "telemetry": {},
             "commands": {
                 "SBN_WAKEUP_MID": {
@@ -1171,8 +1123,6 @@
             "definition": "../apps/sbn"
         },
         "sc": {
-            "short_name": "sc",
-            "long_name": "Stored Command",
             "telemetry": {
                 "SC_HK_TLM_MID": {
                     "msgID": "0x09e3"
@@ -1197,8 +1147,6 @@
             "definition": "../apps/sc"
         },
         "sch": {
-            "short_name": "sch",
-            "long_name": "Scheduler",
             "telemetry": {
                 "SCH_DIAG_TLM_MID": {
                     "msgID": "0x09e7"
@@ -1226,8 +1174,6 @@
             "definition": "../apps/sch"
         },
         "sens": {
-            "short_name": "sens",
-            "long_name": "Sensor Application",
             "telemetry": {
                 "SENS_HK_TLM_MID": {
                     "msgID": "0x0c55"
@@ -1252,8 +1198,6 @@
             "definition": "../apps/sens"
         },
         "sim": {
-            "short_name": "sim",
-            "long_name": "Simulation Application",
             "telemetry": {
                 "SIM_HK_TLM_MID": {
                     "msgID": "0x0c7d"
@@ -1278,8 +1222,6 @@
             "definition": "../apps/sim"
         },
         "sonar": {
-            "short_name": "sonar",
-            "long_name": "Sonar Driver",
             "telemetry": {
                 "SONAR_OUT_DATA_MID": {
                     "msgID": "0x0cd9"
@@ -1307,8 +1249,6 @@
             "definition": "../apps/sonar"
         },
         "to": {
-            "short_name": "to",
-            "long_name": "Telemetry Output",
             "telemetry": {
                 "TO_DIAG_TLM_MID": {
                     "msgID": "0x0911"
@@ -1339,8 +1279,6 @@
             "definition": "../apps/to"
         },
         "ulr": {
-            "short_name": "ulr",
-            "long_name": "uLanding Radar Driver",
             "telemetry": {
                 "ULR_HK_TLM_MID": {
                     "msgID": "0x0c4b"
@@ -1365,8 +1303,6 @@
             "definition": "../apps/ulr"
         },
         "vc": {
-            "short_name": "vc",
-            "long_name": "Video Control",
             "telemetry": {
                 "VC_HK_TLM_MID": {
                     "msgID": "0x0c39"
@@ -1397,8 +1333,6 @@
             "definition": "../apps/vc"
         },
         "vm": {
-            "short_name": "vm",
-            "long_name": "Vehicle Manager",
             "telemetry": {
                 "VM_HK_TLM_MID": {
                     "msgID": "0x0c6d"
@@ -1426,8 +1360,6 @@
             "definition": "../apps/vm"
         },
         "px4lib": {
-            "short_name": "px4lib",
-            "long_name": "PX4 Library",
             "telemetry": {
                 "PX4_ACTUATOR_ARMED_MID": {
                     "msgID": "0x0a05"
