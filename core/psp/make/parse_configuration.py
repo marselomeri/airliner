@@ -62,31 +62,67 @@ if len(sys.argv) == 3:
             dirBase = os.path.abspath(os.path.dirname(objModule['definition']))
             
             # Iterate through the code_templates 
-            for code_template_name in objModule['code_templates']:
-                objCodeTemplate = objModule['code_templates'][code_template_name]
+            if 'code_templates' in objModule.keys():
+                for code_template_name in objModule['code_templates']:
+                    print(code_template_name)
+                    objCodeTemplate = objModule['code_templates'][code_template_name]
                 
-                # Get the template directory
-                dirTemplate = os.path.dirname(os.path.join(dirBase, objCodeTemplate['template']))
+                    # Get the template directory
+                    dirTemplate = os.path.dirname(os.path.join(dirBase, objCodeTemplate['template']))
                 
-                # Get the template filename
-                fileNameTemplate = os.path.basename(objCodeTemplate['template'])
+                    # Get the template filename
+                    fileNameTemplate = os.path.basename(objCodeTemplate['template'])
                 
-                j2_env = jinja2.Environment(loader=jinja2.FileSystemLoader(dirTemplate))
-                
-                output = j2_env.get_template(fileNameTemplate).render(objModule)
-                
-                # If there is an existing file, only write the file if the contents have changed.
-                writeFile = True
-                outFileName = os.path.join(outputPath, objCodeTemplate['output'] )
-                if os.path.exists(outFileName):
-                    # It does exist.  Now load it.
-                    with open(outFileName, 'r') as outFile:
-                        oldData = outFile.read()
-                        if oldData == output:
-                            writeFile = False
+                    j2_env = jinja2.Environment(loader=jinja2.FileSystemLoader(dirTemplate))
+                    
+                    output = j2_env.get_template(fileNameTemplate).render(objModule)
+                    
+                    # If there is an existing file, only write the file if the contents have changed.
+                    writeFile = True
+                    outFileName = os.path.join(outputPath, objCodeTemplate['output'] )
+                    if os.path.exists(outFileName):
+                        # It does exist.  Now load it.
+                        with open(outFileName, 'r') as outFile:
+                            oldData = outFile.read()
+                            if oldData == output:
+                                writeFile = False
                             
-                if writeFile:
-                    # Save the results
-                    with open(outFileName, "w") as outputFile:
-                        outputFile.write(output)
+                    if writeFile:
+                        # Save the results
+                        with open(outFileName, "w") as outputFile:
+                            outputFile.write(output)
+            
+            # Iterate through tables 
+            if 'tables' in objModule.keys():
+                for code_template_name in objModule['tables']:
+                    objCodeTemplate = objModule['tables'][code_template_name]
+                
+                    # Get the template directory
+                    dirTemplate = os.path.dirname(os.path.join(dirBase, objCodeTemplate['template']))
+                
+                    # Get the template filename
+                    fileNameTemplate = os.path.basename(objCodeTemplate['template'])
+                
+                    j2_env = jinja2.Environment(loader=jinja2.FileSystemLoader(dirTemplate))
+                    print("******************************")
+                    print(code_template_name)
+                    print(dirTemplate)
+                    print(fileNameTemplate)
+                    
+                    output = j2_env.get_template(fileNameTemplate).render(objModule)
+                    
+                    # If there is an existing file, only write the file if the contents have changed.
+                    writeFile = True
+                    outFileName = os.path.join(outputPath, objCodeTemplate['output'] )
+                    if os.path.exists(outFileName):
+                        # It does exist.  Now load it.
+                        with open(outFileName, 'r') as outFile:
+                            oldData = outFile.read()
+                            if oldData == output:
+                                writeFile = False
+                            
+                    if writeFile:
+                        # Save the results
+                        with open(outFileName, "w") as outputFile:
+                            outputFile.write(output)
                     

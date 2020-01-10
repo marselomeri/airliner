@@ -28,32 +28,46 @@ extern "C" {
 #include "sch_tbldefs.h"
 
 
-/* Group IDs */
-{%- for group in content.groups %}
-#define {{ "%-*s" % (GRPIDX_NAME_WIDTH, group.name) }} ({{ group.value }})
-{%- endfor %}
-
-
 /* Message Indices */
-{%- for msg_idx in content.msg_idx %}
-#define {{ "%-*s" % (MSGIDX_NAME_WIDTH, msg_idx.name) }} ({{ msg_idx.value }})
+{%- for idx in range(1, config.SCH_MAX_MESSAGES.value) %}
+{%-   set msgKey =  idx|string %}
+{%-   set MSG = tables._MSG_DEFS[msgKey] %}
+{%-   if MSG.msgid|length %}
+#define {{ "%-*s" % (MSGIDX_NAME_WIDTH, MSG.msgid ~ "X") }} ({{ idx }})
+{%-   endif %}
 {%- endfor %}
 
 
 SCH_ScheduleEntry_t SCH_DefaultScheduleTable[SCH_TABLE_ENTRIES] = 
 {
-    {%- for slot in content.schedule %}
-    /* Slot #{{ loop.index0 }} */
-    {%- for activity in slot %}
-    { {{ "%-*s" % (ENABLE_STATE_WIDTH, activity.EnableState) }}, {{ "%-*s" % (TYPE_WIDTH, activity.Type) }}, {{ activity.Frequency }}, {{ activity.Remainder }}, {{ "%-*s" % (MSGIDX_NAME_WIDTH, activity.MessageIndex) }}, {{ "%-*s" % (GRPIDX_NAME_WIDTH, activity.GroupData) }} 
-        {{- increment(counter, 'idx') -}}
+  {%- for slotID in range(0, config.SCH_TOTAL_SLOTS.value|int) %}
+    {%- set slotKey =  slotID|string %}
+    /* Slot #{{ slotKey }} */
+    {%- for actID in range(0, config.SCH_ENTRIES_PER_SLOT.value|int) %}
+      {%- set actKey =  actID|string %}
+      {%- set activity = tables._SCHED_DEF["0"].schedule[slotKey][actKey] %}
+      {%- if activity.EnableState|length %}
+        {%- if activity.MessageIndex|int %}
+          {%- set msgKey =  activity.MessageIndex|string %}
+          {%- set MSG = tables._MSG_DEFS[msgKey] %}
+          {%- set msgIdx = MSG.msgid ~ "X" %}
+        {%- else %}
+          {%- set msgIdx = "0" %}
+        {%- endif %}
+        { {{ "%-*s" % (ENABLE_STATE_WIDTH, activity.EnableState) }}, {{ "%-*s" % (TYPE_WIDTH, activity.Type) }}, {{ activity.Frequency }}, {{ activity.Remainder }}, {{ "%-*s" % (MSGIDX_NAME_WIDTH, msgIdx) }}, {{ "%-*s" % (GRPIDX_NAME_WIDTH, activity.GroupData) }} 
         {%- if 'Deadline' in activity -%}
             , {{ activity.Deadline }}
         {%- endif %} }
-    {{- ", /* idx: {} */".format(counter['idx']-1) if not loop.last else "" }}
+      {%- else %}
+        { {{ "%-*s" % (ENABLE_STATE_WIDTH, "SCH_UNUSED") }}, {{ "%-*s" % (TYPE_WIDTH, "SCH_ACTIVITY_NONE") }}, {{ 0 }}, {{ 0 }}, {{ "%-*s" % (MSGIDX_NAME_WIDTH, 0) }}, {{ "%-*s" % (GRPIDX_NAME_WIDTH, "SCH_GROUP_NONE") }} 
+        {%- if 'Deadline' in activity -%}
+            , {{ 0 }}
+        {%- endif %} }
+      {%- endif %} }
+      {{- ", /* idx: {} */".format(actID) if not loop.last else "" }}
     {%- endfor -%}
-    {{- ", /* idx: {} */".format(counter['idx']-1) if not loop.last else "  /* idx: {} */".format(counter['idx']-1) }}
-    {% endfor %}
+    {{- ", /* idx: {} */".format(config.SCH_ENTRIES_PER_SLOT.value|int - 1) if not loop.last else "  /* idx: {} */".format(config.SCH_ENTRIES_PER_SLOT.value|int - 1) }}
+  {% endfor %}
 };
 
 

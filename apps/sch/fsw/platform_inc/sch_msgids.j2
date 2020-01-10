@@ -14,7 +14,6 @@
 ***************************/
 #define SCH_CMD_MID                    ({{ commands.SCH_CMD_MID.msgid }}) /**< \brief SCH Ground Commands Message ID */
 #define SCH_SEND_HK_MID                ({{ commands.SCH_SEND_HK_MID.msgid }}) /**< \brief SCH Send Housekeeping Message ID */
-#define SCH_UNUSED_MID                 ({{ commands.SCH_UNUSED_MID.msgid }}) /**< \brief SCH MDT Unused Message Message ID */
 
 
 /***************************
@@ -24,6 +23,9 @@
 #define SCH_DIAG_TLM_MID               ({{ telemetry.SCH_DIAG_TLM_MID.msgid }}) /**< \brief SCH Diagnostic Telemetry Message ID */
 
 #define SCH_ACTIVITY_DONE_MID          ({{ telemetry.SCH_ACTIVITY_DONE_MID.msgid }})
+
+
+#define SCH_UNUSED_MID                 (0)
 
 
 #endif /* _sch_msgids_h_ */

@@ -19,24 +19,26 @@ extern "C" {
 /* Message table entry map */
 SCH_MessageEntry_t SCH_DefaultMessageTable[SCH_MAX_MESSAGES] =
 {
-    /* **  DO NOT USE -- entry #0 reserved for "unused" command ID - DO NOT USE */
-    { { SCH_FIX_HEADER({{ "%-*s," % (COL_WIDTH, "SCH_UNUSED_MID")}} 0xC000, 0x0001), 0x0000 } },
-    {%- for msg in content.msg_list %}
-    {%- if 'payload' in msg %}
-    { { SCH_FIX_HEADER({{ "%-*s," % (COL_WIDTH, msg.msgid)}} 0xC000, {{ "0x{0:04x}".format(((msg.payload | length) * 2) + 1)}}), 0x0000 {% for word in msg.payload -%}
-           , {{ word }}
-       {%- endfor %} } }
-    {%- else %}
-    { { SCH_FIX_HEADER({{ "%-*s," % (COL_WIDTH, msg.msgid)}} 0xC000, 0x0001), 0x0000 } }
-    {%- endif %}
-    {{- "," if not loop.last else "" -}}
+    /* **  DO NOT USE -- ENTRY #0 RESERVED FOR "UNUSED" COMMAND ID - DO NOT USE */
+    { { SCH_FIX_HEADER({{ "%-*s," % (COL_WIDTH, "SCH_UNUSED_MID")}} 0XC000, 0X0001), 0X0000 } },
+    {%- for idx in range(1, config.SCH_MAX_MESSAGES.value) %}
+    {%-   set msgKey =  idx|string %}
+    {%-   set MSG = tables._MSG_DEFS[msgKey] %}
+
+        {%- if 'payload' in MSG %}
+    { { SCH_FIX_HEADER({{ "%-*S," % (COL_WIDTH, MSG.msgid)}} 0XC000, {{ "0X{0:04X}".FORMAT(((MSG.payload | length) * 2) + 1)}}), {{ "%-*s," % (COL_WIDTH, MSG.cc)}} {% for WORD in MSG.payload -%}
+             , {{ WORD }}
+           {%- endfor %} } }
+        {%- else %}
+    { { SCH_FIX_HEADER({{ "%-*s," % (COL_WIDTH, MSG.msgid)}} 0XC000, 0X0001), {{ "%-*s" % (COL_WIDTH, MSG.cc)}} } }       
+        {%- endif %}
     {%- endfor %}
 
 };
 
 
 /* Table file header */
-CFE_TBL_FILEDEF(SCH_DefaultMessageTable, SCH.MSG_DEFS, {{description}}, {{file_name}} )
+CFE_TBL_FILEDEF(SCH_DefaultMessageTable, SCH.MSG_DEFS, SCH message definitions table, sch_def_msgtbl.tbl)
 
 
 

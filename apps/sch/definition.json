@@ -12,28 +12,30 @@
     },
     "code_templates": {
         "msgids": {
-            "template": "../platform_inc/sch_msgids.j2",
+            "template": "fsw/platform_inc/sch_msgids.j2",
             "output": "sch_msgids.h"
         },
         "perfids": {
-            "template": "../mission_inc/sch_perfids.j2",
+            "template": "fsw/mission_inc/sch_perfids.j2",
             "output": "sch_perfids.h"
         },
         "platform_cfg": {
-            "template": "../platform_inc/sch_platform_cfg.j2",
+            "template": "fsw/platform_inc/sch_platform_cfg.j2",
             "output": "sch_platform_cfg.h"
         }
     },
     "tables": {
         "_MSG_DEFS": {
             "title": "Message Definitions", 
-            "default": "sch_def_msgtbl.tbl", 
-            "template": "../tables/sch_def_msgtbl.j2" 
+            "template": "fsw/tables/sch_def_msgtbl.j2",
+            "output": "sch_def_msgtbl.c",
+            "default": "sch_def_msgtbl.tbl" 
         },
         "_SCHED_DEF": {
             "title": "Schedule Definitions", 
-            "default": "sch_def_schtbl.tbl", 
-            "template": "../tables/sch_def_schtbl.j2"
+            "default": "sch_def_schtbl.tbl",
+            "output": "sch_def_schtbl.c",
+            "template": "fsw/tables/sch_def_schtbl.j2"
         }
     },
     "events": {
@@ -342,8 +344,8 @@
             "name": "SCH_MAX_SLOTS_PER_WAKEUP",
             "value": 5
         },
-        "SCH_MICROS_PER_MAJOR_FRAM": {
-            "name": "SCH_MICROS_PER_MAJOR_FRAM",
+        "SCH_MICROS_PER_MAJOR_FRAME": {
+            "name": "SCH_MICROS_PER_MAJOR_FRAME",
             "value": 1000000
         },
         "SCH_SYNC_SLOT_DRIFT_WINDOW": {
@@ -362,8 +364,8 @@
             "name": "SCH_MAX_NOISY_MAJORF",
             "value": 2
         },
-        "SCH_LIB_PRESENC": {
-            "name": "SCH_LIB_PRESENC",
+        "SCH_LIB_PRESENCE": {
+            "name": "SCH_LIB_PRESENCE",
             "value": 1
         },
         "SCH_LIB_DIS_CTR": {
