@@ -42,7 +42,7 @@ SCH_ScheduleEntry_t SCH_DefaultScheduleTable[SCH_TABLE_ENTRIES] =
 {
   {%- for slotID in range(0, config.SCH_TOTAL_SLOTS.value|int) %}
     {%- set slotKey =  slotID|string %}
-    /* Slot #{{ slotKey }} */
+  /* Slot #{{ slotKey }} */
     {%- for actID in range(0, config.SCH_ENTRIES_PER_SLOT.value|int) %}
       {%- set actKey =  actID|string %}
       {%- set activity = tables._SCHED_DEF["0"].schedule[slotKey][actKey] %}
@@ -54,12 +54,12 @@ SCH_ScheduleEntry_t SCH_DefaultScheduleTable[SCH_TABLE_ENTRIES] =
         {%- else %}
           {%- set msgIdx = "0" %}
         {%- endif %}
-        { {{ "%-*s" % (ENABLE_STATE_WIDTH, activity.EnableState) }}, {{ "%-*s" % (TYPE_WIDTH, activity.Type) }}, {{ activity.Frequency }}, {{ activity.Remainder }}, {{ "%-*s" % (MSGIDX_NAME_WIDTH, msgIdx) }}, {{ "%-*s" % (GRPIDX_NAME_WIDTH, activity.GroupData) }} 
+    { {{ "%-*s" % (ENABLE_STATE_WIDTH, activity.EnableState) }}, {{ "%-*s" % (TYPE_WIDTH, activity.Type) }}, {{ activity.Frequency }}, {{ activity.Remainder }}, {{ "%-*s" % (MSGIDX_NAME_WIDTH, msgIdx) }}, {{ "%-*s" % (GRPIDX_NAME_WIDTH, activity.GroupData) }} 
         {%- if 'Deadline' in activity -%}
             , {{ activity.Deadline }}
         {%- endif %} }
       {%- else %}
-        { {{ "%-*s" % (ENABLE_STATE_WIDTH, "SCH_UNUSED") }}, {{ "%-*s" % (TYPE_WIDTH, "SCH_ACTIVITY_NONE") }}, {{ 0 }}, {{ 0 }}, {{ "%-*s" % (MSGIDX_NAME_WIDTH, 0) }}, {{ "%-*s" % (GRPIDX_NAME_WIDTH, "SCH_GROUP_NONE") }} 
+    { {{ "%-*s" % (ENABLE_STATE_WIDTH, "SCH_UNUSED") }}, {{ "%-*s" % (TYPE_WIDTH, "SCH_ACTIVITY_NONE") }}, {{ 0 }}, {{ 0 }}, {{ "%-*s" % (MSGIDX_NAME_WIDTH, 0) }}, {{ "%-*s" % (GRPIDX_NAME_WIDTH, "SCH_GROUP_NONE") }} 
         {%- if 'Deadline' in activity -%}
             , {{ 0 }}
         {%- endif %} }
