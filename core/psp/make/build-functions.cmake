@@ -72,19 +72,21 @@ function(psp_initialize_airliner_build)
     if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/config.json)
         # Yes, a config.json file is present.  Generate a merged configuration file.
         
-        add_custom_command(
-            OUTPUT 
-                ${CMAKE_CURRENT_BINARY_DIR}/_config.json       # Fake! This ensures we always run.
-            BYPRODUCTS
-                ${CMAKE_CURRENT_BINARY_DIR}/config.json
-            COMMENT "Generating templated code"
+        message("Generating templated code")
+        
+        set_property(GLOBAL PROPERTY AIRLINER_CONFIG_FILE_PROPERTY ${CMAKE_CURRENT_BINARY_DIR}/config.json)
+        set_property(GLOBAL PROPERTY AIRLINER_GENERATED_CODE_DIR_PROPERTY ${CMAKE_CURRENT_BINARY_DIR}/generated_code)
+
+        execute_process(
+            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
             COMMAND python ${PROJECT_SOURCE_DIR}/core/psp/make/merge_config.py ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}/config.json
-            COMMAND ${CMAKE_COMMAND} -E make_directory generated_code
-            COMMAND echo ${PROJECT_SOURCE_DIR}/core/psp/make/parse_configuration.py ${CMAKE_CURRENT_BINARY_DIR}/config.json generated_code
-            COMMAND python ${PROJECT_SOURCE_DIR}/core/psp/make/parse_configuration.py ${CMAKE_CURRENT_BINARY_DIR}/config.json generated_code
         )
-        add_custom_target(config_json ALL
-            DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/_config.json   # Fake! This ensures we always run.
+        
+        execute_process(
+            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+            COMMAND ${CMAKE_COMMAND} -E make_directory generated_code
+            COMMAND python ${PROJECT_SOURCE_DIR}/core/psp/make/parse_configuration.py ${CMAKE_CURRENT_BINARY_DIR}/config.json generated_code
+            #COMMAND ${CMAKE_COMMAND} ${CMAKE_CURRENT_BINARY_DIR}/generated_code
         )
     endif()
     
@@ -452,7 +454,7 @@ function(psp_add_airliner_app)
                 -DRSM_CONFIG:STRING='${PROJECT_SOURCE_DIR}/psp/make/rsm/rsm.cfg'
                 -DSOURCES:STRING='${SOURCE_LIST}'
                 -DOUTPUT_FILE:STRING='${CMAKE_CURRENT_BINARY_DIR}/rsm/apps/${PARSED_ARGS_APP_NAME}/index.html'
-                -P ${PROJECT_SOURCE_DIR}/psp/make/run-rsm.cmake
+                -P ${PROJECT_SOURCE_DIR}/core/psp/make/run-rsm.cmake
         )
         add_dependencies(rsm ${PARSED_ARGS_APP_NAME}-rsm)
     endif()
@@ -479,6 +481,14 @@ function(psp_add_airliner_app)
 	    file(COPY ${PARSED_ARGS_COMMANDER_PLUGIN} DESTINATION ${COMMANDER_WORKSPACE_PLUGINS_DIR}/apps/${PARSED_ARGS_TARGET})
 	    file(RENAME ${APP_CMDR_PLUGIN_ORIG_PATH} ${APP_CMDR_PLUGIN_NEW_PATH})
     endif()	
+    
+    get_property(AIRLINER_CONFIG_FILE GLOBAL PROPERTY AIRLINER_CONFIG_FILE_PROPERTY)
+    get_property(AIRLINER_GENERATED_CODE_DIR GLOBAL PROPERTY AIRLINER_GENERATED_CODE_DIR_PROPERTY)
+    
+    if(EXISTS ${AIRLINER_GENERATED_CODE_DIR}/tables/${PARSED_ARGS_APP_NAME}/CMakeLists.txt)
+        add_subdirectory(${AIRLINER_GENERATED_CODE_DIR}/tables/${PARSED_ARGS_APP_NAME} generated_objs/${PARSED_ARGS_APP_NAME}/tables)
+    endif()
+
 endfunction(psp_add_airliner_app)
 
 

@@ -123,7 +123,7 @@
         "_SCHED_DEF": {
           "0": {
             "description": "This is a description",
-            "file_name": "This is a file name",
+            "file_name": "sch_def_schtbl",
             "groups": {
               "SCH_GROUP_NONE": {
                 "value": ""
@@ -45634,6 +45634,8 @@
           }
         },
         "_MSG_DEFS": {
+          "0": {
+          "file_name": "sch_def_msgtbl",
           "1": {
             "msgid": "CFE_ES_SEND_HK_MID",
             "cc": "0"
@@ -45999,6 +46001,7 @@
             "cc": "0"
           },
           "128": {}
+        }
         }
       }
     },

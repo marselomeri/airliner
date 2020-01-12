@@ -28,7 +28,6 @@
         "_MSG_DEFS": {
             "title": "Message Definitions", 
             "template": "fsw/tables/sch_def_msgtbl.j2",
-            "output": "sch_def_msgtbl.c",
             "default": "sch_def_msgtbl.tbl" 
         },
         "_SCHED_DEF": {
