@@ -49,8 +49,8 @@ add_airliner_app_def(ms5607
     DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in
     
     REFERENCE_CONFIG
-        ${PROJECT_SOURCE_DIR}/apps/ms5607/fsw/mission_inc
-        ${PROJECT_SOURCE_DIR}/apps/ms5607/fsw/platform_inc
+        $ENV{AIRLINER_ROOT}/apps/ms5607/fsw/mission_inc
+        $ENV{AIRLINER_ROOT}/apps/ms5607/fsw/platform_inc
          
     MSG_OVERRIDES   ${CMAKE_CURRENT_SOURCE_DIR}/ms5607_msg_overrides.json
 

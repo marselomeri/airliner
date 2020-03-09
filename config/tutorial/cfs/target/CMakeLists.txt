@@ -48,23 +48,23 @@ initialize_airliner_build(
 
 add_airliner_app(
     cfs_lib
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/cfs_lib/fsw/for_build
+    DEFINITION $ENV{AIRLINER_ROOT}/apps/cfs_lib/fsw/for_build
 )
 
 add_airliner_app(
     px4lib
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/px4lib/fsw/for_build
+    DEFINITION $ENV{AIRLINER_ROOT}/apps/px4lib/fsw/for_build
     MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/px4lib/px4_msg_overrides.json
 )
 
 add_airliner_app(
     pblib
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/pblib/fsw/for_build
+    DEFINITION $ENV{AIRLINER_ROOT}/apps/pblib/fsw/for_build
 )
 
 add_airliner_app(
     sch
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/sch/fsw/for_build
+    DEFINITION $ENV{AIRLINER_ROOT}/apps/sch/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/sch
     CONFIG_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/sch/sch_custom_rt.c
@@ -77,7 +77,7 @@ add_airliner_app(
 
 add_airliner_app(
     cf
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/cf/fsw/for_build
+    DEFINITION $ENV{AIRLINER_ROOT}/apps/cf/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/cf
     CONFIG_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/cf_platform_cfg.h
@@ -88,7 +88,7 @@ add_airliner_app(
 
 add_airliner_app(
     cs
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/cs/fsw/for_build
+    DEFINITION $ENV{AIRLINER_ROOT}/apps/cs/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/cs
     CONFIG_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/cs_platform_cfg.h
@@ -100,7 +100,7 @@ add_airliner_app(
 
 add_airliner_app(
     ds
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/ds/fsw/for_build
+    DEFINITION $ENV{AIRLINER_ROOT}/apps/ds/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/ds
     CONFIG_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/ds_platform_cfg.h
@@ -111,7 +111,7 @@ add_airliner_app(
 
 add_airliner_app(
     fm
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/fm/fsw/for_build
+    DEFINITION $ENV{AIRLINER_ROOT}/apps/fm/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/fm
     CONFIG_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/fm_platform_cfg.h
@@ -122,7 +122,7 @@ add_airliner_app(
 
 add_airliner_app(
     hk
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/hk/fsw/for_build
+    DEFINITION $ENV{AIRLINER_ROOT}/apps/hk/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/hk
     CONFIG_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/hk_platform_cfg.h
@@ -133,7 +133,7 @@ add_airliner_app(
 
 add_airliner_app(
     hs
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/hs/fsw/for_build
+    DEFINITION $ENV{AIRLINER_ROOT}/apps/hs/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/hs
     CONFIG_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/hs/hs_custom.c
@@ -145,7 +145,7 @@ add_airliner_app(
 
 add_airliner_app(
     lc
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/lc/fsw/for_build
+    DEFINITION $ENV{AIRLINER_ROOT}/apps/lc/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/lc
     CONFIG_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/lc/src/lc_custom.c
@@ -158,7 +158,7 @@ add_airliner_app(
 
 add_airliner_app(
     md
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/md/fsw/for_build
+    DEFINITION $ENV{AIRLINER_ROOT}/apps/md/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/md
     CONFIG_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/md_platform_cfg.h
@@ -169,7 +169,7 @@ add_airliner_app(
 
 add_airliner_app(
     mm
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/mm/fsw/for_build
+    DEFINITION $ENV{AIRLINER_ROOT}/apps/mm/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/mm
     CONFIG_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/mm_platform_cfg.h
@@ -181,7 +181,7 @@ add_airliner_app(
 
 add_airliner_app(
     sc
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/sc/fsw/for_build
+    DEFINITION $ENV{AIRLINER_ROOT}/apps/sc/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/sc
     CONFIG_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/sc_platform_cfg.h
@@ -192,7 +192,7 @@ add_airliner_app(
 
 add_airliner_app(
     ci
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/ci/fsw/for_build
+    DEFINITION $ENV{AIRLINER_ROOT}/apps/ci/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/ci
     CONFIG_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/ci/ci_custom.c
@@ -205,7 +205,7 @@ add_airliner_app(
 
 add_airliner_app(
     to
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/to/fsw/for_build
+    DEFINITION $ENV{AIRLINER_ROOT}/apps/to/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/to
     CONFIG_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/to/to_custom.c

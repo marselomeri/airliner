@@ -56,8 +56,8 @@ add_airliner_app_def(mac
         ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr
     
     REFERENCE_CONFIG
-        ${PROJECT_SOURCE_DIR}/apps/mac/fsw/mission_inc
-        ${PROJECT_SOURCE_DIR}/apps/mac/fsw/platform_inc
+        $ENV{AIRLINER_ROOT}/apps/mac/fsw/mission_inc
+        $ENV{AIRLINER_ROOT}/apps/mac/fsw/platform_inc
 )
 
 add_airliner_app_unit_test(mac-ut

@@ -55,8 +55,8 @@ add_airliner_app_def(gps
     DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in
     
     REFERENCE_CONFIG
-        ${PROJECT_SOURCE_DIR}/apps/gps/fsw/mission_inc
-        ${PROJECT_SOURCE_DIR}/apps/gps/fsw/platform_inc
+        $ENV{AIRLINER_ROOT}/apps/gps/fsw/mission_inc
+        $ENV{AIRLINER_ROOT}/apps/gps/fsw/platform_inc
 )
 
 add_airliner_app_unit_test(gps-ut

@@ -18,8 +18,8 @@ add_airliner_app_def(sonar
     DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in
     
     REFERENCE_CONFIG
-        ${PROJECT_SOURCE_DIR}/apps/sonar/fsw/mission_inc
-        ${PROJECT_SOURCE_DIR}/apps/sonar/fsw/platform_inc
+        $ENV{AIRLINER_ROOT}/apps/sonar/fsw/mission_inc
+        $ENV{AIRLINER_ROOT}/apps/sonar/fsw/platform_inc
 )
 
 #add_airliner_app_unit_test(sonar-ut

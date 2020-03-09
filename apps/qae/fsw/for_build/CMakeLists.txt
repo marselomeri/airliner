@@ -23,8 +23,8 @@ add_airliner_app_def(qae
         ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr
     
     REFERENCE_CONFIG
-        ${PROJECT_SOURCE_DIR}/apps/qae/fsw/mission_inc
-        ${PROJECT_SOURCE_DIR}/apps/qae/fsw/platform_inc
+        $ENV{AIRLINER_ROOT}/apps/qae/fsw/mission_inc
+        $ENV{AIRLINER_ROOT}/apps/qae/fsw/platform_inc
 )
 
 add_airliner_app_unit_test(qae-ut

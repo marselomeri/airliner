@@ -23,8 +23,8 @@ add_airliner_app_def(bat
         ${CMAKE_CURRENT_SOURCE_DIR}/bat_msg_overrides.json
     
     REFERENCE_CONFIG
-        ${PROJECT_SOURCE_DIR}/apps/bat/fsw/mission_inc
-        ${PROJECT_SOURCE_DIR}/apps/bat/fsw/platform_inc
+        $ENV{AIRLINER_ROOT}/apps/bat/fsw/mission_inc
+        $ENV{AIRLINER_ROOT}/apps/bat/fsw/platform_inc
 )
 
 add_airliner_app_unit_test(bat-ut

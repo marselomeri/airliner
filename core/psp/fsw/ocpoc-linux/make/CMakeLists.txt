@@ -31,7 +31,7 @@
 #
 #############################################################################
  
-include(${PROJECT_SOURCE_DIR}/osal/src/make/build-functions.cmake)
+include($ENV{AIRLINER_ROOT}/osal/src/make/build-functions.cmake)
 
 add_executable(${PARSED_ARGS_PREFIX}psp-unit-test ${PSP_UNIT_TEST_SRC})
 target_link_libraries(${PARSED_ARGS_PREFIX}psp-unit-test -fprofile-arcs gcov ${CMAKE_THREAD_LIBS_INIT})
@@ -44,7 +44,7 @@ set_property(TARGET ${PARSED_ARGS_PREFIX}psp-unit-test
         )
 
 target_include_directories(${PARSED_ARGS_PREFIX}psp-unit-test PUBLIC
-    ${PROJECT_SOURCE_DIR}/tools/ut_assert/inc/
+    $ENV{AIRLINER_ROOT}/tools/ut_assert/inc/
     ${CMAKE_CURRENT_SOURCE_DIR}/../src
     ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test
     ${OSAL_INC_DIRS}

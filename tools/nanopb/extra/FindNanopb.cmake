@@ -127,7 +127,7 @@ function(NANOPB_GENERATE_CPP SRCS HDRS OUTPUT_DIR DEPENDENT_TARGET)
   set(${OUTPUT_DIR})
   set(${DEPENDENT_TARGET})
 
-  set(GENERATOR_PATH ${PROJECT_SOURCE_DIR}/tools/nanopb/generator)
+  set(GENERATOR_PATH $ENV{AIRLINER_ROOT}/tools/nanopb/generator)
 
   set(NANOPB_GENERATOR_EXECUTABLE ${GENERATOR_PATH}/nanopb_generator.py)
 

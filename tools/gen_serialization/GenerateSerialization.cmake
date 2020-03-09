@@ -10,11 +10,11 @@ function(generate_serialization_code)
         add_custom_target(gen_serialization 
             DEPENDS explain_cookie 
             
-            COMMAND ${PROJECT_SOURCE_DIR}/tools/gen_serialization/generate
+            COMMAND $ENV{AIRLINER_ROOT}/tools/gen_serialization/generate
                 ${PARSED_ARGS_INPUT_FILE}
                 ${PARSED_ARGS_OUTPUT_DIR} 
             	
-            COMMAND ${PROJECT_SOURCE_DIR}/tools/commander/merge.js 
+            COMMAND $ENV{AIRLINER_ROOT}/tools/commander/merge.js 
                 -a ${PARSED_ARGS_INPUT_FILE}
                 -b ${PARSED_ARGS_OUTPUT_DIR}/airliner-overrides.json
                 -o ${PARSED_ARGS_OUTPUT_DIR}/airliner.json
@@ -38,7 +38,7 @@ function(add_airliner_json_input)
         endif(NOT EXISTS "${PARSED_ARGS_OUTPUT_DIR}/airliner-overrides.json")
         
         execute_process(
-            COMMAND ${PROJECT_SOURCE_DIR}/tools/commander/merge.js 
+            COMMAND $ENV{AIRLINER_ROOT}/tools/commander/merge.js 
             	-a ${PARSED_ARGS_OUTPUT_DIR}/airliner-overrides.json
             	-b ${PARSED_ARGS_INPUT_FILE} 
             	-o ${PARSED_ARGS_OUTPUT_DIR}/airliner-overrides.json

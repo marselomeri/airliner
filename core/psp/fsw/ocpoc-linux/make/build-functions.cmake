@@ -31,8 +31,8 @@
 #
 #############################################################################
  
-include(${PROJECT_SOURCE_DIR}/tools/explain/python/GenerateSymbolMap.cmake)
-include(${PROJECT_SOURCE_DIR}/tools/gen_serialization/GenerateSerialization.cmake)
+include($ENV{AIRLINER_ROOT}/tools/explain/python/GenerateSymbolMap.cmake)
+include($ENV{AIRLINER_ROOT}/tools/gen_serialization/GenerateSerialization.cmake)
 
 set(PSP_UNIT_TEST_WRAPPER "")
 
@@ -70,7 +70,7 @@ function(psp_initialize_airliner_build)
     
     # Find the Nano Protobuf utility to use later.
     set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE BOTH)
-    set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/tools/nanopb/extra)
+    set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} $ENV{AIRLINER_ROOT}/tools/nanopb/extra)
     find_package(Nanopb REQUIRED)
     
     # Is this a reference build?
@@ -123,9 +123,9 @@ function(psp_initialize_airliner_build)
 	
 	# Setup commander
     execute_process(
-        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/tools/commander
+        WORKING_DIRECTORY $ENV{AIRLINER_ROOT}/tools/commander
         COMMAND npm install
-        OUTPUT_FILE ${PROJECT_SOURCE_DIR}/tools/commander/node_modules
+        OUTPUT_FILE $ENV{AIRLINER_ROOT}/tools/commander/node_modules
     )
     
     # Merge in the platform independent CFE message overrides.
@@ -280,7 +280,7 @@ endfunction(psp_add_test)
 
 #add_airliner_app(
 #    DEFINITION
-#        ${PROJECT_SOURCE_DIR}/apps/cfs_lib
+#        $ENV{AIRLINER_ROOT}/apps/cfs_lib
 #    CONFIG
 #        ${CMAKE_CURRENT_SOURCE_DIR}/apps/cfs_lib
 #)
@@ -362,10 +362,10 @@ function(psp_add_airliner_app)
             COMMAND mkdir -p '${CMAKE_CURRENT_BINARY_DIR}/rsm/apps/${PARSED_ARGS_APP_NAME}'
             COMMAND ${CMAKE_COMMAND} 
                 -DRSM_EXEC:STRING='${RSM_EXEC}'
-                -DRSM_CONFIG:STRING='${PROJECT_SOURCE_DIR}/psp/fsw/ocpoc-linux/make/rsm/rsm.cfg'
+                -DRSM_CONFIG:STRING='$ENV{AIRLINER_ROOT}/psp/fsw/ocpoc-linux/make/rsm/rsm.cfg'
                 -DSOURCES:STRING='${SOURCE_LIST}'
                 -DOUTPUT_FILE:STRING='${CMAKE_CURRENT_BINARY_DIR}/rsm/apps/${PARSED_ARGS_APP_NAME}/index.html'
-                -P ${PROJECT_SOURCE_DIR}/psp/fsw/ocpoc-linux/make/run-rsm.cmake
+                -P $ENV{AIRLINER_ROOT}/psp/fsw/ocpoc-linux/make/run-rsm.cmake
         )
         add_dependencies(rsm ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-rsm)
     endif()
@@ -463,7 +463,7 @@ function(psp_add_airliner_app_def)
     if(PARSED_ARGS_PROTOBUF_DEFS)
         set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE BOTH)
 
-        set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/tools/nanopb/extra")
+        set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "$ENV{AIRLINER_ROOT}/tools/nanopb/extra")
         find_package(Nanopb REQUIRED)
         include_directories(${NANOPB_INCLUDE_DIRS})
         file(MAKE_DIRECTORY ${PARSED_ARGS_PROTOBUF_MSGS_DIR})
@@ -529,83 +529,83 @@ function(psp_add_airliner_app_unit_test)
     
     if(PARSED_ARGS_UTASSERT)
         set(UTASSERT_SRC
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/utassert.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_es_hooks.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_es_stubs.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_evs_hooks.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_evs_stubs.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_fs_stubs.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_psp_eeprom_stubs.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_psp_memrange_stubs.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_psp_memutils_stubs.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_psp_ram_stubs.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_psp_timer_stubs.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_psp_watchdog_stubs.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_sb_hooks.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_sb_stubs.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_tbl_hooks.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_tbl_stubs.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_time_hooks.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_time_stubs.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/utlist.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_osapi_stubs.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_osfileapi_stubs.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/uttest.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/uttools.c)
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/utassert.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_es_hooks.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_es_stubs.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_evs_hooks.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_evs_stubs.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_fs_stubs.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_psp_eeprom_stubs.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_psp_memrange_stubs.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_psp_memutils_stubs.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_psp_ram_stubs.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_psp_timer_stubs.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_psp_watchdog_stubs.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_sb_hooks.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_sb_stubs.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_tbl_hooks.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_tbl_stubs.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_time_hooks.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_time_stubs.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/utlist.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_osapi_stubs.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_osfileapi_stubs.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/uttest.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/uttools.c)
         
         target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${UTASSERT_SRC})
         target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC ${UTASSERT_SRC})
         
-        target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${PROJECT_SOURCE_DIR}/tools/ut_assert/inc/)
-        target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC ${PROJECT_SOURCE_DIR}/tools/ut_assert/inc/)
+        target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC $ENV{AIRLINER_ROOT}/tools/ut_assert/inc/)
+        target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC $ENV{AIRLINER_ROOT}/tools/ut_assert/inc/)
     elseif(PARSED_ARGS_UTF)
         set(UTF_SRC
-            ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_es_api.c
-            ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_es_cds.c
-            ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_esmempool.c
-            ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_evs.c
-            ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_psp_eeprom.c
-            ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_psp_memrange.c
-            ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_psp_memutils.c
-            ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_psp_port.c
-            ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_psp_ram.c
-            ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_psp_support.c
-            ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_sb_api.c
-            ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_sb.c
-            ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_tbl_api.c
-            ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_tbl_internal.c
-            ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_time_api.c
-            ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_time_utils.c
-            ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_osapi.c
-            ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_osfilesys.c
-            ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_osloader.c
-            ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_ostimer.c
-            ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_sim.c
+            $ENV{AIRLINER_ROOT}/tools/utf/src/utf_cfe_es_api.c
+            $ENV{AIRLINER_ROOT}/tools/utf/src/utf_cfe_es_cds.c
+            $ENV{AIRLINER_ROOT}/tools/utf/src/utf_cfe_esmempool.c
+            $ENV{AIRLINER_ROOT}/tools/utf/src/utf_cfe_evs.c
+            $ENV{AIRLINER_ROOT}/tools/utf/src/utf_cfe_psp_eeprom.c
+            $ENV{AIRLINER_ROOT}/tools/utf/src/utf_cfe_psp_memrange.c
+            $ENV{AIRLINER_ROOT}/tools/utf/src/utf_cfe_psp_memutils.c
+            $ENV{AIRLINER_ROOT}/tools/utf/src/utf_cfe_psp_port.c
+            $ENV{AIRLINER_ROOT}/tools/utf/src/utf_cfe_psp_ram.c
+            $ENV{AIRLINER_ROOT}/tools/utf/src/utf_cfe_psp_support.c
+            $ENV{AIRLINER_ROOT}/tools/utf/src/utf_cfe_sb_api.c
+            $ENV{AIRLINER_ROOT}/tools/utf/src/utf_cfe_sb.c
+            $ENV{AIRLINER_ROOT}/tools/utf/src/utf_cfe_tbl_api.c
+            $ENV{AIRLINER_ROOT}/tools/utf/src/utf_cfe_tbl_internal.c
+            $ENV{AIRLINER_ROOT}/tools/utf/src/utf_cfe_time_api.c
+            $ENV{AIRLINER_ROOT}/tools/utf/src/utf_cfe_time_utils.c
+            $ENV{AIRLINER_ROOT}/tools/utf/src/utf_osapi.c
+            $ENV{AIRLINER_ROOT}/tools/utf/src/utf_osfilesys.c
+            $ENV{AIRLINER_ROOT}/tools/utf/src/utf_osloader.c
+            $ENV{AIRLINER_ROOT}/tools/utf/src/utf_ostimer.c
+            $ENV{AIRLINER_ROOT}/tools/utf/src/utf_sim.c
             )
             
         target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${UTF_SRC})
         target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC ${UTF_SRC})
         
-        target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${PROJECT_SOURCE_DIR}/tools/utf/inc/)
-        target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC ${PROJECT_SOURCE_DIR}/tools/utf/inc/)
+        target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC $ENV{AIRLINER_ROOT}/tools/utf/inc/)
+        target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC $ENV{AIRLINER_ROOT}/tools/utf/inc/)
     endif()
 
 	if(PARSED_ARGS_NANOPB)
 		set(NANOPB_SRC 
-		    ${PROJECT_SOURCE_DIR}/tools/nanopb/pb.h
-		    ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_common.c
-			${PROJECT_SOURCE_DIR}/tools/nanopb/pb_common.h
-		    ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_decode.c
-		    ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_decode.h
-		    ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_encode.c
-		    ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_encode.h
+		    $ENV{AIRLINER_ROOT}/tools/nanopb/pb.h
+		    $ENV{AIRLINER_ROOT}/tools/nanopb/pb_common.c
+			$ENV{AIRLINER_ROOT}/tools/nanopb/pb_common.h
+		    $ENV{AIRLINER_ROOT}/tools/nanopb/pb_decode.c
+		    $ENV{AIRLINER_ROOT}/tools/nanopb/pb_decode.h
+		    $ENV{AIRLINER_ROOT}/tools/nanopb/pb_encode.c
+		    $ENV{AIRLINER_ROOT}/tools/nanopb/pb_encode.h
 		)
 			
                 target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${NANOPB_SRC})
                 target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC ${NANOPB_SRC})
 
-		target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${PROJECT_SOURCE_DIR}/tools/nanopb/)
-		target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC ${PROJECT_SOURCE_DIR}/tools/nanopb/)
+		target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC $ENV{AIRLINER_ROOT}/tools/nanopb/)
+		target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC $ENV{AIRLINER_ROOT}/tools/nanopb/)
 	endif()
 	
 	if(EXISTS ${PARSED_ARGS_VALGRIND_SUPPRESSION_FILE})
@@ -648,7 +648,7 @@ function(psp_add_airliner_app_unit_test)
             -DTEST_ARGS:STRING=
             -DUTF_BLESSED_FILE:STRING=${PARSED_ARGS_UTF_BLESSED_FILE}
             -DUTF_OUTPUT_FILE:STRING=${PARSED_ARGS_UTF_OUTPUT_FILE}
-            -P ${PROJECT_SOURCE_DIR}/psp/fsw/ocpoc-linux/make/utf_run_and_check.cmake)
+            -P $ENV{AIRLINER_ROOT}/psp/fsw/ocpoc-linux/make/utf_run_and_check.cmake)
         set_tests_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ctest-build)
             
         add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov)
@@ -657,7 +657,7 @@ function(psp_add_airliner_app_unit_test)
             -DTEST_ARGS:STRING=
             -DUTF_BLESSED_FILE:STRING=${PARSED_ARGS_UTF_BLESSED_FILE}
             -DUTF_OUTPUT_FILE:STRING=${PARSED_ARGS_UTF_OUTPUT_FILE}
-            -P ${PROJECT_SOURCE_DIR}/psp/fsw/ocpoc-linux/make/utf_run_and_check.cmake)
+            -P $ENV{AIRLINER_ROOT}/psp/fsw/ocpoc-linux/make/utf_run_and_check.cmake)
         set_tests_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov-ctest-build)
             
         if(NOT PARSED_ARGS_NO_MEMCHECK)
@@ -667,7 +667,7 @@ function(psp_add_airliner_app_unit_test)
                 -DTEST_ARGS:STRING=${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}
                 -DUTF_BLESSED_FILE:STRING=${PARSED_ARGS_UTF_BLESSED_FILE}
                 -DUTF_OUTPUT_FILE:STRING=${PARSED_ARGS_UTF_OUTPUT_FILE}
-                -P ${PROJECT_SOURCE_DIR}/psp/fsw/ocpoc-linux/make/utf_run_and_check.cmake)
+                -P $ENV{AIRLINER_ROOT}/psp/fsw/ocpoc-linux/make/utf_run_and_check.cmake)
             set_tests_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-memcheck PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-memcheck-ctest-build)
         endif()
         
@@ -678,7 +678,7 @@ function(psp_add_airliner_app_unit_test)
                 -DTEST_ARGS:STRING=${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}
                 -DUTF_BLESSED_FILE:STRING=${PARSED_ARGS_UTF_BLESSED_FILE}
                 -DUTF_OUTPUT_FILE:STRING=${PARSED_ARGS_UTF_OUTPUT_FILE}
-                -P ${PROJECT_SOURCE_DIR}/psp/fsw/ocpoc-linux/make/utf_run_and_check.cmake)
+                -P $ENV{AIRLINER_ROOT}/psp/fsw/ocpoc-linux/make/utf_run_and_check.cmake)
             set_tests_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-helgrind PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-helgrind-ctest-build)
         endif()
             
@@ -689,7 +689,7 @@ function(psp_add_airliner_app_unit_test)
                 -DTEST_ARGS:STRING=${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}
                 -DUTF_BLESSED_FILE:STRING=${PARSED_ARGS_UTF_BLESSED_FILE}
                 -DUTF_OUTPUT_FILE:STRING=${PARSED_ARGS_UTF_OUTPUT_FILE}
-                -P ${PROJECT_SOURCE_DIR}/psp/fsw/ocpoc-linux/make/utf_run_and_check.cmake)
+                -P $ENV{AIRLINER_ROOT}/psp/fsw/ocpoc-linux/make/utf_run_and_check.cmake)
             set_tests_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-massif PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-massif-ctest-build)
         endif()
     else()
@@ -744,12 +744,12 @@ function(psp_add_airliner_cfe_unit_test)
 
     add_executable(${AIRLINER_BUILD_PREFIX}${TEST_NAME} EXCLUDE_FROM_ALL
         ${PARSED_ARGS_SOURCES}
-        ${PROJECT_SOURCE_DIR}/psp/fsw/ocpoc-linux/unit_test/bsp_ut.c
+        $ENV{AIRLINER_ROOT}/psp/fsw/ocpoc-linux/unit_test/bsp_ut.c
     )
 
     add_executable(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov EXCLUDE_FROM_ALL
         ${PARSED_ARGS_SOURCES}
-        ${PROJECT_SOURCE_DIR}/psp/fsw/ocpoc-linux/unit_test/bsp_ut.c
+        $ENV{AIRLINER_ROOT}/psp/fsw/ocpoc-linux/unit_test/bsp_ut.c
     )
 
     target_include_directories(${AIRLINER_BUILD_PREFIX}${TEST_NAME} PUBLIC ${PARSED_ARGS_INCLUDES})

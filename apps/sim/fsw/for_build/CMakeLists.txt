@@ -39,7 +39,7 @@ add_airliner_app_def(simlib
    
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
-        ${PROJECT_SOURCE_DIR}/mavlink/include/mavlink/v1.0/common/
+        $ENV{AIRLINER_ROOT}/mavlink/include/mavlink/v1.0/common/
 
     # This application has a public include header.  Add it so all the other applications can access it.
     PUBLIC_INCLUDES
@@ -49,8 +49,8 @@ add_airliner_app_def(simlib
     DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/lib_detail_doxy.in
     
     REFERENCE_CONFIG
-        ${PROJECT_SOURCE_DIR}/apps/sim/fsw/mission_inc
-        ${PROJECT_SOURCE_DIR}/apps/sim/fsw/platform_inc
+        $ENV{AIRLINER_ROOT}/apps/sim/fsw/mission_inc
+        $ENV{AIRLINER_ROOT}/apps/sim/fsw/platform_inc
 )
 
 add_airliner_app_def(sim
@@ -66,14 +66,14 @@ add_airliner_app_def(sim
 
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
-        ${PROJECT_SOURCE_DIR}/mavlink/include/mavlink/v1.0/common/
+        $ENV{AIRLINER_ROOT}/mavlink/include/mavlink/v1.0/common/
 
     USER_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/user_doxy.in
     DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in
     
     REFERENCE_CONFIG
-        ${PROJECT_SOURCE_DIR}/apps/sim/fsw/mission_inc
-        ${PROJECT_SOURCE_DIR}/apps/sim/fsw/platform_inc
+        $ENV{AIRLINER_ROOT}/apps/sim/fsw/mission_inc
+        $ENV{AIRLINER_ROOT}/apps/sim/fsw/platform_inc
 )
 
 add_airliner_app_unit_test(sim-ut
@@ -103,7 +103,7 @@ add_airliner_app_unit_test(sim-ut
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
-        ${PROJECT_SOURCE_DIR}/mavlink/include/mavlink/v1.0/common/
+        $ENV{AIRLINER_ROOT}/mavlink/include/mavlink/v1.0/common/
         
     VALGRIND_SUPPRESSION_FILE
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/valgrind.supp

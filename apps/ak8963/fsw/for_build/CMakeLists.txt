@@ -51,8 +51,8 @@ add_airliner_app_def(ak8963
     MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/ak8963_msg_overrides.json
     
     REFERENCE_CONFIG
-        ${PROJECT_SOURCE_DIR}/apps/ak8963/fsw/mission_inc
-        ${PROJECT_SOURCE_DIR}/apps/ak8963/fsw/platform_inc
+        $ENV{AIRLINER_ROOT}/apps/ak8963/fsw/mission_inc
+        $ENV{AIRLINER_ROOT}/apps/ak8963/fsw/platform_inc
 
     COMMANDER_PLUGIN
         ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr

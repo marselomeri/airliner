@@ -3,10 +3,10 @@ add_custom_command(
         ${CMAKE_CURRENT_BINARY_DIR}/sm_src/VM_ArmingContext.cpp ${CMAKE_CURRENT_BINARY_DIR}/sm_src/VM_ArmingContext.h
         ${CMAKE_CURRENT_BINARY_DIR}/sm_src/VM_NavigationContext.cpp ${CMAKE_CURRENT_BINARY_DIR}/sm_src/VM_NavigationContext.h
     COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/sm_src
-    COMMAND java -jar ${PROJECT_SOURCE_DIR}/tools/smc/bin/Smc.jar -c++ -d ${CMAKE_CURRENT_BINARY_DIR}/sm_src ${CMAKE_CURRENT_SOURCE_DIR}/../src/VM_Arming.sm
-    COMMAND java -jar ${PROJECT_SOURCE_DIR}/tools/smc/bin/Smc.jar -c++ -d ${CMAKE_CURRENT_BINARY_DIR}/sm_src ${CMAKE_CURRENT_SOURCE_DIR}/../src/VM_Navigation.sm
-    COMMAND java -jar ${PROJECT_SOURCE_DIR}/tools/smc/bin/Smc.jar -graph -glevel 0 -d ${CMAKE_CURRENT_BINARY_DIR}/sm_src ${CMAKE_CURRENT_SOURCE_DIR}/../src/VM_Arming.sm
-    COMMAND java -jar ${PROJECT_SOURCE_DIR}/tools/smc/bin/Smc.jar -graph -glevel 0 -d ${CMAKE_CURRENT_BINARY_DIR}/sm_src ${CMAKE_CURRENT_SOURCE_DIR}/../src/VM_Navigation.sm
+    COMMAND java -jar $ENV{AIRLINER_ROOT}/tools/smc/bin/Smc.jar -c++ -d ${CMAKE_CURRENT_BINARY_DIR}/sm_src ${CMAKE_CURRENT_SOURCE_DIR}/../src/VM_Arming.sm
+    COMMAND java -jar $ENV{AIRLINER_ROOT}/tools/smc/bin/Smc.jar -c++ -d ${CMAKE_CURRENT_BINARY_DIR}/sm_src ${CMAKE_CURRENT_SOURCE_DIR}/../src/VM_Navigation.sm
+    COMMAND java -jar $ENV{AIRLINER_ROOT}/tools/smc/bin/Smc.jar -graph -glevel 0 -d ${CMAKE_CURRENT_BINARY_DIR}/sm_src ${CMAKE_CURRENT_SOURCE_DIR}/../src/VM_Arming.sm
+    COMMAND java -jar $ENV{AIRLINER_ROOT}/tools/smc/bin/Smc.jar -graph -glevel 0 -d ${CMAKE_CURRENT_BINARY_DIR}/sm_src ${CMAKE_CURRENT_SOURCE_DIR}/../src/VM_Navigation.sm
 
     BYPRODUCTS
         ${CMAKE_CURRENT_BINARY_DIR}/sm_src/VM_ArmingContext.cpp ${CMAKE_CURRENT_BINARY_DIR}/sm_src/VM_ArmingContext.h
@@ -60,8 +60,8 @@ add_airliner_app_def(vm
         ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr
     
     REFERENCE_CONFIG
-        ${PROJECT_SOURCE_DIR}/apps/vm/fsw/mission_inc
-        ${PROJECT_SOURCE_DIR}/apps/vm/fsw/platform_inc
+        $ENV{AIRLINER_ROOT}/apps/vm/fsw/mission_inc
+        $ENV{AIRLINER_ROOT}/apps/vm/fsw/platform_inc
 )
 
 add_dependencies(vm

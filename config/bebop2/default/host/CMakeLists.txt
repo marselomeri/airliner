@@ -26,15 +26,15 @@ include(../set-vars.cmake)
 #
 #add_airliner_app(
 #    px4lib
-#    DEFINITION ${PROJECT_SOURCE_DIR}/apps/px4lib/fsw/for_build)
+#    DEFINITION $ENV{AIRLINER_ROOT}/apps/px4lib/fsw/for_build)
 #    
 #add_airliner_app(
 #    pblib
-#    DEFINITION ${PROJECT_SOURCE_DIR}/apps/pblib/fsw/for_build)
+#    DEFINITION $ENV{AIRLINER_ROOT}/apps/pblib/fsw/for_build)
 #
 #add_airliner_app(
 #    sch
-#    DEFINITION ${PROJECT_SOURCE_DIR}/apps/sch/fsw/for_build
+#    DEFINITION $ENV{AIRLINER_ROOT}/apps/sch/fsw/for_build
 #    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/sch
 #    CONFIG_SOURCES
 #        ${CMAKE_CURRENT_SOURCE_DIR}/apps/sch/sch_custom_rt.c
@@ -45,7 +45,7 @@ include(../set-vars.cmake)
 #
 #add_airliner_app(
 #    cf
-#    DEFINITION ${PROJECT_SOURCE_DIR}/apps/cf/fsw/for_build
+#    DEFINITION $ENV{AIRLINER_ROOT}/apps/cf/fsw/for_build
 #    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/cf
 #    CONFIG_SOURCES
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/cf_platform_cfg.h
@@ -55,7 +55,7 @@ include(../set-vars.cmake)
 #
 #add_airliner_app(
 #    ci
-#    DEFINITION ${PROJECT_SOURCE_DIR}/apps/ci/fsw/for_build
+#    DEFINITION $ENV{AIRLINER_ROOT}/apps/ci/fsw/for_build
 #    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/ci
 #    CONFIG_SOURCES
 #        ${CMAKE_CURRENT_SOURCE_DIR}/apps/ci/ci_custom.c
@@ -67,7 +67,7 @@ include(../set-vars.cmake)
 #
 #add_airliner_app(
 #    to
-#    DEFINITION ${PROJECT_SOURCE_DIR}/apps/to/fsw/for_build
+#    DEFINITION $ENV{AIRLINER_ROOT}/apps/to/fsw/for_build
 #    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/to
 #    CONFIG_SOURCES
 #        ${CMAKE_CURRENT_SOURCE_DIR}/apps/to/to_custom.c

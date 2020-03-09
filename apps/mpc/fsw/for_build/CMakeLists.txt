@@ -23,8 +23,8 @@ add_airliner_app_def(mpc
         ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr
     
     REFERENCE_CONFIG
-        ${PROJECT_SOURCE_DIR}/apps/mpc/fsw/mission_inc
-        ${PROJECT_SOURCE_DIR}/apps/mpc/fsw/platform_inc
+        $ENV{AIRLINER_ROOT}/apps/mpc/fsw/mission_inc
+        $ENV{AIRLINER_ROOT}/apps/mpc/fsw/platform_inc
 )
 
 add_airliner_app_unit_test(mpc-ut

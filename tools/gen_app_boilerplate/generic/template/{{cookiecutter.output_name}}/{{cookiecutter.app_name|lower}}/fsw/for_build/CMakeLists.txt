@@ -51,8 +51,8 @@ add_airliner_app_def({{cookiecutter.app_name|lower}}
         ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr
     
     REFERENCE_CONFIG
-        ${PROJECT_SOURCE_DIR}/apps/{{cookiecutter.app_name|lower}}/fsw/mission_inc
-        ${PROJECT_SOURCE_DIR}/apps/{{cookiecutter.app_name|lower}}/fsw/platform_inc
+        $ENV{AIRLINER_ROOT}/apps/{{cookiecutter.app_name|lower}}/fsw/mission_inc
+        $ENV{AIRLINER_ROOT}/apps/{{cookiecutter.app_name|lower}}/fsw/platform_inc
 )
 
 add_airliner_app_unit_test({{cookiecutter.app_name}}-UT

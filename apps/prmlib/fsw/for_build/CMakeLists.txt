@@ -54,8 +54,8 @@ add_airliner_app_def(prmlib
     DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in
     
     REFERENCE_CONFIG
-        ${PROJECT_SOURCE_DIR}/apps/prmlib/fsw/mission_inc
-        ${PROJECT_SOURCE_DIR}/apps/prmlib/fsw/platform_inc
+        $ENV{AIRLINER_ROOT}/apps/prmlib/fsw/mission_inc
+        $ENV{AIRLINER_ROOT}/apps/prmlib/fsw/platform_inc
 )
 
 add_airliner_app_def(prm
@@ -78,8 +78,8 @@ add_airliner_app_def(prm
         ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr
     
     REFERENCE_CONFIG
-        ${PROJECT_SOURCE_DIR}/apps/prm/fsw/mission_inc
-        ${PROJECT_SOURCE_DIR}/apps/prm/fsw/platform_inc
+        $ENV{AIRLINER_ROOT}/apps/prm/fsw/mission_inc
+        $ENV{AIRLINER_ROOT}/apps/prm/fsw/platform_inc
 )
 
 add_airliner_app_unit_test(prmlib-ut

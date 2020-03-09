@@ -40,8 +40,8 @@ set(EXPLAIN_DIR	${CMAKE_CURRENT_BINARY_DIR}/ PARENT_SCOPE)
 set(EXPLAIN_DB	${EXPLAIN_DIR}/airliner-symbols.sqlite PARENT_SCOPE)
 
  
-include(${PROJECT_SOURCE_DIR}/tools/explain/python/GenerateSymbolMap.cmake)
-include(${PROJECT_SOURCE_DIR}/tools/gen_serialization/GenerateSerialization.cmake)
+include($ENV{AIRLINER_ROOT}/tools/explain/python/GenerateSymbolMap.cmake)
+include($ENV{AIRLINER_ROOT}/tools/gen_serialization/GenerateSerialization.cmake)
 
 include(${PARSED_ARGS_PSP}/make/build-functions.cmake)
 
@@ -75,7 +75,7 @@ function(psp_initialize_airliner_build)
     
     # Find the Nano Protobuf utility to use later.
     set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE BOTH)
-    set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/tools/nanopb/extra)
+    set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} $ENV{AIRLINER_ROOT}/tools/nanopb/extra)
     find_package(Nanopb REQUIRED)
     
     # Is this a reference build?
@@ -210,9 +210,9 @@ function(psp_initialize_airliner_build)
     
     # Setup commander
     execute_process(
-        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/tools/commander
+        WORKING_DIRECTORY $ENV{AIRLINER_ROOT}/tools/commander
         COMMAND npm install
-        OUTPUT_FILE ${PROJECT_SOURCE_DIR}/tools/commander/node_modules
+        OUTPUT_FILE $ENV{AIRLINER_ROOT}/tools/commander/node_modules
     )
     
     # Merge in the platform independent CFE message overrides.
@@ -347,7 +347,7 @@ endfunction(psp_add_test)
 
 #add_airliner_app(
 #    DEFINITION
-#        ${PROJECT_SOURCE_DIR}/apps/cfs_lib
+#        $ENV{AIRLINER_ROOT}/apps/cfs_lib
 #    CONFIG
 #        ${CMAKE_CURRENT_SOURCE_DIR}/apps/cfs_lib
 #)
@@ -429,10 +429,10 @@ function(psp_add_airliner_app)
             COMMAND mkdir -p '${CMAKE_CURRENT_BINARY_DIR}/rsm/apps/${PARSED_ARGS_APP_NAME}'
             COMMAND ${CMAKE_COMMAND} 
                 -DRSM_EXEC:STRING='${RSM_EXEC}'
-                -DRSM_CONFIG:STRING='${PROJECT_SOURCE_DIR}/psp/make/rsm/rsm.cfg'
+                -DRSM_CONFIG:STRING='$ENV{AIRLINER_ROOT}/psp/make/rsm/rsm.cfg'
                 -DSOURCES:STRING='${SOURCE_LIST}'
                 -DOUTPUT_FILE:STRING='${CMAKE_CURRENT_BINARY_DIR}/rsm/apps/${PARSED_ARGS_APP_NAME}/index.html'
-                -P ${PROJECT_SOURCE_DIR}/psp/make/run-rsm.cmake
+                -P $ENV{AIRLINER_ROOT}/psp/make/run-rsm.cmake
         )
         add_dependencies(rsm ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-rsm)
     endif()
@@ -528,7 +528,7 @@ function(psp_add_airliner_app_def)
     if(PARSED_ARGS_PROTOBUF_DEFS)
         set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE BOTH)
 
-        set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/tools/nanopb/extra")
+        set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "$ENV{AIRLINER_ROOT}/tools/nanopb/extra")
         find_package(Nanopb REQUIRED)
         include_directories(${NANOPB_INCLUDE_DIRS})
         file(MAKE_DIRECTORY ${PARSED_ARGS_PROTOBUF_MSGS_DIR})
@@ -594,53 +594,53 @@ function(psp_add_airliner_app_unit_test)
     
     if(PARSED_ARGS_UTASSERT)
         set(UTASSERT_SRC
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/utassert.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_es_hooks.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_es_stubs.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_evs_hooks.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_evs_stubs.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_fs_stubs.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_psp_eeprom_stubs.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_psp_memrange_stubs.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_psp_memutils_stubs.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_psp_ram_stubs.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_psp_timer_stubs.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_psp_watchdog_stubs.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_sb_hooks.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_sb_stubs.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_tbl_hooks.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_tbl_stubs.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_time_hooks.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_time_stubs.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/utlist.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_osapi_stubs.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_osfileapi_stubs.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/uttest.c
-            ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/uttools.c)
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/utassert.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_es_hooks.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_es_stubs.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_evs_hooks.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_evs_stubs.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_fs_stubs.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_psp_eeprom_stubs.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_psp_memrange_stubs.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_psp_memutils_stubs.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_psp_ram_stubs.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_psp_timer_stubs.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_psp_watchdog_stubs.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_sb_hooks.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_sb_stubs.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_tbl_hooks.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_tbl_stubs.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_time_hooks.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_time_stubs.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/utlist.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_osapi_stubs.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_osfileapi_stubs.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/uttest.c
+            $ENV{AIRLINER_ROOT}/tools/ut_assert/src/uttools.c)
         
         target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${UTASSERT_SRC})
         target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC ${UTASSERT_SRC})
         
-        target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${PROJECT_SOURCE_DIR}/tools/ut_assert/inc/)
-        target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC ${PROJECT_SOURCE_DIR}/tools/ut_assert/inc/)
+        target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC $ENV{AIRLINER_ROOT}/tools/ut_assert/inc/)
+        target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC $ENV{AIRLINER_ROOT}/tools/ut_assert/inc/)
     endif()
 
 	if(PARSED_ARGS_NANOPB)
 		set(NANOPB_SRC 
-		    ${PROJECT_SOURCE_DIR}/tools/nanopb/pb.h
-		    ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_common.c
-			${PROJECT_SOURCE_DIR}/tools/nanopb/pb_common.h
-		    ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_decode.c
-		    ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_decode.h
-		    ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_encode.c
-		    ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_encode.h
+		    $ENV{AIRLINER_ROOT}/tools/nanopb/pb.h
+		    $ENV{AIRLINER_ROOT}/tools/nanopb/pb_common.c
+			$ENV{AIRLINER_ROOT}/tools/nanopb/pb_common.h
+		    $ENV{AIRLINER_ROOT}/tools/nanopb/pb_decode.c
+		    $ENV{AIRLINER_ROOT}/tools/nanopb/pb_decode.h
+		    $ENV{AIRLINER_ROOT}/tools/nanopb/pb_encode.c
+		    $ENV{AIRLINER_ROOT}/tools/nanopb/pb_encode.h
 		)
 			
         target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${NANOPB_SRC})
         target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC ${NANOPB_SRC})
 
-		target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${PROJECT_SOURCE_DIR}/tools/nanopb/)
-		target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC ${PROJECT_SOURCE_DIR}/tools/nanopb/)
+		target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC $ENV{AIRLINER_ROOT}/tools/nanopb/)
+		target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC $ENV{AIRLINER_ROOT}/tools/nanopb/)
 	endif()
 	
 	if(EXISTS ${PARSED_ARGS_VALGRIND_SUPPRESSION_FILE})

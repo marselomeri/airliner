@@ -37,7 +37,7 @@ set(CFE_FSW ${CFE_DIR}/fsw)
 set(CFE_CORE_SRC ${CFE_FSW}/src)
 set(CFE_TOOLS ${CFE_DIR}/tools)
 set(CFE_UNIT_TEST ${CFE_FSW}/unit-test)
-set(CFE_CMDR_PLUGIN_DIR ${PROJECT_SOURCE_DIR}/core/cdr)
+set(CFE_CMDR_PLUGIN_DIR $ENV{AIRLINER_ROOT}/core/cdr)
 set(CFE_MSG_OVERRIDES ${CMAKE_CURRENT_LIST_DIR}/cfe_msg_overrides.json)
  
 set(CFE_INC_DIRS

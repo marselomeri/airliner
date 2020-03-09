@@ -5,7 +5,7 @@ function(explain_generate_symbol_map)
     
     add_custom_target(${TARGET_NAME}_DB
         DEPENDS EXPLAIN_INSTALL
-        COMMAND ${PROJECT_SOURCE_DIR}/tools/explain/python/generate_symbol_map 
+        COMMAND $ENV{AIRLINER_ROOT}/tools/explain/python/generate_symbol_map 
             ${PARSED_ARGS_INPUT_PATH} 
             ${PARSED_ARGS_INPUT_FILE} 
             ${PARSED_ARGS_DATABASE_NAME} 
@@ -23,7 +23,7 @@ function(explain_read_elf)
     
     add_custom_target(${TARGET_NAME}_DB
         DEPENDS EXPLAIN_INSTALL
-        COMMAND ${PROJECT_SOURCE_DIR}/tools/explain/python/read_elf 
+        COMMAND $ENV{AIRLINER_ROOT}/tools/explain/python/read_elf 
             ${PARSED_ARGS_DATABASE_NAME} 
             ${PARSED_ARGS_INPUT_PATH}
             ${PROJECT_BINARY_DIR}/host
@@ -46,7 +46,7 @@ function(explain_generate_cookie)
     
     add_custom_target(explain_cookie 
         DEPENDS EXPLAIN_INSTALL explain_parsing
-        COMMAND ${PROJECT_SOURCE_DIR}/tools/explain/python/generate_cookie
+        COMMAND $ENV{AIRLINER_ROOT}/tools/explain/python/generate_cookie
             ${PARSED_ARGS_DATABASE_NAME} 
             ${PARSED_ARGS_OUTPUT_FILE} 
             ${PROJECT_BINARY_DIR}/host
@@ -56,7 +56,7 @@ endfunction(explain_generate_cookie)
 
 function(explain_setup)
     add_custom_target(EXPLAIN_INSTALL
-        COMMAND ${PROJECT_SOURCE_DIR}/tools/explain/python/setup_explain 
+        COMMAND $ENV{AIRLINER_ROOT}/tools/explain/python/setup_explain 
             ${PROJECT_BINARY_DIR}/host
     )
     add_dependencies(ground_tools EXPLAIN_INSTALL)

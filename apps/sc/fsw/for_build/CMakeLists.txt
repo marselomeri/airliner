@@ -68,8 +68,8 @@ add_airliner_app_def(sc
         ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr
     
     REFERENCE_CONFIG
-        ${PROJECT_SOURCE_DIR}/apps/sc/fsw/mission_inc
-        ${PROJECT_SOURCE_DIR}/apps/sc/fsw/platform_inc
+        $ENV{AIRLINER_ROOT}/apps/sc/fsw/mission_inc
+        $ENV{AIRLINER_ROOT}/apps/sc/fsw/platform_inc
 )
 
 

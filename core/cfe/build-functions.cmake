@@ -88,7 +88,7 @@ function(initialize_airliner_build)
     set(CFE_OSAL_DIR ${PARSED_ARGS_OSAL})
 
     include(${PARSED_ARGS_PSP}/make/build-vars.cmake)
-    include(${PROJECT_SOURCE_DIR}/core/psp/make/build-functions.cmake)
+    include($ENV{AIRLINER_ROOT}/core/psp/make/build-functions.cmake)
     
     set_global_airliner_includes(${PARSED_ARGS_CONFIG})
     
@@ -115,7 +115,7 @@ endfunction(initialize_airliner_build)
 
 #add_airliner_app(
 #    DEFINITION
-#        ${PROJECT_SOURCE_DIR}/apps/cfs_lib
+#        $ENV{AIRLINER_ROOT}/apps/cfs_lib
 #    CONFIG
 #        ${CMAKE_CURRENT_SOURCE_DIR}/apps/cfs_lib
 #)

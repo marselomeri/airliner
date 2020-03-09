@@ -140,13 +140,13 @@ add_airliner_app_def(pblib
         ${PROTOBUF_MSGS_DIR}/PX4_CommanderStateMsg_t.pb.c
         ${PROTOBUF_MSGS_DIR}/PX4_SatelliteInfoMsg_t.pb.h
         ${PROTOBUF_MSGS_DIR}/PX4_SatelliteInfoMsg_t.pb.c
-        ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_common.c
-        ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_common.h
-        ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_decode.c
-        ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_decode.h
-        ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_encode.c
-        ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_encode.h
-        ${PROJECT_SOURCE_DIR}/tools/nanopb/pb.h
+        $ENV{AIRLINER_ROOT}/tools/nanopb/pb_common.c
+        $ENV{AIRLINER_ROOT}/tools/nanopb/pb_common.h
+        $ENV{AIRLINER_ROOT}/tools/nanopb/pb_decode.c
+        $ENV{AIRLINER_ROOT}/tools/nanopb/pb_decode.h
+        $ENV{AIRLINER_ROOT}/tools/nanopb/pb_encode.c
+        $ENV{AIRLINER_ROOT}/tools/nanopb/pb_encode.h
+        $ENV{AIRLINER_ROOT}/tools/nanopb/pb.h
 
     INCLUDES
         ${PROTOBUF_MSGS_DIR}
@@ -213,8 +213,8 @@ add_airliner_app_def(pblib
     DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in
     
     REFERENCE_CONFIG
-        ${PROJECT_SOURCE_DIR}/apps/pblib/fsw/mission_inc
-        ${PROJECT_SOURCE_DIR}/apps/pblib/fsw/platform_inc
+        $ENV{AIRLINER_ROOT}/apps/pblib/fsw/mission_inc
+        $ENV{AIRLINER_ROOT}/apps/pblib/fsw/platform_inc
 )
 
 add_airliner_app_unit_test(pblib-ut

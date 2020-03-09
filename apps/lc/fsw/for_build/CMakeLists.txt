@@ -63,8 +63,8 @@ add_airliner_app_def(lc
         ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr
     
     REFERENCE_CONFIG
-        ${PROJECT_SOURCE_DIR}/apps/lc/fsw/mission_inc
-        ${PROJECT_SOURCE_DIR}/apps/lc/fsw/platform_inc
+        $ENV{AIRLINER_ROOT}/apps/lc/fsw/mission_inc
+        $ENV{AIRLINER_ROOT}/apps/lc/fsw/platform_inc
 )
 
 add_airliner_app_unit_test(lc-ut
