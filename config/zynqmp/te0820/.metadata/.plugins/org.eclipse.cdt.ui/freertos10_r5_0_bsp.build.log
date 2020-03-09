@@ -1,0 +1,266 @@
+00:22:03 **** Build of project freertos10_r5_0_bsp ****
+make -k all 
+Running Make include in psu_cortexr5_0/libsrc/xilflash_v4_5/src
+make -C psu_cortexr5_0/libsrc/xilflash_v4_5/src -s include  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Running Make include in psu_cortexr5_0/libsrc/xilsecure_v3_2/src
+make -C psu_cortexr5_0/libsrc/xilsecure_v3_2/src -s include  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Running Make include in psu_cortexr5_0/libsrc/csudma_v1_3/src
+make -C psu_cortexr5_0/libsrc/csudma_v1_3/src -s include  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Running Make include in psu_cortexr5_0/libsrc/xilskey_v6_6/src
+make -C psu_cortexr5_0/libsrc/xilskey_v6_6/src -s include  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Running Make include in psu_cortexr5_0/libsrc/sdps_v3_6/src
+make -C psu_cortexr5_0/libsrc/sdps_v3_6/src -s include  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Running Make include in psu_cortexr5_0/libsrc/ipipsu_v2_4/src
+make -C psu_cortexr5_0/libsrc/ipipsu_v2_4/src -s include  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Running Make include in psu_cortexr5_0/libsrc/emacps_v3_8/src
+make -C psu_cortexr5_0/libsrc/emacps_v3_8/src -s include  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Running Make include in psu_cortexr5_0/libsrc/ttcps_v3_7/src
+make -C psu_cortexr5_0/libsrc/ttcps_v3_7/src -s include  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Running Make include in psu_cortexr5_0/libsrc/resetps_v1_2/src
+make -C psu_cortexr5_0/libsrc/resetps_v1_2/src -s include  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Running Make include in psu_cortexr5_0/libsrc/axipmon_v6_7/src
+make -C psu_cortexr5_0/libsrc/axipmon_v6_7/src -s include  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Running Make include in psu_cortexr5_0/libsrc/xilffs_v4_0/src
+make -C psu_cortexr5_0/libsrc/xilffs_v4_0/src -s include  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Running Make include in psu_cortexr5_0/libsrc/iicps_v3_8/src
+make -C psu_cortexr5_0/libsrc/iicps_v3_8/src -s include  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Running Make include in psu_cortexr5_0/libsrc/openamp_v1_5/src
+make -C psu_cortexr5_0/libsrc/openamp_v1_5/src -s include  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Running Make include in psu_cortexr5_0/libsrc/xilpm_v2_4/src
+make -C psu_cortexr5_0/libsrc/xilpm_v2_4/src -s include  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Include files for this library have already been copied.
+Running Make include in psu_cortexr5_0/libsrc/scugic_v3_10/src
+make -C psu_cortexr5_0/libsrc/scugic_v3_10/src -s include  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Running Make include in psu_cortexr5_0/libsrc/libmetal_v1_4/src
+make -C psu_cortexr5_0/libsrc/libmetal_v1_4/src -s include  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Running Make include in psu_cortexr5_0/libsrc/sysmonpsu_v2_5/src
+make -C psu_cortexr5_0/libsrc/sysmonpsu_v2_5/src -s include  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Running Make include in psu_cortexr5_0/libsrc/ddrcpsu_v1_1/src
+make -C psu_cortexr5_0/libsrc/ddrcpsu_v1_1/src -s include  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Running Make include in psu_cortexr5_0/libsrc/gpiops_v3_4/src
+make -C psu_cortexr5_0/libsrc/gpiops_v3_4/src -s include  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Running Make include in psu_cortexr5_0/libsrc/xilmfs_v2_3/src
+make -C psu_cortexr5_0/libsrc/xilmfs_v2_3/src -s include  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Running Make include in psu_cortexr5_0/libsrc/uartps_v3_7/src
+make -C psu_cortexr5_0/libsrc/uartps_v3_7/src -s include  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Running Make include in psu_cortexr5_0/libsrc/qspipsu_v1_8/src
+make -C psu_cortexr5_0/libsrc/qspipsu_v1_8/src -s include  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Running Make include in psu_cortexr5_0/libsrc/cpu_cortexr5_v1_4/src
+make -C psu_cortexr5_0/libsrc/cpu_cortexr5_v1_4/src -s include  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Running Make include in psu_cortexr5_0/libsrc/rtcpsu_v1_6/src
+make -C psu_cortexr5_0/libsrc/rtcpsu_v1_6/src -s include  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Running Make include in psu_cortexr5_0/libsrc/clockps_v1_0/src
+make -C psu_cortexr5_0/libsrc/clockps_v1_0/src -s include  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Running Make include in psu_cortexr5_0/libsrc/zdma_v1_6/src
+make -C psu_cortexr5_0/libsrc/zdma_v1_6/src -s include  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Running Make include in psu_cortexr5_0/libsrc/freertos10_xilinx_v1_2/src
+make -C psu_cortexr5_0/libsrc/freertos10_xilinx_v1_2/src -s include  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+include
+Running Make include in psu_cortexr5_0/libsrc/coresightps_dcc_v1_4/src
+make -C psu_cortexr5_0/libsrc/coresightps_dcc_v1_4/src -s include  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Running Make include in psu_cortexr5_0/libsrc/usbpsu_v1_4/src
+make -C psu_cortexr5_0/libsrc/usbpsu_v1_4/src -s include  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Running Make include in psu_cortexr5_0/libsrc/wdtps_v3_1/src
+make -C psu_cortexr5_0/libsrc/wdtps_v3_1/src -s include  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Running Make include in psu_cortexr5_0/libsrc/xilfpga_v4_2/src
+make -C psu_cortexr5_0/libsrc/xilfpga_v4_2/src -s include  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Running Make libs in psu_cortexr5_0/libsrc/xilflash_v4_5/src
+make -C psu_cortexr5_0/libsrc/xilflash_v4_5/src -s libs  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Compiling XilFlash Library
+Running Make libs in psu_cortexr5_0/libsrc/xilsecure_v3_2/src
+make -C psu_cortexr5_0/libsrc/xilsecure_v3_2/src -s libs  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Compiling XilSecure Library
+Running Make libs in psu_cortexr5_0/libsrc/csudma_v1_3/src
+make -C psu_cortexr5_0/libsrc/csudma_v1_3/src -s libs  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Compiling csudma
+armr5-none-eabi-ar: creating ../../../lib/libxil.a
+Running Make libs in psu_cortexr5_0/libsrc/xilskey_v6_6/src
+make -C psu_cortexr5_0/libsrc/xilskey_v6_6/src -s libs  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Compiling Xilskey Library
+Running Make libs in psu_cortexr5_0/libsrc/sdps_v3_6/src
+make -C psu_cortexr5_0/libsrc/sdps_v3_6/src -s libs  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Compiling sdps
+Running Make libs in psu_cortexr5_0/libsrc/ipipsu_v2_4/src
+make -C psu_cortexr5_0/libsrc/ipipsu_v2_4/src -s libs  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Compiling ipipsu
+Running Make libs in psu_cortexr5_0/libsrc/emacps_v3_8/src
+make -C psu_cortexr5_0/libsrc/emacps_v3_8/src -s libs  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Compiling emacps
+Running Make libs in psu_cortexr5_0/libsrc/ttcps_v3_7/src
+make -C psu_cortexr5_0/libsrc/ttcps_v3_7/src -s libs  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Compiling ttcps
+Running Make libs in psu_cortexr5_0/libsrc/resetps_v1_2/src
+make -C psu_cortexr5_0/libsrc/resetps_v1_2/src -s libs  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Compiling resetps
+Running Make libs in psu_cortexr5_0/libsrc/axipmon_v6_7/src
+make -C psu_cortexr5_0/libsrc/axipmon_v6_7/src -s libs  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Compiling axipmon
+Running Make libs in psu_cortexr5_0/libsrc/xilffs_v4_0/src
+make -C psu_cortexr5_0/libsrc/xilffs_v4_0/src -s libs  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Compiling XilFFs Library
+diskio.c: In function 'disk_ioctl':
+diskio.c:402:7: warning: unused parameter 'pdrv' [-Wunused-parameter]
+  BYTE pdrv,    /* Physical drive number (0) */
+       ^~~~
+Running Make libs in psu_cortexr5_0/libsrc/iicps_v3_8/src
+make -C psu_cortexr5_0/libsrc/iicps_v3_8/src -s libs  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Compiling iicps
+Running Make libs in psu_cortexr5_0/libsrc/openamp_v1_5/src
+make -C psu_cortexr5_0/libsrc/openamp_v1_5/src -s libs  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+[ 10%] Building C object lib/CMakeFiles/open_amp-static.dir/virtio/virtio.c.obj
+[ 20%] Building C object lib/CMakeFiles/open_amp-static.dir/virtio/virtqueue.c.obj
+[ 30%] Building C object lib/CMakeFiles/open_amp-static.dir/rpmsg/rpmsg.c.obj
+[ 40%] Building C object lib/CMakeFiles/open_amp-static.dir/rpmsg/rpmsg_virtio.c.obj
+[ 50%] Building C object lib/CMakeFiles/open_amp-static.dir/remoteproc/elf_loader.c.obj
+[ 60%] Building C object lib/CMakeFiles/open_amp-static.dir/remoteproc/remoteproc.c.obj
+[ 70%] Building C object lib/CMakeFiles/open_amp-static.dir/remoteproc/remoteproc_virtio.c.obj
+[ 80%] Building C object lib/CMakeFiles/open_amp-static.dir/remoteproc/rsc_table_parser.c.obj
+[ 90%] Building C object lib/CMakeFiles/open_amp-static.dir/proxy/rpmsg_retarget.c.obj
+[100%] Linking C static library libopen_amp.a
+/opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/bin/armr5-none-eabi-ar cq libopen_amp.a  CMakeFiles/open_amp-static.dir/virtio/virtio.c.obj CMakeFiles/open_amp-static.dir/virtio/virtqueue.c.obj CMakeFiles/open_amp-static.dir/rpmsg/rpmsg.c.obj CMakeFiles/open_amp-static.dir/rpmsg/rpmsg_virtio.c.obj CMakeFiles/open_amp-static.dir/remoteproc/elf_loader.c.obj CMakeFiles/open_amp-static.dir/remoteproc/remoteproc.c.obj CMakeFiles/open_amp-static.dir/remoteproc/remoteproc_virtio.c.obj CMakeFiles/open_amp-static.dir/remoteproc/rsc_table_parser.c.obj CMakeFiles/open_amp-static.dir/proxy/rpmsg_retarget.c.obj
+/opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/bin/armr5-none-eabi-ranlib libopen_amp.a
+[100%] Built target open_amp-static
+Install the project...
+-- Install configuration: "Debug"
+-- Installing: ../../../lib/libopen_amp.a
+-- Up-to-date: ../../../include/openamp
+-- Installing: ../../../include/openamp/rpmsg.h
+-- Installing: ../../../include/openamp/open_amp.h
+-- Installing: ../../../include/openamp/compiler.h
+-- Installing: ../../../include/openamp/remoteproc_virtio.h
+-- Installing: ../../../include/openamp/virtio.h
+-- Installing: ../../../include/openamp/remoteproc.h
+-- Installing: ../../../include/openamp/elf_loader.h
+-- Installing: ../../../include/openamp/rpmsg_virtio.h
+-- Installing: ../../../include/openamp/rpmsg_retarget.h
+-- Installing: ../../../include/openamp/rsc_table_parser.h
+-- Installing: ../../../include/openamp/virtqueue.h
+-- Installing: ../../../include/openamp/remoteproc_loader.h
+-- Installing: ../../../include/openamp/virtio_ring.h
+Running Make libs in psu_cortexr5_0/libsrc/xilpm_v2_4/src
+make -C psu_cortexr5_0/libsrc/xilpm_v2_4/src -s libs  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Compiling xilpm library
+armr5-none-eabi-ar: creating ../../../lib/libxilpm.a
+Running Make libs in psu_cortexr5_0/libsrc/scugic_v3_10/src
+make -C psu_cortexr5_0/libsrc/scugic_v3_10/src -s libs  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Compiling scugic
+Running Make libs in psu_cortexr5_0/libsrc/libmetal_v1_4/src
+make -C psu_cortexr5_0/libsrc/libmetal_v1_4/src -s libs  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+[  6%] Building C object lib/CMakeFiles/metal-static.dir/dma.c.obj
+[ 12%] Building C object lib/CMakeFiles/metal-static.dir/device.c.obj
+[ 18%] Building C object lib/CMakeFiles/metal-static.dir/init.c.obj
+[ 25%] Building C object lib/CMakeFiles/metal-static.dir/io.c.obj
+[ 31%] Building C object lib/CMakeFiles/metal-static.dir/log.c.obj
+[ 37%] Building C object lib/CMakeFiles/metal-static.dir/shmem.c.obj
+[ 43%] Building C object lib/CMakeFiles/metal-static.dir/version.c.obj
+[ 50%] Building C object lib/CMakeFiles/metal-static.dir/system/freertos/condition.c.obj
+[ 56%] Building C object lib/CMakeFiles/metal-static.dir/system/freertos/device.c.obj
+[ 62%] Building C object lib/CMakeFiles/metal-static.dir/system/freertos/init.c.obj
+[ 68%] Building C object lib/CMakeFiles/metal-static.dir/system/freertos/io.c.obj
+[ 75%] Building C object lib/CMakeFiles/metal-static.dir/system/freertos/irq.c.obj
+[ 81%] Building C object lib/CMakeFiles/metal-static.dir/system/freertos/shmem.c.obj
+[ 87%] Building C object lib/CMakeFiles/metal-static.dir/system/freertos/time.c.obj
+[ 93%] Building C object lib/CMakeFiles/metal-static.dir/system/freertos/zynqmp_r5/sys.c.obj
+[100%] Linking C static library libmetal.a
+/opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/bin/armr5-none-eabi-ar cq libmetal.a  CMakeFiles/metal-static.dir/dma.c.obj CMakeFiles/metal-static.dir/device.c.obj CMakeFiles/metal-static.dir/init.c.obj CMakeFiles/metal-static.dir/io.c.obj CMakeFiles/metal-static.dir/log.c.obj CMakeFiles/metal-static.dir/shmem.c.obj CMakeFiles/metal-static.dir/version.c.obj CMakeFiles/metal-static.dir/system/freertos/condition.c.obj CMakeFiles/metal-static.dir/system/freertos/device.c.obj CMakeFiles/metal-static.dir/system/freertos/init.c.obj CMakeFiles/metal-static.dir/system/freertos/io.c.obj CMakeFiles/metal-static.dir/system/freertos/irq.c.obj CMakeFiles/metal-static.dir/system/freertos/shmem.c.obj CMakeFiles/metal-static.dir/system/freertos/time.c.obj CMakeFiles/metal-static.dir/system/freertos/zynqmp_r5/sys.c.obj
+/opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/bin/armr5-none-eabi-ranlib libmetal.a
+[100%] Built target metal-static
+Install the project...
+-- Install configuration: "Debug"
+-- Installing: ../../../include/metal/alloc.h
+-- Installing: ../../../include/metal/assert.h
+-- Installing: ../../../include/metal/atomic.h
+-- Installing: ../../../include/metal/cache.h
+-- Installing: ../../../include/metal/compiler.h
+-- Installing: ../../../include/metal/condition.h
+-- Installing: ../../../include/metal/config.h
+-- Installing: ../../../include/metal/cpu.h
+-- Installing: ../../../include/metal/device.h
+-- Installing: ../../../include/metal/dma.h
+-- Installing: ../../../include/metal/io.h
+-- Installing: ../../../include/metal/irq.h
+-- Installing: ../../../include/metal/list.h
+-- Installing: ../../../include/metal/log.h
+-- Installing: ../../../include/metal/mutex.h
+-- Installing: ../../../include/metal/shmem.h
+-- Installing: ../../../include/metal/sleep.h
+-- Installing: ../../../include/metal/spinlock.h
+-- Installing: ../../../include/metal/sys.h
+-- Installing: ../../../include/metal/time.h
+-- Installing: ../../../include/metal/utilities.h
+-- Installing: ../../../include/metal/version.h
+-- Installing: ../../../include/metal/compiler/gcc/atomic.h
+-- Installing: ../../../include/metal/compiler/gcc/compiler.h
+-- Installing: ../../../include/metal/compiler/iar/compiler.h
+-- Installing: ../../../include/metal/processor/arm/atomic.h
+-- Installing: ../../../include/metal/processor/arm/cpu.h
+-- Installing: ../../../include/metal/system/freertos/alloc.h
+-- Installing: ../../../include/metal/system/freertos/assert.h
+-- Installing: ../../../include/metal/system/freertos/cache.h
+-- Installing: ../../../include/metal/system/freertos/condition.h
+-- Installing: ../../../include/metal/system/freertos/io.h
+-- Installing: ../../../include/metal/system/freertos/irq.h
+-- Installing: ../../../include/metal/system/freertos/log.h
+-- Installing: ../../../include/metal/system/freertos/mutex.h
+-- Installing: ../../../include/metal/system/freertos/sleep.h
+-- Installing: ../../../include/metal/system/freertos/sys.h
+-- Installing: ../../../include/metal/system/freertos/zynqmp_r5/sys.h
+-- Installing: ../../../lib/libmetal.a
+Running Make libs in psu_cortexr5_0/libsrc/sysmonpsu_v2_5/src
+make -C psu_cortexr5_0/libsrc/sysmonpsu_v2_5/src -s libs  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Compiling sysmonpsu
+Running Make libs in psu_cortexr5_0/libsrc/ddrcpsu_v1_1/src
+make -C psu_cortexr5_0/libsrc/ddrcpsu_v1_1/src -s libs  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Compiling ddrcpsu
+Running Make libs in psu_cortexr5_0/libsrc/gpiops_v3_4/src
+make -C psu_cortexr5_0/libsrc/gpiops_v3_4/src -s libs  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Compiling gpiops
+Running Make libs in psu_cortexr5_0/libsrc/xilmfs_v2_3/src
+make -C psu_cortexr5_0/libsrc/xilmfs_v2_3/src -s libs  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Compiling XilMFS Library
+
+XilMFS library is being deprecated from 2019.1. In the subsequent releases, it will be made obsolete.
+We recommend you to use XilFFS instead, which is available in Xilinx SDK.
+
+mfs_filesys.c: In function 'mfs_file_lseek':
+mfs_filesys.c:1006:16: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+     if (offset >= mfs_file_system[mfs_open_files[fd].first_block].block_size) { /* attempting to seek beyond end of file */
+                ^~
+Running Make libs in psu_cortexr5_0/libsrc/uartps_v3_7/src
+make -C psu_cortexr5_0/libsrc/uartps_v3_7/src -s libs  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Compiling uartps
+Running Make libs in psu_cortexr5_0/libsrc/qspipsu_v1_8/src
+make -C psu_cortexr5_0/libsrc/qspipsu_v1_8/src -s libs  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Compiling qspipsu
+Running Make libs in psu_cortexr5_0/libsrc/cpu_cortexr5_v1_4/src
+make -C psu_cortexr5_0/libsrc/cpu_cortexr5_v1_4/src -s libs  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Compiling cpu_cortexr5
+Running Make libs in psu_cortexr5_0/libsrc/rtcpsu_v1_6/src
+make -C psu_cortexr5_0/libsrc/rtcpsu_v1_6/src -s libs  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Compiling rtcpsu
+Running Make libs in psu_cortexr5_0/libsrc/clockps_v1_0/src
+make -C psu_cortexr5_0/libsrc/clockps_v1_0/src -s libs  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Compiling clockps
+Running Make libs in psu_cortexr5_0/libsrc/zdma_v1_6/src
+make -C psu_cortexr5_0/libsrc/zdma_v1_6/src -s libs  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Compiling zdma
+Running Make libs in psu_cortexr5_0/libsrc/freertos10_xilinx_v1_2/src
+make -C psu_cortexr5_0/libsrc/freertos10_xilinx_v1_2/src -s libs  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Compiling standalone R5
+Compiling FreeRTOS
+Running Make libs in psu_cortexr5_0/libsrc/coresightps_dcc_v1_4/src
+make -C psu_cortexr5_0/libsrc/coresightps_dcc_v1_4/src -s libs  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Compiling coresightps_dcc
+Running Make libs in psu_cortexr5_0/libsrc/usbpsu_v1_4/src
+make -C psu_cortexr5_0/libsrc/usbpsu_v1_4/src -s libs  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Compiling usbpsu
+Running Make libs in psu_cortexr5_0/libsrc/wdtps_v3_1/src
+make -C psu_cortexr5_0/libsrc/wdtps_v3_1/src -s libs  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Compiling wdtps
+Running Make libs in psu_cortexr5_0/libsrc/xilfpga_v4_2/src
+make -C psu_cortexr5_0/libsrc/xilfpga_v4_2/src -s libs  "SHELL=/bin/sh" "COMPILER=armr5-none-eabi-gcc" "ARCHIVER=armr5-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c -mcpu=cortex-r5" "EXTRA_COMPILER_FLAGS=-g -DARMR5 -Wall -Wextra  -mfpu=vfpv3-d16 -DUNDEFINE_FILE_OPS"
+Compiling xilfpga Library
+Finished building libraries
+
+00:22:16 Build Finished (took 13s.394ms)
+

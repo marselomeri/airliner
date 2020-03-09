@@ -39,6 +39,8 @@ TARGET_NAMES := $(shell echo ${TARGET_PATHS} )
 export AIRLINER_ROOT = ${PWD}
 
 
+
+
 help::
 	@echo $(TARGET_PATHS)
 	@echo 'Specify a target to build.  Available targets are:'
@@ -61,7 +63,49 @@ $(TARGET_NAMES)::
 	TARGET_PATH=$$(echo ${TARGET_PATHS} | cut -d " " -f $$idx); \
 	mkdir -p build/$$TARGET_PATH; \
 	(cd build/$$TARGET_PATH; cmake -DBUILDNAME:STRING=$$TARGET_PATH -G"Eclipse CDT4 - Unix Makefiles" -DCMAKE_ECLIPSE_GENERATE_SOURCE_PROJECT=TRUE CMAKE_BUILD_TYPE=Debug ../../..; $(MAKE) --no-print-directory);
-	
+
+rtems/tools/bin/arm-rtems5-gcc::
+rtems-toolchain::
+	@echo 'Building RTEMS ARM toolchain'
+	cd rtems/rtems-source-builder/rtems; \
+	  ../source-builder/sb-check; \
+	  ../source-builder/sb-set-builder --source-only-download 5/rtems-all; \
+	  ../source-builder/sb-set-builder --without-rtems --prefix=../../tools 5/rtems-arm
+
+
+rtems/rtems/cpukit/configure::
+rtems-bootstrap:: rtems/tools/bin/arm-rtems5-gcc
+	@echo 'Bootstrapping RTEMS'
+	export PATH=${PWD}/rtems/tools/bin:${PATH}; \
+	  cd rtems/rtems; \
+	  ./rtems-bootstrap
+
+rtems-bsp-snickerdoodle:: 
+	@echo 'Building Snickerdoodle Kernel'
+	export PATH=${PWD}/rtems/tools/bin:${PATH}; \
+	  cd rtems; \
+	  mkdir -p snickerdoodle/kernel; \
+	  cd snickerdoodle; \
+	  ../rtems/configure --target=arm-rtems5 --enable-rtemsbsp=snickerdoodle --enable-tests=samples --prefix=${PWD}/rtems/snickerdoodle/kernel; \
+	  make; \
+	  make install
+
+rtems-bsp-ocpoc:: 
+	@echo 'Building Ocpoc Kernel'
+	export PATH=${PWD}/rtems/tools/bin:${PATH}; \
+	  cd rtems; \
+	  mkdir -p ocpoc/kernel; \
+	  cd ocpoc; \
+	  ../rtems/configure --target=arm-rtems5 --enable-rtemsbsp=ocpoc --enable-tests=samples --prefix=${PWD}/rtems/ocpoc/kernel; \
+	  make; \
+	  make install
+
+rtems:: rtems-bsp-snickerdoodle rtems-bsp-ocpoc
+	export PATH=${PWD}/rtems/tools/bin:${PATH}; \
+	  cd rtems; \
+	  arm-rtems5-objcopy -R -S --strip-debug -O binary snickerdoodle/arm-rtems5/c/snickerdoodle/testsuites/samples/hello.exe hello.bin; \
+	  arm-rtems5-objcopy -R -S --strip-debug -O binary ocpoc/arm-rtems5/c/ocpoc/testsuites/samples/hello.exe hello.bin;
 
 clean::
 	rm -rf build
+

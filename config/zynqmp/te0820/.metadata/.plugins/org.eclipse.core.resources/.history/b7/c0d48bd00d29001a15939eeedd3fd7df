@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <string.h>
+#include <strings.h>
+#include <stdlib.h>
+
+#include "common_types.h"
+#include "osapi.h"
+#include "utassert.h"
+#include "uttest.h"
+#include "utbsp.h"
+#include "untar.h"
+
+
+/* OS Constructs */
+void TestUntar(void);
+
+os_fs_err_name_t errname;
+
+extern unsigned char testDir1[];
+extern unsigned int testDir1Size;
+
+
+
+
+/* *************************************** MAIN ************************************** */
+
+void OS_Application_Startup(void)
+{
+    errname[0] = 0;
+
+    if (OS_API_Init() != OS_SUCCESS)
+    {
+        UtAssert_Abort("OS_API_Init() failed");
+    }
+
+    /*
+     * Register the test setup and check routines in UT assert
+     *
+     * It is done this way so that the output is logically grouped,
+     * otherwise the entire thing would be lumped together
+     * as a single test case.
+     */
+    UtTest_Add(TestUntar, NULL, NULL, "TestUntar");
+}
+
+void TestUntar(void)
+{
+	untar((char*)testDir1, testDir1Size, "0:/");
+}
+

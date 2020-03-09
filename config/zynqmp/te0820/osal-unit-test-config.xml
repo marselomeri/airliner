@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdtprojectproperties>
+<section name="org.eclipse.cdt.internal.ui.wizards.settingswizards.IncludePaths">
+<language name="s">
+<includepath workspace_path="true">/osal-core-test/core/osal/inc</includepath>
+<includepath workspace_path="true">/osal-core-test/core/osal/ut_assert/inc</includepath>
+<includepath workspace_path="true">/osal-core-test/config/platform_inc</includepath>
+<includepath workspace_path="true">/osal-core-test/config/mission_inc</includepath>
+
+</language>
+<language name="c,C,cc,cxx,cpp,S">
+<includepath>../freertos10_r5_0_bsp/psu_cortexr5_0/include</includepath>
+<includepath workspace_path="true">/osal-core-test/core/osal/inc</includepath>
+<includepath workspace_path="true">/osal-core-test/core/osal/ut_assert/inc</includepath>
+<includepath workspace_path="true">/osal-core-test/config/platform_inc</includepath>
+<includepath workspace_path="true">/osal-core-test/config/mission_inc</includepath>
+
+</language>
+<language name="ld">
+
+</language>
+<language name="Object File">
+
+</language>
+</section>
+<section name="org.eclipse.cdt.internal.ui.wizards.settingswizards.Macros">
+<language name="s">
+
+</language>
+<language name="c,C,cc,cxx,cpp,S">
+<macro>
+<name>ARMR5</name><value/>
+</macro>
+
+</language>
+<language name="ld">
+
+</language>
+<language name="Object File">
+
+</language>
+</section>
+</cdtprojectproperties>

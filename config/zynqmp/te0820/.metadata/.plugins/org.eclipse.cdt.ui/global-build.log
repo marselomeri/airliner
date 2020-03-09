@@ -1,0 +1,939 @@
+22:50:38 **** Incremental Build of configuration Debug for project loader-test ****
+make all 
+Building target: loader-test.elf
+Invoking: ARM R5 g++ linker
+armr5-none-eabi-gcc -Wl,-T -Wl,../../../../../core/psp/fsw/zynqmp_r5/src/lscript.ld -L../../freertos10_r5_0_bsp/psu_cortexr5_0/lib -o "loader-test.elf"  ./core/psp/ut_bsp/bsp_ut.o  ./core/psp/src/cfe_psp_voltab.o  ./core/osal/ut_src/CFS_LIB.o ./core/osal/ut_src/loader-test.o ./core/osal/ut_src/testDir1.o  ./core/osal/ut_assert/src/utassert.o ./core/osal/ut_assert/src/utlist.o ./core/osal/ut_assert/src/utstubs.o ./core/osal/ut_assert/src/uttest.o ./core/osal/ut_assert/src/uttools.o  ./core/osal/src/dl/libs/libc/symtab/symtab_findbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_findbyvalue.o ./core/osal/src/dl/libs/libc/symtab/symtab_findorderedbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_sortbyname.o  ./core/osal/src/dl/libs/libc/queue/dq_addafter.o ./core/osal/src/dl/libs/libc/queue/dq_addbefore.o ./core/osal/src/dl/libs/libc/queue/dq_addfirst.o ./core/osal/src/dl/libs/libc/queue/dq_addlast.o ./core/osal/src/dl/libs/libc/queue/dq_cat.o ./core/osal/src/dl/libs/libc/queue/dq_count.o ./core/osal/src/dl/libs/libc/queue/dq_rem.o ./core/osal/src/dl/libs/libc/queue/dq_remfirst.o ./core/osal/src/dl/libs/libc/queue/dq_remlast.o ./core/osal/src/dl/libs/libc/queue/sq_addafter.o ./core/osal/src/dl/libs/libc/queue/sq_addfirst.o ./core/osal/src/dl/libs/libc/queue/sq_addlast.o ./core/osal/src/dl/libs/libc/queue/sq_cat.o ./core/osal/src/dl/libs/libc/queue/sq_count.o ./core/osal/src/dl/libs/libc/queue/sq_rem.o ./core/osal/src/dl/libs/libc/queue/sq_remafter.o ./core/osal/src/dl/libs/libc/queue/sq_remfirst.o ./core/osal/src/dl/libs/libc/queue/sq_remlast.o  ./core/osal/src/dl/libs/libc/machine/arm/armv7-r/arch_elf.o  ./core/osal/src/dl/binfmt/libelf/libelf_addrenv.o ./core/osal/src/dl/binfmt/libelf/libelf_bind.o ./core/osal/src/dl/binfmt/libelf/libelf_ctors.o ./core/osal/src/dl/binfmt/libelf/libelf_dtors.o ./core/osal/src/dl/binfmt/libelf/libelf_init.o ./core/osal/src/dl/binfmt/libelf/libelf_iobuffer.o ./core/osal/src/dl/binfmt/libelf/libelf_load.o ./core/osal/src/dl/binfmt/libelf/libelf_read.o ./core/osal/src/dl/binfmt/libelf/libelf_sections.o ./core/osal/src/dl/binfmt/libelf/libelf_symbols.o ./core/osal/src/dl/binfmt/libelf/libelf_uninit.o ./core/osal/src/dl/binfmt/libelf/libelf_unload.o ./core/osal/src/dl/binfmt/libelf/libelf_verify.o  ./core/osal/src/dl/binfmt/binfmt_globals.o ./core/osal/src/dl/binfmt/binfmt_initialize.o ./core/osal/src/dl/binfmt/binfmt_loadmodule.o ./core/osal/src/dl/binfmt/binfmt_register.o ./core/osal/src/dl/binfmt/binfmt_unregister.o ./core/osal/src/dl/binfmt/elf.o  ./core/osal/src/dl/untar.o  ./core/osal/src/osapi.o ./core/osal/src/osfileapi.o ./core/osal/src/osfilesys.o ./core/osal/src/osloader.o ./core/osal/src/osnetwork.o ./core/osal/src/osrtm.o ./core/osal/src/ostimer.o   -Wl,--start-group,-lxil,-lfreertos,-lgcc,-lc,-lstdc++,--end-group -Wl,--start-group,-lxil,-lmetal,-lgcc,-lc,--end-group -Wl,--start-group,-lxil,-lmetal,-lopen_amp,-lgcc,-lc,--end-group -Wl,--start-group,-lxilffs,-lxil,-lgcc,-lc,--end-group -lxilflash -Wl,--start-group,-lxilfpga,-lxil,-lxilsecure,-lgcc,-lc,--end-group -Wl,--start-group,-lxilpm,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilsecure,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilskey,-lxil,-lgcc,-lc,--end-group
+./core/osal/src/dl/binfmt/libelf/libelf_bind.o: In function `elf_bind':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:439: undefined reference to `elf_symname'
+collect2: error: ld returned 1 exit status
+makefile:60: recipe for target 'loader-test.elf' failed
+make: *** [loader-test.elf] Error 1
+22:50:48 **** Incremental Build of configuration Debug for project loader-test ****
+make all 
+Building target: loader-test.elf
+Invoking: ARM R5 g++ linker
+armr5-none-eabi-gcc -Wl,-T -Wl,../../../../../core/psp/fsw/zynqmp_r5/src/lscript.ld -L../../freertos10_r5_0_bsp/psu_cortexr5_0/lib -o "loader-test.elf"  ./core/psp/ut_bsp/bsp_ut.o  ./core/psp/src/cfe_psp_voltab.o  ./core/osal/ut_src/CFS_LIB.o ./core/osal/ut_src/loader-test.o ./core/osal/ut_src/testDir1.o  ./core/osal/ut_assert/src/utassert.o ./core/osal/ut_assert/src/utlist.o ./core/osal/ut_assert/src/utstubs.o ./core/osal/ut_assert/src/uttest.o ./core/osal/ut_assert/src/uttools.o  ./core/osal/src/dl/libs/libc/symtab/symtab_findbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_findbyvalue.o ./core/osal/src/dl/libs/libc/symtab/symtab_findorderedbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_sortbyname.o  ./core/osal/src/dl/libs/libc/queue/dq_addafter.o ./core/osal/src/dl/libs/libc/queue/dq_addbefore.o ./core/osal/src/dl/libs/libc/queue/dq_addfirst.o ./core/osal/src/dl/libs/libc/queue/dq_addlast.o ./core/osal/src/dl/libs/libc/queue/dq_cat.o ./core/osal/src/dl/libs/libc/queue/dq_count.o ./core/osal/src/dl/libs/libc/queue/dq_rem.o ./core/osal/src/dl/libs/libc/queue/dq_remfirst.o ./core/osal/src/dl/libs/libc/queue/dq_remlast.o ./core/osal/src/dl/libs/libc/queue/sq_addafter.o ./core/osal/src/dl/libs/libc/queue/sq_addfirst.o ./core/osal/src/dl/libs/libc/queue/sq_addlast.o ./core/osal/src/dl/libs/libc/queue/sq_cat.o ./core/osal/src/dl/libs/libc/queue/sq_count.o ./core/osal/src/dl/libs/libc/queue/sq_rem.o ./core/osal/src/dl/libs/libc/queue/sq_remafter.o ./core/osal/src/dl/libs/libc/queue/sq_remfirst.o ./core/osal/src/dl/libs/libc/queue/sq_remlast.o  ./core/osal/src/dl/libs/libc/machine/arm/armv7-r/arch_elf.o  ./core/osal/src/dl/binfmt/libelf/libelf_addrenv.o ./core/osal/src/dl/binfmt/libelf/libelf_bind.o ./core/osal/src/dl/binfmt/libelf/libelf_ctors.o ./core/osal/src/dl/binfmt/libelf/libelf_dtors.o ./core/osal/src/dl/binfmt/libelf/libelf_init.o ./core/osal/src/dl/binfmt/libelf/libelf_iobuffer.o ./core/osal/src/dl/binfmt/libelf/libelf_load.o ./core/osal/src/dl/binfmt/libelf/libelf_read.o ./core/osal/src/dl/binfmt/libelf/libelf_sections.o ./core/osal/src/dl/binfmt/libelf/libelf_symbols.o ./core/osal/src/dl/binfmt/libelf/libelf_uninit.o ./core/osal/src/dl/binfmt/libelf/libelf_unload.o ./core/osal/src/dl/binfmt/libelf/libelf_verify.o  ./core/osal/src/dl/binfmt/binfmt_globals.o ./core/osal/src/dl/binfmt/binfmt_initialize.o ./core/osal/src/dl/binfmt/binfmt_loadmodule.o ./core/osal/src/dl/binfmt/binfmt_register.o ./core/osal/src/dl/binfmt/binfmt_unregister.o ./core/osal/src/dl/binfmt/elf.o  ./core/osal/src/dl/untar.o  ./core/osal/src/osapi.o ./core/osal/src/osfileapi.o ./core/osal/src/osfilesys.o ./core/osal/src/osloader.o ./core/osal/src/osnetwork.o ./core/osal/src/osrtm.o ./core/osal/src/ostimer.o   -Wl,--start-group,-lxil,-lfreertos,-lgcc,-lc,-lstdc++,--end-group -Wl,--start-group,-lxil,-lmetal,-lgcc,-lc,--end-group -Wl,--start-group,-lxil,-lmetal,-lopen_amp,-lgcc,-lc,--end-group -Wl,--start-group,-lxilffs,-lxil,-lgcc,-lc,--end-group -lxilflash -Wl,--start-group,-lxilfpga,-lxil,-lxilsecure,-lgcc,-lc,--end-group -Wl,--start-group,-lxilpm,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilsecure,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilskey,-lxil,-lgcc,-lc,--end-group
+./core/osal/src/dl/binfmt/libelf/libelf_bind.o: In function `elf_bind':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:439: undefined reference to `elf_symname'
+collect2: error: ld returned 1 exit status
+make: *** [loader-test.elf] Error 1
+makefile:60: recipe for target 'loader-test.elf' failed
+22:53:16 **** Auto Build of configuration Debug for project loader-test ****
+make all 
+Building file: /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c
+Invoking: ARM R5 g++ compiler
+armr5-none-eabi-gcc -DARMR5 -Wall -O0 -g3 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -I"/home/mbenson/git/airliner/core/osal/inc" -I"/home/mbenson/git/airliner/core/osal/ut_assert/inc" -I"/home/mbenson/git/airliner/config/zynqmp/inc" -I"/home/mbenson/git/airliner/config/shared/inc" -I/home/mbenson/git/airliner/core/osal/src/os/freertos -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/libs/libxx -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/libs/libc -c -fmessage-length=0 -MT"core/osal/src/dl/binfmt/libelf/libelf_bind.o" -mcpu=cortex-r5 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -MMD -MP -MF"core/osal/src/dl/binfmt/libelf/libelf_bind.d" -MT"core/osal/src/dl/binfmt/libelf/libelf_bind.o" -o "core/osal/src/dl/binfmt/libelf/libelf_bind.o" "/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c"
+In file included from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:49:0:
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c: In function 'elf_relocate':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:5:33: warning: implicit declaration of function 'pvPortMalloc'; did you mean 'realloc'? [-Wimplicit-function-declaration]
+ #define kmm_malloc(s)           pvPortMalloc(s)
+                                 ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:166:22: note: in expansion of macro 'kmm_malloc'
+   rels = (Elf32_Rel*)kmm_malloc(size);
+                      ^~~~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:7:33: warning: implicit declaration of function 'vPortFree' [-Wimplicit-function-declaration]
+ #define kmm_free(s)             vPortFree(s)
+                                 ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:253:15: note: in expansion of macro 'kmm_free'
+               kmm_free(cache);
+               ^~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c: In function 'elf_bind':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:439:19: warning: implicit declaration of function 'elf_symname'; did you mean 'elf_symvalue'? [-Wimplicit-function-declaration]
+          status = elf_symname(loadinfo, &sym);
+                   ^~~~~~~~~~~
+                   elf_symvalue
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:450:13: warning: value computed is not used [-Wunused-value]
+             *nexports++;
+             ^~~~~~~~~~~
+Finished building: /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c
+ 
+Building target: loader-test.elf
+Invoking: ARM R5 g++ linker
+armr5-none-eabi-gcc -Wl,-T -Wl,../../../../../core/psp/fsw/zynqmp_r5/src/lscript.ld -L../../freertos10_r5_0_bsp/psu_cortexr5_0/lib -o "loader-test.elf"  ./core/psp/ut_bsp/bsp_ut.o  ./core/psp/src/cfe_psp_voltab.o  ./core/osal/ut_src/CFS_LIB.o ./core/osal/ut_src/loader-test.o ./core/osal/ut_src/testDir1.o  ./core/osal/ut_assert/src/utassert.o ./core/osal/ut_assert/src/utlist.o ./core/osal/ut_assert/src/utstubs.o ./core/osal/ut_assert/src/uttest.o ./core/osal/ut_assert/src/uttools.o  ./core/osal/src/dl/libs/libc/symtab/symtab_findbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_findbyvalue.o ./core/osal/src/dl/libs/libc/symtab/symtab_findorderedbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_sortbyname.o  ./core/osal/src/dl/libs/libc/queue/dq_addafter.o ./core/osal/src/dl/libs/libc/queue/dq_addbefore.o ./core/osal/src/dl/libs/libc/queue/dq_addfirst.o ./core/osal/src/dl/libs/libc/queue/dq_addlast.o ./core/osal/src/dl/libs/libc/queue/dq_cat.o ./core/osal/src/dl/libs/libc/queue/dq_count.o ./core/osal/src/dl/libs/libc/queue/dq_rem.o ./core/osal/src/dl/libs/libc/queue/dq_remfirst.o ./core/osal/src/dl/libs/libc/queue/dq_remlast.o ./core/osal/src/dl/libs/libc/queue/sq_addafter.o ./core/osal/src/dl/libs/libc/queue/sq_addfirst.o ./core/osal/src/dl/libs/libc/queue/sq_addlast.o ./core/osal/src/dl/libs/libc/queue/sq_cat.o ./core/osal/src/dl/libs/libc/queue/sq_count.o ./core/osal/src/dl/libs/libc/queue/sq_rem.o ./core/osal/src/dl/libs/libc/queue/sq_remafter.o ./core/osal/src/dl/libs/libc/queue/sq_remfirst.o ./core/osal/src/dl/libs/libc/queue/sq_remlast.o  ./core/osal/src/dl/libs/libc/machine/arm/armv7-r/arch_elf.o  ./core/osal/src/dl/binfmt/libelf/libelf_addrenv.o ./core/osal/src/dl/binfmt/libelf/libelf_bind.o ./core/osal/src/dl/binfmt/libelf/libelf_ctors.o ./core/osal/src/dl/binfmt/libelf/libelf_dtors.o ./core/osal/src/dl/binfmt/libelf/libelf_init.o ./core/osal/src/dl/binfmt/libelf/libelf_iobuffer.o ./core/osal/src/dl/binfmt/libelf/libelf_load.o ./core/osal/src/dl/binfmt/libelf/libelf_read.o ./core/osal/src/dl/binfmt/libelf/libelf_sections.o ./core/osal/src/dl/binfmt/libelf/libelf_symbols.o ./core/osal/src/dl/binfmt/libelf/libelf_uninit.o ./core/osal/src/dl/binfmt/libelf/libelf_unload.o ./core/osal/src/dl/binfmt/libelf/libelf_verify.o  ./core/osal/src/dl/binfmt/binfmt_globals.o ./core/osal/src/dl/binfmt/binfmt_initialize.o ./core/osal/src/dl/binfmt/binfmt_loadmodule.o ./core/osal/src/dl/binfmt/binfmt_register.o ./core/osal/src/dl/binfmt/binfmt_unregister.o ./core/osal/src/dl/binfmt/elf.o  ./core/osal/src/dl/untar.o  ./core/osal/src/osapi.o ./core/osal/src/osfileapi.o ./core/osal/src/osfilesys.o ./core/osal/src/osloader.o ./core/osal/src/osnetwork.o ./core/osal/src/osrtm.o ./core/osal/src/ostimer.o   -Wl,--start-group,-lxil,-lfreertos,-lgcc,-lc,-lstdc++,--end-group -Wl,--start-group,-lxil,-lmetal,-lgcc,-lc,--end-group -Wl,--start-group,-lxil,-lmetal,-lopen_amp,-lgcc,-lc,--end-group -Wl,--start-group,-lxilffs,-lxil,-lgcc,-lc,--end-group -lxilflash -Wl,--start-group,-lxilfpga,-lxil,-lxilsecure,-lgcc,-lc,--end-group -Wl,--start-group,-lxilpm,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilsecure,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilskey,-lxil,-lgcc,-lc,--end-group
+./core/osal/src/dl/binfmt/libelf/libelf_bind.o: In function `elf_bind':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:439: undefined reference to `elf_symname'
+collect2: error: ld returned 1 exit status
+make: *** [loader-test.elf] Error 1
+makefile:60: recipe for target 'loader-test.elf' failed
+22:53:56 **** Auto Build of configuration Debug for project loader-test ****
+make all 
+Building file: /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_symbols.c
+Invoking: ARM R5 g++ compiler
+armr5-none-eabi-gcc -DARMR5 -Wall -O0 -g3 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -I"/home/mbenson/git/airliner/core/osal/inc" -I"/home/mbenson/git/airliner/core/osal/ut_assert/inc" -I"/home/mbenson/git/airliner/config/zynqmp/inc" -I"/home/mbenson/git/airliner/config/shared/inc" -I/home/mbenson/git/airliner/core/osal/src/os/freertos -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/libs/libxx -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/libs/libc -c -fmessage-length=0 -MT"core/osal/src/dl/binfmt/libelf/libelf_symbols.o" -mcpu=cortex-r5 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -MMD -MP -MF"core/osal/src/dl/binfmt/libelf/libelf_symbols.d" -MT"core/osal/src/dl/binfmt/libelf/libelf_symbols.o" -o "core/osal/src/dl/binfmt/libelf/libelf_symbols.o" "/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_symbols.c"
+Finished building: /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_symbols.c
+ 
+Building target: loader-test.elf
+Invoking: ARM R5 g++ linker
+armr5-none-eabi-gcc -Wl,-T -Wl,../../../../../core/psp/fsw/zynqmp_r5/src/lscript.ld -L../../freertos10_r5_0_bsp/psu_cortexr5_0/lib -o "loader-test.elf"  ./core/psp/ut_bsp/bsp_ut.o  ./core/psp/src/cfe_psp_voltab.o  ./core/osal/ut_src/CFS_LIB.o ./core/osal/ut_src/loader-test.o ./core/osal/ut_src/testDir1.o  ./core/osal/ut_assert/src/utassert.o ./core/osal/ut_assert/src/utlist.o ./core/osal/ut_assert/src/utstubs.o ./core/osal/ut_assert/src/uttest.o ./core/osal/ut_assert/src/uttools.o  ./core/osal/src/dl/libs/libc/symtab/symtab_findbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_findbyvalue.o ./core/osal/src/dl/libs/libc/symtab/symtab_findorderedbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_sortbyname.o  ./core/osal/src/dl/libs/libc/queue/dq_addafter.o ./core/osal/src/dl/libs/libc/queue/dq_addbefore.o ./core/osal/src/dl/libs/libc/queue/dq_addfirst.o ./core/osal/src/dl/libs/libc/queue/dq_addlast.o ./core/osal/src/dl/libs/libc/queue/dq_cat.o ./core/osal/src/dl/libs/libc/queue/dq_count.o ./core/osal/src/dl/libs/libc/queue/dq_rem.o ./core/osal/src/dl/libs/libc/queue/dq_remfirst.o ./core/osal/src/dl/libs/libc/queue/dq_remlast.o ./core/osal/src/dl/libs/libc/queue/sq_addafter.o ./core/osal/src/dl/libs/libc/queue/sq_addfirst.o ./core/osal/src/dl/libs/libc/queue/sq_addlast.o ./core/osal/src/dl/libs/libc/queue/sq_cat.o ./core/osal/src/dl/libs/libc/queue/sq_count.o ./core/osal/src/dl/libs/libc/queue/sq_rem.o ./core/osal/src/dl/libs/libc/queue/sq_remafter.o ./core/osal/src/dl/libs/libc/queue/sq_remfirst.o ./core/osal/src/dl/libs/libc/queue/sq_remlast.o  ./core/osal/src/dl/libs/libc/machine/arm/armv7-r/arch_elf.o  ./core/osal/src/dl/binfmt/libelf/libelf_addrenv.o ./core/osal/src/dl/binfmt/libelf/libelf_bind.o ./core/osal/src/dl/binfmt/libelf/libelf_ctors.o ./core/osal/src/dl/binfmt/libelf/libelf_dtors.o ./core/osal/src/dl/binfmt/libelf/libelf_init.o ./core/osal/src/dl/binfmt/libelf/libelf_iobuffer.o ./core/osal/src/dl/binfmt/libelf/libelf_load.o ./core/osal/src/dl/binfmt/libelf/libelf_read.o ./core/osal/src/dl/binfmt/libelf/libelf_sections.o ./core/osal/src/dl/binfmt/libelf/libelf_symbols.o ./core/osal/src/dl/binfmt/libelf/libelf_uninit.o ./core/osal/src/dl/binfmt/libelf/libelf_unload.o ./core/osal/src/dl/binfmt/libelf/libelf_verify.o  ./core/osal/src/dl/binfmt/binfmt_globals.o ./core/osal/src/dl/binfmt/binfmt_initialize.o ./core/osal/src/dl/binfmt/binfmt_loadmodule.o ./core/osal/src/dl/binfmt/binfmt_register.o ./core/osal/src/dl/binfmt/binfmt_unregister.o ./core/osal/src/dl/binfmt/elf.o  ./core/osal/src/dl/untar.o  ./core/osal/src/osapi.o ./core/osal/src/osfileapi.o ./core/osal/src/osfilesys.o ./core/osal/src/osloader.o ./core/osal/src/osnetwork.o ./core/osal/src/osrtm.o ./core/osal/src/ostimer.o   -Wl,--start-group,-lxil,-lfreertos,-lgcc,-lc,-lstdc++,--end-group -Wl,--start-group,-lxil,-lmetal,-lgcc,-lc,--end-group -Wl,--start-group,-lxil,-lmetal,-lopen_amp,-lgcc,-lc,--end-group -Wl,--start-group,-lxilffs,-lxil,-lgcc,-lc,--end-group -lxilflash -Wl,--start-group,-lxilfpga,-lxil,-lxilsecure,-lgcc,-lc,--end-group -Wl,--start-group,-lxilpm,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilsecure,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilskey,-lxil,-lgcc,-lc,--end-group
+Finished building target: loader-test.elf
+ 
+Invoking: ARM R5 Print Size
+armr5-none-eabi-size loader-test.elf  |tee "loader-test.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 260576	  27652	1725744	2013972	 1ebb14	loader-test.elf
+Finished building: loader-test.elf.size
+ 
+22:54:06 **** Incremental Build of configuration Debug for project loader-test ****
+make all 
+make: Nothing to be done for 'all'.
+23:04:01 **** Auto Build of configuration Debug for project loader-test ****
+make all 
+Building file: /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c
+Invoking: ARM R5 g++ compiler
+armr5-none-eabi-gcc -DARMR5 -Wall -O0 -g3 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -I"/home/mbenson/git/airliner/core/osal/inc" -I"/home/mbenson/git/airliner/core/osal/ut_assert/inc" -I"/home/mbenson/git/airliner/config/zynqmp/inc" -I"/home/mbenson/git/airliner/config/shared/inc" -I/home/mbenson/git/airliner/core/osal/src/os/freertos -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/libs/libxx -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/libs/libc -c -fmessage-length=0 -MT"core/osal/src/dl/binfmt/libelf/libelf_bind.o" -mcpu=cortex-r5 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -MMD -MP -MF"core/osal/src/dl/binfmt/libelf/libelf_bind.d" -MT"core/osal/src/dl/binfmt/libelf/libelf_bind.o" -o "core/osal/src/dl/binfmt/libelf/libelf_bind.o" "/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c"
+In file included from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:49:0:
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c: In function 'elf_relocate':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:5:33: warning: implicit declaration of function 'pvPortMalloc'; did you mean 'realloc'? [-Wimplicit-function-declaration]
+ #define kmm_malloc(s)           pvPortMalloc(s)
+                                 ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:166:22: note: in expansion of macro 'kmm_malloc'
+   rels = (Elf32_Rel*)kmm_malloc(size);
+                      ^~~~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:7:33: warning: implicit declaration of function 'vPortFree' [-Wimplicit-function-declaration]
+ #define kmm_free(s)             vPortFree(s)
+                                 ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:253:15: note: in expansion of macro 'kmm_free'
+               kmm_free(cache);
+               ^~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c: In function 'elf_bind':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:439:19: warning: implicit declaration of function 'elf_symname'; did you mean 'elf_symvalue'? [-Wimplicit-function-declaration]
+          status = elf_symname(loadinfo, &sym);
+                   ^~~~~~~~~~~
+                   elf_symvalue
+In file included from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:49:0:
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:441:73: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
+             exports[*nexports].sym_name = (Elf32_Rel*)kmm_malloc(strlen(loadinfo->iobuffer));
+                                                                         ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:5:46: note: in definition of macro 'kmm_malloc'
+ #define kmm_malloc(s)           pvPortMalloc(s)
+                                              ^
+In file included from /opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:10:0,
+                 from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:43:
+/opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:37:9: note: expected 'const char *' but argument is of type 'uint8_t * {aka unsigned char *}'
+ size_t  _EXFUN(strlen,(const char *));
+         ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:441:41: warning: assignment from incompatible pointer type [-Wincompatible-pointer-types]
+             exports[*nexports].sym_name = (Elf32_Rel*)kmm_malloc(strlen(loadinfo->iobuffer));
+                                         ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:448:42: warning: assignment makes pointer from integer without a cast [-Wint-conversion]
+             exports[*nexports].sym_value = sym.st_value;
+                                          ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:450:13: warning: value computed is not used [-Wunused-value]
+             *nexports++;
+             ^~~~~~~~~~~
+Finished building: /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c
+ 
+Building target: loader-test.elf
+Invoking: ARM R5 g++ linker
+armr5-none-eabi-gcc -Wl,-T -Wl,../../../../../core/psp/fsw/zynqmp_r5/src/lscript.ld -L../../freertos10_r5_0_bsp/psu_cortexr5_0/lib -o "loader-test.elf"  ./core/psp/ut_bsp/bsp_ut.o  ./core/psp/src/cfe_psp_voltab.o  ./core/osal/ut_src/CFS_LIB.o ./core/osal/ut_src/loader-test.o ./core/osal/ut_src/testDir1.o  ./core/osal/ut_assert/src/utassert.o ./core/osal/ut_assert/src/utlist.o ./core/osal/ut_assert/src/utstubs.o ./core/osal/ut_assert/src/uttest.o ./core/osal/ut_assert/src/uttools.o  ./core/osal/src/dl/libs/libc/symtab/symtab_findbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_findbyvalue.o ./core/osal/src/dl/libs/libc/symtab/symtab_findorderedbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_sortbyname.o  ./core/osal/src/dl/libs/libc/queue/dq_addafter.o ./core/osal/src/dl/libs/libc/queue/dq_addbefore.o ./core/osal/src/dl/libs/libc/queue/dq_addfirst.o ./core/osal/src/dl/libs/libc/queue/dq_addlast.o ./core/osal/src/dl/libs/libc/queue/dq_cat.o ./core/osal/src/dl/libs/libc/queue/dq_count.o ./core/osal/src/dl/libs/libc/queue/dq_rem.o ./core/osal/src/dl/libs/libc/queue/dq_remfirst.o ./core/osal/src/dl/libs/libc/queue/dq_remlast.o ./core/osal/src/dl/libs/libc/queue/sq_addafter.o ./core/osal/src/dl/libs/libc/queue/sq_addfirst.o ./core/osal/src/dl/libs/libc/queue/sq_addlast.o ./core/osal/src/dl/libs/libc/queue/sq_cat.o ./core/osal/src/dl/libs/libc/queue/sq_count.o ./core/osal/src/dl/libs/libc/queue/sq_rem.o ./core/osal/src/dl/libs/libc/queue/sq_remafter.o ./core/osal/src/dl/libs/libc/queue/sq_remfirst.o ./core/osal/src/dl/libs/libc/queue/sq_remlast.o  ./core/osal/src/dl/libs/libc/machine/arm/armv7-r/arch_elf.o  ./core/osal/src/dl/binfmt/libelf/libelf_addrenv.o ./core/osal/src/dl/binfmt/libelf/libelf_bind.o ./core/osal/src/dl/binfmt/libelf/libelf_ctors.o ./core/osal/src/dl/binfmt/libelf/libelf_dtors.o ./core/osal/src/dl/binfmt/libelf/libelf_init.o ./core/osal/src/dl/binfmt/libelf/libelf_iobuffer.o ./core/osal/src/dl/binfmt/libelf/libelf_load.o ./core/osal/src/dl/binfmt/libelf/libelf_read.o ./core/osal/src/dl/binfmt/libelf/libelf_sections.o ./core/osal/src/dl/binfmt/libelf/libelf_symbols.o ./core/osal/src/dl/binfmt/libelf/libelf_uninit.o ./core/osal/src/dl/binfmt/libelf/libelf_unload.o ./core/osal/src/dl/binfmt/libelf/libelf_verify.o  ./core/osal/src/dl/binfmt/binfmt_globals.o ./core/osal/src/dl/binfmt/binfmt_initialize.o ./core/osal/src/dl/binfmt/binfmt_loadmodule.o ./core/osal/src/dl/binfmt/binfmt_register.o ./core/osal/src/dl/binfmt/binfmt_unregister.o ./core/osal/src/dl/binfmt/elf.o  ./core/osal/src/dl/untar.o  ./core/osal/src/osapi.o ./core/osal/src/osfileapi.o ./core/osal/src/osfilesys.o ./core/osal/src/osloader.o ./core/osal/src/osnetwork.o ./core/osal/src/osrtm.o ./core/osal/src/ostimer.o   -Wl,--start-group,-lxil,-lfreertos,-lgcc,-lc,-lstdc++,--end-group -Wl,--start-group,-lxil,-lmetal,-lgcc,-lc,--end-group -Wl,--start-group,-lxil,-lmetal,-lopen_amp,-lgcc,-lc,--end-group -Wl,--start-group,-lxilffs,-lxil,-lgcc,-lc,--end-group -lxilflash -Wl,--start-group,-lxilfpga,-lxil,-lxilsecure,-lgcc,-lc,--end-group -Wl,--start-group,-lxilpm,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilsecure,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilskey,-lxil,-lgcc,-lc,--end-group
+Finished building target: loader-test.elf
+ 
+Invoking: ARM R5 Print Size
+armr5-none-eabi-size loader-test.elf  |tee "loader-test.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 260704	  27652	1725744	2014100	 1ebb94	loader-test.elf
+Finished building: loader-test.elf.size
+ 
+23:04:08 **** Incremental Build of configuration Debug for project loader-test ****
+make all 
+make: Nothing to be done for 'all'.
+23:05:52 **** Auto Build of configuration Debug for project loader-test ****
+make all 
+Building file: /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c
+Invoking: ARM R5 g++ compiler
+armr5-none-eabi-gcc -DARMR5 -Wall -O0 -g3 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -I"/home/mbenson/git/airliner/core/osal/inc" -I"/home/mbenson/git/airliner/core/osal/ut_assert/inc" -I"/home/mbenson/git/airliner/config/zynqmp/inc" -I"/home/mbenson/git/airliner/config/shared/inc" -I/home/mbenson/git/airliner/core/osal/src/os/freertos -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/libs/libxx -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/libs/libc -c -fmessage-length=0 -MT"core/osal/src/dl/binfmt/libelf/libelf_bind.o" -mcpu=cortex-r5 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -MMD -MP -MF"core/osal/src/dl/binfmt/libelf/libelf_bind.d" -MT"core/osal/src/dl/binfmt/libelf/libelf_bind.o" -o "core/osal/src/dl/binfmt/libelf/libelf_bind.o" "/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c"
+In file included from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:49:0:
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c: In function 'elf_relocate':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:5:33: warning: implicit declaration of function 'pvPortMalloc'; did you mean 'realloc'? [-Wimplicit-function-declaration]
+ #define kmm_malloc(s)           pvPortMalloc(s)
+                                 ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:166:22: note: in expansion of macro 'kmm_malloc'
+   rels = (Elf32_Rel*)kmm_malloc(size);
+                      ^~~~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:7:33: warning: implicit declaration of function 'vPortFree' [-Wimplicit-function-declaration]
+ #define kmm_free(s)             vPortFree(s)
+                                 ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:253:15: note: in expansion of macro 'kmm_free'
+               kmm_free(cache);
+               ^~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c: In function 'elf_bind':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:439:19: warning: implicit declaration of function 'elf_symname'; did you mean 'elf_symvalue'? [-Wimplicit-function-declaration]
+          status = elf_symname(loadinfo, &sym);
+                   ^~~~~~~~~~~
+                   elf_symvalue
+In file included from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:49:0:
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:441:73: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
+             exports[*nexports].sym_name = (Elf32_Rel*)kmm_malloc(strlen(loadinfo->iobuffer));
+                                                                         ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:5:46: note: in definition of macro 'kmm_malloc'
+ #define kmm_malloc(s)           pvPortMalloc(s)
+                                              ^
+In file included from /opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:10:0,
+                 from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:43:
+/opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:37:9: note: expected 'const char *' but argument is of type 'uint8_t * {aka unsigned char *}'
+ size_t  _EXFUN(strlen,(const char *));
+         ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:441:41: warning: assignment from incompatible pointer type [-Wincompatible-pointer-types]
+             exports[*nexports].sym_name = (Elf32_Rel*)kmm_malloc(strlen(loadinfo->iobuffer));
+                                         ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:448:49: warning: pointer targets in passing argument 2 of 'strcpy' differ in signedness [-Wpointer-sign]
+             strcpy(exports[*nexports].sym_name, loadinfo->iobuffer);
+                                                 ^~~~~~~~
+In file included from /opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:10:0,
+                 from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:43:
+/opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:34:8: note: expected 'const char * restrict' but argument is of type 'uint8_t * {aka unsigned char *}'
+ char  *_EXFUN(strcpy,(char *__restrict, const char *__restrict));
+        ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:450:42: warning: assignment makes pointer from integer without a cast [-Wint-conversion]
+             exports[*nexports].sym_value = sym.st_value;
+                                          ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:452:13: warning: value computed is not used [-Wunused-value]
+             *nexports++;
+             ^~~~~~~~~~~
+Finished building: /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c
+ 
+Building target: loader-test.elf
+Invoking: ARM R5 g++ linker
+armr5-none-eabi-gcc -Wl,-T -Wl,../../../../../core/psp/fsw/zynqmp_r5/src/lscript.ld -L../../freertos10_r5_0_bsp/psu_cortexr5_0/lib -o "loader-test.elf"  ./core/psp/ut_bsp/bsp_ut.o  ./core/psp/src/cfe_psp_voltab.o  ./core/osal/ut_src/CFS_LIB.o ./core/osal/ut_src/loader-test.o ./core/osal/ut_src/testDir1.o  ./core/osal/ut_assert/src/utassert.o ./core/osal/ut_assert/src/utlist.o ./core/osal/ut_assert/src/utstubs.o ./core/osal/ut_assert/src/uttest.o ./core/osal/ut_assert/src/uttools.o  ./core/osal/src/dl/libs/libc/symtab/symtab_findbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_findbyvalue.o ./core/osal/src/dl/libs/libc/symtab/symtab_findorderedbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_sortbyname.o  ./core/osal/src/dl/libs/libc/queue/dq_addafter.o ./core/osal/src/dl/libs/libc/queue/dq_addbefore.o ./core/osal/src/dl/libs/libc/queue/dq_addfirst.o ./core/osal/src/dl/libs/libc/queue/dq_addlast.o ./core/osal/src/dl/libs/libc/queue/dq_cat.o ./core/osal/src/dl/libs/libc/queue/dq_count.o ./core/osal/src/dl/libs/libc/queue/dq_rem.o ./core/osal/src/dl/libs/libc/queue/dq_remfirst.o ./core/osal/src/dl/libs/libc/queue/dq_remlast.o ./core/osal/src/dl/libs/libc/queue/sq_addafter.o ./core/osal/src/dl/libs/libc/queue/sq_addfirst.o ./core/osal/src/dl/libs/libc/queue/sq_addlast.o ./core/osal/src/dl/libs/libc/queue/sq_cat.o ./core/osal/src/dl/libs/libc/queue/sq_count.o ./core/osal/src/dl/libs/libc/queue/sq_rem.o ./core/osal/src/dl/libs/libc/queue/sq_remafter.o ./core/osal/src/dl/libs/libc/queue/sq_remfirst.o ./core/osal/src/dl/libs/libc/queue/sq_remlast.o  ./core/osal/src/dl/libs/libc/machine/arm/armv7-r/arch_elf.o  ./core/osal/src/dl/binfmt/libelf/libelf_addrenv.o ./core/osal/src/dl/binfmt/libelf/libelf_bind.o ./core/osal/src/dl/binfmt/libelf/libelf_ctors.o ./core/osal/src/dl/binfmt/libelf/libelf_dtors.o ./core/osal/src/dl/binfmt/libelf/libelf_init.o ./core/osal/src/dl/binfmt/libelf/libelf_iobuffer.o ./core/osal/src/dl/binfmt/libelf/libelf_load.o ./core/osal/src/dl/binfmt/libelf/libelf_read.o ./core/osal/src/dl/binfmt/libelf/libelf_sections.o ./core/osal/src/dl/binfmt/libelf/libelf_symbols.o ./core/osal/src/dl/binfmt/libelf/libelf_uninit.o ./core/osal/src/dl/binfmt/libelf/libelf_unload.o ./core/osal/src/dl/binfmt/libelf/libelf_verify.o  ./core/osal/src/dl/binfmt/binfmt_globals.o ./core/osal/src/dl/binfmt/binfmt_initialize.o ./core/osal/src/dl/binfmt/binfmt_loadmodule.o ./core/osal/src/dl/binfmt/binfmt_register.o ./core/osal/src/dl/binfmt/binfmt_unregister.o ./core/osal/src/dl/binfmt/elf.o  ./core/osal/src/dl/untar.o  ./core/osal/src/osapi.o ./core/osal/src/osfileapi.o ./core/osal/src/osfilesys.o ./core/osal/src/osloader.o ./core/osal/src/osnetwork.o ./core/osal/src/osrtm.o ./core/osal/src/ostimer.o   -Wl,--start-group,-lxil,-lfreertos,-lgcc,-lc,-lstdc++,--end-group -Wl,--start-group,-lxil,-lmetal,-lgcc,-lc,--end-group -Wl,--start-group,-lxil,-lmetal,-lopen_amp,-lgcc,-lc,--end-group -Wl,--start-group,-lxilffs,-lxil,-lgcc,-lc,--end-group -lxilflash -Wl,--start-group,-lxilfpga,-lxil,-lxilsecure,-lgcc,-lc,--end-group -Wl,--start-group,-lxilpm,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilsecure,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilskey,-lxil,-lgcc,-lc,--end-group
+Finished building target: loader-test.elf
+ 
+Invoking: ARM R5 Print Size
+armr5-none-eabi-size loader-test.elf  |tee "loader-test.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 260752	  27652	1725744	2014148	 1ebbc4	loader-test.elf
+Finished building: loader-test.elf.size
+ 
+23:05:58 **** Auto Build of configuration Debug for project loader-test ****
+make all 
+Building file: /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c
+Invoking: ARM R5 g++ compiler
+armr5-none-eabi-gcc -DARMR5 -Wall -O0 -g3 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -I"/home/mbenson/git/airliner/core/osal/inc" -I"/home/mbenson/git/airliner/core/osal/ut_assert/inc" -I"/home/mbenson/git/airliner/config/zynqmp/inc" -I"/home/mbenson/git/airliner/config/shared/inc" -I/home/mbenson/git/airliner/core/osal/src/os/freertos -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/libs/libxx -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/libs/libc -c -fmessage-length=0 -MT"core/osal/src/dl/binfmt/libelf/libelf_bind.o" -mcpu=cortex-r5 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -MMD -MP -MF"core/osal/src/dl/binfmt/libelf/libelf_bind.d" -MT"core/osal/src/dl/binfmt/libelf/libelf_bind.o" -o "core/osal/src/dl/binfmt/libelf/libelf_bind.o" "/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c"
+In file included from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:49:0:
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c: In function 'elf_relocate':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:5:33: warning: implicit declaration of function 'pvPortMalloc'; did you mean 'realloc'? [-Wimplicit-function-declaration]
+ #define kmm_malloc(s)           pvPortMalloc(s)
+                                 ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:166:22: note: in expansion of macro 'kmm_malloc'
+   rels = (Elf32_Rel*)kmm_malloc(size);
+                      ^~~~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:7:33: warning: implicit declaration of function 'vPortFree' [-Wimplicit-function-declaration]
+ #define kmm_free(s)             vPortFree(s)
+                                 ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:253:15: note: in expansion of macro 'kmm_free'
+               kmm_free(cache);
+               ^~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c: In function 'elf_bind':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:439:19: warning: implicit declaration of function 'elf_symname'; did you mean 'elf_symvalue'? [-Wimplicit-function-declaration]
+          status = elf_symname(loadinfo, &sym);
+                   ^~~~~~~~~~~
+                   elf_symvalue
+In file included from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:49:0:
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:441:73: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
+             exports[*nexports].sym_name = (Elf32_Rel*)kmm_malloc(strlen(loadinfo->iobuffer));
+                                                                         ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:5:46: note: in definition of macro 'kmm_malloc'
+ #define kmm_malloc(s)           pvPortMalloc(s)
+                                              ^
+In file included from /opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:10:0,
+                 from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:43:
+/opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:37:9: note: expected 'const char *' but argument is of type 'uint8_t * {aka unsigned char *}'
+ size_t  _EXFUN(strlen,(const char *));
+         ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:441:41: warning: assignment from incompatible pointer type [-Wincompatible-pointer-types]
+             exports[*nexports].sym_name = (Elf32_Rel*)kmm_malloc(strlen(loadinfo->iobuffer));
+                                         ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:448:49: warning: pointer targets in passing argument 2 of 'strcpy' differ in signedness [-Wpointer-sign]
+             strcpy(exports[*nexports].sym_name, loadinfo->iobuffer);
+                                                 ^~~~~~~~
+In file included from /opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:10:0,
+                 from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:43:
+/opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:34:8: note: expected 'const char * restrict' but argument is of type 'uint8_t * {aka unsigned char *}'
+ char  *_EXFUN(strcpy,(char *__restrict, const char *__restrict));
+        ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:449:42: warning: assignment makes pointer from integer without a cast [-Wint-conversion]
+             exports[*nexports].sym_value = sym.st_value;
+                                          ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:451:13: warning: value computed is not used [-Wunused-value]
+             *nexports++;
+             ^~~~~~~~~~~
+Finished building: /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c
+ 
+Building target: loader-test.elf
+Invoking: ARM R5 g++ linker
+armr5-none-eabi-gcc -Wl,-T -Wl,../../../../../core/psp/fsw/zynqmp_r5/src/lscript.ld -L../../freertos10_r5_0_bsp/psu_cortexr5_0/lib -o "loader-test.elf"  ./core/psp/ut_bsp/bsp_ut.o  ./core/psp/src/cfe_psp_voltab.o  ./core/osal/ut_src/CFS_LIB.o ./core/osal/ut_src/loader-test.o ./core/osal/ut_src/testDir1.o  ./core/osal/ut_assert/src/utassert.o ./core/osal/ut_assert/src/utlist.o ./core/osal/ut_assert/src/utstubs.o ./core/osal/ut_assert/src/uttest.o ./core/osal/ut_assert/src/uttools.o  ./core/osal/src/dl/libs/libc/symtab/symtab_findbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_findbyvalue.o ./core/osal/src/dl/libs/libc/symtab/symtab_findorderedbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_sortbyname.o  ./core/osal/src/dl/libs/libc/queue/dq_addafter.o ./core/osal/src/dl/libs/libc/queue/dq_addbefore.o ./core/osal/src/dl/libs/libc/queue/dq_addfirst.o ./core/osal/src/dl/libs/libc/queue/dq_addlast.o ./core/osal/src/dl/libs/libc/queue/dq_cat.o ./core/osal/src/dl/libs/libc/queue/dq_count.o ./core/osal/src/dl/libs/libc/queue/dq_rem.o ./core/osal/src/dl/libs/libc/queue/dq_remfirst.o ./core/osal/src/dl/libs/libc/queue/dq_remlast.o ./core/osal/src/dl/libs/libc/queue/sq_addafter.o ./core/osal/src/dl/libs/libc/queue/sq_addfirst.o ./core/osal/src/dl/libs/libc/queue/sq_addlast.o ./core/osal/src/dl/libs/libc/queue/sq_cat.o ./core/osal/src/dl/libs/libc/queue/sq_count.o ./core/osal/src/dl/libs/libc/queue/sq_rem.o ./core/osal/src/dl/libs/libc/queue/sq_remafter.o ./core/osal/src/dl/libs/libc/queue/sq_remfirst.o ./core/osal/src/dl/libs/libc/queue/sq_remlast.o  ./core/osal/src/dl/libs/libc/machine/arm/armv7-r/arch_elf.o  ./core/osal/src/dl/binfmt/libelf/libelf_addrenv.o ./core/osal/src/dl/binfmt/libelf/libelf_bind.o ./core/osal/src/dl/binfmt/libelf/libelf_ctors.o ./core/osal/src/dl/binfmt/libelf/libelf_dtors.o ./core/osal/src/dl/binfmt/libelf/libelf_init.o ./core/osal/src/dl/binfmt/libelf/libelf_iobuffer.o ./core/osal/src/dl/binfmt/libelf/libelf_load.o ./core/osal/src/dl/binfmt/libelf/libelf_read.o ./core/osal/src/dl/binfmt/libelf/libelf_sections.o ./core/osal/src/dl/binfmt/libelf/libelf_symbols.o ./core/osal/src/dl/binfmt/libelf/libelf_uninit.o ./core/osal/src/dl/binfmt/libelf/libelf_unload.o ./core/osal/src/dl/binfmt/libelf/libelf_verify.o  ./core/osal/src/dl/binfmt/binfmt_globals.o ./core/osal/src/dl/binfmt/binfmt_initialize.o ./core/osal/src/dl/binfmt/binfmt_loadmodule.o ./core/osal/src/dl/binfmt/binfmt_register.o ./core/osal/src/dl/binfmt/binfmt_unregister.o ./core/osal/src/dl/binfmt/elf.o  ./core/osal/src/dl/untar.o  ./core/osal/src/osapi.o ./core/osal/src/osfileapi.o ./core/osal/src/osfilesys.o ./core/osal/src/osloader.o ./core/osal/src/osnetwork.o ./core/osal/src/osrtm.o ./core/osal/src/ostimer.o   -Wl,--start-group,-lxil,-lfreertos,-lgcc,-lc,-lstdc++,--end-group -Wl,--start-group,-lxil,-lmetal,-lgcc,-lc,--end-group -Wl,--start-group,-lxil,-lmetal,-lopen_amp,-lgcc,-lc,--end-group -Wl,--start-group,-lxilffs,-lxil,-lgcc,-lc,--end-group -lxilflash -Wl,--start-group,-lxilfpga,-lxil,-lxilsecure,-lgcc,-lc,--end-group -Wl,--start-group,-lxilpm,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilsecure,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilskey,-lxil,-lgcc,-lc,--end-group
+Finished building target: loader-test.elf
+ 
+Invoking: ARM R5 Print Size
+armr5-none-eabi-size loader-test.elf  |tee "loader-test.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 260752	  27652	1725744	2014148	 1ebbc4	loader-test.elf
+Finished building: loader-test.elf.size
+ 
+23:06:06 **** Incremental Build of configuration Debug for project loader-test ****
+make all 
+make: Nothing to be done for 'all'.
+23:09:58 **** Incremental Build of configuration Debug for project loader-test ****
+make all 
+make: Nothing to be done for 'all'.
+23:13:44 **** Auto Build of configuration Debug for project loader-test ****
+make all 
+Building file: /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c
+Invoking: ARM R5 g++ compiler
+armr5-none-eabi-gcc -DARMR5 -Wall -O0 -g3 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -I"/home/mbenson/git/airliner/core/osal/inc" -I"/home/mbenson/git/airliner/core/osal/ut_assert/inc" -I"/home/mbenson/git/airliner/config/zynqmp/inc" -I"/home/mbenson/git/airliner/config/shared/inc" -I/home/mbenson/git/airliner/core/osal/src/os/freertos -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/libs/libxx -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/libs/libc -c -fmessage-length=0 -MT"core/osal/src/dl/binfmt/libelf/libelf_bind.o" -mcpu=cortex-r5 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -MMD -MP -MF"core/osal/src/dl/binfmt/libelf/libelf_bind.d" -MT"core/osal/src/dl/binfmt/libelf/libelf_bind.o" -o "core/osal/src/dl/binfmt/libelf/libelf_bind.o" "/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c"
+In file included from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:49:0:
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c: In function 'elf_relocate':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:5:33: warning: implicit declaration of function 'pvPortMalloc'; did you mean 'realloc'? [-Wimplicit-function-declaration]
+ #define kmm_malloc(s)           pvPortMalloc(s)
+                                 ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:166:22: note: in expansion of macro 'kmm_malloc'
+   rels = (Elf32_Rel*)kmm_malloc(size);
+                      ^~~~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:7:33: warning: implicit declaration of function 'vPortFree' [-Wimplicit-function-declaration]
+ #define kmm_free(s)             vPortFree(s)
+                                 ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:253:15: note: in expansion of macro 'kmm_free'
+               kmm_free(cache);
+               ^~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c: In function 'elf_bind':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:439:19: warning: implicit declaration of function 'elf_symname'; did you mean 'elf_symvalue'? [-Wimplicit-function-declaration]
+          status = elf_symname(loadinfo, &sym);
+                   ^~~~~~~~~~~
+                   elf_symvalue
+In file included from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:49:0:
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:443:77: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
+                 exports[*nexports].sym_name = (Elf32_Rel*)kmm_malloc(strlen(loadinfo->iobuffer));
+                                                                             ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:5:46: note: in definition of macro 'kmm_malloc'
+ #define kmm_malloc(s)           pvPortMalloc(s)
+                                              ^
+In file included from /opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:10:0,
+                 from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:43:
+/opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:37:9: note: expected 'const char *' but argument is of type 'uint8_t * {aka unsigned char *}'
+ size_t  _EXFUN(strlen,(const char *));
+         ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:443:45: warning: assignment from incompatible pointer type [-Wincompatible-pointer-types]
+                 exports[*nexports].sym_name = (Elf32_Rel*)kmm_malloc(strlen(loadinfo->iobuffer));
+                                             ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:450:53: warning: pointer targets in passing argument 2 of 'strcpy' differ in signedness [-Wpointer-sign]
+                 strcpy(exports[*nexports].sym_name, loadinfo->iobuffer);
+                                                     ^~~~~~~~
+In file included from /opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:10:0,
+                 from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:43:
+/opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:34:8: note: expected 'const char * restrict' but argument is of type 'uint8_t * {aka unsigned char *}'
+ char  *_EXFUN(strcpy,(char *__restrict, const char *__restrict));
+        ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:451:46: warning: assignment makes pointer from integer without a cast [-Wint-conversion]
+                 exports[*nexports].sym_value = sym.st_value;
+                                              ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:453:17: warning: value computed is not used [-Wunused-value]
+                 *nexports++;
+                 ^~~~~~~~~~~
+Finished building: /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c
+ 
+Building target: loader-test.elf
+Invoking: ARM R5 g++ linker
+armr5-none-eabi-gcc -Wl,-T -Wl,../../../../../core/psp/fsw/zynqmp_r5/src/lscript.ld -L../../freertos10_r5_0_bsp/psu_cortexr5_0/lib -o "loader-test.elf"  ./core/psp/ut_bsp/bsp_ut.o  ./core/psp/src/cfe_psp_voltab.o  ./core/osal/ut_src/CFS_LIB.o ./core/osal/ut_src/loader-test.o ./core/osal/ut_src/testDir1.o  ./core/osal/ut_assert/src/utassert.o ./core/osal/ut_assert/src/utlist.o ./core/osal/ut_assert/src/utstubs.o ./core/osal/ut_assert/src/uttest.o ./core/osal/ut_assert/src/uttools.o  ./core/osal/src/dl/libs/libc/symtab/symtab_findbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_findbyvalue.o ./core/osal/src/dl/libs/libc/symtab/symtab_findorderedbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_sortbyname.o  ./core/osal/src/dl/libs/libc/queue/dq_addafter.o ./core/osal/src/dl/libs/libc/queue/dq_addbefore.o ./core/osal/src/dl/libs/libc/queue/dq_addfirst.o ./core/osal/src/dl/libs/libc/queue/dq_addlast.o ./core/osal/src/dl/libs/libc/queue/dq_cat.o ./core/osal/src/dl/libs/libc/queue/dq_count.o ./core/osal/src/dl/libs/libc/queue/dq_rem.o ./core/osal/src/dl/libs/libc/queue/dq_remfirst.o ./core/osal/src/dl/libs/libc/queue/dq_remlast.o ./core/osal/src/dl/libs/libc/queue/sq_addafter.o ./core/osal/src/dl/libs/libc/queue/sq_addfirst.o ./core/osal/src/dl/libs/libc/queue/sq_addlast.o ./core/osal/src/dl/libs/libc/queue/sq_cat.o ./core/osal/src/dl/libs/libc/queue/sq_count.o ./core/osal/src/dl/libs/libc/queue/sq_rem.o ./core/osal/src/dl/libs/libc/queue/sq_remafter.o ./core/osal/src/dl/libs/libc/queue/sq_remfirst.o ./core/osal/src/dl/libs/libc/queue/sq_remlast.o  ./core/osal/src/dl/libs/libc/machine/arm/armv7-r/arch_elf.o  ./core/osal/src/dl/binfmt/libelf/libelf_addrenv.o ./core/osal/src/dl/binfmt/libelf/libelf_bind.o ./core/osal/src/dl/binfmt/libelf/libelf_ctors.o ./core/osal/src/dl/binfmt/libelf/libelf_dtors.o ./core/osal/src/dl/binfmt/libelf/libelf_init.o ./core/osal/src/dl/binfmt/libelf/libelf_iobuffer.o ./core/osal/src/dl/binfmt/libelf/libelf_load.o ./core/osal/src/dl/binfmt/libelf/libelf_read.o ./core/osal/src/dl/binfmt/libelf/libelf_sections.o ./core/osal/src/dl/binfmt/libelf/libelf_symbols.o ./core/osal/src/dl/binfmt/libelf/libelf_uninit.o ./core/osal/src/dl/binfmt/libelf/libelf_unload.o ./core/osal/src/dl/binfmt/libelf/libelf_verify.o  ./core/osal/src/dl/binfmt/binfmt_globals.o ./core/osal/src/dl/binfmt/binfmt_initialize.o ./core/osal/src/dl/binfmt/binfmt_loadmodule.o ./core/osal/src/dl/binfmt/binfmt_register.o ./core/osal/src/dl/binfmt/binfmt_unregister.o ./core/osal/src/dl/binfmt/elf.o  ./core/osal/src/dl/untar.o  ./core/osal/src/osapi.o ./core/osal/src/osfileapi.o ./core/osal/src/osfilesys.o ./core/osal/src/osloader.o ./core/osal/src/osnetwork.o ./core/osal/src/osrtm.o ./core/osal/src/ostimer.o   -Wl,--start-group,-lxil,-lfreertos,-lgcc,-lc,-lstdc++,--end-group -Wl,--start-group,-lxil,-lmetal,-lgcc,-lc,--end-group -Wl,--start-group,-lxil,-lmetal,-lopen_amp,-lgcc,-lc,--end-group -Wl,--start-group,-lxilffs,-lxil,-lgcc,-lc,--end-group -lxilflash -Wl,--start-group,-lxilfpga,-lxil,-lxilsecure,-lgcc,-lc,--end-group -Wl,--start-group,-lxilpm,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilsecure,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilskey,-lxil,-lgcc,-lc,--end-group
+Finished building target: loader-test.elf
+ 
+Invoking: ARM R5 Print Size
+armr5-none-eabi-size loader-test.elf  |tee "loader-test.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 260768	  27652	1725744	2014164	 1ebbd4	loader-test.elf
+Finished building: loader-test.elf.size
+ 
+23:13:57 **** Incremental Build of configuration Debug for project loader-test ****
+make all 
+make: Nothing to be done for 'all'.
+23:16:48 **** Auto Build of configuration Debug for project loader-test ****
+make all 
+Building file: /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c
+Invoking: ARM R5 g++ compiler
+armr5-none-eabi-gcc -DARMR5 -Wall -O0 -g3 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -I"/home/mbenson/git/airliner/core/osal/inc" -I"/home/mbenson/git/airliner/core/osal/ut_assert/inc" -I"/home/mbenson/git/airliner/config/zynqmp/inc" -I"/home/mbenson/git/airliner/config/shared/inc" -I/home/mbenson/git/airliner/core/osal/src/os/freertos -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/libs/libxx -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/libs/libc -c -fmessage-length=0 -MT"core/osal/src/dl/binfmt/libelf/libelf_bind.o" -mcpu=cortex-r5 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -MMD -MP -MF"core/osal/src/dl/binfmt/libelf/libelf_bind.d" -MT"core/osal/src/dl/binfmt/libelf/libelf_bind.o" -o "core/osal/src/dl/binfmt/libelf/libelf_bind.o" "/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c"
+In file included from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:49:0:
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c: In function 'elf_relocate':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:5:33: warning: implicit declaration of function 'pvPortMalloc'; did you mean 'realloc'? [-Wimplicit-function-declaration]
+ #define kmm_malloc(s)           pvPortMalloc(s)
+                                 ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:166:22: note: in expansion of macro 'kmm_malloc'
+   rels = (Elf32_Rel*)kmm_malloc(size);
+                      ^~~~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:7:33: warning: implicit declaration of function 'vPortFree' [-Wimplicit-function-declaration]
+ #define kmm_free(s)             vPortFree(s)
+                                 ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:253:15: note: in expansion of macro 'kmm_free'
+               kmm_free(cache);
+               ^~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c: In function 'elf_bind':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:439:19: warning: implicit declaration of function 'elf_symname'; did you mean 'elf_symvalue'? [-Wimplicit-function-declaration]
+          status = elf_symname(loadinfo, &sym);
+                   ^~~~~~~~~~~
+                   elf_symvalue
+In file included from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:49:0:
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:442:77: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
+                 exports[*nexports].sym_name = (Elf32_Rel*)kmm_malloc(strlen(loadinfo->iobuffer));
+                                                                             ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:5:46: note: in definition of macro 'kmm_malloc'
+ #define kmm_malloc(s)           pvPortMalloc(s)
+                                              ^
+In file included from /opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:10:0,
+                 from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:43:
+/opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:37:9: note: expected 'const char *' but argument is of type 'uint8_t * {aka unsigned char *}'
+ size_t  _EXFUN(strlen,(const char *));
+         ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:442:45: warning: assignment from incompatible pointer type [-Wincompatible-pointer-types]
+                 exports[*nexports].sym_name = (Elf32_Rel*)kmm_malloc(strlen(loadinfo->iobuffer));
+                                             ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:449:53: warning: pointer targets in passing argument 2 of 'strcpy' differ in signedness [-Wpointer-sign]
+                 strcpy(exports[*nexports].sym_name, loadinfo->iobuffer);
+                                                     ^~~~~~~~
+In file included from /opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:10:0,
+                 from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:43:
+/opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:34:8: note: expected 'const char * restrict' but argument is of type 'uint8_t * {aka unsigned char *}'
+ char  *_EXFUN(strcpy,(char *__restrict, const char *__restrict));
+        ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:450:46: warning: assignment makes pointer from integer without a cast [-Wint-conversion]
+                 exports[*nexports].sym_value = sym.st_value;
+                                              ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:452:17: warning: value computed is not used [-Wunused-value]
+                 *nexports++;
+                 ^~~~~~~~~~~
+Finished building: /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c
+ 
+Building target: loader-test.elf
+Invoking: ARM R5 g++ linker
+armr5-none-eabi-gcc -Wl,-T -Wl,../../../../../core/psp/fsw/zynqmp_r5/src/lscript.ld -L../../freertos10_r5_0_bsp/psu_cortexr5_0/lib -o "loader-test.elf"  ./core/psp/ut_bsp/bsp_ut.o  ./core/psp/src/cfe_psp_voltab.o  ./core/osal/ut_src/CFS_LIB.o ./core/osal/ut_src/loader-test.o ./core/osal/ut_src/testDir1.o  ./core/osal/ut_assert/src/utassert.o ./core/osal/ut_assert/src/utlist.o ./core/osal/ut_assert/src/utstubs.o ./core/osal/ut_assert/src/uttest.o ./core/osal/ut_assert/src/uttools.o  ./core/osal/src/dl/libs/libc/symtab/symtab_findbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_findbyvalue.o ./core/osal/src/dl/libs/libc/symtab/symtab_findorderedbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_sortbyname.o  ./core/osal/src/dl/libs/libc/queue/dq_addafter.o ./core/osal/src/dl/libs/libc/queue/dq_addbefore.o ./core/osal/src/dl/libs/libc/queue/dq_addfirst.o ./core/osal/src/dl/libs/libc/queue/dq_addlast.o ./core/osal/src/dl/libs/libc/queue/dq_cat.o ./core/osal/src/dl/libs/libc/queue/dq_count.o ./core/osal/src/dl/libs/libc/queue/dq_rem.o ./core/osal/src/dl/libs/libc/queue/dq_remfirst.o ./core/osal/src/dl/libs/libc/queue/dq_remlast.o ./core/osal/src/dl/libs/libc/queue/sq_addafter.o ./core/osal/src/dl/libs/libc/queue/sq_addfirst.o ./core/osal/src/dl/libs/libc/queue/sq_addlast.o ./core/osal/src/dl/libs/libc/queue/sq_cat.o ./core/osal/src/dl/libs/libc/queue/sq_count.o ./core/osal/src/dl/libs/libc/queue/sq_rem.o ./core/osal/src/dl/libs/libc/queue/sq_remafter.o ./core/osal/src/dl/libs/libc/queue/sq_remfirst.o ./core/osal/src/dl/libs/libc/queue/sq_remlast.o  ./core/osal/src/dl/libs/libc/machine/arm/armv7-r/arch_elf.o  ./core/osal/src/dl/binfmt/libelf/libelf_addrenv.o ./core/osal/src/dl/binfmt/libelf/libelf_bind.o ./core/osal/src/dl/binfmt/libelf/libelf_ctors.o ./core/osal/src/dl/binfmt/libelf/libelf_dtors.o ./core/osal/src/dl/binfmt/libelf/libelf_init.o ./core/osal/src/dl/binfmt/libelf/libelf_iobuffer.o ./core/osal/src/dl/binfmt/libelf/libelf_load.o ./core/osal/src/dl/binfmt/libelf/libelf_read.o ./core/osal/src/dl/binfmt/libelf/libelf_sections.o ./core/osal/src/dl/binfmt/libelf/libelf_symbols.o ./core/osal/src/dl/binfmt/libelf/libelf_uninit.o ./core/osal/src/dl/binfmt/libelf/libelf_unload.o ./core/osal/src/dl/binfmt/libelf/libelf_verify.o  ./core/osal/src/dl/binfmt/binfmt_globals.o ./core/osal/src/dl/binfmt/binfmt_initialize.o ./core/osal/src/dl/binfmt/binfmt_loadmodule.o ./core/osal/src/dl/binfmt/binfmt_register.o ./core/osal/src/dl/binfmt/binfmt_unregister.o ./core/osal/src/dl/binfmt/elf.o  ./core/osal/src/dl/untar.o  ./core/osal/src/osapi.o ./core/osal/src/osfileapi.o ./core/osal/src/osfilesys.o ./core/osal/src/osloader.o ./core/osal/src/osnetwork.o ./core/osal/src/osrtm.o ./core/osal/src/ostimer.o   -Wl,--start-group,-lxil,-lfreertos,-lgcc,-lc,-lstdc++,--end-group -Wl,--start-group,-lxil,-lmetal,-lgcc,-lc,--end-group -Wl,--start-group,-lxil,-lmetal,-lopen_amp,-lgcc,-lc,--end-group -Wl,--start-group,-lxilffs,-lxil,-lgcc,-lc,--end-group -lxilflash -Wl,--start-group,-lxilfpga,-lxil,-lxilsecure,-lgcc,-lc,--end-group -Wl,--start-group,-lxilpm,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilsecure,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilskey,-lxil,-lgcc,-lc,--end-group
+Finished building target: loader-test.elf
+ 
+Invoking: ARM R5 Print Size
+armr5-none-eabi-size loader-test.elf  |tee "loader-test.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 260768	  27652	1725744	2014164	 1ebbd4	loader-test.elf
+Finished building: loader-test.elf.size
+ 
+23:17:10 **** Incremental Build of configuration Debug for project loader-test ****
+make all 
+make: Nothing to be done for 'all'.
+23:18:52 **** Incremental Build of configuration Debug for project loader-test ****
+make all 
+make: Nothing to be done for 'all'.
+23:21:13 **** Auto Build of configuration Debug for project loader-test ****
+make all 
+Building file: /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c
+Invoking: ARM R5 g++ compiler
+armr5-none-eabi-gcc -DARMR5 -Wall -O0 -g3 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -I"/home/mbenson/git/airliner/core/osal/inc" -I"/home/mbenson/git/airliner/core/osal/ut_assert/inc" -I"/home/mbenson/git/airliner/config/zynqmp/inc" -I"/home/mbenson/git/airliner/config/shared/inc" -I/home/mbenson/git/airliner/core/osal/src/os/freertos -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/libs/libxx -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/libs/libc -c -fmessage-length=0 -MT"core/osal/src/dl/binfmt/libelf/libelf_bind.o" -mcpu=cortex-r5 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -MMD -MP -MF"core/osal/src/dl/binfmt/libelf/libelf_bind.d" -MT"core/osal/src/dl/binfmt/libelf/libelf_bind.o" -o "core/osal/src/dl/binfmt/libelf/libelf_bind.o" "/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c"
+In file included from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:49:0:
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c: In function 'elf_relocate':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:5:33: warning: implicit declaration of function 'pvPortMalloc'; did you mean 'realloc'? [-Wimplicit-function-declaration]
+ #define kmm_malloc(s)           pvPortMalloc(s)
+                                 ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:166:22: note: in expansion of macro 'kmm_malloc'
+   rels = (Elf32_Rel*)kmm_malloc(size);
+                      ^~~~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:7:33: warning: implicit declaration of function 'vPortFree' [-Wimplicit-function-declaration]
+ #define kmm_free(s)             vPortFree(s)
+                                 ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:253:15: note: in expansion of macro 'kmm_free'
+               kmm_free(cache);
+               ^~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c: In function 'elf_bind':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:439:19: warning: implicit declaration of function 'elf_symname'; did you mean 'elf_symvalue'? [-Wimplicit-function-declaration]
+          status = elf_symname(loadinfo, &sym);
+                   ^~~~~~~~~~~
+                   elf_symvalue
+In file included from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:49:0:
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:442:77: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
+                 exports[*nexports].sym_name = (Elf32_Rel*)kmm_malloc(strlen(loadinfo->iobuffer));
+                                                                             ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:5:46: note: in definition of macro 'kmm_malloc'
+ #define kmm_malloc(s)           pvPortMalloc(s)
+                                              ^
+In file included from /opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:10:0,
+                 from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:43:
+/opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:37:9: note: expected 'const char *' but argument is of type 'uint8_t * {aka unsigned char *}'
+ size_t  _EXFUN(strlen,(const char *));
+         ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:442:45: warning: assignment from incompatible pointer type [-Wincompatible-pointer-types]
+                 exports[*nexports].sym_name = (Elf32_Rel*)kmm_malloc(strlen(loadinfo->iobuffer));
+                                             ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:449:53: warning: pointer targets in passing argument 2 of 'strcpy' differ in signedness [-Wpointer-sign]
+                 strcpy(exports[*nexports].sym_name, loadinfo->iobuffer);
+                                                     ^~~~~~~~
+In file included from /opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:10:0,
+                 from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:43:
+/opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:34:8: note: expected 'const char * restrict' but argument is of type 'uint8_t * {aka unsigned char *}'
+ char  *_EXFUN(strcpy,(char *__restrict, const char *__restrict));
+        ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:450:46: warning: assignment makes pointer from integer without a cast [-Wint-conversion]
+                 exports[*nexports].sym_value = sym.st_value;
+                                              ^
+Finished building: /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c
+ 
+Building target: loader-test.elf
+Invoking: ARM R5 g++ linker
+armr5-none-eabi-gcc -Wl,-T -Wl,../../../../../core/psp/fsw/zynqmp_r5/src/lscript.ld -L../../freertos10_r5_0_bsp/psu_cortexr5_0/lib -o "loader-test.elf"  ./core/psp/ut_bsp/bsp_ut.o  ./core/psp/src/cfe_psp_voltab.o  ./core/osal/ut_src/CFS_LIB.o ./core/osal/ut_src/loader-test.o ./core/osal/ut_src/testDir1.o  ./core/osal/ut_assert/src/utassert.o ./core/osal/ut_assert/src/utlist.o ./core/osal/ut_assert/src/utstubs.o ./core/osal/ut_assert/src/uttest.o ./core/osal/ut_assert/src/uttools.o  ./core/osal/src/dl/libs/libc/symtab/symtab_findbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_findbyvalue.o ./core/osal/src/dl/libs/libc/symtab/symtab_findorderedbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_sortbyname.o  ./core/osal/src/dl/libs/libc/queue/dq_addafter.o ./core/osal/src/dl/libs/libc/queue/dq_addbefore.o ./core/osal/src/dl/libs/libc/queue/dq_addfirst.o ./core/osal/src/dl/libs/libc/queue/dq_addlast.o ./core/osal/src/dl/libs/libc/queue/dq_cat.o ./core/osal/src/dl/libs/libc/queue/dq_count.o ./core/osal/src/dl/libs/libc/queue/dq_rem.o ./core/osal/src/dl/libs/libc/queue/dq_remfirst.o ./core/osal/src/dl/libs/libc/queue/dq_remlast.o ./core/osal/src/dl/libs/libc/queue/sq_addafter.o ./core/osal/src/dl/libs/libc/queue/sq_addfirst.o ./core/osal/src/dl/libs/libc/queue/sq_addlast.o ./core/osal/src/dl/libs/libc/queue/sq_cat.o ./core/osal/src/dl/libs/libc/queue/sq_count.o ./core/osal/src/dl/libs/libc/queue/sq_rem.o ./core/osal/src/dl/libs/libc/queue/sq_remafter.o ./core/osal/src/dl/libs/libc/queue/sq_remfirst.o ./core/osal/src/dl/libs/libc/queue/sq_remlast.o  ./core/osal/src/dl/libs/libc/machine/arm/armv7-r/arch_elf.o  ./core/osal/src/dl/binfmt/libelf/libelf_addrenv.o ./core/osal/src/dl/binfmt/libelf/libelf_bind.o ./core/osal/src/dl/binfmt/libelf/libelf_ctors.o ./core/osal/src/dl/binfmt/libelf/libelf_dtors.o ./core/osal/src/dl/binfmt/libelf/libelf_init.o ./core/osal/src/dl/binfmt/libelf/libelf_iobuffer.o ./core/osal/src/dl/binfmt/libelf/libelf_load.o ./core/osal/src/dl/binfmt/libelf/libelf_read.o ./core/osal/src/dl/binfmt/libelf/libelf_sections.o ./core/osal/src/dl/binfmt/libelf/libelf_symbols.o ./core/osal/src/dl/binfmt/libelf/libelf_uninit.o ./core/osal/src/dl/binfmt/libelf/libelf_unload.o ./core/osal/src/dl/binfmt/libelf/libelf_verify.o  ./core/osal/src/dl/binfmt/binfmt_globals.o ./core/osal/src/dl/binfmt/binfmt_initialize.o ./core/osal/src/dl/binfmt/binfmt_loadmodule.o ./core/osal/src/dl/binfmt/binfmt_register.o ./core/osal/src/dl/binfmt/binfmt_unregister.o ./core/osal/src/dl/binfmt/elf.o  ./core/osal/src/dl/untar.o  ./core/osal/src/osapi.o ./core/osal/src/osfileapi.o ./core/osal/src/osfilesys.o ./core/osal/src/osloader.o ./core/osal/src/osnetwork.o ./core/osal/src/osrtm.o ./core/osal/src/ostimer.o   -Wl,--start-group,-lxil,-lfreertos,-lgcc,-lc,-lstdc++,--end-group -Wl,--start-group,-lxil,-lmetal,-lgcc,-lc,--end-group -Wl,--start-group,-lxil,-lmetal,-lopen_amp,-lgcc,-lc,--end-group -Wl,--start-group,-lxilffs,-lxil,-lgcc,-lc,--end-group -lxilflash -Wl,--start-group,-lxilfpga,-lxil,-lxilsecure,-lgcc,-lc,--end-group -Wl,--start-group,-lxilpm,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilsecure,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilskey,-lxil,-lgcc,-lc,--end-group
+Finished building target: loader-test.elf
+ 
+Invoking: ARM R5 Print Size
+armr5-none-eabi-size loader-test.elf  |tee "loader-test.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 260768	  27652	1725744	2014164	 1ebbd4	loader-test.elf
+Finished building: loader-test.elf.size
+ 
+23:21:17 **** Incremental Build of configuration Debug for project loader-test ****
+make all 
+make: Nothing to be done for 'all'.
+23:22:31 **** Auto Build of configuration Debug for project loader-test ****
+make all 
+Building file: /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c
+Invoking: ARM R5 g++ compiler
+armr5-none-eabi-gcc -DARMR5 -Wall -O0 -g3 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -I"/home/mbenson/git/airliner/core/osal/inc" -I"/home/mbenson/git/airliner/core/osal/ut_assert/inc" -I"/home/mbenson/git/airliner/config/zynqmp/inc" -I"/home/mbenson/git/airliner/config/shared/inc" -I/home/mbenson/git/airliner/core/osal/src/os/freertos -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/libs/libxx -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/libs/libc -c -fmessage-length=0 -MT"core/osal/src/dl/binfmt/libelf/libelf_bind.o" -mcpu=cortex-r5 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -MMD -MP -MF"core/osal/src/dl/binfmt/libelf/libelf_bind.d" -MT"core/osal/src/dl/binfmt/libelf/libelf_bind.o" -o "core/osal/src/dl/binfmt/libelf/libelf_bind.o" "/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c"
+In file included from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:49:0:
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c: In function 'elf_relocate':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:5:33: warning: implicit declaration of function 'pvPortMalloc'; did you mean 'realloc'? [-Wimplicit-function-declaration]
+ #define kmm_malloc(s)           pvPortMalloc(s)
+                                 ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:166:22: note: in expansion of macro 'kmm_malloc'
+   rels = (Elf32_Rel*)kmm_malloc(size);
+                      ^~~~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:7:33: warning: implicit declaration of function 'vPortFree' [-Wimplicit-function-declaration]
+ #define kmm_free(s)             vPortFree(s)
+                                 ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:253:15: note: in expansion of macro 'kmm_free'
+               kmm_free(cache);
+               ^~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c: In function 'elf_bind':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:439:19: warning: implicit declaration of function 'elf_symname'; did you mean 'elf_symvalue'? [-Wimplicit-function-declaration]
+          status = elf_symname(loadinfo, &sym);
+                   ^~~~~~~~~~~
+                   elf_symvalue
+In file included from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:49:0:
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:442:77: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
+                 exports[*nexports].sym_name = (Elf32_Rel*)kmm_malloc(strlen(loadinfo->iobuffer));
+                                                                             ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:5:46: note: in definition of macro 'kmm_malloc'
+ #define kmm_malloc(s)           pvPortMalloc(s)
+                                              ^
+In file included from /opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:10:0,
+                 from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:43:
+/opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:37:9: note: expected 'const char *' but argument is of type 'uint8_t * {aka unsigned char *}'
+ size_t  _EXFUN(strlen,(const char *));
+         ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:442:45: warning: assignment from incompatible pointer type [-Wincompatible-pointer-types]
+                 exports[*nexports].sym_name = (Elf32_Rel*)kmm_malloc(strlen(loadinfo->iobuffer));
+                                             ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:449:53: warning: pointer targets in passing argument 2 of 'strcpy' differ in signedness [-Wpointer-sign]
+                 strcpy(exports[*nexports].sym_name, loadinfo->iobuffer);
+                                                     ^~~~~~~~
+In file included from /opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:10:0,
+                 from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:43:
+/opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:34:8: note: expected 'const char * restrict' but argument is of type 'uint8_t * {aka unsigned char *}'
+ char  *_EXFUN(strcpy,(char *__restrict, const char *__restrict));
+        ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:450:46: warning: assignment makes pointer from integer without a cast [-Wint-conversion]
+                 exports[*nexports].sym_value = sym.st_value;
+                                              ^
+Finished building: /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c
+ 
+Building target: loader-test.elf
+Invoking: ARM R5 g++ linker
+armr5-none-eabi-gcc -Wl,-T -Wl,../../../../../core/psp/fsw/zynqmp_r5/src/lscript.ld -L../../freertos10_r5_0_bsp/psu_cortexr5_0/lib -o "loader-test.elf"  ./core/psp/ut_bsp/bsp_ut.o  ./core/psp/src/cfe_psp_voltab.o  ./core/osal/ut_src/CFS_LIB.o ./core/osal/ut_src/loader-test.o ./core/osal/ut_src/testDir1.o  ./core/osal/ut_assert/src/utassert.o ./core/osal/ut_assert/src/utlist.o ./core/osal/ut_assert/src/utstubs.o ./core/osal/ut_assert/src/uttest.o ./core/osal/ut_assert/src/uttools.o  ./core/osal/src/dl/libs/libc/symtab/symtab_findbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_findbyvalue.o ./core/osal/src/dl/libs/libc/symtab/symtab_findorderedbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_sortbyname.o  ./core/osal/src/dl/libs/libc/queue/dq_addafter.o ./core/osal/src/dl/libs/libc/queue/dq_addbefore.o ./core/osal/src/dl/libs/libc/queue/dq_addfirst.o ./core/osal/src/dl/libs/libc/queue/dq_addlast.o ./core/osal/src/dl/libs/libc/queue/dq_cat.o ./core/osal/src/dl/libs/libc/queue/dq_count.o ./core/osal/src/dl/libs/libc/queue/dq_rem.o ./core/osal/src/dl/libs/libc/queue/dq_remfirst.o ./core/osal/src/dl/libs/libc/queue/dq_remlast.o ./core/osal/src/dl/libs/libc/queue/sq_addafter.o ./core/osal/src/dl/libs/libc/queue/sq_addfirst.o ./core/osal/src/dl/libs/libc/queue/sq_addlast.o ./core/osal/src/dl/libs/libc/queue/sq_cat.o ./core/osal/src/dl/libs/libc/queue/sq_count.o ./core/osal/src/dl/libs/libc/queue/sq_rem.o ./core/osal/src/dl/libs/libc/queue/sq_remafter.o ./core/osal/src/dl/libs/libc/queue/sq_remfirst.o ./core/osal/src/dl/libs/libc/queue/sq_remlast.o  ./core/osal/src/dl/libs/libc/machine/arm/armv7-r/arch_elf.o  ./core/osal/src/dl/binfmt/libelf/libelf_addrenv.o ./core/osal/src/dl/binfmt/libelf/libelf_bind.o ./core/osal/src/dl/binfmt/libelf/libelf_ctors.o ./core/osal/src/dl/binfmt/libelf/libelf_dtors.o ./core/osal/src/dl/binfmt/libelf/libelf_init.o ./core/osal/src/dl/binfmt/libelf/libelf_iobuffer.o ./core/osal/src/dl/binfmt/libelf/libelf_load.o ./core/osal/src/dl/binfmt/libelf/libelf_read.o ./core/osal/src/dl/binfmt/libelf/libelf_sections.o ./core/osal/src/dl/binfmt/libelf/libelf_symbols.o ./core/osal/src/dl/binfmt/libelf/libelf_uninit.o ./core/osal/src/dl/binfmt/libelf/libelf_unload.o ./core/osal/src/dl/binfmt/libelf/libelf_verify.o  ./core/osal/src/dl/binfmt/binfmt_globals.o ./core/osal/src/dl/binfmt/binfmt_initialize.o ./core/osal/src/dl/binfmt/binfmt_loadmodule.o ./core/osal/src/dl/binfmt/binfmt_register.o ./core/osal/src/dl/binfmt/binfmt_unregister.o ./core/osal/src/dl/binfmt/elf.o  ./core/osal/src/dl/untar.o  ./core/osal/src/osapi.o ./core/osal/src/osfileapi.o ./core/osal/src/osfilesys.o ./core/osal/src/osloader.o ./core/osal/src/osnetwork.o ./core/osal/src/osrtm.o ./core/osal/src/ostimer.o   -Wl,--start-group,-lxil,-lfreertos,-lgcc,-lc,-lstdc++,--end-group -Wl,--start-group,-lxil,-lmetal,-lgcc,-lc,--end-group -Wl,--start-group,-lxil,-lmetal,-lopen_amp,-lgcc,-lc,--end-group -Wl,--start-group,-lxilffs,-lxil,-lgcc,-lc,--end-group -lxilflash -Wl,--start-group,-lxilfpga,-lxil,-lxilsecure,-lgcc,-lc,--end-group -Wl,--start-group,-lxilpm,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilsecure,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilskey,-lxil,-lgcc,-lc,--end-group
+Finished building target: loader-test.elf
+ 
+Invoking: ARM R5 Print Size
+armr5-none-eabi-size loader-test.elf  |tee "loader-test.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 260768	  27652	1725744	2014164	 1ebbd4	loader-test.elf
+Finished building: loader-test.elf.size
+ 
+23:22:41 **** Incremental Build of configuration Debug for project loader-test ****
+make all 
+make: Nothing to be done for 'all'.
+23:27:08 **** Auto Build of configuration Debug for project loader-test ****
+make all 
+Building file: /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c
+Invoking: ARM R5 g++ compiler
+armr5-none-eabi-gcc -DARMR5 -Wall -O0 -g3 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -I"/home/mbenson/git/airliner/core/osal/inc" -I"/home/mbenson/git/airliner/core/osal/ut_assert/inc" -I"/home/mbenson/git/airliner/config/zynqmp/inc" -I"/home/mbenson/git/airliner/config/shared/inc" -I/home/mbenson/git/airliner/core/osal/src/os/freertos -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/libs/libxx -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/libs/libc -c -fmessage-length=0 -MT"core/osal/src/dl/binfmt/libelf/libelf_bind.o" -mcpu=cortex-r5 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -MMD -MP -MF"core/osal/src/dl/binfmt/libelf/libelf_bind.d" -MT"core/osal/src/dl/binfmt/libelf/libelf_bind.o" -o "core/osal/src/dl/binfmt/libelf/libelf_bind.o" "/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c"
+In file included from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:49:0:
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c: In function 'elf_relocate':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:5:33: warning: implicit declaration of function 'pvPortMalloc'; did you mean 'realloc'? [-Wimplicit-function-declaration]
+ #define kmm_malloc(s)           pvPortMalloc(s)
+                                 ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:166:22: note: in expansion of macro 'kmm_malloc'
+   rels = (Elf32_Rel*)kmm_malloc(size);
+                      ^~~~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:7:33: warning: implicit declaration of function 'vPortFree' [-Wimplicit-function-declaration]
+ #define kmm_free(s)             vPortFree(s)
+                                 ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:253:15: note: in expansion of macro 'kmm_free'
+               kmm_free(cache);
+               ^~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c: In function 'elf_bind':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:440:19: warning: implicit declaration of function 'elf_symname'; did you mean 'elf_symvalue'? [-Wimplicit-function-declaration]
+          status = elf_symname(loadinfo, &sym);
+                   ^~~~~~~~~~~
+                   elf_symvalue
+In file included from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:49:0:
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:443:77: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
+                 exports[*nexports].sym_name = (Elf32_Rel*)kmm_malloc(strlen(loadinfo->iobuffer));
+                                                                             ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:5:46: note: in definition of macro 'kmm_malloc'
+ #define kmm_malloc(s)           pvPortMalloc(s)
+                                              ^
+In file included from /opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:10:0,
+                 from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:43:
+/opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:37:9: note: expected 'const char *' but argument is of type 'uint8_t * {aka unsigned char *}'
+ size_t  _EXFUN(strlen,(const char *));
+         ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:443:45: warning: assignment from incompatible pointer type [-Wincompatible-pointer-types]
+                 exports[*nexports].sym_name = (Elf32_Rel*)kmm_malloc(strlen(loadinfo->iobuffer));
+                                             ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:450:53: warning: pointer targets in passing argument 2 of 'strcpy' differ in signedness [-Wpointer-sign]
+                 strcpy(exports[*nexports].sym_name, loadinfo->iobuffer);
+                                                     ^~~~~~~~
+In file included from /opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:10:0,
+                 from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:43:
+/opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:34:8: note: expected 'const char * restrict' but argument is of type 'uint8_t * {aka unsigned char *}'
+ char  *_EXFUN(strcpy,(char *__restrict, const char *__restrict));
+        ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:451:46: warning: assignment makes pointer from integer without a cast [-Wint-conversion]
+                 exports[*nexports].sym_value = sym.st_value;
+                                              ^
+Finished building: /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c
+ 
+Building target: loader-test.elf
+Invoking: ARM R5 g++ linker
+armr5-none-eabi-gcc -Wl,-T -Wl,../../../../../core/psp/fsw/zynqmp_r5/src/lscript.ld -L../../freertos10_r5_0_bsp/psu_cortexr5_0/lib -o "loader-test.elf"  ./core/psp/ut_bsp/bsp_ut.o  ./core/psp/src/cfe_psp_voltab.o  ./core/osal/ut_src/CFS_LIB.o ./core/osal/ut_src/loader-test.o ./core/osal/ut_src/testDir1.o  ./core/osal/ut_assert/src/utassert.o ./core/osal/ut_assert/src/utlist.o ./core/osal/ut_assert/src/utstubs.o ./core/osal/ut_assert/src/uttest.o ./core/osal/ut_assert/src/uttools.o  ./core/osal/src/dl/libs/libc/symtab/symtab_findbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_findbyvalue.o ./core/osal/src/dl/libs/libc/symtab/symtab_findorderedbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_sortbyname.o  ./core/osal/src/dl/libs/libc/queue/dq_addafter.o ./core/osal/src/dl/libs/libc/queue/dq_addbefore.o ./core/osal/src/dl/libs/libc/queue/dq_addfirst.o ./core/osal/src/dl/libs/libc/queue/dq_addlast.o ./core/osal/src/dl/libs/libc/queue/dq_cat.o ./core/osal/src/dl/libs/libc/queue/dq_count.o ./core/osal/src/dl/libs/libc/queue/dq_rem.o ./core/osal/src/dl/libs/libc/queue/dq_remfirst.o ./core/osal/src/dl/libs/libc/queue/dq_remlast.o ./core/osal/src/dl/libs/libc/queue/sq_addafter.o ./core/osal/src/dl/libs/libc/queue/sq_addfirst.o ./core/osal/src/dl/libs/libc/queue/sq_addlast.o ./core/osal/src/dl/libs/libc/queue/sq_cat.o ./core/osal/src/dl/libs/libc/queue/sq_count.o ./core/osal/src/dl/libs/libc/queue/sq_rem.o ./core/osal/src/dl/libs/libc/queue/sq_remafter.o ./core/osal/src/dl/libs/libc/queue/sq_remfirst.o ./core/osal/src/dl/libs/libc/queue/sq_remlast.o  ./core/osal/src/dl/libs/libc/machine/arm/armv7-r/arch_elf.o  ./core/osal/src/dl/binfmt/libelf/libelf_addrenv.o ./core/osal/src/dl/binfmt/libelf/libelf_bind.o ./core/osal/src/dl/binfmt/libelf/libelf_ctors.o ./core/osal/src/dl/binfmt/libelf/libelf_dtors.o ./core/osal/src/dl/binfmt/libelf/libelf_init.o ./core/osal/src/dl/binfmt/libelf/libelf_iobuffer.o ./core/osal/src/dl/binfmt/libelf/libelf_load.o ./core/osal/src/dl/binfmt/libelf/libelf_read.o ./core/osal/src/dl/binfmt/libelf/libelf_sections.o ./core/osal/src/dl/binfmt/libelf/libelf_symbols.o ./core/osal/src/dl/binfmt/libelf/libelf_uninit.o ./core/osal/src/dl/binfmt/libelf/libelf_unload.o ./core/osal/src/dl/binfmt/libelf/libelf_verify.o  ./core/osal/src/dl/binfmt/binfmt_globals.o ./core/osal/src/dl/binfmt/binfmt_initialize.o ./core/osal/src/dl/binfmt/binfmt_loadmodule.o ./core/osal/src/dl/binfmt/binfmt_register.o ./core/osal/src/dl/binfmt/binfmt_unregister.o ./core/osal/src/dl/binfmt/elf.o  ./core/osal/src/dl/untar.o  ./core/osal/src/osapi.o ./core/osal/src/osfileapi.o ./core/osal/src/osfilesys.o ./core/osal/src/osloader.o ./core/osal/src/osnetwork.o ./core/osal/src/osrtm.o ./core/osal/src/ostimer.o   -Wl,--start-group,-lxil,-lfreertos,-lgcc,-lc,-lstdc++,--end-group -Wl,--start-group,-lxil,-lmetal,-lgcc,-lc,--end-group -Wl,--start-group,-lxil,-lmetal,-lopen_amp,-lgcc,-lc,--end-group -Wl,--start-group,-lxilffs,-lxil,-lgcc,-lc,--end-group -lxilflash -Wl,--start-group,-lxilfpga,-lxil,-lxilsecure,-lgcc,-lc,--end-group -Wl,--start-group,-lxilpm,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilsecure,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilskey,-lxil,-lgcc,-lc,--end-group
+Finished building target: loader-test.elf
+ 
+Invoking: ARM R5 Print Size
+armr5-none-eabi-size loader-test.elf  |tee "loader-test.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 260784	  27652	1725744	2014180	 1ebbe4	loader-test.elf
+Finished building: loader-test.elf.size
+ 
+23:27:22 **** Incremental Build of configuration Debug for project loader-test ****
+make all 
+make: Nothing to be done for 'all'.
+23:28:34 **** Auto Build of configuration Debug for project loader-test ****
+make all 
+Building file: /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c
+Invoking: ARM R5 g++ compiler
+armr5-none-eabi-gcc -DARMR5 -Wall -O0 -g3 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -I"/home/mbenson/git/airliner/core/osal/inc" -I"/home/mbenson/git/airliner/core/osal/ut_assert/inc" -I"/home/mbenson/git/airliner/config/zynqmp/inc" -I"/home/mbenson/git/airliner/config/shared/inc" -I/home/mbenson/git/airliner/core/osal/src/os/freertos -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/libs/libxx -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/libs/libc -c -fmessage-length=0 -MT"core/osal/src/dl/binfmt/libelf/libelf_bind.o" -mcpu=cortex-r5 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -MMD -MP -MF"core/osal/src/dl/binfmt/libelf/libelf_bind.d" -MT"core/osal/src/dl/binfmt/libelf/libelf_bind.o" -o "core/osal/src/dl/binfmt/libelf/libelf_bind.o" "/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c"
+In file included from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:49:0:
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c: In function 'elf_relocate':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:5:33: warning: implicit declaration of function 'pvPortMalloc'; did you mean 'realloc'? [-Wimplicit-function-declaration]
+ #define kmm_malloc(s)           pvPortMalloc(s)
+                                 ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:166:22: note: in expansion of macro 'kmm_malloc'
+   rels = (Elf32_Rel*)kmm_malloc(size);
+                      ^~~~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:7:33: warning: implicit declaration of function 'vPortFree' [-Wimplicit-function-declaration]
+ #define kmm_free(s)             vPortFree(s)
+                                 ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:253:15: note: in expansion of macro 'kmm_free'
+               kmm_free(cache);
+               ^~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c: In function 'elf_bind':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:440:19: warning: implicit declaration of function 'elf_symname'; did you mean 'elf_symvalue'? [-Wimplicit-function-declaration]
+          status = elf_symname(loadinfo, &sym);
+                   ^~~~~~~~~~~
+                   elf_symvalue
+In file included from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:49:0:
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:443:79: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
+                 exports[cpyNexports].sym_name = (Elf32_Rel*)kmm_malloc(strlen(loadinfo->iobuffer));
+                                                                               ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:5:46: note: in definition of macro 'kmm_malloc'
+ #define kmm_malloc(s)           pvPortMalloc(s)
+                                              ^
+In file included from /opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:10:0,
+                 from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:43:
+/opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:37:9: note: expected 'const char *' but argument is of type 'uint8_t * {aka unsigned char *}'
+ size_t  _EXFUN(strlen,(const char *));
+         ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:443:47: warning: assignment from incompatible pointer type [-Wincompatible-pointer-types]
+                 exports[cpyNexports].sym_name = (Elf32_Rel*)kmm_malloc(strlen(loadinfo->iobuffer));
+                                               ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:450:55: warning: pointer targets in passing argument 2 of 'strcpy' differ in signedness [-Wpointer-sign]
+                 strcpy(exports[cpyNexports].sym_name, loadinfo->iobuffer);
+                                                       ^~~~~~~~
+In file included from /opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:10:0,
+                 from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:43:
+/opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:34:8: note: expected 'const char * restrict' but argument is of type 'uint8_t * {aka unsigned char *}'
+ char  *_EXFUN(strcpy,(char *__restrict, const char *__restrict));
+        ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:451:48: warning: assignment makes pointer from integer without a cast [-Wint-conversion]
+                 exports[cpyNexports].sym_value = sym.st_value;
+                                                ^
+Finished building: /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c
+ 
+Building target: loader-test.elf
+Invoking: ARM R5 g++ linker
+armr5-none-eabi-gcc -Wl,-T -Wl,../../../../../core/psp/fsw/zynqmp_r5/src/lscript.ld -L../../freertos10_r5_0_bsp/psu_cortexr5_0/lib -o "loader-test.elf"  ./core/psp/ut_bsp/bsp_ut.o  ./core/psp/src/cfe_psp_voltab.o  ./core/osal/ut_src/CFS_LIB.o ./core/osal/ut_src/loader-test.o ./core/osal/ut_src/testDir1.o  ./core/osal/ut_assert/src/utassert.o ./core/osal/ut_assert/src/utlist.o ./core/osal/ut_assert/src/utstubs.o ./core/osal/ut_assert/src/uttest.o ./core/osal/ut_assert/src/uttools.o  ./core/osal/src/dl/libs/libc/symtab/symtab_findbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_findbyvalue.o ./core/osal/src/dl/libs/libc/symtab/symtab_findorderedbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_sortbyname.o  ./core/osal/src/dl/libs/libc/queue/dq_addafter.o ./core/osal/src/dl/libs/libc/queue/dq_addbefore.o ./core/osal/src/dl/libs/libc/queue/dq_addfirst.o ./core/osal/src/dl/libs/libc/queue/dq_addlast.o ./core/osal/src/dl/libs/libc/queue/dq_cat.o ./core/osal/src/dl/libs/libc/queue/dq_count.o ./core/osal/src/dl/libs/libc/queue/dq_rem.o ./core/osal/src/dl/libs/libc/queue/dq_remfirst.o ./core/osal/src/dl/libs/libc/queue/dq_remlast.o ./core/osal/src/dl/libs/libc/queue/sq_addafter.o ./core/osal/src/dl/libs/libc/queue/sq_addfirst.o ./core/osal/src/dl/libs/libc/queue/sq_addlast.o ./core/osal/src/dl/libs/libc/queue/sq_cat.o ./core/osal/src/dl/libs/libc/queue/sq_count.o ./core/osal/src/dl/libs/libc/queue/sq_rem.o ./core/osal/src/dl/libs/libc/queue/sq_remafter.o ./core/osal/src/dl/libs/libc/queue/sq_remfirst.o ./core/osal/src/dl/libs/libc/queue/sq_remlast.o  ./core/osal/src/dl/libs/libc/machine/arm/armv7-r/arch_elf.o  ./core/osal/src/dl/binfmt/libelf/libelf_addrenv.o ./core/osal/src/dl/binfmt/libelf/libelf_bind.o ./core/osal/src/dl/binfmt/libelf/libelf_ctors.o ./core/osal/src/dl/binfmt/libelf/libelf_dtors.o ./core/osal/src/dl/binfmt/libelf/libelf_init.o ./core/osal/src/dl/binfmt/libelf/libelf_iobuffer.o ./core/osal/src/dl/binfmt/libelf/libelf_load.o ./core/osal/src/dl/binfmt/libelf/libelf_read.o ./core/osal/src/dl/binfmt/libelf/libelf_sections.o ./core/osal/src/dl/binfmt/libelf/libelf_symbols.o ./core/osal/src/dl/binfmt/libelf/libelf_uninit.o ./core/osal/src/dl/binfmt/libelf/libelf_unload.o ./core/osal/src/dl/binfmt/libelf/libelf_verify.o  ./core/osal/src/dl/binfmt/binfmt_globals.o ./core/osal/src/dl/binfmt/binfmt_initialize.o ./core/osal/src/dl/binfmt/binfmt_loadmodule.o ./core/osal/src/dl/binfmt/binfmt_register.o ./core/osal/src/dl/binfmt/binfmt_unregister.o ./core/osal/src/dl/binfmt/elf.o  ./core/osal/src/dl/untar.o  ./core/osal/src/osapi.o ./core/osal/src/osfileapi.o ./core/osal/src/osfilesys.o ./core/osal/src/osloader.o ./core/osal/src/osnetwork.o ./core/osal/src/osrtm.o ./core/osal/src/ostimer.o   -Wl,--start-group,-lxil,-lfreertos,-lgcc,-lc,-lstdc++,--end-group -Wl,--start-group,-lxil,-lmetal,-lgcc,-lc,--end-group -Wl,--start-group,-lxil,-lmetal,-lopen_amp,-lgcc,-lc,--end-group -Wl,--start-group,-lxilffs,-lxil,-lgcc,-lc,--end-group -lxilflash -Wl,--start-group,-lxilfpga,-lxil,-lxilsecure,-lgcc,-lc,--end-group -Wl,--start-group,-lxilpm,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilsecure,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilskey,-lxil,-lgcc,-lc,--end-group
+Finished building target: loader-test.elf
+ 
+Invoking: ARM R5 Print Size
+armr5-none-eabi-size loader-test.elf  |tee "loader-test.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 260768	  27652	1725744	2014164	 1ebbd4	loader-test.elf
+Finished building: loader-test.elf.size
+ 
+23:28:41 **** Incremental Build of configuration Debug for project loader-test ****
+make all 
+make: Nothing to be done for 'all'.
+23:29:48 **** Incremental Build of configuration Debug for project loader-test ****
+make all 
+make: Nothing to be done for 'all'.
+23:31:57 **** Auto Build of configuration Debug for project loader-test ****
+make all 
+Building file: /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/elf.c
+Invoking: ARM R5 g++ compiler
+armr5-none-eabi-gcc -DARMR5 -Wall -O0 -g3 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -I"/home/mbenson/git/airliner/core/osal/inc" -I"/home/mbenson/git/airliner/core/osal/ut_assert/inc" -I"/home/mbenson/git/airliner/config/zynqmp/inc" -I"/home/mbenson/git/airliner/config/shared/inc" -I/home/mbenson/git/airliner/core/osal/src/os/freertos -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/libs/libxx -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/libs/libc -c -fmessage-length=0 -MT"core/osal/src/dl/binfmt/elf.o" -mcpu=cortex-r5 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -MMD -MP -MF"core/osal/src/dl/binfmt/elf.d" -MT"core/osal/src/dl/binfmt/elf.o" -o "core/osal/src/dl/binfmt/elf.o" "/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/elf.c"
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/elf.c: In function 'elf_loadbinary':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/elf.c:253:29: warning: passing argument 2 of 'elf_bind' discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   ret = elf_bind(&loadinfo, binp->exports, &binp->nexports, binp->max_exports);
+                             ^~~~
+In file included from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/elf.c:50:0:
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/binfmt/elf.h:250:5: note: expected 'struct symtab_s *' but argument is of type 'const struct symtab_s *'
+ int elf_bind(struct elf_loadinfo_s *loadinfo,
+     ^~~~~~~~
+Finished building: /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/elf.c
+ 
+Building target: loader-test.elf
+Invoking: ARM R5 g++ linker
+armr5-none-eabi-gcc -Wl,-T -Wl,../../../../../core/psp/fsw/zynqmp_r5/src/lscript.ld -L../../freertos10_r5_0_bsp/psu_cortexr5_0/lib -o "loader-test.elf"  ./core/psp/ut_bsp/bsp_ut.o  ./core/psp/src/cfe_psp_voltab.o  ./core/osal/ut_src/CFS_LIB.o ./core/osal/ut_src/loader-test.o ./core/osal/ut_src/testDir1.o  ./core/osal/ut_assert/src/utassert.o ./core/osal/ut_assert/src/utlist.o ./core/osal/ut_assert/src/utstubs.o ./core/osal/ut_assert/src/uttest.o ./core/osal/ut_assert/src/uttools.o  ./core/osal/src/dl/libs/libc/symtab/symtab_findbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_findbyvalue.o ./core/osal/src/dl/libs/libc/symtab/symtab_findorderedbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_sortbyname.o  ./core/osal/src/dl/libs/libc/queue/dq_addafter.o ./core/osal/src/dl/libs/libc/queue/dq_addbefore.o ./core/osal/src/dl/libs/libc/queue/dq_addfirst.o ./core/osal/src/dl/libs/libc/queue/dq_addlast.o ./core/osal/src/dl/libs/libc/queue/dq_cat.o ./core/osal/src/dl/libs/libc/queue/dq_count.o ./core/osal/src/dl/libs/libc/queue/dq_rem.o ./core/osal/src/dl/libs/libc/queue/dq_remfirst.o ./core/osal/src/dl/libs/libc/queue/dq_remlast.o ./core/osal/src/dl/libs/libc/queue/sq_addafter.o ./core/osal/src/dl/libs/libc/queue/sq_addfirst.o ./core/osal/src/dl/libs/libc/queue/sq_addlast.o ./core/osal/src/dl/libs/libc/queue/sq_cat.o ./core/osal/src/dl/libs/libc/queue/sq_count.o ./core/osal/src/dl/libs/libc/queue/sq_rem.o ./core/osal/src/dl/libs/libc/queue/sq_remafter.o ./core/osal/src/dl/libs/libc/queue/sq_remfirst.o ./core/osal/src/dl/libs/libc/queue/sq_remlast.o  ./core/osal/src/dl/libs/libc/machine/arm/armv7-r/arch_elf.o  ./core/osal/src/dl/binfmt/libelf/libelf_addrenv.o ./core/osal/src/dl/binfmt/libelf/libelf_bind.o ./core/osal/src/dl/binfmt/libelf/libelf_ctors.o ./core/osal/src/dl/binfmt/libelf/libelf_dtors.o ./core/osal/src/dl/binfmt/libelf/libelf_init.o ./core/osal/src/dl/binfmt/libelf/libelf_iobuffer.o ./core/osal/src/dl/binfmt/libelf/libelf_load.o ./core/osal/src/dl/binfmt/libelf/libelf_read.o ./core/osal/src/dl/binfmt/libelf/libelf_sections.o ./core/osal/src/dl/binfmt/libelf/libelf_symbols.o ./core/osal/src/dl/binfmt/libelf/libelf_uninit.o ./core/osal/src/dl/binfmt/libelf/libelf_unload.o ./core/osal/src/dl/binfmt/libelf/libelf_verify.o  ./core/osal/src/dl/binfmt/binfmt_globals.o ./core/osal/src/dl/binfmt/binfmt_initialize.o ./core/osal/src/dl/binfmt/binfmt_loadmodule.o ./core/osal/src/dl/binfmt/binfmt_register.o ./core/osal/src/dl/binfmt/binfmt_unregister.o ./core/osal/src/dl/binfmt/elf.o  ./core/osal/src/dl/untar.o  ./core/osal/src/osapi.o ./core/osal/src/osfileapi.o ./core/osal/src/osfilesys.o ./core/osal/src/osloader.o ./core/osal/src/osnetwork.o ./core/osal/src/osrtm.o ./core/osal/src/ostimer.o   -Wl,--start-group,-lxil,-lfreertos,-lgcc,-lc,-lstdc++,--end-group -Wl,--start-group,-lxil,-lmetal,-lgcc,-lc,--end-group -Wl,--start-group,-lxil,-lmetal,-lopen_amp,-lgcc,-lc,--end-group -Wl,--start-group,-lxilffs,-lxil,-lgcc,-lc,--end-group -lxilflash -Wl,--start-group,-lxilfpga,-lxil,-lxilsecure,-lgcc,-lc,--end-group -Wl,--start-group,-lxilpm,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilsecure,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilskey,-lxil,-lgcc,-lc,--end-group
+Finished building target: loader-test.elf
+ 
+Invoking: ARM R5 Print Size
+armr5-none-eabi-size loader-test.elf  |tee "loader-test.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 260768	  27652	1725744	2014164	 1ebbd4	loader-test.elf
+Finished building: loader-test.elf.size
+ 
+23:32:02 **** Incremental Build of configuration Debug for project loader-test ****
+make all 
+make: Nothing to be done for 'all'.
+23:34:01 **** Auto Build of configuration Debug for project loader-test ****
+make all 
+Building file: /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c
+Invoking: ARM R5 g++ compiler
+armr5-none-eabi-gcc -DARMR5 -Wall -O0 -g3 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -I"/home/mbenson/git/airliner/core/osal/inc" -I"/home/mbenson/git/airliner/core/osal/ut_assert/inc" -I"/home/mbenson/git/airliner/config/zynqmp/inc" -I"/home/mbenson/git/airliner/config/shared/inc" -I/home/mbenson/git/airliner/core/osal/src/os/freertos -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/libs/libxx -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/libs/libc -c -fmessage-length=0 -MT"core/osal/src/dl/binfmt/libelf/libelf_bind.o" -mcpu=cortex-r5 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -MMD -MP -MF"core/osal/src/dl/binfmt/libelf/libelf_bind.d" -MT"core/osal/src/dl/binfmt/libelf/libelf_bind.o" -o "core/osal/src/dl/binfmt/libelf/libelf_bind.o" "/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c"
+In file included from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:49:0:
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c: In function 'elf_relocate':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:5:33: warning: implicit declaration of function 'pvPortMalloc'; did you mean 'realloc'? [-Wimplicit-function-declaration]
+ #define kmm_malloc(s)           pvPortMalloc(s)
+                                 ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:166:22: note: in expansion of macro 'kmm_malloc'
+   rels = (Elf32_Rel*)kmm_malloc(size);
+                      ^~~~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:7:33: warning: implicit declaration of function 'vPortFree' [-Wimplicit-function-declaration]
+ #define kmm_free(s)             vPortFree(s)
+                                 ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:253:15: note: in expansion of macro 'kmm_free'
+               kmm_free(cache);
+               ^~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c: In function 'elf_bind':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:439:19: warning: implicit declaration of function 'elf_symname'; did you mean 'elf_symvalue'? [-Wimplicit-function-declaration]
+          status = elf_symname(loadinfo, &sym);
+                   ^~~~~~~~~~~
+                   elf_symvalue
+In file included from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:49:0:
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:442:77: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
+                 exports[*nexports].sym_name = (Elf32_Rel*)kmm_malloc(strlen(loadinfo->iobuffer));
+                                                                             ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:5:46: note: in definition of macro 'kmm_malloc'
+ #define kmm_malloc(s)           pvPortMalloc(s)
+                                              ^
+In file included from /opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:10:0,
+                 from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:43:
+/opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:37:9: note: expected 'const char *' but argument is of type 'uint8_t * {aka unsigned char *}'
+ size_t  _EXFUN(strlen,(const char *));
+         ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:442:45: warning: assignment from incompatible pointer type [-Wincompatible-pointer-types]
+                 exports[*nexports].sym_name = (Elf32_Rel*)kmm_malloc(strlen(loadinfo->iobuffer));
+                                             ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:449:53: warning: pointer targets in passing argument 2 of 'strcpy' differ in signedness [-Wpointer-sign]
+                 strcpy(exports[*nexports].sym_name, loadinfo->iobuffer);
+                                                     ^~~~~~~~
+In file included from /opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:10:0,
+                 from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:43:
+/opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:34:8: note: expected 'const char * restrict' but argument is of type 'uint8_t * {aka unsigned char *}'
+ char  *_EXFUN(strcpy,(char *__restrict, const char *__restrict));
+        ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:450:46: warning: assignment makes pointer from integer without a cast [-Wint-conversion]
+                 exports[*nexports].sym_value = sym.st_value;
+                                              ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:452:17: warning: value computed is not used [-Wunused-value]
+                 *nexports++;
+                 ^~~~~~~~~~~
+Finished building: /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c
+ 
+Building target: loader-test.elf
+Invoking: ARM R5 g++ linker
+armr5-none-eabi-gcc -Wl,-T -Wl,../../../../../core/psp/fsw/zynqmp_r5/src/lscript.ld -L../../freertos10_r5_0_bsp/psu_cortexr5_0/lib -o "loader-test.elf"  ./core/psp/ut_bsp/bsp_ut.o  ./core/psp/src/cfe_psp_voltab.o  ./core/osal/ut_src/CFS_LIB.o ./core/osal/ut_src/loader-test.o ./core/osal/ut_src/testDir1.o  ./core/osal/ut_assert/src/utassert.o ./core/osal/ut_assert/src/utlist.o ./core/osal/ut_assert/src/utstubs.o ./core/osal/ut_assert/src/uttest.o ./core/osal/ut_assert/src/uttools.o  ./core/osal/src/dl/libs/libc/symtab/symtab_findbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_findbyvalue.o ./core/osal/src/dl/libs/libc/symtab/symtab_findorderedbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_sortbyname.o  ./core/osal/src/dl/libs/libc/queue/dq_addafter.o ./core/osal/src/dl/libs/libc/queue/dq_addbefore.o ./core/osal/src/dl/libs/libc/queue/dq_addfirst.o ./core/osal/src/dl/libs/libc/queue/dq_addlast.o ./core/osal/src/dl/libs/libc/queue/dq_cat.o ./core/osal/src/dl/libs/libc/queue/dq_count.o ./core/osal/src/dl/libs/libc/queue/dq_rem.o ./core/osal/src/dl/libs/libc/queue/dq_remfirst.o ./core/osal/src/dl/libs/libc/queue/dq_remlast.o ./core/osal/src/dl/libs/libc/queue/sq_addafter.o ./core/osal/src/dl/libs/libc/queue/sq_addfirst.o ./core/osal/src/dl/libs/libc/queue/sq_addlast.o ./core/osal/src/dl/libs/libc/queue/sq_cat.o ./core/osal/src/dl/libs/libc/queue/sq_count.o ./core/osal/src/dl/libs/libc/queue/sq_rem.o ./core/osal/src/dl/libs/libc/queue/sq_remafter.o ./core/osal/src/dl/libs/libc/queue/sq_remfirst.o ./core/osal/src/dl/libs/libc/queue/sq_remlast.o  ./core/osal/src/dl/libs/libc/machine/arm/armv7-r/arch_elf.o  ./core/osal/src/dl/binfmt/libelf/libelf_addrenv.o ./core/osal/src/dl/binfmt/libelf/libelf_bind.o ./core/osal/src/dl/binfmt/libelf/libelf_ctors.o ./core/osal/src/dl/binfmt/libelf/libelf_dtors.o ./core/osal/src/dl/binfmt/libelf/libelf_init.o ./core/osal/src/dl/binfmt/libelf/libelf_iobuffer.o ./core/osal/src/dl/binfmt/libelf/libelf_load.o ./core/osal/src/dl/binfmt/libelf/libelf_read.o ./core/osal/src/dl/binfmt/libelf/libelf_sections.o ./core/osal/src/dl/binfmt/libelf/libelf_symbols.o ./core/osal/src/dl/binfmt/libelf/libelf_uninit.o ./core/osal/src/dl/binfmt/libelf/libelf_unload.o ./core/osal/src/dl/binfmt/libelf/libelf_verify.o  ./core/osal/src/dl/binfmt/binfmt_globals.o ./core/osal/src/dl/binfmt/binfmt_initialize.o ./core/osal/src/dl/binfmt/binfmt_loadmodule.o ./core/osal/src/dl/binfmt/binfmt_register.o ./core/osal/src/dl/binfmt/binfmt_unregister.o ./core/osal/src/dl/binfmt/elf.o  ./core/osal/src/dl/untar.o  ./core/osal/src/osapi.o ./core/osal/src/osfileapi.o ./core/osal/src/osfilesys.o ./core/osal/src/osloader.o ./core/osal/src/osnetwork.o ./core/osal/src/osrtm.o ./core/osal/src/ostimer.o   -Wl,--start-group,-lxil,-lfreertos,-lgcc,-lc,-lstdc++,--end-group -Wl,--start-group,-lxil,-lmetal,-lgcc,-lc,--end-group -Wl,--start-group,-lxil,-lmetal,-lopen_amp,-lgcc,-lc,--end-group -Wl,--start-group,-lxilffs,-lxil,-lgcc,-lc,--end-group -lxilflash -Wl,--start-group,-lxilfpga,-lxil,-lxilsecure,-lgcc,-lc,--end-group -Wl,--start-group,-lxilpm,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilsecure,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilskey,-lxil,-lgcc,-lc,--end-group
+Finished building target: loader-test.elf
+ 
+Invoking: ARM R5 Print Size
+armr5-none-eabi-size loader-test.elf  |tee "loader-test.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 260752	  27652	1725744	2014148	 1ebbc4	loader-test.elf
+Finished building: loader-test.elf.size
+ 
+23:34:28 **** Incremental Build of configuration Debug for project loader-test ****
+make all 
+make: Nothing to be done for 'all'.
+23:36:11 **** Auto Build of configuration Debug for project loader-test ****
+make all 
+Building file: /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c
+Invoking: ARM R5 g++ compiler
+armr5-none-eabi-gcc -DARMR5 -Wall -O0 -g3 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -I"/home/mbenson/git/airliner/core/osal/inc" -I"/home/mbenson/git/airliner/core/osal/ut_assert/inc" -I"/home/mbenson/git/airliner/config/zynqmp/inc" -I"/home/mbenson/git/airliner/config/shared/inc" -I/home/mbenson/git/airliner/core/osal/src/os/freertos -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/libs/libxx -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/libs/libc -c -fmessage-length=0 -MT"core/osal/src/dl/binfmt/libelf/libelf_bind.o" -mcpu=cortex-r5 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -MMD -MP -MF"core/osal/src/dl/binfmt/libelf/libelf_bind.d" -MT"core/osal/src/dl/binfmt/libelf/libelf_bind.o" -o "core/osal/src/dl/binfmt/libelf/libelf_bind.o" "/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c"
+In file included from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:49:0:
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c: In function 'elf_relocate':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:5:33: warning: implicit declaration of function 'pvPortMalloc'; did you mean 'realloc'? [-Wimplicit-function-declaration]
+ #define kmm_malloc(s)           pvPortMalloc(s)
+                                 ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:166:22: note: in expansion of macro 'kmm_malloc'
+   rels = (Elf32_Rel*)kmm_malloc(size);
+                      ^~~~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:7:33: warning: implicit declaration of function 'vPortFree' [-Wimplicit-function-declaration]
+ #define kmm_free(s)             vPortFree(s)
+                                 ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:253:15: note: in expansion of macro 'kmm_free'
+               kmm_free(cache);
+               ^~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c: In function 'elf_bind':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:439:19: warning: implicit declaration of function 'elf_symname'; did you mean 'elf_symvalue'? [-Wimplicit-function-declaration]
+          status = elf_symname(loadinfo, &sym);
+                   ^~~~~~~~~~~
+                   elf_symvalue
+In file included from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:49:0:
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:442:77: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
+                 exports[*nexports].sym_name = (Elf32_Rel*)kmm_malloc(strlen(loadinfo->iobuffer));
+                                                                             ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:5:46: note: in definition of macro 'kmm_malloc'
+ #define kmm_malloc(s)           pvPortMalloc(s)
+                                              ^
+In file included from /opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:10:0,
+                 from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:43:
+/opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:37:9: note: expected 'const char *' but argument is of type 'uint8_t * {aka unsigned char *}'
+ size_t  _EXFUN(strlen,(const char *));
+         ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:442:45: warning: assignment from incompatible pointer type [-Wincompatible-pointer-types]
+                 exports[*nexports].sym_name = (Elf32_Rel*)kmm_malloc(strlen(loadinfo->iobuffer));
+                                             ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:449:53: warning: pointer targets in passing argument 2 of 'strcpy' differ in signedness [-Wpointer-sign]
+                 strcpy(exports[*nexports].sym_name, loadinfo->iobuffer);
+                                                     ^~~~~~~~
+In file included from /opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:10:0,
+                 from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:43:
+/opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:34:8: note: expected 'const char * restrict' but argument is of type 'uint8_t * {aka unsigned char *}'
+ char  *_EXFUN(strcpy,(char *__restrict, const char *__restrict));
+        ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:450:46: warning: assignment makes pointer from integer without a cast [-Wint-conversion]
+                 exports[*nexports].sym_value = sym.st_value;
+                                              ^
+Finished building: /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c
+ 
+Building target: loader-test.elf
+Invoking: ARM R5 g++ linker
+armr5-none-eabi-gcc -Wl,-T -Wl,../../../../../core/psp/fsw/zynqmp_r5/src/lscript.ld -L../../freertos10_r5_0_bsp/psu_cortexr5_0/lib -o "loader-test.elf"  ./core/psp/ut_bsp/bsp_ut.o  ./core/psp/src/cfe_psp_voltab.o  ./core/osal/ut_src/CFS_LIB.o ./core/osal/ut_src/loader-test.o ./core/osal/ut_src/testDir1.o  ./core/osal/ut_assert/src/utassert.o ./core/osal/ut_assert/src/utlist.o ./core/osal/ut_assert/src/utstubs.o ./core/osal/ut_assert/src/uttest.o ./core/osal/ut_assert/src/uttools.o  ./core/osal/src/dl/libs/libc/symtab/symtab_findbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_findbyvalue.o ./core/osal/src/dl/libs/libc/symtab/symtab_findorderedbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_sortbyname.o  ./core/osal/src/dl/libs/libc/queue/dq_addafter.o ./core/osal/src/dl/libs/libc/queue/dq_addbefore.o ./core/osal/src/dl/libs/libc/queue/dq_addfirst.o ./core/osal/src/dl/libs/libc/queue/dq_addlast.o ./core/osal/src/dl/libs/libc/queue/dq_cat.o ./core/osal/src/dl/libs/libc/queue/dq_count.o ./core/osal/src/dl/libs/libc/queue/dq_rem.o ./core/osal/src/dl/libs/libc/queue/dq_remfirst.o ./core/osal/src/dl/libs/libc/queue/dq_remlast.o ./core/osal/src/dl/libs/libc/queue/sq_addafter.o ./core/osal/src/dl/libs/libc/queue/sq_addfirst.o ./core/osal/src/dl/libs/libc/queue/sq_addlast.o ./core/osal/src/dl/libs/libc/queue/sq_cat.o ./core/osal/src/dl/libs/libc/queue/sq_count.o ./core/osal/src/dl/libs/libc/queue/sq_rem.o ./core/osal/src/dl/libs/libc/queue/sq_remafter.o ./core/osal/src/dl/libs/libc/queue/sq_remfirst.o ./core/osal/src/dl/libs/libc/queue/sq_remlast.o  ./core/osal/src/dl/libs/libc/machine/arm/armv7-r/arch_elf.o  ./core/osal/src/dl/binfmt/libelf/libelf_addrenv.o ./core/osal/src/dl/binfmt/libelf/libelf_bind.o ./core/osal/src/dl/binfmt/libelf/libelf_ctors.o ./core/osal/src/dl/binfmt/libelf/libelf_dtors.o ./core/osal/src/dl/binfmt/libelf/libelf_init.o ./core/osal/src/dl/binfmt/libelf/libelf_iobuffer.o ./core/osal/src/dl/binfmt/libelf/libelf_load.o ./core/osal/src/dl/binfmt/libelf/libelf_read.o ./core/osal/src/dl/binfmt/libelf/libelf_sections.o ./core/osal/src/dl/binfmt/libelf/libelf_symbols.o ./core/osal/src/dl/binfmt/libelf/libelf_uninit.o ./core/osal/src/dl/binfmt/libelf/libelf_unload.o ./core/osal/src/dl/binfmt/libelf/libelf_verify.o  ./core/osal/src/dl/binfmt/binfmt_globals.o ./core/osal/src/dl/binfmt/binfmt_initialize.o ./core/osal/src/dl/binfmt/binfmt_loadmodule.o ./core/osal/src/dl/binfmt/binfmt_register.o ./core/osal/src/dl/binfmt/binfmt_unregister.o ./core/osal/src/dl/binfmt/elf.o  ./core/osal/src/dl/untar.o  ./core/osal/src/osapi.o ./core/osal/src/osfileapi.o ./core/osal/src/osfilesys.o ./core/osal/src/osloader.o ./core/osal/src/osnetwork.o ./core/osal/src/osrtm.o ./core/osal/src/ostimer.o   -Wl,--start-group,-lxil,-lfreertos,-lgcc,-lc,-lstdc++,--end-group -Wl,--start-group,-lxil,-lmetal,-lgcc,-lc,--end-group -Wl,--start-group,-lxil,-lmetal,-lopen_amp,-lgcc,-lc,--end-group -Wl,--start-group,-lxilffs,-lxil,-lgcc,-lc,--end-group -lxilflash -Wl,--start-group,-lxilfpga,-lxil,-lxilsecure,-lgcc,-lc,--end-group -Wl,--start-group,-lxilpm,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilsecure,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilskey,-lxil,-lgcc,-lc,--end-group
+Finished building target: loader-test.elf
+ 
+Invoking: ARM R5 Print Size
+armr5-none-eabi-size loader-test.elf  |tee "loader-test.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 260768	  27652	1725744	2014164	 1ebbd4	loader-test.elf
+Finished building: loader-test.elf.size
+ 
+23:36:23 **** Incremental Build of configuration Debug for project loader-test ****
+make all 
+make: Nothing to be done for 'all'.
+23:40:27 **** Auto Build of configuration Debug for project loader-test ****
+make all 
+Building file: /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c
+Invoking: ARM R5 g++ compiler
+armr5-none-eabi-gcc -DARMR5 -Wall -O0 -g3 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -I"/home/mbenson/git/airliner/core/osal/inc" -I"/home/mbenson/git/airliner/core/osal/ut_assert/inc" -I"/home/mbenson/git/airliner/config/zynqmp/inc" -I"/home/mbenson/git/airliner/config/shared/inc" -I/home/mbenson/git/airliner/core/osal/src/os/freertos -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/libs/libxx -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/libs/libc -c -fmessage-length=0 -MT"core/osal/src/dl/binfmt/libelf/libelf_bind.o" -mcpu=cortex-r5 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -MMD -MP -MF"core/osal/src/dl/binfmt/libelf/libelf_bind.d" -MT"core/osal/src/dl/binfmt/libelf/libelf_bind.o" -o "core/osal/src/dl/binfmt/libelf/libelf_bind.o" "/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c"
+In file included from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:49:0:
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c: In function 'elf_relocate':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:5:33: warning: implicit declaration of function 'pvPortMalloc'; did you mean 'realloc'? [-Wimplicit-function-declaration]
+ #define kmm_malloc(s)           pvPortMalloc(s)
+                                 ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:166:22: note: in expansion of macro 'kmm_malloc'
+   rels = (Elf32_Rel*)kmm_malloc(size);
+                      ^~~~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:7:33: warning: implicit declaration of function 'vPortFree' [-Wimplicit-function-declaration]
+ #define kmm_free(s)             vPortFree(s)
+                                 ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:253:15: note: in expansion of macro 'kmm_free'
+               kmm_free(cache);
+               ^~~~~~~~
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c: In function 'elf_bind':
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:439:42: warning: assignment makes pointer from integer without a cast [-Wint-conversion]
+             exports[*nexports].sym_value = sym.st_value;
+                                          ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:441:19: warning: implicit declaration of function 'elf_symname'; did you mean 'elf_symvalue'? [-Wimplicit-function-declaration]
+          status = elf_symname(loadinfo, &sym);
+                   ^~~~~~~~~~~
+                   elf_symvalue
+In file included from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:49:0:
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:444:77: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
+                 exports[*nexports].sym_name = (Elf32_Rel*)kmm_malloc(strlen(loadinfo->iobuffer));
+                                                                             ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include/nuttx/kmalloc.h:5:46: note: in definition of macro 'kmm_malloc'
+ #define kmm_malloc(s)           pvPortMalloc(s)
+                                              ^
+In file included from /opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:10:0,
+                 from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:43:
+/opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:37:9: note: expected 'const char *' but argument is of type 'uint8_t * {aka unsigned char *}'
+ size_t  _EXFUN(strlen,(const char *));
+         ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:444:45: warning: assignment from incompatible pointer type [-Wincompatible-pointer-types]
+                 exports[*nexports].sym_name = (Elf32_Rel*)kmm_malloc(strlen(loadinfo->iobuffer));
+                                             ^
+/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:451:53: warning: pointer targets in passing argument 2 of 'strcpy' differ in signedness [-Wpointer-sign]
+                 strcpy(exports[*nexports].sym_name, loadinfo->iobuffer);
+                                                     ^~~~~~~~
+In file included from /opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:10:0,
+                 from /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c:43:
+/opt/Xilinx/SDK/2018.3/gnu/armr5/lin/gcc-arm-none-eabi/arm-none-eabi/include/string.h:34:8: note: expected 'const char * restrict' but argument is of type 'uint8_t * {aka unsigned char *}'
+ char  *_EXFUN(strcpy,(char *__restrict, const char *__restrict));
+        ^
+Finished building: /home/mbenson/git/airliner/core/osal/src/os/freertos/dl/binfmt/libelf/libelf_bind.c
+ 
+Building target: loader-test.elf
+Invoking: ARM R5 g++ linker
+armr5-none-eabi-gcc -Wl,-T -Wl,../../../../../core/psp/fsw/zynqmp_r5/src/lscript.ld -L../../freertos10_r5_0_bsp/psu_cortexr5_0/lib -o "loader-test.elf"  ./core/psp/ut_bsp/bsp_ut.o  ./core/psp/src/cfe_psp_voltab.o  ./core/osal/ut_src/CFS_LIB.o ./core/osal/ut_src/loader-test.o ./core/osal/ut_src/testDir1.o  ./core/osal/ut_assert/src/utassert.o ./core/osal/ut_assert/src/utlist.o ./core/osal/ut_assert/src/utstubs.o ./core/osal/ut_assert/src/uttest.o ./core/osal/ut_assert/src/uttools.o  ./core/osal/src/dl/libs/libc/symtab/symtab_findbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_findbyvalue.o ./core/osal/src/dl/libs/libc/symtab/symtab_findorderedbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_sortbyname.o  ./core/osal/src/dl/libs/libc/queue/dq_addafter.o ./core/osal/src/dl/libs/libc/queue/dq_addbefore.o ./core/osal/src/dl/libs/libc/queue/dq_addfirst.o ./core/osal/src/dl/libs/libc/queue/dq_addlast.o ./core/osal/src/dl/libs/libc/queue/dq_cat.o ./core/osal/src/dl/libs/libc/queue/dq_count.o ./core/osal/src/dl/libs/libc/queue/dq_rem.o ./core/osal/src/dl/libs/libc/queue/dq_remfirst.o ./core/osal/src/dl/libs/libc/queue/dq_remlast.o ./core/osal/src/dl/libs/libc/queue/sq_addafter.o ./core/osal/src/dl/libs/libc/queue/sq_addfirst.o ./core/osal/src/dl/libs/libc/queue/sq_addlast.o ./core/osal/src/dl/libs/libc/queue/sq_cat.o ./core/osal/src/dl/libs/libc/queue/sq_count.o ./core/osal/src/dl/libs/libc/queue/sq_rem.o ./core/osal/src/dl/libs/libc/queue/sq_remafter.o ./core/osal/src/dl/libs/libc/queue/sq_remfirst.o ./core/osal/src/dl/libs/libc/queue/sq_remlast.o  ./core/osal/src/dl/libs/libc/machine/arm/armv7-r/arch_elf.o  ./core/osal/src/dl/binfmt/libelf/libelf_addrenv.o ./core/osal/src/dl/binfmt/libelf/libelf_bind.o ./core/osal/src/dl/binfmt/libelf/libelf_ctors.o ./core/osal/src/dl/binfmt/libelf/libelf_dtors.o ./core/osal/src/dl/binfmt/libelf/libelf_init.o ./core/osal/src/dl/binfmt/libelf/libelf_iobuffer.o ./core/osal/src/dl/binfmt/libelf/libelf_load.o ./core/osal/src/dl/binfmt/libelf/libelf_read.o ./core/osal/src/dl/binfmt/libelf/libelf_sections.o ./core/osal/src/dl/binfmt/libelf/libelf_symbols.o ./core/osal/src/dl/binfmt/libelf/libelf_uninit.o ./core/osal/src/dl/binfmt/libelf/libelf_unload.o ./core/osal/src/dl/binfmt/libelf/libelf_verify.o  ./core/osal/src/dl/binfmt/binfmt_globals.o ./core/osal/src/dl/binfmt/binfmt_initialize.o ./core/osal/src/dl/binfmt/binfmt_loadmodule.o ./core/osal/src/dl/binfmt/binfmt_register.o ./core/osal/src/dl/binfmt/binfmt_unregister.o ./core/osal/src/dl/binfmt/elf.o  ./core/osal/src/dl/untar.o  ./core/osal/src/osapi.o ./core/osal/src/osfileapi.o ./core/osal/src/osfilesys.o ./core/osal/src/osloader.o ./core/osal/src/osnetwork.o ./core/osal/src/osrtm.o ./core/osal/src/ostimer.o   -Wl,--start-group,-lxil,-lfreertos,-lgcc,-lc,-lstdc++,--end-group -Wl,--start-group,-lxil,-lmetal,-lgcc,-lc,--end-group -Wl,--start-group,-lxil,-lmetal,-lopen_amp,-lgcc,-lc,--end-group -Wl,--start-group,-lxilffs,-lxil,-lgcc,-lc,--end-group -lxilflash -Wl,--start-group,-lxilfpga,-lxil,-lxilsecure,-lgcc,-lc,--end-group -Wl,--start-group,-lxilpm,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilsecure,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilskey,-lxil,-lgcc,-lc,--end-group
+Finished building target: loader-test.elf
+ 
+Invoking: ARM R5 Print Size
+armr5-none-eabi-size loader-test.elf  |tee "loader-test.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 260768	  27652	1725744	2014164	 1ebbd4	loader-test.elf
+Finished building: loader-test.elf.size
+ 
+23:40:33 **** Incremental Build of configuration Debug for project loader-test ****
+make all 
+make: Nothing to be done for 'all'.
+23:53:55 **** Auto Build of configuration Debug for project loader-test ****
+make all 
+Building file: /home/mbenson/git/airliner/core/osal/src/os/freertos/unit_tests/CFS_LIB.c
+Invoking: ARM R5 g++ compiler
+armr5-none-eabi-gcc -DARMR5 -Wall -O0 -g3 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -I"/home/mbenson/git/airliner/core/osal/inc" -I"/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include" -I"/home/mbenson/git/airliner/core/osal/ut_assert/inc" -I"/home/mbenson/git/airliner/config/zynqmp/inc" -I"/home/mbenson/git/airliner/config/shared/inc" -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/include -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/libs/libxx -I/home/mbenson/git/airliner/core/osal/src/os/freertos/dl/libs/libc -c -fmessage-length=0 -MT"core/osal/ut_src/CFS_LIB.o" -mcpu=cortex-r5 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -MMD -MP -MF"core/osal/ut_src/CFS_LIB.d" -MT"core/osal/ut_src/CFS_LIB.o" -o "core/osal/ut_src/CFS_LIB.o" "/home/mbenson/git/airliner/core/osal/src/os/freertos/unit_tests/CFS_LIB.c"
+Finished building: /home/mbenson/git/airliner/core/osal/src/os/freertos/unit_tests/CFS_LIB.c
+ 
+Building target: loader-test.elf
+Invoking: ARM R5 g++ linker
+armr5-none-eabi-gcc -Wl,-T -Wl,../../../../../core/psp/fsw/zynqmp_r5/src/lscript.ld -L../../freertos10_r5_0_bsp/psu_cortexr5_0/lib -o "loader-test.elf"  ./core/psp/ut_bsp/bsp_ut.o  ./core/psp/src/cfe_psp_voltab.o  ./core/osal/ut_src/CFS_LIB.o ./core/osal/ut_src/loader-test.o ./core/osal/ut_src/testDir1.o  ./core/osal/ut_assert/src/utassert.o ./core/osal/ut_assert/src/utlist.o ./core/osal/ut_assert/src/utstubs.o ./core/osal/ut_assert/src/uttest.o ./core/osal/ut_assert/src/uttools.o  ./core/osal/src/dl/libs/libc/symtab/symtab_findbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_findbyvalue.o ./core/osal/src/dl/libs/libc/symtab/symtab_findorderedbyname.o ./core/osal/src/dl/libs/libc/symtab/symtab_sortbyname.o  ./core/osal/src/dl/libs/libc/queue/dq_addafter.o ./core/osal/src/dl/libs/libc/queue/dq_addbefore.o ./core/osal/src/dl/libs/libc/queue/dq_addfirst.o ./core/osal/src/dl/libs/libc/queue/dq_addlast.o ./core/osal/src/dl/libs/libc/queue/dq_cat.o ./core/osal/src/dl/libs/libc/queue/dq_count.o ./core/osal/src/dl/libs/libc/queue/dq_rem.o ./core/osal/src/dl/libs/libc/queue/dq_remfirst.o ./core/osal/src/dl/libs/libc/queue/dq_remlast.o ./core/osal/src/dl/libs/libc/queue/sq_addafter.o ./core/osal/src/dl/libs/libc/queue/sq_addfirst.o ./core/osal/src/dl/libs/libc/queue/sq_addlast.o ./core/osal/src/dl/libs/libc/queue/sq_cat.o ./core/osal/src/dl/libs/libc/queue/sq_count.o ./core/osal/src/dl/libs/libc/queue/sq_rem.o ./core/osal/src/dl/libs/libc/queue/sq_remafter.o ./core/osal/src/dl/libs/libc/queue/sq_remfirst.o ./core/osal/src/dl/libs/libc/queue/sq_remlast.o  ./core/osal/src/dl/libs/libc/machine/arm/armv7-r/arch_elf.o  ./core/osal/src/dl/binfmt/libelf/libelf_addrenv.o ./core/osal/src/dl/binfmt/libelf/libelf_bind.o ./core/osal/src/dl/binfmt/libelf/libelf_ctors.o ./core/osal/src/dl/binfmt/libelf/libelf_dtors.o ./core/osal/src/dl/binfmt/libelf/libelf_init.o ./core/osal/src/dl/binfmt/libelf/libelf_iobuffer.o ./core/osal/src/dl/binfmt/libelf/libelf_load.o ./core/osal/src/dl/binfmt/libelf/libelf_read.o ./core/osal/src/dl/binfmt/libelf/libelf_sections.o ./core/osal/src/dl/binfmt/libelf/libelf_symbols.o ./core/osal/src/dl/binfmt/libelf/libelf_uninit.o ./core/osal/src/dl/binfmt/libelf/libelf_unload.o ./core/osal/src/dl/binfmt/libelf/libelf_verify.o  ./core/osal/src/dl/binfmt/binfmt_globals.o ./core/osal/src/dl/binfmt/binfmt_initialize.o ./core/osal/src/dl/binfmt/binfmt_loadmodule.o ./core/osal/src/dl/binfmt/binfmt_register.o ./core/osal/src/dl/binfmt/binfmt_unregister.o ./core/osal/src/dl/binfmt/elf.o  ./core/osal/src/dl/untar.o  ./core/osal/src/osapi.o ./core/osal/src/osfileapi.o ./core/osal/src/osfilesys.o ./core/osal/src/osloader.o ./core/osal/src/osnetwork.o ./core/osal/src/osrtm.o ./core/osal/src/ostimer.o   -Wl,--start-group,-lxil,-lfreertos,-lgcc,-lc,-lstdc++,--end-group -Wl,--start-group,-lxil,-lmetal,-lgcc,-lc,--end-group -Wl,--start-group,-lxil,-lmetal,-lopen_amp,-lgcc,-lc,--end-group -Wl,--start-group,-lxilffs,-lxil,-lgcc,-lc,--end-group -lxilflash -Wl,--start-group,-lxilfpga,-lxil,-lxilsecure,-lgcc,-lc,--end-group -Wl,--start-group,-lxilpm,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilsecure,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilskey,-lxil,-lgcc,-lc,--end-group
+Finished building target: loader-test.elf
+ 
+Invoking: ARM R5 Print Size
+armr5-none-eabi-size loader-test.elf  |tee "loader-test.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 260768	  27652	1725744	2014164	 1ebbd4	loader-test.elf
+Finished building: loader-test.elf.size
+ 
+23:53:59 **** Incremental Build of configuration Debug for project loader-test ****
+make all 
+make: Nothing to be done for 'all'.
+23:54:50 **** Incremental Build of configuration Debug for project loader-test ****
+make all 
+make: Nothing to be done for 'all'.

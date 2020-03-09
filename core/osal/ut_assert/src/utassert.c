@@ -25,6 +25,11 @@
 **
 */
 
+#if defined(__cplusplus)
+extern "C"
+{
+#endif
+
 /*
  * Includes
  */
@@ -148,3 +153,7 @@ void UtAssert_Message(uint8 MessageType, const char *File, uint32 Line, const ch
 
     UT_BSP_DoText(MessageType, FinalMessage);
 }
+
+#if defined(__cplusplus)
+}
+#endif

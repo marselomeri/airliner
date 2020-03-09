@@ -1,0 +1,12 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "ff.h"
+
+
+static int parseoct(const char *p, size_t n);
+static int is_end_of_archive(const char *p);
+static void create_dir(char *pathname);
+static FIL create_file(char *pathname);
+static int verify_checksum(const char *p);
+static void untar(char *srcBuf, unsigned int srcSize, const char *path);

@@ -90,8 +90,10 @@ void task_2(void)
 {
     uint32             status;
 
+    OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
     OS_printf("Starting task 2\n");
     OS_TaskRegister();
+    OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
 
     while (1)
     {
@@ -218,53 +220,85 @@ void MutexSetup(void)
    /*
    ** Create the mutex 
    */
+   OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
    status = OS_MutSemCreate( &mut_sem_id, "MutSem1", 0);
+   OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
    UtAssert_True(status == OS_SUCCESS, "MutSem1 create Id=%u Rc=%d", (unsigned int)mut_sem_id, (int)status);
+   OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
 
    /*
    ** Test the mutex to see if it supports nesting 
    */
+   OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
    status = OS_MutSemTake(mut_sem_id);
+   OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
    UtAssert_True(status == OS_SUCCESS, "OS_MutSemTake 1 Rc=%d", (int)status);
+   OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
 
+   OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
    status = OS_MutSemTake(mut_sem_id);
+   OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
    UtAssert_True(status == OS_SUCCESS, "OS_MutSemTake 2 Rc=%d", (int)status);
+   OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
 
+   OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
    status = OS_MutSemGive(mut_sem_id);
+   OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
    UtAssert_True(status == OS_SUCCESS, "OS_MutSemGive 2 Rc=%d", (int)status);
+   OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
 
+   OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
    status = OS_MutSemGive(mut_sem_id);
+   OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
    UtAssert_True(status == OS_SUCCESS, "OS_MutSemGive 1 Rc=%d", (int)status);
+   OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
 
    /*
    ** Create the tasks
    */
+   OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
    status = OS_TaskCreate( &task_1_id, "Task 1", task_1, task_1_stack, TASK_STACK_SIZE, TASK_1_PRIORITY, 0);
+   OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
    UtAssert_True(status == OS_SUCCESS, "Task 1 create Id=%u Rc=%d", (unsigned int)task_1_id, (int)status);
+   OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
 
+   OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
    status = OS_TaskCreate( &task_2_id, "Task 2", task_2, task_2_stack, TASK_STACK_SIZE, TASK_2_PRIORITY, 0);
+   OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
    UtAssert_True(status == OS_SUCCESS, "Task 2 create Id=%u Rc=%d", (unsigned int)task_2_id, (int)status);
- 
+   OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
+
+   OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
    status = OS_TaskCreate( &task_3_id, "Task 3", task_3, task_3_stack, TASK_STACK_SIZE, TASK_3_PRIORITY, 0);
+   OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
    UtAssert_True(status == OS_SUCCESS, "Task 3 create Id=%u Rc=%d", (unsigned int)task_3_id, (int)status);
+   OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
 
    /*
     * Time limited execution
     */
    while (counter < 100)
    {
+	    OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
       OS_TaskDelay(100);
    }
 
    /*
     * Delete the tasks
     */
+   OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
    status = OS_TaskDelete(task_1_id);
+   OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
    UtAssert_True(status == OS_SUCCESS, "Task 1 delete Rc=%d", (int)status);
+   OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
    status = OS_TaskDelete(task_2_id);
+   OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
    UtAssert_True(status == OS_SUCCESS, "Task 2 delete Rc=%d", (int)status);
+   OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
    status = OS_TaskDelete(task_3_id);
+   OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
    UtAssert_True(status == OS_SUCCESS, "Task 3 delete Rc=%d", (int)status);
+   OS_printf("%s:%u\n", __FUNCTION__, __LINE__);
 }
 
 void MutexCheck(void)

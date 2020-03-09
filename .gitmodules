@@ -7,3 +7,9 @@
 [submodule "tools/jmavsim"]
 	path = tools/jmavsim
 	url = https://github.com/WindhoverLabs/jMAVSim.git
+[submodule "rtems/rtems"]
+	path = rtems/rtems
+	url = https://github.com/WindhoverLabs/rtems.git
+[submodule "rtems/rtems-source-builder"]
+	path = rtems/rtems-source-builder
+	url = https://github.com/WindhoverLabs/rtems-source-builder.git

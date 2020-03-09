@@ -1,0 +1,36 @@
+18:05:19 **** Auto Build of configuration Debug for project xilffs_example ****
+make all 
+Building file: ../src/xilffs_polled_example.c
+Invoking: ARM R5 gcc compiler
+armr5-none-eabi-gcc -DARMR5 -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/xilffs_polled_example.o" -mcpu=cortex-r5 -I../../freertos10_r5_0_bsp/psu_cortexr5_0/include -MMD -MP -MF"src/xilffs_polled_example.d" -MT"src/xilffs_polled_example.o" -o "src/xilffs_polled_example.o" "../src/xilffs_polled_example.c"
+../src/xilffs_polled_example.c:141:6: warning: return type of 'main' is not 'int' [-Wmain]
+ void main(void)
+      ^~~~
+In file included from ../../freertos10_r5_0_bsp/psu_cortexr5_0/include/xsdps.h:164:0,
+                 from ../src/xilffs_polled_example.c:67:
+../src/xilffs_polled_example.c: In function 'main':
+../../freertos10_r5_0_bsp/psu_cortexr5_0/include/xstatus.h:61:41: warning: 'return' with a value, in function returning void
+ #define XST_FAILURE                     1L
+                                         ^
+../src/xilffs_polled_example.c:152:10: note: in expansion of macro 'XST_FAILURE'
+   return XST_FAILURE;
+          ^~~~~~~~~~~
+../src/xilffs_polled_example.c:141:6: note: declared here
+ void main(void)
+      ^~~~
+Finished building: ../src/xilffs_polled_example.c
+ 
+Building target: xilffs_example.elf
+Invoking: ARM R5 gcc linker
+armr5-none-eabi-gcc -Wl,-T -Wl,../src/lscript.ld -L../../freertos10_r5_0_bsp/psu_cortexr5_0/lib -o "xilffs_example.elf"  ./src/xilffs_polled_example.o   -Wl,--start-group,-lxil,-lfreertos,-lgcc,-lc,--end-group -Wl,--start-group,-lxil,-lmetal,-lgcc,-lc,--end-group -Wl,--start-group,-lxil,-lmetal,-lopen_amp,-lgcc,-lc,--end-group -Wl,--start-group,-lxilffs,-lxil,-lgcc,-lc,--end-group -lxilflash -Wl,--start-group,-lxilfpga,-lxil,-lxilsecure,-lgcc,-lc,--end-group -Wl,--start-group,-lxilpm,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilsecure,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilskey,-lxil,-lgcc,-lc,--end-group
+Finished building target: xilffs_example.elf
+ 
+Invoking: ARM R5 Print Size
+armr5-none-eabi-size xilffs_example.elf  |tee "xilffs_example.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 149256	   4304	1046256	1199816	 124ec8	xilffs_example.elf
+Finished building: xilffs_example.elf.size
+ 
+
+18:05:20 Build Finished (took 516ms)
+

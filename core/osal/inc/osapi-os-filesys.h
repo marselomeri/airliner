@@ -122,8 +122,8 @@
 #define _osapi_filesys_
 #include <stdio.h>
 #include <stdlib.h>
-#include <dirent.h>
 #include <sys/stat.h>
+#include "osconfig.h"
 
 #define OS_READ_ONLY        0
 #define OS_WRITE_ONLY       1
@@ -235,8 +235,26 @@ typedef struct
  * applicable OSes use the posix calls */
 
 typedef struct stat         os_fstat_t;
-typedef DIR*                os_dirp_t;
-typedef struct dirent       os_dirent_t;
+
+typedef struct
+{
+	uint32 ID;
+} os_dir_t;
+
+typedef enum
+{
+	DT_FILE = 0,
+	DT_DIR  = 1
+} os_dt_t;
+
+typedef os_dir_t*           os_dirp_t;
+
+typedef struct
+{
+	char    d_name[OS_MAX_PATH_LEN];
+	os_dt_t d_type;
+} os_dirent_t;
+
 /* still don't know what this should be*/
 typedef unsigned long int   os_fshealth_t; 
 

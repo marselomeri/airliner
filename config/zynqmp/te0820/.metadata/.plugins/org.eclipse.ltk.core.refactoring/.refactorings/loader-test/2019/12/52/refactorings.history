@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;loader-test/core/osal/src/unit_tests/file-api-test.c&apos; to &apos;loader-test.c&apos;" description="Rename resource &apos;file-api-test.c&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="core/osal/src/unit_tests/file-api-test.c" name="loader-test.c" stamp="1577491592352" updateReferences="true"/>
+</session>
