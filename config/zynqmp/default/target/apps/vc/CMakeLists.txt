@@ -60,7 +60,7 @@ add_airliner_app_unit_test(vc-custom-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/vc_app_stubs/
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/vc_custom_shared_test/
         # Sealed code
-        ${PROJECT_SOURCE_DIR}/apps/vc/fsw/src/
+        $ENV{AIRLINER_ROOT}/apps/vc/fsw/src/
 
     WRAPPERS
         # Wrapped functions (see platform stubs)

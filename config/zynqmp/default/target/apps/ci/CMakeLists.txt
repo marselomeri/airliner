@@ -15,15 +15,15 @@ add_airliner_app_unit_test(ci-custom-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/ci_testrunner.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/ci_custom_test.c
 	    ${CMAKE_CURRENT_SOURCE_DIR}/ci_custom.c
-        ${PROJECT_SOURCE_DIR}/apps/ci/fsw/src/ci_app.c
-        ${PROJECT_SOURCE_DIR}/apps/ci/fsw/src/ci_config_utils.c
+        $ENV{AIRLINER_ROOT}/apps/ci/fsw/src/ci_app.c
+        $ENV{AIRLINER_ROOT}/apps/ci/fsw/src/ci_config_utils.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/ci_mock_os_calls.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/ci_test_utils.c
-        ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_es_hooks.c
-        ${PROJECT_SOURCE_DIR}/apps/pblib/fsw/src/pb_lib.c
+        $ENV{AIRLINER_ROOT}/tools/ut_assert/src/ut_cfe_es_hooks.c
+        $ENV{AIRLINER_ROOT}/apps/pblib/fsw/src/pb_lib.c
         
 	INCLUDES
-        ${PROJECT_SOURCE_DIR}/apps/ci/fsw/src/
+        $ENV{AIRLINER_ROOT}/apps/ci/fsw/src/
         
     WRAPPERS
         socket

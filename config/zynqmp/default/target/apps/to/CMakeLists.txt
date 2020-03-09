@@ -32,7 +32,7 @@ add_airliner_app_table(
 #    INCLUDES
 #        ${CMAKE_CURRENT_SOURCE_DIR}/
 #        ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/
-#        ${PROJECT_SOURCE_DIR}/apps/to/fsw/src
+#        $ENV{AIRLINER_ROOT}/apps/to/fsw/src
 #        
 #    WRAPPERS
 #        socket

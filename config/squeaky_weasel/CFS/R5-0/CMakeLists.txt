@@ -6,8 +6,8 @@ include($ENV{AIRLINER_ROOT}/airliner.cmake)
 # cross toolchain or has target independent functions.
 
 initialize_airliner_build(
-    PSP  ${PSP_TARGET_DIR}/pc-linux-wh
-    OSAL ${OSAL_TARGET_DIR}/posix-fast
+    PSP  ${PSP_TARGET_DIR}/zynqmp_r5
+    OSAL ${OSAL_TARGET_DIR}/freertos
     CORE_BINARY ${CMAKE_CURRENT_SOURCE_DIR}/airliner
     CORE_TOOLS ${CMAKE_CURRENT_SOURCE_DIR}/tools
     CONFIG

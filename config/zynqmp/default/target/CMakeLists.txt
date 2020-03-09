@@ -35,12 +35,12 @@ initialize_airliner_build(
 
 add_airliner_app(
     cfs_lib
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/cfs_lib/fsw/for_build
+    DEFINITION $ENV{AIRLINER_ROOT}/apps/cfs_lib/fsw/for_build
 )
 
 add_airliner_app(
     px4lib
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/px4lib/fsw/for_build
+    DEFINITION $ENV{AIRLINER_ROOT}/apps/px4lib/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/px4lib
     CONFIG_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/px4lib/px4lib_custom.c
@@ -49,19 +49,19 @@ add_airliner_app(
 
 add_airliner_app(
     pblib
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/pblib/fsw/for_build
+    DEFINITION $ENV{AIRLINER_ROOT}/apps/pblib/fsw/for_build
 )
 
 add_airliner_app(
     prmlib
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/prmlib/fsw/for_build
+    DEFINITION $ENV{AIRLINER_ROOT}/apps/prmlib/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/prm
     MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/prm/prm_custom_overrides.json
 )
 
 add_airliner_app(
     sch
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/sch/fsw/for_build
+    DEFINITION $ENV{AIRLINER_ROOT}/apps/sch/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/sch
     CONFIG_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/sch/sch_custom_rt.c
