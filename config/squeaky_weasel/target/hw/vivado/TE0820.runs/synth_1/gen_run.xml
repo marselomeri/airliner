@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenRun Id="synth_1" LaunchPart="xczu2cg-sfvc784-1-i" LaunchTime="1583516628">
+  <File Type="PA-TCL" Name="zusys_wrapper.tcl"/>
+  <File Type="REPORTS-TCL" Name="zusys_wrapper_reports.tcl"/>
+  <File Type="RDS-RDS" Name="zusys_wrapper.vds"/>
+  <File Type="RDS-UTIL" Name="zusys_wrapper_utilization_synth.rpt"/>
+  <File Type="RDS-UTIL-PB" Name="zusys_wrapper_utilization_synth.pb"/>
+  <File Type="RDS-DCP" Name="zusys_wrapper.dcp"/>
+  <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
+    <Filter Type="Srcs"/>
+    <File Path="$PSRCDIR/sources_1/bd/zusys/zusys.bd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/bd/zusys/hdl/zusys_wrapper.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/../vitis/SW_MB_0/Debug/SW_MB_0.elf">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="ScopedToRef" Val="zusys"/>
+        <Attr Name="ScopedToCell" Val="microblaze_0"/>
+        <Attr Name="IsVisible" Val="1"/>
+      </FileInfo>
+    </File>
+    <Config>
+      <Option Name="DesignMode" Val="RTL"/>
+      <Option Name="TopModule" Val="zusys_wrapper"/>
+      <Option Name="TopAutoSet" Val="TRUE"/>
+    </Config>
+  </FileSet>
+  <FileSet Name="constrs_in" Type="Constrs" RelSrcDir="$PSRCDIR/constrs_1">
+    <Filter Type="Constrs"/>
+    <File Path="$PPRDIR/../constraints/vivado_target.xdc">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/../constraints/_i_bitgen.xdc">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="implementation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/../constraints/_i_io.xdc">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="implementation"/>
+      </FileInfo>
+    </File>
+    <Config>
+      <Option Name="TargetConstrsFile" Val="$PPRDIR/../constraints/vivado_target.xdc"/>
+      <Option Name="ConstrsType" Val="XDC"/>
+    </Config>
+  </FileSet>
+  <FileSet Name="utils" Type="Utils" RelSrcDir="$PSRCDIR/utils_1">
+    <Filter Type="Utils"/>
+    <Config>
+      <Option Name="TopAutoSet" Val="TRUE"/>
+    </Config>
+  </FileSet>
+  <Strategy Version="1" Minor="2">
+    <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019"/>
+    <Step Id="synth_design"/>
+  </Strategy>
+  <BlockFileSet Type="BlockSrcs" Name="zusys_util_ds_buf_0_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="zusys_microblaze_0_axi_intc_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="zusys_microblaze_0_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="zusys_rst_ps8_0_99M_1"/>
+  <BlockFileSet Type="BlockSrcs" Name="zusys_axi_gpio_0_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="zusys_labtools_fmeter_0_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="zusys_vio_0_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="zusys_zynq_ultra_ps_e_0_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="zusys_ilmb_bram_if_cntlr_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="zusys_ilmb_v10_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="zusys_mdm_1_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="zusys_dlmb_bram_if_cntlr_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="zusys_lmb_bram_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="zusys_dlmb_v10_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="zusys_xbar_0"/>
+</GenRun>

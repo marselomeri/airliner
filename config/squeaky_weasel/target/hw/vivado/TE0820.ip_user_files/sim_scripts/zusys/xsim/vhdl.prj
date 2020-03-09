@@ -1,0 +1,18 @@
+vhdl xil_defaultlib  \
+"../../../../TE0820.srcs/sources_1/bd/zusys/ipshared/2bc4/labtools_fmeter.vhd" \
+"../../../bd/zusys/ip/zusys_labtools_fmeter_0_0/sim/zusys_labtools_fmeter_0_0.vhd" \
+"../../../bd/zusys/ip/zusys_util_ds_buf_0_0/util_ds_buf.vhd" \
+"../../../bd/zusys/ip/zusys_util_ds_buf_0_0/sim/zusys_util_ds_buf_0_0.vhd" \
+"../../../bd/zusys/ip/zusys_vio_0_0/sim/zusys_vio_0_0.vhd" \
+"../../../bd/zusys/sim/zusys.vhd" \
+"../../../bd/zusys/ip/zusys_axi_gpio_0_0/sim/zusys_axi_gpio_0_0.vhd" \
+"../../../bd/zusys/ip/zusys_rst_ps8_0_99M_1/sim/zusys_rst_ps8_0_99M_1.vhd" \
+"../../../bd/zusys/ip/zusys_microblaze_0_0/sim/zusys_microblaze_0_0.vhd" \
+"../../../bd/zusys/ip/zusys_dlmb_v10_0/sim/zusys_dlmb_v10_0.vhd" \
+"../../../bd/zusys/ip/zusys_ilmb_v10_0/sim/zusys_ilmb_v10_0.vhd" \
+"../../../bd/zusys/ip/zusys_dlmb_bram_if_cntlr_0/sim/zusys_dlmb_bram_if_cntlr_0.vhd" \
+"../../../bd/zusys/ip/zusys_ilmb_bram_if_cntlr_0/sim/zusys_ilmb_bram_if_cntlr_0.vhd" \
+"../../../bd/zusys/ip/zusys_microblaze_0_axi_intc_0/sim/zusys_microblaze_0_axi_intc_0.vhd" \
+"../../../bd/zusys/ip/zusys_mdm_1_0/sim/zusys_mdm_1_0.vhd" \
+
+nosort

@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<Runs Version="1" Minor="0">
+	<Run Id="zusys_rst_ps8_0_99M_1_synth_1" LaunchDir="C:/TE0820/vivado/TE0820.runs/zusys_rst_ps8_0_99M_1_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="zusys_axi_gpio_0_0_synth_1" LaunchDir="C:/TE0820/vivado/TE0820.runs/zusys_axi_gpio_0_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="zusys_vio_0_0_synth_1" LaunchDir="C:/TE0820/vivado/TE0820.runs/zusys_vio_0_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="zusys_labtools_fmeter_0_0_synth_1" LaunchDir="C:/TE0820/vivado/TE0820.runs/zusys_labtools_fmeter_0_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="zusys_util_ds_buf_0_0_synth_1" LaunchDir="C:/TE0820/vivado/TE0820.runs/zusys_util_ds_buf_0_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="zusys_zynq_ultra_ps_e_0_0_synth_1" LaunchDir="C:/TE0820/vivado/TE0820.runs/zusys_zynq_ultra_ps_e_0_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="zusys_microblaze_0_axi_intc_0_synth_1" LaunchDir="C:/TE0820/vivado/TE0820.runs/zusys_microblaze_0_axi_intc_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="zusys_ilmb_bram_if_cntlr_0_synth_1" LaunchDir="C:/TE0820/vivado/TE0820.runs/zusys_ilmb_bram_if_cntlr_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="zusys_ilmb_v10_0_synth_1" LaunchDir="C:/TE0820/vivado/TE0820.runs/zusys_ilmb_v10_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="zusys_dlmb_bram_if_cntlr_0_synth_1" LaunchDir="C:/TE0820/vivado/TE0820.runs/zusys_dlmb_bram_if_cntlr_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado" IsOrderedIPRun="true">
+		<Parent Id="zusys_ilmb_bram_if_cntlr_0_synth_1"/>
+	</Run>
+	<Run Id="zusys_mdm_1_0_synth_1" LaunchDir="C:/TE0820/vivado/TE0820.runs/zusys_mdm_1_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="zusys_lmb_bram_0_synth_1" LaunchDir="C:/TE0820/vivado/TE0820.runs/zusys_lmb_bram_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="zusys_dlmb_v10_0_synth_1" LaunchDir="C:/TE0820/vivado/TE0820.runs/zusys_dlmb_v10_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado" IsOrderedIPRun="true">
+		<Parent Id="zusys_ilmb_v10_0_synth_1"/>
+	</Run>
+	<Run Id="zusys_xbar_0_synth_1" LaunchDir="C:/TE0820/vivado/TE0820.runs/zusys_xbar_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="zusys_microblaze_0_0_synth_1" LaunchDir="C:/TE0820/vivado/TE0820.runs/zusys_microblaze_0_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="zusys_axi_quad_spi_0_1_synth_1" LaunchDir="C:/TE0820/vivado/TE0820.runs/zusys_axi_quad_spi_0_1_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="zusys_clk_wiz_1_synth_1" LaunchDir="C:/TE0820/vivado/TE0820.runs/zusys_clk_wiz_1_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="zusys_axi_iic_0_1_synth_1" LaunchDir="C:/TE0820/vivado/TE0820.runs/zusys_axi_iic_0_1_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="synth_1" LaunchDir="C:/TE0820/vivado/TE0820.runs/synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado">
+		<Parent Id="zusys_rst_ps8_0_99M_1_synth_1"/>
+		<Parent Id="zusys_axi_gpio_0_0_synth_1"/>
+		<Parent Id="zusys_vio_0_0_synth_1"/>
+		<Parent Id="zusys_labtools_fmeter_0_0_synth_1"/>
+		<Parent Id="zusys_util_ds_buf_0_0_synth_1"/>
+		<Parent Id="zusys_zynq_ultra_ps_e_0_0_synth_1"/>
+		<Parent Id="zusys_microblaze_0_axi_intc_0_synth_1"/>
+		<Parent Id="zusys_ilmb_bram_if_cntlr_0_synth_1"/>
+		<Parent Id="zusys_ilmb_v10_0_synth_1"/>
+		<Parent Id="zusys_dlmb_bram_if_cntlr_0_synth_1"/>
+		<Parent Id="zusys_mdm_1_0_synth_1"/>
+		<Parent Id="zusys_lmb_bram_0_synth_1"/>
+		<Parent Id="zusys_dlmb_v10_0_synth_1"/>
+		<Parent Id="zusys_xbar_0_synth_1"/>
+		<Parent Id="zusys_microblaze_0_0_synth_1"/>
+		<Parent Id="zusys_axi_quad_spi_0_1_synth_1"/>
+		<Parent Id="zusys_clk_wiz_1_synth_1"/>
+		<Parent Id="zusys_axi_iic_0_1_synth_1"/>
+	</Run>
+	<Parameters>
+		<Parameter Name="runs.monitorLSFJobs" Val="true" Type="bool"/>
+		<Parameter Name="runs.enableClusterConf" Val="true" Type="bool"/>
+	</Parameters>
+</Runs>
+
