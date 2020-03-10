@@ -1,0 +1,11 @@
+/* C:/Users/xilinx/AppData/Local/Temp/bootgen_SW_A53_011568904982389322446/sd_card_temp/boot.bif */
+/* Command to create bitstream .bin file:       */
+/*   bootgen -image <bif_file> -split bin -w    */
+/* Command to create BOOT.BIN file:             */
+/*   bootgen -arch zynqmp -image <bif_file> -w -o i BOOT.BIN */
+/*TE0820-03-02AI21FA*/
+the_ROM_image:
+{
+ [bootloader, destination_cpu=a53-0] C:/TE0820/vitis/TE0820-03-02AI21FA/export/TE0820-03-02AI21FA/sw/TE0820-03-02AI21FA/boot/fsbl.elf
+ [destination_cpu=a53-0, exception_level=el-3] C:/TE0820/vitis/SW_A53_0/Debug/SW_A53_0.elf
+}
