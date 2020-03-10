@@ -1,7 +1,0 @@
-//arch = zynqmp; split = false; format = BIN
-the_ROM_image:
-{
-	[bootloader, destination_cpu = a53-0]C:/TE0820/vitis/TE0820-03-02AI21FA/export/TE0820-03-02AI21FA/sw/TE0820-03-02AI21FA/boot/fsbl.elf
-	[destination_device = pl]C:\TE0820\vivado\TE0820.runs\impl_1\zusys_wrapper.bit
-	[destination_cpu = a53-0]C:/TE0820/vitis/SW_A53_0/Debug/SW_A53_0.elf
-}

@@ -1,8 +1,0 @@
--M
-microblaze-fdt
--device
-loader,file=<TE0820-03-02AI21FA/qemu/pmufw.elf>
--machine-path
-.
--display
-none
