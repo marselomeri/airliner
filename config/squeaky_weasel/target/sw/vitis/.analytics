@@ -1,2 +1,0 @@
-timestamp=[2020-03-09 19:08:44], mode=WORKBENCH_START, duration=0:00:04.194, duration_ms=4194, data={}
-timestamp=[2020-03-09 19:08:51], mode=WORKBENCH_UI_INIT, duration=0:00:07.760, duration_ms=7760, data={editors_count=0, platform_editors_count=0, projects_count=0, platform_projects_count=0, active_platform_editor=false, projects=}

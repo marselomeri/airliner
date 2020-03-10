@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ASCII"?>
+<sdkproject:SdkProject xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sdkproject="http://www.xilinx.com/sdkproject" name="SW_A53_0" location="C:/TE0820/vitis/SW_A53_0" platform="C:/TE0820/vitis/TE0820-03-02AI21FA/export/TE0820-03-02AI21FA/TE0820-03-02AI21FA.xpfm" platformUID="xilinx:te0820_2cg_1i::0.0(custom)" systemProject="SW_system" sysConfig="TE0820-03-02AI21FA" runtime="C/C++" cpu="standalone_domain" cpuInstance="psu_cortexa53_0" os="standalone" mssSignature="d18469d49610fb5f539457c91b6f03c3">
+  <configuration name="Debug" id="xilinx.gnu.arm.a53.exe.debug.13767042">
+    <configBuildOptions xsi:type="sdkproject:SdkOptions"/>
+    <lastBuildOptions xsi:type="sdkproject:SdkOptions"/>
+  </configuration>
+  <configuration name="Release" id="xilinx.gnu.arm.a53.exe.release.1144073140" dirty="true">
+    <configBuildOptions xsi:type="sdkproject:SdkOptions"/>
+  </configuration>
+  <template appTemplateName="hello_world"/>
+</sdkproject:SdkProject>
