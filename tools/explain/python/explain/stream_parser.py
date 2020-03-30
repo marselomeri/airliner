@@ -130,11 +130,10 @@ class CcsdsMixin(StreamParser, metaclass=ABCMeta):
     ccsds_map = ...  # type: SymbolMap
     msg_map = ...  # type: Dict[int, str]
 
-    def __init__(self, database, stream):
+    def __init__(self, database, stream, ccsds_map):
         super().__init__(database, stream)
         self.ccsds_map = SymbolMap.from_name(self.database, 'CCSDS_PriHdr_t')
-        with open(os.path.join(
-                os.path.dirname(__file__), 'ccsds_map.json')) as fp:
+        with open(ccsds_map) as fp:
             self.msg_map = {int(k, 0): v for k, v in json.load(fp).items()}
 
     def structures(self, offset=0):
@@ -160,8 +159,8 @@ class CcsdsMixin(StreamParser, metaclass=ABCMeta):
 class CfeStreamParser(StreamParser, metaclass=ABCMeta):
     """Assumes that the stream is a CFE stream, and looks for a CFE_FS_Header_t
     at the beginning of the stream."""
-    def __init__(self, database, stream):
-        super().__init__(database, stream)
+    def __init__(self, database, stream, ccsds_map):
+        super().__init__(database, stream, ccsds_map)
         self.cfe_map = SymbolMap.from_name(self.database, 'CFE_FS_Header_t')
         self.cfe_header = self.read_symbol(
             self.cfe_map, offset=0, little_endian=False)
@@ -175,8 +174,8 @@ class AirlinerStreamParser(CfeStreamParser, CcsdsMixin):
     """Assumes that the stream is for an Airliner log, and assumes that there is
     a XX_FileHeader_t after the CFE header, where XX is the name of the App that
     created the log."""
-    def __init__(self, database, stream, header_struct_name):
-        super().__init__(database, stream)
+    def __init__(self, database, stream, header_struct_name, ccsds_map):
+        super().__init__(database, stream, ccsds_map)
         self.header_map = SymbolMap.from_name(self.database, header_struct_name)
         self.header = self.read_symbol(
             self.header_map, offset=self.cfe_map['byte_size'])
@@ -193,9 +192,10 @@ def main():
     source.add_argument('--database', default=':memory:',
                         help='database to read from')
     source.add_argument('--elf', help='ELF file to dynamically load')
+    parser.add_argument('--ccsds', help='CCSDS input file')
     parser.add_argument('--csv', help='directory to put output csv files')
-    parser.add_argument('stream', help='stream (file) to parse')
-    parser.add_argument('file_struct', metavar='file-struct',
+    parser.add_argument('--stream', help='stream (file) to parse')
+    parser.add_argument('--file_struct', metavar='file-struct',
                         help='structure name that comes after '
                              'the CCSDS file header')
 
@@ -214,7 +214,7 @@ def main():
     if args.csv:
         path = os.path.join(path, args.csv)
 
-    stream_parser = AirlinerStreamParser(database, stream, args.file_struct)
+    stream_parser = AirlinerStreamParser(database, stream, args.file_struct, args.ccsds)
     start_time = time()
 
     def prog(s):
@@ -230,10 +230,18 @@ def main():
             name = symbol.symbol_map['name']
             flat = OrderedDict(symbol.flatten())
             if name not in csvs:
-                file = open(os.path.join(path, name + '.csv'), 'w')
-                fieldnames = flat.keys()
-                csv = writer(file)
-                csv.writerow(fieldnames)
+                # Check if the path already exists.  If it does, append but don't write the header. 
+                if os.path.exists(os.path.join(path, name + '.csv')):
+                    # This file already exists.  Append to it.
+                    file = open(os.path.join(path, name + '.csv'), 'a')
+                    csv = writer(file)
+                else:
+                    # This file does not yet exist.  Create it and write the header.
+                    file = open(os.path.join(path, name + '.csv'), 'w')
+                    fieldnames = flat.keys()
+                    csv = writer(file)
+                    csv.writerow(fieldnames)
+
                 csvs[name] = CsvFilePair(csv, file)
             csv = csvs[name].csv
             csv.writerow(flat.values())
