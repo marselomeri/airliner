@@ -1,0 +1,17 @@
+table.table.table-condensed
+  tbody
+    tr
+      th Cmd Count
+      td
+        div(data-cdr={tlm:[{name:'/CVT/CVT_HkTlm_t/usCmdCnt'}]}) ---
+    tr
+      th Error Count
+      td
+        div(data-cdr={tlm:[{name:'/CVT/CVT_HkTlm_t/usCmdErrCnt'}]}) ---
+              
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/CVT/Noop'}}) No-Op    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/CVT/Reset'}}) Reset    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/CVT/SendHk'}}) Send HK  
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/CVT/Wakeup'}}) Wakeup
+      
