@@ -1,8 +1,6 @@
 #ifndef CI_PLATFORM_CFG_H
 #define CI_PLATFORM_CFG_H
 
-#include "ci_app.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif

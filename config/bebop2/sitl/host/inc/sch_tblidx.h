@@ -87,8 +87,6 @@
 #define SENS_SEND_HK_MIDX			90
 #define SENS_WAKEUP_MIDX			91
 
-#define PX4BR_PROC_CMD_MIDX			100
-#define PX4BR_SEND_HK_MIDX			101
 #define AE_SEND_HK_MIDX			    102
 #define AE_WAKEUP_MIDX			    103
 #define LD_SEND_HK_MIDX			    104
