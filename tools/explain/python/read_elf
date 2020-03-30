@@ -2,10 +2,11 @@
 
 EXPLAIN_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 DATABASE_NAME=$1
-INPUT_FILE=$2
+SEARCH_PATH=$2
 VENV_DIR=$3
+MODULE_NAME=$4
 
 cd $VENV_DIR
 source venv/bin/activate
-elf_reader $DATABASE_NAME $INPUT_FILE -q
+find ${SEARCH_PATH} -type f -name "*.o" -exec elf_reader $DATABASE_NAME $MODULE_NAME {} -q \;
 deactivate

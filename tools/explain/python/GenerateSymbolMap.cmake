@@ -19,14 +19,15 @@ endfunction(explain_generate_symbol_map)
 function(explain_read_elf)
     set(TARGET_NAME ${ARGV0})
     # Define the function arguments.
-    cmake_parse_arguments(PARSED_ARGS "" "INPUT_PATH;DATABASE_NAME" "" ${ARGN})
+    cmake_parse_arguments(PARSED_ARGS "" "MODULE_NAME;INPUT_PATH;DATABASE_NAME" "" ${ARGN})
     
     add_custom_target(${TARGET_NAME}_DB
         DEPENDS EXPLAIN_INSTALL
         COMMAND ${PROJECT_SOURCE_DIR}/tools/explain/python/read_elf 
             ${PARSED_ARGS_DATABASE_NAME} 
-            ${PARSED_ARGS_INPUT_PATH}
+            ${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}
             ${PROJECT_BINARY_DIR}/host
+            ${PARSED_ARGS_MODULE_NAME}
     )
     add_dependencies(${TARGET_NAME}_DB ${TARGET_NAME})
     if(TARGET ground_tools)   

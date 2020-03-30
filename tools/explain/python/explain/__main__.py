@@ -41,7 +41,9 @@ from explain import explain_elf, explain_symbol
 from explain.map import SymbolMap
 from explain.elf_reader import ElfReader
 from explain.map import ElfMap
+from explain.map import ModuleMap
 from explain.util import get_all_elfs
+from explain.util import get_all_modules
 from explain.serialization import convert
 
 def main():
@@ -82,11 +84,11 @@ def main():
         out = OrderedDict()
         all_symbols = []
         symbols_dict = {}
-        elf_names = get_all_elfs(db)
-        for elf_name in elf_names:
-            elf = ElfMap.from_name(db, elf_name)
-            all_symbols = all_symbols + [explain_symbol(s) for s in elf.symbols()]
-            out['little_endian'] = elf['little_endian'] == 1
+        module_names = get_all_modules(db)
+        for module_name in module_names:
+            module = ModuleMap.from_name(db, module_name)
+            all_symbols = all_symbols + [explain_symbol(s) for s in module.symbols()]
+            out['little_endian'] = 1
 
         for symbol in all_symbols:
             if symbol["name"][0] == '*':
@@ -96,7 +98,7 @@ def main():
 
         sorted_symbols = OrderedDict(sorted(symbols_dict.items()))
 
-        out['files'] = elf_names
+        out['modules'] = module_names
         out['cmds'] = {}
         out['tlm'] = {}
         out['symbols'] = sorted_symbols

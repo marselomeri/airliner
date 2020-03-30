@@ -43,7 +43,45 @@ from explain.struct_fmt import struct_fmt
 from explain.explain_error import ExplainError
 from explain.sql import SQLiteCacheRow
 
-__all__ = ['ElfMap', 'SymbolMap', 'FieldMap', 'BitFieldMap']
+__all__ = ['ModuleMap', 'ElfMap', 'SymbolMap', 'FieldMap', 'BitFieldMap']
+
+
+class ModuleMap(SQLiteCacheRow):
+    """A module name. Can be used to find symbols."""
+
+    @staticmethod
+    def from_name(database, name):
+        """Find module in database with a name and return it."""
+        module_id = database.execute('SELECT id FROM modules WHERE name==?',
+                                  (name,)).fetchone()
+        if module_id is None:
+            raise ExplainError('Cannot find Module with name {}'
+                               .format(name))
+        return ModuleMap.from_cache(database, module_id[0])
+
+    def symbol(self, symbol_name):
+        """Return symbol from module with name."""
+        symbol_id = self.database.execute(
+            'SELECT id FROM symbols WHERE module=? AND name=?',
+            (self.row, symbol_name)).fetchone()
+        if symbol_id is None:
+            raise ExplainError('There is no symbol with name {!r} in {!r}'
+                               .format(symbol_name, self.name))
+        return SymbolMap.from_cache(self.database, symbol_id[0])
+
+    def symbols(self):
+        """Yield all symbols in this module."""
+        symbols = self.database.execute(
+            'SELECT id FROM symbols WHERE module=? AND name NOT LIKE "\\_%" ESCAPE "\\"', (self.row,)).fetchall()
+        for symbol in symbols:
+            try:
+                yield SymbolMap.from_cache(self.database, symbol[0])
+            except RecursionError as e:
+                print('WARNING: Caught RecursionError creating map for symbol id {}'.format(symbol[0]))
+
+    @classmethod
+    def table(cls):
+        return 'modules'
 
 
 class ElfMap(SQLiteCacheRow):
@@ -125,8 +163,7 @@ class SymbolMap(SQLiteCacheRow):
         # These are technically immutable but for performance reasons that is
         # not enforced. Do not modify attributes of SymbolMap in user code
         # outside of this class without knowing exactly what you are doing.
-        self.elf = ElfMap.from_cache(self.database, self['elf'])
-        self.little_endian = self.elf['little_endian']
+        self.module = ModuleMap.from_cache(self.database, self['module'])
         # Cache SQL column to attributes
         self.byte_size = self['byte_size']
         # Symbol value format as seen by the struct module. Updated externally.
@@ -220,7 +257,6 @@ class FieldMap(SQLiteCacheRow):
         self.type = None
         field_type = self['type']
         if field_type is None:
-            print('field {} is a null pointer.'.format(self.row))
             self.type = None
         elif self.is_pointer:
             self.type = None
