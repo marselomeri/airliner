@@ -1,0 +1,41 @@
+{
+    "Airliner": {
+        "apps": {
+            "CVT": {
+                "operations": {
+                    "Noop":             { "airliner_cc":  0, "macro": "CVT_CMD_MID", "airliner_msg": "CVT_NoArgCmd_t" },
+                    "Reset":            { "airliner_cc":  1, "macro": "CVT_CMD_MID", "airliner_msg": "CVT_NoArgCmd_t" },
+                    "CVT_HkTlm_t":      {                    "macro": "CVT_HK_TLM_MID", "airliner_msg": "CVT_HkTlm_t" },
+                    "SendHk":           { "airliner_cc":  0, "macro": "CVT_SEND_HK_MID", "airliner_msg": "CVT_NoArgCmd_t"},
+                    "Wakeup":           { "airliner_cc":  0, "macro": "CVT_WAKEUP_MID", "airliner_msg": "CVT_NoArgCmd_t"}
+                },    
+                "scheduler": {
+                    "activities": [
+                        "CVT_SEND_HK_MID",
+                        "CVT_WAKEUP_MID"
+                    ]
+                },
+                "events": [
+                    {"macro": "CVT_INF_EID",              "id": 1},
+                    {"macro": "CVT_INIT_INF_EID",         "id": 2},
+                    {"macro": "CVT_CONFIG_TABLE_INF_EID", "id": 3},
+                    {"macro": "CVT_CDS_INF_EID",          "id": 4},
+                    {"macro": "CVT_CMD_INF_EID",          "id": 5},
+                    {"macro": "CVT_ERR_EID",              "id": 6},
+                    {"macro": "CVT_INIT_ERR_EID",         "id": 7},
+                    {"macro": "CVT_CONFIG_TABLE_ERR_EID", "id": 8},
+                    {"macro": "CVT_CDS_ERR_EID",          "id": 9},
+                    {"macro": "CVT_CMD_ERR_EID",          "id": 10},
+                    {"macro": "CVT_PIPE_ERR_EID",         "id": 11},
+                    {"macro": "CVT_MSGID_ERR_EID",        "id": 12},
+                    {"macro": "CVT_MSGLEN_ERR_EID",       "id": 13}
+                ],
+                "config": {
+                },
+                "tables": [
+                    {"id": "CONFIG_TBL",  "title": "CVT Configuration",  "isDumpTable": false}
+                ]
+            }
+        }
+    }
+}

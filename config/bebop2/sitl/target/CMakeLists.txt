@@ -57,6 +57,15 @@ add_airliner_app(
 )
 
 add_airliner_app(
+    cvt
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/cvt/fsw/for_build
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/cvt_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/cvt_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/cvt_perfids.h
+)
+
+add_airliner_app(
     sim
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/sim/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/sim
