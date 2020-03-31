@@ -140,17 +140,17 @@ python_pb = join(target, "python_pb")
 os.mkdir(nano_protos)
 os.mkdir(protos)
 os.mkdir(python_pb)
-for root, dirs, files in os.walk(apps):
+for root, dirs, modules in os.walk(apps):
     if root.split('/')[-1] == "protos_nanopb":
-        for f in files:
+        for f in modules:
             path = abspath(join(root, f))
             copyfile(path, join(nano_protos, f))
     if root.split('/')[-1] == "protos":
-        for f in files:
+        for f in modules:
             path = abspath(join(root, f))
             copyfile(path, join(protos, f))
     if root.split('/')[-1] == "python_pb":
-        for f in files:
+        for f in modules:
             path = abspath(join(root, f))
             copyfile(path, join(python_pb, f))
 

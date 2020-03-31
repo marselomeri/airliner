@@ -313,11 +313,9 @@ def convert(explain, out_dir):
     global explain_dict
     explain_dict = explain
     # Parse app names
-    apps = [app.split('.')[0] for app in explain_dict["files"]]
-    apps.append("PX4")
-    apps.append("CFE")
+    apps = [app.split('.')[0] for app in explain_dict["modules"]]
     serial_input = setup_serialization_dict(apps)
-    serial_input["Airliner"]["little_endian"] = explain["little_endian"]
+    serial_input["Airliner"]["little_endian"] = 1 #explain["little_endian"]
 
     # Reformat data into expected form
     for symbol, data in explain_dict["symbols"].items():

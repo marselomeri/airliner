@@ -79,3 +79,12 @@ def get_all_elfs(database):
         raise ExplainError('No ELFs imported into database')
 
     return [name[0] for name in elf_names.fetchall()]
+
+def get_all_modules(database):
+    """Find all module names in database return them."""
+    module_names = database.execute('SELECT name FROM modules')
+
+    if module_names is None:
+        raise ExplainError('No modules imported into database')
+
+    return [name[0] for name in module_names.fetchall()]

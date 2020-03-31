@@ -69,6 +69,8 @@ from elftools.elf.elffile import ELFFile
 
 from explain.explain_error import ExplainError
 from explain.loggable import Loggable
+from elftools.construct.lib.container import ListContainer
+from elftools.dwarf.descriptions import ExprDumper
 
 
 class ElfReaderError(ExplainError):
@@ -113,21 +115,29 @@ class ElfReader(Loggable):
         """
         c = self.database.cursor()
         c.execute(
+            'CREATE TABLE IF NOT EXISTS modules ('
+            'id INTEGER PRIMARY KEY,'
+            'name TEXT UNIQUE NOT NULL,'
+            'UNIQUE (id, name)'
+            ');')
+        c.execute(
             'CREATE TABLE IF NOT EXISTS elfs ('
             'id INTEGER PRIMARY KEY,'
             'name TEXT UNIQUE NOT NULL,'
+            'module INTEGER NOT NULL,'
             'checksum TEXT NOT NULL,'
             'date DATETIME NOT NULL DEFAULT(CURRENT_TIMESTAMP),'
-            'little_endian BOOLEAN NOT NULL'
+            'little_endian BOOLEAN NOT NULL,'
+            'FOREIGN KEY(module) REFERENCES modules(id)'
             ');')
         c.execute(
             'CREATE TABLE IF NOT EXISTS symbols ('
             'id INTEGER PRIMARY KEY,'
-            'elf INTEGER NOT NULL,'
+            'module INTEGER NOT NULL,'
             'name TEXT NOT NULL,'
             'byte_size INTEGER NOT NULL,'
-            'FOREIGN KEY(elf) REFERENCES elfs(id),'
-            'UNIQUE (elf, name)'
+            'FOREIGN KEY(module) REFERENCES modules(id),'
+            'UNIQUE (module, name)'
             ')')
         c.execute(
             'CREATE TABLE IF NOT EXISTS fields('
@@ -165,7 +175,7 @@ class ElfReader(Loggable):
         the database."""
         return '\n'.join(line for line in self.database.iterdump())
 
-    def insert_elf(self, file_name):
+    def insert_elf(self, file_name, module_name):
         """Insert an ELF file and symbols into ElfReader.
 
         Return True if successful.
@@ -178,26 +188,37 @@ class ElfReader(Loggable):
             return False
         elf = ELFFile(stream)
         checksum = self.checksum(file_name)
-        base = os.path.basename(file_name)
+
+        # Insert Module into modules table.
+        c = self.database.cursor()
+        try:
+            c.execute('INSERT INTO modules(name) '
+                      'VALUES (?)',
+                      (module_name,))
+            module_id = c.lastrowid
+        except sqlite3.IntegrityError as e:
+            c.execute('SELECT id FROM modules WHERE name=?',
+                      (module_name,))
+            module = c.fetchone()
+            module_id = module[0]
 
         # Insert ELF file into elfs table.
         c = self.database.cursor()
         try:
             # Note: sqlite does not store binary data. Must use sqlite.Binary
             # to pass in checksum.
-            c.execute('INSERT INTO elfs(name, checksum, little_endian) '
-                      'VALUES (?, ?, ?)',
-                      (base, sqlite3.Binary(checksum), elf.little_endian))
+            c.execute('INSERT INTO elfs(name, module, checksum, little_endian) '
+                      'VALUES (?, ?, ?, ?)',
+                      (file_name, module_id, sqlite3.Binary(checksum), elf.little_endian))
         except sqlite3.IntegrityError as e:
             c.execute('SELECT date FROM elfs WHERE name=? AND checksum=?',
-                      (base, sqlite3.Binary(checksum)))
+                      (file_name, sqlite3.Binary(checksum)))
             duplicate = c.fetchone()
             raise ElfReaderError('{!r} matched previously loaded ELF uploaded '
-                                 'on {}'.format(base, duplicate[0])) from e
+                                 'on {}'.format(file_name, duplicate[0])) from e
 
         # Insert symbols from ELF
-        elf_id = c.lastrowid
-        elf_view = ElfView(self.database, elf_id, self.logger)
+        elf_view = ElfView(self.database, module_id, self.logger)
         elf_view.insert_symbols_from_elf(elf)
         return True
 
@@ -216,10 +237,10 @@ class ElfView(Loggable):
     """
     ENCODING = 'utf-8'
 
-    def __init__(self, database, elf_id, logger=None):
+    def __init__(self, database, module_id, logger=None):
         super().__init__(logger)
         self.database = database
-        self.elf_id = elf_id
+        self.module_id = module_id
         # Because of cu_offset do not multi-thread this.
         self.cu_offset = None
 
@@ -289,8 +310,8 @@ class ElfView(Loggable):
         self.debug('insert_symbol({!r}, byte_size={})'.format(
             name, byte_size))
         c = self.database.cursor()
-        c.execute('INSERT INTO symbols(elf, name, byte_size)'
-                  'VALUES(?, ?, ?)', (self.elf_id, name, byte_size))
+        c.execute('INSERT INTO symbols(module, name, byte_size)'
+                  'VALUES(?, ?, ?)', (self.module_id, name, byte_size))
         symbol_id = c.lastrowid
         c.close()
         return symbol_id
@@ -305,8 +326,8 @@ class ElfView(Loggable):
     def symbol(self, name):
         """Return a symbol row id by its name."""
         symbol_id = self.database.execute(
-            'SELECT id FROM symbols WHERE elf=? AND name=?',
-            (self.elf_id, name)).fetchone()
+            'SELECT id FROM symbols WHERE module=? AND name=?',
+            (self.module_id, name)).fetchone()
         return symbol_id[0] if symbol_id is not None else None
 
     def insert_symbols_from_elf(self, elf):
@@ -316,9 +337,9 @@ class ElfView(Loggable):
         DIE it can find.
         """
         # print(elf.header)
-        dwarf = elf.get_dwarf_info()
+        self.dwarf = elf.get_dwarf_info()
 
-        for i, cu in enumerate(dwarf.iter_CUs()):
+        for i, cu in enumerate(self.dwarf.iter_CUs()):
             self.debug('CU #{}: {}'.format(i, cu.header))
             top = cu.get_top_DIE()
             dies = {c.offset - cu.cu_offset: c for c in top.iter_children()}
@@ -374,7 +395,8 @@ class ElfView(Loggable):
             'DW_TAG_unspecified_type': self._tag_skip,
             'DW_TAG_variable': self._tag_skip,
             'DW_TAG_volatile_type': self._tag_skip,
-            'DW_TAG_dwarf_procedure': self._tag_skip
+            'DW_TAG_dwarf_procedure': self._tag_skip,
+            'DW_TAG_imported_declaration': self._tag_skip
         }
         try:
             callback = known_tags[symbol.tag]
@@ -457,7 +479,13 @@ class ElfView(Loggable):
         """Insert a base type into the database."""
         self.debug('_tag_base_type 0x{:x}'.format(die_offset))
         die = dies[die_offset - self.cu_offset]
-        name = die.attributes['DW_AT_name'].value.decode(ElfView.ENCODING)
+        try:
+            name = die.attributes['DW_AT_name'].value.decode(ElfView.ENCODING)
+        except:
+            self.debug('Skipping unnamed base type at 0x{:x}'.format(
+                die_offset))
+            return
+           
         size = die.attributes['DW_AT_byte_size'].value
         symbol_id = self.symbol(name) or self.insert_symbol(name, size)
         dies[die_offset - self.cu_offset] = symbol_id
@@ -546,8 +574,16 @@ class ElfView(Loggable):
                     continue
                 self.debug('{} {}.{}'
                            .format(kind, symbol_name, field_name))
-                byte_offset = 0 if union else \
-                    child.attributes['DW_AT_data_member_location'].value
+                if union:
+                    byte_offset = 0
+                else:
+                    if type(child.attributes['DW_AT_data_member_location'].value) == ListContainer:
+                        expr_dumper = ExprDumper(self.dwarf.structs)
+                        expr_dumper.process_expr(child.attributes['DW_AT_data_member_location'].value)
+                        byte_offset = int(expr_dumper.get_str().split(':')[1].strip())
+                    else:
+                        byte_offset = child.attributes['DW_AT_data_member_location'].value
+
                 field_type = child.attributes['DW_AT_type'].value
                 field_type_id = self._symbol_requires(
                     dies, field_type, typedef=field_name)
@@ -677,6 +713,7 @@ def main():
                         help='continue adding ELF files if one fails')
     parser.add_argument('database', default=':memory:',
                         help='use or create a database on the file system')
+    parser.add_argument('module', help='Module name')
     parser.add_argument('files', nargs='*', default=[],
                         help='elf file(s) to load')
     parser.add_argument('-q', '--no-log', action='store_true',
@@ -705,7 +742,7 @@ def main():
     for file in args.files:
         try:
             logger.info('Adding ELF {}'.format(file))
-            elf_reader.insert_elf(file)
+            elf_reader.insert_elf(file, args.module)
         except Exception as e:
             if args.cont:
                 logger.exception('Problem adding ELF:')
