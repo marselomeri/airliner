@@ -164,6 +164,10 @@ class SymbolMap(SQLiteCacheRow):
         # not enforced. Do not modify attributes of SymbolMap in user code
         # outside of this class without knowing exactly what you are doing.
         self.module = ModuleMap.from_cache(self.database, self['module'])
+        #TODO: Fix this
+        #self.little_endian = self.elf['little_endian']
+        self.little_endian = True
+
         # Cache SQL column to attributes
         self.byte_size = self['byte_size']
         # Symbol value format as seen by the struct module. Updated externally.
@@ -228,7 +232,7 @@ class SymbolMap(SQLiteCacheRow):
 
     def refresh_field_cache(self):
         c = self.database.execute(
-            'SELECT id FROM fields WHERE symbol=? ORDER BY id', (self.row,))
+            'SELECT id FROM fields WHERE symbol=? ORDER BY byte_offset', (self.row,))
         self.fields = [FieldMap.from_cache(self.database, field[0])
                        for field in c.fetchall()]
         self.fields_by_name = {field['name']: field for field in self.fields}
@@ -251,6 +255,9 @@ class FieldMap(SQLiteCacheRow):
     def __init__(self, database, row):
         super().__init__(database, row)
         self.bit_field = BitFieldMap.from_cache(self.database, self.row)
+        #TODO: Fix this
+        #self.little_endian = self['little_endian']
+        self.little_endian = True
         self.byte_offset = self['byte_offset']
         self.is_pointer = self['name'] == '[pointer]'
         self.is_typedef = self['name'] == 'typedef'

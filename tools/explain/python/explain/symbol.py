@@ -63,13 +63,22 @@ class Symbol(Mapping):
         kind = field.type.simple
         symbol_offset = self.offset + field.byte_offset
         count, array = kind.array
+
+        # Use the endianness defined by the field record, if it is present.
+        if field.little_endian != None:
+            # It is present.  Use it.
+            little_endian = field.little_endian
+        else:
+            # It is not present.  Just use whatever is defined for the symbol.
+            little_endian=self.little_endian
+
         if bit_field:
             symbol = BitFieldSymbol(
                 symbol_map=kind,
                 bit_field=bit_field,
                 buffer=self.buffer,
                 offset=symbol_offset,
-                little_endian=self.little_endian
+                little_endian=little_endian
             )
         elif array:
             symbol = ArraySymbol(
@@ -78,14 +87,14 @@ class Symbol(Mapping):
                 offset=symbol_offset,
                 count=count,
                 unit_symbol=array,
-                little_endian=self.little_endian
+                little_endian=little_endian
             )
         else:
             symbol = Symbol(
                 symbol_map=kind,
                 buffer=self.buffer,
                 offset=symbol_offset,
-                little_endian=self.little_endian
+                little_endian=little_endian
             )
         return symbol
 

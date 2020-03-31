@@ -147,6 +147,7 @@ class ElfReader(Loggable):
             'byte_offset INTEGER NOT NULL,'
             'type INTEGER,'
             'multiplicity INTEGER NOT NULL,'
+            'little_endian BOOLEAN,'
             'FOREIGN KEY (symbol) REFERENCES symbols(id),'
             'FOREIGN KEY (type) REFERENCES symbols(id),'
             'UNIQUE (symbol, name)'
@@ -157,7 +158,7 @@ class ElfReader(Loggable):
             'bit_size INTEGER NOT NULL,'
             'bit_offset INTEGER NOT NULL,'
             'FOREIGN KEY (field) REFERENCES fields(id)'
-            ') WITHOUT ROWID')
+            ')')
         c.execute(
             'CREATE TABLE IF NOT EXISTS enumerations('
             'symbol INTEGER NOT NULL,'
@@ -165,7 +166,7 @@ class ElfReader(Loggable):
             'name TEXT NOT NULL,'
             'FOREIGN KEY (symbol) REFERENCES symbols(id),'
             'PRIMARY KEY (symbol, value)'
-            ') WITHOUT ROWID')
+            ')')
         c.close()
 
     @property
@@ -367,7 +368,7 @@ class ElfView(Loggable):
             self.error(
                 'Could not locate DIE at 0x{:x}. The previous tag that '
                 'ElfReader recognizes is a {} at 0x{:x}.'
-                .format(die_offset, dies[closest].tag, closest))
+                .format(die_offset, dies[closest], closest))
             return None
         if isinstance(symbol, int):
             self.debug('Found inserted symbol id = {}'.format(symbol))
@@ -384,6 +385,7 @@ class ElfView(Loggable):
             'DW_TAG_class_type': self._tag_skip,
             'DW_TAG_const_type': self._tag_skip,
             'DW_TAG_imported_module': self._tag_skip,
+            'DW_TAG_imported_declaration': self._tag_skip,
             'DW_TAG_namespace': self._tag_skip,
             'DW_TAG_reference_type': self._tag_skip,
             'DW_TAG_rvalue_reference_type': self._tag_skip,

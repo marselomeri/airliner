@@ -37,6 +37,7 @@ from explain.explain_error import ExplainError
 
 STRUCT_MAPPING = {
     'char': 'b',
+    'signed char': 'b',
     'unsigned char': 'B',
     'short': 'h',
     'unsigned short': 'H',
@@ -48,7 +49,16 @@ STRUCT_MAPPING = {
     'unsigned long long': 'Q',
     'float': 'f',
     'double': 'd',
-    'ptr': 'P'
+    'ptr': 'P',
+    'int8_t': 'b',
+    'uint8_t': 'B',
+    'int16_t': 'h',
+    'uint16_t': 'H',
+    'int32_t': 'i',
+    'uint32_t': 'I',
+    'int64_t': 'l',
+    'uint64_t': 'L',
+    '_Bool': 'B'
 }
 # Custom types that map different type names to common types.
 STRUCT_MAPPING['long int'] = STRUCT_MAPPING['long']
@@ -60,6 +70,19 @@ STRUCT_MAPPING['uint64'] = STRUCT_MAPPING['unsigned long']
 STRUCT_MAPPING['uint32'] = STRUCT_MAPPING['unsigned int']
 STRUCT_MAPPING['uint16'] = STRUCT_MAPPING['unsigned short']
 STRUCT_MAPPING['uint8'] = STRUCT_MAPPING['unsigned char']
+STRUCT_MAPPING['int64'] = STRUCT_MAPPING['long']
+STRUCT_MAPPING['int32'] = STRUCT_MAPPING['int']
+STRUCT_MAPPING['int16'] = STRUCT_MAPPING['short']
+STRUCT_MAPPING['int8'] = STRUCT_MAPPING['char']
+STRUCT_MAPPING['uint64_t'] = STRUCT_MAPPING['unsigned long']
+STRUCT_MAPPING['uint32_t'] = STRUCT_MAPPING['unsigned int']
+STRUCT_MAPPING['uint16_t'] = STRUCT_MAPPING['unsigned short']
+STRUCT_MAPPING['uint8_t'] = STRUCT_MAPPING['unsigned char']
+STRUCT_MAPPING['int64_t'] = STRUCT_MAPPING['long']
+STRUCT_MAPPING['int32_t'] = STRUCT_MAPPING['int']
+STRUCT_MAPPING['int16_t'] = STRUCT_MAPPING['short']
+STRUCT_MAPPING['int8_t'] = STRUCT_MAPPING['char']
+STRUCT_MAPPING['_Bool'] = STRUCT_MAPPING['char']
 
 
 SYMBOL_FORMAT_MAPPING = {}
