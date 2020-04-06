@@ -34,7 +34,7 @@
 include(${PROJECT_SOURCE_DIR}/osal/src/make/build-functions.cmake)
 
 add_executable(${PARSED_ARGS_PREFIX}psp-unit-test ${PSP_UNIT_TEST_SRC})
-target_link_libraries(${PARSED_ARGS_PREFIX}psp-unit-test -fprofile-arcs gcov ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(${PARSED_ARGS_PREFIX}psp-unit-test -fprofile-arcs gcov)
 set_target_properties(${PARSED_ARGS_PREFIX}psp-unit-test PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast -fprofile-arcs -ftest-coverage")
 set_property(TARGET ${PARSED_ARGS_PREFIX}psp-unit-test
             APPEND_STRING

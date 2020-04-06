@@ -37,7 +37,7 @@ set(PSP_INC_DIRS
     ${CMAKE_CURRENT_LIST_DIR}/../../inc)
 
 # Set libraries to link into the main executable
-set(LIBS pthread dl rt )
+#set(LIBS pthread dl rt )
 
 # Set compiler flags for apps and the main executable.
 set(COMPILE_FLAGS "-m32 -g -fstack-protector-all" )

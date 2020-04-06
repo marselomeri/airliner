@@ -45,3 +45,17 @@ table.table.table-condensed
       td
         div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/outputStreamID'}]}) ---
       td
+    tr
+      th UDP Tx Enable
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/udpTxEnable'}]}) ---
+      td 
+        button.btn.cdr-primary(data-cdr={cmd:{name:'/' + pluginName + '/toggleUdpTxEnable'}}) Toggle    
+    tr
+      th UDP Rx Enable
+      td
+        div(data-cdr={tlm:[{name:'/' + pluginName + '/hk/udpRxEnable'}]}) ---
+      td 
+        button.btn.cdr-primary(data-cdr={cmd:{name:'/' + pluginName + '/toggleUdpRxEnable'}}) Toggle
+
+

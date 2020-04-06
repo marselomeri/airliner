@@ -1,0 +1,54 @@
+# This suppression is due to pthread_create and not calling join at the end of
+# the thread execution.  We're relying on the kill signal so this is ok.
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:calloc
+   fun:allocate_dtv
+   fun:_dl_allocate_tls
+   fun:allocate_stack
+   fun:pthread_create@@GLIBC_2.1
+   fun:OS_TaskCreate
+   fun:OS_Application_Startup
+   fun:main
+}
+
+# The next suppressions are due to a temporary kludge.  However, the 
+# conflicted symbol is thread safe through avoidance, therefore not a 
+# problem.
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:OS_ApplicationShutdown
+   fun:UT_timertest_task
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Misc
+   fun:pthread_setname_np
+   fun:OS_TaskCreate
+   fun:OS_Application_Startup
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:OS_IdleLoop
+   fun:BinSemTimeoutSetup
+   fun:UtTest_Run
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:BinSemTimeoutCheck
+   fun:UtTest_Run
+   fun:main
+}

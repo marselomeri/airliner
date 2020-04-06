@@ -3,8 +3,7 @@
 
 initialize_airliner_build(
     PSP ${PSP_TARGET_DIR}/pc-linux-wh
-    OSAL ${OSAL_TARGET_DIR}/posix-wh
-    CORE_BINARY ${CMAKE_CURRENT_SOURCE_DIR}/airliner
+    OSAL ${OSAL_TARGET_DIR}/posix-fast
     CORE_TOOLS ${CMAKE_CURRENT_SOURCE_DIR}/tools
     CONFIG
         ${CMAKE_CURRENT_SOURCE_DIR}/inc

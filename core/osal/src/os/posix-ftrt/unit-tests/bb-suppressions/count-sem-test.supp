@@ -1,0 +1,85 @@
+# This next two hits are caused by the OSAL Runtime manager not doing an 
+# orderly shutdown calling join on the pthread it creates.  The kill signal 
+# will suffice.  No join is necessary.
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:allocate_dtv
+   fun:_dl_allocate_tls
+   fun:allocate_stack
+   fun:pthread_create@@GLIBC_2.1
+   fun:OS_TaskCreate
+   fun:CountSemSetup
+   fun:UtTest_Run
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:allocate_dtv
+   fun:_dl_allocate_tls
+   fun:allocate_stack
+   fun:pthread_create@@GLIBC_2.1
+   fun:OS_TaskCreate
+   fun:CountSemSetup
+   fun:UtTest_Run
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:allocate_dtv
+   fun:_dl_allocate_tls
+   fun:allocate_stack
+   fun:pthread_create@@GLIBC_2.1
+   fun:OS_RtmInitExecTask
+   fun:OS_RtmInit
+   fun:OS_API_InitEx
+   fun:OS_API_Init
+   fun:OS_Application_Startup
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:task_1
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:CountSemSetup
+   fun:UtTest_Run
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:task_1
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:CountSemCheck
+   fun:UtTest_Run
+   fun:main
+}
+
