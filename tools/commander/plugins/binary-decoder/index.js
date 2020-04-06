@@ -274,7 +274,6 @@ class BinaryDecoder extends CdrGroundPlugin {
                     break;
 
                 default:
-                    // console.log( "Data type not found" );
                     outTlmDef.dataType = undefined;
                 }
             }
@@ -887,16 +886,15 @@ class BinaryDecoder extends CdrGroundPlugin {
 
                 default:
                     var nextFieldDef = rootDef.required_pb_msgs[ fieldDef.pb_type ];
-                var elementBitSize = fieldDef.bit_size;
-                var nextBitOffset = elementBitSize;
+                    var elementBitSize = fieldDef.bit_size;
+                    var nextBitOffset = elementBitSize;
 
-                var value = {};
-                var fields = nextFieldDef.fields;
-                for ( var fieldName in fields ) {
-                    var field = fields[ fieldName ];
-
-                    value[ fieldName ] = self.getFieldValueAsPbType( buffer, field, bitOffset + field.bit_offset, rootDef );
-                }
+                    var value = {};
+                    var fields = nextFieldDef.fields;
+                    for ( var fieldName in fields ) {
+                        var field = fields[ fieldName ];
+                        value[ fieldName ] = self.getFieldValue( buffer, field, bitOffset + field.bit_offset, rootDef );
+                    }
                 }
             }
         } catch ( err ) {
@@ -1170,16 +1168,16 @@ class BinaryDecoder extends CdrGroundPlugin {
                 default:
                     var nextFieldDef = this.getMsgDefByName( fieldDef.airliner_type );
 
-                if ( typeof nextFieldDef === 'undefined' ) {
-                    value = this.getFieldValueAsPbType( buffer, fieldDef, bitOffset, rootDef );
-                } else {
-                    var nextFields = nextFieldDef.fields;
-                    var value = {};
-                    for ( var fieldName in nextFields ) {
-                        var nextField = nextFields[ fieldName ];
-                        value[ fieldName ] = this.getFieldValue( buffer, nextField, nextField.bit_offset + bitOffset, nextFieldDef );
+                    if ( typeof nextFieldDef === 'undefined' ) {
+                        value = this.getFieldValueAsPbType( buffer, fieldDef, bitOffset, rootDef );
+                    } else {
+                        var nextFields = nextFieldDef.fields;
+                        var value = {};
+                        for ( var fieldName in nextFields ) {
+                            var nextField = nextFields[ fieldName ];
+                            value[ fieldName ] = this.getFieldValue( buffer, nextField, nextField.bit_offset + bitOffset, nextFieldDef );
+                        }
                     }
-                }
                 }
             }
         } catch ( err ) {

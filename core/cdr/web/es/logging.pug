@@ -11,8 +11,8 @@ table.table.table-condensed
         span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.SysLogEntries'}]}) ---
       td
         .btn-group
-          button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_ClearSysLog'}}) Clear Log
-          button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_WriteSyslogCmd_t'}}) Write Log
+          button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_ClearSysLog'}}) Clear SysLog
+          button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_WriteSyslogCmd_t'}}) Write SysLog
     tr 
       th Mode:
       td
@@ -33,5 +33,5 @@ table.table.table-condensed
         span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.ERLogEntries'}]}) ---
       td
         .btn-group
-          button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_ClearErLog'}}) Clear Log
-          button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_WriteERlogCmd_t'}}) Write Log
+          button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_ClearErLog'}}) Clear ERLog
+          button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_WriteERlogCmd_t'}}) Write ERLog

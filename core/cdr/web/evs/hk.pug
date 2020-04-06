@@ -57,6 +57,9 @@ table.table.table-condensed
       td
         span(data-cdr={tlm:[{name:'/CFE/CFE_EVS_TlmPkt_t/Payload.LogFullFlag'}]}) ---
       td
+        .btn-group
+          button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_EVS_LogFileCmd_t'}, indicator:'cmd'}) Write Log
+          button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_EVS_ClearLog'}, indicator:'cmd'}) Clear Log
     tr
       th Log Mode
       td

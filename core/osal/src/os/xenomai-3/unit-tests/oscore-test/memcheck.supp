@@ -1,0 +1,22 @@
+# Suppress warnings produced by Valgrind.
+# http://wiki.wxwidgets.org/Valgrind_Suppression_File_Howto
+{
+   pthread_sigmask1
+   Memcheck:Cond
+   fun:pthread_sigmask
+   fun:OS_InterruptSafeUnlock
+   fun:OS_QueueCreate
+   fun:UT_os_apiinit_test
+   fun:main
+}
+
+{
+   pthread_sigmask2
+   Memcheck:Param
+   rt_sigprocmask(set)
+   fun:pthread_sigmask
+   fun:OS_InterruptSafeUnlock
+   fun:OS_QueueCreate
+   fun:UT_os_apiinit_test
+   fun:main
+}

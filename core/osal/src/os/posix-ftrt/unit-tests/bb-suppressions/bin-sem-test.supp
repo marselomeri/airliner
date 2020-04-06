@@ -1,0 +1,149 @@
+# The following 4 suppressions are because we just kill threads with a kill 
+# signal rather than use join. 
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:allocate_dtv
+   fun:_dl_allocate_tls
+   fun:allocate_stack
+   fun:pthread_create@@GLIBC_2.1
+   fun:OS_RtmInitExecTask
+   fun:OS_RtmInit
+   fun:OS_API_InitEx
+   fun:OS_API_Init
+   fun:OS_Application_Startup
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:allocate_dtv
+   fun:_dl_allocate_tls
+   fun:allocate_stack
+   fun:pthread_create@@GLIBC_2.1
+   fun:OS_TaskCreate
+   fun:BinSemSetup
+   fun:UtTest_Run
+   fun:main
+}
+
+
+
+
+
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:TimerFunction
+   fun:OS_TimerSignalHandler
+   obj:/lib/i386-linux-gnu/libpthread-2.23.so
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:task_2
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:OS_BinSemTake
+   fun:task_1
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:OS_BinSemTake
+   fun:task_1
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:OS_ApplicationShutdown
+   fun:task_2
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:OS_TaskExit
+   fun:task_2
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:OS_BinSemGive
+   fun:TimerFunction
+   fun:OS_TimerSignalHandler
+   obj:/lib/i386-linux-gnu/libpthread-2.23.so
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:OS_IdleLoop
+   fun:BinSemSetup
+   fun:UtTest_Run
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:BinSemCheck
+   fun:UtTest_Run
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:task_1
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:task_2
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:OS_BinSemGetInfo
+   fun:TimerFunction
+   fun:OS_TimerSignalHandler
+   obj:/lib/i386-linux-gnu/libpthread-2.23.so
+}

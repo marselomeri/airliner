@@ -1,0 +1,298 @@
+# This next two hits are caused by the OSAL Runtime manager not doing an 
+# orderly shutdown calling join on the pthread it creates.  The kill signal 
+# will suffice.  No join is necessary.
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:allocate_dtv
+   fun:_dl_allocate_tls
+   fun:allocate_stack
+   fun:pthread_create@@GLIBC_2.1
+   fun:OS_RtmInitExecTask
+   fun:OS_RtmInit
+   fun:OS_API_InitEx
+   fun:OS_API_Init
+   fun:OS_Application_Startup
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:allocate_dtv
+   fun:_dl_allocate_tls
+   fun:allocate_stack
+   fun:pthread_create@@GLIBC_2.1
+   fun:OS_TaskCreate
+   fun:QueueTimeoutSetup
+   fun:UtTest_Run
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:TimerFunction
+   fun:OS_TimerSignalHandler
+   obj:/lib/i386-linux-gnu/libpthread-2.23.so
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:task_1
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:task_2
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:OS_ApplicationShutdown
+   fun:task_1
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:OS_ApplicationShutdown
+   fun:task_2
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:OS_IdleLoop
+   fun:QueueTimeoutSetup
+   fun:UtTest_Run
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:QueueTimeoutCheck
+   fun:UtTest_Run
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:OS_TaskExit
+   fun:task_1
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:OS_TaskExit
+   fun:task_2
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:strdup
+   fun:_dl_load_cache_lookup
+   fun:_dl_map_object
+   fun:dl_open_worker
+   fun:_dl_catch_error
+   fun:_dl_open
+   fun:do_dlopen
+   fun:_dl_catch_error
+   fun:dlerror_run
+   fun:__libc_dlopen_mode
+   fun:pthread_cancel_init
+   fun:_Unwind_ForcedUnwind
+   fun:__pthread_unwind
+   fun:__do_cancel
+   fun:pthread_exit
+   fun:OS_TaskExit
+   fun:task_1
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:strdup
+   fun:_dl_load_cache_lookup
+   fun:_dl_map_object
+   fun:dl_open_worker
+   fun:_dl_catch_error
+   fun:_dl_open
+   fun:do_dlopen
+   fun:_dl_catch_error
+   fun:dlerror_run
+   fun:__libc_dlopen_mode
+   fun:pthread_cancel_init
+   fun:_Unwind_ForcedUnwind
+   fun:__pthread_unwind
+   fun:__do_cancel
+   fun:pthread_exit
+   fun:OS_TaskExit
+   fun:task_2
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:_dl_new_object
+   fun:_dl_map_object_from_fd
+   fun:_dl_map_object
+   fun:dl_open_worker
+   fun:_dl_catch_error
+   fun:_dl_open
+   fun:do_dlopen
+   fun:_dl_catch_error
+   fun:dlerror_run
+   fun:__libc_dlopen_mode
+   fun:pthread_cancel_init
+   fun:_Unwind_ForcedUnwind
+   fun:__pthread_unwind
+   fun:__do_cancel
+   fun:pthread_exit
+   fun:OS_TaskExit
+   fun:task_1
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:_dl_new_object
+   fun:_dl_map_object_from_fd
+   fun:_dl_map_object
+   fun:dl_open_worker
+   fun:_dl_catch_error
+   fun:_dl_open
+   fun:do_dlopen
+   fun:_dl_catch_error
+   fun:dlerror_run
+   fun:__libc_dlopen_mode
+   fun:pthread_cancel_init
+   fun:_Unwind_ForcedUnwind
+   fun:__pthread_unwind
+   fun:__do_cancel
+   fun:pthread_exit
+   fun:OS_TaskExit
+   fun:task_2
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   fun:_dl_new_object
+   fun:_dl_map_object_from_fd
+   fun:_dl_map_object
+   fun:dl_open_worker
+   fun:_dl_catch_error
+   fun:_dl_open
+   fun:do_dlopen
+   fun:_dl_catch_error
+   fun:dlerror_run
+   fun:__libc_dlopen_mode
+   fun:pthread_cancel_init
+   fun:_Unwind_ForcedUnwind
+   fun:__pthread_unwind
+   fun:__do_cancel
+   fun:pthread_exit
+   fun:OS_TaskExit
+   fun:task_1
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   fun:_dl_new_object
+   fun:_dl_map_object_from_fd
+   fun:_dl_map_object
+   fun:dl_open_worker
+   fun:_dl_catch_error
+   fun:_dl_open
+   fun:do_dlopen
+   fun:_dl_catch_error
+   fun:dlerror_run
+   fun:__libc_dlopen_mode
+   fun:pthread_cancel_init
+   fun:_Unwind_ForcedUnwind
+   fun:__pthread_unwind
+   fun:__do_cancel
+   fun:pthread_exit
+   fun:OS_TaskExit
+   fun:task_2
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   fun:_dl_check_map_versions
+   fun:dl_open_worker
+   fun:_dl_catch_error
+   fun:_dl_open
+   fun:do_dlopen
+   fun:_dl_catch_error
+   fun:dlerror_run
+   fun:__libc_dlopen_mode
+   fun:pthread_cancel_init
+   fun:_Unwind_ForcedUnwind
+   fun:__pthread_unwind
+   fun:__do_cancel
+   fun:pthread_exit
+   fun:OS_TaskExit
+   fun:task_2
+   fun:start_thread
+   fun:clone
+}

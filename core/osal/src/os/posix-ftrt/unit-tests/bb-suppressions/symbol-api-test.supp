@@ -1,0 +1,64 @@
+# This next two suppressions are caused by the dlsym function and is due to
+# the purposeful error condition from the unit test.
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   fun:_dlerror_run
+   fun:dlsym
+   fun:OS_SymbolLookup
+   fun:TestSymbolApi
+   fun:UtTest_Run
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:vasprintf
+   fun:asprintf
+   fun:dlerror
+   fun:OS_SymbolLookup
+   fun:TestSymbolApi
+   fun:UtTest_Run
+   fun:main
+}
+
+# This next suppression is caused by the OSAL Runtime manager not doing an 
+# orderly shutdown calling join on the pthread it creates.  The kill signal 
+# will suffice.  No join is necessary.
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:allocate_dtv
+   fun:_dl_allocate_tls
+   fun:allocate_stack
+   fun:pthread_create@@GLIBC_2.1
+   fun:OS_RtmInitExecTask
+   fun:OS_RtmInit
+   fun:OS_API_InitEx
+   fun:OS_API_Init
+   fun:OS_Application_Startup
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:realloc
+   fun:vasprintf
+   fun:asprintf
+   fun:dlerror
+   fun:OS_SymbolLookup
+   fun:TestSymbolApi
+   fun:UtTest_Run
+   fun:main
+}
+

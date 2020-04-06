@@ -1,0 +1,55 @@
+# The following suppression is due to bad unit test code.  The problem has
+# been reported to the original author.  For now, this problem does not 
+# affect the unit test itself so it is suppressed.
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:UT_os_teardown
+   fun:OS_Application_Startup
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:__fopen_internal
+   fun:fopen@@GLIBC_2.1
+   fun:UT_os_setup
+   fun:OS_Application_Startup
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:PthAPIerror
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:OS_InterruptSafeLock
+   fun:OS_BinSemFlush
+   fun:UT_os_bin_sem_flush_test
+   fun:OS_Application_Startup
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:PthAPIerror
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:OS_InterruptSafeLock
+   fun:OS_BinSemGive
+   fun:UT_os_bin_sem_give_test
+   fun:OS_Application_Startup
+   fun:main
+}
+
+	{
+   <insert_a_suppression_name_here>
+   Helgrind:PthAPIerror
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:OS_InterruptSafeLock
+   fun:OS_BinSemTake
+   fun:UT_os_bin_sem_take_test
+   fun:OS_Application_Startup
+   fun:main
+}

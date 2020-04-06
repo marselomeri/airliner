@@ -1,0 +1,24 @@
+# This suppression is due to a negative test condition and executes
+# as expected.  It is not a problem.
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Addr4
+   fun:readdir
+   fun:OS_readdir
+   fun:UT_os_closedir_test
+   fun:OS_Application_Startup
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Param
+   getdents(dirp)
+   fun:__getdents
+   fun:readdir
+   fun:OS_readdir
+   fun:UT_os_closedir_test
+   fun:OS_Application_Startup
+   fun:main
+}

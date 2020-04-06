@@ -6,7 +6,6 @@ include(../set-vars.cmake)
 initialize_airliner_build(
     PSP ${TARGET_PSP}
     OSAL ${TARGET_OSAL}
-    CORE_BINARY ${CMAKE_CURRENT_SOURCE_DIR}/airliner
     CORE_TOOLS ${CMAKE_CURRENT_SOURCE_DIR}/tools
     CONFIG
         ${CMAKE_CURRENT_SOURCE_DIR}/inc

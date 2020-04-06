@@ -55,6 +55,7 @@
 #include "cfe_tbl_internal.h"
 #include "cfe_tbl_filedef.h"
 #include "osconfig.h"
+#include <linux/limits.h>
 
 #define MAX_SECTION_HDR_NAME_LEN   (128)
 #define TBL_DEF_SYMBOL_NAME "CFE_TBL_FileDef"
@@ -105,8 +106,8 @@ int32 LocateAndReadUserObject(void);
 /**
 *    Global Variables
 */
-char SrcFilename[OS_MAX_FILE_NAME+3]={""};
-char DstFilename[OS_MAX_FILE_NAME+3]={""};
+char SrcFilename[PATH_MAX]={""};
+char DstFilename[PATH_MAX]={""};
 char TableName[38]={""};
 char Description[32]={""};
 char LineOfText[300]={""};
@@ -834,12 +835,12 @@ int32 ProcessCmdLineOptions(int ArgumentCount, char *Arguments[])
         }
         else if (!InputFileSpecified)
         {
-            strncpy(SrcFilename, Arguments[i], OS_MAX_FILE_NAME);
+            strncpy(SrcFilename, Arguments[i], sizeof(SrcFilename));
             InputFileSpecified = TRUE;
         }
         else if (!OutputFileSpecified)
         {
-            strncpy(DstFilename, Arguments[i], OS_MAX_FILE_NAME);
+            strncpy(DstFilename, Arguments[i], sizeof(DstFilename));
             OutputFileSpecified = TRUE;
         }
         else
@@ -1003,7 +1004,7 @@ int32 OpenSrcFile(void)
     if (Verbose) printf("Original Source File Modification Time: %s\n", ctime(&SrcFileStats.st_mtime));
     if (Verbose) printf("Source File Modification Time in Seconds since S/C Epoch: %ld (0x%08X)\n", SrcFileTimeInScEpoch, SrcFileTimeInScEpoch);
 
-    return SUCCESS;
+    return RtnCode;
 }
 
 int32 OpenDstFile(void)

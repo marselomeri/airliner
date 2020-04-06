@@ -4,7 +4,6 @@
 initialize_airliner_build(
     PSP ${PSP_TARGET_DIR}/pc-linux-nasa
     OSAL ${OSAL_TARGET_DIR}/posix-nasa
-    CORE_BINARY ${CMAKE_CURRENT_SOURCE_DIR}/airliner
     CORE_TOOLS ${CMAKE_CURRENT_SOURCE_DIR}/tools
     CONFIG
         ${CMAKE_CURRENT_SOURCE_DIR}/inc

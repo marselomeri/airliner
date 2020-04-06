@@ -228,8 +228,8 @@ function(psp_add_test)
     target_include_directories(${AIRLINER_BUILD_PREFIX}${TEST_NAME} PUBLIC ${PARSED_ARGS_INCLUDES})
     target_include_directories(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov PUBLIC ${PARSED_ARGS_INCLUDES})
 
-    target_link_libraries(${AIRLINER_BUILD_PREFIX}${TEST_NAME} -ldl -lrt ${CMAKE_THREAD_LIBS_INIT})
-    target_link_libraries(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov -fprofile-arcs gcov -ldl -lrt ${CMAKE_THREAD_LIBS_INIT})
+    target_link_libraries(${AIRLINER_BUILD_PREFIX}${TEST_NAME} -ldl -lrt)
+    target_link_libraries(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov -fprofile-arcs gcov -ldl -lrt)
 
     set_target_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME} PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast")
     set_target_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast -fprofile-arcs -ftest-coverage")
@@ -521,8 +521,7 @@ function(psp_add_airliner_app_unit_test)
     add_executable(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} EXCLUDE_FROM_ALL ${PARSED_ARGS_SOURCES})
     add_executable(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov EXCLUDE_FROM_ALL ${PARSED_ARGS_SOURCES})
     
-    target_link_libraries(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} ${CMAKE_THREAD_LIBS_INIT})
-    target_link_libraries(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov -fprofile-arcs gcov ${CMAKE_THREAD_LIBS_INIT})
+    target_link_libraries(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov -fprofile-arcs gcov)
     
     set_target_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast")
     set_target_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast -fprofile-arcs -ftest-coverage")
@@ -755,8 +754,8 @@ function(psp_add_airliner_cfe_unit_test)
     target_include_directories(${AIRLINER_BUILD_PREFIX}${TEST_NAME} PUBLIC ${PARSED_ARGS_INCLUDES})
     target_include_directories(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov PUBLIC ${PARSED_ARGS_INCLUDES})
 
-    target_link_libraries(${AIRLINER_BUILD_PREFIX}${TEST_NAME} -ldl -lrt ${CMAKE_THREAD_LIBS_INIT})
-    target_link_libraries(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov -fprofile-arcs gcov -ldl -lrt ${CMAKE_THREAD_LIBS_INIT})
+    target_link_libraries(${AIRLINER_BUILD_PREFIX}${TEST_NAME} -ldl -lrt)
+    target_link_libraries(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov -fprofile-arcs gcov -ldl -lrt)
 
     set_target_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME} PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast")
     set_target_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast -fprofile-arcs -ftest-coverage")

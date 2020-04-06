@@ -1,0 +1,362 @@
+# This next two hits are caused by the OSAL Runtime manager not doing an 
+# orderly shutdown calling join on the pthread it creates.  The kill signal 
+# will suffice.  No join is necessary.
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:allocate_dtv
+   fun:_dl_allocate_tls
+   fun:allocate_stack
+   fun:pthread_create@@GLIBC_2.1
+   fun:OS_RtmInitExecTask
+   fun:OS_RtmInit
+   fun:OS_API_InitEx
+   fun:OS_API_Init
+   fun:OS_Application_Startup
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:allocate_dtv
+   fun:_dl_allocate_tls
+   fun:allocate_stack
+   fun:pthread_create@@GLIBC_2.1
+   fun:OS_TaskCreate
+   fun:TestTaskStartStopPart1
+   fun:UtTest_Run
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:allocate_dtv
+   fun:_dl_allocate_tls
+   fun:allocate_stack
+   fun:pthread_create@@GLIBC_2.1
+   fun:OS_TaskCreate
+   fun:TestTaskStartStopPart2
+   fun:UtTest_Run
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:UtAssertEx
+   fun:TestTaskStartStopPart1
+   fun:UtTest_Run
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:UtAssertEx
+   fun:TestTaskStartStopPart2
+   fun:UtTest_Run
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:UtAssertEx
+   fun:SenderTaskPart1Main
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:UtAssertEx
+   fun:ReceiverTaskMain
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:UtAssert_SetContext
+   fun:UtTest_Run
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Misc
+   fun:__exit_thread
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:OS_QueueDelete
+   fun:SenderTaskPart1Main
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:UtAssert_EndTest
+   fun:UtTest_Run
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:UtAssertEx
+   fun:SenderTaskPart1Main
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:UtAssertEx
+   fun:SenderTaskPart2Main
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:UtAssertEx
+   fun:SenderTaskPart1Main
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+# The next two suppressions are purposeful.  Helgrind flags them as deadlock
+# would occur.  Its not taking into account that the first pthread_mutex_lock
+# call returned a EOWNERDEAD.  We just called pthread_mutex_consistent so we
+# can reattempt the lock. 
+{
+   <insert_a_suppression_name_here>
+   Helgrind:PthAPIerror
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:OS_MutSemTake
+   fun:SenderTaskPart1Main
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:PthAPIerror
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:OS_MutSemTake
+   fun:SenderTaskPart1Main
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:OS_QueueGet
+   fun:ReceiverTaskMain
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:OS_QueueDelete
+   fun:SenderTaskPart1Main
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:OS_QueueDelete
+   fun:SenderTaskPart2Main
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:OS_QueueCreate
+   fun:SenderTaskPart1Main
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:OS_QueueCreate
+   fun:SenderTaskPart2Main
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:OS_QueueDelete
+   fun:SenderTaskPart1Main
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:OS_QueueDelete
+   fun:SenderTaskPart2Main
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:PthAPIerror
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:OS_QueueDelete
+   fun:SenderTaskPart1Main
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:PthAPIerror
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:OS_QueueDelete
+   fun:SenderTaskPart2Main
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:PthAPIerror
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:OS_MutSemTake
+   fun:SenderTaskPart1Main
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:PthAPIerror
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:OS_MutSemTake
+   fun:SenderTaskPart2Main
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Misc
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:OS_QueueDelete
+   fun:SenderTaskPart1Main
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Misc
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:OS_QueueDelete
+   fun:SenderTaskPart2Main
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Misc
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:OS_MutSemDelete
+   fun:SenderTaskPart1Main
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Misc
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:OS_MutSemDelete
+   fun:SenderTaskPart2Main
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:UtAssert_GetContext
+   fun:SenderTaskPart1Main
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Helgrind:Race
+   fun:UtAssert_GetContext
+   fun:SenderTaskPart2Main
+   obj:/usr/lib/valgrind/vgpreload_helgrind-x86-linux.so
+   fun:start_thread
+   fun:clone
+}

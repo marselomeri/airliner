@@ -37,5 +37,7 @@
     outPort: 5010,
     outAddress: '192.168.42.1',
     inputStreamID: 'bin-cmd-stream',
-    outputStreamID: 'bin-tlm-stream'
+    outputStreamID: 'bin-tlm-stream',
+    udpTxEnable: true,
+    udpRxEnable: true
 }

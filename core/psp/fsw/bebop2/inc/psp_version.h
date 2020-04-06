@@ -2,12 +2,12 @@
 **  $Id: psp_version.h 1.2.2.3 2014/10/01 15:41:26GMT-05:00 sstrege Exp  $
 **
 **
-**      Copyright (c) 2004-2011, United States Government as represented by
-**      Administrator for The National Aeronautics and Space Administration.
+**      Copyright (c) 2004-2011, United States Government as represented by 
+**      Administrator for The National Aeronautics and Space Administration. 
 **      All Rights Reserved.
 **
 **      This is governed by the NASA Open Source Agreement and may be used,
-**      distributed and modified only pursuant to the terms of that agreement.
+**      distributed and modified only pursuant to the terms of that agreement. 
 **
 **
 **

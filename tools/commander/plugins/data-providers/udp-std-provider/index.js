@@ -82,12 +82,18 @@ class UdpStdProvider extends CdrGroundPlugin {
     
     
     processOutgoingBuffer(buffer) {
+        if (!this.udpTxEnable) {
+            return;
+        }
         this.hk.content.msgSentCount++;
         this.sender.send( buffer, 0, buffer.length, this.hk.content.outPort, this.hk.content.outAddress);
     }
     
     
     processIncomingBuffer(buffer, rinfo) {
+        if (!this.udpRxEnable) {
+            return;
+        }
         this.hk.content.msgRecvCount++;
         this.send( this.hk.content.outputStreamID, buffer );
     }
@@ -162,6 +168,16 @@ class UdpStdProvider extends CdrGroundPlugin {
                 doc: 'Input binary stream from encoder/decoder to binary data provider.',
                 format: String,
                 default: ''
+            },
+            udpTxEnable: {
+                doc: 'Flag to enable transmit on UDP plugin.',
+                format: Boolean,
+                default: false
+            },
+            udpRxEnable: {
+                doc: 'Flag to enable receive on UDP plugin.',
+                format: Boolean,
+                default: false
             }
         } );
 
@@ -174,7 +190,11 @@ class UdpStdProvider extends CdrGroundPlugin {
         } );
         
         this.config.name = name;
-    }
+        
+        /* Initialize tx/rx enable flags */
+        this.udpTxEnable = this.config.get('udpTxEnable')
+        this.udpRxEnable = this.config.get('udpRxEnable')
+     }
     
     
     initTelemetry() {
@@ -189,7 +209,9 @@ class UdpStdProvider extends CdrGroundPlugin {
                 msgSentCount: 0,
                 msgRecvCount: 0,
                 inputStreamID: this.config.get( 'inputStreamID' ),
-                outputStreamID: this.config.get( 'outputStreamID' )
+                outputStreamID: this.config.get( 'outputStreamID' ),
+                udpTxEnable: this.config.get( 'udpTxEnable' ),
+                udpRxEnable: this.config.get( 'udpRxEnable' )
             }
         };
         this.addTelemetry(this.hk, 1000);
@@ -264,6 +286,21 @@ class UdpStdProvider extends CdrGroundPlugin {
             ]
         };
         this.addCommand(cmdSetOutput, this.setOutput);
+ 
+        var cmdToggleUdpTxEnable = {
+            opsPath: '/' + this.config.name + '/toggleUdpTxEnable',
+            args: [
+            ]
+        }
+        this.addCommand(cmdToggleUdpTxEnable, this.toggleUdpTxEnable);
+
+        var cmdToggleUdpRxEnable = {
+            opsPath: '/' + this.config.name + '/toggleUdpRxEnable',
+            args: [
+            ]
+        }
+        this.addCommand(cmdToggleUdpRxEnable, this.toggleUdpRxEnable);
+
     }
     
     
@@ -314,6 +351,19 @@ class UdpStdProvider extends CdrGroundPlugin {
             }
     	}
     }
+
+    toggleUdpTxEnable(cmd) {
+        var self = this;
+        this.udpTxEnable = !this.udpTxEnable;
+        this.hk.content.udpTxEnable = this.udpTxEnable; 
+    };
+
+    toggleUdpRxEnable(cmd) {
+        var self = this;
+        this.udpRxEnable = !this.udpRxEnable;
+        this.hk.content.udpRxEnable = this.udpRxEnable; 
+    };
+
 }
 
 

@@ -103,23 +103,23 @@ function(psp_initialize_airliner_build)
 
     ###  EXPLAIN
     # Prepare the build to be ready to use the Explain utility.
-	add_custom_target(ground_tools)
-	add_custom_target(explain_parsing)
+    add_custom_target(ground_tools)
+    add_custom_target(explain_parsing)
 	
-	# Set the path to put the objects we create for Explain to parse.
-	file(MAKE_DIRECTORY ${EXPLAIN_OBJS_INSTALL_DIR})
+    # Set the path to put the objects we create for Explain to parse.
+    file(MAKE_DIRECTORY ${EXPLAIN_OBJS_INSTALL_DIR})
 	
-	# EXPLAIN_DIR:  This is the directory for all explain generated files.
-	file(MAKE_DIRECTORY ${EXPLAIN_DIR})
+    # EXPLAIN_DIR:  This is the directory for all explain generated files.
+    file(MAKE_DIRECTORY ${EXPLAIN_DIR})
 	
-	# Prepare the build to be ready to use the Explain utility.
-	explain_setup()
-    
+    # Prepare the build to be ready to use the Explain utility.
+    explain_setup()
+
     if(${BUILD_CORE_FROM_SOURCE})
         # Do the things that we only do when we build the core binary from source.
         
         # Set what we're going to call the executable file.
-        set(CFE_EXEC_FILE core-bin)
+        set(CFE_EXEC_FILE airliner)
         
         # Parse the OSAL CMake files that will specify the various source files.
         if(NOT EXISTS ${PARSED_ARGS_OSAL})
@@ -129,70 +129,64 @@ function(psp_initialize_airliner_build)
         # Parse the OSAL CMake files that will specify the various source files.
         add_subdirectory(${PARSED_ARGS_OSAL} osal)
  
-	    # Now build CFE using the various source files that just parsed.
-	    add_executable(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} ${CFE_SRC} ${OSAL_SRC} ${PSP_PLATFORM_SRC} ${PSP_SHARED_SRC})
-	    set_target_properties(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} PROPERTIES OUTPUT_NAME ${CFE_EXEC_FILE})
+	# Now build CFE using the various source files that just parsed.
+	add_executable(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} ${CFE_SRC} ${OSAL_SRC} ${PSP_PLATFORM_SRC} ${PSP_SHARED_SRC})
+	set_target_properties(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} PROPERTIES OUTPUT_NAME ${CFE_EXEC_FILE})
 	    
-	    # Add the OSAL include paths, if any. 
-	    target_include_directories(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} PUBLIC ${OSAL_INCS})
+	# Add the OSAL include paths, if any. 
+	target_include_directories(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} PUBLIC ${OSAL_INCS})
 	
-	    # Make sure we enable exports, to prevent the compiler from optimizing them out.  This needs to be done so the
-	    # applications can call all the CFE functions.  Otherwise, the compiler will just remove most of the functions
-	    # because they aren't being used by CFE.
-	    set_target_properties(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} PROPERTIES ENABLE_EXPORTS TRUE)
+	# Make sure we enable exports, to prevent the compiler from optimizing them out.  This needs to be done so the
+	# applications can call all the CFE functions.  Otherwise, the compiler will just remove most of the functions
+	# because they aren't being used by CFE.
+	set_target_properties(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} PROPERTIES ENABLE_EXPORTS TRUE)
 	
-	    # Link in the various libraries specified by the PSP
-	    target_link_libraries(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} ${LIBS})
+	# Link in the various libraries specified by the PSP
+	target_link_libraries(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} ${LIBS})
 	
-	    # Add in the various flags also supplied by the PSP.
-	    set_target_properties(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} PROPERTIES COMPILE_FLAGS ${COMPILE_FLAGS})
-	    if(NOT LINK_FLAGS STREQUAL "")
-	        set_target_properties(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} PROPERTIES LINK_FLAGS ${LINK_FLAGS})
-	    endif()
+	# Add in the various flags also supplied by the PSP.
+	set_target_properties(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} PROPERTIES COMPILE_FLAGS ${COMPILE_FLAGS})
+	if(NOT LINK_FLAGS STREQUAL "")
+	    set_target_properties(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} PROPERTIES LINK_FLAGS ${LINK_FLAGS})
+	endif()
 	
-	    # Specify where the files are going to, defined at the top of this file.
-	    set_target_properties(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CFE_INSTALL_DIR})
+	# Specify where the files are going to, defined at the top of this file.
+	set_target_properties(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CFE_INSTALL_DIR})
 	
-	    # Generate documentation
-	    #add_subdirectory($ENV{CFE_DIR}/docs docs)
+	# Generate documentation
+	#add_subdirectory($ENV{CFE_DIR}/docs docs)
 	    
-	    ## Generate documentation
-	    find_package(Doxygen)
-	    if(DOXYGEN_FOUND)
-	        string (REPLACE ";" " " OSAL_SRC_FILES "${OSAL_SRC}")
-	        string (REPLACE ";" " " CONFIG_SOURCES "${PARSED_ARGS_CONFIG_SOURCES}")
+	## Generate documentation
+	find_package(Doxygen)
+	if(DOXYGEN_FOUND)
+	    string (REPLACE ";" " " OSAL_SRC_FILES "${OSAL_SRC}")
+	    string (REPLACE ";" " " CONFIG_SOURCES "${PARSED_ARGS_CONFIG_SOURCES}")
 	
-	        if(NOT {PARSED_ARGS_PREFIX}docs)        
-	            add_custom_target(${PARSED_ARGS_PREFIX}docs)
-	        endif()
+	    if(NOT {PARSED_ARGS_PREFIX}docs)        
+	        add_custom_target(${PARSED_ARGS_PREFIX}docs)
+            endif()
 	        
-	        set(CFS_DOCS_HTML_DIR ${CMAKE_BINARY_DIR}/docs/html)
-	        set(CFS_DOCS_LATEX_DIR ${CMAKE_BINARY_DIR}/docs/latex)      
-	        configure_file(${CFE_DOCS_DIR}/user_doxy.in ${CMAKE_CURRENT_BINARY_DIR}/user_doxy @ONLY)
-	        configure_file(${CFE_DOCS_DIR}/detail_doxy.in ${CMAKE_CURRENT_BINARY_DIR}/detail_doxy @ONLY)
-	        add_custom_target(${PARSED_ARGS_PREFIX}cfe-docs
-	            COMMAND mkdir -p ${CFS_DOCS_HTML_DIR}/detailed_design/cfe/
-	            COMMAND mkdir -p ${CFS_DOCS_HTML_DIR}/users_guide/cfe/
-	            COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/detail_doxy
-	            COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/user_doxy
-	            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/
-	        )
-	        add_dependencies(${PARSED_ARGS_PREFIX}docs ${PARSED_ARGS_PREFIX}cfe-docs)
-	    endif(DOXYGEN_FOUND)  
-	    
-	    # Generate the Explain symbol maps
-	    explain_read_elf(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} 
-	        INPUT_PATH     ${CFE_INSTALL_DIR}/${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE}
-	        DATABASE_NAME  ${EXPLAIN_DB}
+	    set(CFS_DOCS_HTML_DIR ${CMAKE_BINARY_DIR}/docs/html)
+	    set(CFS_DOCS_LATEX_DIR ${CMAKE_BINARY_DIR}/docs/latex)      
+	    configure_file(${CFE_DOCS_DIR}/user_doxy.in ${CMAKE_CURRENT_BINARY_DIR}/user_doxy @ONLY)
+	    configure_file(${CFE_DOCS_DIR}/detail_doxy.in ${CMAKE_CURRENT_BINARY_DIR}/detail_doxy @ONLY)
+	
+            add_custom_target(${PARSED_ARGS_PREFIX}cfe-docs
+	        COMMAND mkdir -p ${CFS_DOCS_HTML_DIR}/detailed_design/cfe/
+	        COMMAND mkdir -p ${CFS_DOCS_HTML_DIR}/users_guide/cfe/
+	        COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/detail_doxy
+	        COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/user_doxy
+	        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/
 	    )
+	    add_dependencies(${PARSED_ARGS_PREFIX}docs ${PARSED_ARGS_PREFIX}cfe-docs)
+	endif(DOXYGEN_FOUND) 
 	    
-	    #set(EXPLAIN_SYMBOL_FILE airliner-symbols.json)
-	    #explain_generate_symbol_map(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} 
-	    #    INPUT_PATH  ${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE}
-	    #    INPUT_FILE  ${CFE_EXEC_FILE}
-	    #    DATABASE_NAME  ${EXPLAIN_DIR}/airliner-symbols.sqlite
-	    #    OUTPUT_FILE ${EXPLAIN_DIR}/airliner-symbols.json
-	    #)
+	## Generate the Explain symbol maps
+	explain_read_elf(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} 
+	    INPUT_PATH     ${CFE_INSTALL_DIR}/${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE}
+	    DATABASE_NAME  ${EXPLAIN_DB}
+            MODULE_NAME    CFE
+	)
     else()
         # Do the things that we only do when we are assuming the core binary is already built.
         
@@ -306,8 +300,8 @@ function(psp_add_test)
     target_include_directories(${AIRLINER_BUILD_PREFIX}${TEST_NAME} PUBLIC ${PARSED_ARGS_INCLUDES})
     target_include_directories(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov PUBLIC ${PARSED_ARGS_INCLUDES})
 
-    target_link_libraries(${AIRLINER_BUILD_PREFIX}${TEST_NAME} -ldl -lrt ${CMAKE_THREAD_LIBS_INIT})
-    target_link_libraries(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov -fprofile-arcs gcov -ldl -lrt ${CMAKE_THREAD_LIBS_INIT})
+    target_link_libraries(${AIRLINER_BUILD_PREFIX}${TEST_NAME} ${LIBS})
+    target_link_libraries(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov ${LIBS} -fprofile-arcs gcov)
 
     set_target_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME} PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast")
     set_target_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast -fprofile-arcs -ftest-coverage")
@@ -536,10 +530,12 @@ function(psp_add_airliner_app_def)
     endif()
     
     # Generate the Explain symbol maps
-	explain_read_elf(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}
-	    INPUT_PATH     ${INSTALL_DIR}/${PARSED_ARGS_FILE}.so
-	    DATABASE_NAME  ${EXPLAIN_DB}
-	)
+    string(TOUPPER ${PARSED_ARGS_TARGET} MODULE_NAME)
+    explain_read_elf(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}
+        INPUT_PATH     ${INSTALL_DIR}/${PARSED_ARGS_FILE}.so
+        DATABASE_NAME  ${EXPLAIN_DB}
+        MODULE_NAME    ${MODULE_NAME}
+    )
 
     # Add the msg and ops_name Pyliner JSON override files
     if(PARSED_ARGS_MSG_OVERRIDES) 
@@ -586,8 +582,8 @@ function(psp_add_airliner_app_unit_test)
     add_executable(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} EXCLUDE_FROM_ALL ${PARSED_ARGS_SOURCES})
     add_executable(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov EXCLUDE_FROM_ALL ${PARSED_ARGS_SOURCES})
     
-    target_link_libraries(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} ${CMAKE_THREAD_LIBS_INIT})
-    target_link_libraries(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov -fprofile-arcs gcov ${CMAKE_THREAD_LIBS_INIT})
+    target_link_libraries(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} ${LIBS})
+    target_link_libraries(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov ${LIBS} -fprofile-arcs gcov)
     
     set_target_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast")
     set_target_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast -fprofile-arcs -ftest-coverage")
@@ -732,8 +728,7 @@ function(psp_add_airliner_cfe_unit_test)
     target_include_directories(${AIRLINER_BUILD_PREFIX}${TEST_NAME} PUBLIC ${PARSED_ARGS_INCLUDES})
     target_include_directories(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov PUBLIC ${PARSED_ARGS_INCLUDES})
 
-    target_link_libraries(${AIRLINER_BUILD_PREFIX}${TEST_NAME} -ldl -lrt ${CMAKE_THREAD_LIBS_INIT})
-    target_link_libraries(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov -fprofile-arcs gcov -ldl -lrt ${CMAKE_THREAD_LIBS_INIT})
+    target_link_libraries(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov -fprofile-arcs gcov)
 
     set_target_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME} PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast")
     set_target_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast -fprofile-arcs -ftest-coverage")
