@@ -124,8 +124,8 @@ void TO_Custom_Init_Nominal(void)
     int32 result = -1;
     int32 expected = 0;
     uint8 ChannelID = 0;
-    uint16 testPort = 5011;
-    char *testIP = "127.0.0.1";
+    uint16 testPort = TO_UDP_CHANNEL_PORT;
+    char *testIP = TO_UDP_CHANNEL_ADDRESS;
     
     char returnString[128];
     snprintf(returnString, 128, "UDP telemetry output enabled channel %u to %s:%u", 
@@ -802,30 +802,16 @@ void TO_OutputChannel_ProcessNewCustomCmds_DisableNominal(void)
             "TO_OutputChannel_Disable() failed to raise an event");
 }
 
-
  /**************************************************************************
- * Tests for TO_OutputChannel_ProtobufChannelTask()
+ * Tests for TO_OutputChannel_UDPChannelTask()
  **************************************************************************/
 /**
- * Test TO_OutputChannel_ProtobufChannelTask()
+ * Test TO_OutputChannel_UDPChannelTask()
  * Note: currently there is no way to fail this function
  */
-void TO_OutputChannel_ProtobufChannelTask_Nominal(void)
+void TO_OutputChannel_UDPChannelTask_Nominal(void)
 {
-    TO_OutputChannel_ProtobufChannelTask();
-}
-
-
- /**************************************************************************
- * Tests for TO_OutputChannel_BinaryChannelTask()
- **************************************************************************/
-/**
- * Test TO_OutputChannel_BinaryChannelTask()
- * Note: currently there is no way to fail this function
- */
-void TO_OutputChannel_BinaryChannelTask_Nominal(void)
-{
-    TO_OutputChannel_BinaryChannelTask();
+    TO_OutputChannel_UDPChannelTask();
 }
 
 
@@ -984,12 +970,9 @@ void TO_Custom_App_Test_AddTestCases(void)
     UtTest_Add(TO_OutputChannel_ProcessNewCustomCmds_DisableNominal, 
                 TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
                "TO_OutputChannel_ProcessNewCustomCmds_DisableNominal");
-    UtTest_Add(TO_OutputChannel_ProtobufChannelTask_Nominal,
+    UtTest_Add(TO_OutputChannel_UDPChannelTask_Nominal,
                 TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
-               "TO_OutputChannel_ProtobufChannelTask_Nominal");
-    UtTest_Add(TO_OutputChannel_BinaryChannelTask_Nominal,
-                TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
-               "TO_OutputChannel_BinaryChannelTask_Nominal");
+               "TO_OutputChannel_UDPChannelTask_Nominal");
     UtTest_Add(TO_OutputChannel_CustomCleanupAll_Nominal, 
                 TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
                "TO_OutputChannel_CustomCleanupAll_Nominal");

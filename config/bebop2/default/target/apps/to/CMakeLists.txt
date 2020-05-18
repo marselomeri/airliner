@@ -2,15 +2,8 @@ set(APP_NAME to)
 
 add_airliner_app_table(
     ${APP_NAME}
-    NAME to_grnd_bin
-    SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/to_ground_binary.c
-    INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/src/
-)
-
-add_airliner_app_table(
-    ${APP_NAME}
-    NAME to_grnd_pb
-    SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/to_ground_protobuf.c
+    NAME to_ground_dev
+    SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/to_ground_dev.c
     INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/src/
 )
 

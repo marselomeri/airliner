@@ -48,7 +48,7 @@
 ** Local Defines
 *************************************************************************/
 
-typedef struct TO_ChannelData_t TO_ChannelData_t;
+typedef struct TO_ChannelData_t TO_ChannelData;
 
 /************************************************************************
 ** Local Structure Definitions
@@ -59,8 +59,8 @@ typedef struct TO_ChannelData_t TO_ChannelData_t;
 */
 typedef enum
 {
-	TO_PQUEUE_UNUSED = 0,
-	TO_PQUEUE_ENA = 1,
+    TO_PQUEUE_UNUSED = 0,
+    TO_PQUEUE_ENA    = 1,
 } TO_PriorityQueueState_t;
 
 /**
@@ -68,26 +68,26 @@ typedef enum
 */
 typedef enum
 {
-	TO_PRIORITY_QUEUE_TYPE_FIFO = 0,
-	TO_PRIORITY_QUEUE_TYPE_SINGLE,
+    TO_PRIORITY_QUEUE_TYPE_FIFO   = 0,
+    TO_PRIORITY_QUEUE_TYPE_SINGLE = 1,
 } TO_PriorityQueueType_t;
 
 
 /** \brief Definition for a single priority queue entry. */
 typedef struct
 {
-	TO_PriorityQueueState_t State;
-	uint16					MsgLimit;
-	TO_PriorityQueueType_t  QType;
+    TO_PriorityQueueState_t State;
+    uint16                  MsgLimit;
+    TO_PriorityQueueType_t  QType;
 } TO_PriorityQueue_t;
 
 typedef struct
 {
-	uint16					DroppedMsgCnt;
-    uint16					QueuedMsgCnt;
-    uint16					CurrentlyQueuedCnt;
-    uint16					HighwaterMark;
-    uint32					OSALQueueID;
+    uint16                  DroppedMsgCnt;
+    uint16                  QueuedMsgCnt;
+    uint16                  CurrentlyQueuedCnt;
+    uint16                  HighwaterMark;
+    uint32                  OSALQueueID;
 } TO_PriorityQueueMetrics_t;
 
 
@@ -107,7 +107,7 @@ typedef struct
 **       and Queued Message Counts.
 **
 *************************************************************************/
-void TO_PriorityQueue_ResetCountsAll(TO_ChannelData_t* channel);
+void TO_PriorityQueue_ResetCountsAll(TO_ChannelData* channel);
 
 
 
@@ -119,7 +119,7 @@ void TO_PriorityQueue_ResetCountsAll(TO_ChannelData_t* channel);
 **       the queue, deallocating each message its popped off the queue.
 **
 *************************************************************************/
-void TO_PriorityQueue_CleanupAll(TO_ChannelData_t* channel);
+void TO_PriorityQueue_CleanupAll(TO_ChannelData* channel);
 
 
 
@@ -136,7 +136,7 @@ void TO_PriorityQueue_CleanupAll(TO_ChannelData_t* channel);
 **  \endreturns
 **
 *************************************************************************/
-int32 TO_PriorityQueue_BuildupAll(TO_ChannelData_t* channel);
+int32 TO_PriorityQueue_BuildupAll(TO_ChannelData* channel);
 
 
 
@@ -159,7 +159,7 @@ int32 TO_PriorityQueue_BuildupAll(TO_ChannelData_t* channel);
 **  \endreturns
 **
 *************************************************************************/
-int32 TO_PriorityQueue_QueueMsg(TO_ChannelData_t *channel, CFE_SB_MsgPtr_t MsgPtr, uint32 PQueueIndex);
+int32 TO_PriorityQueue_QueueMsg(TO_ChannelData *channel, CFE_SB_MsgPtr_t MsgPtr, uint32 PQueueIndex);
 
 
 
@@ -176,7 +176,7 @@ int32 TO_PriorityQueue_QueueMsg(TO_ChannelData_t *channel, CFE_SB_MsgPtr_t MsgPt
 **  \endreturns
 **
 *************************************************************************/
-int32 TO_PriorityQueue_TeardownAll(TO_ChannelData_t* channel);
+int32 TO_PriorityQueue_TeardownAll(TO_ChannelData* channel);
 
 
 
@@ -214,7 +214,7 @@ boolean TO_PriorityQueue_Query(uint16 ChannelIdx, uint16 PQueueIdx);
 **  \endreturns
 **
 *************************************************************************/
-boolean TO_PriorityQueue_IsValid(TO_ChannelData_t* channel, uint32 PQueueIdx);
+boolean TO_PriorityQueue_IsValid(TO_ChannelData* channel, uint32 PQueueIdx);
 
 
 #endif

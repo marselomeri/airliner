@@ -7,8 +7,11 @@ extern "C" {
 
 #include "cfe_platform_cfg.h"
 
-#define TO_CUSTOM_CHILD_TASK_FLAGS            OS_ENABLE_CORE_0
-#define TO_CUSTOM_TASK_STACK_SIZE             131072
+
+#define TO_CUSTOM_CHILD_TASK_FLAGS     (OS_ENABLE_CORE_0)
+#define TO_CUSTOM_TASK_STACK_SIZE      (131072)
+#define TO_UDP_CHANNEL_ADDRESS         "127.0.0.1"
+#define TO_UDP_CHANNEL_PORT            (5011)
 
 /*
 ** to Platform Configuration Parameter Definitions
@@ -27,7 +30,7 @@ extern "C" {
 **       Must be defined as a numeric value that is greater than
 **       or equal to zero.
 */
-#define TO_MISSION_REV                (0)
+#define TO_MISSION_REV                (1)
 
 /** \brief Pipe depth for the Scheduler pipe 
 **
@@ -98,11 +101,10 @@ extern "C" {
 **       The length of each string, including the NULL terminator cannot exceed
 **       the #OS_MAX_PATH_LEN value.
 */
-#define TO_GROUND_BINARY_CONFIG_TABLE_FILENAME      ("/cf/apps/to_grnd_bin.tbl")
-#define TO_GROUND_PROTOBUF_CONFIG_TABLE_FILENAME    ("/cf/apps/to_grnd_pb.tbl")
+#define TO_GROUND_DEVUDP_CONFIG_TABLE_FILENAME    ("/cf/apps/to_ground_dev.tbl")
 
 
-#define TO_MAX_MEMPOOL_BLK_SIZES 8
+#define TO_MAX_MEMPOOL_BLK_SIZES      (8)
 
 /**
 **  \cfeescfg Define TO Memory Pool Block Sizes
@@ -127,10 +129,8 @@ extern "C" {
 /**
  * \brief Defines the table identification name used for table registration.
  */
-#define TO_GROUND_BINARY_CONFIG_TABLENAME        ("GRND_BIN_CFG")
-#define TO_GROUND_BINARY_DUMP_TABLENAME          ("GRND_BIN_DMP")
-#define TO_GROUND_PROTOBUF_CONFIG_TABLENAME      ("GRND_PB_CFG")
-#define TO_GROUND_PROTOBUF_DUMP_TABLENAME        ("GRND_PB_DMP")
+#define TO_GROUND_DEVUDP_CONFIG_TABLENAME        ("GRND_DEV_CFG")
+#define TO_GROUND_DEVUDP_DUMP_TABLENAME          ("GRND_DEV_DMP")
 
 /** \brief The timeout value, in milliseconds, to wait for ES application startup sync.
 **
@@ -141,8 +141,9 @@ extern "C" {
 
 /* TODO:  Add more platform configuration parameter definitions here, if necessary. */
 #define TO_MAX_MSGS_OUT_PER_FRAME (100)
-#define TO_MAX_CHANNELS			  (5)
-#define TO_OUTPUT_QUEUE_DEPTH     (10)
+#define TO_MAX_CHANNELS	          (2)
+#define TO_OUTPUT_QUEUE_DEPTH     (20)
+#define TO_UDP_CHANNEL_TASK_PRIORITY (119)
 
 /**
 **  \tocfg Number of bytes in the Message Memory Pool
@@ -159,8 +160,6 @@ extern "C" {
 **       needed.
 */
 #define TO_NUM_BYTES_IN_MEM_POOL        (TO_MAX_CHANNELS * TO_OUTPUT_QUEUE_DEPTH * TO_MAX_BLOCK_SIZE)
-
-#define TO_MAX_PROTOBUF_ENC_LEN	5000
 
 
 #ifdef __cplusplus

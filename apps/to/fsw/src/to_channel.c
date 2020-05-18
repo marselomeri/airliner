@@ -113,16 +113,15 @@ end_of_function:
 
 void TO_Channel_ProcessTelemetryAll(void)
 {
-    int32 iStatus = CFE_SUCCESS;
     uint32 i = 0;
 
     for(i = 0; i < TO_MAX_CHANNELS; ++i)
     {
-	    TO_ChannelData_t *channel = &TO_AppData.ChannelData[i];
-	    if(channel->State == TO_CHANNEL_OPENED)
-	    {
-	    	TO_Channel_ProcessTelemetry(channel);
-	    }
+	TO_ChannelData_t *channel = &TO_AppData.ChannelData[i];
+	if(channel->State == TO_CHANNEL_OPENED)
+	{
+            TO_Channel_ProcessTelemetry(channel);
+        }
     }
 }
 
@@ -139,16 +138,15 @@ void TO_Channel_ProcessTelemetry(TO_ChannelData_t *channel)
 
 void TO_Channel_ResetCountsAll(void)
 {
-    int32 iStatus = CFE_SUCCESS;
     uint32 i = 0;
 
     for(i = 0; i < TO_MAX_CHANNELS; ++i)
     {
-	    TO_ChannelData_t *channel = &TO_AppData.ChannelData[i];
-	    if(channel->State == TO_CHANNEL_OPENED)
-	    {
-	    	TO_Channel_ResetCounts(channel);
-	    }
+        TO_ChannelData_t *channel = &TO_AppData.ChannelData[i];
+        if(channel->State == TO_CHANNEL_OPENED)
+        {
+            TO_Channel_ResetCounts(channel);
+        }
     }
 }
 

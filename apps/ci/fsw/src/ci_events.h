@@ -34,9 +34,6 @@
 #ifndef CI_EVENTS_H
 #define CI_EVENTS_H
 
-#include <termio.h>
-#include <stdlib.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -479,19 +476,6 @@ typedef enum {
 **
 */
 	CI_CMD_UPDATE_REG_EID = 33,
-
-/** \brief <tt> 'CI - Unable to find deserialization function' </tt>
-**  \event <tt> 'CI - Unable to find deserialization function' </tt>
-**
-**  \par Type: ERROR
-**
-**  \par Cause:
-**
-**  This event message is issued when CI receives a message
-**  that requires deserialization and it is unable to locate
-**  that message's decoding function
-*/
-	CI_NO_DECODE_FUNC_EID = 34,
 
 /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
     CI_EVT_CNT = 35

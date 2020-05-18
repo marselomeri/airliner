@@ -66,7 +66,7 @@ int32 CI_InitCustom(void);
 **  \param [in/out]   size          Read contents size
 **
 *************************************************************************/
-void CI_ReadMessage(char* buffer, uint32* size);
+void CI_ReadMessage(uint8* buffer, uint32* size);
 
 /************************************************************************/
 /** \brief Read Serialized Message

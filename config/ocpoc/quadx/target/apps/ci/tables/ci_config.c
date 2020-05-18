@@ -42,14 +42,12 @@ static OS_USED CFE_TBL_FileDef_t CFE_TBL_FileDef =
 /* Default CI config table data */
 CI_ConfigTblEntry_t CI_ConfigTbl[CI_CONFIG_TABLE_MAX_ENTRIES] =
 {
-	/* Table ID */
-	1,
-	{
-		/* Registered Commands */
-		{0x1806, 2, STEP_2, UNAUTHORIZED, 0, LOG}, // CFE ES Proc/Power Reset
-		{0x1c29, 0, STEP_1, UNAUTHORIZED, 0, LOG}, // EA Noop
-		{0x1c29, 1, STEP_2, UNAUTHORIZED, 0, LOG}  // EA Reset
-	}
+    /* Table ID */
+    1,
+    {
+        /* Registered Commands */
+        {0x1806, 2, STEP_2, UNAUTHORIZED, 0, LOG} // CFE ES Proc/Power Reset
+    }
 };
 
 /*

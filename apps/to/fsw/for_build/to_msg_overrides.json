@@ -11,6 +11,8 @@
                     "TO_QueryPriorityQueueCmd_t": { "airliner_cc":  5, "macro": "TO_CMD_MID", "airliner_msg": "TO_QueryPriorityQueueCmd_t" },
                     "TO_QueryOutputChannelCmd_t": { "airliner_cc":  6, "macro": "TO_CMD_MID", "airliner_msg": "TO_QueryOutputChannelCmd_t" },
                     "TO_SendDiagCmd_t":           { "airliner_cc":  7, "macro": "TO_CMD_MID", "airliner_msg": "TO_SendDiagCmd_t" },
+                    "TO_EnableChannelCmd_t":      { "airliner_cc": 10, "macro": "TO_CMD_MID", "airliner_msg": "TO_EnableChannelCmd_t" },
+                    "TO_DisableChannelCmd_t":     { "airliner_cc": 11, "macro": "TO_CMD_MID", "airliner_msg": "TO_DisableChannelCmd_t" },
                     "TO_HkTlm_t":                 {                    "macro": "TO_HK_TLM_MID", "airliner_msg": "TO_HkTlm_t" },
                     "TO_ChannelDiagTlm_t":        {                    "macro": "TO_DIAG_TLM_MID", "airliner_msg": "TO_ChannelDiagTlm_t" }
                 },    

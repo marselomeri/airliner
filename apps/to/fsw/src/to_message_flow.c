@@ -181,7 +181,6 @@ TO_MessageFlow_t* TO_MessageFlow_GetObject(TO_ChannelData_t* channel, CFE_SB_Msg
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 TO_PriorityQueue_t* TO_MessageFlow_GetPQueue(TO_ChannelData_t* channel, TO_MessageFlow_t *MsgFlow, uint32 *Index)
 {
-	uint32 i = 0;
 	uint32 idx = 0;
 	TO_PriorityQueue_t* outPQueue = 0;
 
@@ -404,7 +403,6 @@ end_of_function:
 boolean TO_MessageFlow_Query(uint16 ChannelIdx, CFE_SB_MsgId_t MsgID)
 {
 	uint32 i = 0;
-	TO_MessageFlow_t *outMsgFlow = 0;
     boolean found = FALSE;
 
     TO_ChannelData_t *channel;
