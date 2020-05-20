@@ -58,8 +58,8 @@ void TO_Classifier_Run(TO_ChannelData_t* channel)
         {
         	TO_PriorityQueue_t *pqueue = 0;
         	TO_MessageFlow_t *msgFlow = 0;
-        	int32 msgFlowIndex = 0;
-        	int32 pQueueIndex = 0;
+        	uint32 msgFlowIndex = 0;
+        	uint32 pQueueIndex = 0;
 
         	CFE_SB_MsgId_t DataMsgID = CFE_SB_GetMsgId(DataMsgPtr);
 

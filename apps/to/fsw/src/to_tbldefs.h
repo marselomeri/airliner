@@ -68,8 +68,8 @@ extern "C" {
 
 typedef enum
 {
-	TO_OUTPUT_TYPE_BINARY	= 0,
-	TO_OUTPUT_TYPE_PROTOBUF	= 1
+    TO_OUTPUT_TYPE_BINARY	= 0,
+    TO_OUTPUT_TYPE_PROTOBUF	= 1
 } TO_ChannelType_t;
 
 /* TODO:  Add doxygen markup. */

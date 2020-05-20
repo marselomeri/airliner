@@ -39,6 +39,7 @@
 ** Includes
 *************************************************************************/
 #include "ci_config_utils.h"
+#include "ci_app.h"
 
 /************************************************************************
 ** Local Defines
@@ -75,7 +76,7 @@ extern CI_AppData_t  CI_AppData;
 /* Initialize Config Table                                         */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-int32 CI_InitTbls()
+int32 CI_InitTbls(void)
 {
     int32  iStatus=0;
 

@@ -53,7 +53,6 @@
 #include "to_output_queue.h"
 #include "to_custom.h"
 #include "to_channel.h"
-#include "pb_lib.h"
 
 /************************************************************************
 ** Local Defines
@@ -78,13 +77,13 @@ TO_AppData_t  TO_AppData;
 uint32  TO_MemPoolDefSize[TO_MAX_MEMPOOL_BLK_SIZES] =
 {
     TO_MAX_BLOCK_SIZE,
-	TO_MEM_BLOCK_SIZE_07,
+    TO_MEM_BLOCK_SIZE_07,
     TO_MEM_BLOCK_SIZE_06,
-	TO_MEM_BLOCK_SIZE_05,
-	TO_MEM_BLOCK_SIZE_04,
-	TO_MEM_BLOCK_SIZE_03,
-	TO_MEM_BLOCK_SIZE_02,
-	TO_MEM_BLOCK_SIZE_01
+    TO_MEM_BLOCK_SIZE_05,
+    TO_MEM_BLOCK_SIZE_04,
+    TO_MEM_BLOCK_SIZE_03,
+    TO_MEM_BLOCK_SIZE_02,
+    TO_MEM_BLOCK_SIZE_01
 };
 
 /************************************************************************
@@ -685,21 +684,20 @@ void TO_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr)
 
 void TO_ReportHousekeeping()
 {
-	uint32 i = 0;
-	int32 iStatus;
+    uint32 i = 0;
 
-	for(i = 0; i < TO_MAX_CHANNELS; ++i)
-	{
-		TO_ChannelData_t *channel = &TO_AppData.ChannelData[i];
-		TO_Channel_LockByRef(channel);
-		TO_AppData.HkTlm.QueuedInOutputChannel[i] = channel->OutputQueue.CurrentlyQueuedCnt;
-		TO_Channel_UnlockByRef(channel);
-	}
+    for(i = 0; i < TO_MAX_CHANNELS; ++i)
+    {
+        TO_ChannelData_t *channel = &TO_AppData.ChannelData[i];
+        TO_Channel_LockByRef(channel);
+        TO_AppData.HkTlm.QueuedInOutputChannel[i] = channel->OutputQueue.CurrentlyQueuedCnt;
+        TO_Channel_UnlockByRef(channel);
+    }
 
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&TO_AppData.HkTlm);
-	OS_MutSemTake(TO_AppData.MutexID);
+    OS_MutSemTake(TO_AppData.MutexID);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&TO_AppData.HkTlm);
-	OS_MutSemGive(TO_AppData.MutexID);
+    OS_MutSemGive(TO_AppData.MutexID);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -916,45 +914,6 @@ void TO_AppMain()
 
     /* Exit the application */
     CFE_ES_ExitApp(TO_AppData.uiRunStatus);
-}
-
-uint32 TO_ProtobufTlmEncode(CFE_SB_MsgPtr_t MsgInPtr,
-		char *BufferOut, uint32 Size)
-{
-	CFE_SB_MsgId_t  	msgId = 0;
-	uint32  			msgSize = 0;
-	uint16  			outSize = 0;
-	uint32  			hdrSize = 0;
-	uint32  			payloadSize = 0;
-	PBLib_EncodeFuncPtr_t encodeFunc;
-
-	/* Get required params */
-	msgId = CFE_SB_GetMsgId(MsgInPtr);
-	payloadSize = CFE_SB_GetUserDataLength(MsgInPtr); //change to user data length
-	hdrSize = CFE_SB_MsgHdrSize(msgId);
-
-	/* Get serialization funciton from PBL */
-	encodeFunc = PBLIB_GetTlmSerializationFunc(msgId);
-	if(encodeFunc == 0)
-	{
-		CFE_EVS_SendEvent (TO_NO_ENCODE_FUNC_EID, CFE_EVS_ERROR, "MsgId (0x%04X) has no serialization function",
-									msgId);
-		outSize = 0;
-		goto TO_ProtobufEncode_Exit_Tag;
-	}
-
-	/* Call encode function */
-	payloadSize = encodeFunc(MsgInPtr, &BufferOut[hdrSize], Size - hdrSize);
-	outSize = hdrSize + payloadSize;
-
-	/* Create new SB msg from serialized data */
-	CFE_SB_InitMsg(BufferOut, msgId, outSize, FALSE);
-
-	/* Update header info */
-	CFE_SB_GenerateChecksum((CFE_SB_MsgPtr_t)BufferOut);
-
-TO_ProtobufEncode_Exit_Tag:
-	return outSize;
 }
 
 

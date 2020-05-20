@@ -73,6 +73,7 @@ typedef enum {
     TO_TLMOUTSOCKET_ERR_EID = TO_EVT_CNT,
     TO_TLMOUTENA_INF_EID,
     TO_TLMOUTENA_ERR_EID,
+    TO_TLMOUTSEND_ERR_EID,
     TO_TLMOUTSTOP_ERR_EID,
     TO_CUSTOM_EVT_CNT
 } TO_CustomEventIds_t;
@@ -111,11 +112,24 @@ extern TO_AppData_t TO_AppData;
 ** Local Function Definitions
 *************************************************************************/
 
+/**
+ * The routine to send a buffer out the channel.  This routine
+ * abstracts the formatting and output of different channels.
+ */
+int32 TO_OutputChannel_Send(uint32 ChannelID, const char* Buffer, uint32 Size);
 
-int32 TO_OutputChannel_Enable(uint8 ChannelID, const char *DestinationAddress, uint16 DestinationPort);
-int32 TO_OutputChannel_Disable(uint8 ChannelID);
-void  TO_OutputChannel_BinaryChannelTask(void);
-void  TO_OutputChannel_ProtobufChannelTask(void);
+int32 TO_OutputChannel_Enable(uint32 ChannelID, const char *DestinationAddress, uint16 DestinationPort);
+int32 TO_OutputChannel_Disable(uint32 ChannelID);
+
+/**
+ * The UDP Development Channel Task Entry Point
+ */
+void  TO_OutputChannel_UDPChannelTask(void);
+
+/**
+ * The child task routine for a pulling from the output queue and sending
+ * out the channel.
+ */
 void  TO_OutputChannel_ChannelHandler(uint32 ChannelIndex);
 
 int32 TO_OutputChannel_CustomBuildupAll(uint32 index);

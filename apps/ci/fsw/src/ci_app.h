@@ -42,7 +42,6 @@
 ** Includes
 *************************************************************************/
 #include "cfe.h"
-#include "pb_lib.h"
 #include "ci_platform_cfg.h"
 #include "ci_mission_cfg.h"
 #include "ci_private_ids.h"
@@ -62,11 +61,6 @@ extern "C" {
 /************************************************************************
 ** Local Defines
 *************************************************************************/
-#define CI_MAX_CMD_INGEST                   (CFE_SB_MAX_SB_MSG_SIZE)
-#define CI_LISTENER_TASK_NAME               ("CI_LISTENER")
-#define CI_SERIAL_LISTENER_TASK_NAME        ("CI_SERIAL_LISTENER")
-#define CI_CFG_TBL_MUTEX_NAME               ("CI_CFG_TBL_MUTEX")
-#define CI_TIME_TBL_MUTEX_NAME              ("CI_TIME_TBL_MUTEX")
 #define CI_INVALID_VALUE                    (CI_MAX_RGST_CMDS + 1)
 
 /************************************************************************
@@ -388,34 +382,22 @@ int32  CI_InitListenerTask(void);
 *************************************************************************/
 void CI_ListenerTaskMain(void);
 
-/************************************************************************/
-/** \brief Serialized Listener Task Main
-**
-**  \par Description
-**       This function opens a socket and ingests all serialized cmds for
-**       CI to process before publishing them to the software bus.
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-*************************************************************************/
-void CI_SerializedListenerTaskMain(void);
-
 
 /************************************************************************/
 /** \brief Process Ingest Command
 **
 **  \par Description
 **       This function contains the shared logic for processing a cmd
-**       used by both the serialized and nonserialized ingest loops.
+**       used by both the ingest loop.
 **
 **  \par Assumptions, External Events, and Notes:
 **       None
 **
 **  \param [in]   CmdMsgPtr     A #CFE_SB_Msg_t pointer that
 **                              references the software bus message
-**  \param [in]   MsgSize 		The size of the message from the
-**  							ingest buffer
+**  \param [in]   MsgSize 	The size of the message from the
+**  				ingest buffer. A size of zero indicates
+**  				"no message to process".
 **
 *************************************************************************/
 void CI_ProcessIngestCmd(CFE_SB_MsgPtr_t CmdMsgPtr, uint32 MsgSize);
@@ -440,25 +422,6 @@ void CI_ProcessIngestCmd(CFE_SB_MsgPtr_t CmdMsgPtr, uint32 MsgSize);
 **
 *************************************************************************/
 boolean CI_ValidateCmd(const CFE_SB_Msg_t* MsgPtr, uint32 MsgSize);
-
-/************************************************************************/
-/** \brief Validate Serialized Command
-**
-**  \par Description
-**       This function validates several parameters of a serialized command.
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]   MsgPtr        A #CFE_SB_Msg_t pointer that
-**                              references the software bus message
-**
-**  \returns
-**  TRUE if the command is valid, FALSE if it is not.
-**  \endreturns
-**
-*************************************************************************/
-boolean CI_ValidateSerialCmd(const CFE_SB_Msg_t* MsgPtr);
 
 
 /************************************************************************/
@@ -608,26 +571,6 @@ void CI_CmdDeregister(const CFE_SB_Msg_t* MsgPtr);
 **
 *************************************************************************/
 void CI_UpdateCmdReg(const CFE_SB_Msg_t* MsgPtr);
-
-/************************************************************************/
-/** \brief Deserialize Message
-**
-**  \par Description
-**       This function receives a SB message pointer that has a payload
-**       serialized with protobuf and deserializes that payload to return
-**       a valid message pointer CFS can understand.
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]   MsgPtr        A #CFE_SB_Msg_t pointer that
-**                              references the software bus message
-**
-**  \returns
-**  #uint32 The size of the new #CFE_SB_Msg_t
-**  \endreturns
-*************************************************************************/
-uint32 CI_DeserializeMsg(CFE_SB_MsgPtr_t CmdMsgPtr);
 
 #ifdef __cplusplus
 }

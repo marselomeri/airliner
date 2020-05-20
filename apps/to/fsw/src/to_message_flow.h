@@ -62,14 +62,14 @@ typedef struct
 {
     CFE_SB_MsgId_t  MsgId;
     uint16          MsgLimit;
-    uint16			PQueueID;
+    uint16          PQueueID;
 } TO_MessageFlow_t;
 
 
 typedef struct
 {
-    uint16			DroppedMsgCnt;
-    uint16			QueuedMsgCnt;
+    uint16          DroppedMsgCnt;
+    uint16          QueuedMsgCnt;
 } TO_MessageFlowMetrics_t;
 
 /************************************************************************

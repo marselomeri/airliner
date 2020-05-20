@@ -6,9 +6,6 @@ extern "C" {
 #endif
 
 
-#define CI_LISTENER_TASK_FLAGS            OS_ENABLE_CORE_0
-#define CI_SERIAL_LISTENER_TASK_FLAGS     OS_ENABLE_CORE_0
-
 /*
 ** ci Platform Configuration Parameter Definitions
 */
@@ -26,7 +23,7 @@ extern "C" {
 **       Must be defined as a numeric value that is greater than
 **       or equal to zero.
 */
-#define CI_MISSION_REV                (0)
+#define CI_MISSION_REV                (1)
 
 /** \brief Pipe depth for the Scheduler pipe 
 **
@@ -91,20 +88,6 @@ extern "C" {
 */
 #define CI_CMD_PIPE_NAME              ("CI_CMD_PIPE")
 
-/** \brief Pipe depth for the data pipe 
-**
-**  \par Limits:
-**       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
-*/
-#define CI_DATA_PIPE_DEPTH            (4)
-
-/** \brief Pipe name for the Scheduler pipe 
-**
-**  \par Limits:
-**       Note, this name must fit in OS_MAX_API_NAME.
-*/
-#define CI_DATA_PIPE_NAME             ("CI_DATA_PIPE")
-
 /** \brief The config table default filename
 **
 **  \par Limits:
@@ -128,9 +111,6 @@ extern "C" {
 */
 #define CI_STARTUP_TIMEOUT_MSEC        (5000)
 
-/** \brief Max Length of Ingested Serialized Data */
-#define CI_MAX_ENC_LEN                 (32768)
-
 /** \brief CI Ingest Mode */
 #define CI_INGEST_MODE                 (CI_BHV_OPTIMISTIC)
 
@@ -144,14 +124,23 @@ extern "C" {
 /** \brief CI Lister Task Stack Size */
 #define CI_LISTENER_TASK_STACK_SIZE         (160000)
 
+/** \brief CI Lister Task Flags for CFE_ES_CreateChildTask() */
+#define CI_LISTENER_TASK_FLAGS              (OS_ENABLE_CORE_0)
+
 /** \brief CI Lister Task Priority */
 #define CI_LISTENER_TASK_PRIORITY           (109)
 
-/** \brief CI Serialized Lister Task Stack Size */
-#define CI_SERIAL_LISTENER_TASK_STACK_SIZE	(160000)
+/** \brief The largest size message CI can ingest */
+#define CI_MAX_CMD_INGEST                   (CFE_SB_MAX_SB_MSG_SIZE)
 
-/** \brief CI Serialized Lister Task Priority */
-#define CI_SERIAL_LISTENER_TASK_PRIORITY	(112)
+/** \brief Listener task name */
+#define CI_LISTENER_TASK_NAME               ("CI_LISTENER")
+
+/** \brief CI config table mutex name */
+#define CI_CFG_TBL_MUTEX_NAME               ("CI_CFG_TBL_MUTEX")
+
+/** \brief CI timeout table mutex name */
+#define CI_TIME_TBL_MUTEX_NAME              ("CI_TIME_TBL_MUTEX")
 
 #ifdef __cplusplus
 }

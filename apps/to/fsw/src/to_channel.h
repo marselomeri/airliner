@@ -45,18 +45,16 @@
 #include "cfe.h"
 #include "to_tbldefs.h"
 
-typedef struct TO_ChannelData_t TO_ChannelData_t;
-
 typedef enum
 {
-	TO_CHANNEL_CLOSED = 0,
-	TO_CHANNEL_OPENED = 1,
-	TO_CHANNEL_RECONFIGURING = 2,
+    TO_CHANNEL_CLOSED = 0,
+    TO_CHANNEL_OPENED = 1,
+    TO_CHANNEL_RECONFIGURING = 2,
 } TO_ChannelState_t;
 
 struct TO_ChannelData_t
 {
-	TO_ChannelState_t State;
+    TO_ChannelState_t State;
 
     /* Config table-related */
 
@@ -88,7 +86,7 @@ struct TO_ChannelData_t
 
     uint32 MutexID;
 
-	TO_OutputQueue_t OutputQueue;
+    TO_OutputQueue_t OutputQueue;
 };
 
 

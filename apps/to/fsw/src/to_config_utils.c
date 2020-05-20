@@ -159,7 +159,7 @@ TO_InitConfigTbl_Exit_Tag:
 int32 TO_ValidateConfigTbl(void* ConfigTblPtr)
 {
     int32  iStatus=0;
-    TO_ChannelTbl_t* TO_ConfigTblPtr = (TO_ChannelTbl_t*)(ConfigTblPtr);
+    //TO_ChannelTbl_t* TO_ConfigTblPtr = (TO_ChannelTbl_t*)(ConfigTblPtr);
 
     if (ConfigTblPtr == NULL)
     {
@@ -190,7 +190,6 @@ TO_ValidateConfigTbl_Exit_Tag:
 
 int32 TO_ProcessNewConfigTbl(TO_ChannelData_t* channel)
 {
-	uint32 i = 0;
 	int32 iStatus = 0;
 
 	/* Build up the new configuration. */
@@ -199,6 +198,7 @@ int32 TO_ProcessNewConfigTbl(TO_ChannelData_t* channel)
 	{
 		goto end_of_function;
 	}
+
 	iStatus = TO_PriorityQueue_BuildupAll(channel);
 	if(iStatus != 0)
 	{
@@ -218,7 +218,6 @@ end_of_function:
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void TO_ReleaseAllTables()
 {
-    int32 iStatus = CFE_SUCCESS;
     uint32 i = 0;
 
     for(i = 0; i < TO_MAX_CHANNELS; ++i)
