@@ -60,9 +60,6 @@ add_airliner_app_def(px4lib
         ${PROJECT_SOURCE_DIR}/apps/px4lib/fsw/platform_inc
 )
 
-# set optimization for px4lib
-target_compile_options(px4lib PRIVATE -O3)
-
 add_airliner_app_unit_test(px4lib-vector1f-ut
     UTASSERT
     SOURCES
@@ -112,7 +109,6 @@ add_airliner_app_unit_test(px4lib-vector3f-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector3F_test_utils.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector3F_test_utils.hpp
         ${PX4LIB_SOURCES}
-
 
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
