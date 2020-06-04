@@ -28,7 +28,7 @@ static OS_USED CFE_TBL_FileDef_t CFE_TBL_FileDef =
     */
 
     "CI_ConfigTbl", "CI.CONFIG_TBL", "CI default config table",
-    "ci_config.tbl", (sizeof(CI_ConfigTblEntry_t) * CI_CONFIG_TABLE_MAX_ENTRIES)
+    "ci_config.tbl", sizeof(CI_ConfigTblEntry_t)
 };
 
 /*
@@ -40,7 +40,7 @@ static OS_USED CFE_TBL_FileDef_t CFE_TBL_FileDef =
 */
 
 /* Default CI config table data */
-CI_ConfigTblEntry_t CI_ConfigTbl[CI_CONFIG_TABLE_MAX_ENTRIES] =
+CI_ConfigTblEntry_t CI_ConfigTbl =
 {
     /* Table ID */
     1,

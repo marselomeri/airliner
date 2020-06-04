@@ -20,7 +20,6 @@ add_airliner_app_unit_test(ci-custom-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/ci_mock_os_calls.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/ci_test_utils.c
         ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_es_hooks.c
-        ${PROJECT_SOURCE_DIR}/apps/pblib/fsw/src/pb_lib.c
         
 	INCLUDES
         ${PROJECT_SOURCE_DIR}/apps/ci/fsw/src/
