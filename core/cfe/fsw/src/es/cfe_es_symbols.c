@@ -34,25 +34,25 @@
 #include "cfe_es_msg.h"
 
 /* Command messages. */
-CFE_ES_NoArgsCmd_t          CFE_ES_NoArgsCmd_S;
-CFE_ES_RestartCmd_t         CFE_ES_RestartCmd_S;
-CFE_ES_ShellCmd_t           CFE_ES_ShellCmd_S;
-CFE_ES_QueryAllCmd_t        CFE_ES_QueryAllCmd_S;
-CFE_ES_QueryAllTasksCmd_t   CFE_ES_QueryAllTasksCmd_S;
-CFE_ES_WriteSyslogCmd_t     CFE_ES_WriteSyslogCmd_S;
-CFE_ES_WriteERlogCmd_t      CFE_ES_WriteERlogCmd_S;
-CFE_ES_OverWriteSysLogCmd_t CFE_ES_OverWriteSysLogCmd_S;
-CFE_ES_StartAppCmd_t        CFE_ES_StartAppCmd_S;
+CFE_ES_Noop_t               CFE_ES_Noop_s;
+CFE_ES_Restart_t            CFE_ES_Restart_S;
+CFE_ES_Shell_t              CFE_ES_Shell_S;
+CFE_ES_QueryAll_t           CFE_ES_QueryAll_S;
+CFE_ES_QueryAllTasks_t      CFE_ES_QueryAllTasks_S;
+CFE_ES_WriteSyslog_t        CFE_ES_WriteSyslog_S;
+CFE_ES_WriteERLog_t         CFE_ES_WriteERLog_S;
+CFE_ES_OverWriteSyslog_t    CFE_ES_OverWriteSyslog_S;
+CFE_ES_StartApp_t           CFE_ES_StartApp_S;
 CFE_ES_AppNameCmd_t         CFE_ES_AppNameCmd_S;
-CFE_ES_AppReloadCmd_t       CFE_ES_AppReloadCmd_S;
-CFE_ES_SetMaxPRCountCmd_t   CFE_ES_SetMaxPRCountCmd_S;
-CFE_ES_DeleteCDSCmd_t       CFE_ES_DeleteCDSCmd_S;
-CFE_ES_PerfStartCmd_t       CFE_ES_PerfStartCmd_S;
-CFE_ES_PerfStopCmd_t        CFE_ES_PerfStopCmd_S;
-CFE_ES_PerfSetFilterMaskCmd_t CFE_ES_PerfSetFilterMaskCmd_S;
-CFE_ES_PerfSetTrigMaskCmd_t CFE_ES_PerfSetTrigMaskCmd_S;
-CFE_ES_TlmPoolStatsCmd_t    CFE_ES_TlmPoolStatsCmd_S;
-CFE_ES_DumpCDSRegCmd_t      CFE_ES_DumpCDSRegCmd_S;
+CFE_ES_ReloadApp_t          CFE_ES_ReloadApp_S;
+CFE_ES_SetMaxPRCount_t      CFE_ES_SetMaxPRCount_S;
+CFE_ES_DeleteCDS_t          CFE_ES_DeleteCDS_S;
+CFE_ES_StartPerfData_t      CFE_ES_StartPerfData_S;
+CFE_ES_StopPerfData_t       CFE_ES_StopPerfData_S;
+CFE_ES_SetPerfFilterMask_t  CFE_ES_SetPerfFilterMask_S;
+CFE_ES_SetPerfTriggerMask_t CFE_ES_SetPerfTriggerMask_S;
+CFE_ES_SendMemPoolStats_t   CFE_ES_SendMemPoolStats_S;
+CFE_ES_DumpCDSRegistry_t    CFE_ES_DumpCDSRegistry_S;
 
 /* Telemetry messages. */
 CFE_ES_OneAppTlm_t    CFE_ES_OneAppTlm_S;

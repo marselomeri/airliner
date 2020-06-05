@@ -38,14 +38,12 @@ CFE_TBL_HkPacket_t     CFE_TBL_HkPacket_S;
 CFE_TBL_TblRegPacket_t CFE_TBL_TblRegPacket_S;
 
 /* Command messages. */
-CFE_TBL_NoArgsCmd_t    CFE_TBL_NoArgsCmd_S;
-CFE_TBL_LoadCmd_t      CFE_TBL_LoadCmd_S;
-CFE_TBL_DumpCmd_t      CFE_TBL_DumpCmd_S;
-CFE_TBL_ValidateCmd_t  CFE_TBL_ValidateCmd_S;
-CFE_TBL_ActivateCmd_t  CFE_TBL_ActivateCmd_S;
-CFE_TBL_DumpRegCmd_t   CFE_TBL_DumpRegCmd_S;
-CFE_TBL_TlmRegCmd_t    CFE_TBL_TlmRegCmd_S;
-CFE_TBL_DelCDSCmd_t    CFE_TBL_DelCDSCmd_S;
-CFE_TBL_AbortLdCmd_t   CFE_TBL_AbortLdCmd_S;
-CFE_TBL_NotifyCmd_t    CFE_TBL_NotifyCmd_S;
+CFE_TBL_Noop_t         CFE_TBL_Noop_S;
+CFE_TBL_Load_t         CFE_TBL_Load_S;
+CFE_TBL_Dump_t         CFE_TBL_Dump_S;
+CFE_TBL_Validate_t     CFE_TBL_Validate_S;
+CFE_TBL_Activate_t     CFE_TBL_Activate_S;
+CFE_TBL_DumpRegistry_t CFE_TBL_DumpRegistry_S;
+CFE_TBL_SendRegistry_t CFE_TBL_SendRegistry_S;
+CFE_TBL_DeleteCDS_t    CFE_TBL_DeleteCDS_S;
 

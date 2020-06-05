@@ -707,7 +707,7 @@ void Test_CI_ValidateCmd_Checksum_Invalid(void)
 	/* Set to cause to fail */
 	CheckSum = CCSDS_ComputeCheckSum(cmdPkt);
 	CheckSum++;
-	CCSDS_WR_CHECKSUM(cmdPkt->SecHdr, CheckSum);
+	CCSDS_WR_CHECKSUM(cmdPkt->Sec, CheckSum);
 
 	/* Execute the function being tested */
 	retCode = CI_ValidateCmd(CmdMsgPtr, MsgSize);
@@ -1690,7 +1690,7 @@ void Test_CI_ProcessNewAppCmds_Reset(void)
 	cmdPkt = (CCSDS_CmdPkt_t *)CmdMsgPtr;
 
 	/* Set to cause to reset */
-	CCSDS_WR_FC(cmdPkt->SecHdr, 1);
+	CCSDS_WR_FC(cmdPkt->Sec, 1);
 
 	/* Updates values */
 	CI_AppData.HkTlm.usCmdCnt = 1;

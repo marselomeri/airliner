@@ -1,16 +1,24 @@
 /*
-**
 **  Filename: cfe_evs_utils.h
 **  $Id: cfe_evs_utils.h 1.5 2012/01/13 12:00:56GMT-05:00 acudmore Exp  $
 **
+**      GSC-18128-1, "Core Flight Executive Version 6.6"
 **
-**      Copyright (c) 2004-2012, United States government as represented by the 
-**      administrator of the National Aeronautics Space Administration.  
-**      All rights reserved. This software(cFE) was created at NASA's Goddard 
-**      Space Flight Center pursuant to government contracts.
+**      Copyright (c) 2006-2019 United States Government as represented by
+**      the Administrator of the National Aeronautics and Space Administration.
+**      All Rights Reserved.
 **
-**      This is governed by the NASA Open Source Agreement and may be used, 
-**      distributed and modified only pursuant to the terms of that agreement.
+**      Licensed under the Apache License, Version 2.0 (the "License");
+**      you may not use this file except in compliance with the License.
+**      You may obtain a copy of the License at
+**
+**        http://www.apache.org/licenses/LICENSE-2.0
+**
+**      Unless required by applicable law or agreed to in writing, software
+**      distributed under the License is distributed on an "AS IS" BASIS,
+**      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+**      See the License for the specific language governing permissions and
+**      limitations under the License.
 **  
 **
 **  Title:    Event Services Task and API - Utility functions.
@@ -28,45 +36,10 @@
 **  References:
 **     Flight Software Branch C Coding Standard Version 1.0a
 **
-**
-**  $Date: 2012/01/13 12:00:56GMT-05:00 $
-**  $Revision: 1.5 $
-**  $Log: cfe_evs_utils.h  $
-**  Revision 1.5 2012/01/13 12:00:56GMT-05:00 acudmore 
-**  Changed license text to reflect open source
-**  Revision 1.4 2011/04/05 16:33:46EDT lwalling 
-**  Optimize EVS use of string functions, plus other performance improvements
-**  Revision 1.3 2010/10/25 15:01:43EDT jmdagost 
-**  Corrected bad apostrophe in prologue.
-**  Revision 1.2 2010/10/04 15:27:13EDT jmdagost 
-**  Cleaned up copyright symbol.
-**  Revision 1.1 2008/04/17 08:05:14EDT ruperera 
-**  Initial revision
-**  Member added to project c:/MKSDATA/MKS-REPOSITORY/MKS-CFE-PROJECT/fsw/cfe-core/src/evs/project.pj
-**  Revision 1.7 2007/03/14 11:55:17EDT njyanchik 
-**  This is a check in of EVS's cleanup function for apps
-**  Revision 1.6 2006/06/08 14:14:54EDT njyanchik 
-**  I added the appropriate legal headers to all of the evs files
-**  Revision 1.5 2005/10/06 13:37:22EDT slstrege 
-**  Delta code review actions
-**  Revision 1.4 2005/09/12 12:38:23EDT sstrege 
-**  Fixed "FindEventID" utility function to accept a signed integer
-**  Revision 1.3 2005/08/19 16:24:28EDT sstrege 
-**  Removed variable length argument passing
-**  Revision 1.2 2005/08/02 15:32:49CDT sstrege 
-**  Added comments to structures and structure elements
-**  Revision 1.1 2005/07/29 19:42:55EDT sstrege 
-**  Initial revision
-**  Member added to project d:/mksdata/MKS-CFE-REPOSITORY/cfe-core/evs/project.pj
-**
 */
 
 #ifndef _cfe_evs_utils_
 #define _cfe_evs_utils_
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 /********************* Include Files  ************************/
 
@@ -92,12 +65,9 @@ void EVS_EnableTypes(uint8 BitMask, uint32 AppID);
 
 void EVS_DisableTypes(uint8 BitMask, uint32 AppID);
 
-void EVS_SendPacket(uint32 AppID, CFE_TIME_SysTime_t Time, CFE_EVS_Packet_t *EVS_PktPtr);
+void EVS_GenerateEventTelemetry(uint32 AppID, uint16 EventID, uint16 EventType,
+        const CFE_TIME_SysTime_t *Time, const char *MsgSpec, va_list ArgPtr);
 
 int32 EVS_SendEvent (uint16 EventID, uint16 EventType, const char *Spec, ... );
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif  /* _cfe_evs_utils_ */

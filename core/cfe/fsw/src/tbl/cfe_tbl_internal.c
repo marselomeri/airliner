@@ -1,66 +1,29 @@
 /*
 ** $Id: cfe_tbl_internal.c 1.15 2014/08/22 16:30:24GMT-05:00 lwalling Exp  $
 **
-**      Copyright (c) 2004-2012, United States government as represented by the 
-**      administrator of the National Aeronautics Space Administration.  
-**      All rights reserved. This software(cFE) was created at NASA's Goddard 
-**      Space Flight Center pursuant to government contracts.
+**      GSC-18128-1, "Core Flight Executive Version 6.6"
 **
-**      This is governed by the NASA Open Source Agreement and may be used, 
-**      distributed and modified only pursuant to the terms of that agreement.
+**      Copyright (c) 2006-2019 United States Government as represented by
+**      the Administrator of the National Aeronautics and Space Administration.
+**      All Rights Reserved.
+**
+**      Licensed under the Apache License, Version 2.0 (the "License");
+**      you may not use this file except in compliance with the License.
+**      You may obtain a copy of the License at
+**
+**        http://www.apache.org/licenses/LICENSE-2.0
+**
+**      Unless required by applicable law or agreed to in writing, software
+**      distributed under the License is distributed on an "AS IS" BASIS,
+**      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+**      See the License for the specific language governing permissions and
+**      limitations under the License.
 **  
-**
 ** Purpose:  cFE Table Services (TBL) utility function source file
 **
 ** Author:   D. Kobe/the Hammers Company, Inc.
 **
 ** Notes:
-**
-** $Log: cfe_tbl_internal.c  $
-** Revision 1.15 2014/08/22 16:30:24GMT-05:00 lwalling 
-** Change signed loop counters to unsigned
-** Revision 1.14 2012/02/22 15:13:51EST lwalling 
-** Remove obsolete TODO comments
-** Revision 1.13 2012/01/13 12:17:39EST acudmore 
-** Changed license text to reflect open source
-** Revision 1.12 2012/01/04 17:27:07EST sstrege 
-** Added LockFlag check when checking for inactive buffer use
-** Revision 1.11 2011/12/28 14:02:55EST lwalling 
-** Add validation tests for spacecraft ID and processor ID to CFE_TBL_ReadHeaders()
-** Revision 1.10 2011/09/02 14:58:26EDT jmdagost 
-** Added new-line characters where missing in syslog calls.
-** Revision 1.9 2010/10/27 17:53:29EDT dkobe 
-** Added TableLoadedOnce flag to Critical Table Registry
-** Revision 1.8 2010/10/27 16:36:20EDT dkobe 
-** Added Table CRC computation and maintenance to internal table functions
-** Revision 1.7 2010/10/27 13:56:32EDT dkobe 
-** Added TBL notification registry data and message sending function
-** Revision 1.6 2010/10/25 15:00:32EDT jmdagost 
-** Corrected bad apostrophe in prologue.
-** Revision 1.5 2010/10/04 15:18:52EDT jmdagost 
-** Cleaned up copyright symbol.
-** Revision 1.4 2009/06/10 09:20:06EDT acudmore 
-** Changed OS_Mem* and OS_BSP* calls to CFE_PSP_* calls
-** Revision 1.3 2008/07/29 15:55:15EDT dkobe 
-** Moved CFE_TBL_DumpToBuffer from cfe_tbl_internal.c to cfe_tbl_api.c
-** Revision 1.2 2008/07/29 14:05:35EDT dkobe 
-** Removed redundant FileCreateTimeSecs and FileCreateTimeSubSecs fields
-** Revision 1.1 2008/04/17 08:05:34EDT ruperera 
-** Initial revision
-** Member added to project c:/MKSDATA/MKS-REPOSITORY/MKS-CFE-PROJECT/fsw/cfe-core/src/tbl/project.pj
-** Revision 1.51 2007/08/07 12:52:42EDT David Kobe (dlkobe) 
-** Modified CFE_ES_GetPoolBuf API's first parameter to be of type uint32**
-** Revision 1.50 2007/07/13 11:27:15EDT dlkobe 
-** Moved prototype for CFE_TBL_UpdateCriticalTblCDS to cfe_tbl_internal.h
-** Revision 1.49 2007/07/03 10:19:17EDT dlkobe 
-** Removed unused CFE_TBL_AddAccessLink function
-** Revision 1.48 2007/06/07 09:34:52EDT dlkobe 
-** Corrected Critical Table CDS Name and CDS Registry Init
-** Revision 1.47 2007/04/30 11:01:16EDT rjmcgraw 
-** Changed EarlyInit to return error when detected
-** Revision 1.46 2007/04/28 16:14:44EDT dlkobe 
-** Changed RegisterCDS call to use internal RegisterCDSEx call
-**
 **
 */
 
@@ -107,13 +70,13 @@ int32 CFE_TBL_EarlyInit (void)
 
 
     /* Initialize the Table Registry */
-    for(i=0; i < CFE_TBL_MAX_NUM_TABLES; i++)
+    for(i=0; i < CFE_PLATFORM_TBL_MAX_NUM_TABLES; i++)
     {
         CFE_TBL_InitRegistryRecord(&CFE_TBL_TaskData.Registry[i]);
     }
 
     /* Initialize the Table Access Descriptors */
-    for (i=0; i<CFE_TBL_MAX_NUM_HANDLES; i++)
+    for (i=0; i<CFE_PLATFORM_TBL_MAX_NUM_HANDLES; i++)
     {
         CFE_TBL_TaskData.Handles[i].AppId = CFE_ES_ERR_APPID;
         CFE_TBL_TaskData.Handles[i].RegIndex = 0;
@@ -126,7 +89,7 @@ int32 CFE_TBL_EarlyInit (void)
     }
 
     /* Initialize the Table Validation Results Records */
-    for (i=0; i<CFE_TBL_MAX_NUM_VALIDATIONS; i++)
+    for (i=0; i<CFE_PLATFORM_TBL_MAX_NUM_VALIDATIONS; i++)
     {
         CFE_TBL_TaskData.ValidationResults[i].State = CFE_TBL_VALIDATION_FREE;
         CFE_TBL_TaskData.ValidationResults[i].CrcOfTable = 0;
@@ -136,7 +99,7 @@ int32 CFE_TBL_EarlyInit (void)
     }
 
     /* Initialize the Dump-Only Table Dump Control Blocks */
-    for (i=0; i<CFE_TBL_MAX_SIMULTANEOUS_LOADS; i++)
+    for (i=0; i<CFE_PLATFORM_TBL_MAX_SIMULTANEOUS_LOADS; i++)
     {
         CFE_TBL_TaskData.DumpControlBlocks[i].State = CFE_TBL_DUMP_FREE;
         CFE_TBL_TaskData.DumpControlBlocks[i].DumpBufferPtr = NULL;
@@ -147,7 +110,7 @@ int32 CFE_TBL_EarlyInit (void)
         CFE_TBL_TaskData.LoadBuffs[i].Taken = TRUE;
     }
 
-    CFE_TBL_TaskData.ValidationCtr = 0;
+    CFE_TBL_TaskData.ValidationCounter = 0;
 
     CFE_TBL_TaskData.HkTlmTblRegIndex = CFE_TBL_NOT_FOUND;
     CFE_TBL_TaskData.LastTblUpdated = CFE_TBL_NOT_FOUND;
@@ -181,19 +144,19 @@ int32 CFE_TBL_EarlyInit (void)
     */
     CFE_SB_InitMsg(&CFE_TBL_TaskData.HkPacket,
                     CFE_TBL_HK_TLM_MID,
-                    sizeof(CFE_TBL_HkPacket_t), TRUE);
+                    sizeof(CFE_TBL_TaskData.HkPacket), TRUE);
 
     /*
     ** Initialize table registry report packet (clear user data area)...
     */
     CFE_SB_InitMsg(&CFE_TBL_TaskData.TblRegPacket,
                     CFE_TBL_REG_TLM_MID,
-                    sizeof(CFE_TBL_TblRegPacket_t), TRUE);
+                    sizeof(CFE_TBL_TaskData.TblRegPacket), TRUE);
 
     /* Initialize memory partition and allocate shared table buffers. */
     Status = CFE_ES_PoolCreate(&CFE_TBL_TaskData.Buf.PoolHdl,
-                                CFE_TBL_TaskData.Buf.Partition,                               
-                                CFE_TBL_BUF_MEMORY_BYTES);        
+                                CFE_TBL_TaskData.Buf.Partition.Data,
+                                CFE_PLATFORM_TBL_BUF_MEMORY_BYTES);        
 
     if(Status < 0)
     {
@@ -209,9 +172,9 @@ int32 CFE_TBL_EarlyInit (void)
             /* Allocate memory for shared load buffers */
             Status = CFE_ES_GetPoolBuf((uint32 **)&CFE_TBL_TaskData.LoadBuffs[j].BufferPtr,
                                        CFE_TBL_TaskData.Buf.PoolHdl,
-                                       CFE_TBL_MAX_SNGL_TABLE_SIZE);
+                                       CFE_PLATFORM_TBL_MAX_SNGL_TABLE_SIZE);
 
-            if (Status < CFE_TBL_MAX_SNGL_TABLE_SIZE)
+            if (Status < CFE_PLATFORM_TBL_MAX_SNGL_TABLE_SIZE)
             {
                 CFE_ES_WriteToSysLog("CFE_TBL:InitBuffers GetPoolBuf Fail Index=%d, Status=0x%X\n", (int)j, (unsigned int)Status);
                 return Status;
@@ -221,23 +184,23 @@ int32 CFE_TBL_EarlyInit (void)
                 /* The buffer is successfully created, so allow it to be used */
                 CFE_TBL_TaskData.LoadBuffs[j].Taken = FALSE;
                 
-                CFE_PSP_MemSet(CFE_TBL_TaskData.LoadBuffs[j].DataSource, 0, OS_MAX_PATH_LEN);
+                memset(CFE_TBL_TaskData.LoadBuffs[j].DataSource, 0, OS_MAX_PATH_LEN);
                 CFE_TBL_TaskData.LoadBuffs[j].FileCreateTimeSecs = 0;
                 CFE_TBL_TaskData.LoadBuffs[j].FileCreateTimeSubSecs = 0;
             }
 
             j++;
-        } while ((j < CFE_TBL_MAX_SIMULTANEOUS_LOADS) && 
-                 (Status >= CFE_TBL_MAX_SNGL_TABLE_SIZE));
+        } while ((j < CFE_PLATFORM_TBL_MAX_SIMULTANEOUS_LOADS) && 
+                 (Status >= CFE_PLATFORM_TBL_MAX_SNGL_TABLE_SIZE));
     }
     
     /* Try to obtain a previous image of the Critical Table Registry from the Critical Data Store */
     Status = CFE_ES_RegisterCDSEx(&CFE_TBL_TaskData.CritRegHandle, 
-                                  (sizeof(CFE_TBL_CritRegRec_t)*CFE_TBL_MAX_CRITICAL_TABLES),
+                                  (sizeof(CFE_TBL_CritRegRec_t)*CFE_PLATFORM_TBL_MAX_CRITICAL_TABLES),
                                   "CFE_TBL.CritReg", TRUE);
                                 
     /* Assume for the moment that nothing is already in the CDS and zero out the Critical Table Registry */
-    for (i=0; i<CFE_TBL_MAX_CRITICAL_TABLES; i++)
+    for (i=0; i<CFE_PLATFORM_TBL_MAX_CRITICAL_TABLES; i++)
     {
         CFE_TBL_TaskData.CritReg[i].CDSHandle = CFE_ES_CDS_BAD_HANDLE;
         CFE_TBL_TaskData.CritReg[i].FileCreateTimeSecs = 0;
@@ -305,7 +268,7 @@ void CFE_TBL_InitRegistryRecord (CFE_TBL_RegistryRec_t *RegRecPtr)
 {
     RegRecPtr->OwnerAppId = CFE_TBL_NOT_OWNED;
     RegRecPtr->Size = 0;
-    RegRecPtr->NotificationMsgId = 0;
+    RegRecPtr->NotificationMsgId = CFE_SB_INVALID_MSG_ID;
     RegRecPtr->NotificationCC = 0;
     RegRecPtr->NotificationParam = 0;
     RegRecPtr->Buffers[0].BufferPtr = NULL;
@@ -334,7 +297,7 @@ void CFE_TBL_InitRegistryRecord (CFE_TBL_RegistryRec_t *RegRecPtr)
     RegRecPtr->DumpOnly = FALSE;
     RegRecPtr->DumpControlIndex = CFE_TBL_NO_DUMP_PENDING;
     RegRecPtr->UserDefAddr = FALSE;
-    RegRecPtr->DblBuffered = FALSE;
+    RegRecPtr->DoubleBuffered = FALSE;
     RegRecPtr->NotifyByMsg = FALSE;
     RegRecPtr->ActiveBufferIndex = 0;
     RegRecPtr->Name[0] = '\0';
@@ -355,11 +318,11 @@ int32 CFE_TBL_ValidateHandle(CFE_TBL_Handle_t TblHandle)
     int32 Status = CFE_SUCCESS;
 
     /* Is the handle out of range? */
-    if (TblHandle >= CFE_TBL_MAX_NUM_HANDLES)
+    if (TblHandle >= CFE_PLATFORM_TBL_MAX_NUM_HANDLES)
     {
         Status = CFE_TBL_ERR_INVALID_HANDLE;
 
-        CFE_ES_WriteToSysLog("CFE_TBL:ValidateHandle-Table Handle=%d is > %d\n", TblHandle, CFE_TBL_MAX_NUM_HANDLES);
+        CFE_ES_WriteToSysLog("CFE_TBL:ValidateHandle-Table Handle=%d is > %d\n", TblHandle, CFE_PLATFORM_TBL_MAX_NUM_HANDLES);
     }
     else
     {
@@ -387,12 +350,12 @@ int32 CFE_TBL_ValidateAppID(uint32 *AppIdPtr)
 
     if (Status == CFE_SUCCESS)
     {
-        if (*AppIdPtr >= CFE_ES_MAX_APPLICATIONS)
+        if (*AppIdPtr >= CFE_PLATFORM_ES_MAX_APPLICATIONS)
         {
             Status = CFE_TBL_ERR_BAD_APP_ID;
 
             CFE_ES_WriteToSysLog("CFE_TBL:ValidateAppID-AppId=%d > Max Apps (%d)\n",
-                                 (int)(*AppIdPtr), CFE_ES_MAX_APPLICATIONS);
+                                 (int)(*AppIdPtr), CFE_PLATFORM_ES_MAX_APPLICATIONS);
         }
     }
     else
@@ -531,7 +494,7 @@ int32 CFE_TBL_RemoveAccessLink(CFE_TBL_Handle_t TblHandle)
             }
 
             /* If a double buffered table, then free the second buffer as well */
-            if (RegRecPtr->DblBuffered)
+            if (RegRecPtr->DoubleBuffered)
             {
                 Status = CFE_ES_PutPoolBuf(CFE_TBL_TaskData.Buf.PoolHdl, (uint32 *)RegRecPtr->Buffers[1].BufferPtr);
                 RegRecPtr->Buffers[1].BufferPtr = NULL;
@@ -690,7 +653,7 @@ int16 CFE_TBL_FindTableInRegistry(const char *TblName)
                 RegIndx = i;
             }
         }
-    } while ( (RegIndx == CFE_TBL_NOT_FOUND) && (i < (CFE_TBL_MAX_NUM_TABLES-1)) );
+    } while ( (RegIndx == CFE_TBL_NOT_FOUND) && (i < (CFE_PLATFORM_TBL_MAX_NUM_TABLES-1)) );
 
     return RegIndx;
 }   /* End of CFE_TBL_FindTableInRegistry() */
@@ -708,7 +671,7 @@ int16 CFE_TBL_FindFreeRegistryEntry(void)
     int16 RegIndx = CFE_TBL_NOT_FOUND;
     int16 i = 0;
 
-    while ( (RegIndx == CFE_TBL_NOT_FOUND) && (i < CFE_TBL_MAX_NUM_TABLES) )
+    while ( (RegIndx == CFE_TBL_NOT_FOUND) && (i < CFE_PLATFORM_TBL_MAX_NUM_TABLES) )
     {
         /* A Table Registry is only "Free" when there isn't an owner AND */
         /* all other applications are not sharing or locking the table   */
@@ -739,7 +702,7 @@ CFE_TBL_Handle_t CFE_TBL_FindFreeHandle(void)
     CFE_TBL_Handle_t HandleIndx = CFE_TBL_END_OF_LIST;
     int16 i = 0;
 
-    while ((HandleIndx == CFE_TBL_END_OF_LIST) && (i < CFE_TBL_MAX_NUM_HANDLES))
+    while ((HandleIndx == CFE_TBL_END_OF_LIST) && (i < CFE_PLATFORM_TBL_MAX_NUM_HANDLES))
     {
         if (CFE_TBL_TaskData.Handles[i].UsedFlag == FALSE)
         {
@@ -848,7 +811,7 @@ int32 CFE_TBL_GetWorkingBuffer(CFE_TBL_LoadBuff_t **WorkingBufferPtr,
     /* If a load is already in progress, return the previously allocated working buffer */
     if (RegRecPtr->LoadInProgress != CFE_TBL_NO_LOAD_IN_PROGRESS)
     {
-        if (RegRecPtr->DblBuffered)
+        if (RegRecPtr->DoubleBuffered)
         {
             *WorkingBufferPtr = &RegRecPtr->Buffers[(1U-RegRecPtr->ActiveBufferIndex)];
         }
@@ -865,7 +828,7 @@ int32 CFE_TBL_GetWorkingBuffer(CFE_TBL_LoadBuff_t **WorkingBufferPtr,
         /* over the accessibility of the shared working buffers.                                         */
         if ((RegRecPtr->TableLoadedOnce == FALSE) && (CalledByApp == TRUE))
         {
-            if (RegRecPtr->DblBuffered)
+            if (RegRecPtr->DoubleBuffered)
             {
                 *WorkingBufferPtr = &RegRecPtr->Buffers[RegRecPtr->ActiveBufferIndex];
             }
@@ -878,7 +841,7 @@ int32 CFE_TBL_GetWorkingBuffer(CFE_TBL_LoadBuff_t **WorkingBufferPtr,
         {
             /* If the table is a double buffered table, then check to make sure the */
             /* inactive buffer has been freed by any Applications that may have been using it */
-            if (RegRecPtr->DblBuffered)
+            if (RegRecPtr->DoubleBuffered)
             {
                 /* Determine the index of the Inactive Buffer Pointer */
                 InactiveBufferIndex = 1 - RegRecPtr->ActiveBufferIndex;
@@ -922,13 +885,13 @@ int32 CFE_TBL_GetWorkingBuffer(CFE_TBL_LoadBuff_t **WorkingBufferPtr,
 
                 /* Determine if there are any common buffers available */
                 i = 0;
-                while ((i < CFE_TBL_MAX_SIMULTANEOUS_LOADS) && (CFE_TBL_TaskData.LoadBuffs[i].Taken == TRUE))
+                while ((i < CFE_PLATFORM_TBL_MAX_SIMULTANEOUS_LOADS) && (CFE_TBL_TaskData.LoadBuffs[i].Taken == TRUE))
                 {
                     i++;
                 }
 
                 /* If a free buffer was found, then return the address to the associated shared buffer */
-                if (i < CFE_TBL_MAX_SIMULTANEOUS_LOADS)
+                if (i < CFE_PLATFORM_TBL_MAX_SIMULTANEOUS_LOADS)
                 {
                     CFE_TBL_TaskData.LoadBuffs[i].Taken = TRUE;
                     *WorkingBufferPtr = &CFE_TBL_TaskData.LoadBuffs[i];
@@ -948,10 +911,11 @@ int32 CFE_TBL_GetWorkingBuffer(CFE_TBL_LoadBuff_t **WorkingBufferPtr,
                 OS_MutSemGive(CFE_TBL_TaskData.WorkBufMutex);
             }
 
-            if ((*WorkingBufferPtr) != NULL)
+            if ((*WorkingBufferPtr) != NULL &&
+                    (*WorkingBufferPtr)->BufferPtr != RegRecPtr->Buffers[RegRecPtr->ActiveBufferIndex].BufferPtr)
             {
                 /* In case the file contains a partial table load, get the active buffer contents first */
-                CFE_PSP_MemCpy((*WorkingBufferPtr)->BufferPtr,
+                memcpy((*WorkingBufferPtr)->BufferPtr,
                           RegRecPtr->Buffers[RegRecPtr->ActiveBufferIndex].BufferPtr,
                           RegRecPtr->Size);
             }
@@ -1037,7 +1001,7 @@ int32 CFE_TBL_LoadFromFile(CFE_TBL_LoadBuff_t *WorkingBufferPtr,
                             Status = CFE_TBL_ERR_FILE_TOO_LARGE;
                         }
 
-                        CFE_PSP_MemSet(WorkingBufferPtr->DataSource, 0, OS_MAX_PATH_LEN);
+                        memset(WorkingBufferPtr->DataSource, 0, OS_MAX_PATH_LEN);
                         strncpy(WorkingBufferPtr->DataSource, Filename, OS_MAX_PATH_LEN);
 
                         /* Save file creation time for later storage into Registry */
@@ -1048,7 +1012,7 @@ int32 CFE_TBL_LoadFromFile(CFE_TBL_LoadBuff_t *WorkingBufferPtr,
                         WorkingBufferPtr->Crc = CFE_ES_CalculateCRC(WorkingBufferPtr->BufferPtr,
                                                                     RegRecPtr->Size,
                                                                     0,
-                                                                    CFE_ES_DEFAULT_CRC);
+                                                                    CFE_MISSION_ES_DEFAULT_CRC);
                     }
                 }
                 else
@@ -1093,7 +1057,7 @@ int32 CFE_TBL_UpdateInternal( CFE_TBL_Handle_t TblHandle,
     }
     else
     {
-        if (RegRecPtr->DblBuffered)
+        if (RegRecPtr->DoubleBuffered)
         {
             /* To update a double buffered table only requires a pointer swap */
             RegRecPtr->ActiveBufferIndex = (uint8)RegRecPtr->LoadInProgress;
@@ -1133,9 +1097,13 @@ int32 CFE_TBL_UpdateInternal( CFE_TBL_Handle_t TblHandle,
             else
             {
                 /* To update a single buffered table requires a memcpy from working buffer */
-                CFE_PSP_MemCpy(RegRecPtr->Buffers[0].BufferPtr,
-                          CFE_TBL_TaskData.LoadBuffs[RegRecPtr->LoadInProgress].BufferPtr,
-                          RegRecPtr->Size);
+                if (RegRecPtr->Buffers[0].BufferPtr !=
+                        CFE_TBL_TaskData.LoadBuffs[RegRecPtr->LoadInProgress].BufferPtr)
+                {
+                    memcpy(RegRecPtr->Buffers[0].BufferPtr,
+                              CFE_TBL_TaskData.LoadBuffs[RegRecPtr->LoadInProgress].BufferPtr,
+                              RegRecPtr->Size);
+                }
 
                 /* Save source description with active buffer */
                 strncpy(RegRecPtr->Buffers[0].DataSource,
@@ -1214,14 +1182,14 @@ int32 CFE_TBL_ReadHeaders( int32 FileDescriptor,
     int32 Status;
     int32 EndianCheck = 0x01020304;
 
-    #if (CFE_TBL_VALID_SCID_COUNT > 0)
-    static uint32 ListSC[2] = { CFE_TBL_VALID_SCID_1, CFE_TBL_VALID_SCID_2};
+    #if (CFE_PLATFORM_TBL_VALID_SCID_COUNT > 0)
+    static uint32 ListSC[2] = { CFE_PLATFORM_TBL_VALID_SCID_1, CFE_PLATFORM_TBL_VALID_SCID_2};
     uint32 IndexSC;
     #endif
     
-    #if (CFE_TBL_VALID_PRID_COUNT > 0)
-    static uint32 ListPR[4] = { CFE_TBL_VALID_PRID_1, CFE_TBL_VALID_PRID_2,
-                                CFE_TBL_VALID_PRID_3, CFE_TBL_VALID_PRID_4};
+    #if (CFE_PLATFORM_TBL_VALID_PRID_COUNT > 0)
+    static uint32 ListPR[4] = { CFE_PLATFORM_TBL_VALID_PRID_1, CFE_PLATFORM_TBL_VALID_PRID_2,
+                                CFE_PLATFORM_TBL_VALID_PRID_3, CFE_PLATFORM_TBL_VALID_PRID_4};
     uint32 IndexPR;
     #endif
     
@@ -1232,7 +1200,7 @@ int32 CFE_TBL_ReadHeaders( int32 FileDescriptor,
     if (Status != sizeof(CFE_FS_Header_t))
     {
         CFE_EVS_SendEventWithAppID(CFE_TBL_FILE_STD_HDR_ERR_EID,
-                                   CFE_EVS_ERROR,
+                                   CFE_EVS_EventType_ERROR,
                                    CFE_TBL_TaskData.TableTaskAppId,
                                    "Unable to read std header for '%s', Status = 0x%08X",
                                    LoadFilename, (unsigned int)Status);
@@ -1245,7 +1213,7 @@ int32 CFE_TBL_ReadHeaders( int32 FileDescriptor,
         if (StdFileHeaderPtr->ContentType != CFE_FS_FILE_CONTENT_ID)
         {
             CFE_EVS_SendEventWithAppID(CFE_TBL_FILE_TYPE_ERR_EID,
-                                       CFE_EVS_ERROR,
+                                       CFE_EVS_EventType_ERROR,
                                        CFE_TBL_TaskData.TableTaskAppId,
                                        "File '%s' is not a cFE file type, ContentType = 0x%08X",
                                        LoadFilename, (unsigned int)StdFileHeaderPtr->ContentType);
@@ -1255,10 +1223,10 @@ int32 CFE_TBL_ReadHeaders( int32 FileDescriptor,
         else
         {
             /* Verify the SubType to ensure that it is a Table Image File */
-            if (StdFileHeaderPtr->SubType != CFE_FS_TBL_IMG_SUBTYPE)
+            if (StdFileHeaderPtr->SubType != CFE_FS_SubType_TBL_IMG)
             {
                 CFE_EVS_SendEventWithAppID(CFE_TBL_FILE_SUBTYPE_ERR_EID,
-                                           CFE_EVS_ERROR,
+                                           CFE_EVS_EventType_ERROR,
                                            CFE_TBL_TaskData.TableTaskAppId,
                                            "File subtype for '%s' is wrong. Subtype = 0x%08X",
                                            LoadFilename, (unsigned int)StdFileHeaderPtr->SubType);
@@ -1273,7 +1241,7 @@ int32 CFE_TBL_ReadHeaders( int32 FileDescriptor,
                 if (Status != sizeof(CFE_TBL_File_Hdr_t))
                 {
                     CFE_EVS_SendEventWithAppID(CFE_TBL_FILE_TBL_HDR_ERR_EID,
-                                               CFE_EVS_ERROR,
+                                               CFE_EVS_EventType_ERROR,
                                                CFE_TBL_TaskData.TableTaskAppId,
                                                "Unable to read tbl header for '%s', Status = 0x%08X",
                                                LoadFilename, (unsigned int)Status);
@@ -1302,11 +1270,11 @@ int32 CFE_TBL_ReadHeaders( int32 FileDescriptor,
                     TblFileHeaderPtr->TableName[sizeof(TblFileHeaderPtr->TableName) - 1] = '\0';
 
                     /* Verify Spacecraft ID contained in table file header [optional] */
-                    #if (CFE_TBL_VALID_SCID_COUNT > 0)
+                    #if (CFE_PLATFORM_TBL_VALID_SCID_COUNT > 0)
                     if (Status == CFE_SUCCESS)
                     {
                         Status = CFE_TBL_ERR_BAD_SPACECRAFT_ID;
-                        for (IndexSC = 0; IndexSC < CFE_TBL_VALID_SCID_COUNT; IndexSC++)
+                        for (IndexSC = 0; IndexSC < CFE_PLATFORM_TBL_VALID_SCID_COUNT; IndexSC++)
                         {
                             if (StdFileHeaderPtr->SpacecraftID == ListSC[IndexSC])
                             {
@@ -1317,20 +1285,20 @@ int32 CFE_TBL_ReadHeaders( int32 FileDescriptor,
                         if (Status == CFE_TBL_ERR_BAD_SPACECRAFT_ID)
                         {
                             CFE_EVS_SendEventWithAppID(CFE_TBL_SPACECRAFT_ID_ERR_EID,
-                                                       CFE_EVS_ERROR,
+                                                       CFE_EVS_EventType_ERROR,
                                                        CFE_TBL_TaskData.TableTaskAppId,
                                                        "Unable to verify Spacecraft ID for '%s', ID = 0x%08X",
-                                                       LoadFilename, StdFileHeaderPtr->SpacecraftID);
+                                                       LoadFilename, (unsigned int)StdFileHeaderPtr->SpacecraftID);
                         }
                     }
                     #endif
 
                     /* Verify Processor ID contained in table file header [optional] */
-                    #if (CFE_TBL_VALID_PRID_COUNT > 0)
+                    #if (CFE_PLATFORM_TBL_VALID_PRID_COUNT > 0)
                     if (Status == CFE_SUCCESS)
                     {
                         Status = CFE_TBL_ERR_BAD_PROCESSOR_ID;
-                        for (IndexPR = 0; IndexPR < CFE_TBL_VALID_PRID_COUNT; IndexPR++)
+                        for (IndexPR = 0; IndexPR < CFE_PLATFORM_TBL_VALID_PRID_COUNT; IndexPR++)
                         {
                             if (StdFileHeaderPtr->ProcessorID == ListPR[IndexPR])
                             {
@@ -1341,10 +1309,10 @@ int32 CFE_TBL_ReadHeaders( int32 FileDescriptor,
                         if (Status == CFE_TBL_ERR_BAD_PROCESSOR_ID)
                         {
                             CFE_EVS_SendEventWithAppID(CFE_TBL_PROCESSOR_ID_ERR_EID,
-                                                       CFE_EVS_ERROR,
+                                                       CFE_EVS_EventType_ERROR,
                                                        CFE_TBL_TaskData.TableTaskAppId,
                                                        "Unable to verify Processor ID for '%s', ID = 0x%08X",
-                                                       LoadFilename, StdFileHeaderPtr->ProcessorID);
+                                                       LoadFilename, (unsigned int)StdFileHeaderPtr->ProcessorID);
                         }
                     }
                     #endif
@@ -1406,7 +1374,7 @@ int32 CFE_TBL_CleanUpApp(uint32 AppId)
 
     /* Scan Dump Requests to determine if any of the tables that */
     /* were to be dumped will be deleted */
-    for (i=0; i<CFE_TBL_MAX_SIMULTANEOUS_LOADS; i++)
+    for (i=0; i<CFE_PLATFORM_TBL_MAX_SIMULTANEOUS_LOADS; i++)
     {
         /* Check to see if the table to be dumped is owned by the App to be deleted */
         if ((CFE_TBL_TaskData.DumpControlBlocks[i].State != CFE_TBL_DUMP_FREE) && 
@@ -1418,7 +1386,7 @@ int32 CFE_TBL_CleanUpApp(uint32 AppId)
     }
     
     /* Scan Access Descriptors to determine if the Application had access to any tables */
-    for (i=0; i<CFE_TBL_MAX_NUM_HANDLES; i++)
+    for (i=0; i<CFE_PLATFORM_TBL_MAX_NUM_HANDLES; i++)
     {
         /* Check to see if the Handle belongs to the Application being deleted */
         if (CFE_TBL_TaskData.Handles[i].AppId == AppId)
@@ -1468,7 +1436,7 @@ void CFE_TBL_FindCriticalTblInfo(CFE_TBL_CritRegRec_t **CritRegRecPtr, CFE_ES_CD
     /* Assume the record is never found */
     *CritRegRecPtr = NULL;
     
-    for (i=0; i<CFE_TBL_MAX_CRITICAL_TABLES; i++)
+    for (i=0; i<CFE_PLATFORM_TBL_MAX_CRITICAL_TABLES; i++)
     {
         if (CFE_TBL_TaskData.CritReg[i].CDSHandle == CDSHandleToFind)
         {
@@ -1566,7 +1534,7 @@ int32 CFE_TBL_SendNotificationMsg(CFE_TBL_RegistryRec_t *RegRecPtr)
         if (Status != CFE_SUCCESS)
         {
             CFE_EVS_SendEvent(CFE_TBL_FAIL_NOTIFY_SEND_ERR_EID,
-                              CFE_EVS_ERROR,
+                              CFE_EVS_EventType_ERROR,
                               "Manage Notification Pkt Error(Status=0x%08X)",
                               (unsigned int)Status);
         }

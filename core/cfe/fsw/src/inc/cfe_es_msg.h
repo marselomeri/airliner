@@ -3,14 +3,23 @@
 **  cfe_es_msg.h
 **  $Id: cfe_es_msg.h 1.13 2014/08/19 13:30:55GMT-05:00 sstrege Exp  $
 **
-**      Copyright (c) 2004-2012, United States government as represented by the 
-**      administrator of the National Aeronautics Space Administration.  
-**      All rights reserved. This software(cFE) was created at NASA's Goddard 
-**      Space Flight Center pursuant to government contracts.
+**      GSC-18128-1, "Core Flight Executive Version 6.6"
 **
-**      This is governed by the NASA Open Source Agreement and may be used,
-**      distributed and modified only pursuant to the terms of that agreement. 
+**      Copyright (c) 2006-2019 United States Government as represented by
+**      the Administrator of the National Aeronautics and Space Administration.
+**      All Rights Reserved.
 **
+**      Licensed under the Apache License, Version 2.0 (the "License");
+**      you may not use this file except in compliance with the License.
+**      You may obtain a copy of the License at
+**
+**        http://www.apache.org/licenses/LICENSE-2.0
+**
+**      Unless required by applicable law or agreed to in writing, software
+**      distributed under the License is distributed on an "AS IS" BASIS,
+**      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+**      See the License for the specific language governing permissions and
+**      limitations under the License.
 **
 **  Purpose:
 **  cFE Executive Services (ES) Command and Telemetry packet definition file.
@@ -20,58 +29,6 @@
 **     cFE Flight Software Application Developers Guide
 **
 **  Notes:
-**
-**
-** $Log: cfe_es_msg.h  $
-** Revision 1.13 2014/08/19 13:30:55GMT-05:00 sstrege 
-** Fixed doxygen warning - updated reference to OS_MAX_PRIORITY to MAX_PRIORITY
-** Revision 1.12 2012/01/18 16:28:56EST jmdagost 
-** Replaced Padding HK telemetry points with OSAL revision and mission revision.
-** Revision 1.11 2012/01/13 12:32:14EST acudmore 
-** Changed license text to reflect open source
-** Revision 1.10 2012/01/10 13:35:13EST lwalling 
-** Add output filename to shell command packet structure
-** Revision 1.9 2011/01/18 13:42:37EST lwalling 
-** Fix incorrect structure name in Doxygen comment
-** Revision 1.8 2010/11/24 09:18:25EST jmdagost 
-** Removed unneeded padding byte from housekeeping packet.
-** Revision 1.7 2010/11/23 15:29:23EST jmdagost 
-** Added cFE Mission Revision telemetry point in Housekeeping, changed cFE SubMinor Version to cFE Revision.
-** Revision 1.6 2010/11/04 17:16:01EDT jmdagost 
-** Added TriggerMode parameter to Performance Analyzer Start cmd, updated documentation.
-** Revision 1.5 2010/11/04 14:20:20EDT acudmore 
-** Changed comments to reflect RAM disk path configuration option.
-** Revision 1.4 2009/08/04 13:34:17EDT aschoeni 
-** Added heap information to ES telemetry
-** Revision 1.3 2008/12/08 12:06:54EST dkobe 
-** Updates to correct doxygen errors
-** Revision 1.2 2008/06/20 15:40:28EDT apcudmore 
-** Added support for OSAL based module loader
-**  - Removed calls and references to the BSP based module loader
-** Revision 1.1 2008/04/17 08:05:20EDT ruperera 
-** Initial revision
-** Member added to project c:/MKSDATA/MKS-REPOSITORY/MKS-CFE-PROJECT/fsw/cfe-core/src/inc/project.pj
-** Revision 1.16 2007/09/27 15:54:57EDT David Kobe (dlkobe) 
-** Added doxygen comments for commands and telemetry
-** Revision 1.15 2007/09/25 14:38:53EDT David Kobe (dlkobe) 
-** Added Criticality note to Memory Pool Stats command description.
-** Revision 1.14 2007/09/20 10:52:57EDT apcudmore 
-** Added Query All Tasks command, file definition, events, error codes etc.
-** Revision 1.13 2007/06/07 16:03:55EDT dlkobe 
-** Corrected doxygen comment syntax errors
-** Revision 1.12 2007/06/07 13:07:48EDT dlkobe 
-** Added Command and Telemetry doxygen comments to TIME, EVS and SB
-** Revision 1.11 2007/06/02 10:10:13EDT dlkobe 
-** Added doxygen comments for User's Guides
-** Revision 1.10 2007/05/09 12:41:44EDT dlkobe 
-** Added command structure for Dump CDS Registry Command
-** Revision 1.8 2007/05/04 20:07:52EDT dlkobe 
-** Added command to telemeter memory pool statistics
-** Revision 1.7 2007/04/25 11:57:04EDT apcudmore 
-** Implemented "Back End" of Application Restart and Delete.
-** Changes include all ES Cleanup code to delete App and Task Resources.
-** Revision 1.6 2007/04/20 14:22:42EDT rjmcgraw 
-** Renamed performance structs for consistency
 **
 */
 /*************************************************************************/
@@ -165,7 +122,7 @@ extern "C" {
 **
 **  \sa  #CFE_ES_RESET_PR_COUNT_CC
 */
-#define CFE_ES_RESET_CC                1
+#define CFE_ES_RESET_COUNTERS_CC                1
 
 /** \cfeescmd Executive Services Processor / Power-On Reset
 **
@@ -176,7 +133,7 @@ extern "C" {
 **       of the volatile disk and the contents of the Critical Data Store.
 **       NOTE: If a requested Processor Reset should cause the 
 **       Processor Reset Counter (\b \c \ES_PROCRESETCNT)
-**       to exceed OR EQUAL the limit #CFE_ES_MAX_PROCESSOR_RESETS (which is reported in
+**       to exceed OR EQUAL the limit #CFE_PLATFORM_ES_MAX_PROCESSOR_RESETS (which is reported in
 **       housekeeping telemetry as \b \c \ES_MAXPROCRESETS), 
 **       the command is \b AUTOMATICALLY upgraded to a Power-On Reset.
 **
@@ -226,7 +183,7 @@ extern "C" {
 **       and sent as a series of shell command output telemetry packets.
 **
 **       If the shell command output filename argument is empty, then
-**       #CFE_ES_DEFAULT_SHELL_FILENAME will be used as the filename.
+**       #CFE_PLATFORM_ES_DEFAULT_SHELL_FILENAME will be used as the filename.
 **
 **  \cfecmdmnemonic \ES_SHELL
 **
@@ -263,7 +220,7 @@ extern "C" {
 **
 **  \sa 
 */
-#define CFE_ES_SHELL_CMD_CC            3
+#define CFE_ES_SHELL_CC            3
 
 /** \cfeescmd Load and Start an Application
 **
@@ -291,10 +248,10 @@ extern "C" {
 **         or less than four characters in length
 **       - The specified application entry point is a NULL string
 **       - The specified application name is a NULL string
-**       - The specified stack size is less than #CFE_ES_DEFAULT_STACK_SIZE
+**       - The specified stack size is less than #CFE_PLATFORM_ES_DEFAULT_STACK_SIZE
 **       - The specified priority is greater than MAX_PRIORITY (as defined in osapi.c)
-**       - The specified exception action is neither #CFE_ES_APP_EXCEPTION_RESTART_APP (0) or
-**         #CFE_ES_APP_EXCEPTION_PROC_RESTART (1)
+**       - The specified exception action is neither #CFE_ES_ExceptionAction_RESTART_APP (0) or
+**         #CFE_ES_ExceptionAction_PROC_RESTART (1)
 **       - The Operating System was unable to load the specified application file
 **
 **       Evidence of failure may be found in the following telemetry:
@@ -507,7 +464,7 @@ extern "C" {
 **       - The #CFE_ES_ALL_APPS_EID debug event message will be 
 **         generated.
 **       - The file specified in the command (or the default specified
-**         by the #CFE_ES_DEFAULT_APP_LOG_FILE configuration parameter) will be 
+**         by the #CFE_PLATFORM_ES_DEFAULT_APP_LOG_FILE configuration parameter) will be 
 **         updated with the lastest information.
 **
 **  \par Error Conditions
@@ -563,8 +520,8 @@ extern "C" {
 **       This command is not dangerous.  However, any previously logged data
 **       will be lost.
 **
-**  \sa #CFE_ES_WRITE_SYSLOG_CC, #CFE_ES_CLEAR_ERLOG_CC, #CFE_ES_WRITE_ERLOG_CC,
-**      #CFE_ES_OVERWRITE_SYSLOG_CC
+**  \sa #CFE_ES_WRITE_SYSLOG_CC, #CFE_ES_CLEAR_ER_LOG_CC, #CFE_ES_WRITE_ER_LOG_CC,
+**      #CFE_ES_OVER_WRITE_SYSLOG_CC
 */
 #define CFE_ES_CLEAR_SYSLOG_CC        10  
 
@@ -587,7 +544,7 @@ extern "C" {
 **       - The #CFE_ES_SYSLOG2_EID debug event message will be 
 **         generated.
 **       - The file specified in the command (or the default specified
-**         by the #CFE_ES_DEFAULT_SYSLOG_FILE configuration parameter) will be 
+**         by the #CFE_PLATFORM_ES_DEFAULT_SYSLOG_FILE configuration parameter) will be 
 **         updated with the lastest information.
 **
 **  \par Error Conditions
@@ -606,8 +563,8 @@ extern "C" {
 **       if performed repeatedly without sufficient file management by the 
 **       operator, fill the file system.
 **
-**  \sa #CFE_ES_CLEAR_SYSLOG_CC, #CFE_ES_CLEAR_ERLOG_CC, #CFE_ES_WRITE_ERLOG_CC,
-**      #CFE_ES_OVERWRITE_SYSLOG_CC
+**  \sa #CFE_ES_CLEAR_SYSLOG_CC, #CFE_ES_CLEAR_ER_LOG_CC, #CFE_ES_WRITE_ER_LOG_CC,
+**      #CFE_ES_OVER_WRITE_SYSLOG_CC
 */
 #define CFE_ES_WRITE_SYSLOG_CC        11  
 
@@ -644,9 +601,9 @@ extern "C" {
 **       This command is not dangerous.  However, any previously logged data
 **       will be lost.
 **
-**  \sa #CFE_ES_CLEAR_SYSLOG_CC, #CFE_ES_WRITE_SYSLOG_CC, #CFE_ES_WRITE_ERLOG_CC
+**  \sa #CFE_ES_CLEAR_SYSLOG_CC, #CFE_ES_WRITE_SYSLOG_CC, #CFE_ES_WRITE_ER_LOG_CC
 */
-#define CFE_ES_CLEAR_ERLOG_CC         12  
+#define CFE_ES_CLEAR_ER_LOG_CC         12  
 
 /** \cfeescmd Writes Exeception and Reset Log to a File
 **
@@ -667,7 +624,7 @@ extern "C" {
 **       - The #CFE_ES_ERLOG2_EID debug event message will be 
 **         generated.
 **       - The file specified in the command (or the default specified
-**         by the #CFE_ES_DEFAULT_ER_LOG_FILE configuration parameter) will be 
+**         by the #CFE_PLATFORM_ES_DEFAULT_ER_LOG_FILE configuration parameter) will be 
 **         updated with the lastest information.
 **
 **  \par Error Conditions
@@ -686,9 +643,9 @@ extern "C" {
 **       if performed repeatedly without sufficient file management by the 
 **       operator, fill the file system.
 **
-**  \sa #CFE_ES_CLEAR_SYSLOG_CC, #CFE_ES_WRITE_SYSLOG_CC, #CFE_ES_CLEAR_ERLOG_CC
+**  \sa #CFE_ES_CLEAR_SYSLOG_CC, #CFE_ES_WRITE_SYSLOG_CC, #CFE_ES_CLEAR_ER_LOG_CC
 */
-#define CFE_ES_WRITE_ERLOG_CC         13  
+#define CFE_ES_WRITE_ER_LOG_CC         13  
 
 /** \cfeescmd Start Performance Analyzer
 **
@@ -720,7 +677,7 @@ extern "C" {
 **  \par Error Conditions
 **       This command may fail for the following reason(s):
 **       - The command packet length is incorrect
-**       - A previous #CFE_ES_PERF_STOPDATA_CC command has not completely finished.
+**       - A previous #CFE_ES_STOP_PERF_DATA_CC command has not completely finished.
 **       - An invalid trigger mode is requested.
 **
 **       Evidence of failure may be found in the following telemetry:
@@ -732,9 +689,9 @@ extern "C" {
 **       This command is not inherently dangerous but may cause a small increase in CPU
 **       utilization as the performance analyzer data is collected.
 **
-**  \sa #CFE_ES_PERF_STOPDATA_CC, #CFE_ES_PERF_SETFILTERMASK_CC, #CFE_ES_PERF_SETTRIGMASK_CC
+**  \sa #CFE_ES_STOP_PERF_DATA_CC, #CFE_ES_SET_PERF_FILTER_MASK_CC, #CFE_ES_SET_PERF_TRIGGER_MASK_CC
 */
-#define CFE_ES_PERF_STARTDATA_CC      14  
+#define CFE_ES_START_PERF_DATA_CC      14  
 
 /** \cfeescmd Stop Performance Analyzer
 **
@@ -756,7 +713,7 @@ extern "C" {
 **       - The #CFE_ES_PERF_STOPCMD_EID debug event message will be 
 **         generated.
 **       - The file specified in the command (or the default specified
-**         by the #CFE_ES_DEFAULT_PERF_DUMP_FILENAME configuration parameter) will be 
+**         by the #CFE_PLATFORM_ES_DEFAULT_PERF_DUMP_FILENAME configuration parameter) will be 
 **         updated with the lastest information.
 **
 **  \par Error Conditions
@@ -775,9 +732,9 @@ extern "C" {
 **       This command is not inherently dangerous.  An additional low priority child
 **       task will be spawned, however, to dump the performance analyzer data to a file.
 **
-**  \sa #CFE_ES_PERF_STARTDATA_CC, #CFE_ES_PERF_SETFILTERMASK_CC, #CFE_ES_PERF_SETTRIGMASK_CC
+**  \sa #CFE_ES_START_PERF_DATA_CC, #CFE_ES_SET_PERF_FILTER_MASK_CC, #CFE_ES_SET_PERF_TRIGGER_MASK_CC
 */
-#define CFE_ES_PERF_STOPDATA_CC       15                
+#define CFE_ES_STOP_PERF_DATA_CC       15                
 
 /** \cfeescmd Set Performance Analyzer's Filter Masks
 **
@@ -813,9 +770,9 @@ extern "C" {
 **       Changing the filter masks may cause a small change in the Performance
 **       Analyzer's CPU utilization.
 **
-**  \sa #CFE_ES_PERF_STARTDATA_CC, #CFE_ES_PERF_STOPDATA_CC, #CFE_ES_PERF_SETTRIGMASK_CC
+**  \sa #CFE_ES_START_PERF_DATA_CC, #CFE_ES_STOP_PERF_DATA_CC, #CFE_ES_SET_PERF_TRIGGER_MASK_CC
 */
-#define CFE_ES_PERF_SETFILTERMASK_CC  16  
+#define CFE_ES_SET_PERF_FILTER_MASK_CC  16  
 
 /** \cfeescmd Set Performance Analyzer's Trigger Masks
 **
@@ -851,9 +808,9 @@ extern "C" {
 **       Changing the trigger masks may cause a small change in the Performance
 **       Analyzer's CPU utilization.
 **
-**  \sa #CFE_ES_PERF_STARTDATA_CC, #CFE_ES_PERF_STOPDATA_CC, #CFE_ES_PERF_SETFILTERMASK_CC
+**  \sa #CFE_ES_START_PERF_DATA_CC, #CFE_ES_STOP_PERF_DATA_CC, #CFE_ES_SET_PERF_FILTER_MASK_CC
 */
-#define CFE_ES_PERF_SETTRIGMASK_CC    17  
+#define CFE_ES_SET_PERF_TRIGGER_MASK_CC    17  
 
 /** \cfeescmd Set Executive Services System Log Mode to Discard/Overwrite
 **
@@ -880,7 +837,7 @@ extern "C" {
 **  \par Error Conditions
 **       This command may fail for the following reason(s):
 **       - The command packet length is incorrect
-**       - The desired mode is neither #CFE_ES_LOG_OVERWRITE or #CFE_ES_LOG_DISCARD
+**       - The desired mode is neither #CFE_ES_LogMode_OVERWRITE or #CFE_ES_LogMode_DISCARD
 **
 **       Evidence of failure may be found in the following telemetry:
 **       - \b \c \ES_CMDEC - command error counter will increment
@@ -894,7 +851,7 @@ extern "C" {
 **
 **  \sa #CFE_ES_CLEAR_SYSLOG_CC, #CFE_ES_WRITE_SYSLOG_CC
 */
-#define CFE_ES_OVERWRITE_SYSLOG_CC    18
+#define CFE_ES_OVER_WRITE_SYSLOG_CC    18
 
 /** \cfeescmd Resets the Processor Reset Counter to Zero
 **
@@ -932,7 +889,7 @@ extern "C" {
 **       would have to have more processor resets before an automatic power-on reset
 **       occurred.
 **
-**  \sa #CFE_ES_SET_MAX_PR_COUNT_CC, #CFE_ES_RESET_CC
+**  \sa #CFE_ES_SET_MAX_PR_COUNT_CC, #CFE_ES_RESET_COUNTERS_CC
 */
 #define CFE_ES_RESET_PR_COUNT_CC      19
 
@@ -996,7 +953,7 @@ extern "C" {
 **       - The #CFE_ES_CDS_DELETED_INFO_EID informational event message will be 
 **         generated.
 **       - The specified CDS should no longer appear in a CDS Registry dump generated
-**         upon receipt of the #CFE_ES_DUMP_CDS_REG_CC command
+**         upon receipt of the #CFE_ES_DUMP_CDS_REGISTRY_CC command
 **
 **  \par Error Conditions
 **       This command may fail for the following reason(s):
@@ -1016,7 +973,7 @@ extern "C" {
 **       associated with an active application.  However, deleting a CDS does eliminate
 **       any "history" that an application may be wishing to keep.
 **
-**  \sa #CFE_ES_DUMP_CDS_REG_CC, #CFE_TBL_DELETE_CDS_CC
+**  \sa #CFE_ES_DUMP_CDS_REGISTRY_CC, #CFE_TBL_DELETE_CDS_CC
 */
 #define CFE_ES_DELETE_CDS_CC          21
 
@@ -1038,7 +995,7 @@ extern "C" {
 **         increment
 **       - The #CFE_ES_TLM_POOL_STATS_INFO_EID debug event message will be 
 **         generated.
-**       - The \link #CFE_ES_PoolStatsTlm_t Memory Pool Statistics Telemetry Packet \endlink
+**       - The \link #CFE_ES_MemStatsTlm_t Memory Pool Statistics Telemetry Packet \endlink
 **         is produced
 **
 **  \par Error Conditions
@@ -1060,7 +1017,7 @@ extern "C" {
 **
 **  \sa 
 */
-#define CFE_ES_TLM_POOL_STATS_CC      22
+#define CFE_ES_SEND_MEM_POOL_STATS_CC      22
 
 /** \cfeescmd Dump Critical Data Store Registry to a File
 **
@@ -1081,7 +1038,7 @@ extern "C" {
 **       - The #CFE_ES_CDS_REG_DUMP_INF_EID debug event message will be 
 **         generated.
 **       - The file specified in the command (or the default specified
-**         by the #CFE_ES_DEFAULT_CDS_REG_DUMP_FILE configuration parameter) will be 
+**         by the #CFE_PLATFORM_ES_DEFAULT_CDS_REG_DUMP_FILE configuration parameter) will be 
 **         updated with the lastest information.
 **
 **  \par Error Conditions
@@ -1101,7 +1058,7 @@ extern "C" {
 **
 **  \sa  #CFE_ES_DELETE_CDS_CC, #CFE_TBL_DELETE_CDS_CC
 */
-#define CFE_ES_DUMP_CDS_REG_CC        23
+#define CFE_ES_DUMP_CDS_REGISTRY_CC        23
 
 /** \cfeescmd Writes a list of All Executive Services Tasks to a File
 **
@@ -1122,7 +1079,7 @@ extern "C" {
 **       - The #CFE_ES_TASKINFO_EID debug event message will be 
 **         generated.
 **       - The file specified in the command (or the default specified
-**         by the #CFE_ES_DEFAULT_TASK_LOG_FILE configuration parameter) will be 
+**         by the #CFE_PLATFORM_ES_DEFAULT_TASK_LOG_FILE configuration parameter) will be 
 **         updated with the lastest information.
 **
 **  \par Error Conditions
@@ -1160,7 +1117,7 @@ extern "C" {
 ** This includes:
 ** -# The Housekeeping Request Message
 ** -# The No-Op Command (For details, see #CFE_ES_NOOP_CC)
-** -# The Reset Counters Command (For details, see #CFE_ES_RESET_CC)
+** -# The Reset Counters Command (For details, see #CFE_ES_RESET_COUNTERS_CC)
 */
 typedef struct
 {
@@ -1168,8 +1125,21 @@ typedef struct
 
 } CFE_ES_NoArgsCmd_t;
 
+/*
+ * The following commands all share the "NoArgs" format
+ *
+ * They are each given their own type name matching the command name, which
+ * allows them to change independently in the future without changing the prototype
+ * of the handler function.
+ */
+typedef CFE_ES_NoArgsCmd_t      CFE_ES_Noop_t;
+typedef CFE_ES_NoArgsCmd_t      CFE_ES_ResetCounters_t;
+typedef CFE_ES_NoArgsCmd_t      CFE_ES_ClearSyslog_t;
+typedef CFE_ES_NoArgsCmd_t      CFE_ES_ClearERLog_t;
+typedef CFE_ES_NoArgsCmd_t      CFE_ES_ResetPRCount_t;
+
 /**
-** \brief Reset cFE Command
+** \brief Restart cFE Command
 **
 ** For command details, see #CFE_ES_RESTART_CC
 **
@@ -1184,19 +1154,19 @@ typedef struct
 {
     uint8                 CmdHeader[CFE_SB_CMD_HDR_SIZE];    /**< \brief cFE Software Bus Command Message Header */
     CFE_ES_RestartCmd_Payload_t Payload;
-} CFE_ES_RestartCmd_t;
+} CFE_ES_Restart_t;
 
 /**
 ** \brief Shell Command
 **
-** For command details, see #CFE_ES_SHELL_CMD_CC
+** For command details, see #CFE_ES_SHELL_CC
 **
 **/
 typedef struct
 {
-  char                  CmdString[CFE_ES_MAX_SHELL_CMD];   /**< \brief ASCII text string containing shell command
+  char                  CmdString[CFE_MISSION_ES_MAX_SHELL_CMD];   /**< \brief ASCII text string containing shell command
                                                                 to be executed */
-  char                  OutputFilename[OS_MAX_PATH_LEN];   /**< \brief Filename where shell command output is to
+  char                  OutputFilename[CFE_MISSION_MAX_PATH_LEN];   /**< \brief Filename where shell command output is to
                                                                 be written */
 } CFE_ES_ShellCmd_Payload_t;
 
@@ -1204,92 +1174,47 @@ typedef struct
 {
     uint8                       CmdHeader[CFE_SB_CMD_HDR_SIZE];    /**< \brief cFE Software Bus Command Message Header */
     CFE_ES_ShellCmd_Payload_t   Payload;
-} CFE_ES_ShellCmd_t;
+} CFE_ES_Shell_t;
 
 /**
-** \brief Write All ES Application Info for All Applications to File Command
+** \brief Payload format for commands which accept a single file name
 **
-** For command details, see #CFE_ES_QUERY_ALL_CC
+** This format is shared by several executive services commands.
+** For command details, see #CFE_ES_QUERY_ALL_CC, #CFE_ES_QUERY_ALL_TASKS_CC,
+** #CFE_ES_WRITE_SYSLOG_CC, and #CFE_ES_WRITE_ER_LOG_CC
 **
 **/
 typedef struct
 {
-  char                  QueryAllFileName[OS_MAX_PATH_LEN]; /**< \brief ASCII text string containing full path and
+  char                  FileName[CFE_MISSION_MAX_PATH_LEN]; /**< \brief ASCII text string containing full path and
                                                                 filename of file in which Application data is to be dumped */
-} CFE_ES_QueryAllCmd_Payload_t;
+} CFE_ES_FileNameCmd_Payload_t;
 
 typedef struct
 {
-    uint8                           CmdHeader[CFE_SB_CMD_HDR_SIZE];    /**< \brief cFE Software Bus Command Message Header */
-    CFE_ES_QueryAllCmd_Payload_t    Payload;
-} CFE_ES_QueryAllCmd_t;
+    uint8                        CmdHeader[CFE_SB_CMD_HDR_SIZE];    /**< \brief cFE Software Bus Command Message Header */
+    CFE_ES_FileNameCmd_Payload_t Payload;
+} CFE_ES_FileNameCmd_t;
 
-/**
-** \brief Write All ES Application Info for All Tasks to File Command
-**
-** For command details, see #CFE_ES_QUERY_ALL_TASKS_CC
-**
-**/
-typedef struct
-{
-  char                  QueryAllFileName[OS_MAX_PATH_LEN]; /**< \brief ASCII text string containing full path and
-                                                                filename of file in which Application data is to be dumped */
-
-} CFE_ES_QueryAllTasksCmd_Payload_t;
-
-typedef struct
-{
-    uint8                               CmdHeader[CFE_SB_CMD_HDR_SIZE];    /**< \brief cFE Software Bus Command Message Header */
-    CFE_ES_QueryAllTasksCmd_Payload_t   Payload;
-} CFE_ES_QueryAllTasksCmd_t;
-
-
-/**
-** \brief Dump System Log to File Command
-**
-** For command details, see #CFE_ES_WRITE_SYSLOG_CC
-**
-**/
-typedef struct
-{
-  char                  SysLogFileName[OS_MAX_PATH_LEN];  /**< \brief ASCII text string containing full path and
-                                                                filename of file in which System Log is to be dumped */
-} CFE_ES_WriteSyslogCmd_Payload_t;
-
-typedef struct
-{
-    uint8                           CmdHeader[CFE_SB_CMD_HDR_SIZE];    /**< \brief cFE Software Bus Command Message Header */
-    CFE_ES_WriteSyslogCmd_Payload_t Payload;
-} CFE_ES_WriteSyslogCmd_t;
-
-/**
-** \brief Dump Exception and Reset Log to File Command
-**
-** For command details, see #CFE_ES_WRITE_ERLOG_CC
-**
-**/
-typedef struct
-{
-  char                  ERLogFileName[OS_MAX_PATH_LEN];   /**< \brief ASCII text string containing full path and
-                                                                filename of file in which ER Log is to be dumped */
-} CFE_ES_WriteERlogCmd_Payload_t;
-
-typedef struct
-{
-    uint8                 CmdHeader[CFE_SB_CMD_HDR_SIZE];    /**< \brief cFE Software Bus Command Message Header */
-    CFE_ES_WriteERlogCmd_Payload_t Payload;
-} CFE_ES_WriteERlogCmd_t;
+/*
+ * Unique typedefs for each of the commands that utilize the FileNameCmd 
+ * packet format
+ */
+typedef CFE_ES_FileNameCmd_t CFE_ES_QueryAll_t;
+typedef CFE_ES_FileNameCmd_t CFE_ES_QueryAllTasks_t;
+typedef CFE_ES_FileNameCmd_t CFE_ES_WriteSyslog_t;
+typedef CFE_ES_FileNameCmd_t CFE_ES_WriteERLog_t;
 
 /**
 ** \brief Overwrite/Discard System Log Configuration Command
 **
-** For command details, see #CFE_ES_OVERWRITE_SYSLOG_CC
+** For command details, see #CFE_ES_OVER_WRITE_SYSLOG_CC
 **
 **/
 typedef struct 
 {
-   uint32               Mode;                            /**< \brief #CFE_ES_LOG_DISCARD=Throw away most recent messages,
-                                                                     #CFE_ES_LOG_OVERWRITE=Overwrite oldest with most recent */
+   uint32               Mode;                            /**< \brief #CFE_ES_LogMode_DISCARD=Throw away most recent messages,
+                                                                     #CFE_ES_LogMode_OVERWRITE=Overwrite oldest with most recent */
 
 } CFE_ES_OverWriteSysLogCmd_Payload_t;
 
@@ -1297,7 +1222,7 @@ typedef struct
 {
     uint8                               CmdHeader[CFE_SB_CMD_HDR_SIZE];    /**< \brief cFE Software Bus Command Message Header */
     CFE_ES_OverWriteSysLogCmd_Payload_t Payload;
-} CFE_ES_OverWriteSysLogCmd_t;
+} CFE_ES_OverWriteSyslog_t;
 
 /**
 ** \brief Start Application Command
@@ -1307,18 +1232,19 @@ typedef struct
 **/
 typedef struct
 {
-  char                  Application[OS_MAX_API_NAME];    /**< \brief Name of Application to be started */
-  char                  AppEntryPoint[OS_MAX_API_NAME];  /**< \brief Symbolic name of Application's entry point */
-  char                  AppFileName[OS_MAX_PATH_LEN];    /**< \brief Full path and filename of Application's 
+  char                  Application[CFE_MISSION_MAX_API_LEN];    /**< \brief Name of Application to be started */
+  char                  AppEntryPoint[CFE_MISSION_MAX_API_LEN];  /**< \brief Symbolic name of Application's entry point */
+  char                  AppFileName[CFE_MISSION_MAX_PATH_LEN];    /**< \brief Full path and filename of Application's 
                                                                      executable image */
 
   uint32                StackSize;                       /**< \brief Desired stack size for the new application */
 
-  uint16                ExceptionAction;                 /**< \brief #CFE_ES_APP_EXCEPTION_RESTART_APP=On exception, 
+  uint16                ExceptionAction;                 /**< \brief #CFE_ES_ExceptionAction_RESTART_APP=On exception, 
                                                                      restart Application,
-                                                                     #CFE_ES_APP_EXCEPTION_PROC_RESTART=On exception,
+                                                                     #CFE_ES_ExceptionAction_PROC_RESTART=On exception,
                                                                      perform a Processor Reset */
   uint16                Priority;                        /**< \brief The new Applications runtime priority. */
+  uint32                Flags;                           /**< \brief The flags parameter for the main task of the Application. */
 
 } CFE_ES_StartAppCmd_Payload_t;
 
@@ -1326,7 +1252,7 @@ typedef struct
 {
     uint8                           CmdHeader[CFE_SB_CMD_HDR_SIZE];    /**< \brief cFE Software Bus Command Message Header */
     CFE_ES_StartAppCmd_Payload_t    Payload;
-} CFE_ES_StartAppCmd_t;
+} CFE_ES_StartApp_t;
 
 /**
 ** \brief Command Structure for Commands requiring just an Application Name
@@ -1336,7 +1262,7 @@ typedef struct
 **/
 typedef struct
 {
-  char                  Application[OS_MAX_API_NAME];    /**< \brief ASCII text string containing Application Name */
+  char                  Application[CFE_MISSION_MAX_API_LEN];    /**< \brief ASCII text string containing Application Name */
 } CFE_ES_AppNameCmd_Payload_t;
 
 typedef struct
@@ -1344,6 +1270,15 @@ typedef struct
     uint8                       CmdHeader[CFE_SB_CMD_HDR_SIZE];    /**< \brief cFE Software Bus Command Message Header */
     CFE_ES_AppNameCmd_Payload_t Payload;
 } CFE_ES_AppNameCmd_t;
+
+/*
+ * Like NoArgsCmd, this message definition is shared by multiple commands.
+ * Create a separate typedef for each one so they can all evolve independently
+ * without affecting the prototype.
+ */
+typedef CFE_ES_AppNameCmd_t CFE_ES_StopApp_t;
+typedef CFE_ES_AppNameCmd_t CFE_ES_RestartApp_t;
+typedef CFE_ES_AppNameCmd_t CFE_ES_QueryOne_t;
 
 /**
 ** \brief Reload Application Command
@@ -1353,8 +1288,8 @@ typedef struct
 **/
 typedef struct
 {
-  char                  Application[OS_MAX_API_NAME];   /**< \brief ASCII text string containing Application Name */
-  char                  AppFileName[OS_MAX_PATH_LEN];   /**< \brief Full path and filename of Application's 
+  char                  Application[CFE_MISSION_MAX_API_LEN];   /**< \brief ASCII text string containing Application Name */
+  char                  AppFileName[CFE_MISSION_MAX_PATH_LEN];   /**< \brief Full path and filename of Application's 
                                                                     executable image */
 } CFE_ES_AppReloadCmd_Payload_t;
 
@@ -1362,7 +1297,7 @@ typedef struct
 {
     uint8                           CmdHeader[CFE_SB_CMD_HDR_SIZE];    /**< \brief cFE Software Bus Command Message Header */
     CFE_ES_AppReloadCmd_Payload_t   Payload;
-} CFE_ES_AppReloadCmd_t;
+} CFE_ES_ReloadApp_t;
 
 /**
 ** \brief Set Maximum Processor Reset Count Command
@@ -1380,7 +1315,7 @@ typedef struct
 {
     uint8                               CmdHeader[CFE_SB_CMD_HDR_SIZE];    /**< \brief cFE Software Bus Command Message Header */
     CFE_ES_SetMaxPRCountCmd_Payload_t   Payload;
-} CFE_ES_SetMaxPRCountCmd_t;
+} CFE_ES_SetMaxPRCount_t;
 
 /**
 ** \brief Delete Critical Data Store Command
@@ -1390,7 +1325,7 @@ typedef struct
 **/
 typedef struct
 {
-  char                  CdsName[CFE_ES_CDS_MAX_FULL_NAME_LEN]; /**< \brief ASCII text string containing name of CDS to delete */
+  char                  CdsName[CFE_MISSION_ES_CDS_MAX_NAME_LEN]; /**< \brief ASCII text string containing name of CDS to delete */
 
 } CFE_ES_DeleteCDSCmd_Payload_t;
 
@@ -1398,48 +1333,48 @@ typedef struct
 {
     uint8                           CmdHeader[CFE_SB_CMD_HDR_SIZE];    /**< \brief cFE Software Bus Command Message Header */
     CFE_ES_DeleteCDSCmd_Payload_t   Payload;
-} CFE_ES_DeleteCDSCmd_t;
+} CFE_ES_DeleteCDS_t;
 
 /**
 ** \brief Start Performance Analyzer Command
 **
-** For command details, see #CFE_ES_PERF_STARTDATA_CC
+** For command details, see #CFE_ES_START_PERF_DATA_CC
 **
 **/
 typedef struct
 {
   uint32                TriggerMode;                    /**< \brief Desired trigger position (Start, Center, End) */
-} CFE_ES_PerfStartCmd_Payload_t;
+} CFE_ES_StartPerfCmd_Payload_t;
 
 typedef struct
 {
     uint8                           CmdHeader[CFE_SB_CMD_HDR_SIZE];    /**< \brief cFE Software Bus Command Message Header */
-    CFE_ES_PerfStartCmd_Payload_t   Payload;
-} CFE_ES_PerfStartCmd_t;
+    CFE_ES_StartPerfCmd_Payload_t   Payload;
+} CFE_ES_StartPerfData_t;
 
 /**
 ** \brief Stop Performance Analyzer Command
 **
-** For command details, see #CFE_ES_PERF_STOPDATA_CC
+** For command details, see #CFE_ES_STOP_PERF_DATA_CC
 **
 **/
 typedef struct
 {
-  char                  DataFileName[OS_MAX_PATH_LEN];  /**< \brief ASCII text string of full path and filename 
+  char                  DataFileName[CFE_MISSION_MAX_PATH_LEN];  /**< \brief ASCII text string of full path and filename 
                                                                     of file Performance Analyzer data is to be written */
-} CFE_ES_PerfStopCmd_Payload_t;
+} CFE_ES_StopPerfCmd_Payload_t;
 
 typedef struct
 {
     uint8                           CmdHeader[CFE_SB_CMD_HDR_SIZE];    /**< \brief cFE Software Bus Command Message Header */
-    CFE_ES_PerfStopCmd_Payload_t    Payload;
-} CFE_ES_PerfStopCmd_t;
+    CFE_ES_StopPerfCmd_Payload_t    Payload;
+} CFE_ES_StopPerfData_t;
 
 
 /**
 ** \brief Set Performance Analyzer Filter Mask Command
 **
-** For command details, see #CFE_ES_PERF_SETFILTERMASK_CC
+** For command details, see #CFE_ES_SET_PERF_FILTER_MASK_CC
 **
 **/
 typedef struct
@@ -1447,18 +1382,18 @@ typedef struct
   uint32                FilterMaskNum;                   /**< \brief Index into array of Filter Masks */
   uint32                FilterMask;                      /**< \brief New Mask for specified entry in array of Filter Masks */
 
-} CFE_ES_PerfSetFilterMaskCmd_Payload_t;
+} CFE_ES_SetPerfFilterMaskCmd_Payload_t;
 
 typedef struct
 {
     uint8                 CmdHeader[CFE_SB_CMD_HDR_SIZE];    /**< \brief cFE Software Bus Command Message Header */
-    CFE_ES_PerfSetFilterMaskCmd_Payload_t Payload;
-} CFE_ES_PerfSetFilterMaskCmd_t;
+    CFE_ES_SetPerfFilterMaskCmd_Payload_t Payload;
+} CFE_ES_SetPerfFilterMask_t;
 
 /**
 ** \brief Set Performance Analyzer Trigger Mask Command
 **
-** For command details, see #CFE_ES_PERF_SETTRIGMASK_CC
+** For command details, see #CFE_ES_SET_PERF_TRIGGER_MASK_CC
 **
 **/
 typedef struct
@@ -1466,51 +1401,51 @@ typedef struct
   uint32                TriggerMaskNum;                 /**< \brief Index into array of Trigger Masks */
   uint32                TriggerMask;                    /**< \brief New Mask for specified entry in array of Trigger Masks */
 
-} CFE_ES_PerfSetTrigMaskCmd_Payload_t;
+} CFE_ES_SetPerfTrigMaskCmd_Payload_t;
 
 typedef struct
 {
     uint8                               CmdHeader[CFE_SB_CMD_HDR_SIZE];    /**< \brief cFE Software Bus Command Message Header */
-    CFE_ES_PerfSetTrigMaskCmd_Payload_t Payload;
-} CFE_ES_PerfSetTrigMaskCmd_t;
+    CFE_ES_SetPerfTrigMaskCmd_Payload_t Payload;
+} CFE_ES_SetPerfTriggerMask_t;
 
 /**
 ** \brief Telemeter Memory Pool Statistics Command
 **
-** For command details, see #CFE_ES_TLM_POOL_STATS_CC
+** For command details, see #CFE_ES_SEND_MEM_POOL_STATS_CC
 **
 **/
 typedef struct
 {
-  char                  Application[OS_MAX_API_NAME];   /**< \brief - RESERVED - should be all zeroes */
+  char                  Application[CFE_MISSION_MAX_API_LEN];   /**< \brief - RESERVED - should be all zeroes */
   CFE_ES_MemHandle_t    PoolHandle;                     /**< \brief Handle of Pool whose statistics are to be telemetered */
 
-} CFE_ES_TlmPoolStatsCmd_Payload_t;
+} CFE_ES_SendMemPoolStatsCmd_Payload_t;
 
 typedef struct
 {
     uint8                               CmdHeader[CFE_SB_CMD_HDR_SIZE];    /**< \brief cFE Software Bus Command Message Header */
-    CFE_ES_TlmPoolStatsCmd_Payload_t    Payload;
-} CFE_ES_TlmPoolStatsCmd_t;
+    CFE_ES_SendMemPoolStatsCmd_Payload_t    Payload;
+} CFE_ES_SendMemPoolStats_t;
 
 /**
 ** \brief Dump CDS Registry Command
 **
-** For command details, see #CFE_ES_DUMP_CDS_REG_CC
+** For command details, see #CFE_ES_DUMP_CDS_REGISTRY_CC
 **
 **/
 typedef struct
 {
-  char                  DumpFilename[OS_MAX_PATH_LEN];  /**< \brief ASCII text string of full path and filename 
+  char                  DumpFilename[CFE_MISSION_MAX_PATH_LEN];  /**< \brief ASCII text string of full path and filename 
                                                                     of file CDS Registry is to be written */
-} CFE_ES_DumpCDSRegCmd_Payload_t;
+} CFE_ES_DumpCDSRegistryCmd_Payload_t;
 
 typedef struct
 {
     uint8                           CmdHeader[CFE_SB_CMD_HDR_SIZE];    /**< \brief cFE Software Bus Command Message Header */
-    CFE_ES_DumpCDSRegCmd_Payload_t  Payload;
+    CFE_ES_DumpCDSRegistryCmd_Payload_t  Payload;
 
-} CFE_ES_DumpCDSRegCmd_t;
+} CFE_ES_DumpCDSRegistry_t;
 
 /*************************************************************************/
 /**********************************/
@@ -1545,7 +1480,7 @@ typedef struct
 {
     uint8                           TlmHeader[CFE_SB_TLM_HDR_SIZE]; /**< \brief cFE Software Bus Telemetry Message Header */
     CFE_ES_PoolStatsTlm_Payload_t   Payload;
-} CFE_ES_PoolStatsTlm_t;
+} CFE_ES_MemStatsTlm_t;
 
 /*************************************************************************/
 
@@ -1554,9 +1489,9 @@ typedef struct
 **/
 typedef struct
 {
-  uint8                 CmdCounter;  /**< \cfetlmmnemonic \ES_CMDPC 
+  uint8                 CommandCounter;  /**< \cfetlmmnemonic \ES_CMDPC 
                                           \brief The ES Application Command Counter */
-  uint8                 ErrCounter;  /**< \cfetlmmnemonic \ES_CMDEC 
+  uint8                 CommandErrorCounter;  /**< \cfetlmmnemonic \ES_CMDEC 
                                           \brief The ES Application Command Error Counter */
   
   uint16                CFECoreChecksum;    /**< \cfetlmmnemonic \ES_CKSUM 
@@ -1618,9 +1553,9 @@ typedef struct
                                               \brief Current mode of Performance Analyzer */
   uint32                PerfTriggerCount;                           /**< \cfetlmmnemonic \ES_PERFTRIGCNT 
                                                                          \brief Number of Times Perfomance Analyzer has Triggered */
-  uint32                PerfFilterMask[CFE_ES_PERF_MAX_IDS / 32];   /**< \cfetlmmnemonic \ES_PERFFLTRMASK 
+  uint32                PerfFilterMask[CFE_MISSION_ES_PERF_MAX_IDS / 32];   /**< \cfetlmmnemonic \ES_PERFFLTRMASK
                                                                          \brief Current Setting of Performance Analyzer Filter Masks */
-  uint32                PerfTriggerMask[CFE_ES_PERF_MAX_IDS / 32];  /**< \cfetlmmnemonic \ES_PERFTRIGMASK 
+  uint32                PerfTriggerMask[CFE_MISSION_ES_PERF_MAX_IDS / 32];  /**< \cfetlmmnemonic \ES_PERFTRIGMASK
                                                                          \brief Current Setting of Performance Analyzer Trigger Masks */
   uint32                PerfDataStart;   /**< \cfetlmmnemonic \ES_PERFDATASTART 
                                               \brief Identifies First Stored Entry in Performance Analyzer Log */
@@ -1636,21 +1571,21 @@ typedef struct
                                               \brief Number of free blocks remaining in the OS heap */
   uint32                HeapMaxBlockSize;  /**< \cfetlmmnemonic \ES_HEAPMAXBLK
                                               \brief Number of bytes in the largest free block */
-} CFE_ES_HkPacket_Payload_t;
+} CFE_ES_HousekeepingTlm_Payload_t;
 
 typedef struct
 {
     uint8                       TlmHeader[CFE_SB_TLM_HDR_SIZE]; /**< \brief cFE Software Bus Telemetry Message Header */
-    CFE_ES_HkPacket_Payload_t   Payload;
+    CFE_ES_HousekeepingTlm_Payload_t   Payload;
   
-} CFE_ES_HkPacket_t;
+} CFE_ES_HousekeepingTlm_t;
 
 /** 
 **  \cfeestlm OS Shell Output Packet
 **/
 typedef struct
 {
-  char                  ShellOutput[CFE_ES_MAX_SHELL_PKT];  /**< \brief ASCII text string containing output from OS Shell
+  char                  ShellOutput[CFE_MISSION_ES_MAX_SHELL_PKT];  /**< \brief ASCII text string containing output from OS Shell
                                                                  that was received in response to an OS Shell Command */
 } CFE_ES_ShellPacket_Payload_t;
 
@@ -1658,9 +1593,24 @@ typedef struct
 {
     uint8                           TlmHeader[CFE_SB_TLM_HDR_SIZE]; /**< \brief cFE Software Bus Telemetry Message Header */
     CFE_ES_ShellPacket_Payload_t    Payload;
-}CFE_ES_ShellPacket_t;
+}CFE_ES_ShellTlm_t;
 
 /*************************************************************************/
+
+/*
+ * COMPATIBILITY TYPEDEFS:
+ * In some circumstances applications may subscribe to telemetry from this component,
+ * and therefore the name changes may break existing code.  For these situations a
+ * typedef is created to continue supporting the previous name.  These should be
+ * removed in the next CFE release.
+ */
+#ifndef CFE_OMIT_DEPRECATED_6_6
+
+typedef CFE_ES_HousekeepingTlm_t    CFE_ES_HkPacket_t;
+typedef CFE_ES_ShellTlm_t           CFE_ES_ShellPacket_t;
+typedef CFE_ES_MemStatsTlm_t        CFE_ES_PoolStatsTlm_t;
+
+#endif /* CFE_OMIT_DEPRECATED_6_6 */
 
 #ifdef __cplusplus
 }

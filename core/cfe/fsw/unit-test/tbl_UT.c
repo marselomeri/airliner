@@ -1,11 +1,21 @@
 /*
-**      Copyright (c) 2004-2012, United States government as represented by the
-**      administrator of the National Aeronautics Space Administration.
-**      All rights reserved. This software(cFE) was created at NASA's Goddard
-**      Space Flight Center pursuant to government contracts.
+**      GSC-18128-1, "Core Flight Executive Version 6.6"
 **
-**      This is governed by the NASA Open Source Agreement and may be used,
-**      distributed and modified only pursuant to the terms of that agreement.
+**      Copyright (c) 2006-2019 United States Government as represented by
+**      the Administrator of the National Aeronautics and Space Administration.
+**      All Rights Reserved.
+**
+**      Licensed under the Apache License, Version 2.0 (the "License");
+**      you may not use this file except in compliance with the License.
+**      You may obtain a copy of the License at
+**
+**        http://www.apache.org/licenses/LICENSE-2.0
+**
+**      Unless required by applicable law or agreed to in writing, software
+**      distributed under the License is distributed on an "AS IS" BASIS,
+**      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+**      See the License for the specific language governing permissions and
+**      limitations under the License.
 **
 ** File:
 **    tbl_UT.c
@@ -81,7 +91,7 @@ void *Tbl1Ptr = NULL;
 void *Tbl2Ptr = NULL;
 void **ArrayOfPtrsToTblPtrs[2];
 
-CFE_TBL_RegistryRec_t Original[CFE_TBL_MAX_NUM_TABLES];
+CFE_TBL_RegistryRec_t Original[CFE_PLATFORM_TBL_MAX_NUM_TABLES];
 UT_SetRtn_t TBL_ValidationFuncRtn;
 
 /*
@@ -154,7 +164,7 @@ void UT_InitializeTableRegistryNames()
 {
     int i;
 
-    for (i = 0; i < CFE_TBL_MAX_NUM_TABLES; i++)
+    for (i = 0; i < CFE_PLATFORM_TBL_MAX_NUM_TABLES; i++)
     {
         snprintf(CFE_TBL_TaskData.Registry[i].Name,
                  CFE_TBL_MAX_FULL_NAME_LEN, "%d", i);
@@ -169,13 +179,13 @@ void UT_ResetTableRegistry(void)
 {
     int32 i = 0;
 
-    for (i = 0; i < CFE_TBL_MAX_NUM_TABLES; i++)
+    for (i = 0; i < CFE_PLATFORM_TBL_MAX_NUM_TABLES; i++)
     {
         CFE_TBL_InitRegistryRecord(&CFE_TBL_TaskData.Registry[i]);
     }
 
     /* Initialize the table access descriptors */
-    for (i = 0; i < CFE_TBL_MAX_NUM_HANDLES; i++)
+    for (i = 0; i < CFE_PLATFORM_TBL_MAX_NUM_HANDLES; i++)
     {
         CFE_TBL_TaskData.Handles[i].AppId = CFE_ES_ERR_APPID;
         CFE_TBL_TaskData.Handles[i].RegIndex = 0;
@@ -188,7 +198,7 @@ void UT_ResetTableRegistry(void)
     }
 
     /* Initialize the table validation results records */
-    for (i = 0; i < CFE_TBL_MAX_NUM_VALIDATIONS; i++)
+    for (i = 0; i < CFE_PLATFORM_TBL_MAX_NUM_VALIDATIONS; i++)
     {
         CFE_TBL_TaskData.ValidationResults[i].State = CFE_TBL_VALIDATION_FREE;
         CFE_TBL_TaskData.ValidationResults[i].CrcOfTable = 0;
@@ -198,7 +208,7 @@ void UT_ResetTableRegistry(void)
     }
 
     /* Initialize the dump-only table dump control blocks */
-    for (i = 0; i < CFE_TBL_MAX_SIMULTANEOUS_LOADS; i++)
+    for (i = 0; i < CFE_PLATFORM_TBL_MAX_SIMULTANEOUS_LOADS; i++)
     {
         CFE_TBL_TaskData.DumpControlBlocks[i].State = CFE_TBL_DUMP_FREE;
         CFE_TBL_TaskData.DumpControlBlocks[i].DumpBufferPtr = NULL;
@@ -209,7 +219,7 @@ void UT_ResetTableRegistry(void)
         CFE_TBL_TaskData.LoadBuffs[i].Taken = FALSE;
     }
 
-    CFE_TBL_TaskData.ValidationCtr = 0;
+    CFE_TBL_TaskData.ValidationCounter = 0;
     CFE_TBL_TaskData.HkTlmTblRegIndex = CFE_TBL_NOT_FOUND;
     CFE_TBL_TaskData.LastTblUpdated = CFE_TBL_NOT_FOUND;
 }
@@ -231,7 +241,7 @@ void Test_CFE_TBL_TaskInit(void)
     MsgPtr = (CFE_SB_MsgPtr_t) &NoArgsCmd;
     CFE_TBL_TaskMain();
     UT_Report(__FILE__, __LINE__,
-              ES_ExitAppRtn.value == CFE_ES_RUNSTATUS_CORE_APP_RUNTIME_ERROR &&
+              ES_ExitAppRtn.value == CFE_ES_RunStatus_CORE_APP_RUNTIME_ERROR &&
               ES_ExitAppRtn.count == 1,
               "CFE_TBL_TaskMain",
               "Success");
@@ -243,8 +253,8 @@ void Test_CFE_TBL_TaskInit(void)
     UT_SetRtnCode(&ES_RegisterRtn, -1, 1);
     CFE_TBL_TaskMain();
     UT_Report(__FILE__, __LINE__,
-              ES_ExitAppRtn.value == CFE_ES_RUNSTATUS_CORE_APP_INIT_ERROR +
-                                     CFE_ES_RUNSTATUS_CORE_APP_RUNTIME_ERROR &&
+              ES_ExitAppRtn.value == CFE_ES_RunStatus_CORE_APP_INIT_ERROR +
+                                     CFE_ES_RunStatus_CORE_APP_RUNTIME_ERROR &&
               ES_ExitAppRtn.count == 2,
               "CFE_TBL_TaskMain",
               "Application register fail");
@@ -308,7 +318,7 @@ void Test_CFE_TBL_TaskInit(void)
 
     /* Test command pipe messages handler response to a valid command */
     UT_InitData();
-    UT_SetSBTotalMsgLen(sizeof(CFE_TBL_NoArgsCmd_t));
+    UT_SetSBTotalMsgLen(sizeof(NoArgsCmd));
     CFE_SB_SetMsgId(MsgPtr, CFE_TBL_CMD_MID);
     CFE_SB_SetCmdCode(MsgPtr, CFE_TBL_NOOP_CC);
     CFE_TBL_TaskPipe(MsgPtr);
@@ -321,7 +331,7 @@ void Test_CFE_TBL_TaskInit(void)
      * message length
      */
     UT_InitData();
-    UT_SetSBTotalMsgLen(sizeof(CFE_TBL_NoArgsCmd_t ) - 1);
+    UT_SetSBTotalMsgLen(sizeof(NoArgsCmd) - 1);
     CFE_SB_SetMsgId(MsgPtr, CFE_TBL_CMD_MID);
     CFE_SB_SetCmdCode(MsgPtr, CFE_TBL_NOOP_CC);
     CFE_TBL_TaskPipe(MsgPtr);
@@ -334,7 +344,7 @@ void Test_CFE_TBL_TaskInit(void)
      * command code
      */
     UT_InitData();
-    UT_SetSBTotalMsgLen(sizeof(CFE_TBL_NoArgsCmd_t ));
+    UT_SetSBTotalMsgLen(sizeof(NoArgsCmd));
     CFE_SB_SetMsgId(MsgPtr, CFE_TBL_CMD_MID);
     CFE_SB_SetCmdCode(MsgPtr, 999);
     CFE_TBL_TaskPipe(MsgPtr);
@@ -345,29 +355,29 @@ void Test_CFE_TBL_TaskInit(void)
 
     /* Test command pipe messages handler response to "message type" message */
     UT_InitData();
-    UT_SetSBTotalMsgLen(sizeof(CFE_TBL_NoArgsCmd_t ));
+    UT_SetSBTotalMsgLen(sizeof(NoArgsCmd));
     CFE_SB_SetMsgId(MsgPtr, CFE_TBL_SEND_HK_MID);
     CFE_SB_SetCmdCode(MsgPtr, 0);
-    CFE_TBL_TaskData.CmdCounter = 0;
-    CFE_TBL_TaskData.ErrCounter = 0;
+    CFE_TBL_TaskData.CommandCounter = 0;
+    CFE_TBL_TaskData.CommandErrorCounter = 0;
     CFE_TBL_TaskPipe(MsgPtr);
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TBL_MID_ERR_EID &&
-                  CFE_TBL_TaskData.CmdCounter == 0 &&
-                  CFE_TBL_TaskData.ErrCounter == 0,
+                  CFE_TBL_TaskData.CommandCounter == 0 &&
+                  CFE_TBL_TaskData.CommandErrorCounter == 0,
               "CFE_TBL_TaskPipe",
               "'Message' type message");
 
     /* Test command pipe messages handler response to "command type" message */
     UT_InitData();
-    UT_SetSBTotalMsgLen(sizeof(CFE_TBL_NoArgsCmd_t));
+    UT_SetSBTotalMsgLen(sizeof(NoArgsCmd));
     CFE_SB_SetMsgId(MsgPtr, CFE_TBL_CMD_MID);
-    CFE_SB_SetCmdCode(MsgPtr, CFE_TBL_RESET_CC);
+    CFE_SB_SetCmdCode(MsgPtr, CFE_TBL_RESET_COUNTERS_CC);
     CFE_TBL_TaskPipe(MsgPtr);
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TBL_RESET_INF_EID &&
-                  CFE_TBL_TaskData.CmdCounter == 0 &&
-                  CFE_TBL_TaskData.ErrCounter == 0,
+                  CFE_TBL_TaskData.CommandCounter == 0 &&
+                  CFE_TBL_TaskData.CommandErrorCounter == 0,
               "CFE_TBL_TaskPipe",
               "'Command' type message");
 }
@@ -452,7 +462,7 @@ void Test_CFE_TBL_SearchCmdHndlrTbl(void)
 void Test_CFE_TBL_DeleteCDSCmd(void)
 {
     int                 j, k;
-    CFE_TBL_DelCDSCmd_t DelCDSCmd;
+    CFE_TBL_DeleteCDS_t DelCDSCmd;
 
 #ifdef UT_VERBOSE
     UT_Text("Begin Test Delete CDS Command\n");
@@ -463,25 +473,25 @@ void Test_CFE_TBL_DeleteCDSCmd(void)
     strncpy(DelCDSCmd.Payload.TableName, "0",
             sizeof(DelCDSCmd.Payload.TableName));
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_DeleteCDSCmd((CFE_SB_MsgPayloadPtr_t) &DelCDSCmd.Payload) ==
+              CFE_TBL_DeleteCDSCmd(&DelCDSCmd) ==
                                        CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_DeleteCDSCmd",
               "Table name found in table registry");
 
     /* Test failure to find table in the critical table registry */
     UT_InitData();
-    k = CFE_TBL_MAX_CRITICAL_TABLES + CFE_TBL_MAX_NUM_TABLES;
+    k = CFE_PLATFORM_TBL_MAX_CRITICAL_TABLES + CFE_PLATFORM_TBL_MAX_NUM_TABLES;
 
-    for (j = CFE_TBL_MAX_NUM_TABLES; j < k; j++)
+    for (j = CFE_PLATFORM_TBL_MAX_NUM_TABLES; j < k; j++)
     {
-        snprintf(CFE_TBL_TaskData.CritReg[j - CFE_TBL_MAX_NUM_TABLES].Name,
+        snprintf(CFE_TBL_TaskData.CritReg[j - CFE_PLATFORM_TBL_MAX_NUM_TABLES].Name,
                  CFE_TBL_MAX_FULL_NAME_LEN, "%d", j);
     }
 
     strncpy(DelCDSCmd.Payload.TableName, "-1", 
         sizeof(DelCDSCmd.Payload.TableName));
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_DeleteCDSCmd((CFE_SB_MsgPayloadPtr_t) &DelCDSCmd.Payload) ==
+              CFE_TBL_DeleteCDSCmd(&DelCDSCmd) ==
                                        CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_DeleteCDSCmd",
               "Table not found in critical table registry");
@@ -491,10 +501,10 @@ void Test_CFE_TBL_DeleteCDSCmd(void)
      */
     UT_InitData();
     snprintf(DelCDSCmd.Payload.TableName, sizeof(DelCDSCmd.Payload.TableName), "%d",
-             CFE_TBL_MAX_CRITICAL_TABLES + CFE_TBL_MAX_NUM_TABLES - 1);
+             CFE_PLATFORM_TBL_MAX_CRITICAL_TABLES + CFE_PLATFORM_TBL_MAX_NUM_TABLES - 1);
     UT_SetRtnCode(&ES_DeleteCDSRtn, CFE_ES_CDS_WRONG_TYPE_ERR, 1);
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_DeleteCDSCmd((CFE_SB_MsgPayloadPtr_t) &DelCDSCmd.Payload) ==
+              CFE_TBL_DeleteCDSCmd(&DelCDSCmd) ==
                                        CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_DeleteCDSCmd",
               "Table is in critical table registry but CDS is not tagged "
@@ -504,7 +514,7 @@ void Test_CFE_TBL_DeleteCDSCmd(void)
     UT_InitData();
     UT_SetRtnCode(&ES_DeleteCDSRtn, CFE_ES_CDS_OWNER_ACTIVE_ERR, 1);
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_DeleteCDSCmd((CFE_SB_MsgPayloadPtr_t) &DelCDSCmd.Payload) ==
+              CFE_TBL_DeleteCDSCmd(&DelCDSCmd) ==
                 CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_DeleteCDSCmd",
               "CDS owning application is still active");
@@ -513,7 +523,7 @@ void Test_CFE_TBL_DeleteCDSCmd(void)
     UT_InitData();
     UT_SetRtnCode(&ES_DeleteCDSRtn, CFE_ES_CDS_NOT_FOUND_ERR, 1);
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_DeleteCDSCmd((CFE_SB_MsgPayloadPtr_t) &DelCDSCmd.Payload) ==
+              CFE_TBL_DeleteCDSCmd(&DelCDSCmd) ==
                 CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_DeleteCDSCmd",
               "Unable to locate table in CDS registry");
@@ -522,7 +532,7 @@ void Test_CFE_TBL_DeleteCDSCmd(void)
     UT_InitData();
     UT_SetRtnCode(&ES_DeleteCDSRtn, CFE_SUCCESS - 1, 1);
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_DeleteCDSCmd((CFE_SB_MsgPayloadPtr_t) &DelCDSCmd.Payload) ==
+              CFE_TBL_DeleteCDSCmd(&DelCDSCmd) ==
                 CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_DeleteCDSCmd",
               "Error while deleting table from CDS");
@@ -531,7 +541,7 @@ void Test_CFE_TBL_DeleteCDSCmd(void)
     UT_InitData();
     UT_SetRtnCode(&ES_DeleteCDSRtn, CFE_SUCCESS, 1);
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_DeleteCDSCmd((CFE_SB_MsgPayloadPtr_t) &DelCDSCmd.Payload) ==
+              CFE_TBL_DeleteCDSCmd(&DelCDSCmd) ==
                 CFE_TBL_INC_CMD_CTR,
               "CFE_TBL_DeleteCDSCmd",
               "Successfully removed table from CDS");
@@ -542,7 +552,7 @@ void Test_CFE_TBL_DeleteCDSCmd(void)
 */
 void Test_CFE_TBL_TlmRegCmd(void)
 {
-    CFE_TBL_TlmRegCmd_t TlmRegCmd;
+    CFE_TBL_SendRegistry_t TlmRegCmd;
 
 #ifdef UT_VERBOSE
     UT_Text("Begin Test Telemetry Registry Command\n");
@@ -557,20 +567,20 @@ void Test_CFE_TBL_TlmRegCmd(void)
     strncpy((char *)TlmRegCmd.Payload.TableName, CFE_TBL_TaskData.Registry[0].Name,
             sizeof(TlmRegCmd.Payload.TableName));
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_TlmRegCmd((CFE_SB_MsgPayloadPtr_t) &TlmRegCmd.Payload) ==
+              CFE_TBL_SendRegistryCmd(&TlmRegCmd) ==
                 CFE_TBL_INC_CMD_CTR,
-              "CFE_TBL_TlmRegCmd",
+              "CFE_TBL_SendRegistryCmd",
               "Table registry entry for telemetry does exist");
 
     /* Test when table name does not exist */
     UT_InitData();
 
     snprintf(TlmRegCmd.Payload.TableName, sizeof(TlmRegCmd.Payload.TableName),
-             "%d", CFE_TBL_MAX_NUM_TABLES + 1);
+             "%d", CFE_PLATFORM_TBL_MAX_NUM_TABLES + 1);
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_TlmRegCmd((CFE_SB_MsgPayloadPtr_t) &TlmRegCmd.Payload) ==
+              CFE_TBL_SendRegistryCmd(&TlmRegCmd) ==
                 CFE_TBL_INC_ERR_CTR,
-              "CFE_TBL_TlmRegCmd",
+              "CFE_TBL_SendRegistryCmd",
               "Table registry entry for telemetry doesn't exist");
 }
 
@@ -580,7 +590,7 @@ void Test_CFE_TBL_TlmRegCmd(void)
 void Test_CFE_TBL_AbortLoadCmd(void)
 {
     int load = (int) CFE_TBL_TaskData.Registry[0].LoadInProgress;
-    CFE_TBL_AbortLdCmd_t  AbortLdCmd;
+    CFE_TBL_AbortLoad_t  AbortLdCmd;
 
 #ifdef UT_VERBOSE
     UT_Text("Begin Test Abort Load Command\n");
@@ -596,7 +606,7 @@ void Test_CFE_TBL_AbortLoadCmd(void)
             sizeof(AbortLdCmd.Payload.TableName));
     CFE_TBL_TaskData.Registry[0].LoadInProgress = 1;
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_AbortLoadCmd((CFE_SB_MsgPayloadPtr_t) &AbortLdCmd.Payload) ==
+              CFE_TBL_AbortLoadCmd(&AbortLdCmd) ==
                 CFE_TBL_INC_CMD_CTR,
               "CFE_TBL_AbortLoadCmd",
               "Table registry entry exists & load in progress");
@@ -605,7 +615,7 @@ void Test_CFE_TBL_AbortLoadCmd(void)
     UT_InitData();
     CFE_TBL_TaskData.Registry[0].LoadInProgress = CFE_TBL_NO_LOAD_IN_PROGRESS;
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_AbortLoadCmd((CFE_SB_MsgPayloadPtr_t) &AbortLdCmd.Payload) ==
+              CFE_TBL_AbortLoadCmd(&AbortLdCmd) ==
                 CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_AbortLoadCmd",
               "Table registry entry exists but no load in progress");
@@ -617,7 +627,7 @@ void Test_CFE_TBL_AbortLoadCmd(void)
     CFE_TBL_TaskData.Registry[0].LoadInProgress = CFE_TBL_NO_LOAD_IN_PROGRESS + 1;
     CFE_TBL_TaskData.Registry[0].DumpOnly = TRUE;
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_AbortLoadCmd((CFE_SB_MsgPayloadPtr_t) &AbortLdCmd.Payload) ==
+              CFE_TBL_AbortLoadCmd(&AbortLdCmd) ==
                 CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_AbortLoadCmd",
               "Table registry entry exists, load in progress, dump only");
@@ -625,16 +635,16 @@ void Test_CFE_TBL_AbortLoadCmd(void)
     /* Test when table name not found in the registry */
     UT_InitData();
     snprintf(AbortLdCmd.Payload.TableName, sizeof(AbortLdCmd.Payload.TableName),
-             "%d", CFE_TBL_MAX_NUM_TABLES + 1);
+             "%d", CFE_PLATFORM_TBL_MAX_NUM_TABLES + 1);
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_AbortLoadCmd((CFE_SB_MsgPayloadPtr_t) &AbortLdCmd.Payload) ==
+              CFE_TBL_AbortLoadCmd(&AbortLdCmd) ==
                 CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_AbortLoadCmd",
               "Table registry entry doesn't exist");
 
     /* Test when table is double buffered */
     UT_InitData();
-    CFE_TBL_TaskData.Registry[0].DblBuffered = TRUE;
+    CFE_TBL_TaskData.Registry[0].DoubleBuffered = TRUE;
     CFE_TBL_TaskData.LoadBuffs[0].Taken = TRUE;
     CFE_TBL_AbortLoad(&CFE_TBL_TaskData.Registry[0]);
     UT_Report(__FILE__, __LINE__,
@@ -654,7 +664,7 @@ void Test_CFE_TBL_ActivateCmd(void)
 {
     int                   load = (int) CFE_TBL_TaskData.Registry[0].LoadInProgress;
     uint8                 dump = CFE_TBL_TaskData.Registry[0].DumpOnly;
-    CFE_TBL_ActivateCmd_t ActivateCmd;
+    CFE_TBL_Activate_t    ActivateCmd;
 
 #ifdef UT_VERBOSE
     UT_Text("Begin Test Activate Command\n");
@@ -670,7 +680,7 @@ void Test_CFE_TBL_ActivateCmd(void)
     UT_InitData();
     CFE_TBL_TaskData.Registry[0].DumpOnly = TRUE;
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_ActivateCmd((CFE_SB_MsgPayloadPtr_t) &ActivateCmd.Payload) ==
+              CFE_TBL_ActivateCmd(&ActivateCmd) ==
                                       CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_ActivateCmd",
               "Table registry exists, but dump-only table attempted to load");
@@ -681,9 +691,9 @@ void Test_CFE_TBL_ActivateCmd(void)
     UT_InitData();
     CFE_TBL_TaskData.Registry[0].DumpOnly = FALSE;
     CFE_TBL_TaskData.Registry[0].LoadInProgress = CFE_TBL_NO_LOAD_IN_PROGRESS + 1;
-    CFE_TBL_TaskData.Registry[0].DblBuffered = TRUE;
+    CFE_TBL_TaskData.Registry[0].DoubleBuffered = TRUE;
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_ActivateCmd((CFE_SB_MsgPayloadPtr_t) &ActivateCmd.Payload) ==
+              CFE_TBL_ActivateCmd(&ActivateCmd) ==
                 CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_ActivateCmd",
               "Table registry exists, not a dump-only tbl, and a load in "
@@ -693,10 +703,10 @@ void Test_CFE_TBL_ActivateCmd(void)
      * progress, the table isn't double-buffered, and ValidationStatus = TRUE
      */
     UT_InitData();
-    CFE_TBL_TaskData.Registry[0].DblBuffered = FALSE;
+    CFE_TBL_TaskData.Registry[0].DoubleBuffered = FALSE;
     CFE_TBL_TaskData.LoadBuffs[CFE_TBL_TaskData.Registry[0].LoadInProgress].Validated = TRUE;
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_ActivateCmd((CFE_SB_MsgPayloadPtr_t) &ActivateCmd.Payload) ==
+              CFE_TBL_ActivateCmd(&ActivateCmd) ==
                 CFE_TBL_INC_CMD_CTR,
               "CFE_TBL_ActivateCmd",
               "Table registry exists, not a dump-only tbl, and a load in "
@@ -709,7 +719,7 @@ void Test_CFE_TBL_ActivateCmd(void)
     CFE_TBL_TaskData.Registry[0].NotifyByMsg = FALSE;
     CFE_TBL_TaskData.Registry[0].LoadInProgress = CFE_TBL_NO_LOAD_IN_PROGRESS;
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_ActivateCmd((CFE_SB_MsgPayloadPtr_t) &ActivateCmd.Payload) ==
+              CFE_TBL_ActivateCmd(&ActivateCmd) ==
                 CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_ActivateCmd",
               "Table registry exists, not a dump-only tbl, no load in "
@@ -723,7 +733,7 @@ void Test_CFE_TBL_ActivateCmd(void)
     CFE_TBL_TaskData.Registry[0].NotifyByMsg = TRUE;
     CFE_TBL_TaskData.Registry[0].LoadInProgress = CFE_TBL_NO_LOAD_IN_PROGRESS + 1;
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_ActivateCmd((CFE_SB_MsgPayloadPtr_t) &ActivateCmd.Payload) ==
+              CFE_TBL_ActivateCmd(&ActivateCmd) ==
                 CFE_TBL_INC_CMD_CTR,
               "CFE_TBL_ActivateCmd",
               "Table registry exists, not a dump-only tbl, no load in "
@@ -732,9 +742,9 @@ void Test_CFE_TBL_ActivateCmd(void)
     /* Test when the table name doesn't exist */
     UT_InitData();
     snprintf(ActivateCmd.Payload.TableName, sizeof(ActivateCmd.Payload.TableName),
-             "%d", CFE_TBL_MAX_NUM_TABLES + 1);
+             "%d", CFE_PLATFORM_TBL_MAX_NUM_TABLES + 1);
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_ActivateCmd((CFE_SB_MsgPayloadPtr_t) &ActivateCmd.Payload) ==
+              CFE_TBL_ActivateCmd(&ActivateCmd) ==
                 CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_ActivateCmd",
               "Table registry entry doesn't exist");
@@ -828,8 +838,8 @@ void Test_CFE_TBL_ResetCmd(void)
     /* Test run through function (there are no additional paths) */
     UT_InitData();
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_ResetCmd(NULL) == CFE_TBL_DONT_INC_CTR,
-              "CFE_TBL_ResetCmd",
+              CFE_TBL_ResetCountersCmd(NULL) == CFE_TBL_DONT_INC_CTR,
+              "CFE_TBL_ResetCountersCmd",
               "Function run and completed");
 }
 
@@ -841,7 +851,7 @@ void Test_CFE_TBL_ValidateCmd(void)
     int                       i;
     uint8                     Buff;
     uint8                     *BuffPtr = &Buff;
-    CFE_TBL_ValidateCmd_t     ValidateCmd;
+    CFE_TBL_Validate_t        ValidateCmd;
     CFE_TBL_CallbackFuncPtr_t ValFuncPtr = (CFE_TBL_CallbackFuncPtr_t)
                                              ((unsigned long )
                                                &UT_InitializeTableRegistryNames);
@@ -853,9 +863,9 @@ void Test_CFE_TBL_ValidateCmd(void)
     /* Test when table name is not found in the registry */
     UT_InitData();
     snprintf(ValidateCmd.Payload.TableName, sizeof(ValidateCmd.Payload.TableName),
-             "%d", CFE_TBL_MAX_NUM_TABLES + 1);
+             "%d", CFE_PLATFORM_TBL_MAX_NUM_TABLES + 1);
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_ValidateCmd((CFE_SB_MsgPayloadPtr_t) &ValidateCmd.Payload) ==
+              CFE_TBL_ValidateCmd(&ValidateCmd) ==
                 CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_ValidateCmd",
               "Table registry entry doesn't exist");
@@ -866,19 +876,19 @@ void Test_CFE_TBL_ValidateCmd(void)
     UT_InitData();
     strncpy((char *)ValidateCmd.Payload.TableName, CFE_TBL_TaskData.Registry[0].Name,
             sizeof(ValidateCmd.Payload.TableName));
-    ValidateCmd.Payload.ActiveTblFlag = CFE_TBL_ACTIVE_BUFFER;
+    ValidateCmd.Payload.ActiveTableFlag = CFE_TBL_BufferSelect_ACTIVE;
     CFE_TBL_TaskData.Registry[0].
       Buffers[CFE_TBL_TaskData.Registry[0].ActiveBufferIndex].
         BufferPtr = BuffPtr;
 
-    for (i = 0; i < CFE_TBL_MAX_NUM_VALIDATIONS; i++)
+    for (i = 0; i < CFE_PLATFORM_TBL_MAX_NUM_VALIDATIONS; i++)
     {
         CFE_TBL_TaskData.ValidationResults[i].State =
             CFE_TBL_VALIDATION_PENDING;
     }
 
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_ValidateCmd((CFE_SB_MsgPayloadPtr_t) &ValidateCmd.Payload) ==
+              CFE_TBL_ValidateCmd(&ValidateCmd) ==
                 CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_ValidateCmd",
               "Active buffer with data: too many table validations have "
@@ -891,7 +901,7 @@ void Test_CFE_TBL_ValidateCmd(void)
     CFE_TBL_TaskData.ValidationResults[0].State = CFE_TBL_VALIDATION_FREE;
     CFE_TBL_TaskData.Registry[0].ValidationFuncPtr = NULL;
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_ValidateCmd((CFE_SB_MsgPayloadPtr_t) &ValidateCmd.Payload) ==
+              CFE_TBL_ValidateCmd(&ValidateCmd) ==
                 CFE_TBL_INC_CMD_CTR,
               "CFE_TBL_ValidateCmd",
               "Active buffer with data: No validation function pointer");
@@ -902,9 +912,9 @@ void Test_CFE_TBL_ValidateCmd(void)
     UT_InitData();
     CFE_TBL_TaskData.ValidationResults[0].State = CFE_TBL_VALIDATION_FREE;
     CFE_TBL_TaskData.Registry[0].ValidationFuncPtr = ValFuncPtr;
-    ValidateCmd.Payload.ActiveTblFlag = TRUE;
+    ValidateCmd.Payload.ActiveTableFlag = TRUE;
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_ValidateCmd((CFE_SB_MsgPayloadPtr_t) &ValidateCmd.Payload) ==
+              CFE_TBL_ValidateCmd(&ValidateCmd) ==
                 CFE_TBL_INC_CMD_CTR,
               "CFE_TBL_ValidateCmd",
               "Active buffer with data: validation function pointer and "
@@ -914,13 +924,13 @@ void Test_CFE_TBL_ValidateCmd(void)
      * validation function pointer exists
      */
     UT_InitData();
-    ValidateCmd.Payload.ActiveTblFlag = CFE_TBL_INACTIVE_BUFFER;
-    CFE_TBL_TaskData.Registry[0].DblBuffered = TRUE;
+    ValidateCmd.Payload.ActiveTableFlag = CFE_TBL_BufferSelect_INACTIVE;
+    CFE_TBL_TaskData.Registry[0].DoubleBuffered = TRUE;
     CFE_TBL_TaskData.Registry[0].Buffers[1 - CFE_TBL_TaskData.Registry[0].ActiveBufferIndex].BufferPtr = BuffPtr;
     CFE_TBL_TaskData.ValidationResults[0].State = CFE_TBL_VALIDATION_FREE;
     CFE_TBL_TaskData.Registry[0].ValidationFuncPtr = ValFuncPtr;
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_ValidateCmd((CFE_SB_MsgPayloadPtr_t) &ValidateCmd.Payload) ==
+              CFE_TBL_ValidateCmd(&ValidateCmd) ==
                 CFE_TBL_INC_CMD_CTR,
               "CFE_TBL_ValidateCmd",
               "Inactive buffer: double buffered table : validation "
@@ -932,13 +942,13 @@ void Test_CFE_TBL_ValidateCmd(void)
      */
     UT_InitData();
     CFE_TBL_TaskData.Registry[0].NotifyByMsg = FALSE;
-    CFE_TBL_TaskData.Registry[0].DblBuffered = FALSE;
+    CFE_TBL_TaskData.Registry[0].DoubleBuffered = FALSE;
     CFE_TBL_TaskData.LoadBuffs[CFE_TBL_TaskData.Registry[0].LoadInProgress].BufferPtr = BuffPtr;
     CFE_TBL_TaskData.ValidationResults[0].State = CFE_TBL_VALIDATION_FREE;
     CFE_TBL_TaskData.Registry[0].LoadInProgress =
         CFE_TBL_NO_LOAD_IN_PROGRESS + 1;
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_ValidateCmd((CFE_SB_MsgPayloadPtr_t) &ValidateCmd.Payload) ==
+              CFE_TBL_ValidateCmd(&ValidateCmd) ==
                 CFE_TBL_INC_CMD_CTR,
               "CFE_TBL_ValidateCmd",
               "Inactive buffer: single buffered table with load in progress: "
@@ -951,13 +961,13 @@ void Test_CFE_TBL_ValidateCmd(void)
     UT_InitData();
     UT_SetRtnCode(&SBSendMsgRtn, CFE_SB_INTERNAL_ERR, 1);
     CFE_TBL_TaskData.Registry[0].NotifyByMsg = TRUE;
-    CFE_TBL_TaskData.Registry[0].DblBuffered = FALSE;
+    CFE_TBL_TaskData.Registry[0].DoubleBuffered = FALSE;
     CFE_TBL_TaskData.LoadBuffs[CFE_TBL_TaskData.Registry[0].LoadInProgress].BufferPtr = BuffPtr;
     CFE_TBL_TaskData.ValidationResults[0].State = CFE_TBL_VALIDATION_FREE;
     CFE_TBL_TaskData.Registry[0].LoadInProgress =
         CFE_TBL_NO_LOAD_IN_PROGRESS + 1;
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_ValidateCmd((CFE_SB_MsgPayloadPtr_t) &ValidateCmd.Payload) ==
+              CFE_TBL_ValidateCmd(&ValidateCmd) ==
                 CFE_TBL_INC_CMD_CTR,
               "CFE_TBL_ValidateCmd",
               "Inactive buffer: single buffered table with load in progress: "
@@ -969,16 +979,16 @@ void Test_CFE_TBL_ValidateCmd(void)
     UT_InitData();
     CFE_TBL_TaskData.Registry[0].LoadInProgress = CFE_TBL_NO_LOAD_IN_PROGRESS;
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_ValidateCmd((CFE_SB_MsgPayloadPtr_t) &ValidateCmd.Payload) ==
+              CFE_TBL_ValidateCmd(&ValidateCmd) ==
                 CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_ValidateCmd",
               "Inactive buffer: single buffered table with load in progress");
 
     /* Test with an illegal buffer */
     UT_InitData();
-    ValidateCmd.Payload.ActiveTblFlag = 0xffff;
+    ValidateCmd.Payload.ActiveTableFlag = 0xffff;
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_ValidateCmd((CFE_SB_MsgPayloadPtr_t) &ValidateCmd.Payload) ==
+              CFE_TBL_ValidateCmd(&ValidateCmd) ==
                 CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_ValidateCmd",
               "Illegal buffer");
@@ -1015,7 +1025,7 @@ void Test_CFE_TBL_GetTblRegData(void)
     /* Test using a double buffered table */
     UT_InitData();
     CFE_TBL_TaskData.TblRegPacket.Payload.InactiveBufferAddr = '\0';
-    CFE_TBL_TaskData.Registry[CFE_TBL_TaskData.HkTlmTblRegIndex].DblBuffered = TRUE;
+    CFE_TBL_TaskData.Registry[CFE_TBL_TaskData.HkTlmTblRegIndex].DoubleBuffered = TRUE;
     CFE_TBL_GetTblRegData();
     UT_Report(__FILE__, __LINE__,
               CFE_TBL_TaskData.TblRegPacket.Payload.InactiveBufferAddr != '\0',
@@ -1025,7 +1035,7 @@ void Test_CFE_TBL_GetTblRegData(void)
     /* Test using a single buffered table and the buffer is inactive */
     UT_InitData();
     CFE_TBL_TaskData.TblRegPacket.Payload.InactiveBufferAddr = '\0';
-    CFE_TBL_TaskData.Registry[CFE_TBL_TaskData.HkTlmTblRegIndex].DblBuffered = FALSE;
+    CFE_TBL_TaskData.Registry[CFE_TBL_TaskData.HkTlmTblRegIndex].DoubleBuffered = FALSE;
     CFE_TBL_TaskData.
       Registry[CFE_TBL_TaskData.HkTlmTblRegIndex].
         LoadInProgress = CFE_TBL_NO_LOAD_IN_PROGRESS + 1;
@@ -1055,15 +1065,15 @@ void Test_CFE_TBL_GetTblRegData(void)
 void Test_CFE_TBL_GetHkData(void)
 {
     int   i;
-    int32 NumLoadPendingIndex = CFE_TBL_MAX_NUM_TABLES - 1;
-    int32 FreeSharedBuffIndex = CFE_TBL_MAX_SIMULTANEOUS_LOADS - 1;
-    int32 ValTableIndex = CFE_TBL_MAX_NUM_VALIDATIONS - 1;
+    int32 NumLoadPendingIndex = CFE_PLATFORM_TBL_MAX_NUM_TABLES - 1;
+    int32 FreeSharedBuffIndex = CFE_PLATFORM_TBL_MAX_SIMULTANEOUS_LOADS - 1;
+    int32 ValTableIndex = CFE_PLATFORM_TBL_MAX_NUM_VALIDATIONS - 1;
 
 #ifdef UT_VERBOSE
     UT_Text("Begin Test Get Housekeeping Data\n");
 #endif
 
-    for (i = 0; i < CFE_TBL_MAX_NUM_TABLES; i++)
+    for (i = 0; i < CFE_PLATFORM_TBL_MAX_NUM_TABLES; i++)
     {
         CFE_TBL_TaskData.Registry[i].LoadPending = FALSE;
     }
@@ -1084,31 +1094,31 @@ void Test_CFE_TBL_GetHkData(void)
     CFE_TBL_GetHkData();
     UT_Report(__FILE__, __LINE__,
               CFE_TBL_TaskData.HkPacket.Payload.NumFreeSharedBufs ==
-                  CFE_TBL_MAX_SIMULTANEOUS_LOADS - 1,
+                  CFE_PLATFORM_TBL_MAX_SIMULTANEOUS_LOADS - 1,
               "CFE_TBL_GetHkData",
               "Lower free shared buffer count");
 
     /* Test making a ValPtr with result = CFE_SUCCESS */
     UT_InitData();
-    CFE_TBL_TaskData.SuccessValCtr = 0;
+    CFE_TBL_TaskData.SuccessValCounter = 0;
     CFE_TBL_TaskData.ValidationResults[ValTableIndex].State =
         CFE_TBL_VALIDATION_PERFORMED;
     CFE_TBL_TaskData.ValidationResults[ValTableIndex].Result = CFE_SUCCESS;
     CFE_TBL_GetHkData();
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_TaskData.SuccessValCtr == 1,
+              CFE_TBL_TaskData.SuccessValCounter == 1,
               "CFE_TBL_GetHkData",
               "ValPtr result CFE_SUCCESS");
 
     /* Test making a ValPtr without result = CFE_SUCCESS */
     UT_InitData();
-    CFE_TBL_TaskData.FailedValCtr = 0;
+    CFE_TBL_TaskData.FailedValCounter = 0;
     CFE_TBL_TaskData.ValidationResults[ValTableIndex].State =
         CFE_TBL_VALIDATION_PERFORMED;
     CFE_TBL_TaskData.ValidationResults[ValTableIndex].Result = CFE_SUCCESS - 1;
     CFE_TBL_GetHkData();
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_TaskData.FailedValCtr == 1,
+              CFE_TBL_TaskData.FailedValCounter == 1,
               "CFE_TBL_GetHkData",
               "ValPtr result != CFE_SUCCESS");
 
@@ -1134,7 +1144,7 @@ void Test_CFE_TBL_GetHkData(void)
 
     /* Test with invalid last valid table updated out of range (high) */
     UT_InitData();
-    CFE_TBL_TaskData.LastTblUpdated = CFE_TBL_MAX_NUM_TABLES;
+    CFE_TBL_TaskData.LastTblUpdated = CFE_PLATFORM_TBL_MAX_NUM_TABLES;
     CFE_TBL_TaskData.HkPacket.Payload.LastUpdateTime.Seconds = 54321;
     CFE_TBL_GetHkData();
     UT_Report(__FILE__, __LINE__,
@@ -1150,13 +1160,13 @@ void Test_CFE_TBL_GetHkData(void)
 void Test_CFE_TBL_DumpRegCmd(void)
 {
     int                  q;
-    CFE_TBL_DumpRegCmd_t DumpRegCmd;
+    CFE_TBL_DumpRegistry_t DumpRegCmd;
 
 #ifdef UT_VERBOSE
     UT_Text("Begin Test Dump Register Command\n");
 #endif
 
-    for (q = 0; q < CFE_TBL_MAX_NUM_TABLES; q++)
+    for (q = 0; q < CFE_PLATFORM_TBL_MAX_NUM_TABLES; q++)
     {
         CFE_TBL_TaskData.Registry[q].HeadOfAccessList = CFE_TBL_END_OF_LIST;
     }
@@ -1167,9 +1177,9 @@ void Test_CFE_TBL_DumpRegCmd(void)
             sizeof(DumpRegCmd.Payload.DumpFilename));
     UT_SetOSFail(OS_CREAT_FAIL);
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_DumpRegCmd((CFE_SB_MsgPayloadPtr_t) &DumpRegCmd.Payload) ==
+              CFE_TBL_DumpRegistryCmd(&DumpRegCmd) ==
                 CFE_TBL_INC_ERR_CTR,
-              "CFE_TBL_DumpRegCmd",
+              "CFE_TBL_DumpRegistryCmd",
               "Error creating dump file");
 
     /* Test with an error writing the cFE File header */
@@ -1177,9 +1187,9 @@ void Test_CFE_TBL_DumpRegCmd(void)
     UT_SetOSFail(OS_NO_FAIL);
     UT_SetRtnCode(&FSWriteHdrRtn, sizeof(CFE_FS_Header_t) - 1, 1);
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_DumpRegCmd((CFE_SB_MsgPayloadPtr_t) &DumpRegCmd.Payload) ==
+              CFE_TBL_DumpRegistryCmd(&DumpRegCmd) ==
                 CFE_TBL_INC_ERR_CTR,
-              "CFE_TBL_DumpRegCmd",
+              "CFE_TBL_DumpRegistryCmd",
               "Error writing cFE File header");
 
     /* Test where the table is owned, the file doesn't already exist, and the
@@ -1191,12 +1201,12 @@ void Test_CFE_TBL_DumpRegCmd(void)
     CFE_TBL_TaskData.Registry[0].HeadOfAccessList = CFE_TBL_END_OF_LIST;
     CFE_TBL_TaskData.Registry[1].OwnerAppId = CFE_TBL_NOT_OWNED;
     CFE_TBL_TaskData.Registry[0].LoadInProgress = CFE_TBL_NO_LOAD_IN_PROGRESS + 1;
-    CFE_TBL_TaskData.Registry[0].DblBuffered = TRUE;
+    CFE_TBL_TaskData.Registry[0].DoubleBuffered = TRUE;
     UT_SetOSFail(OS_OPEN_FAIL);
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_DumpRegCmd((CFE_SB_MsgPayloadPtr_t) &DumpRegCmd.Payload) ==
+              CFE_TBL_DumpRegistryCmd(&DumpRegCmd) ==
                 CFE_TBL_INC_CMD_CTR,
-              "CFE_TBL_DumpRegCmd",
+              "CFE_TBL_DumpRegistryCmd",
               "Table is owned, file didn't exist previously: successfully "
                 "dumped table");
 
@@ -1207,9 +1217,9 @@ void Test_CFE_TBL_DumpRegCmd(void)
     UT_SetOSFail(OS_NO_FAIL);
     CFE_TBL_TaskData.Registry[0].LoadInProgress = CFE_TBL_NO_LOAD_IN_PROGRESS;
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_DumpRegCmd((CFE_SB_MsgPayloadPtr_t) &DumpRegCmd.Payload) ==
+              CFE_TBL_DumpRegistryCmd(&DumpRegCmd) ==
                 CFE_TBL_INC_CMD_CTR,
-              "CFE_TBL_DumpRegCmd",
+              "CFE_TBL_DumpRegistryCmd",
               "File did exist previously: successfully overwritten table");
 
     /* Test where the table is not owned, the OS write fails, resulting in an
@@ -1221,18 +1231,18 @@ void Test_CFE_TBL_DumpRegCmd(void)
     CFE_TBL_TaskData.Registry[0].HeadOfAccessList = 2;
     CFE_TBL_TaskData.Handles[2].NextLink = CFE_TBL_END_OF_LIST;
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_DumpRegCmd((CFE_SB_MsgPayloadPtr_t) &DumpRegCmd.Payload) ==
+              CFE_TBL_DumpRegistryCmd(&DumpRegCmd) ==
                 CFE_TBL_INC_ERR_CTR,
-              "CFE_TBL_DumpRegCmd",
+              "CFE_TBL_DumpRegistryCmd",
               "Table is not owned, OS_write fails: Error writing Registry");
 
     /* Test using the default dump file name */
     UT_InitData();
     strcpy(DumpRegCmd.Payload.DumpFilename, "X");
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_DumpRegCmd((CFE_SB_MsgPayloadPtr_t) &DumpRegCmd.Payload) ==
+              CFE_TBL_DumpRegistryCmd(&DumpRegCmd) ==
                 CFE_TBL_INC_CMD_CTR,
-              "CFE_TBL_DumpRegCmd",
+              "CFE_TBL_DumpRegistryCmd",
               "Default dump file name");
 }
 
@@ -1245,18 +1255,20 @@ void Test_CFE_TBL_DumpCmd(void)
     uint8              Buff;
     uint8              *BuffPtr = &Buff;
     CFE_TBL_LoadBuff_t Load = {0};
-    CFE_TBL_DumpCmd_t  DumpCmd;
+    CFE_TBL_Dump_t     DumpCmd;
 
 #ifdef UT_VERBOSE
     UT_Text("Begin Test Dump Command\n");
 #endif
 
+    memset(&DumpCmd, 0, sizeof(DumpCmd));
+
     /* Test where the table cannot be found in the registry */
     UT_InitData();
     snprintf(DumpCmd.Payload.TableName, sizeof(DumpCmd.Payload.TableName),
-             "%d", CFE_TBL_MAX_NUM_TABLES + 1);
+             "%d", CFE_PLATFORM_TBL_MAX_NUM_TABLES + 1);
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_DumpCmd((CFE_SB_MsgPayloadPtr_t) &DumpCmd.Payload) ==
+              CFE_TBL_DumpCmd(&DumpCmd) ==
                 CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_DumpCmd",
               "Table registry entry doesn't exist");
@@ -1272,10 +1284,10 @@ void Test_CFE_TBL_DumpCmd(void)
     CFE_TBL_TaskData.Registry[2].OwnerAppId = 0;
     strncpy(DumpCmd.Payload.TableName, CFE_TBL_TaskData.Registry[2].Name,
             sizeof(DumpCmd.Payload.TableName));
-    DumpCmd.Payload.ActiveTblFlag = CFE_TBL_ACTIVE_BUFFER;
+    DumpCmd.Payload.ActiveTableFlag = CFE_TBL_BufferSelect_ACTIVE;
     CFE_TBL_TaskData.Registry[2].Buffers[CFE_TBL_TaskData.Registry[2].ActiveBufferIndex].BufferPtr = BuffPtr;
 
-    for (i = 0; i < CFE_TBL_MAX_NUM_TABLES; i++)
+    for (i = 0; i < CFE_PLATFORM_TBL_MAX_NUM_TABLES; i++)
     {
         CFE_TBL_TaskData.Registry[i].DumpOnly = TRUE;
     }
@@ -1284,12 +1296,12 @@ void Test_CFE_TBL_DumpCmd(void)
     CFE_TBL_TaskData.DumpControlBlocks[3].State = CFE_TBL_DUMP_FREE;
     CFE_TBL_TaskData.Registry[2].DumpControlIndex = CFE_TBL_NO_DUMP_PENDING;
     CFE_TBL_TaskData.Registry[2].LoadInProgress = CFE_TBL_NO_LOAD_IN_PROGRESS + 1;
-    CFE_TBL_TaskData.Registry[2].DblBuffered = FALSE;
+    CFE_TBL_TaskData.Registry[2].DoubleBuffered = FALSE;
     CFE_TBL_TaskData.LoadBuffs[CFE_TBL_TaskData.Registry[2].LoadInProgress] = Load;
     CFE_TBL_TaskData.Registry[2].NotifyByMsg = TRUE;
     UT_SetRtnCode(&SBSendMsgRtn, CFE_SB_INTERNAL_ERR, 1);
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_DumpCmd((CFE_SB_MsgPayloadPtr_t) &DumpCmd.Payload) ==
+              CFE_TBL_DumpCmd(&DumpCmd) ==
                 CFE_TBL_INC_CMD_CTR,
               "CFE_TBL_DumpCmd",
               "Active buffer, pointer created, validation passes, is a dump "
@@ -1305,16 +1317,16 @@ void Test_CFE_TBL_DumpCmd(void)
     CFE_TBL_TaskData.Registry[2].DumpControlIndex = CFE_TBL_NO_DUMP_PENDING;
     CFE_TBL_TaskData.Registry[2].LoadInProgress = CFE_TBL_NO_LOAD_IN_PROGRESS;
     CFE_TBL_TaskData.Registry[2].TableLoadedOnce = TRUE;
-    CFE_TBL_TaskData.Registry[2].DblBuffered = FALSE;
+    CFE_TBL_TaskData.Registry[2].DoubleBuffered = FALSE;
 
-    for (u = 0; u < CFE_TBL_MAX_SIMULTANEOUS_LOADS; u++)
+    for (u = 0; u < CFE_PLATFORM_TBL_MAX_SIMULTANEOUS_LOADS; u++)
     {
         CFE_TBL_TaskData.LoadBuffs[u].Taken = TRUE;
     }
 
     CFE_TBL_TaskData.Registry[2].NotifyByMsg = TRUE;
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_DumpCmd((CFE_SB_MsgPayloadPtr_t) &DumpCmd.Payload) ==
+              CFE_TBL_DumpCmd(&DumpCmd) ==
                 CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_DumpCmd",
               "Active buffer, pointer created, is a dump only table, no dump "
@@ -1328,14 +1340,14 @@ void Test_CFE_TBL_DumpCmd(void)
     UT_InitData();
     CFE_TBL_TaskData.Registry[2].DumpControlIndex = CFE_TBL_NO_DUMP_PENDING;
 
-    for (k = 0; k < CFE_TBL_MAX_SIMULTANEOUS_LOADS; k++)
+    for (k = 0; k < CFE_PLATFORM_TBL_MAX_SIMULTANEOUS_LOADS; k++)
     {
         CFE_TBL_TaskData.DumpControlBlocks[k].State = CFE_TBL_DUMP_PENDING;
     }
 
     CFE_TBL_TaskData.Registry[2].NotifyByMsg = TRUE;
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_DumpCmd((CFE_SB_MsgPayloadPtr_t) &DumpCmd.Payload) ==
+              CFE_TBL_DumpCmd(&DumpCmd) ==
                 CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_DumpCmd",
               "Active buffer, pointer created, is dump only table, fails to "
@@ -1346,13 +1358,13 @@ void Test_CFE_TBL_DumpCmd(void)
      * dump is already pending
      */
     UT_InitData();
-    DumpCmd.Payload.ActiveTblFlag = CFE_TBL_INACTIVE_BUFFER;
-    CFE_TBL_TaskData.Registry[2].DblBuffered = TRUE;
+    DumpCmd.Payload.ActiveTableFlag = CFE_TBL_BufferSelect_INACTIVE;
+    CFE_TBL_TaskData.Registry[2].DoubleBuffered = TRUE;
     CFE_TBL_TaskData.Registry[2].Buffers[(1 - CFE_TBL_TaskData.Registry[2].ActiveBufferIndex)].BufferPtr = BuffPtr;
     CFE_TBL_TaskData.Registry[2].DumpControlIndex = CFE_TBL_NO_DUMP_PENDING +
                                                     1;
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_DumpCmd((CFE_SB_MsgPayloadPtr_t) &DumpCmd.Payload) ==
+              CFE_TBL_DumpCmd(&DumpCmd) ==
                 CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_DumpCmd",
               "Inactive buffer, double-buffered, dump already in progress: "
@@ -1362,14 +1374,14 @@ void Test_CFE_TBL_DumpCmd(void)
      * dump only table
      */
     UT_InitData();
-    CFE_TBL_TaskData.Registry[2].DblBuffered = FALSE;
+    CFE_TBL_TaskData.Registry[2].DoubleBuffered = FALSE;
     CFE_TBL_TaskData.Registry[2].LoadInProgress = CFE_TBL_NO_LOAD_IN_PROGRESS + 1;
     CFE_TBL_TaskData.LoadBuffs[CFE_TBL_TaskData.Registry[2].LoadInProgress].BufferPtr = BuffPtr;
     CFE_TBL_TaskData.Registry[2].DumpOnly = FALSE;
     strncpy(DumpCmd.Payload.DumpFilename, CFE_TBL_TaskData.Registry[2].LastFileLoaded,
             sizeof(DumpCmd.Payload.DumpFilename));
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_DumpCmd((CFE_SB_MsgPayloadPtr_t) &DumpCmd.Payload) ==
+              CFE_TBL_DumpCmd(&DumpCmd) ==
                 CFE_TBL_INC_CMD_CTR,
               "CFE_TBL_DumpCmd",
               "Inactive buffer, single-buffered, pointer created, is a dump "
@@ -1381,7 +1393,7 @@ void Test_CFE_TBL_DumpCmd(void)
     UT_InitData();
     CFE_TBL_TaskData.Registry[2].LoadInProgress = CFE_TBL_NO_LOAD_IN_PROGRESS;
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_DumpCmd((CFE_SB_MsgPayloadPtr_t) &DumpCmd.Payload) ==
+              CFE_TBL_DumpCmd(&DumpCmd) ==
                 CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_DumpCmd",
               "Inactive buffer, single-buffered: no inactive buffer for table "
@@ -1394,7 +1406,7 @@ void Test_CFE_TBL_DumpCmd(void)
     CFE_TBL_TaskData.Registry[2].LoadInProgress = CFE_TBL_NO_LOAD_IN_PROGRESS + 1;
     CFE_TBL_TaskData.Registry[2].UserDefAddr = TRUE;
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_DumpCmd((CFE_SB_MsgPayloadPtr_t) &DumpCmd.Payload) ==
+              CFE_TBL_DumpCmd(&DumpCmd) ==
                 CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_DumpCmd",
               "Inactive buffer, single-buffered: no inactive buffer for table "
@@ -1402,9 +1414,9 @@ void Test_CFE_TBL_DumpCmd(void)
 
     /* Test with an illegal buffer parameter */
     UT_InitData();
-    DumpCmd.Payload.ActiveTblFlag = CFE_TBL_ACTIVE_BUFFER + 1;
+    DumpCmd.Payload.ActiveTableFlag = CFE_TBL_BufferSelect_ACTIVE + 1;
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_DumpCmd((CFE_SB_MsgPayloadPtr_t) &DumpCmd.Payload) ==
+              CFE_TBL_DumpCmd(&DumpCmd) ==
                 CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_DumpCmd",
               "Illegal buffer parameter");
@@ -1420,14 +1432,14 @@ void Test_CFE_TBL_LoadCmd(void)
     CFE_TBL_File_Hdr_t TblFileHeader;
     CFE_FS_Header_t    StdFileHeader;
     CFE_TBL_LoadBuff_t BufferPtr = CFE_TBL_TaskData.LoadBuffs[0];
-    CFE_TBL_LoadCmd_t  LoadCmd;
+    CFE_TBL_Load_t     LoadCmd;
 
 #ifdef UT_VERBOSE
     UT_Text("Begin Test Load Command\n");
 #endif
 
-    StdFileHeader.SpacecraftID = CFE_TBL_VALID_SCID_1;
-    StdFileHeader.ProcessorID = CFE_TBL_VALID_PRID_1;
+    StdFileHeader.SpacecraftID = CFE_PLATFORM_TBL_VALID_SCID_1;
+    StdFileHeader.ProcessorID = CFE_PLATFORM_TBL_VALID_PRID_1;
 
     /* Test response to inability to open file */
     UT_InitData();
@@ -1435,7 +1447,7 @@ void Test_CFE_TBL_LoadCmd(void)
             sizeof(LoadCmd.Payload.LoadFilename));
     UT_SetOSFail(OS_OPEN_FAIL);
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_LoadCmd((CFE_SB_MsgPayloadPtr_t) &LoadCmd.Payload) ==
+              CFE_TBL_LoadCmd(&LoadCmd) ==
                 CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_LoadCmd",
               "Unable to open file");
@@ -1444,7 +1456,7 @@ void Test_CFE_TBL_LoadCmd(void)
     UT_InitData();
     UT_SetOSFail(OS_NO_FAIL);
 
-    for (i = 0; i < CFE_TBL_MAX_NUM_TABLES; i++)
+    for (i = 0; i < CFE_PLATFORM_TBL_MAX_NUM_TABLES; i++)
     {
         CFE_TBL_TaskData.Registry[i].OwnerAppId = CFE_TBL_NOT_OWNED;
         CFE_TBL_TaskData.Registry[i].LoadPending = FALSE;
@@ -1456,11 +1468,11 @@ void Test_CFE_TBL_LoadCmd(void)
             sizeof(StdFileHeader.Description));
     StdFileHeader.Description[CFE_FS_HDR_DESC_MAX_LEN - 1] = '\0';
     StdFileHeader.ContentType = CFE_FS_FILE_CONTENT_ID;
-    StdFileHeader.SubType = CFE_FS_TBL_IMG_SUBTYPE;
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    StdFileHeader.SubType = CFE_FS_SubType_TBL_IMG;
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_LoadCmd((CFE_SB_MsgPayloadPtr_t) &LoadCmd.Payload) ==
+              CFE_TBL_LoadCmd(&LoadCmd) ==
                 CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_LoadCmd",
               "Table registry entry doesn't exist");
@@ -1468,12 +1480,12 @@ void Test_CFE_TBL_LoadCmd(void)
     /* Test attempt to load a dump only table */
     UT_InitData();
     CFE_TBL_TaskData.Registry[0].OwnerAppId = 0;
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     CFE_TBL_TaskData.Registry[0].Size = sizeof(CFE_TBL_File_Hdr_t) + 1;
     CFE_TBL_TaskData.Registry[0].DumpOnly = TRUE;
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_LoadCmd((CFE_SB_MsgPayloadPtr_t) &LoadCmd.Payload) ==
+              CFE_TBL_LoadCmd(&LoadCmd) ==
                 CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_LoadCmd",
               "Attempting to load a dump only table");
@@ -1481,13 +1493,13 @@ void Test_CFE_TBL_LoadCmd(void)
     /* Test attempt to load a table with a load already pending */
     UT_InitData();
     CFE_TBL_TaskData.Registry[0].OwnerAppId = 0;
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     CFE_TBL_TaskData.Registry[0].Size = sizeof(CFE_TBL_File_Hdr_t) + 1;
     CFE_TBL_TaskData.Registry[0].DumpOnly = FALSE;
     CFE_TBL_TaskData.Registry[0].LoadPending = TRUE;
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_LoadCmd((CFE_SB_MsgPayloadPtr_t) &LoadCmd.Payload) ==
+              CFE_TBL_LoadCmd(&LoadCmd) ==
                 CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_LoadCmd",
               "Attempting to load a table with load already pending");
@@ -1510,13 +1522,13 @@ void Test_CFE_TBL_LoadCmd(void)
     CFE_TBL_TaskData.Registry[0].Size = sizeof(CFE_TBL_File_Hdr_t);
     CFE_TBL_TaskData.Registry[0].LoadInProgress =
         CFE_TBL_NO_LOAD_IN_PROGRESS + 1;
-    CFE_TBL_TaskData.Registry[0].DblBuffered = FALSE;
+    CFE_TBL_TaskData.Registry[0].DoubleBuffered = FALSE;
     CFE_TBL_TaskData.LoadBuffs[CFE_TBL_TaskData.Registry[0].LoadInProgress].BufferPtr = (uint8 *) &BufferPtr;
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     CFE_TBL_TaskData.Registry[0].DumpOnly = FALSE;
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_LoadCmd((CFE_SB_MsgPayloadPtr_t) &LoadCmd.Payload) ==
+              CFE_TBL_LoadCmd(&LoadCmd) ==
                 CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_LoadCmd",
               "There is more data than the file indicates");
@@ -1533,10 +1545,10 @@ void Test_CFE_TBL_LoadCmd(void)
     UT_SetRtnCode(&OSReadRtn, 0, 3);
     strncpy((char *)TblFileHeader.TableName, CFE_TBL_TaskData.Registry[0].Name,
             sizeof(TblFileHeader.TableName));
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_LoadCmd((CFE_SB_MsgPayloadPtr_t) &LoadCmd.Payload) ==
+              CFE_TBL_LoadCmd(&LoadCmd) ==
                 CFE_TBL_INC_CMD_CTR,
               "CFE_TBL_LoadCmd",
               "Successful load");
@@ -1553,10 +1565,10 @@ void Test_CFE_TBL_LoadCmd(void)
     strncpy((char *)TblFileHeader.TableName, CFE_TBL_TaskData.Registry[0].Name,
             sizeof(TblFileHeader.TableName));
     UT_SetRtnCode(&OSReadRtn, 0, 2);
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_LoadCmd((CFE_SB_MsgPayloadPtr_t) &LoadCmd.Payload) ==
+              CFE_TBL_LoadCmd(&LoadCmd) ==
                 CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_LoadCmd",
               "Incomplete load of file into the working buffer");
@@ -1565,20 +1577,20 @@ void Test_CFE_TBL_LoadCmd(void)
     UT_InitData();
     CFE_TBL_TaskData.Registry[0].LoadInProgress = CFE_TBL_NO_LOAD_IN_PROGRESS;
     CFE_TBL_TaskData.Registry[0].TableLoadedOnce = TRUE;
-    CFE_TBL_TaskData.Registry[0].DblBuffered = FALSE;
+    CFE_TBL_TaskData.Registry[0].DoubleBuffered = FALSE;
     CFE_TBL_TaskData.Registry[0].Buffers[CFE_TBL_TaskData.Registry[0].ActiveBufferIndex] = BufferPtr;
 
-    for (j = 0; j < CFE_TBL_MAX_SIMULTANEOUS_LOADS; j++)
+    for (j = 0; j < CFE_PLATFORM_TBL_MAX_SIMULTANEOUS_LOADS; j++)
     {
         CFE_TBL_TaskData.LoadBuffs[j].Taken = TRUE;
     }
 
     strncpy((char *)TblFileHeader.TableName, CFE_TBL_TaskData.Registry[0].Name,
             sizeof(TblFileHeader.TableName));
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_LoadCmd((CFE_SB_MsgPayloadPtr_t) &LoadCmd.Payload) ==
+              CFE_TBL_LoadCmd(&LoadCmd) ==
                 CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_LoadCmd",
               "No working buffers available");
@@ -1595,10 +1607,10 @@ void Test_CFE_TBL_LoadCmd(void)
     CFE_TBL_TaskData.Registry[0].Size = sizeof(CFE_TBL_File_Hdr_t) - 1;
     strncpy((char *)TblFileHeader.TableName, CFE_TBL_TaskData.Registry[0].Name,
             sizeof(TblFileHeader.TableName));
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_LoadCmd((CFE_SB_MsgPayloadPtr_t) &LoadCmd.Payload) ==
+              CFE_TBL_LoadCmd(&LoadCmd) ==
                 CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_LoadCmd",
               "Table header indicates data beyond size of the table");
@@ -1614,10 +1626,10 @@ void Test_CFE_TBL_LoadCmd(void)
 
     strncpy((char *)TblFileHeader.TableName, CFE_TBL_TaskData.Registry[0].Name,
             sizeof(TblFileHeader.TableName));
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_LoadCmd((CFE_SB_MsgPayloadPtr_t) &LoadCmd.Payload) ==
+              CFE_TBL_LoadCmd(&LoadCmd) ==
                 CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_LoadCmd",
               "Table header indicates no data in file");
@@ -1640,10 +1652,10 @@ void Test_CFE_TBL_LoadCmd(void)
     CFE_TBL_TaskData.Registry[0].Size = sizeof(CFE_TBL_File_Hdr_t);
     strncpy((char *)TblFileHeader.TableName, CFE_TBL_TaskData.Registry[0].Name,
             sizeof(TblFileHeader.TableName));
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_LoadCmd((CFE_SB_MsgPayloadPtr_t) &LoadCmd.Payload) ==
+              CFE_TBL_LoadCmd(&LoadCmd) ==
                 CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_LoadCmd",
               "File has partial load for uninitialized table and offset "
@@ -1667,10 +1679,10 @@ void Test_CFE_TBL_LoadCmd(void)
     CFE_TBL_TaskData.Registry[0].Size = sizeof(CFE_TBL_File_Hdr_t);
     strncpy(TblFileHeader.TableName, CFE_TBL_TaskData.Registry[0].Name,
             sizeof(TblFileHeader.TableName));
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_LoadCmd((CFE_SB_MsgPayloadPtr_t) &LoadCmd.Payload) ==
+              CFE_TBL_LoadCmd(&LoadCmd) ==
                 CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_LoadCmd",
               "File has partial load for uninitialized table and offset "
@@ -1682,7 +1694,7 @@ void Test_CFE_TBL_LoadCmd(void)
             sizeof(LoadCmd.Payload.LoadFilename));
     UT_SetRtnCode(&FSReadHdrRtn, sizeof(CFE_FS_Header_t) - 1, 1);
     UT_Report(__FILE__, __LINE__,
-              CFE_TBL_LoadCmd((CFE_SB_MsgPayloadPtr_t) &LoadCmd.Payload) ==
+              CFE_TBL_LoadCmd(&LoadCmd) ==
                 CFE_TBL_INC_ERR_CTR,
               "CFE_TBL_LoadCmd",
               "Unable to read file header");
@@ -1728,7 +1740,7 @@ void Test_CFE_TBL_HousekeepingCmd(void)
     CFE_TBL_TaskData.DumpControlBlocks[0].DumpBufferPtr = DumpBuffPtr;
     CFE_TBL_TaskData.DumpControlBlocks[0].State = CFE_TBL_DUMP_PERFORMED;
 
-    for (i = 1; i < CFE_TBL_MAX_SIMULTANEOUS_LOADS; i++)
+    for (i = 1; i < CFE_PLATFORM_TBL_MAX_SIMULTANEOUS_LOADS; i++)
     {
         CFE_TBL_TaskData.DumpControlBlocks[i].State = CFE_TBL_DUMP_PENDING;
     }
@@ -1740,7 +1752,7 @@ void Test_CFE_TBL_HousekeepingCmd(void)
               "CFE_TBL_HousekeepingCmd",
               "Able to open dump file");
 
-    for (i = 1; i < CFE_TBL_MAX_SIMULTANEOUS_LOADS; i++)
+    for (i = 1; i < CFE_PLATFORM_TBL_MAX_SIMULTANEOUS_LOADS; i++)
     {
         CFE_TBL_TaskData.DumpControlBlocks[i].State = CFE_TBL_DUMP_PENDING;
     }
@@ -1801,7 +1813,7 @@ void Test_CFE_TBL_Register(void)
     CFE_TBL_Handle_t           TblHandle2;
     CFE_TBL_Handle_t           TblHandle3;
     boolean                    EventsCorrect;
-    char                       TblName[CFE_TBL_MAX_NAME_LENGTH + 2];
+    char                       TblName[CFE_MISSION_TBL_MAX_NAME_LENGTH + 2];
     int16                      i;
     CFE_TBL_AccessDescriptor_t *AccessDescPtr;
     CFE_TBL_RegistryRec_t      *RegRecPtr;
@@ -1825,7 +1837,7 @@ void Test_CFE_TBL_Register(void)
 
     /* Test response to an application ID larger than the maximum allowed */
     UT_InitData();
-    UT_SetAppID(CFE_ES_MAX_APPLICATIONS);
+    UT_SetAppID(CFE_PLATFORM_ES_MAX_APPLICATIONS);
     UT_SetRtnCode(&GetAppIDRtn, CFE_SUCCESS, 1);
     RtnCode = CFE_TBL_Register(&TblHandle1, "UT_Table1",
                                sizeof(UT_Table1_t),
@@ -1841,7 +1853,7 @@ void Test_CFE_TBL_Register(void)
     UT_InitData();
 
     /* Create a table name longer than alowed */
-    for (i = 0; i < CFE_TBL_MAX_NAME_LENGTH + 1; i++)
+    for (i = 0; i < CFE_MISSION_TBL_MAX_NAME_LENGTH + 1; i++)
     {
         TblName[i] = 'A';
     }
@@ -1883,7 +1895,7 @@ void Test_CFE_TBL_Register(void)
     /* Test response to a table size larger than the maximum allowed */
     UT_InitData();
     RtnCode = CFE_TBL_Register(&TblHandle1, "UT_Table1",
-                               (CFE_TBL_MAX_SNGL_TABLE_SIZE + 1),
+                               (CFE_PLATFORM_TBL_MAX_SNGL_TABLE_SIZE + 1),
                                CFE_TBL_OPT_DEFAULT, NULL);
     EventsCorrect = (UT_EventIsInHistory(CFE_TBL_REGISTER_ERR_EID) == TRUE &&
                      UT_GetNumEventsSent() == 1);
@@ -1897,7 +1909,7 @@ void Test_CFE_TBL_Register(void)
      */
     UT_InitData();
     RtnCode = CFE_TBL_Register(&TblHandle1, "UT_Table1",
-                               (CFE_TBL_MAX_DBL_TABLE_SIZE + 1),
+                               (CFE_PLATFORM_TBL_MAX_DBL_TABLE_SIZE + 1),
                                CFE_TBL_OPT_DBL_BUFFER, NULL);
     EventsCorrect = (UT_EventIsInHistory(CFE_TBL_REGISTER_ERR_EID) == TRUE &&
                      UT_GetNumEventsSent() == 1);
@@ -2267,7 +2279,7 @@ void Test_CFE_TBL_Register(void)
     UT_SetRtnCode(&ES_RegisterCDSRtn, CFE_ES_CDS_ALREADY_EXISTS, 1);
 
     /* Remove all entries from critical table registry */
-    for (i = 0; i < CFE_TBL_MAX_CRITICAL_TABLES; i++)
+    for (i = 0; i < CFE_PLATFORM_TBL_MAX_CRITICAL_TABLES; i++)
     {
         CFE_TBL_TaskData.CritReg[i].CDSHandle = CFE_ES_CDS_BAD_HANDLE;
     }
@@ -2301,7 +2313,7 @@ void Test_CFE_TBL_Register(void)
 
     /* Remove all entries from critical table registry */
     /* a. Perform test */
-    for (i = 0; i < CFE_TBL_MAX_CRITICAL_TABLES; i++)
+    for (i = 0; i < CFE_PLATFORM_TBL_MAX_CRITICAL_TABLES; i++)
     {
         CFE_TBL_TaskData.CritReg[i].CDSHandle = 1;
     }
@@ -2349,9 +2361,9 @@ void Test_CFE_TBL_Register(void)
     i = 0;
     RtnCode = CFE_SUCCESS;
 
-    while (i < CFE_TBL_MAX_NUM_TABLES && RtnCode == CFE_SUCCESS)
+    while (i < CFE_PLATFORM_TBL_MAX_NUM_TABLES && RtnCode == CFE_SUCCESS)
     {
-        snprintf(TblName, CFE_TBL_MAX_NAME_LENGTH, "UT_Table%d", i + 1);
+        snprintf(TblName, CFE_MISSION_TBL_MAX_NAME_LENGTH, "UT_Table%d", i + 1);
         RtnCode = CFE_TBL_Register(&TblHandle1, TblName,
                                    sizeof(UT_Table1_t),
                                    CFE_TBL_OPT_DEFAULT, NULL);
@@ -2365,7 +2377,7 @@ void Test_CFE_TBL_Register(void)
 
     /* b. Perform test */
     UT_ClearEventHistory();
-    snprintf(TblName, CFE_TBL_MAX_NAME_LENGTH, "UT_Table%d", i + 1);
+    snprintf(TblName, CFE_MISSION_TBL_MAX_NAME_LENGTH, "UT_Table%d", i + 1);
     RtnCode = CFE_TBL_Register(&TblHandle2, TblName,
                                sizeof(UT_Table1_t),
                                CFE_TBL_OPT_DEFAULT, NULL);
@@ -2394,7 +2406,7 @@ void Test_CFE_TBL_Register(void)
     do
     {
         RtnCode = CFE_TBL_Share(&TblHandle1, "ut_cfe_tbl.UT_Table2");
-    } while ((TblHandle1 < CFE_TBL_MAX_NUM_HANDLES - 1) &&
+    } while ((TblHandle1 < CFE_PLATFORM_TBL_MAX_NUM_HANDLES - 1) &&
              RtnCode == CFE_SUCCESS);
 
         UT_Report(__FILE__, __LINE__,
@@ -2404,8 +2416,8 @@ void Test_CFE_TBL_Register(void)
 
     /* b. Perform test */
     UT_ClearEventHistory();
-    snprintf(TblName, CFE_TBL_MAX_NAME_LENGTH, "UT_Table%d",
-             CFE_TBL_MAX_NUM_TABLES);
+    snprintf(TblName, CFE_MISSION_TBL_MAX_NAME_LENGTH, "UT_Table%d",
+             CFE_PLATFORM_TBL_MAX_NUM_TABLES);
     RtnCode = CFE_TBL_Register(&TblHandle1,
                                TblName,
                                sizeof(UT_Table1_t),
@@ -2481,7 +2493,7 @@ void Test_CFE_TBL_Register(void)
     /* Test attempt to register a table with access index at end of list */
     UT_InitData();
 
-   for (i = 0; i < CFE_TBL_MAX_NUM_TABLES; i++)
+   for (i = 0; i < CFE_PLATFORM_TBL_MAX_NUM_TABLES; i++)
    {
        CFE_TBL_TaskData.Registry[i].HeadOfAccessList = CFE_TBL_END_OF_LIST;
    }
@@ -2501,15 +2513,15 @@ void Test_CFE_TBL_Register(void)
    UT_InitData();
    UT_SetAppID(1);
    UT_SetRtnCode(&GetPoolRtn, CFE_SEVERITY_ERROR, 1);
-   snprintf(TblName, CFE_TBL_MAX_NAME_LENGTH, "UT_Table%d",
-            CFE_TBL_MAX_NUM_TABLES);
+   snprintf(TblName, CFE_MISSION_TBL_MAX_NAME_LENGTH, "UT_Table%d",
+            CFE_PLATFORM_TBL_MAX_NUM_TABLES);
    CFE_TBL_TaskData.Handles[0].UsedFlag = FALSE;
    RtnCode = CFE_TBL_Register(&TblHandle2, TblName,
                               sizeof(UT_Table1_t) + 1,
                               CFE_TBL_OPT_DBL_BUFFER, NULL);
    AccessDescPtr = &CFE_TBL_TaskData.Handles[TblHandle2];
    RegRecPtr = &CFE_TBL_TaskData.Registry[AccessDescPtr->RegIndex];
-   EventsCorrect = RegRecPtr->DblBuffered == FALSE &&
+   EventsCorrect = RegRecPtr->DoubleBuffered == FALSE &&
                    RegRecPtr->ActiveBufferIndex == 0;
    UT_Report(__FILE__, __LINE__,
               RtnCode == CFE_SEVERITY_ERROR && EventsCorrect,
@@ -2533,8 +2545,8 @@ void Test_CFE_TBL_Share(void)
     UT_Text("Begin Test Share\n");
 #endif
 
-    StdFileHeader.SpacecraftID = CFE_TBL_VALID_SCID_1;
-    StdFileHeader.ProcessorID = CFE_TBL_VALID_PRID_1;
+    StdFileHeader.SpacecraftID = CFE_PLATFORM_TBL_VALID_SCID_1;
+    StdFileHeader.ProcessorID = CFE_PLATFORM_TBL_VALID_PRID_1;
 
     /* Test response to an invalid application ID */
     UT_InitData();
@@ -2549,7 +2561,7 @@ void Test_CFE_TBL_Share(void)
 
     /* Test response to an application ID larger than the maximum allowed */
     UT_InitData();
-    UT_SetAppID(CFE_ES_MAX_APPLICATIONS);
+    UT_SetAppID(CFE_PLATFORM_ES_MAX_APPLICATIONS);
     UT_SetRtnCode(&GetAppIDRtn, CFE_SUCCESS, 1);
     RtnCode = CFE_TBL_Share(&App2TblHandle1, "ut_cfe_tbl.UT_Table2");
     EventsCorrect = (UT_EventIsInHistory(CFE_TBL_SHARE_ERR_EID) == TRUE &&
@@ -2582,7 +2594,7 @@ void Test_CFE_TBL_Share(void)
 
     /* Test unregistering tables to free handles */
     UT_InitData();
-    RtnCode = CFE_TBL_Unregister(CFE_TBL_MAX_NUM_HANDLES / 2);
+    RtnCode = CFE_TBL_Unregister(CFE_PLATFORM_TBL_MAX_NUM_HANDLES / 2);
     EventsCorrect = (UT_GetNumEventsSent() == 0);
     UT_Report(__FILE__, __LINE__,
               RtnCode == CFE_SUCCESS && EventsCorrect,
@@ -2592,7 +2604,7 @@ void Test_CFE_TBL_Share(void)
     /* Test unregister response to a PutPoolBuf error */
     UT_InitData();
     UT_SetRtnCode(&PutPoolRtn, CFE_ES_ERR_MEM_HANDLE, 1);
-    RtnCode = CFE_TBL_Unregister(CFE_TBL_MAX_NUM_HANDLES / 2 + 1);
+    RtnCode = CFE_TBL_Unregister(CFE_PLATFORM_TBL_MAX_NUM_HANDLES / 2 + 1);
     EventsCorrect = (UT_GetNumEventsSent() == 0);
     UT_Report(__FILE__, __LINE__,
               RtnCode == CFE_SUCCESS && EventsCorrect,
@@ -2605,7 +2617,7 @@ void Test_CFE_TBL_Share(void)
     strncpy(StdFileHeader.Description, "FS header description",
             sizeof(StdFileHeader.Description));
     StdFileHeader.ContentType = CFE_FS_FILE_CONTENT_ID;
-    StdFileHeader.SubType = CFE_FS_TBL_IMG_SUBTYPE;
+    StdFileHeader.SubType = CFE_FS_SubType_TBL_IMG;
     strncpy((char *)TblFileHeader.TableName, "ut_cfe_tbl.UT_Table4",
             sizeof(TblFileHeader.TableName));
     TblFileHeader.NumBytes = sizeof(UT_Table1_t);
@@ -2617,8 +2629,8 @@ void Test_CFE_TBL_Share(void)
         CFE_TBL_ByteSwapUint32(&TblFileHeader.Offset);
     }
 
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     UT_SetRtnCode(&OSReadRtn, 0, 3);
     RtnCode = CFE_TBL_Load(3, CFE_TBL_SRC_FILE, "TblSrcFileName.dat");
     EventsCorrect =
@@ -2665,7 +2677,7 @@ void Test_CFE_TBL_Unregister(void)
     /* Test response to unregistering a table with an invalid handle */
     UT_InitData();
     UT_SetAppID(1);
-    RtnCode = CFE_TBL_Unregister(CFE_TBL_MAX_NUM_HANDLES);
+    RtnCode = CFE_TBL_Unregister(CFE_PLATFORM_TBL_MAX_NUM_HANDLES);
     EventsCorrect = (UT_EventIsInHistory(CFE_TBL_UNREGISTER_ERR_EID) == TRUE &&
                      UT_GetNumEventsSent() == 1);
     UT_Report(__FILE__, __LINE__,
@@ -2777,8 +2789,8 @@ void Test_CFE_TBL_Load(void)
     UT_Text("Begin Test Load\n");
 #endif
 
-    StdFileHeader.SpacecraftID = CFE_TBL_VALID_SCID_1;
-    StdFileHeader.ProcessorID = CFE_TBL_VALID_PRID_1;
+    StdFileHeader.SpacecraftID = CFE_PLATFORM_TBL_VALID_SCID_1;
+    StdFileHeader.ProcessorID = CFE_PLATFORM_TBL_VALID_PRID_1;
 
     /* Set up for table load test */
     UT_InitData();
@@ -2801,7 +2813,7 @@ void Test_CFE_TBL_Load(void)
     strncpy(StdFileHeader.Description,"Test description",
             sizeof(StdFileHeader.Description));
     StdFileHeader.ContentType = CFE_FS_FILE_CONTENT_ID;
-    StdFileHeader.SubType = CFE_FS_TBL_IMG_SUBTYPE;
+    StdFileHeader.SubType = CFE_FS_SubType_TBL_IMG;
     strncpy((char *)TblFileHeader.TableName, "ut_cfe_tbl.UT_Table1",
             sizeof(TblFileHeader.TableName));
     TblFileHeader.NumBytes = sizeof(UT_Table1_t) - 1;
@@ -2813,8 +2825,8 @@ void Test_CFE_TBL_Load(void)
         CFE_TBL_ByteSwapUint32(&TblFileHeader.Offset);
     }
 
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     UT_SetRtnCode(&OSReadRtn, 0, 3);
     RtnCode = CFE_TBL_Load(App1TblHandle1,
                            CFE_TBL_SRC_FILE,
@@ -2830,8 +2842,8 @@ void Test_CFE_TBL_Load(void)
      * loaded
      */
     UT_InitData();
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     UT_SetRtnCode(&OSReadRtn, 0, 3);
     AccessDescPtr = &CFE_TBL_TaskData.Handles[App1TblHandle1];
     RegRecPtr = &CFE_TBL_TaskData.Registry[AccessDescPtr->RegIndex];
@@ -2854,7 +2866,7 @@ void Test_CFE_TBL_Load(void)
     strncpy(StdFileHeader.Description,"Test description",
             sizeof(StdFileHeader.Description));
     StdFileHeader.ContentType = CFE_FS_FILE_CONTENT_ID;
-    StdFileHeader.SubType = CFE_FS_TBL_IMG_SUBTYPE;
+    StdFileHeader.SubType = CFE_FS_SubType_TBL_IMG;
     strncpy((char *)TblFileHeader.TableName, "ut_cfe_tbl.NotUT_Table1",
             sizeof(TblFileHeader.TableName));
     TblFileHeader.NumBytes = sizeof(UT_Table1_t);
@@ -2866,8 +2878,8 @@ void Test_CFE_TBL_Load(void)
         CFE_TBL_ByteSwapUint32(&TblFileHeader.Offset);
     }
 
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     UT_SetRtnCode(&OSReadRtn, 0, 3);
     RtnCode = CFE_TBL_Load(App1TblHandle1,
                            CFE_TBL_SRC_FILE,
@@ -2902,7 +2914,7 @@ void Test_CFE_TBL_Load(void)
     strncpy(StdFileHeader.Description,"Test description",
             sizeof(StdFileHeader.Description));
     StdFileHeader.ContentType = CFE_FS_FILE_CONTENT_ID;
-    StdFileHeader.SubType = CFE_FS_TBL_IMG_SUBTYPE;
+    StdFileHeader.SubType = CFE_FS_SubType_TBL_IMG;
     strncpy(TblFileHeader.TableName, "ut_cfe_tbl.NotUT_Table1",
             sizeof(TblFileHeader.TableName));
     TblFileHeader.NumBytes = sizeof(UT_Table1_t);
@@ -2914,12 +2926,12 @@ void Test_CFE_TBL_Load(void)
         CFE_TBL_ByteSwapUint32(&TblFileHeader.Offset);
     }
 
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     UT_SetRtnCode(&OSReadRtn, 0, 3);
     AccessDescPtr = &CFE_TBL_TaskData.Handles[App1TblHandle2];
     RegRecPtr = &CFE_TBL_TaskData.Registry[AccessDescPtr->RegIndex];
-    RegRecPtr->DblBuffered = TRUE;
+    RegRecPtr->DoubleBuffered = TRUE;
     RegRecPtr->TableLoadedOnce = TRUE;
     RtnCode = CFE_TBL_Load(App1TblHandle2,
                            CFE_TBL_SRC_FILE,
@@ -2985,7 +2997,7 @@ void Test_CFE_TBL_Load(void)
 
     /* Test attempt to load a table with a bad handle */
     UT_InitData();
-    RtnCode = CFE_TBL_Load(CFE_TBL_MAX_NUM_HANDLES,
+    RtnCode = CFE_TBL_Load(CFE_PLATFORM_TBL_MAX_NUM_HANDLES,
                            CFE_TBL_SRC_ADDRESS,
                            &TestTable1);
     EventsCorrect = (UT_EventIsInHistory(CFE_TBL_LOAD_ERR_EID) == TRUE &&
@@ -3140,7 +3152,7 @@ void Test_CFE_TBL_GetAddress(void)
     /* Test attempt to get the address with an invalid handle */
     UT_InitData();
     RtnCode = CFE_TBL_GetAddress((void **) &App3TblPtr,
-                                 CFE_TBL_MAX_NUM_HANDLES);
+                                 CFE_PLATFORM_TBL_MAX_NUM_HANDLES);
     EventsCorrect = (UT_GetNumEventsSent() == 0);
     UT_Report(__FILE__, __LINE__,
               RtnCode == CFE_TBL_ERR_INVALID_HANDLE && EventsCorrect,
@@ -3259,7 +3271,7 @@ void Test_CFE_TBL_GetAddresses(void)
      * allowed to see
      */
     UT_InitData();
-    UT_SetAppID(CFE_ES_MAX_APPLICATIONS);
+    UT_SetAppID(CFE_PLATFORM_ES_MAX_APPLICATIONS);
     RtnCode = CFE_TBL_GetAddresses(ArrayOfPtrsToTblPtrs, 2, ArrayOfHandles);
     EventsCorrect = (UT_GetNumEventsSent() == 0);
     UT_Report(__FILE__, __LINE__,
@@ -3310,7 +3322,7 @@ void Test_CFE_TBL_Validate(void)
      * not allowed to see
      */
     UT_InitData();
-    UT_SetAppID(CFE_ES_MAX_APPLICATIONS);
+    UT_SetAppID(CFE_PLATFORM_ES_MAX_APPLICATIONS);
     RtnCode = CFE_TBL_Validate(App1TblHandle1);
     EventsCorrect = (UT_GetNumEventsSent() == 0);
     UT_Report(__FILE__, __LINE__,
@@ -3740,10 +3752,10 @@ void Test_CFE_TBL_Manage(void)
      * later
      */
     CFE_TBL_TaskData.DumpControlBlocks[0].DumpBufferPtr = WorkingBufferPtr;
-    CFE_PSP_MemCpy(CFE_TBL_TaskData.DumpControlBlocks[0].
+    memcpy(CFE_TBL_TaskData.DumpControlBlocks[0].
                      DumpBufferPtr->DataSource,
                    "MyDumpFilename", OS_MAX_PATH_LEN);
-    CFE_PSP_MemCpy(CFE_TBL_TaskData.DumpControlBlocks[0].TableName,
+    memcpy(CFE_TBL_TaskData.DumpControlBlocks[0].TableName,
                    "ut_cfe_tbl.UT_Table2", CFE_TBL_MAX_FULL_NAME_LEN);
     CFE_TBL_TaskData.DumpControlBlocks[0].Size = RegRecPtr->Size;
     RegRecPtr->DumpControlIndex = 0;
@@ -3797,7 +3809,7 @@ void Test_CFE_TBL_Update(void)
     /* Test processing an update on an application with a bad ID
      */
     UT_InitData();
-    UT_SetAppID(CFE_ES_MAX_APPLICATIONS);
+    UT_SetAppID(CFE_PLATFORM_ES_MAX_APPLICATIONS);
     RtnCode = CFE_TBL_Update(App1TblHandle1);
     EventsCorrect = (UT_GetNumEventsSent() == 1);
     UT_Report(__FILE__, __LINE__,
@@ -3822,7 +3834,7 @@ void Test_CFE_TBL_GetStatus(void)
      * application is not allowed to see
      */
     UT_InitData();
-    UT_SetAppID(CFE_ES_MAX_APPLICATIONS);
+    UT_SetAppID(CFE_PLATFORM_ES_MAX_APPLICATIONS);
     RtnCode = CFE_TBL_GetStatus(App1TblHandle1);
     EventsCorrect = (UT_GetNumEventsSent() == 0);
     UT_Report(__FILE__, __LINE__,
@@ -3835,7 +3847,7 @@ void Test_CFE_TBL_GetStatus(void)
      * application is not allowed to see
      */
     UT_InitData();
-    UT_SetAppID(CFE_ES_MAX_APPLICATIONS);
+    UT_SetAppID(CFE_PLATFORM_ES_MAX_APPLICATIONS);
     RtnCode = CFE_TBL_DumpToBuffer(App1TblHandle1);
     EventsCorrect = (UT_GetNumEventsSent() == 0);
     UT_Report(__FILE__, __LINE__,
@@ -3901,8 +3913,8 @@ void Test_CFE_TBL_TblMod(void)
     UT_Text("Begin Test Table Modified\n");
 #endif
 
-    FileHeader.SpacecraftID = CFE_TBL_VALID_SCID_1;
-    FileHeader.ProcessorID = CFE_TBL_VALID_PRID_1;
+    FileHeader.SpacecraftID = CFE_PLATFORM_TBL_VALID_SCID_1;
+    FileHeader.ProcessorID = CFE_PLATFORM_TBL_VALID_PRID_1;
 
     /* Test adding a TBL API for notifying table services that the table has
      * been updated by the application
@@ -3932,7 +3944,7 @@ void Test_CFE_TBL_TblMod(void)
     strncpy(FileHeader.Description, "FS header description",
             sizeof(FileHeader.Description));
     FileHeader.ContentType = CFE_FS_FILE_CONTENT_ID;
-    FileHeader.SubType = CFE_FS_TBL_IMG_SUBTYPE;
+    FileHeader.SubType = CFE_FS_SubType_TBL_IMG;
     FileHeader.TimeSeconds = 1704;
     FileHeader.TimeSubSeconds = 104;
     strncpy((char *)File.TblHeader.TableName, "ut_cfe_tbl.UT_Table1",
@@ -3953,8 +3965,8 @@ void Test_CFE_TBL_TblMod(void)
         File.TblData.TblElement2 = 0x05060708;
     }
 
-    UT_SetReadBuffer(&File, sizeof(UT_TempFile_t));
-    UT_SetReadHeader(&FileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&File, sizeof(File));
+    UT_SetReadHeader(&FileHeader, sizeof(FileHeader));
     UT_SetRtnCode(&OSReadRtn, 0, 3);
 
     /* Perform load */
@@ -4024,7 +4036,7 @@ void Test_CFE_TBL_TblMod(void)
     strncpy(FileHeader.Description, "FS header description",
             sizeof(FileHeader.Description));
     FileHeader.ContentType = CFE_FS_FILE_CONTENT_ID;
-    FileHeader.SubType = CFE_FS_TBL_IMG_SUBTYPE;
+    FileHeader.SubType = CFE_FS_SubType_TBL_IMG;
     FileHeader.TimeSeconds = 1704;
     FileHeader.TimeSubSeconds = 104;
     strncpy((char *)File.TblHeader.TableName, "ut_cfe_tbl.UT_Table2",
@@ -4040,8 +4052,8 @@ void Test_CFE_TBL_TblMod(void)
 
     File.TblData.TblElement1 = 0x04030201;
     File.TblData.TblElement2 = 0x08070605;
-    UT_SetReadBuffer(&File, sizeof(UT_TempFile_t));
-    UT_SetReadHeader(&FileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&File, sizeof(File));
+    UT_SetReadHeader(&FileHeader, sizeof(FileHeader));
     UT_SetRtnCode(&OSReadRtn, 0, 3);
 
     /* Perform load with extra long filename */
@@ -4103,8 +4115,8 @@ void Test_CFE_TBL_Internal(void)
     UT_Text("Begin Test Internal\n");
 #endif
 
-    StdFileHeader.SpacecraftID = CFE_TBL_VALID_SCID_1;
-    StdFileHeader.ProcessorID = CFE_TBL_VALID_PRID_1;
+    StdFileHeader.SpacecraftID = CFE_PLATFORM_TBL_VALID_SCID_1;
+    StdFileHeader.ProcessorID = CFE_PLATFORM_TBL_VALID_PRID_1;
 
     /* Test setup - register a double buffered table */
     UT_InitData();
@@ -4178,7 +4190,7 @@ void Test_CFE_TBL_Internal(void)
             sizeof(StdFileHeader.Description));
     StdFileHeader.Description[CFE_FS_HDR_DESC_MAX_LEN - 1] = '\0';
     StdFileHeader.ContentType = CFE_FS_FILE_CONTENT_ID;
-    StdFileHeader.SubType = CFE_FS_TBL_IMG_SUBTYPE;
+    StdFileHeader.SubType = CFE_FS_SubType_TBL_IMG;
     strncpy((char *)TblFileHeader.TableName, "ut_cfe_tbl.UT_Table2",
             sizeof(TblFileHeader.TableName));
     TblFileHeader.NumBytes = sizeof(UT_Table1_t);
@@ -4190,8 +4202,8 @@ void Test_CFE_TBL_Internal(void)
         CFE_TBL_ByteSwapUint32(&TblFileHeader.Offset);
     }
 
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     RtnCode = CFE_TBL_LoadFromFile(WorkingBufferPtr, RegRecPtr, Filename);
     EventsCorrect = (UT_GetNumEventsSent() == 0);
     UT_Report(__FILE__, __LINE__,
@@ -4205,7 +4217,7 @@ void Test_CFE_TBL_Internal(void)
     UT_InitData();
     Filename[OS_MAX_PATH_LEN - 1] = '\0';
     StdFileHeader.ContentType = CFE_FS_FILE_CONTENT_ID;
-    StdFileHeader.SubType = CFE_FS_TBL_IMG_SUBTYPE;
+    StdFileHeader.SubType = CFE_FS_SubType_TBL_IMG;
     strncpy((char *)TblFileHeader.TableName, "ut_cfe_tbl.UT_Table2",
             sizeof(TblFileHeader.TableName));
     TblFileHeader.NumBytes = sizeof(UT_Table1_t);
@@ -4217,8 +4229,8 @@ void Test_CFE_TBL_Internal(void)
         CFE_TBL_ByteSwapUint32(&TblFileHeader.Offset);
     }
 
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     UT_SetRtnCode(&OSReadRtn, sizeof(UT_Table1_t), 2);
     RtnCode = CFE_TBL_LoadFromFile(WorkingBufferPtr, RegRecPtr, Filename);
     EventsCorrect = (UT_GetNumEventsSent() == 0);
@@ -4233,7 +4245,7 @@ void Test_CFE_TBL_Internal(void)
     UT_InitData();
     Filename[OS_MAX_PATH_LEN - 1] = '\0';
     StdFileHeader.ContentType = CFE_FS_FILE_CONTENT_ID;
-    StdFileHeader.SubType = CFE_FS_TBL_IMG_SUBTYPE;
+    StdFileHeader.SubType = CFE_FS_SubType_TBL_IMG;
     strncpy((char *)TblFileHeader.TableName, "ut_cfe_tbl.UT_Table2",
             sizeof(TblFileHeader.TableName));
     TblFileHeader.NumBytes = sizeof(UT_Table1_t);
@@ -4245,8 +4257,8 @@ void Test_CFE_TBL_Internal(void)
         CFE_TBL_ByteSwapUint32(&TblFileHeader.Offset);
     }
 
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     UT_SetDeferredRetcode(UT_KEY(OS_read), 2, sizeof(UT_Table1_t) - 1);
     UT_SetDeferredRetcode(UT_KEY(OS_read), 1, 0);
     RtnCode = CFE_TBL_LoadFromFile(WorkingBufferPtr, RegRecPtr, Filename);
@@ -4262,7 +4274,7 @@ void Test_CFE_TBL_Internal(void)
     UT_InitData();
     Filename[OS_MAX_PATH_LEN - 1] = '\0';
     StdFileHeader.ContentType = CFE_FS_FILE_CONTENT_ID;
-    StdFileHeader.SubType = CFE_FS_TBL_IMG_SUBTYPE;
+    StdFileHeader.SubType = CFE_FS_SubType_TBL_IMG;
     strncpy((char *)TblFileHeader.TableName, "ut_cfe_tbl.NotUT_Table2",
             sizeof(TblFileHeader.TableName));
     TblFileHeader.NumBytes = sizeof(UT_Table1_t);
@@ -4274,8 +4286,8 @@ void Test_CFE_TBL_Internal(void)
         CFE_TBL_ByteSwapUint32(&TblFileHeader.Offset);
     }
 
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     UT_SetRtnCode(&OSReadRtn, 0, 3);
     RtnCode = CFE_TBL_LoadFromFile(WorkingBufferPtr, RegRecPtr, Filename);
     EventsCorrect = (UT_GetNumEventsSent() == 0);
@@ -4288,7 +4300,7 @@ void Test_CFE_TBL_Internal(void)
     UT_InitData();
     Filename[OS_MAX_PATH_LEN - 1] = '\0';
     StdFileHeader.ContentType = CFE_FS_FILE_CONTENT_ID;
-    StdFileHeader.SubType = CFE_FS_TBL_IMG_SUBTYPE;
+    StdFileHeader.SubType = CFE_FS_SubType_TBL_IMG;
     strncpy((char *)TblFileHeader.TableName, "ut_cfe_tbl.UT_Table1",
             sizeof(TblFileHeader.TableName));
     TblFileHeader.NumBytes = sizeof(UT_Table1_t);
@@ -4300,8 +4312,8 @@ void Test_CFE_TBL_Internal(void)
         CFE_TBL_ByteSwapUint32(&TblFileHeader.Offset);
     }
 
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     OldOSFail = UT_OS_Fail;
     UT_SetOSFail(OS_OPEN_FAIL);
     RtnCode = CFE_TBL_LoadFromFile(WorkingBufferPtr, RegRecPtr, Filename);
@@ -4316,7 +4328,7 @@ void Test_CFE_TBL_Internal(void)
     UT_InitData();
     Filename[OS_MAX_PATH_LEN - 1] = '\0';
     StdFileHeader.ContentType = CFE_FS_FILE_CONTENT_ID;
-    StdFileHeader.SubType = CFE_FS_TBL_IMG_SUBTYPE;
+    StdFileHeader.SubType = CFE_FS_SubType_TBL_IMG;
     strncpy((char *)TblFileHeader.TableName, "ut_cfe_tbl.UT_Table2",
             sizeof(TblFileHeader.TableName));
     TblFileHeader.NumBytes = sizeof(UT_Table1_t) - 1;
@@ -4328,8 +4340,8 @@ void Test_CFE_TBL_Internal(void)
         CFE_TBL_ByteSwapUint32(&TblFileHeader.Offset);
     }
 
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     UT_SetRtnCode(&OSReadRtn, 0, 3);
     RtnCode = CFE_TBL_LoadFromFile(WorkingBufferPtr, RegRecPtr, Filename);
     EventsCorrect = (UT_GetNumEventsSent() == 0);
@@ -4344,7 +4356,7 @@ void Test_CFE_TBL_Internal(void)
     UT_InitData();
     Filename[OS_MAX_PATH_LEN - 1] = '\0';
     StdFileHeader.ContentType = CFE_FS_FILE_CONTENT_ID;
-    StdFileHeader.SubType = CFE_FS_TBL_IMG_SUBTYPE;
+    StdFileHeader.SubType = CFE_FS_SubType_TBL_IMG;
     strncpy((char *)TblFileHeader.TableName, "ut_cfe_tbl.UT_Table1",
             sizeof(TblFileHeader.TableName));
     TblFileHeader.NumBytes = sizeof(UT_Table1_t) - 1;
@@ -4356,8 +4368,8 @@ void Test_CFE_TBL_Internal(void)
         CFE_TBL_ByteSwapUint32(&TblFileHeader.Offset);
     }
 
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     strncpy(Filename, "MyTestInputFilename", sizeof(Filename));
     Filename[sizeof(Filename) - 1] = '\0';
     UT_SetRtnCode(&FSReadHdrRtn, sizeof(CFE_FS_Header_t) - 1, 1);
@@ -4377,7 +4389,7 @@ void Test_CFE_TBL_Internal(void)
     UT_InitData();
     Filename[OS_MAX_PATH_LEN - 1] = '\0';
     StdFileHeader.ContentType = CFE_FS_FILE_CONTENT_ID - 1;
-    StdFileHeader.SubType = CFE_FS_TBL_IMG_SUBTYPE;
+    StdFileHeader.SubType = CFE_FS_SubType_TBL_IMG;
     strncpy((char *)TblFileHeader.TableName, "ut_cfe_tbl.UT_Table1",
             sizeof(TblFileHeader.TableName));
     TblFileHeader.NumBytes = sizeof(UT_Table1_t) - 1;
@@ -4389,8 +4401,8 @@ void Test_CFE_TBL_Internal(void)
         CFE_TBL_ByteSwapUint32(&TblFileHeader.Offset);
     }
 
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     RtnCode = CFE_TBL_ReadHeaders(FileDescriptor, &StdFileHeader,
                                   &TblFileHeader, Filename);
     EventsCorrect = (UT_EventIsInHistory(CFE_TBL_FILE_TYPE_ERR_EID) == TRUE &&
@@ -4404,7 +4416,7 @@ void Test_CFE_TBL_Internal(void)
     UT_InitData();
     Filename[OS_MAX_PATH_LEN - 1] = '\0';
     StdFileHeader.ContentType = CFE_FS_FILE_CONTENT_ID;
-    StdFileHeader.SubType = CFE_FS_TBL_IMG_SUBTYPE - 1;
+    StdFileHeader.SubType = CFE_FS_SubType_TBL_IMG - 1;
     strncpy((char *)TblFileHeader.TableName, "ut_cfe_tbl.UT_Table1",
             sizeof(TblFileHeader.TableName));
     TblFileHeader.NumBytes = sizeof(UT_Table1_t) - 1;
@@ -4416,8 +4428,8 @@ void Test_CFE_TBL_Internal(void)
         CFE_TBL_ByteSwapUint32(&TblFileHeader.Offset);
     }
 
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     RtnCode = CFE_TBL_ReadHeaders(FileDescriptor, &StdFileHeader,
                                   &TblFileHeader, Filename);
     EventsCorrect =
@@ -4434,7 +4446,7 @@ void Test_CFE_TBL_Internal(void)
     UT_InitData();
     Filename[OS_MAX_PATH_LEN - 1] = '\0';
     StdFileHeader.ContentType = CFE_FS_FILE_CONTENT_ID;
-    StdFileHeader.SubType = CFE_FS_TBL_IMG_SUBTYPE;
+    StdFileHeader.SubType = CFE_FS_SubType_TBL_IMG;
     strncpy((char *)TblFileHeader.TableName, "ut_cfe_tbl.UT_Table1",
             sizeof(TblFileHeader.TableName));
     TblFileHeader.NumBytes = sizeof(UT_Table1_t) - 1;
@@ -4446,8 +4458,8 @@ void Test_CFE_TBL_Internal(void)
         CFE_TBL_ByteSwapUint32(&TblFileHeader.Offset);
     }
 
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     UT_SetRtnCode(&OSReadRtn, sizeof(CFE_TBL_File_Hdr_t) - 1, 1);
     RtnCode = CFE_TBL_ReadHeaders(FileDescriptor, &StdFileHeader,
                                   &TblFileHeader, Filename);
@@ -4589,7 +4601,7 @@ void Test_CFE_TBL_Internal(void)
     /* d. Perform an initial load on the critical single buffered table */
     UT_InitData();
     StdFileHeader.ContentType = CFE_FS_FILE_CONTENT_ID;
-    StdFileHeader.SubType = CFE_FS_TBL_IMG_SUBTYPE;
+    StdFileHeader.SubType = CFE_FS_SubType_TBL_IMG;
     strncpy((char *)TblFileHeader.TableName, "ut_cfe_tbl.UT_Table1",
             sizeof(TblFileHeader.TableName));
     TblFileHeader.NumBytes = sizeof(UT_Table1_t);
@@ -4601,8 +4613,8 @@ void Test_CFE_TBL_Internal(void)
         CFE_TBL_ByteSwapUint32(&TblFileHeader.Offset);
     }
 
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     UT_SetRtnCode(&OSReadRtn, 0, 3);
     RtnCode = CFE_TBL_Load(App1TblHandle1, CFE_TBL_SRC_FILE,
                            "TblSrcFileName.dat");
@@ -4617,7 +4629,7 @@ void Test_CFE_TBL_Internal(void)
     /* e. Update CDS for single buffered table */
     UT_InitData();
     StdFileHeader.ContentType = CFE_FS_FILE_CONTENT_ID;
-    StdFileHeader.SubType = CFE_FS_TBL_IMG_SUBTYPE;
+    StdFileHeader.SubType = CFE_FS_SubType_TBL_IMG;
     strncpy((char *)TblFileHeader.TableName, "ut_cfe_tbl.UT_Table1",
             sizeof(TblFileHeader.TableName));
     TblFileHeader.NumBytes = sizeof(UT_Table1_t);
@@ -4629,8 +4641,8 @@ void Test_CFE_TBL_Internal(void)
         CFE_TBL_ByteSwapUint32(&TblFileHeader.Offset);
     }
 
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     UT_SetRtnCode(&OSReadRtn, 0, 3);
     RtnCode = CFE_TBL_Load(App1TblHandle1, CFE_TBL_SRC_FILE,
                            "TblSrcFileName.dat");
@@ -4645,7 +4657,7 @@ void Test_CFE_TBL_Internal(void)
     /* f. Perform an initial load on the critical double buffered table */
     UT_InitData();
     StdFileHeader.ContentType = CFE_FS_FILE_CONTENT_ID;
-    StdFileHeader.SubType = CFE_FS_TBL_IMG_SUBTYPE;
+    StdFileHeader.SubType = CFE_FS_SubType_TBL_IMG;
     strncpy((char *)TblFileHeader.TableName, "ut_cfe_tbl.UT_Table2",
             sizeof(TblFileHeader.TableName));
     TblFileHeader.NumBytes = sizeof(UT_Table1_t);
@@ -4657,8 +4669,8 @@ void Test_CFE_TBL_Internal(void)
         CFE_TBL_ByteSwapUint32(&TblFileHeader.Offset);
     }
 
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     UT_SetRtnCode(&OSReadRtn, 0, 3);
     RtnCode = CFE_TBL_Load(App1TblHandle2, CFE_TBL_SRC_FILE,
                            "TblSrcFileName.dat");
@@ -4673,7 +4685,7 @@ void Test_CFE_TBL_Internal(void)
     /* g. Update CDS for double buffered table */
     UT_InitData();
     StdFileHeader.ContentType = CFE_FS_FILE_CONTENT_ID;
-    StdFileHeader.SubType = CFE_FS_TBL_IMG_SUBTYPE;
+    StdFileHeader.SubType = CFE_FS_SubType_TBL_IMG;
     strncpy((char *)TblFileHeader.TableName, "ut_cfe_tbl.UT_Table2",
             sizeof(TblFileHeader.TableName));
     TblFileHeader.NumBytes = sizeof(UT_Table1_t);
@@ -4685,8 +4697,8 @@ void Test_CFE_TBL_Internal(void)
         CFE_TBL_ByteSwapUint32(&TblFileHeader.Offset);
     }
 
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     UT_SetRtnCode(&OSReadRtn, 0, 3);
     CFE_TBL_GetAddress(&TblPtr, App1TblHandle2);
     RtnCode = CFE_TBL_Load(App1TblHandle2, CFE_TBL_SRC_FILE,
@@ -4704,7 +4716,7 @@ void Test_CFE_TBL_Internal(void)
      */
     UT_InitData();
     StdFileHeader.ContentType = CFE_FS_FILE_CONTENT_ID;
-    StdFileHeader.SubType = CFE_FS_TBL_IMG_SUBTYPE;
+    StdFileHeader.SubType = CFE_FS_SubType_TBL_IMG;
     strncpy((char *)TblFileHeader.TableName, "ut_cfe_tbl.UT_Table2",
             sizeof(TblFileHeader.TableName));
     TblFileHeader.NumBytes = sizeof(UT_Table1_t);
@@ -4716,8 +4728,8 @@ void Test_CFE_TBL_Internal(void)
         CFE_TBL_ByteSwapUint32(&TblFileHeader.Offset);
     }
 
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     UT_SetRtnCode(&OSReadRtn, 0, 3);
     RtnCode = CFE_TBL_Load(App1TblHandle2, CFE_TBL_SRC_FILE,
                            "TblSrcFileName.dat");
@@ -4751,7 +4763,7 @@ void Test_CFE_TBL_Internal(void)
     /* c. Perform test */
     UT_ClearEventHistory();
     StdFileHeader.ContentType = CFE_FS_FILE_CONTENT_ID;
-    StdFileHeader.SubType = CFE_FS_TBL_IMG_SUBTYPE;
+    StdFileHeader.SubType = CFE_FS_SubType_TBL_IMG;
     strncpy((char *)TblFileHeader.TableName, "ut_cfe_tbl.UT_Table2",
             sizeof(TblFileHeader.TableName));
     TblFileHeader.NumBytes = sizeof(UT_Table1_t);
@@ -4763,8 +4775,8 @@ void Test_CFE_TBL_Internal(void)
         CFE_TBL_ByteSwapUint32(&TblFileHeader.Offset);
     }
 
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     UT_SetRtnCode(&OSReadRtn, 0, 3);
     UT_SetRtnCode(&ES_CopyToCDSRtn, CFE_ES_ERR_MEM_HANDLE, 1);
     RtnCode = CFE_TBL_Load(App1TblHandle2, CFE_TBL_SRC_FILE,
@@ -4799,7 +4811,7 @@ void Test_CFE_TBL_Internal(void)
     /* c. Perform test */
     UT_ClearEventHistory();
     StdFileHeader.ContentType = CFE_FS_FILE_CONTENT_ID;
-    StdFileHeader.SubType = CFE_FS_TBL_IMG_SUBTYPE;
+    StdFileHeader.SubType = CFE_FS_SubType_TBL_IMG;
     strncpy((char *)TblFileHeader.TableName, "ut_cfe_tbl.UT_Table2",
             sizeof(TblFileHeader.TableName));
     TblFileHeader.NumBytes = sizeof(UT_Table1_t);
@@ -4811,8 +4823,8 @@ void Test_CFE_TBL_Internal(void)
         CFE_TBL_ByteSwapUint32(&TblFileHeader.Offset);
     }
 
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     UT_SetRtnCode(&OSReadRtn, 0, 3);
     UT_SetRtnCode(&ES_CopyToCDSRtn, CFE_ES_ERR_MEM_HANDLE, 2);
     RtnCode = CFE_TBL_Load(App1TblHandle2, CFE_TBL_SRC_FILE,
@@ -4849,7 +4861,7 @@ void Test_CFE_TBL_Internal(void)
     /* c. Perform test */
     UT_ClearEventHistory();
     StdFileHeader.ContentType = CFE_FS_FILE_CONTENT_ID;
-    StdFileHeader.SubType = CFE_FS_TBL_IMG_SUBTYPE;
+    StdFileHeader.SubType = CFE_FS_SubType_TBL_IMG;
     strncpy((char *)TblFileHeader.TableName, "ut_cfe_tbl.UT_Table2",
             sizeof(TblFileHeader.TableName));
     TblFileHeader.NumBytes = sizeof(UT_Table1_t);
@@ -4861,14 +4873,14 @@ void Test_CFE_TBL_Internal(void)
         CFE_TBL_ByteSwapUint32(&TblFileHeader.Offset);
     }
 
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     UT_SetRtnCode(&OSReadRtn, 0, 3);
     UT_SetRtnCode(&ES_CopyToCDSRtn, CFE_ES_ERR_MEM_HANDLE, 2);
     AccessDescPtr = &CFE_TBL_TaskData.Handles[App1TblHandle2];
     RegRecPtr = &CFE_TBL_TaskData.Registry[AccessDescPtr->RegIndex];
 
-    for (i = 0; i < CFE_TBL_MAX_CRITICAL_TABLES; i++)
+    for (i = 0; i < CFE_PLATFORM_TBL_MAX_CRITICAL_TABLES; i++)
     {
         if (CFE_TBL_TaskData.CritReg[i].CDSHandle == RegRecPtr->CDSHandle)
         {
@@ -4930,7 +4942,7 @@ void Test_CFE_TBL_Internal(void)
     /* Test response to an attempt to use an invalid table handle */
     UT_InitData();
     StdFileHeader.ContentType = CFE_FS_FILE_CONTENT_ID;
-    StdFileHeader.SubType = CFE_FS_TBL_IMG_SUBTYPE;
+    StdFileHeader.SubType = CFE_FS_SubType_TBL_IMG;
     strncpy((char *)TblFileHeader.TableName, "ut_cfe_tbl.UT_Table2",
             sizeof(TblFileHeader.TableName));
     TblFileHeader.NumBytes = sizeof(UT_Table1_t);
@@ -4942,8 +4954,8 @@ void Test_CFE_TBL_Internal(void)
         CFE_TBL_ByteSwapUint32(&TblFileHeader.Offset);
     }
 
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     UT_SetRtnCode(&OSReadRtn, 0, 3);
     UT_SetRtnCode(&ES_CopyToCDSRtn, CFE_ES_ERR_MEM_HANDLE, 2);
     RtnCode = CFE_TBL_Load(App1TblHandle2, CFE_TBL_SRC_FILE,
@@ -5038,7 +5050,7 @@ void Test_CFE_TBL_Internal(void)
     EventsCorrect = (UT_GetNumEventsSent() == 0);
     UT_Report(__FILE__, __LINE__,
               RtnCode == CFE_TBL_INFO_NO_UPDATE_PENDING && EventsCorrect,
-              "CFE_TBL_LoadFromFile",
+              "CFE_TBL_UpdateInternal",
               "Inactive buffer ready while load in progress");
 
     /* Test CFE_TBL_UpdateInternal response when an inactive buffer is ready to
@@ -5050,16 +5062,32 @@ void Test_CFE_TBL_Internal(void)
     RegRecPtr->LoadPending = TRUE;
     RegRecPtr->LoadInProgress = CFE_TBL_NO_LOAD_IN_PROGRESS + 1;
     RegRecPtr->CriticalTable = FALSE;
-    RegRecPtr->DblBuffered = TRUE;
+    RegRecPtr->DoubleBuffered = TRUE;
     UT_SetRtnCode(&ES_CopyToCDSRtn, CFE_ES_ERR_MEM_HANDLE, 1);
     RtnCode = CFE_TBL_UpdateInternal(App1TblHandle2, RegRecPtr, AccessDescPtr);
      EventsCorrect = (UT_GetNumEventsSent() == 0);
     UT_Report(__FILE__, __LINE__,
               RtnCode == CFE_SUCCESS && EventsCorrect,
-              "CFE_TBL_LoadFromFile",
+              "CFE_TBL_UpdateInternal",
               "Active buffer ready, no load in progress, double buffered "
                   "non-critical table");
 
+    /* Test CFE_TBL_UpdateInternal single buffer memcpy when
+     * source and dest are not equal
+     */
+    UT_InitData();
+    AccessDescPtr = &CFE_TBL_TaskData.Handles[App1TblHandle2];
+    RegRecPtr = &CFE_TBL_TaskData.Registry[AccessDescPtr->RegIndex];
+    RegRecPtr->LoadPending = TRUE;
+    RegRecPtr->LoadInProgress = CFE_TBL_NO_LOAD_IN_PROGRESS + 1;
+    RegRecPtr->DoubleBuffered = FALSE;
+    RtnCode = CFE_TBL_UpdateInternal(App1TblHandle2, RegRecPtr, AccessDescPtr);
+    EventsCorrect = (UT_GetNumEventsSent() == 0);
+    UT_Report(__FILE__, __LINE__,
+              RtnCode == CFE_SUCCESS && EventsCorrect,
+              "CFE_TBL_UpdateInternal",
+              "Update single buffer table memcpy test with src != dest");
+    
     /* Test application cleanup where there are no dumped tables to delete and
      * the application doesn't own the table
      */
@@ -5081,14 +5109,14 @@ void Test_CFE_TBL_Internal(void)
               "Execute clean up - no dumped tables to delete, application "
                   "doesn't own table");
 
-#if (CFE_TBL_VALID_SCID_COUNT > 0)
+#if (CFE_PLATFORM_TBL_VALID_SCID_COUNT > 0)
     /* Test CFE_TBL_ReadHeaders response to an invalid spacecraft ID */
     UT_InitData();
     Filename[OS_MAX_PATH_LEN - 1] = '\0';
     StdFileHeader.ContentType = CFE_FS_FILE_CONTENT_ID;
-    StdFileHeader.SubType = CFE_FS_TBL_IMG_SUBTYPE;
+    StdFileHeader.SubType = CFE_FS_SubType_TBL_IMG;
     StdFileHeader.SpacecraftID = -1;
-    StdFileHeader.ProcessorID = CFE_TBL_VALID_PRID_1;
+    StdFileHeader.ProcessorID = CFE_PLATFORM_TBL_VALID_PRID_1;
     strncpy(TblFileHeader.TableName, "ut_cfe_tbl.UT_Table1",
             sizeof(TblFileHeader.TableName));
     TblFileHeader.NumBytes = sizeof(UT_Table1_t) - 1;
@@ -5100,8 +5128,8 @@ void Test_CFE_TBL_Internal(void)
         CFE_TBL_ByteSwapUint32(&TblFileHeader.Offset);
     }
 
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     strncpy(Filename, "MyTestInputFilename", sizeof(Filename));
     Filename[sizeof(Filename) - 1] = '\0';
     RtnCode = CFE_TBL_ReadHeaders(FileDescriptor, &StdFileHeader,
@@ -5120,13 +5148,13 @@ void Test_CFE_TBL_Internal(void)
               "*Not tested* Invalid spacecraft ID ");
 #endif
 
-#if (CFE_TBL_VALID_PRID_COUNT > 0)
+#if (CFE_PLATFORM_TBL_VALID_PRID_COUNT > 0)
     /* Test CFE_TBL_ReadHeaders response to an invalid processor ID */
     UT_InitData();
     Filename[OS_MAX_PATH_LEN - 1] = '\0';
     StdFileHeader.ContentType = CFE_FS_FILE_CONTENT_ID;
-    StdFileHeader.SubType = CFE_FS_TBL_IMG_SUBTYPE;
-    StdFileHeader.SpacecraftID = CFE_TBL_VALID_SCID_1;
+    StdFileHeader.SubType = CFE_FS_SubType_TBL_IMG;
+    StdFileHeader.SpacecraftID = CFE_PLATFORM_TBL_VALID_SCID_1;
     StdFileHeader.ProcessorID = -1;
     strncpy(TblFileHeader.TableName, "ut_cfe_tbl.UT_Table1",
             sizeof(TblFileHeader.TableName));
@@ -5139,8 +5167,8 @@ void Test_CFE_TBL_Internal(void)
         CFE_TBL_ByteSwapUint32(&TblFileHeader.Offset);
     }
 
-    UT_SetReadBuffer(&TblFileHeader, sizeof(CFE_TBL_File_Hdr_t));
-    UT_SetReadHeader(&StdFileHeader, sizeof(CFE_FS_Header_t));
+    UT_SetReadBuffer(&TblFileHeader, sizeof(TblFileHeader));
+    UT_SetReadHeader(&StdFileHeader, sizeof(StdFileHeader));
     strncpy(Filename, "MyTestInputFilename", sizeof(Filename));
     Filename[sizeof(Filename) - 1] = '\0';
     RtnCode = CFE_TBL_ReadHeaders(FileDescriptor, &StdFileHeader,

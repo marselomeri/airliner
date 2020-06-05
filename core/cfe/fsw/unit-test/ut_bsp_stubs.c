@@ -1,11 +1,21 @@
 /*
-**      Copyright (c) 2004-2012, United States government as represented by the 
-**      administrator of the National Aeronautics Space Administration.  
-**      All rights reserved. This software(cFE) was created at NASA's Goddard 
-**      Space Flight Center pursuant to government contracts.
+**      GSC-18128-1, "Core Flight Executive Version 6.6"
 **
-**      This is governed by the NASA Open Source Agreement and may be used, 
-**      distributed and modified only pursuant to the terms of that agreement. 
+**      Copyright (c) 2006-2019 United States Government as represented by
+**      the Administrator of the National Aeronautics and Space Administration.
+**      All Rights Reserved.
+**
+**      Licensed under the Apache License, Version 2.0 (the "License");
+**      you may not use this file except in compliance with the License.
+**      You may obtain a copy of the License at
+**
+**        http://www.apache.org/licenses/LICENSE-2.0
+**
+**      Unless required by applicable law or agreed to in writing, software
+**      distributed under the License is distributed on an "AS IS" BASIS,
+**      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+**      See the License for the specific language governing permissions and
+**      limitations under the License.
 **
 ** File:
 ** $Id: ut_bsp_stubs.c 1.9 2014/05/28 09:21:51GMT-05:00 wmoleski Exp  $
@@ -16,62 +26,6 @@
 ** Notes:
 ** Minimal work is done, only what is required for unit testing
 **
-** $Data:$
-** $Revision: 1.9 $
-** $Log: ut_bsp_stubs.c  $
-** Revision 1.9 2014/05/28 09:21:51GMT-05:00 wmoleski 
-** Overwriting cFE Unit Test files with the updated JSC files.
-** Revision 1.8 2012/01/13 13:59:29EST acudmore 
-** Added license text
-** Revision 1.7 2011/11/30 15:44:39EST jmdagost 
-** Added CFE_PSP_MemValidateRange stub function.
-** Revision 1.6 2010/11/23 13:17:48EST jmdagost 
-** Added CFE_PSP_MemRead8() stub.
-** Revision 1.5 2010/09/09 15:02:57EDT jmdagost 
-** Updated funciton CFE_PSP_GetCFETextSegmentInfo() to avoid segment fault in CentOS VM environment.
-** Also made dummy CFE segment CfeData a non-zero value.
-** Revision 1.4 2009/06/25 14:14:47EDT rmcgraw 
-** DCR8290:5 Removed #include os_bsp.h
-** Revision 1.3 2009/06/25 12:46:02EDT rmcgraw 
-** DCR8290:5 cFE API changes to unit test files
-** Revision 1.2 2008/08/15 11:27:02EDT njyanchik 
-** Check in of ES Unit Test
-** Revision 1.1 2008/04/17 13:05:44BST ruperera 
-** Initial revision
-** Member added to project c:/MKSDATA/MKS-REPOSITORY/MKS-CFE-PROJECT/fsw/cfe-core/unit-test/project.pj
-** Revision 1.15 2007/09/26 15:00:47EDT njyanchik 
-** This is the first update of the ES unit tests for 5.0
-** Revision 1.14 2007/05/30 15:15:18EDT njyanchik 
-** check in of ES Unit test
-** Revision 1.13 2007/05/30 08:56:41EDT njyanchik 
-** Update
-** Revision 1.12 2007/05/24 15:48:08EDT njyanchik 
-** Update for ES Unit Test
-** Revision 1.11 2007/05/22 13:03:57EDT njyanchik 
-** Updated changes to not lose my work
-** Revision 1.10 2007/05/16 11:14:36EDT njyanchik 
-** Update ES's unit test driver to match code for build 4.1
-** Revision 1.9 2007/05/04 09:10:32EDT njyanchik 
-** Check in of Time UT and related changes
-** Revision 1.8 2007/05/01 13:28:24EDT njyanchik 
-** I updated the ut stubs to get the each of the subsytems to compile under the unit test. I did not
-** change the unit tests themselves to cover more of the files, however.
-** Revision 1.7 2007/02/27 15:17:10EST njyanchik 
-** There was some code in ut_bsp_stubs.c that would cause linking errors on all OS's but linux.
-** This has been resolved
-** Revision 1.6 2007/01/17 10:04:20EST njyanchik 
-** This CP Checks in cleaned-up versions of the files checked in for the ES unit test
-** Revision 1.5 2007/01/17 09:26:08GMT-05:00 njyanchik 
-** Check in of ES Unit Test changed files
-** Revision 1.4 2006/11/06 15:10:06GMT-05:00 apcudmore 
-** Removed OS_BSPGetRestartType. The routine is obsolete.
-** Revision 1.3 2006/11/02 13:53:57EST njyanchik 
-** Unit test for TIME was updated to match the changes made for this DCR
-** Revision 1.2 2006/11/01 12:46:53GMT-05:00 njyanchik 
-** Changed the Unit test to reflect the changes from removing the CDS functionality from TIME
-** Revision 1.1 2006/03/02 15:10:24GMT-05:00 jjhageman 
-** Initial revision
-** Member added to project d:/mksdata/MKS-CFE-PROJECT/fsw/cfe-core/unit-test/project.pj
 */
 
 /*
@@ -86,7 +40,7 @@
 /*
 ** Macro definitions
 */
-#define CFE_PSP_CDS_SIZE CFE_ES_CDS_SIZE
+#define CFE_PSP_CDS_SIZE CFE_PLATFORM_ES_CDS_SIZE
 
 /*
 ** Global variables

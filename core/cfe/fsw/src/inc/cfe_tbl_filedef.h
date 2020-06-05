@@ -1,14 +1,23 @@
 /*
-**
 **  $Id: cfe_tbl_filedef.h 1.6 2014/08/26 16:41:40GMT-05:00 sstrege Exp  $
 **
-**      Copyright (c) 2004-2006, United States government as represented by the 
-**      administrator of the National Aeronautics Space Administration.  
-**      All rights reserved. This software(cFE) was created at NASA's Goddard 
-**      Space Flight Center pursuant to government contracts.
+**      GSC-18128-1, "Core Flight Executive Version 6.6"
 **
-**      This is governed by the NASA Open Source Agreement and may be used, 
-**      distributed and modified only pursuant to the terms of that agreement. 
+**      Copyright (c) 2006-2019 United States Government as represented by
+**      the Administrator of the National Aeronautics and Space Administration.
+**      All Rights Reserved.
+**
+**      Licensed under the Apache License, Version 2.0 (the "License");
+**      you may not use this file except in compliance with the License.
+**      You may obtain a copy of the License at
+**
+**        http://www.apache.org/licenses/LICENSE-2.0
+**
+**      Unless required by applicable law or agreed to in writing, software
+**      distributed under the License is distributed on an "AS IS" BASIS,
+**      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+**      See the License for the specific language governing permissions and
+**      limitations under the License.
 **
 **  Title:   ELF2CFETBL Utility Header File for Table Images
 **
@@ -30,22 +39,6 @@
 **
 **  Notes:
 **
-**  $Log: cfe_tbl_filedef.h  $
-**  Revision 1.6 2014/08/26 16:41:40GMT-05:00 sstrege 
-**  Updated CFE_TBL_FILDEF_MAX_NAME_LEN to be set equal to CFE_TBL_MAX_FULL_NAME_LEN
-**  Revision 1.5 2014/06/03 10:35:05EDT lwalling 
-**  Updated CFE_TBL_FILEDEF macro to include reference to OS_USED macro
-**  Revision 1.4 2010/11/15 10:00:47EST dkobe 
-**  Modified definition of CFE_TBL_FileDef_t to ensure longword alignment
-**  Revision 1.3 2010/10/25 15:01:11EDT jmdagost 
-**  Corrected bad apostrophe in prologue.
-**  Revision 1.2 2010/10/04 15:24:57EDT jmdagost 
-**  Cleaned up copyright symbol.
-**  Revision 1.1 2008/04/17 08:05:25EDT ruperera 
-**  Initial revision
-**  Member added to project c:/MKSDATA/MKS-REPOSITORY/MKS-CFE-PROJECT/fsw/cfe-core/src/inc/project.pj
-**  Revision 1.1.1.2 2006/11/17 16:46:55EST David Kobe (dlkobe) 
-**  Updated with Doxygen formatted comments
 */
 
 /*

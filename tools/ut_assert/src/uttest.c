@@ -76,7 +76,7 @@ int UtTest_Run(void)
     uint32                   i;
     UtListNode_t            *UtListNode;
     UtTestDataBaseEntry_t   *UtTestDataBaseEntry;
-    int 					 rc = -1;
+    int                      rc = -1;
 
 	if (UtTestDataBase.NumberOfEntries > 0) {
 
@@ -114,7 +114,7 @@ int UtTest_RunTest(unsigned int testCase)
     uint32                   i = 0;
     UtListNode_t            *UtListNode;
     UtTestDataBaseEntry_t   *UtTestDataBaseEntry;
-    int 					 rc = -1;
+    int                      rc = -1;
 
   	if((testCase < 1) || (testCase > UtTestDataBase.NumberOfEntries)) {
 		printf("\n");

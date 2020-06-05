@@ -1,15 +1,24 @@
 /*
-**
 **  Filename: cfe_error.h
 **  $Id: cfe_error.h 1.14 2014/05/30 13:23:19GMT-05:00 lwalling Exp  $
 **
-**      Copyright (c) 2004-2006, United States government as represented by the 
-**      administrator of the National Aeronautics Space Administration.  
-**      All rights reserved. This software(cFE) was created at NASA's Goddard 
-**      Space Flight Center pursuant to government contracts.
+**      GSC-18128-1, "Core Flight Executive Version 6.6"
 **
-**      This is governed by the NASA Open Source Agreement and may be used, 
-**      distributed and modified only pursuant to the terms of that agreement. 
+**      Copyright (c) 2006-2019 United States Government as represented by
+**      the Administrator of the National Aeronautics and Space Administration.
+**      All Rights Reserved.
+**
+**      Licensed under the Apache License, Version 2.0 (the "License");
+**      you may not use this file except in compliance with the License.
+**      You may obtain a copy of the License at
+**
+**        http://www.apache.org/licenses/LICENSE-2.0
+**
+**      Unless required by applicable law or agreed to in writing, software
+**      distributed under the License is distributed on an "AS IS" BASIS,
+**      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+**      See the License for the specific language governing permissions and
+**      limitations under the License.
 **
 **  Title:    cFE Status Code Definition Header File
 **
@@ -20,60 +29,6 @@
 **
 **  References:
 **     Flight Software Branch C Coding Standard Version 1.0a
-**
-**  $Date: 2014/05/30 13:23:19GMT-05:00 $
-**  $Revision: 1.14 $
-**  $Log: cfe_error.h  $
-**  Revision 1.14 2014/05/30 13:23:19GMT-05:00 lwalling 
-**  Added error code definition for CFE_EVS_EVT_NOT_REGISTERED
-**  Revision 1.13 2011/12/28 13:59:09EST lwalling 
-**  Add definition for CFE_TBL_ERR_BAD_SPACECRAFT_ID and CFE_TBL_ERR_BAD_PROCESSOR_ID
-**  Revision 1.12 2011/11/30 15:42:21EST jmdagost 
-**  Added cFE ES Task Delete Error code to list.
-**  Revision 1.11 2010/10/25 17:49:30EDT jmdagost 
-**  Added FS Filename Length Error code, renumbered subsequent FS codes.
-**  Revision 1.10 2010/10/04 17:06:28EDT jmdagost 
-**  Cleaned up copyright symbol.
-**  Revision 1.9 2009/07/29 15:55:18EDT aschoeni 
-**  Added an error code for GetPoolBufInfo when the buffer is not in the pool
-**  Revision 1.8 2009/07/24 13:51:32EDT aschoeni 
-**  Added SB_BUFFER_INVALID error type to support Zero Copy Mode
-**  Revision 1.7 2009/05/01 14:34:15EDT dkobe 
-**  Added special note to CFE_TBL_ERR_NEVER_LOADED error code
-**  Revision 1.6 2009/05/01 14:26:32EDT dkobe 
-**  Modified return code contents to emphasize success vs failure of API calls
-**  Revision 1.5 2008/12/08 12:06:59EST dkobe 
-**  Updates to correct doxygen errors
-**  Revision 1.4 2008/08/27 16:58:29EDT apcudmore 
-**  added error code for timer delete error in ES task cleanup
-**  Revision 1.3 2008/08/06 22:42:36EDT dkobe 
-**  Added CFE_TIME_RegisterSynchCallback, CFE_TIME_UnregisterSynchCallback and CFE_TIME_CleanUpApp
-**  Revision 1.2 2008/06/20 15:40:32EDT apcudmore 
-**  Added support for OSAL based module loader
-**   - Removed calls and references to the BSP based module loader
-**  Revision 1.1 2008/04/17 08:05:18EDT ruperera 
-**  Initial revision
-**  Member added to project c:/MKSDATA/MKS-REPOSITORY/MKS-CFE-PROJECT/fsw/cfe-core/src/inc/project.pj
-**  Revision 1.40 2007/05/25 16:24:49EDT David Kobe (dlkobe) 
-**  Continued updating doxygen comments
-**  Revision 1.39 2007/05/25 11:57:50EDT apcudmore 
-**  Added CFE_ES_APP_CLEANUP_ERR
-**  Revision 1.38 2007/05/23 11:22:01EDT dlkobe 
-**  Added doxygen formatting
-**  Revision 1.37 2007/05/14 10:26:03EDT apcudmore 
-**  Preserve the EVS Local event log on a processor restart:
-**  - moved the EVS Log to the ES reset data structure
-**  - Added a couple of EVS Log related variables into the EVS_Log_t structure
-**  - Added a routine to the EVS early init to get a pointer to the EVS Log 
-**  - Added code to the EVS housekeeping service routine to copy Log variables into TLM
-**  Revision 1.36 2007/05/04 15:53:17EDT dlkobe 
-**  Added error codes returned by CFE_ES_DeleteCDS function
-**  Revision 1.35 2007/04/28 14:48:59EDT dlkobe 
-**  Baseline Implementation of Critical Tables
-**  Revision 1.32 2007/04/04 16:06:39EDT dlkobe 
-**  Made numerous changes to correct issues identified during ES code walkthrough
-**  Revision 1.30 2007/03/23 10:47:22EST apcudmore 
-**  Added CFE_ES_GetTaskInfo call and corresponding CFE_ES_TaskInfo_t data structure.
 **
 **/
 
@@ -115,7 +70,7 @@ extern "C" {
 **          001 - Events Services
 **          010 - Executive Services
 **          011 - File Services
-**          100 - OS API Services
+**          100 - Generic code for all services
 **          101 - Software Bus Services
 **          110 - Tables Services
 **          111 - Time Services
@@ -147,19 +102,58 @@ extern "C" {
 #define CFE_EVENTS_SERVICE       ((int32)0x02000000)
 #define CFE_EXECUTIVE_SERVICE    ((int32)0x04000000)
 #define CFE_FILE_SERVICE         ((int32)0x06000000)
-#define CFE_OSAPI_SERVICE        ((int32)0x08000000)
+#define CFE_GENERIC_SERVICE      ((int32)0x08000000)
 #define CFE_SOFTWARE_BUS_SERVICE ((int32)0x0a000000)
 #define CFE_TABLE_SERVICE        ((int32)0x0c000000)
 #define CFE_TIME_SERVICE         ((int32)0x0e000000)
 
 /*
-************* COMMON STATUS CODE *************
+************* COMMON STATUS CODES *************
 */
 
 /**
 **  Operation was performed successfully
 */
 #define CFE_SUCCESS              (0)
+
+/**
+**  Informational code indicating that a command was processed
+**  successfully but that the command counter should _not_ be incremented.
+*/
+#define CFE_STATUS_NO_COUNTER_INCREMENT     ((int32)0x48000001)
+
+/*
+**  This error code will be returned when a message validation process
+**  determined that the message length is incorrect
+**
+*/
+#define CFE_STATUS_WRONG_MSG_LENGTH         ((int32)0xc8000002)
+
+/**
+**  This error code will be returned when a message identification process
+**  determined that the message ID does not correspond to a known value
+**
+*/
+#define CFE_STATUS_UNKNOWN_MSG_ID           ((int32)0xc8000003)
+
+/**
+**  This error code will be returned when a message identification process
+**  determined that the command code is does not correspond to any known value
+**
+*/
+#define CFE_STATUS_BAD_COMMAND_CODE         ((int32)0xc8000004)
+
+/**
+**  Current version does not have the function or the feature
+**  of the function implemented.  This could be due to either an early
+**  build for this platform or the platform does not support
+**  the specified feature.
+**
+*/
+#define CFE_STATUS_NOT_IMPLEMENTED          ((int32)0xc800ffff)
+
+
+
 
 /*
 ************* EVENTS SERVICES STATUS CODES *************
@@ -179,14 +173,14 @@ extern "C" {
 
 /**
 **  Application ID returned by #CFE_ES_GetAppIDByName is greater
-**  than #CFE_ES_MAX_APPLICATIONS
+**  than #CFE_PLATFORM_ES_MAX_APPLICATIONS
 **
 */
 #define CFE_EVS_APP_ILLEGAL_APP_ID        ((int32)0xc2000003)
 
 /**
 **  Number of Application event filters input upon
-**  registration is greater than #CFE_EVS_MAX_EVENT_FILTERS
+**  registration is greater than #CFE_PLATFORM_EVS_MAX_EVENT_FILTERS
 **
 */
 #define CFE_EVS_APP_FILTER_OVERLOAD        ((int32)0xc2000004)
@@ -206,6 +200,24 @@ extern "C" {
 */
 #define CFE_EVS_EVT_NOT_REGISTERED        ((int32)0xc2000006)
 
+/**
+**  A file write error occurred while processing an EVS command
+**
+*/
+#define CFE_EVS_FILE_WRITE_ERROR          ((int32)0xc2000007)
+
+/**
+**  Invalid parameter supplied to EVS command
+**
+*/
+#define CFE_EVS_INVALID_PARAMETER         ((int32)0xc2000008)
+
+/**
+**  EVS command sent that requires a feature currently turned off
+**  This is to differentiate between "NOT_IMPLEMENTED" where the
+**  feature IS implemented but it is disabled at runtime.
+*/
+#define CFE_EVS_FUNCTION_DISABLED         ((int32)0xc2000009)
 
 /**
 **  Current version of cFE does not have the function or the feature
@@ -252,6 +264,7 @@ extern "C" {
 
 /**
 **  The cFE system Log is full.
+**  This error means the message was not logged at all
 **
 */
 #define CFE_ES_ERR_SYS_LOG_FULL  ((int32)0xc4000006)
@@ -309,7 +322,7 @@ extern "C" {
 
 /**
 **  The Application is requesting a CDS Block with an invalid ASCII string name.
-**  Either the name is too long (> #CFE_ES_CDS_MAX_NAME_LENGTH) or was an empty string.
+**  Either the name is too long (> #CFE_MISSION_ES_CDS_MAX_NAME_LENGTH) or was an empty string.
 **
 */
 #define CFE_ES_CDS_INVALID_NAME  ((int32)0xc400000f)
@@ -324,7 +337,7 @@ extern "C" {
 
 /**
 **  The CDS Registry has as many entries in it as it can hold.  The
-**  CDS Registry size can be adjusted with the #CFE_ES_CDS_MAX_NUM_ENTRIES
+**  CDS Registry size can be adjusted with the #CFE_PLATFORM_ES_CDS_MAX_NUM_ENTRIES
 **  macro defined in the cfe_platform_cfg.h file.
 **
 */
@@ -490,6 +503,21 @@ extern "C" {
 */
 #define CFE_ES_OPERATION_TIMED_OUT ((int32)0xc4000027)
 
+/**
+**  Occurs if CFE_ES_LoadLibrary() detects that the requested
+**  library name is already loaded.
+**
+*/
+#define CFE_ES_LIB_ALREADY_LOADED  ((int32)0x44000028)
+
+
+/**
+**  cFE system Log message truncated.
+**  This information code means the last syslog message was truncated
+**  due to insufficient space in the log buffer.
+**
+*/
+#define CFE_ES_ERR_SYS_LOG_TRUNCATED  ((int32)0x44000028)
 
 /**
 **  Current version of cFE does not have the function or the feature
@@ -807,7 +835,7 @@ extern "C" {
 /**
 **  This error code will be returned from #CFE_SB_CreatePipe when the  
 **  SB cannot accomodate the request to create a pipe because the maximum 
-**  number of pipes (#CFE_SB_MAX_PIPES) are in use. This configuration 
+**  number of pipes (#CFE_PLATFORM_SB_MAX_PIPES) are in use. This configuration 
 **  parameter is defined in the cfe_platform_cfg.h file.
 **
 */
@@ -839,7 +867,7 @@ extern "C" {
 /**
 **  The size field in the message header indicates the message exceeds the  
 **  max Software Bus message size. The max size is defined by   
-**  configuration parameter #CFE_SB_MAX_SB_MSG_SIZE in cfe_mission_cfg.h
+**  configuration parameter #CFE_MISSION_SB_MAX_SB_MSG_SIZE in cfe_mission_cfg.h
 **
 */
 #define CFE_SB_MSG_TOO_BIG      ((int32)0xca000007)
@@ -849,7 +877,7 @@ extern "C" {
 **  This error code will be returned from #CFE_SB_SendMsg when the memory 
 **  in the SB message buffer pool has been depleted. The amount of memory  
 **  in the pool is dictated by the configuration parameter 
-**  #CFE_SB_BUF_MEMORY_BYTES specified in the cfe_platform_cfg.h file. Also 
+**  #CFE_PLATFORM_SB_BUF_MEMORY_BYTES specified in the cfe_platform_cfg.h file. Also 
 **  the memory statistics, including current utilization figures and high 
 **  water marks for the SB Buffer memory pool can be monitored by sending 
 **  a Software Bus command to send the SB statistics packet.
@@ -861,7 +889,7 @@ extern "C" {
 /**
 **  Will be returned when calling one of the SB subscription API's if the
 **  SB routing table cannot accomodate another unique message ID because
-**  the platform configuration parameter #CFE_SB_MAX_MSG_IDS has been met.
+**  the platform configuration parameter #CFE_PLATFORM_SB_MAX_MSG_IDS has been met.
 **
 */
 #define CFE_SB_MAX_MSGS_MET     ((int32)0xca000009)
@@ -872,7 +900,7 @@ extern "C" {
 **  SB routing table cannot accomodate another destination for a 
 **  particular the given message ID. This occurs when the number of   
 **  destinations in use meets the platform configuration parameter 
-**  #CFE_SB_MAX_DEST_PER_PKT.
+**  #CFE_PLATFORM_SB_MAX_DEST_PER_PKT.
 **
 */
 #define CFE_SB_MAX_DESTS_MET    ((int32)0xca00000a)
@@ -936,15 +964,15 @@ extern "C" {
 /** 
 **  The calling Application attempted to register a table whose
 **  name length exceeded the platform configuration value of
-**  #CFE_TBL_MAX_NAME_LENGTH or was zero characters long.
+**  #CFE_MISSION_TBL_MAX_NAME_LENGTH or was zero characters long.
 **
 */
 #define CFE_TBL_ERR_INVALID_NAME ((int32)0xcc000002)
 
 /**
 **  The calling Application attempted to register a table:
-**    a) that was a double buffered table with size greater than #CFE_TBL_MAX_DBL_TABLE_SIZE
-**    b) that was a single buffered table with size greater than #CFE_TBL_MAX_SNGL_TABLE_SIZE
+**    a) that was a double buffered table with size greater than #CFE_PLATFORM_TBL_MAX_DBL_TABLE_SIZE
+**    b) that was a single buffered table with size greater than #CFE_PLATFORM_TBL_MAX_SNGL_TABLE_SIZE
 **    c) that had a size of zero
 **
 */
@@ -969,7 +997,7 @@ extern "C" {
 
 /**
 **  An application attempted to create a table and the Table
-**  registry already contained #CFE_TBL_MAX_NUM_TABLES in it.
+**  registry already contained #CFE_PLATFORM_TBL_MAX_NUM_TABLES in it.
 **
 */
 #define CFE_TBL_ERR_REGISTRY_FULL ((int32)0xcc000006)
@@ -1006,7 +1034,7 @@ extern "C" {
 
 /**
 **   An application attempted to create a table and the Table
-**   Handle Array already used all CFE_TBL_MAX_NUM_HANDLES in it.
+**   Handle Array already used all CFE_PLATFORM_TBL_MAX_NUM_HANDLES in it.
 **
 */
 #define CFE_TBL_ERR_HANDLES_FULL ((int32)0xcc00000B)
@@ -1243,7 +1271,7 @@ extern "C" {
 **  with an invalid Spacecraft ID in the table file header.
 **
 */
-#define CFE_TBL_ERR_BAD_SPACECRAFT_ID (int32)(0xcc000028L)
+#define CFE_TBL_ERR_BAD_SPACECRAFT_ID   ((int32)0xcc000028)
 
 
 /**
@@ -1253,7 +1281,13 @@ extern "C" {
 **  with an invalid Processor ID in the table file header.
 **
 */
-#define CFE_TBL_ERR_BAD_PROCESSOR_ID (int32)(0xcc000029L)
+#define CFE_TBL_ERR_BAD_PROCESSOR_ID    ((int32)0xcc000029)
+
+/**
+**  Error code indicating that the TBL command was not processed
+**  successfully and that the error counter should be incremented.
+*/
+#define CFE_TBL_MESSAGE_ERROR           ((int32)0xcc00002a)
 
 
 /**
@@ -1304,8 +1338,9 @@ extern "C" {
 
 /**
 **  An attempt to register too many cFE Time Services Synchronization
-**  callbacks has been made.  Adjust the #CFE_TIME_MAX_NUM_SYNCH_FUNCS
-**  configuration parameter, recompile and try again.
+**  callbacks has been made.  Only one callback function is allowed per
+**  application.  It is expected that the application itself will
+**  distribute the single callback to child threads as needed.
 **
 */
 #define CFE_TIME_TOO_MANY_SYNCH_CALLBACKS ((int32)0xce000003)

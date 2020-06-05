@@ -909,7 +909,7 @@ boolean CI_ValidateCmd(const CFE_SB_Msg_t* MsgPtr, uint32 MsgSize)
     if (CCSDS_RD_TYPE(MsgPtr->Hdr) != CCSDS_TLM)
     {
         cmdPkt = (CCSDS_CmdPkt_t *)MsgPtr;
-        if (CCSDS_RD_CHECKSUM(cmdPkt->SecHdr) != 0)
+        if (CCSDS_RD_CHECKSUM(cmdPkt->Sec) != 0)
         {
             if (CFE_SB_ValidateChecksum((CFE_SB_MsgPtr_t)MsgPtr) != TRUE)
             {

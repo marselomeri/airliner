@@ -31,18 +31,32 @@
 *
 *****************************************************************************/
 
+#include "cfe_evs_extern_typedefs.h"
 #include "cfe_evs_msg.h"
 
 /* Telemetry messages. */
-CFE_EVS_TlmPkt_t CFE_EVS_TlmPkt_S;
-CFE_EVS_Packet_t CFE_EVS_Packet_S;
+CFE_EVS_TlmPkt_t              CFE_EVS_TlmPkt_S;
+CFE_EVS_Packet_t              CFE_EVS_Packet_S;
 
 /* Command messages. */
-CFE_EVS_LogFileCmd_t CFE_EVS_LogFileCmd_S;
-CFE_EVS_AppDataCmd_t CFE_EVS_AppDataCmd_S;
-CFE_EVS_ModeCmd_t    CFE_EVS_ModeCmd_S;
-CFE_EVS_BitMaskCmd_t CFE_EVS_BitMaskCmd_S;
-CFE_EVS_AppNameCmd_t CFE_EVS_AppNameCmd_S;
-CFE_EVS_AppNameEventIDCmd_t CFE_EVS_AppNameEventIDCmd_S;
-CFE_EVS_AppNameBitMaskCmd_t CFE_EVS_AppNameBitMaskCmd_S;
-CFE_EVS_AppNameEventIDMaskCmd_t CFE_EVS_AppNameEventIDMaskCmd_S;
+CFE_EVS_Noop_t                CFE_EVS_Noop_S;
+CFE_EVS_ResetCounters_t       CFE_EVS_ResetCounters_S;
+CFE_EVS_EnableEventType_t     CFE_EVS_EnableEventType_S;
+CFE_EVS_DisableEventType_t    CFE_EVS_DisableEventType_S;
+CFE_EVS_SetEventFormatMode_t  CFE_EVS_SetEventFormatMode_S;
+CFE_EVS_EnableAppEventType_t  CFE_EVS_EnableAppEventType_S;
+CFE_EVS_DisableAppEventType_t CFE_EVS_DisableAppEventType_S;
+CFE_EVS_EnableAppEvents_t     CFE_EVS_EnableAppEvents_S;
+CFE_EVS_DisableAppEvents_t    CFE_EVS_DisableAppEvents_S;
+CFE_EVS_ResetAppCounter_t     CFE_EVS_ResetAppCounter_S;
+CFE_EVS_SetFilter_t           CFE_EVS_SetFilter_S;
+CFE_EVS_EnablePorts_t         CFE_EVS_EnablePorts_S;
+CFE_EVS_DisablePorts_t        CFE_EVS_DisablePorts_S;
+CFE_EVS_ResetFilter_t         CFE_EVS_ResetFilter_S;
+CFE_EVS_ResetAllFilters_t     CFE_EVS_ResetAllFilters_S;
+CFE_EVS_AddEventFilter_t      CFE_EVS_AddEventFilter_S;
+CFE_EVS_DeleteEventFilter_t   CFE_EVS_DeleteEventFilter_S;
+CFE_EVS_WriteAppDataFile_t    CFE_EVS_WriteAppDataFile_S;
+CFE_EVS_SetLogMode_t          CFE_EVS_SetLogMode_S;
+CFE_EVS_ClearLog_t            CFE_EVS_ClearLog_S;
+CFE_EVS_WriteLogDataFile_t    CFE_EVS_WriteLogDataFile_S;

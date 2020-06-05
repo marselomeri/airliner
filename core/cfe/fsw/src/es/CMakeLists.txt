@@ -43,6 +43,7 @@ set(CFE_ES_SRC
 	${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_perf.c 
 	${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_shell.c 
 	${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_start.c 
+	${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_syslog.c
 	${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_task.c
 	${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_symbols.c
 )

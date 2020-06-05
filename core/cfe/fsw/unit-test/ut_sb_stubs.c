@@ -1,12 +1,21 @@
 /*
+**      GSC-18128-1, "Core Flight Executive Version 6.6"
 **
-**      Copyright (c) 2004-2012, United States government as represented by the 
-**      administrator of the National Aeronautics Space Administration.  
-**      All rights reserved. This software(cFE) was created at NASA's Goddard 
-**      Space Flight Center pursuant to government contracts.
+**      Copyright (c) 2006-2019 United States Government as represented by
+**      the Administrator of the National Aeronautics and Space Administration.
+**      All Rights Reserved.
 **
-**      This is governed by the NASA Open Source Agreement and may be used, 
-**      distributed and modified only pursuant to the terms of that agreement. 
+**      Licensed under the Apache License, Version 2.0 (the "License");
+**      you may not use this file except in compliance with the License.
+**      You may obtain a copy of the License at
+**
+**        http://www.apache.org/licenses/LICENSE-2.0
+**
+**      Unless required by applicable law or agreed to in writing, software
+**      distributed under the License is distributed on an "AS IS" BASIS,
+**      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+**      See the License for the specific language governing permissions and
+**      limitations under the License.
 **
 ** File:
 ** $Id: ut_sb_stubs.c 1.4 2014/05/28 09:21:45GMT-05:00 wmoleski Exp  $
@@ -17,38 +26,6 @@
 ** Notes:
 ** Minimal work is done, only what is required for unit testing
 **
-** $Data:$
-** $Revision: 1.4 $
-** $Log: ut_sb_stubs.c  $
-** Revision 1.4 2014/05/28 09:21:45GMT-05:00 wmoleski 
-** Overwriting cFE Unit Test files with the updated JSC files.
-** Revision 1.3 2012/10/01 18:46:54EDT aschoeni 
-** Removed relative paths in includes, this is now done by makefile
-** Revision 1.2 2012/01/13 13:59:31EST acudmore 
-** Added license text
-** Revision 1.1 2008/04/17 08:05:46EDT ruperera 
-** Initial revision
-** Member added to project c:/MKSDATA/MKS-REPOSITORY/MKS-CFE-PROJECT/fsw/cfe-core/unit-test/project.pj
-** Revision 1.9 2007/05/30 15:15:22EDT njyanchik 
-** check in of ES Unit test
-** Revision 1.8 2007/05/21 08:17:37EDT njyanchik 
-** A check in of ES's Unit test to save my work
-** Revision 1.7 2007/05/16 11:14:37EDT njyanchik 
-** Update ES's unit test driver to match code for build 4.1
-** Revision 1.6 2007/05/10 15:14:25EDT njyanchik 
-** Another update of Jonathans UT
-** Revision 1.5 2007/05/07 13:45:37EDT njyanchik 
-** EVS's Unit test drivers have been updated
-** Revision 1.4 2007/05/04 09:10:24EDT njyanchik 
-** Check in of Time UT and related changes
-** Revision 1.3 2007/05/01 13:28:14EDT njyanchik 
-** I updated the ut stubs to get the each of the subsytems to compile under the unit test. I did not
-** change the unit tests themselves to cover more of the files, however.
-** Revision 1.2 2007/01/17 09:26:07EST njyanchik 
-** Check in of ES Unit Test changed files
-** Revision 1.1 2006/03/02 15:10:26GMT-05:00 jjhageman 
-** Initial revision
-** Member added to project d:/mksdata/MKS-CFE-PROJECT/fsw/cfe-core/unit-test/project.pj
 */
 
 /*
@@ -234,7 +211,37 @@ uint16 CFE_SB_GetCmdCode(CFE_SB_MsgPtr_t MsgPtr)
 ******************************************************************************/
 CFE_SB_MsgId_t CFE_SB_GetMsgId(CFE_SB_MsgPtr_t MsgPtr)
 {
-    return CCSDS_RD_SID(MsgPtr->Hdr);
+       CFE_SB_MsgId_t MsgId = 0;
+
+#ifdef MESSAGE_FORMAT_IS_CCSDS
+
+#ifndef MESSAGE_FORMAT_IS_CCSDS_VER_2  
+    MsgId = CCSDS_RD_SID(MsgPtr->Hdr);
+#else
+
+    uint32            SubSystemId;
+
+    MsgId = CCSDS_RD_APID(MsgPtr->Hdr); /* Primary header APID  */
+     
+    if ( CCSDS_RD_TYPE(MsgPtr->Hdr) == CCSDS_CMD)
+      MsgId = MsgId | CFE_SB_CMD_MESSAGE_TYPE;  
+
+    /* Add in the SubSystem ID as needed */
+    SubSystemId = CCSDS_RD_SUBSYSTEM_ID(MsgPtr->SpacePacket.ApidQ);
+    MsgId = (MsgId | (SubSystemId << 8));
+
+/* Example code to add in the System ID as needed. */
+/*   The default is to init this field to the Spacecraft ID but ignore for routing.   */
+/*   To fully implement this field would require significant SB optimization to avoid */
+/*   prohibitively large routing and index tables. */
+/*      uint16            SystemId;                              */
+/*      SystemId = CCSDS_RD_SYSTEM_ID(HdrPtr->ApidQ);            */
+/*      MsgId = (MsgId | (SystemId << 16)) */
+
+#endif
+#endif
+    
+return MsgId;
 }
 
 /*****************************************************************************/
@@ -344,10 +351,11 @@ int32 CFE_SB_SendMsg(CFE_SB_Msg_t *MsgPtr)
 {
     int32            status = CFE_SUCCESS;
     boolean          flag = FALSE;
-    CFE_EVS_Packet_t *packet;
+    CFE_EVS_LongEventTlm_t *packet;
+    CFE_EVS_ShortEventTlm_t *shortevt;
 #ifdef UT_VERBOSE
     int              i;
-    CFE_EVS_TlmPkt_t *tlmpkt;
+    CFE_EVS_HousekeepingTlm_t *tlmpkt;
 #endif
 
     if (SBSendMsgRtn.count > 0)
@@ -366,13 +374,19 @@ int32 CFE_SB_SendMsg(CFE_SB_Msg_t *MsgPtr)
         /* Process message per type */
         switch (CFE_SB_GetMsgId(MsgPtr))
         {
-            case CFE_EVS_EVENT_MSG_MID:
+            case CFE_EVS_SHORT_EVENT_MSG_MID:
 
-                packet = (CFE_EVS_Packet_t *) MsgPtr;
+                shortevt = (CFE_EVS_ShortEventTlm_t *) MsgPtr;
+                SendMsgEventIDRtn.value = shortevt->Payload.PacketID.EventID;
+                break;
+
+            case CFE_EVS_LONG_EVENT_MSG_MID:
+
+                packet = (CFE_EVS_LongEventTlm_t *) MsgPtr;
                 SendMsgEventIDRtn.value = packet->Payload.PacketID.EventID;
 #ifdef UT_VERBOSE
                 snprintf(cMsg, UT_MAX_MESSAGE_LENGTH,
-"  CFE_SB_SendMsg called: type CFE_EVS_EVENT_MSG_MID\n  %lu/%lu/%s %u:%s",
+"  CFE_SB_SendMsg called: type CFE_EVS_LONG_EVENT_MSG_MID\n  %lu/%lu/%s %u:%s",
                         packet->Payload.PacketID.SpacecraftID,
                         packet->Payload.PacketID.ProcessorID,
                         packet->Payload.PacketID.AppName,
@@ -392,18 +406,18 @@ int32 CFE_SB_SendMsg(CFE_SB_Msg_t *MsgPtr)
 
                 SendMsgEventIDRtn.value = CFE_EVS_HK_TLM_MID;
 #ifdef UT_VERBOSE
-                tlmpkt = (CFE_EVS_TlmPkt_t *) MsgPtr;
+                tlmpkt = (CFE_EVS_HousekeepingTlm_t *) MsgPtr;
                 snprintf(cMsg, UT_MAX_MESSAGE_LENGTH,
                          "  CFE_SB_SendMsg: type CFE_EVS_HK_TLM_MID\n"
                            "   CommandCounter = %d\n"
-                           "   CommandErrCounter = %d\n"
+                           "   CommandErrorCounter = %d\n"
                            "   MessageFormatMode = %d\n"
                            "   MessageSendCounter = %d\n"
                            "   MessageTruncCounter = %d\n"
                            "   UnregisteredAppCounter = %d\n"
                            "   OutputPort = %d\n   LogFullFlag = %d\n"
                            "   LogMode = %d\n   LogOverflowCounter = %d",
-                         tlmpkt->Payload.CommandCounter, tlmpkt->Payload.CommandErrCounter,
+                         tlmpkt->Payload.CommandCounter, tlmpkt->Payload.CommandErrorCounter,
                          tlmpkt->Payload.MessageFormatMode, tlmpkt->Payload.MessageSendCounter,
                          tlmpkt->Payload.MessageTruncCounter,
                          tlmpkt->Payload.UnregisteredAppCounter, tlmpkt->Payload.OutputPort,
@@ -411,7 +425,7 @@ int32 CFE_SB_SendMsg(CFE_SB_Msg_t *MsgPtr)
                          tlmpkt->Payload.LogOverflowCounter);
                 UT_Text(cMsg);
 
-                for (i = 0; i < CFE_ES_MAX_APPLICATIONS; i++)
+                for (i = 0; i < CFE_PLATFORM_ES_MAX_APPLICATIONS; i++)
                 {
                     snprintf(cMsg, UT_MAX_MESSAGE_LENGTH,
                              "   AppID = %lu\n    AppEnableStatus = %d\n    "
@@ -510,7 +524,30 @@ void CFE_SB_SetMsgId(CFE_SB_MsgPtr_t MsgPtr, CFE_SB_MsgId_t MsgId)
 {
     SetMsgIdRtn.value = MsgId;
     SetMsgIdRtn.count++;
+#ifndef MESSAGE_FORMAT_IS_CCSDS_VER_2  
     CCSDS_WR_SID(MsgPtr->Hdr, MsgId);
+#else
+  CCSDS_WR_VERS(MsgPtr->SpacePacket.Hdr, 1);
+
+  /* Set the stream ID APID in the primary header. */
+  CCSDS_WR_APID(MsgPtr->SpacePacket.Hdr, CFE_SB_RD_APID_FROM_MSGID(MsgId) );
+  
+  CCSDS_WR_TYPE(MsgPtr->SpacePacket.Hdr, CFE_SB_RD_TYPE_FROM_MSGID(MsgId) );
+  
+  
+  CCSDS_CLR_SEC_APIDQ(MsgPtr->SpacePacket.ApidQ);
+  
+  CCSDS_WR_EDS_VER(MsgPtr->SpacePacket.ApidQ, 1);
+  
+  CCSDS_WR_ENDIAN(MsgPtr->SpacePacket.ApidQ, CFE_PLATFORM_ENDIAN);
+  
+  CCSDS_WR_PLAYBACK(MsgPtr->SpacePacket.ApidQ, FALSE);
+  
+  CCSDS_WR_SUBSYSTEM_ID(MsgPtr->SpacePacket.ApidQ, CFE_SB_RD_SUBSYS_ID_FROM_MSGID(MsgId));
+  
+  CCSDS_WR_SYSTEM_ID(MsgPtr->SpacePacket.ApidQ, CFE_SPACECRAFT_ID);
+
+#endif
 }
 
 

@@ -1,12 +1,21 @@
 /*
+**      GSC-18128-1, "Core Flight Executive Version 6.6"
 **
-**      Copyright (c) 2004-2012, United States government as represented by the
-**      administrator of the National Aeronautics Space Administration.
-**      All rights reserved. This software(cFE) was created at NASA's Goddard
-**      Space Flight Center pursuant to government contracts.
+**      Copyright (c) 2006-2019 United States Government as represented by
+**      the Administrator of the National Aeronautics and Space Administration.
+**      All Rights Reserved.
 **
-**      This is governed by the NASA Open Source Agreement and may be used,
-**      distributed and modified only pursuant to the terms of that agreement.
+**      Licensed under the Apache License, Version 2.0 (the "License");
+**      you may not use this file except in compliance with the License.
+**      You may obtain a copy of the License at
+**
+**        http://www.apache.org/licenses/LICENSE-2.0
+**
+**      Unless required by applicable law or agreed to in writing, software
+**      distributed under the License is distributed on an "AS IS" BASIS,
+**      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+**      See the License for the specific language governing permissions and
+**      limitations under the License.
 **
 ** File:
 ** $Id: ut_stubs.c 1.11 2014/07/10 09:30:58GMT-05:00 rmcgraw Exp  $
@@ -17,80 +26,6 @@
 ** Notes:
 ** Minimal work is done, only what is required for unit testing
 **
-** $Data:$
-** $Revision: 1.11 $
-** $Log: ut_stubs.c  $
-** Revision 1.11 2014/07/10 09:30:58GMT-05:00 rmcgraw
-** DCR9772:2 Fix unit tests that broke when main files were checked in
-** Revision 1.10 2014/05/28 10:21:44EDT wmoleski
-** Overwriting cFE Unit Test files with the updated JSC files.
-** Revision 1.9 2012/01/13 13:59:31EST acudmore
-** Added license text
-** Revision 1.8 2009/08/04 13:34:27EDT aschoeni
-** Added heap information to ES telemetry
-** Revision 1.7 2009/07/29 19:23:43EDT aschoeni
-** Added GetPoolInfoRtn
-** Revision 1.6 2009/05/06 09:55:00EDT rmcgraw
-** DCR7366:1 Clear event history in UT_InitData
-** Revision 1.5 2009/04/28 16:25:14EDT rmcgraw
-** DCR7366:1 Added utility UT_CheckForOpenSockets
-** Revision 1.4 2009/04/27 10:39:49EDT rmcgraw
-** DCR7366:1 Added printing number of tests that passed in output.
-** Revision 1.3 2009/04/01 16:14:10EDT rmcgraw
-** DCR7366:1 Added poolCreateEx items and moved some utilities from sb_UT.c
-** Revision 1.2 2008/08/15 11:26:55EDT njyanchik
-** Check in of ES Unit Test
-** Revision 1.1 2008/04/17 13:05:47BST ruperera
-** Initial revision
-** Member added to project c:/MKSDATA/MKS-REPOSITORY/MKS-CFE-PROJECT/fsw/cfe-core/unit-test/project.pj
-** Revision 1.24 2007/09/21 19:02:55EDT David Kobe (dlkobe)
-** Updated table unit tests to stop segmentation fault
-** Revision 1.23 2007/07/09 15:31:48EDT dlkobe
-** Improper order of "memset" parameters was fixed
-** Revision 1.22 2007/07/08 22:30:54EDT dlkobe
-** Enhanced CDS simulation
-** Revision 1.21 2007/07/05 15:04:26EDT dlkobe
-** Baseline following complete TBL unit testing
-** Revision 1.20 2007/05/30 15:15:22EDT njyanchik
-** check in of ES Unit test
-** Revision 1.19 2007/05/30 08:56:41EDT njyanchik
-** Update
-** Revision 1.18 2007/05/25 13:13:43EDT njyanchik
-** update of ES unit test
-** Revision 1.17 2007/05/24 15:48:09EDT njyanchik
-** Update for ES Unit Test
-** Revision 1.16 2007/05/22 13:03:58EDT njyanchik
-** Updated changes to not lose my work
-** Revision 1.15 2007/05/16 11:14:37EDT njyanchik
-** Update ES's unit test driver to match code for build 4.1
-** Revision 1.14 2007/05/10 15:14:26EDT njyanchik
-** Another update of Jonathans UT
-** Revision 1.13 2007/05/07 13:45:38EDT njyanchik
-** EVS's Unit test drivers have been updated
-** Revision 1.12 2007/05/04 09:10:24EDT njyanchik
-** Check in of Time UT and related changes
-** Revision 1.10 2007/05/01 13:28:13EDT njyanchik
-** I updated the ut stubs to get the each of the subsytems to compile under the unit test. I did not
-** change the unit tests themselves to cover more of the files, however.
-** Revision 1.9 2007/03/02 15:18:05EST njyanchik
-** Jonathan provided me with a newer tbl unit test to check in
-** Revision 1.8 2007/01/17 09:26:07GMT-05:00 njyanchik
-** Check in of ES Unit Test changed files
-** Revision 1.7 2006/11/08 15:06:08GMT-05:00 rjmcgraw
-** Added FSWriteHdrRtn variable
-** Revision 1.6 2006/11/02 13:53:58EST njyanchik
-** Unit test for TIME was updated to match the changes made for this DCR
-** Revision 1.5 2006/11/01 12:46:54GMT-05:00 njyanchik
-** Changed the Unit test to reflect the changes from removing the CDS functionality from TIME
-** Revision 1.4 2006/07/26 07:10:41GMT-05:00 rjmcgraw
-** Changed SemGiv to SemGive and added CreatePoolRtn
-** Revision 1.3 2006/06/08 19:12:37GMT rjmcgraw
-** Added support for function UT_SetRtnCode
-** Revision 1.2 2006/05/17 13:56:42GMT jjhageman
-** Added UT_Queue for use by the osapi stubs (OS_Queue create, get, set)
-** Revision 1.1 2006/03/02 15:10:26EST jjhageman
-** Initial revision
-** Member added to project d:/mksdata/MKS-CFE-PROJECT/fsw/cfe-core/unit-test/project.pj
 */
 
 /*
@@ -313,6 +248,8 @@ void UT_Report(const char *file, uint32 line, boolean test, char *fun_name,
 */
 void UT_SendMsg(CFE_SB_MsgPtr_t msg_ptr, CFE_SB_MsgId_t id, uint16 code)
 {
+    /* Always set the secondary header flag as CFS applications are required use it */
+    CCSDS_WR_SHDR(*((CCSDS_PriHdr_t *)msg_ptr), 1);
     CFE_SB_SetMsgId(msg_ptr, id);
     CFE_SB_SetCmdCode(msg_ptr, code);
     CFE_SB_SendMsg(msg_ptr);
@@ -668,12 +605,19 @@ uint8 UT_GetActualCmdCodeField(CFE_SB_MsgPtr_t MsgPtr)
      * The CCSDS Command Function Code is defined as living in
      * bits 8 through 14 (mask 0x7F00) of the 16-bit unsigned
      * value encoded in NATIVE endianness in the two bytes
-     * stored at offsets 6 and 7 in the packet.
+     * stored at offsets 6 and 7 in the packet for CCSDS version 1
+     * and offsets 10 and 11 for CCSDS Version 2
      */
 
+    uint8 CmdCodeWordFieldIndex; /* Field index (in WORDS) */
     uint16 *w = (uint16 *)MsgPtr;
 
-    return (w[3] & 0x7F00) >> 8;
+#ifndef MESSAGE_FORMAT_IS_CCSDS_VER_2
+    CmdCodeWordFieldIndex = 3;
+#else
+    CmdCodeWordFieldIndex = 5;
+#endif
+    return (w[CmdCodeWordFieldIndex] & 0x7F00) >> 8;
 }
 
 /*

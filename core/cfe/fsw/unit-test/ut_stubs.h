@@ -1,13 +1,21 @@
 /*
+**      GSC-18128-1, "Core Flight Executive Version 6.6"
 **
-**      Copyright (c) 2004-2012, United States government as represented by the
-**      administrator of the National Aeronautics Space Administration.
-**      All rights reserved. This software(cFE) was created at NASA's Goddard
-**      Space Flight Center pursuant to government contracts.
+**      Copyright (c) 2006-2019 United States Government as represented by
+**      the Administrator of the National Aeronautics and Space Administration.
+**      All Rights Reserved.
 **
-**      This is governed by the NASA Open Source Agreement and may be used,
-**      distributed and modified only pursuant to the terms of that agreement.
+**      Licensed under the Apache License, Version 2.0 (the "License");
+**      you may not use this file except in compliance with the License.
+**      You may obtain a copy of the License at
 **
+**        http://www.apache.org/licenses/LICENSE-2.0
+**
+**      Unless required by applicable law or agreed to in writing, software
+**      distributed under the License is distributed on an "AS IS" BASIS,
+**      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+**      See the License for the specific language governing permissions and
+**      limitations under the License.
 **
 ** File:
 ** $Id: ut_stubs.h 1.10 2014/07/10 09:30:59GMT-05:00 rmcgraw Exp  $
@@ -19,68 +27,6 @@
 ** These routines contain a minimum amount of functionality required for
 ** unit testing full path coverage
 **
-** $Date: 2014/07/10 09:30:59GMT-05:00 $
-** $Revision: 1.10 $
-** $Log: ut_stubs.h  $
-** Revision 1.10 2014/07/10 09:30:59GMT-05:00 rmcgraw
-** DCR9772:2 Fix unit tests that broke when main files were checked in
-** Revision 1.9 2014/05/28 10:21:52EDT wmoleski
-** Overwriting cFE Unit Test files with the updated JSC files.
-** Revision 1.8 2012/10/01 18:47:29EDT aschoeni
-** Removed relative paths in includes, this is now done by makefile
-** Revision 1.7 2012/01/13 13:59:32EST acudmore
-** Added license text
-** Revision 1.6 2010/10/20 12:40:44EDT jmdagost
-** Added UseMutex element to Pool_t structure.
-** Revision 1.5 2009/05/06 09:57:03EDT rmcgraw
-** DCR7366:1 Increased event history from 10 to 64
-** Revision 1.4 2009/04/28 16:25:15EDT rmcgraw
-** DCR7366:1 Added utility UT_CheckForOpenSockets
-** Revision 1.3 2009/04/01 16:15:16EDT rmcgraw
-** DCR7366:1 Added 'getActual...' and DisplayPkt utilities
-** Revision 1.2 2008/08/15 11:26:53EDT njyanchik
-** Check in of ES Unit Test
-** Revision 1.1 2008/04/17 13:05:47BST ruperera
-** Initial revision
-** Member added to project c:/MKSDATA/MKS-REPOSITORY/MKS-CFE-PROJECT/fsw/cfe-core/unit-test/project.pj
-** Revision 1.20 2007/09/21 19:02:57EDT David Kobe (dlkobe)
-** Updated table unit tests to stop segmentation fault
-** Revision 1.19 2007/07/08 22:31:27EDT dlkobe
-** Enhanced CDS Simulation
-** Revision 1.18 2007/07/05 15:04:31EDT dlkobe
-** Baseline following complete TBL unit testing
-** Revision 1.17 2007/05/25 09:17:56EDT njyanchik
-** I added the rmfs call to the OSAL and updated the unit test stubs to match
-** Revision 1.16 2007/05/24 15:48:09EDT njyanchik
-** Update for ES Unit Test
-** Revision 1.15 2007/05/23 10:54:59EDT njyanchik
-** Update again to prevent loss of work
-** Revision 1.14 2007/05/22 13:03:57EDT njyanchik
-** Updated changes to not lose my work
-** Revision 1.13 2007/05/16 11:14:36EDT njyanchik
-** Update ES's unit test driver to match code for build 4.1
-** Revision 1.10 2007/05/01 13:28:24EDT njyanchik
-** I updated the ut stubs to get the each of the subsytems to compile under the unit test. I did not
-** change the unit tests themselves to cover more of the files, however.
-** Revision 1.9 2007/03/02 15:18:04EST njyanchik
-** Jonathan provided me with a newer tbl unit test to check in
-** Revision 1.8 2007/01/18 13:16:10GMT-05:00 njyanchik
-** I fixed an errant "." (dot)
-** Revision 1.7 2007/01/17 10:04:20GMT-05:00 njyanchik
-** This CP Checks in cleaned-up versions of the files checked in for the ES unit test
-** Revision 1.6 2007/01/17 09:26:09GMT-05:00 njyanchik
-** Check in of ES Unit Test changed files
-** Revision 1.5 2006/11/02 13:53:57GMT-05:00 njyanchik
-** Unit test for TIME was updated to match the changes made for this DCR
-** Revision 1.4 2006/11/01 12:46:54GMT-05:00 njyanchik
-** Changed the Unit test to reflect the changes from removing the CDS functionality from TIME
-** Revision 1.3 2006/06/08 14:11:20GMT-05:00 rjmcgraw
-** Added support for function UT_SetRtnCode
-** Revision 1.2 2006/05/17 13:56:45GMT jjhageman
-** Added UT_Queue for use by the osapi stubs (OS_Queue create, get, set)
-** Revision 1.1 2006/03/02 15:10:26EST jjhageman
-** Initial revision
-** Member added to project d:/mksdata/MKS-CFE-PROJECT/fsw/cfe-core/unit-test/project.pj
 */
 #ifndef _UT_STUBS_H_
 #define _UT_STUBS_H_
@@ -193,6 +139,29 @@ typedef UT_Compat_SetRtn_t UT_SetRtn_t;
 #define isHex(chr) (((chr) >= '0' && (chr) <= '9') || \
                     ((chr) >= 'a' && (chr) <= 'f') || \
                     ((chr) >= 'A' && (chr) <= 'F'))
+
+
+/* Required to be defined for GetMsgId and SetMsgId stubs
+ * Actual macro defitiions are in cfe_sb_msg_id_utils.h
+ * #ifndef so that the actual macros are used for unit 
+ * testing of SB
+ * */
+#ifndef CFE_SB_CMD_MESSAGE_TYPE
+#define CFE_SB_CMD_MESSAGE_TYPE 0x0000080
+#endif
+
+#ifndef CFE_SB_RD_APID_FROM_MSGID
+#define CFE_SB_RD_APID_FROM_MSGID(MsgId)          (MsgId & 0x0000007F)  
+#endif
+
+#ifndef CFE_SB_RD_SUBSYS_ID_FROM_MSGID
+#define CFE_SB_RD_SUBSYS_ID_FROM_MSGID(MsgId)  ( (MsgId & 0x0000FF00) >> 8) 
+#endif
+
+#ifndef CFE_SB_RD_TYPE_FROM_MSGID
+#define CFE_SB_RD_TYPE_FROM_MSGID(MsgId)       ( (MsgId & CFE_SB_CMD_MESSAGE_TYPE) >> 7) 
+#endif
+
 
 
 typedef struct

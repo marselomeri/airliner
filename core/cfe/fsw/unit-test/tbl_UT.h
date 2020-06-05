@@ -1,11 +1,21 @@
 /*
-**      Copyright (c) 2004-2012, United States government as represented by the
-**      administrator of the National Aeronautics Space Administration.
-**      All rights reserved. This software(cFE) was created at NASA's Goddard
-**      Space Flight Center pursuant to government contracts.
+**      GSC-18128-1, "Core Flight Executive Version 6.6"
 **
-**      This is governed by the NASA Open Source Agreement and may be used,
-**      distributed and modified only pursuant to the terms of that agreement.
+**      Copyright (c) 2006-2019 United States Government as represented by
+**      the Administrator of the National Aeronautics and Space Administration.
+**      All Rights Reserved.
+**
+**      Licensed under the Apache License, Version 2.0 (the "License");
+**      you may not use this file except in compliance with the License.
+**      You may obtain a copy of the License at
+**
+**        http://www.apache.org/licenses/LICENSE-2.0
+**
+**      Unless required by applicable law or agreed to in writing, software
+**      distributed under the License is distributed on an "AS IS" BASIS,
+**      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+**      See the License for the specific language governing permissions and
+**      limitations under the License.
 **
 ** File:
 **    tbl_UT.h
@@ -212,7 +222,7 @@ void Test_CFE_TBL_DeleteCDSCmd(void);
 ** \returns
 **        This function does not return a value.
 **
-** \sa #UT_Text, #UT_InitData, #UT_Report, #CFE_TBL_TlmRegCmd
+** \sa #UT_Text, #UT_InitData, #UT_Report, #CFE_TBL_SendRegistryCmd
 **
 ******************************************************************************/
 void Test_CFE_TBL_TlmRegCmd(void);
@@ -287,7 +297,7 @@ void Test_CFE_TBL_DumpToFile(void);
 ** \returns
 **        This function does not return a value.
 **
-** \sa #UT_Text, #UT_Report, #CFE_TBL_ResetCmd
+** \sa #UT_Text, #UT_Report, #CFE_TBL_ResetCountersCmd
 **
 ******************************************************************************/
 void Test_CFE_TBL_ResetCmd(void);
@@ -384,7 +394,7 @@ void Test_CFE_TBL_GetHkData(void);
 ** \returns
 **        This function does not return a value.
 **
-** \sa #UT_Text, #UT_InitData, #UT_SetOSFail, #UT_Report, #CFE_TBL_DumpRegCmd,
+** \sa #UT_Text, #UT_InitData, #UT_SetOSFail, #UT_Report, #CFE_TBL_DumpRegistryCmd,
 ** \sa #UT_SetRtnCode
 **
 ******************************************************************************/

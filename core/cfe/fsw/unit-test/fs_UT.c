@@ -1,11 +1,21 @@
 /*
-**      Copyright (c) 2004-2012, United States government as represented by the
-**      administrator of the National Aeronautics Space Administration.
-**      All rights reserved. This software(cFE) was created at NASA's Goddard
-**      Space Flight Center pursuant to government contracts.
+**      GSC-18128-1, "Core Flight Executive Version 6.6"
 **
-**      This is governed by the NASA Open Source Agreement and may be used,
-**      distributed and modified only pursuant to the terms of that agreement.
+**      Copyright (c) 2006-2019 United States Government as represented by
+**      the Administrator of the National Aeronautics and Space Administration.
+**      All Rights Reserved.
+**
+**      Licensed under the Apache License, Version 2.0 (the "License");
+**      you may not use this file except in compliance with the License.
+**      You may obtain a copy of the License at
+**
+**        http://www.apache.org/licenses/LICENSE-2.0
+**
+**      Unless required by applicable law or agreed to in writing, software
+**      distributed under the License is distributed on an "AS IS" BASIS,
+**      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+**      See the License for the specific language governing permissions and
+**      limitations under the License.
 **
 ** File:
 **    fss_UT.c
@@ -67,6 +77,7 @@ void OS_Application_Startup(void)
     UT_ADD_TEST(Test_CFE_FS_ExtractFileNameFromPath);
     UT_ADD_TEST(Test_CFE_FS_Private);
     UT_ADD_TEST(Test_CFE_FS_Decompress);
+    UT_ADD_TEST(Test_CFE_FS_GetUncompressedFile);
 }
 
 /*
@@ -80,7 +91,7 @@ void Test_CFE_FS_InitHeader(void)
     UT_InitData();
     CFE_FS_InitHeader(&Hdr, "description", 123);
     UT_Report(__FILE__, __LINE__,
-    		  Hdr.SubType = 123,
+    		  Hdr.SubType == 123,
               "CFE_FS_InitHeader",
               "Initialize header - successful");
 }
@@ -521,6 +532,61 @@ void Test_CFE_FS_Decompress(void)
 #ifdef UT_VERBOSE
     UT_Text("End Test Decompress\n\n");
 #endif
+}
+
+/*
+ * Test the CFE_FS_GetUncompressedFile() API which is a wrapper
+ * around CFE_FS_Decompress() that outputs to a temp file
+ */
+void Test_CFE_FS_GetUncompressedFile(void)
+{
+    int32 Status;
+    char OutputNameBuffer[OS_MAX_PATH_LEN + 32];
+
+    /* nominal run which must have valid gzip data */
+    UT_InitData();
+    UT_SetReadBuffer(fs_gz_test, 35400);
+    Status = CFE_FS_GetUncompressedFile(OutputNameBuffer, sizeof(OutputNameBuffer),
+            "/cf/Filename.gz", "/ramdisk");
+
+    UT_Report(__FILE__, __LINE__,
+              Status == CFE_SUCCESS,
+              "CFE_FS_GetUncompressedFile",
+              "Nominal Case");
+
+    UT_Report(__FILE__, __LINE__,
+              strcmp(OutputNameBuffer, "/ramdisk/Filename") == 0,
+              "CFE_FS_GetUncompressedFile",
+              "Output file name correct");
+
+    /* test case 2: CFE_FS_ExtractFilenameFromPath() fails */
+    UT_InitData();
+    Status = CFE_FS_GetUncompressedFile(OutputNameBuffer, sizeof(OutputNameBuffer),
+            NULL, "/Output");
+    UT_Report(__FILE__, __LINE__,
+              Status == CFE_FS_BAD_ARGUMENT,
+              "CFE_FS_GetUncompressedFile",
+              "Bad Input Argument");
+
+    /* test case 3: Length too long */
+    UT_InitData();
+    Status = CFE_FS_GetUncompressedFile(OutputNameBuffer, 2,
+            "/cf/Filename.gz", "/ramdisk");
+    UT_Report(__FILE__, __LINE__,
+              Status == CFE_FS_FNAME_TOO_LONG,
+              "CFE_FS_GetUncompressedFile",
+              "Name Too Long");
+
+    /* test case 4: CFE_FS_Decompress() fails */
+    UT_InitData();
+    UT_SetForceFail(UT_KEY(OS_open), OS_ERROR);
+    Status = CFE_FS_GetUncompressedFile(OutputNameBuffer, sizeof(OutputNameBuffer),
+            "/cf/Filename.gz", "/ramdisk");
+    UT_Report(__FILE__, __LINE__,
+              Status == CFE_FS_GZIP_OPEN_INPUT,
+              "CFE_FS_GetUncompressedFile",
+              "Decompress failure");
+
 }
 
 /* Unit test specific call to process SB messages */

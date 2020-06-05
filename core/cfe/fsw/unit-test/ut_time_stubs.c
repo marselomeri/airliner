@@ -1,11 +1,21 @@
 /*
-**      Copyright (c) 2004-2012, United States government as represented by the 
-**      administrator of the National Aeronautics Space Administration.  
-**      All rights reserved. This software(cFE) was created at NASA's Goddard 
-**      Space Flight Center pursuant to government contracts.
+**      GSC-18128-1, "Core Flight Executive Version 6.6"
 **
-**      This is governed by the NASA Open Source Agreement and may be used, 
-**      distributed and modified only pursuant to the terms of that agreement. 
+**      Copyright (c) 2006-2019 United States Government as represented by
+**      the Administrator of the National Aeronautics and Space Administration.
+**      All Rights Reserved.
+**
+**      Licensed under the Apache License, Version 2.0 (the "License");
+**      you may not use this file except in compliance with the License.
+**      You may obtain a copy of the License at
+**
+**        http://www.apache.org/licenses/LICENSE-2.0
+**
+**      Unless required by applicable law or agreed to in writing, software
+**      distributed under the License is distributed on an "AS IS" BASIS,
+**      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+**      See the License for the specific language governing permissions and
+**      limitations under the License.
 **
 ** File:
 ** $Id: ut_time_stubs.c 1.5 2014/05/28 09:21:47GMT-05:00 wmoleski Exp  $
@@ -16,28 +26,6 @@
 ** Notes:
 ** Minimal work is done, only what is required for unit testing
 **
-** $Data:$
-** $Revision: 1.5 $
-** $Log: ut_time_stubs.c  $
-** Revision 1.5 2014/05/28 09:21:47GMT-05:00 wmoleski 
-** Overwriting cFE Unit Test files with the updated JSC files.
-** Revision 1.4 2012/10/01 18:47:26EDT aschoeni 
-** Removed relative paths in includes, this is now done by makefile
-** Revision 1.3 2012/01/13 13:59:32EST acudmore 
-** Added license text
-** Revision 1.2 2008/08/15 11:26:55EDT njyanchik 
-** Check in of ES Unit Test
-** Revision 1.1 2008/04/17 13:05:48BST ruperera 
-** Initial revision
-** Member added to project c:/MKSDATA/MKS-REPOSITORY/MKS-CFE-PROJECT/fsw/cfe-core/unit-test/project.pj
-** Revision 1.3 2007/05/01 13:28:14EDT njyanchik 
-** I updated the ut stubs to get the each of the subsytems to compile under the unit test. I did not
-** change the unit tests themselves to cover more of the files, however.
-** Revision 1.2 2007/01/17 09:26:07EST njyanchik 
-** Check in of ES Unit Test changed files
-** Revision 1.1 2006/03/02 15:10:27GMT-05:00 jjhageman 
-** Initial revision
-** Member added to project d:/mksdata/MKS-CFE-PROJECT/fsw/cfe-core/unit-test/project.pj
 */
 
 /*

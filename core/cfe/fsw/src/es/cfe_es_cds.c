@@ -4,13 +4,23 @@
 **
 **
 **
-**      Copyright (c) 2004-2012, United States government as represented by the 
-**      administrator of the National Aeronautics Space Administration.  
-**      All rights reserved. This software(cFE) was created at NASA Goddard 
-**      Space Flight Center pursuant to government contracts.
+**      GSC-18128-1, "Core Flight Executive Version 6.6"
 **
-**      This is governed by the NASA Open Source Agreement and may be used, 
-**      distributed and modified only pursuant to the terms of that agreement.
+**      Copyright (c) 2006-2019 United States Government as represented by
+**      the Administrator of the National Aeronautics and Space Administration.
+**      All Rights Reserved.
+**
+**      Licensed under the Apache License, Version 2.0 (the "License");
+**      you may not use this file except in compliance with the License.
+**      You may obtain a copy of the License at
+**
+**        http://www.apache.org/licenses/LICENSE-2.0
+**
+**      Unless required by applicable law or agreed to in writing, software
+**      distributed under the License is distributed on an "AS IS" BASIS,
+**      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+**      See the License for the specific language governing permissions and
+**      limitations under the License.
 **
 **  Purpose:  
 **    This file implements the cFE Executive Services Critical Data Store functions.
@@ -23,56 +33,6 @@
 ** 
 **  Modification History:
 **
-** $Log: cfe_es_cds.c  $
-** Revision 1.7 2014/08/22 15:50:11GMT-05:00 lwalling 
-** Changed signed loop counters to unsigned
-** Revision 1.6 2014/05/05 13:21:40EDT acudmore 
-** Changed strncpy call to use correct define ( CFE_ES_CDS_MAX_FULL_NAME_LEN )
-** Revision 1.5 2014/04/23 15:25:52GMT-05:00 acudmore 
-** Reversed "if" clause order to check if array index is out of bounds before using it.
-** Revision 1.4 2012/02/08 16:24:11GMT-05:00 lwalling 
-** Added test for function result
-** Revision 1.3 2012/01/13 11:50:00EST acudmore 
-** Changed license text to reflect open source
-** Revision 1.2 2009/06/10 09:08:53EDT acudmore 
-** Converted OS_Mem* and OS_BSP* API to CFE_PSP_* API
-** Revision 1.1 2008/04/17 08:05:03EDT ruperera 
-** Initial revision
-** Member added to project c:/MKSDATA/MKS-REPOSITORY/MKS-CFE-PROJECT/fsw/cfe-core/src/es/project.pj
-** Revision 1.2.1.16 2007/07/11 11:42:30EDT David Kobe (dlkobe) 
-** Only allocates CDS Registry Record after successful registration
-** Revision 1.2.1.15 2007/06/07 09:35:33EDT dlkobe 
-** Corrected Error in Delete CDS function
-** Revision 1.2.1.14 2007/05/04 15:51:31EDT dlkobe 
-** Added CFE_ES_DeleteCDS function to allow TBL and ES to use common code
-** Revision 1.2.1.13 2007/04/28 16:08:07EDT dlkobe 
-** Corrected yet another file corruption
-** Revision 1.2.1.12 2007/04/28 15:57:01EDT dlkobe 
-** Added "cfe_es_cds.h" includes to resolve sudden errors.
-** Revision 1.2.1.11 2007/04/28 15:50:26EDT dlkobe 
-** Fixed typos leftover from restructuring
-** Revision 1.2.1.10 2007/04/28 15:48:45EDT dlkobe 
-** Correcting Corrupted File
-** Revision 1.2.1.9 2007/04/28 15:35:20EDT dlkobe 
-** Corrected Typos from restructuring
-** Revision 1.2.1.8 2007/04/28 15:32:38EDT dlkobe 
-** Restructured CFE_ES_RegisterCDS call to avoid Application Unknown Error
-** Revision 1.2.1.7 2007/04/28 15:04:43EDT dlkobe 
-** Corrected Variable Name Typo
-** Revision 1.2.1.6 2007/04/28 14:49:02EDT dlkobe 
-** Baseline Implementation of Critical Tables
-** Revision 1.2.1.5 2007/04/26 15:39:35EDT rjmcgraw 
-** Added error returns in CFE_ES_CDS_EarlyInit
-** Revision 1.2.1.4 2007/04/13 16:24:02EDT apcudmore 
-** Changed EarlyInit function to return int32 status
-** Revision 1.2.1.3 2007/04/04 16:06:41EDT dlkobe 
-** Made numerous changes to correct issues identified during ES code walkthrough
-** Revision 1.2.1.2 2006/10/30 15:28:29GMT-05:00 dlkobe 
-** Removed extra "PoolSize" variable
-** Revision 1.2.1.1 2006/10/30 11:05:04GMT-05:00 dlkobe 
-** Initial revision
-** Member added to project d:/mksdata/MKS-CFE-PROJECT/fsw/cfe-core/src/es/project.pj
-**
 */
 
 /*
@@ -82,6 +42,7 @@
 #include "cfe_es_apps.h"
 #include "cfe_es_cds.h"
 #include "cfe_es_global.h"
+#include "cfe_es_log.h"
 #include "cfe_psp.h"
 #include "cfe_es_cds_mempool.h"
 
@@ -93,7 +54,7 @@
 /* Each segment is guaranteed to start at a 4-byte offset boundary */
 #define CDS_REG_SIZE_OFFSET ((sizeof(CFE_ES_Global.CDSVars.ValidityField)+3) & 0xfffffffc)
 #define CDS_REG_OFFSET      (((CDS_REG_SIZE_OFFSET + sizeof(CFE_ES_Global.CDSVars.MaxNumRegEntries)) + 3) & 0xfffffffc)
-#define CDS_POOL_OFFSET     (((CDS_REG_OFFSET + (CFE_ES_CDS_MAX_NUM_ENTRIES * sizeof(CFE_ES_CDS_RegRec_t))) + 3) & 0xfffffffc)
+#define CDS_POOL_OFFSET     (((CDS_REG_OFFSET + (CFE_PLATFORM_ES_CDS_MAX_NUM_ENTRIES * sizeof(CFE_ES_CDS_RegRec_t))) + 3) & 0xfffffffc)
 
 /*****************************************************************************/
 /**
@@ -192,8 +153,8 @@ int32 CFE_ES_CDS_EarlyInit(void)
     
     /* Compute the minimum size required for the CDS with the current configuration of the cFE */
     MinRequiredSize = (sizeof(CFE_ES_Global.CDSVars.ValidityField) * 2) +            /* Minimum size for validity fields */
-                      (CFE_ES_CDS_MAX_NUM_ENTRIES * sizeof(CFE_ES_CDS_RegRec_t)) +   /* Minimum size for CDS Registry contents */
-                      CFE_ES_CDSReqdMinSize(CFE_ES_CDS_MAX_NUM_ENTRIES);             /* Max # of Min Sized Blocks */
+                      (CFE_PLATFORM_ES_CDS_MAX_NUM_ENTRIES * sizeof(CFE_ES_CDS_RegRec_t)) +   /* Minimum size for CDS Registry contents */
+                      CFE_ES_CDSReqdMinSize(CFE_PLATFORM_ES_CDS_MAX_NUM_ENTRIES);             /* Max # of Min Sized Blocks */
     
     /* Get CDS size from OS BSP */
     Status = CFE_PSP_GetCDSSize(&CFE_ES_Global.CDSVars.CDSSize);
@@ -426,7 +387,7 @@ int32 CFE_ES_InitializeCDS(uint32 CDSSize)
     
     /* Clear the CDS to ensure everything is gone */
     /* Create a block of zeros to write to the CDS */
-    CFE_PSP_MemSet(MemBlock, 0, sizeof(MemBlock));
+    memset(MemBlock, 0, sizeof(MemBlock));
     
     /* While there is space to write another block of zeros, then do so */
     while (((NumWritten + sizeof(MemBlock)) < CDSSize) && (Status == OS_SUCCESS))
@@ -515,7 +476,7 @@ int32 CFE_ES_InitCDSRegistry(void)
     uint32 i = 0;
     
     /* Initialize the local CDS Registry */
-    CFE_ES_Global.CDSVars.MaxNumRegEntries = CFE_ES_CDS_MAX_NUM_ENTRIES;
+    CFE_ES_Global.CDSVars.MaxNumRegEntries = CFE_PLATFORM_ES_CDS_MAX_NUM_ENTRIES;
     for (i=0; i<CFE_ES_Global.CDSVars.MaxNumRegEntries; i++)
     {
         CFE_ES_Global.CDSVars.Registry[i].Name[0] = '\0';
@@ -579,12 +540,12 @@ int32 CFE_ES_CDS_ValidateAppID(uint32 *AppIdPtr)
 
     if (Status == CFE_SUCCESS)
     {
-        if (*AppIdPtr >= CFE_ES_MAX_APPLICATIONS)
+        if (*AppIdPtr >= CFE_PLATFORM_ES_MAX_APPLICATIONS)
         {
             Status = CFE_ES_ERR_APPID;
 
             CFE_ES_WriteToSysLog("CFE_CDS:ValidateAppID-AppId=%d > Max Apps (%d)\n",
-                                 (int)(*AppIdPtr), CFE_ES_MAX_APPLICATIONS);
+                                 (int)(*AppIdPtr), CFE_PLATFORM_ES_MAX_APPLICATIONS);
         }
     }
     else
@@ -605,7 +566,7 @@ int32 CFE_ES_CDS_ValidateAppID(uint32 *AppIdPtr)
 
 void CFE_ES_FormCDSName(char *FullCDSName, const char *CDSName, uint32 ThisAppId)
 {
-    char AppName[OS_MAX_API_NAME] = "";
+    char AppName[OS_MAX_API_NAME];
 
     CFE_ES_GetAppName(AppName, ThisAppId, OS_MAX_API_NAME);
 
@@ -746,7 +707,7 @@ int32 CFE_ES_RebuildCDS(void)
                                sizeof(CFE_ES_Global.CDSVars.MaxNumRegEntries));
                                
     if ((Status == CFE_PSP_SUCCESS)  &&
-        (CFE_ES_Global.CDSVars.MaxNumRegEntries <= CFE_ES_CDS_MAX_NUM_ENTRIES))
+        (CFE_ES_Global.CDSVars.MaxNumRegEntries <= CFE_PLATFORM_ES_CDS_MAX_NUM_ENTRIES))
     {
         Status = CFE_PSP_ReadFromCDS(&CFE_ES_Global.CDSVars.Registry,
                                    CDS_REG_OFFSET,
@@ -796,7 +757,10 @@ int32 CFE_ES_DeleteCDS(const char *CDSName, boolean CalledByTblServices)
     char                 OwnerName[OS_MAX_API_NAME];
     uint32               AppId;
     uint32               i;
+    char                 LogMessage[CFE_ES_MAX_SYSLOG_MSG_SIZE];
     
+    LogMessage[0] = 0;
+
     /* Lock Registry for update.  This prevents two applications from */
     /* trying to change the CDS registry at the same time  */
     CFE_ES_LockCDSRegistry();
@@ -842,7 +806,8 @@ int32 CFE_ES_DeleteCDS(const char *CDSName, boolean CalledByTblServices)
                 /* Report any errors incurred while freeing the CDS Memory Block */
                 if (Status < 0)
                 {
-                    CFE_ES_WriteToSysLog("CFE_ES:DeleteCDS-Failed to free CDS Mem Block (Handle=0x%08lX)(Stat=0x%08X)\n",
+                    CFE_ES_SysLog_snprintf(LogMessage, sizeof(LogMessage),
+                            "CFE_ES:DeleteCDS-Failed to free CDS Mem Block (Handle=0x%08lX)(Stat=0x%08X)\n",
                             (unsigned long)RegRecPtr->MemHandle, (unsigned int)Status);
                 }
                 else
@@ -854,7 +819,8 @@ int32 CFE_ES_DeleteCDS(const char *CDSName, boolean CalledByTblServices)
             
                     if (Status != CFE_SUCCESS)
                     {
-                        CFE_ES_WriteToSysLog("CFE_ES:DeleteCDS-Failed to update CDS Registry (Stat=0x%08X)\n", (unsigned int)Status);
+                        CFE_ES_SysLog_snprintf(LogMessage, sizeof(LogMessage),
+                                "CFE_ES:DeleteCDS-Failed to update CDS Registry (Stat=0x%08X)\n", (unsigned int)Status);
                     }
                 }
             }
@@ -871,6 +837,12 @@ int32 CFE_ES_DeleteCDS(const char *CDSName, boolean CalledByTblServices)
 
     /* Unlock Registry for future updates */
     CFE_ES_UnlockCDSRegistry();
+
+    /* Output the message to syslog once the CDS registry resource is unlocked */
+    if (LogMessage[0] != 0)
+    {
+        CFE_ES_SYSLOG_APPEND(LogMessage);
+    }
 
     return Status;
 }   /* End of CFE_ES_DeleteCDS() */

@@ -1,64 +1,29 @@
 /******************************************************************************
 ** File: cfe_sb.h
 **
-**      Copyright (c) 2004-2006, United States government as represented by the
-**      administrator of the National Aeronautics Space Administration.
-**      All rights reserved. This software(cFE) was created at NASA's Goddard
-**      Space Flight Center pursuant to government contracts.
+**      GSC-18128-1, "Core Flight Executive Version 6.6"
 **
-**      This is governed by the NASA Open Source Agreement and may be used,
-**      distributed and modified only pursuant to the terms of that agreement.
+**      Copyright (c) 2006-2019 United States Government as represented by
+**      the Administrator of the National Aeronautics and Space Administration.
+**      All Rights Reserved.
 **
+**      Licensed under the Apache License, Version 2.0 (the "License");
+**      you may not use this file except in compliance with the License.
+**      You may obtain a copy of the License at
+**
+**        http://www.apache.org/licenses/LICENSE-2.0
+**
+**      Unless required by applicable law or agreed to in writing, software
+**      distributed under the License is distributed on an "AS IS" BASIS,
+**      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+**      See the License for the specific language governing permissions and
+**      limitations under the License.
 **
 ** Purpose:
 **      This header file contains all definitions for the cFE Software Bus
 **      Application Programmer's Interface.
 **
 ** Author:   R.McGraw/SSI
-**
-** $Log: cfe_sb.h  $
-** Revision 1.10 2011/04/07 08:34:14GMT-05:00 lwalling 
-** This file references CFE TIME structures, therefore it should include cfe_time.h
-** Revision 1.9 2009/07/29 19:21:50EDT aschoeni 
-** Added ZeroCopyHandle_t
-** Revision 1.8 2009/07/24 18:25:20EDT aschoeni 
-** Added Zero Copy Mode
-** Revision 1.7 2009/07/17 19:42:20EDT aschoeni 
-** Added PassMsg API to sb to support sequence count preservation
-** Revision 1.6 2009/06/10 09:15:06EDT acudmore 
-** updated os_bsp.h to cfe_psp.h
-** Revision 1.5 2009/04/29 10:03:59EDT rmcgraw 
-** DCR5801:11 Changed comments related to subscription return value
-** Revision 1.4 2009/02/27 09:55:04EST rmcgraw 
-** DCR1709:1 Removed incorrect comment in SetTotalMsgLength 
-** and reworded other comments
-** Revision 1.3 2009/02/26 17:49:19EST rmcgraw 
-** DCR6805:1 Added note under subscription API declaration
-** Revision 1.2 2008/12/08 12:06:56EST dkobe 
-** Updates to correct doxygen errors
-** Revision 1.1 2008/04/17 08:05:22EDT ruperera 
-** Initial revision
-** Member added to cfe project on tlserver3
-** Revision 1.25 2007/09/25 10:34:38EDT rjmcgraw 
-** DCR5127 Added doxygen comments
-** Revision 1.24 2007/07/06 13:18:35EDT rjmcgraw 
-** DCR469:1 Changed function prototype for GetLastSenderId
-** Revision 1.23 2007/05/23 11:22:02EDT dlkobe 
-** Added doxygen formatting
-** Revision 1.22 2007/04/19 15:47:03EDT rjmcgraw 
-** Moved subscription reporting structs to cfe_sb_msg.h
-** Revision 1.20 2007/03/22 12:55:20EST rjmcgraw 
-** Added comments regarding Qos
-** Revision 1.19 2007/01/24 16:49:35EST rjmcgraw
-** Added Pipe to SubEntries_t
-** Revision 1.18 2007/01/08 14:42:18EST rjmcgraw
-** Moved SubscribeLocal prototypes to this file from cfe_sb_priv.h
-** Revision 1.17 2007/01/04 14:49:44EST rjmcgraw
-** Added SubType to CFE_SB_SubRprtMsg_t
-** Revision 1.16 2007/01/02 10:01:35EST rjmcgraw
-** Moved structs from priv.h to cfe_sb.h for exposure to apps
-** Revision 1.15 2006/12/28 16:27:34EST rjmcgraw
-** Added cmd codes for SB subscription processing
 **
 ******************************************************************************/
 
@@ -72,11 +37,11 @@ extern "C" {
 /*
 ** Includes
 */
+#include "cfe_sb_extern_typedefs.h"
 #include "osconfig.h"
 #include "cfe_psp.h"
 #include "common_types.h"
 #include "cfe_mission_cfg.h"
-#include "cfe_platform_cfg.h"
 #include "ccsds.h"
 #include "cfe_time.h"
 
@@ -87,8 +52,10 @@ extern "C" {
 #define CFE_SB_POLL                     0      /**< \brief Option used with #CFE_SB_RcvMsg to request immediate pipe status */
 #define CFE_SB_PEND_FOREVER            -1      /**< \brief Option used with #CFE_SB_RcvMsg to force a wait for next message */
 #define CFE_SB_SUB_ENTRIES_PER_PKT      20     /**< \brief Configuration parameter used by SBN App */
-#define CFE_SB_SUBSCRIPTION             0      /**< \brief Subtype specifier used in #CFE_SB_SubRprtMsg_t by SBN App */
-#define CFE_SB_UNSUBSCRIPTION           1      /**< \brief Subtype specified used in #CFE_SB_SubRprtMsg_t by SBN App */
+#define CFE_SB_SUBSCRIPTION             0      /**< \brief Subtype specifier used in #CFE_SB_SingleSubscriptionTlm_t by SBN App */
+#define CFE_SB_UNSUBSCRIPTION           1      /**< \brief Subtype specified used in #CFE_SB_SingleSubscriptionTlm_t by SBN App */
+
+#define CFE_SB_INVALID_MSG_ID           0xFFFF /**< \brief Initializer for CFE_SB_MsgId_t values that will not match any real MsgId */
 
 /*
 ** Macro Definitions
@@ -113,6 +80,11 @@ extern "C" {
 #define CFE_SB_GET_MEMADDR(msgsrc)           (cpuaddr)msgsrc
 
 /*
+** Pipe option bit fields.
+*/
+#define CFE_SB_PIPEOPTS_IGNOREMINE 0x00000001 /**< \brief Messages sent by the app that owns this pipe will not be sent to this pipe. */
+
+/*
 ** Type Definitions
 */
 #ifdef MESSAGE_FORMAT_IS_CCSDS
@@ -120,21 +92,16 @@ extern "C" {
     /**< \brief Generic Software Bus Message Type Definition */
     typedef union {
         CCSDS_PriHdr_t      Hdr;   /**< \brief CCSDS Primary Header #CCSDS_PriHdr_t */
+        CCSDS_SpacePacket_t SpacePacket;
         uint32              Dword; /**< \brief Forces minimum of 32-bit alignment for this object */
         uint8               Byte[sizeof(CCSDS_PriHdr_t)];   /**< \brief Allows byte-level access */
     }CFE_SB_Msg_t;
+        
+    /** \brief Generic Software Bus Command Header Type Definition */
+    typedef CCSDS_CommandPacket_t   CFE_SB_CmdHdr_t;
 
-    /**< \brief Generic Software Bus Command Header Type Definition */
-    typedef struct{
-        CCSDS_PriHdr_t      Pri;/**< \brief CCSDS Primary Header #CCSDS_PriHdr_t */
-        CCSDS_CmdSecHdr_t   Sec;/**< \brief CCSDS Command Secondary Header #CCSDS_CmdSecHdr_t */
-    }CFE_SB_CmdHdr_t;
-
-    /**< \brief Generic Software Bus Telemetry Header Type Definition */
-    typedef struct{
-        CCSDS_PriHdr_t      Pri;/**< \brief CCSDS Primary Header #CCSDS_PriHdr_t */
-        CCSDS_TlmSecHdr_t   Sec;/**< \brief CCSDS Telemetry Secondary Header #CCSDS_TlmSecHdr_t */
-    }CFE_SB_TlmHdr_t;
+    /** \brief Generic Software Bus Telemetry Header Type Definition */
+    typedef CCSDS_TelemetryPacket_t CFE_SB_TlmHdr_t;
 
     #define CFE_SB_CMD_HDR_SIZE     (sizeof(CFE_SB_CmdHdr_t))/**< \brief Size of #CFE_SB_CmdHdr_t in bytes */
     #define CFE_SB_TLM_HDR_SIZE     (sizeof(CFE_SB_TlmHdr_t))/**< \brief Size of #CFE_SB_TlmHdr_t in bytes */
@@ -154,12 +121,6 @@ typedef uint32 CFE_SB_TimeOut_t;
 ** Software Bus pipe identifier used in many SB APIs
 */
 typedef uint8  CFE_SB_PipeId_t;
-
-/**< \brief  CFE_SB_MsgId_t to primitive type definition 
-** 
-** Software Bus message identifier used in many SB APIs
-*/
-typedef uint16 CFE_SB_MsgId_t;
 
 /**< \brief  CFE_SB_MsgPtr_t defined as a pointer to an SB Message */
 typedef CFE_SB_Msg_t *CFE_SB_MsgPtr_t;
@@ -234,7 +195,7 @@ typedef struct {
 ** \retcode #CFE_SB_PIPE_CR_ERR    \retdesc \copydoc CFE_SB_PIPE_CR_ERR   \endcode
 ** \endreturns
 **
-** \sa #CFE_SB_DeletePipe
+** \sa #CFE_SB_DeletePipe #CFE_SB_GetPipeOpts #CFE_SB_SetPipeOpts
 **/
 int32  CFE_SB_CreatePipe(CFE_SB_PipeId_t *PipeIdPtr,
                          uint16  Depth,
@@ -248,9 +209,12 @@ int32  CFE_SB_CreatePipe(CFE_SB_PipeId_t *PipeIdPtr,
 **          This routine deletes an input pipe and cleans up all data structures 
 **          associated with the pipe.  All subscriptions made for this pipe by 
 **          calls to #CFE_SB_Subscribe will be automatically removed from the 
-**          SB routing tables.  Any messages in the pipe will be discarded.  
-**          Applications must call this routine for all of their SB pipes as part 
-**          of their orderly shutdown process.
+**          SB routing tables.  Any messages in the pipe will be discarded.
+**
+**          Applications should not call this routine for all of their
+**          SB pipes as part of their orderly shutdown process, as the
+**          pipe will be deleted by the support framework at the
+**          appropriate time.
 **
 ** \par Assumptions, External Events, and Notes:
 **          None
@@ -263,9 +227,52 @@ int32  CFE_SB_CreatePipe(CFE_SB_PipeId_t *PipeIdPtr,
 ** \retcode #CFE_SB_BAD_ARGUMENT   \retdesc  \copydoc CFE_SB_BAD_ARGUMENT \endcode
 ** \endreturns
 **
-** \sa #CFE_SB_CreatePipe
+** \sa #CFE_SB_CreatePipe #CFE_SB_GetPipeOpts #CFE_SB_SetPipeOpts
 **/
 int32  CFE_SB_DeletePipe(CFE_SB_PipeId_t PipeId);
+
+/*****************************************************************************/
+/**
+** \brief Set options on a pipe.
+**
+** \par Description
+**          This routine sets (or clears) options to alter the pipe's behavior.
+**          Options are (re)set every call to this routine.
+**
+** \param[in]  PipeId       The pipe ID of the pipe to set options on.
+**
+** \param[in]  Opts         A bit field of options.
+**
+** \returns
+** \retcode #CFE_SUCCESS           \retdesc  \copydoc CFE_SUCCESS         \endcode
+** \retcode #CFE_SB_BAD_ARGUMENT   \retdesc  \copydoc CFE_SB_BAD_ARGUMENT \endcode
+** \endreturns
+**
+** \sa #CFE_SB_CreatePipe #CFE_SB_DeletePipe #CFE_SB_GetPipeOpts #CFE_SB_PIPEOPTS_IGNOREMINE
+**/
+int32  CFE_SB_SetPipeOpts(CFE_SB_PipeId_t     PipeId,
+                          uint8               Opts);
+
+/*****************************************************************************/
+/**
+** \brief Get options on a pipe.
+**
+** \par Description
+**          This routine gets the current options on a pipe.
+**
+** \param[in]  PipeId       The pipe ID of the pipe to get options from.
+**
+** \param[out] OptsPtr      A bit field of options.
+**
+** \returns
+** \retcode #CFE_SUCCESS           \retdesc  \copydoc CFE_SUCCESS         \endcode
+** \retcode #CFE_SB_BAD_ARGUMENT   \retdesc  \copydoc CFE_SB_BAD_ARGUMENT \endcode
+** \endreturns
+**
+** \sa #CFE_SB_CreatePipe #CFE_SB_DeletePipe #CFE_SB_SetPipeOpts #CFE_SB_PIPEOPTS_IGNOREMINE
+**/
+int32  CFE_SB_GetPipeOpts(CFE_SB_PipeId_t     PipeId,
+                          uint8               *OptPtr);
 
 /*****************************************************************************/
 /** 
@@ -319,7 +326,7 @@ int32  CFE_SB_SubscribeEx(CFE_SB_MsgId_t      MsgId,
 **          This routine adds the specified pipe to the destination list for 
 **          the specified message ID.  This is the same as #CFE_SB_SubscribeEx 
 **          with the Quality field set to #CFE_SB_Default_Qos and MsgLim set 
-**          to #CFE_SB_DEFAULT_MSG_LIMIT (4).
+**          to #CFE_PLATFORM_SB_DEFAULT_MSG_LIMIT (4).
 **
 ** \par Assumptions, External Events, and Notes:
 **          Note:   As subscriptions are received, the destinations are added to
@@ -355,7 +362,7 @@ int32 CFE_SB_Subscribe(CFE_SB_MsgId_t  MsgId, CFE_SB_PipeId_t PipeId);
 **          This routine adds the specified pipe to the destination list for 
 **          the specified message ID.  This is similar to #CFE_SB_SubscribeEx 
 **          with the Quality field set to #CFE_SB_Default_Qos and MsgLim set 
-**          to #CFE_SB_DEFAULT_MSG_LIMIT, but will not report the subscription.
+**          to #CFE_PLATFORM_SB_DEFAULT_MSG_LIMIT, but will not report the subscription.
 **          Subscription Reporting is enabled for interprocessor communication
 **          by way of the Software Bus Network (SBN) Application. 
 **
@@ -776,37 +783,6 @@ void CFE_SB_InitMsg(void           *MsgPtr,
                     CFE_SB_MsgId_t MsgId,
                     uint16         Length,
                     boolean        Clear );
-
-/*****************************************************************************/
-/** 
-** \brief Get the size of a software bus message header.
-**
-** \par Description
-**          This routine returns the number of bytes in a software bus message header.  
-**          This can be used for sizing buffers that need to store SB messages.  SB 
-**          message header formats can be different for each deployment of the cFE.  
-**          So, applications should use this function and avoid hard coding their buffer 
-**          sizes.
-**
-** \par Assumptions, External Events, and Notes:
-**          - For statically defined messages, a function call will not work.  The 
-**            macros #CFE_SB_CMD_HDR_SIZE and #CFE_SB_TLM_HDR_SIZE are available for use 
-**            in static message buffer sizing or structure definitions.  
-**
-** \param[in]  MsgId   The message ID to calculate header size for.  The size of the message 
-**                     header may depend on the MsgId in some implementations.  For example, 
-**                     if SB messages are implemented as CCSDS packets, the size of the header 
-**                     is different for command vs. telemetry packets.
-**
-** \returns
-** \retstmt The number of bytes in the software bus message header for 
-**          messages with the given \c MsgId. endstmt
-** \endreturns
-**
-** \sa #CFE_SB_GetUserData, #CFE_SB_GetMsgId, #CFE_SB_GetUserDataLength, #CFE_SB_GetTotalMsgLength,
-**     #CFE_SB_GetMsgTime, #CFE_SB_GetCmdCode, #CFE_SB_GetChecksum 
-**/
-uint16 CFE_SB_MsgHdrSize(CFE_SB_MsgId_t MsgId);
 
 /*****************************************************************************/
 /** 
@@ -1266,10 +1242,89 @@ int32 CFE_SB_MessageStringGet(char *DestStringPtr, const char *SourceStringPtr, 
 */
 int32 CFE_SB_MessageStringSet(char *DestStringPtr, const char *SourceStringPtr, uint32 DestMaxSize, uint32 SourceMaxSize);
 
+/**
+ * @brief Identifies whether a two CFE_SB_MsgId_t values are equal
+ *
+ * @par Description
+ *    In cases where the CFE_SB_MsgId_t type is not a simple integer
+ *    type, it may not be possible to do a direct equality check.
+ *    This inline function provides an abstraction for the equality
+ *    check between two CFE_SB_MsgId_t values.
+ *
+ *    Applications should transition to using this function to compare
+ *    MsgId values for equality to remain compatible with future versions
+ *    of cFE.
+ *
+ * @return TRUE if equality checks passed, FALSE otherwise.
+ */
+static inline osalbool CFE_SB_MsgId_Equal(CFE_SB_MsgId_t MsgId1, CFE_SB_MsgId_t MsgId2)
+{
+    return (MsgId1 == MsgId2);
+}
+
+/*****************************************************************************/
+/**
+ * @brief Converts a CFE_SB_MsgId_t to a normal integer
+ *
+ * @par Description
+ *    In cases where the CFE_SB_MsgId_t type is not a simple integer
+ *    type, it is not possible to directly display the value in a
+ *    printf-style statement, use it in a switch() statement, or other
+ *    similar use cases.
+ *
+ *    This inline function provides the ability to map a CFE_SB_MsgId_t
+ *    type back into a simple integer value.
+ *
+ *    Applications should transition to using this function wherever a
+ *    CFE_SB_MsgId_t type needs to be used as an integer.
+ *
+ * @par Assumptions and Notes:
+ *    This negates the type safety that was gained by using a non-
+ *    integer type for the CFE_SB_MsgId_t value.  This should only be used
+ *    in specific cases such as UI display (printf, events, etc) where the
+ *    value is being sent externally.  Any internal API calls should be
+ *    updated to use the CFE_SB_MsgId_t type directly, rather than an
+ *    integer type.
+ *
+ * @return Integer representation of the CFE_SB_MsgId_t
+ */
+static inline CFE_SB_MsgId_Atom_t CFE_SB_MsgIdToValue(CFE_SB_MsgId_t MsgId)
+{
+    return MsgId;
+}
+
+/*****************************************************************************/
+/**
+ * @brief Converts a normal integer into a CFE_SB_MsgId_t
+ *
+ * @par Description:
+ *    In cases where the CFE_SB_MsgId_t type is not a simple integer
+ *    type, it is not possible to directly use an integer value
+ *    supplied via a #define or similar method.
+ *
+ *    This inline function provides the ability to map an integer value
+ *    into a corresponding CFE_SB_MsgId_t value.
+ *
+ *    Applications should transition to using this function wherever an
+ *    integer needs to be used for a CFE_SB_MsgId_t.
+ *
+ * @par Assumptions and Notes:
+ *    This negates the type safety that was gained by using a non-
+ *    integer type for the CFE_SB_MsgId_t value.  This should only be
+ *    used in specific cases where the value is coming from an external
+ *    source.  Any internal API calls should be updated to return the
+ *    CFE_SB_MsgId_t type directly, rather than an integer type.
+ *
+ * @return CFE_SB_MsgId_t representation of the integer
+ */
+static inline CFE_SB_MsgId_t CFE_SB_ValueToMsgId(CFE_SB_MsgId_Atom_t MsgIdValue)
+{
+    return MsgIdValue;
+}
+
 #ifdef __cplusplus
 }
 #endif
-
 
 #endif  /* _cfesb_ */
 /*****************************************************************************/

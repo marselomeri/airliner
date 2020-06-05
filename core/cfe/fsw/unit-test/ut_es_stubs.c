@@ -1,12 +1,21 @@
 /*
+**      GSC-18128-1, "Core Flight Executive Version 6.6"
 **
-**      Copyright (c) 2004-2012, United States government as represented by the
-**      administrator of the National Aeronautics Space Administration.
-**      All rights reserved. This software(cFE) was created at NASA's Goddard
-**      Space Flight Center pursuant to government contracts.
+**      Copyright (c) 2006-2019 United States Government as represented by
+**      the Administrator of the National Aeronautics and Space Administration.
+**      All Rights Reserved.
 **
-**      This is governed by the NASA Open Source Agreement and may be used,
-**      distributed and modified only pursuant to the terms of that agreement.
+**      Licensed under the Apache License, Version 2.0 (the "License");
+**      you may not use this file except in compliance with the License.
+**      You may obtain a copy of the License at
+**
+**        http://www.apache.org/licenses/LICENSE-2.0
+**
+**      Unless required by applicable law or agreed to in writing, software
+**      distributed under the License is distributed on an "AS IS" BASIS,
+**      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+**      See the License for the specific language governing permissions and
+**      limitations under the License.
 **
 ** File:
 ** $Id: ut_es_stubs.c 1.13 2014/09/23 13:30:51GMT-05:00 lwalling Exp  $
@@ -17,59 +26,6 @@
 ** Notes:
 ** Minimal work is done, only what is required for unit testing
 **
-** $Data:$
-** $Revision: 1.13 $
-** $Log: ut_es_stubs.c  $
-** Revision 1.13 2014/09/23 13:30:51GMT-05:00 lwalling 
-** Modify CFE_ES_GetTaskInfo() to also return an error
-** Revision 1.12 2014/05/28 10:21:50EDT wmoleski 
-** Overwriting cFE Unit Test files with the updated JSC files.
-** Revision 1.11 2012/01/13 13:59:30EST acudmore
-** Added license text
-** Revision 1.10 2010/11/03 15:15:09EDT jmdagost
-** Added cfe.h include file.
-** Revision 1.9 2010/10/20 12:39:20EDT jmdagost
-** Added ES memory pool creation with no semaphore option.
-** Revision 1.8 2009/07/29 19:22:21EDT aschoeni
-** Added GetPoolBufInfo and GetPoolInfoRtn
-** Revision 1.7 2009/05/07 15:02:28EDT rmcgraw
-** DCR7366:1 Modified ES_GetTaskInfo
-** Revision 1.6 2009/05/06 09:53:02EDT rmcgraw
-** DCR7366:1 Changed PutPool to return positive integer for success
-** Revision 1.5 2009/04/23 09:27:16EDT rmcgraw
-** DCR7366:1 Commented out the fprintfs that indicate the function was called
-** Revision 1.4 2009/04/01 16:09:08EDT rmcgraw
-** DCR7366:1 Added Stub support for PoolCreateEx and removed alternating task names
-** Revision 1.3 2008/08/15 11:27:04EDT njyanchik
-** Check in of ES Unit Test
-** Revision 1.2 2008/08/07 03:43:52BST dkobe
-** Updated Unit Tests for CFE_TIME_RegisterSynchCallback, CFE_TIME_UnregisterSynchCallback and CFE_TIME_CleanUpApp
-** Revision 1.1 2008/04/17 08:05:44EDT ruperera
-** Initial revision
-** Member added to project c:/MKSDATA/MKS-REPOSITORY/MKS-CFE-PROJECT/fsw/cfe-core/unit-test/project.pj
-** Revision 1.18 2007/09/24 08:01:56EDT njyanchik
-** Update of EVS unit test
-** Revision 1.17 2007/09/21 15:40:18EDT David Kobe (dlkobe)
-** Modified pointer type definitions to eliminate Linux gcc compile warnings
-** Revision 1.15 2007/07/08 22:30:12EDT dlkobe
-** Enhanced simulation of CDS
-** Revision 1.14 2007/07/05 15:04:30EDT dlkobe
-** Baseline following complete TBL unit testing
-** Revision 1.13 2007/05/10 15:14:25EDT njyanchik
-** Another update of Jonathans UT
-** Revision 1.12 2007/05/04 09:12:06EDT njyanchik
-** Check in of Time UT and related changes
-** Revision 1.10 2007/05/01 13:28:23EDT njyanchik
-** I updated the ut stubs to get the each of the subsytems to compile under the unit test. I did not
-** change the unit tests themselves to cover more of the files, however.
-** Revision 1.9 2007/03/19 10:12:50EST njyanchik
-** fix a small api change in ES
-** Revision 1.8 2007/02/26 14:22:13EST njyanchik
-** initial check in files for TBL unit test, plus updates to current files
-** Revision 1.7 2006/11/02 13:53:57EST njyanchik
-** Unit test for TIME was updated to match the changes made for this DCR
-** Revision 1.6 2006/07/26 07:05:23GMT-05:00 rjmcgraw
-** Added CreatePoolRtn code
 */
 
 /*
@@ -81,6 +37,7 @@
 #include "cfe_time_utils.h"
 #include "cfe_es.h"
 #include "ut_stubs.h"
+#include "cfe_es_log.h"
 
 #ifdef CFE_LINUX
 #include "stdlib.h"
@@ -266,11 +223,11 @@ int32 CFE_ES_GetAppIDByName(uint32 *pAppID, const char *pAppName)
     }
     else if (strcmp(pAppName, "unregistered_app") == 0)
     {
-        *pAppID = CFE_ES_MAX_APPLICATIONS - 1;
+        *pAppID = CFE_PLATFORM_ES_MAX_APPLICATIONS - 1;
     }
     else if (strcmp(pAppName, "illegal_id") == 0)
     {
-        *pAppID = CFE_ES_MAX_APPLICATIONS + 1;
+        *pAppID = CFE_PLATFORM_ES_MAX_APPLICATIONS + 1;
     }
     else
     {
@@ -571,17 +528,24 @@ int32 CFE_ES_GetPoolBuf(uint32 **BufPtr,
 
     if (flag == FALSE)
     {
-        /* Round up the requested size to the next highest multiple of 2
-         * for the block size, similar to CFE_ES_GetBlockSize, in order to
-         * account for memory alignment requirements
-         */
-        while (!(Block >> 1 & Size))
+        if (Size > CFE_MISSION_SB_MAX_SB_MSG_SIZE)
         {
-            Block >>= 1;
+            Block = 0xffffffff;
         }
+        else
+        {
+            /* Round up the requested size to the next highest multiple of 2
+             * for the block size, similar to CFE_ES_GetBlockSize, in order to
+             * account for memory alignment requirements
+             */
+            while (!(Block >> 1 & Size))
+            {
+                Block >>= 1;
+            }
 
-        *BufPtr = (uint32 *) &poolBuffer[poolBufIndex];
-        poolBufIndex += Block;
+            *BufPtr = (uint32 *) &poolBuffer[poolBufIndex];
+            poolBufIndex += Block;
+        }
     }
 
     return Block;
@@ -1185,6 +1149,15 @@ int32 CFE_ES_GetResetType(uint32 *ResetSubtypePtr)
 ******************************************************************************/
 void CFE_ES_IncrementTaskCounter(void)
 {
+}
+
+int32 CFE_ES_WaitForSystemState(uint32 State, uint32 Timeout)
+{
+    int32 status = CFE_SUCCESS;
+
+    status = UT_DEFAULT_IMPL(CFE_ES_WaitForSystemState);
+
+    return status;
 }
 
 /*****************************************************************************/

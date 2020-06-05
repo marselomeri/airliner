@@ -1,47 +1,29 @@
 /*
 ** $Id: cfe_tbl_task.h 1.8 2012/01/13 12:17:41GMT-05:00 acudmore Exp  $
 **
-**      Copyright (c) 2004-2012, United States government as represented by the 
-**      administrator of the National Aeronautics Space Administration.  
-**      All rights reserved. This software(cFE) was created at NASA's Goddard 
-**      Space Flight Center pursuant to government contracts.
+**      GSC-18128-1, "Core Flight Executive Version 6.6"
 **
-**      This is governed by the NASA Open Source Agreement and may be used, 
-**      distributed and modified only pursuant to the terms of that agreement.
+**      Copyright (c) 2006-2019 United States Government as represented by
+**      the Administrator of the National Aeronautics and Space Administration.
+**      All Rights Reserved.
+**
+**      Licensed under the Apache License, Version 2.0 (the "License");
+**      you may not use this file except in compliance with the License.
+**      You may obtain a copy of the License at
+**
+**        http://www.apache.org/licenses/LICENSE-2.0
+**
+**      Unless required by applicable law or agreed to in writing, software
+**      distributed under the License is distributed on an "AS IS" BASIS,
+**      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+**      See the License for the specific language governing permissions and
+**      limitations under the License.
 **  
-**
 ** Purpose:  cFE Table Services (TBL) task header file
 **
 ** Author:   David Kobe (the Hammers Company, Inc.)
 **
 ** Notes:
-**
-** $Log: cfe_tbl_task.h  $
-** Revision 1.8 2012/01/13 12:17:41GMT-05:00 acudmore 
-** Changed license text to reflect open source
-** Revision 1.7 2010/10/27 17:53:37EDT dkobe 
-** Added TableLoadedOnce flag to Critical Table Registry
-** Revision 1.6 2010/10/27 16:37:16EDT dkobe 
-** Added CRC to Table Load buffer data structure
-** Revision 1.5 2010/10/27 13:58:42EDT dkobe 
-** Added notification message data to registry data structure type.
-** Revision 1.4 2010/10/25 15:00:28EDT jmdagost 
-** Corrected bad apostrophe in prologue.
-** Revision 1.3 2010/10/04 15:19:36EDT jmdagost 
-** Cleaned up copyright symbol.
-** Revision 1.2 2008/07/29 14:05:33EDT dkobe 
-** Removed redundant FileCreateTimeSecs and FileCreateTimeSubSecs fields
-** Revision 1.1 2008/04/17 08:05:36EDT ruperera 
-** Initial revision
-** Member added to project c:/MKSDATA/MKS-REPOSITORY/MKS-CFE-PROJECT/fsw/cfe-core/src/tbl/project.pj
-** Revision 1.23 2007/07/05 15:38:56EDT David Kobe (dlkobe) 
-** Added Critical Table Flag to Registry Dump Record
-** Revision 1.22 2007/05/04 15:56:24EDT dlkobe 
-** Added Delete CDS command
-** Revision 1.21 2007/04/28 14:48:56EDT dlkobe 
-** Baseline Implementation of Critical Tables
-** Revision 1.20 2006/10/31 12:15:29GMT-05:00 dlkobe 
-** Added a Validation flag to inactive buffers to monitor whether they have been successfully validated or not.
 **
 */
 
@@ -50,10 +32,6 @@
 */
 #ifndef _cfe_tbl_task_
 #define _cfe_tbl_task_
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 
 /*
@@ -152,7 +130,7 @@ typedef struct
 typedef struct 
 {
    CFE_ES_MemHandle_t    PoolHdl;
-   uint8                 Partition[CFE_TBL_BUF_MEMORY_BYTES];
+   CFE_ES_STATIC_POOL_TYPE(CFE_PLATFORM_TBL_BUF_MEMORY_BYTES) Partition;
 } CFE_TBL_BufParams_t;
 
 
@@ -206,7 +184,7 @@ typedef struct
 {
     uint32                      OwnerAppId;         /**< \brief Application ID of App that Registered Table */
     uint32                      Size;               /**< \brief Size, in bytes, of Table */
-    uint32                      NotificationMsgId;  /**< \brief Message ID of an associated management notification message */
+    CFE_SB_MsgId_t              NotificationMsgId;  /**< \brief Message ID of an associated management notification message */
     uint32                      NotificationParam;  /**< \brief Parameter of an associated management notification message */
     CFE_TBL_LoadBuff_t          Buffers[2];         /**< \brief Active and Inactive Buffer Pointers */
     CFE_TBL_CallbackFuncPtr_t   ValidationFuncPtr;  /**< \brief Ptr to Owner App's function that validates tbl contents */
@@ -222,7 +200,7 @@ typedef struct
     boolean                     TableLoadedOnce;    /**< \brief Flag indicating whether table has been loaded once or not */
     boolean                     LoadPending;        /**< \brief Flag indicating an inactive buffer is ready to be copied */
     boolean                     DumpOnly;           /**< \brief Flag indicating Table is NOT to be loaded */
-    boolean                     DblBuffered;        /**< \brief Flag indicating Table has a dedicated inactive buffer */
+    boolean                     DoubleBuffered;        /**< \brief Flag indicating Table has a dedicated inactive buffer */
     boolean                     UserDefAddr;        /**< \brief Flag indicating Table address was defined by Owner Application */
     boolean                     NotifyByMsg;        /**< \brief Flag indicating Table Services should notify owning App via message
                                                                 when table requires management */ 
@@ -284,7 +262,7 @@ typedef struct
     boolean                     TableLoadedOnce;    /**< \brief Flag indicating whether table has been loaded once or not */
     boolean                     LoadPending;        /**< \brief Flag indicating an inactive buffer is ready to be copied */
     boolean                     DumpOnly;           /**< \brief Flag indicating Table is NOT to be loaded */
-    boolean                     DblBuffered;        /**< \brief Flag indicating Table has a dedicated inactive buffer */
+    boolean                     DoubleBuffered;        /**< \brief Flag indicating Table has a dedicated inactive buffer */
     char                        Name[CFE_TBL_MAX_FULL_NAME_LEN];   /**< \brief Processor specific table name */
     char                        LastFileLoaded[OS_MAX_PATH_LEN];   /**< \brief Filename of last file loaded into table */
     char                        OwnerAppName[OS_MAX_API_NAME];     /**< \brief Application Name of App that Registered Table */
@@ -303,14 +281,14 @@ typedef struct
   /*
   ** Task command interface counters...
   */
-  uint8                  CmdCounter;                      /**< \brief Counts number of valid commands received */
-  uint8                  ErrCounter;                      /**< \brief Counts number of invalid commands received */
+  uint8                  CommandCounter;                      /**< \brief Counts number of valid commands received */
+  uint8                  CommandErrorCounter;                      /**< \brief Counts number of invalid commands received */
 
   /*
   ** Table Validation Result counters...
   */
-  uint8                  SuccessValCtr;                   /**< \brief Counts number of successful table validations */
-  uint8                  FailedValCtr;                    /**< \brief Counts number of unsuccessful table validations */
+  uint8                  SuccessValCounter;                   /**< \brief Counts number of successful table validations */
+  uint8                  FailedValCounter;                    /**< \brief Counts number of unsuccessful table validations */
   uint8                  NumValRequests;                  /**< \brief Counts number of table validation requests made */
 
   /*
@@ -321,8 +299,8 @@ typedef struct
   /*
   ** Task housekeeping and diagnostics telemetry packets...
   */
-  CFE_TBL_HkPacket_t     HkPacket;                        /**< \brief Housekeping Telemetry Packet */
-  CFE_TBL_TblRegPacket_t TblRegPacket;                    /**< \brief Table Registry Entry Telemetry Packet */
+  CFE_TBL_HousekeepingTlm_t       HkPacket;               /**< \brief Housekeping Telemetry Packet */
+  CFE_TBL_TableRegistryTlm_t      TblRegPacket;           /**< \brief Table Registry Entry Telemetry Packet */
   CFE_TBL_NotifyCmd_t    NotifyMsg;                       /**< \brief Table management notification command message */
 
   /*
@@ -339,7 +317,7 @@ typedef struct
   uint32                 TableTaskAppId;                  /**< \brief Contains Table Task Application ID as assigned by OS AL */
 
   int16                  HkTlmTblRegIndex;                /**< \brief Index of table registry entry to be telemetered with Housekeeping */
-  uint16                 ValidationCtr;
+  uint16                 ValidationCounter;
 
   /*
   ** Registry Access Mutex and Load Buffer Semaphores
@@ -347,17 +325,17 @@ typedef struct
   uint32                 RegistryMutex;                   /**< \brief Mutex that controls access to Table Registry */
   uint32                 WorkBufMutex;                    /**< \brief Mutex that controls assignment of Working Buffers */
   CFE_ES_CDSHandle_t     CritRegHandle;                   /**< \brief Handle to Critical Table Registry in CDS */
-  CFE_TBL_LoadBuff_t     LoadBuffs[CFE_TBL_MAX_SIMULTANEOUS_LOADS];  /**< \brief Working table buffers shared by single buffered tables */
+  CFE_TBL_LoadBuff_t     LoadBuffs[CFE_PLATFORM_TBL_MAX_SIMULTANEOUS_LOADS];  /**< \brief Working table buffers shared by single buffered tables */
 
   /*
   ** Registry Data
   */
-  CFE_TBL_AccessDescriptor_t  Handles[CFE_TBL_MAX_NUM_HANDLES];  /**< \brief Array of Access Descriptors */
-  CFE_TBL_RegistryRec_t       Registry[CFE_TBL_MAX_NUM_TABLES];  /**< \brief Array of Table Registry Records */
-  CFE_TBL_CritRegRec_t        CritReg[CFE_TBL_MAX_CRITICAL_TABLES]; /**< \brief Array of Critical Table Registry Records */
+  CFE_TBL_AccessDescriptor_t  Handles[CFE_PLATFORM_TBL_MAX_NUM_HANDLES];  /**< \brief Array of Access Descriptors */
+  CFE_TBL_RegistryRec_t       Registry[CFE_PLATFORM_TBL_MAX_NUM_TABLES];  /**< \brief Array of Table Registry Records */
+  CFE_TBL_CritRegRec_t        CritReg[CFE_PLATFORM_TBL_MAX_CRITICAL_TABLES]; /**< \brief Array of Critical Table Registry Records */
   CFE_TBL_BufParams_t         Buf;                               /**< \brief Parameters associated with Table Task's Memory Pool */
-  CFE_TBL_ValidationResult_t  ValidationResults[CFE_TBL_MAX_NUM_VALIDATIONS]; /**< \brief Array of Table Validation Requests */
-  CFE_TBL_DumpControl_t       DumpControlBlocks[CFE_TBL_MAX_SIMULTANEOUS_LOADS]; /**< \brief Array of Dump-Only Dump Control Blocks */
+  CFE_TBL_ValidationResult_t  ValidationResults[CFE_PLATFORM_TBL_MAX_NUM_VALIDATIONS]; /**< \brief Array of Table Validation Requests */
+  CFE_TBL_DumpControl_t       DumpControlBlocks[CFE_PLATFORM_TBL_MAX_SIMULTANEOUS_LOADS]; /**< \brief Array of Dump-Only Dump Control Blocks */
 
 } CFE_TBL_TaskData_t;
 
@@ -416,10 +394,6 @@ void  CFE_TBL_TaskPipe(CFE_SB_Msg_t *MessagePtr);
 ** \retval None
 ******************************************************************************/
 void  CFE_TBL_InitData(void);
-
-#ifdef __cplusplus
-}
-#endif
 
 
 #endif /* _cfe_tbl_task_ */

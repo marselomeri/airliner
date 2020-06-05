@@ -1,12 +1,21 @@
 /*
+**      GSC-18128-1, "Core Flight Executive Version 6.6"
 **
-**      Copyright (c) 2004-2012, United States government as represented by the
-**      administrator of the National Aeronautics Space Administration.
-**      All rights reserved. This software(cFE) was created at NASA's Goddard
-**      Space Flight Center pursuant to government contracts.
+**      Copyright (c) 2006-2019 United States Government as represented by
+**      the Administrator of the National Aeronautics and Space Administration.
+**      All Rights Reserved.
 **
-**      This is governed by the NASA Open Source Agreement and may be used,
-**      distributed and modified only pursuant to the terms of that agreement.
+**      Licensed under the Apache License, Version 2.0 (the "License");
+**      you may not use this file except in compliance with the License.
+**      You may obtain a copy of the License at
+**
+**        http://www.apache.org/licenses/LICENSE-2.0
+**
+**      Unless required by applicable law or agreed to in writing, software
+**      distributed under the License is distributed on an "AS IS" BASIS,
+**      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+**      See the License for the specific language governing permissions and
+**      limitations under the License.
 **
 ** File:
 **    time_UT.c
@@ -21,48 +30,6 @@
 **
 ** Notes:
 **    1. This is unit test code only, not for use in flight
-**
-** $Date: 2014/05/28 09:21:46GMT-05:00 $
-** $Revision: 1.7 $
-** $Log: time_UT.c  $
-** Revision 1.7 2014/05/28 09:21:46GMT-05:00 wmoleski
-** Overwriting cFE Unit Test files with the updated JSC files.
-** Revision 1.6 2012/10/01 18:47:09EDT aschoeni
-** Removed relative paths in includes, this is now done by makefile
-** Revision 1.5 2012/01/13 13:59:29EST acudmore
-** Added license text
-** Revision 1.4 2011/12/07 19:19:32EST aschoeni
-** Removed returns for TIME and SB for cleaning up apps
-** Revision 1.3 2011/11/30 15:09:08EST jmdagost
-** Replaced ifdef/ifndef preprocessor tests with if...==TRUE/if...!=TRUE tests
-** Revision 1.2 2008/08/06 22:43:48EDT dkobe
-** Updated Unit Tests for CFE_TIME_RegisterSynchCallback, CFE_TIME_UnregisterSynchCallback and CFE_TIME_CleanUpApp
-** Revision 1.1 2008/04/17 08:05:44EDT ruperera
-** Initial revision
-** Member added to project c:/MKSDATA/MKS-REPOSITORY/MKS-CFE-PROJECT/fsw/cfe-core/unit-test/project.pj
-** Revision 1.9 2007/05/15 15:16:31EDT njyanchik
-** Updated unit test for new code
-** Revision 1.8 2007/05/04 09:10:25EDT njyanchik
-** Check in of Time UT and related changes
-** Revision 1.7 2007/05/01 13:28:14EDT njyanchik
-** I updated the ut stubs to get the each of the subsytems to compile under the unit test. I did not
-** change the unit tests themselves to cover more of the files, however.
-** Revision 1.6 2006/11/02 13:53:58EST njyanchik
-** Unit test for TIME was updated to match the changes made for this DCR
-** Revision 1.5 2006/11/01 12:46:54GMT-05:00 njyanchik
-** Changed the Unit test to reflect the changes from removing the CDS functionality from TIME
-** Revision 1.4 2006/10/30 14:09:28GMT-05:00 njyanchik
-** I changed TIME to use the new ES_CDS implementation. This involved using the
-** new functions, as well as modifying the CFE_TIME_TaskData structure as well as
-** the CFE_TIME_DiagPacket structure. They both made reference to the address
-** of the TIME CDS (the old implementation). Now they both use the new
-** CFE_ES_CDSHandle_t. Also, the Unit Test for Time was updated. No new paths
-** through the code were created, but since return codes from the CDS functions
-** changed, there needed to be updates to the UT.
-** Revision 1.3 2006/05/31 08:33:15GMT-05:00 jjhageman
-** Addition of CFE_TIME_MET2SCTime testing and added case to CFE_TIME_Sub2MicroSec for full coverage.
-** Revision 1.2 2006/05/31 08:29:37EDT jjhageman
-** Additions for code coverage with different defines
 **
 */
 
@@ -99,7 +66,7 @@ int32 ut_time_CallbackCalled;
 /*
 ** Functions
 */
-#if (CFE_TIME_CFG_SIGNAL == TRUE)
+#if (CFE_PLATFORM_TIME_CFG_SIGNAL == TRUE)
 /*****************************************************************************/
 /**
 ** \brief OS_SelectTone stub function
@@ -182,7 +149,7 @@ void Test_Init(void)
     int16 ExpRtn;
     int16 SubErrCnt = 0;
 
-#if (CFE_TIME_CFG_SERVER == TRUE)
+#if (CFE_PLATFORM_TIME_CFG_SERVER == TRUE)
     int16 SubLocalErrCnt = 0;
 #endif
 
@@ -193,17 +160,16 @@ void Test_Init(void)
     /* Test successful API initialization */
     UT_InitData();
     ExpRtn = 3;
-#if (CFE_TIME_CFG_SERVER == TRUE)
+#if (CFE_PLATFORM_TIME_CFG_SERVER == TRUE)
     ExpRtn++;
 #endif
-#if (CFE_TIME_CFG_SERVER == TRUE)
- #if (CFE_TIME_CFG_FAKE_TONE == TRUE)
+#if (CFE_PLATFORM_TIME_CFG_SERVER == TRUE)
+ #if (CFE_MISSION_TIME_CFG_FAKE_TONE == TRUE)
     ExpRtn++;
  #endif
 #endif
-#if (CFE_TIME_ENA_1HZ_CMD_PKT == TRUE)
+    /* account for 1Hz command, which is always enabled */
     ExpRtn++;
-#endif
     CFE_TIME_EarlyInit();
     UT_Report(__FILE__, __LINE__,
               SetMsgIdRtn.count == ExpRtn,
@@ -262,13 +228,13 @@ void Test_Init(void)
     UT_InitData();
     ExpRtn = 0;
 
-#if (CFE_TIME_CFG_CLIENT == TRUE)
+#if (CFE_PLATFORM_TIME_CFG_CLIENT == TRUE)
     SubErrCnt++;
     UT_SetRtnCode(&SB_SubscribeRtn, -SubErrCnt, SubErrCnt);
     ExpRtn = -SubErrCnt;
 #endif
 
-#if (CFE_TIME_CFG_SERVER == TRUE)
+#if (CFE_PLATFORM_TIME_CFG_SERVER == TRUE)
     SubLocalErrCnt++;
     UT_SetRtnCode(&SB_SubscribeLocalRtn, -SubLocalErrCnt, SubLocalErrCnt);
     ExpRtn = -SubLocalErrCnt;
@@ -285,13 +251,13 @@ void Test_Init(void)
     UT_InitData();
     ExpRtn = 0;
 
-#if (CFE_TIME_CFG_CLIENT == TRUE)
+#if (CFE_PLATFORM_TIME_CFG_CLIENT == TRUE)
     SubErrCnt++;
     UT_SetRtnCode(&SB_SubscribeRtn, -SubErrCnt, SubErrCnt);
     ExpRtn = -SubErrCnt;
 #endif
 
-#if (CFE_TIME_CFG_SERVER == TRUE)
+#if (CFE_PLATFORM_TIME_CFG_SERVER == TRUE)
     SubLocalErrCnt++;
     UT_SetRtnCode(&SB_SubscribeLocalRtn, -SubLocalErrCnt, SubLocalErrCnt);
     ExpRtn = -SubLocalErrCnt;
@@ -308,14 +274,14 @@ void Test_Init(void)
     UT_InitData();
     ExpRtn = 0;
 
-#if (CFE_TIME_CFG_FAKE_TONE == TRUE)
- #if (CFE_TIME_CFG_CLIENT == TRUE)
+#if (CFE_MISSION_TIME_CFG_FAKE_TONE == TRUE)
+ #if (CFE_PLATFORM_TIME_CFG_CLIENT == TRUE)
     SubErrCnt++;
     UT_SetRtnCode(&SB_SubscribeRtn, -SubErrCnt, SubErrCnt);
     ExpRtn = -SubErrCnt;
  #endif
 
- #if (CFE_TIME_CFG_SERVER == TRUE)
+ #if (CFE_PLATFORM_TIME_CFG_SERVER == TRUE)
     SubLocalErrCnt++;
     UT_SetRtnCode(&SB_SubscribeLocalRtn, -SubLocalErrCnt, SubLocalErrCnt);
     ExpRtn = -SubLocalErrCnt;
@@ -336,8 +302,8 @@ void Test_Init(void)
      * subscription
      */
     UT_InitData();
-#if (CFE_TIME_CFG_SERVER == TRUE && CFE_TIME_CFG_SOURCE != TRUE && \
-     CFE_TIME_CFG_FAKE_TONE != TRUE)
+#if (CFE_PLATFORM_TIME_CFG_SERVER == TRUE && CFE_PLATFORM_TIME_CFG_SOURCE != TRUE && \
+     CFE_MISSION_TIME_CFG_FAKE_TONE != TRUE)
     SubErrCnt++;
     UT_SetRtnCode(&SB_SubscribeRtn, -SubErrCnt, SubErrCnt);
     ExpRtn = -SubErrCnt;
@@ -346,6 +312,7 @@ void Test_Init(void)
               "CFE_TIME_Task_Init",
               "Time at tone signal commands subscription failure");
 #else
+    SubErrCnt++;
     UT_Report(__FILE__, __LINE__,
               TRUE,
               "CFE_TIME_Task_Init",
@@ -456,12 +423,12 @@ void Test_GetTime(void)
     CFE_TIME_TaskData.AtToneMET.Subseconds = 0;
     CFE_TIME_TaskData.AtToneSTCF.Seconds = 3600; /* 01:00:00.00000 */
     CFE_TIME_TaskData.AtToneSTCF.Subseconds = 0;
-    CFE_TIME_TaskData.AtToneLeaps = 32;
+    CFE_TIME_TaskData.AtToneLeapSeconds = 32;
     CFE_TIME_TaskData.AtToneDelay.Seconds = 0; /* 0.00000 */
     CFE_TIME_TaskData.AtToneDelay.Subseconds = 0;
     CFE_TIME_TaskData.AtToneLatch.Seconds = 10; /* 10.00000 */
     CFE_TIME_TaskData.AtToneLatch.Subseconds = 0;
-    CFE_TIME_TaskData.ClockSetState = CFE_TIME_NOT_SET; /* Force invalid time */
+    CFE_TIME_TaskData.ClockSetState = CFE_TIME_SetState_NOT_SET; /* Force invalid time */
     CFE_TIME_Print(timeBuf, CFE_TIME_GetMET());
     result = !strcmp(timeBuf, expectedMET);
     snprintf(testDesc, UT_MAX_MESSAGE_LENGTH,
@@ -505,9 +472,9 @@ void Test_GetTime(void)
     seconds = CFE_TIME_GetLeapSeconds();
     snprintf(testDesc, UT_MAX_MESSAGE_LENGTH,
              "Expected = %d, actual = %d",
-             CFE_TIME_TaskData.AtToneLeaps, seconds);
+             CFE_TIME_TaskData.AtToneLeapSeconds, seconds);
     UT_Report(__FILE__, __LINE__,
-              seconds == CFE_TIME_TaskData.AtToneLeaps,
+              seconds == CFE_TIME_TaskData.AtToneLeapSeconds,
               "CFE_TIME_GetLeapSeconds",
               testDesc);
 
@@ -537,7 +504,7 @@ void Test_GetTime(void)
     UT_InitData();
     CFE_TIME_Print(timeBuf, CFE_TIME_GetTime());
 
-#if (CFE_TIME_CFG_DEFAULT_TAI == TRUE)
+#if (CFE_MISSION_TIME_CFG_DEFAULT_TAI == TRUE)
     result = !strcmp(timeBuf, expectedTAI);
     snprintf(testDesc, UT_MAX_MESSAGE_LENGTH,
              "(Default = TAI) Expected = %s, actual = %s",
@@ -569,26 +536,26 @@ void Test_GetTime(void)
     /* Test retrieving the time status (invalid time is expected) */
     UT_InitData();
     UT_Report(__FILE__, __LINE__,
-              CFE_TIME_GetClockState() == CFE_TIME_INVALID,
+              CFE_TIME_GetClockState() == CFE_TIME_ClockState_INVALID,
               "CFE_TIME_GetClockState",
               "Invalid time");
 
 
     /* Test alternate flag values */
-    CFE_TIME_TaskData.ClockSetState = CFE_TIME_NOT_SET;
-    CFE_TIME_TaskData.ClockFlyState = CFE_TIME_NO_FLY;
-    CFE_TIME_TaskData.ClockSource = CFE_TIME_USE_EXTERN;
-    CFE_TIME_TaskData.ClockSignal = CFE_TIME_TONE_RED;
-    CFE_TIME_TaskData.ServerFlyState = CFE_TIME_NO_FLY;
+    CFE_TIME_TaskData.ClockSetState = CFE_TIME_SetState_NOT_SET;
+    CFE_TIME_TaskData.ClockFlyState = CFE_TIME_FlywheelState_NO_FLY;
+    CFE_TIME_TaskData.ClockSource = CFE_TIME_SourceSelect_EXTERNAL;
+    CFE_TIME_TaskData.ClockSignal = CFE_TIME_ToneSignalSelect_REDUNDANT;
+    CFE_TIME_TaskData.ServerFlyState = CFE_TIME_FlywheelState_NO_FLY;
     CFE_TIME_TaskData.Forced2Fly = FALSE;
-    CFE_TIME_TaskData.OneTimeDirection = CFE_TIME_SUB_ADJUST;
-    CFE_TIME_TaskData.OneHzDirection = CFE_TIME_SUB_ADJUST;
-    CFE_TIME_TaskData.DelayDirection = CFE_TIME_SUB_ADJUST;
+    CFE_TIME_TaskData.OneTimeDirection = CFE_TIME_AdjustDirection_SUBTRACT;
+    CFE_TIME_TaskData.OneHzDirection = CFE_TIME_AdjustDirection_SUBTRACT;
+    CFE_TIME_TaskData.DelayDirection = CFE_TIME_AdjustDirection_SUBTRACT;
     CFE_TIME_TaskData.IsToneGood = FALSE;
     ActFlags = CFE_TIME_GetClockInfo();
     StateFlags = 0;
 
-#if (CFE_TIME_CFG_SERVER == TRUE)
+#if (CFE_PLATFORM_TIME_CFG_SERVER == TRUE)
     StateFlags |= CFE_TIME_FLAG_SERVER;
 #endif
 
@@ -601,15 +568,15 @@ void Test_GetTime(void)
 
     /* Test successfully converting the clock state data to flag values */
     UT_InitData();
-    CFE_TIME_TaskData.ClockSetState = CFE_TIME_WAS_SET;
-    CFE_TIME_TaskData.ClockFlyState = CFE_TIME_IS_FLY;
-    CFE_TIME_TaskData.ClockSource = CFE_TIME_USE_INTERN;
-    CFE_TIME_TaskData.ClockSignal = CFE_TIME_TONE_PRI;
-    CFE_TIME_TaskData.ServerFlyState = CFE_TIME_IS_FLY;
+    CFE_TIME_TaskData.ClockSetState = CFE_TIME_SetState_WAS_SET;
+    CFE_TIME_TaskData.ClockFlyState = CFE_TIME_FlywheelState_IS_FLY;
+    CFE_TIME_TaskData.ClockSource = CFE_TIME_SourceSelect_INTERNAL;
+    CFE_TIME_TaskData.ClockSignal = CFE_TIME_ToneSignalSelect_PRIMARY;
+    CFE_TIME_TaskData.ServerFlyState = CFE_TIME_FlywheelState_IS_FLY;
     CFE_TIME_TaskData.Forced2Fly = TRUE;
-    CFE_TIME_TaskData.OneTimeDirection = CFE_TIME_ADD_ADJUST;
-    CFE_TIME_TaskData.OneHzDirection = CFE_TIME_ADD_ADJUST;
-    CFE_TIME_TaskData.DelayDirection = CFE_TIME_ADD_ADJUST;
+    CFE_TIME_TaskData.OneTimeDirection = CFE_TIME_AdjustDirection_ADD;
+    CFE_TIME_TaskData.OneHzDirection = CFE_TIME_AdjustDirection_ADD;
+    CFE_TIME_TaskData.DelayDirection = CFE_TIME_AdjustDirection_ADD;
     CFE_TIME_TaskData.IsToneGood = TRUE;
     StateFlags = CFE_TIME_FLAG_CLKSET |
                  CFE_TIME_FLAG_FLYING |
@@ -622,7 +589,7 @@ void Test_GetTime(void)
                  CFE_TIME_FLAG_ADDTCL |
                  CFE_TIME_FLAG_GDTONE;
 
-#if (CFE_TIME_CFG_SERVER == TRUE)
+#if (CFE_PLATFORM_TIME_CFG_SERVER == TRUE)
     StateFlags |= CFE_TIME_FLAG_SERVER;
 #endif
 
@@ -934,7 +901,7 @@ void Test_ConvertTime(void)
     char timeBuf[sizeof("yyyy-ddd-hh:mm:ss.xxxxx_")];
     CFE_TIME_SysTime_t METTime;
 
-#if (CFE_TIME_CFG_DEFAULT_TAI == TRUE)
+#if (CFE_MISSION_TIME_CFG_DEFAULT_TAI == TRUE)
     /* TAI time derived = MET + STCF */
     char *expectedSCTime = "1980-001-02:00:40.00000";
 #else
@@ -952,7 +919,7 @@ void Test_ConvertTime(void)
     METTime.Subseconds = 0;
     CFE_TIME_TaskData.AtToneSTCF.Seconds = 7240; /* 01:00:00.00000 */
     CFE_TIME_TaskData.AtToneSTCF.Subseconds = 0;
-    CFE_TIME_TaskData.AtToneLeaps = 32;
+    CFE_TIME_TaskData.AtToneLeapSeconds = 32;
     CFE_TIME_Print(timeBuf, CFE_TIME_MET2SCTime(METTime));
 
     /* SC = MET + SCTF [- Leaps for UTC] */
@@ -1063,13 +1030,13 @@ void Test_ConvertCFEFS(void)
     UT_InitData();
 
     /* Calculate expected result based on macro value */
-    if (CFE_TIME_FS_FACTOR < 0 && -CFE_TIME_FS_FACTOR > 0)
+    if (CFE_MISSION_TIME_FS_FACTOR < 0 && -CFE_MISSION_TIME_FS_FACTOR > 0)
     {
         result = 0;
     }
     else
     {
-        result = CFE_TIME_FS_FACTOR;
+        result = CFE_MISSION_TIME_FS_FACTOR;
     }
 
     UT_Report(__FILE__, __LINE__,
@@ -1081,13 +1048,13 @@ void Test_ConvertCFEFS(void)
     UT_InitData();
 
     /* Calculate expected result based on macro value */
-    if (CFE_TIME_FS_FACTOR < 0 && -CFE_TIME_FS_FACTOR > 0xffff)
+    if (CFE_MISSION_TIME_FS_FACTOR < 0 && -CFE_MISSION_TIME_FS_FACTOR > 0xffff)
     {
         result = 0;
     }
     else
     {
-        result = CFE_TIME_FS_FACTOR + 0xffff;
+        result = CFE_MISSION_TIME_FS_FACTOR + 0xffff;
     }
 
     UT_Report(__FILE__, __LINE__,
@@ -1099,20 +1066,20 @@ void Test_ConvertCFEFS(void)
     UT_InitData();
     UT_Report(__FILE__, __LINE__,
               CFE_TIME_CFE2FSSeconds(0xffffffff) ==
-              (uint32) (CFE_TIME_FS_FACTOR - 1),
+              (uint32) (CFE_MISSION_TIME_FS_FACTOR - 1),
               "CFE_TIME_CFE2FSSeconds",
               "Maximum cFE seconds value");
 
     /* Test FS to cFE conversion using 0 for the FS seconds value */
     UT_InitData();
 
-    if (CFE_TIME_FS_FACTOR > 0)
+    if (CFE_MISSION_TIME_FS_FACTOR > 0)
     {
         result = 0;
     }
     else
     {
-        result = -(uint32) CFE_TIME_FS_FACTOR;
+        result = -(uint32) CFE_MISSION_TIME_FS_FACTOR;
     }
 
     UT_Report(__FILE__, __LINE__,
@@ -1125,7 +1092,7 @@ void Test_ConvertCFEFS(void)
      */
     UT_InitData();
     UT_Report(__FILE__, __LINE__,
-              CFE_TIME_FS2CFESeconds(CFE_TIME_FS_FACTOR - 1) == 0,
+              CFE_TIME_FS2CFESeconds(CFE_MISSION_TIME_FS_FACTOR - 1) == 0,
               "CFE_TIME_FS2CFESeconds",
               "Negative cFE seconds conversion (force to zero)");
 
@@ -1134,7 +1101,7 @@ void Test_ConvertCFEFS(void)
      */
     UT_InitData();
 
-    if (CFE_TIME_FS_FACTOR > (uint32) (CFE_TIME_FS_FACTOR + 1))
+    if (CFE_MISSION_TIME_FS_FACTOR > (uint32) (CFE_MISSION_TIME_FS_FACTOR + 1))
     {
         result = 0;
     }
@@ -1144,7 +1111,7 @@ void Test_ConvertCFEFS(void)
     }
 
     UT_Report(__FILE__, __LINE__,
-              CFE_TIME_FS2CFESeconds(CFE_TIME_FS_FACTOR + 1) == result,
+              CFE_TIME_FS2CFESeconds(CFE_MISSION_TIME_FS_FACTOR + 1) == result,
               "CFE_TIME_FS2CFESeconds",
               "Minimum convertible FS seconds value");
 
@@ -1152,7 +1119,7 @@ void Test_ConvertCFEFS(void)
     UT_InitData();
     UT_Report(__FILE__, __LINE__,
               CFE_TIME_FS2CFESeconds(0xffffffff) == 0xffffffff -
-              CFE_TIME_FS_FACTOR,
+              CFE_MISSION_TIME_FS_FACTOR,
               "CFE_TIME_FS2CFESeconds",
               "Maximum FS seconds value");
 }
@@ -1162,7 +1129,7 @@ void Test_ConvertCFEFS(void)
 **
 ** NOTE: Test results depend on the epoch values in cfe_mission_cfg.h (the
 **       tests below assume an epoch of 1980-001-00:00:00.00000).  Full
-**       coverage is possible only when CFE_TIME_EPOCH_SECOND > 0
+**       coverage is possible only when CFE_MISSION_TIME_EPOCH_SECOND > 0
 */
 void Test_Print(void)
 {
@@ -1188,7 +1155,7 @@ void Test_Print(void)
               testDesc);
 
     /* Test with a time value that causes seconds >= 60 when
-     * CFE_TIME_EPOCH_SECOND > 0
+     * CFE_MISSION_TIME_EPOCH_SECOND > 0
      */
     UT_InitData();
     time.Subseconds = 0;
@@ -1196,7 +1163,7 @@ void Test_Print(void)
     CFE_TIME_Print(testDesc, time);
     result = !strcmp(testDesc, "1980-001-00:00:59.00000");
     strncat(testDesc,
-            " Seconds overflow if CFE_TIME_EPOCH_SECOND > 0",
+            " Seconds overflow if CFE_MISSION_TIME_EPOCH_SECOND > 0",
             UT_MAX_MESSAGE_LENGTH);
     testDesc[UT_MAX_MESSAGE_LENGTH - 1] = '\0';
     UT_Report(__FILE__, __LINE__,
@@ -1235,9 +1202,10 @@ void Test_Print(void)
 /*
 ** Test function for use with register and unregister synch callback API tests
 */
-void ut_time_MyCallbackFunc(void)
+int32 ut_time_MyCallbackFunc(void)
 {
     ut_time_CallbackCalled++;
+    return CFE_SUCCESS;
 }
 
 /*
@@ -1245,81 +1213,72 @@ void ut_time_MyCallbackFunc(void)
 */
 void Test_RegisterSyncCallbackTrue(void)
 {
-    Test_RegisterSyncCallback(TRUE);
-}
-
-/*
-** Test registering a synchronization callback function
-*/
-void Test_RegisterSyncCallback(boolean reportResults)
-{
-    uint32  i = 0;
-    int32   Result = CFE_SUCCESS;
-    boolean SuccessfulTestResult = TRUE;
-    boolean UnsuccessfulTestResult = TRUE;
-    boolean BadIDResult = TRUE;
+    int32   Result;
 
 #ifdef UT_VERBOSE
-    if (reportResults)
-    {
-        UT_Text("Begin Test Register Synch Callback\n");
-    }
+    UT_Text("Begin Test Register Synch Callback\n");
 #endif
 
+    /*
+     * One callback per application is allowed; the first should succeed,
+     * the second should fail.
+     */
 
-    if (reportResults)
-    {
-        /* Test registering the callback function with a bad application ID */
-        UT_InitData();
-        UT_SetRtnCode(&GetAppIDRtn, -1, 1);
-        CFE_TIME_TaskData.SynchCallback[0].Ptr = NULL;
+    UT_InitData();
+    UT_SetRtnCode(&GetAppIDRtn, -1, 1);
+    CFE_TIME_TaskData.SynchCallback[0].Ptr = NULL;
 
-        if (CFE_TIME_RegisterSynchCallback((CFE_TIME_SynchCallbackPtr_t)
-                                                     &ut_time_MyCallbackFunc) != -1)
-        {
-            BadIDResult = FALSE;
-        }
-    }
+    Result = CFE_TIME_RegisterSynchCallback(&ut_time_MyCallbackFunc);
+    UT_Report(__FILE__, __LINE__,
+          Result == -1,
+              "CFE_TIME_RegisterSynchCallback",
+              "Bad App ID");
+
 
     /* Test registering the callback function the maximum number of times,
      * then attempt registering one more time
      */
     UT_InitData();
 
-    /* Register callback function one too many times to test all cases */
-    for (i = 0; i <= CFE_TIME_MAX_NUM_SYNCH_FUNCS; i++)
-    {
-        Result = CFE_TIME_RegisterSynchCallback((CFE_TIME_SynchCallbackPtr_t)
-                                                &ut_time_MyCallbackFunc);
+    UT_SetAppID(1);
 
-        if (i < CFE_TIME_MAX_NUM_SYNCH_FUNCS && Result != CFE_SUCCESS)
-        {
-            SuccessfulTestResult = FALSE;
-        }
-        else if (i == CFE_TIME_MAX_NUM_SYNCH_FUNCS &&
-                 Result != CFE_TIME_TOO_MANY_SYNCH_CALLBACKS)
-        {
-            UnsuccessfulTestResult = FALSE;
-        }
-    }
+    /*
+     * One callback per application is allowed; the first should succeed,
+     * the second should fail.
+     */
+    Result = CFE_TIME_RegisterSynchCallback(&ut_time_MyCallbackFunc);
+    UT_Report(__FILE__, __LINE__,
+          Result == CFE_SUCCESS,
+              "CFE_TIME_RegisterSynchCallback",
+              "Successfully registered callbacks");
 
-    if (reportResults)
-    {
-        UT_Report(__FILE__, __LINE__,
-              SuccessfulTestResult,
-                  "CFE_TIME_RegisterSynchCallback",
-                  "Successfully registered callbacks");
 
-        UT_Report(__FILE__, __LINE__,
-              UnsuccessfulTestResult,
-                  "CFE_TIME_RegisterSynchCallback",
-                  "Unsuccessfully registered callback(s)");
+    Result = CFE_TIME_RegisterSynchCallback(&ut_time_MyCallbackFunc);
+    UT_Report(__FILE__, __LINE__,
+          Result == CFE_TIME_TOO_MANY_SYNCH_CALLBACKS,
+              "CFE_TIME_RegisterSynchCallback",
+              "Too Many registered callbacks");
 
-        UT_Report(__FILE__, __LINE__,
-              BadIDResult,
-                  "CFE_TIME_RegisterSynchCallback",
-                  "Bad application ID");
-    }
+    UT_SetAppID(2);
+
+    Result = CFE_TIME_RegisterSynchCallback(&ut_time_MyCallbackFunc);
+    UT_Report(__FILE__, __LINE__,
+          Result == CFE_SUCCESS,
+              "CFE_TIME_RegisterSynchCallback",
+              "Successfully registered callbacks");
+
+    /*
+     * This test case should not be possible in real flight as ES should never
+     * return "success" with an appid out of range, but nonetheless
+     * we need to make sure we do not overwrite our own memory here.
+     */
+    UT_SetAppID(CFE_PLATFORM_ES_MAX_APPLICATIONS);
+    Result = CFE_TIME_RegisterSynchCallback(&ut_time_MyCallbackFunc);
+    UT_Report(__FILE__, __LINE__,
+            Result == CFE_TIME_TOO_MANY_SYNCH_CALLBACKS,
+              "CFE_TIME_RegisterSynchCallback",
+              "App ID out of range");
+
 }
 
 /*
@@ -1348,9 +1307,9 @@ void Test_ExternalTone(void)
 */
 void Test_External(void)
 {
-#if (CFE_TIME_CFG_SRC_MET == TRUE || \
-     CFE_TIME_CFG_SRC_GPS == TRUE || \
-     CFE_TIME_CFG_SRC_TIME == TRUE)
+#if (CFE_PLATFORM_TIME_CFG_SRC_MET == TRUE || \
+     CFE_PLATFORM_TIME_CFG_SRC_GPS == TRUE || \
+     CFE_PLATFORM_TIME_CFG_SRC_TIME == TRUE)
 
     CFE_TIME_SysTime_t settime = {5, 4};
 #endif
@@ -1359,13 +1318,13 @@ void Test_External(void)
     UT_Text("Begin Test External Time Set\n");
 #endif
 
-#if (CFE_TIME_CFG_SRC_MET == TRUE)
+#if (CFE_PLATFORM_TIME_CFG_SRC_MET == TRUE)
     /* Test setting time data from MET using an external source with the clock
      * state not set
      */
     UT_InitData();
-    CFE_TIME_TaskData.ClockSource = CFE_TIME_USE_EXTERN;
-    CFE_TIME_TaskData.ClockSetState = CFE_TIME_NOT_SET;
+    CFE_TIME_TaskData.ClockSource = CFE_TIME_SourceSelect_EXTERNAL;
+    CFE_TIME_TaskData.ClockSetState = CFE_TIME_SetState_NOT_SET;
     CFE_TIME_TaskData.ExternalCount = 0;
     settime.Seconds = 0;
     settime.Subseconds = 0;
@@ -1379,8 +1338,8 @@ void Test_External(void)
      * state set and time less than the minimum
      */
     UT_InitData();
-    CFE_TIME_TaskData.ClockSource = CFE_TIME_USE_EXTERN;
-    CFE_TIME_TaskData.ClockSetState = CFE_TIME_WAS_SET;
+    CFE_TIME_TaskData.ClockSource = CFE_TIME_SourceSelect_EXTERNAL;
+    CFE_TIME_TaskData.ClockSetState = CFE_TIME_SetState_WAS_SET;
     settime.Seconds = 0;
     settime.Subseconds = 0;
     CFE_TIME_TaskData.InternalCount = 0;
@@ -1405,8 +1364,8 @@ void Test_External(void)
      * state set and time greater than the maximum
      */
     UT_InitData();
-    CFE_TIME_TaskData.ClockSource = CFE_TIME_USE_EXTERN;
-    CFE_TIME_TaskData.ClockSetState = CFE_TIME_WAS_SET;
+    CFE_TIME_TaskData.ClockSource = CFE_TIME_SourceSelect_EXTERNAL;
+    CFE_TIME_TaskData.ClockSetState = CFE_TIME_SetState_WAS_SET;
     settime.Seconds = 20;
     settime.Subseconds = 0;
     CFE_TIME_TaskData.InternalCount = 0;
@@ -1429,8 +1388,8 @@ void Test_External(void)
 
     /* Test setting time data from MET (external source, state set) */
     UT_InitData();
-    CFE_TIME_TaskData.ClockSource = CFE_TIME_USE_EXTERN;
-    CFE_TIME_TaskData.ClockSetState = CFE_TIME_WAS_SET;
+    CFE_TIME_TaskData.ClockSource = CFE_TIME_SourceSelect_EXTERNAL;
+    CFE_TIME_TaskData.ClockSetState = CFE_TIME_SetState_WAS_SET;
     settime.Seconds = 10;
     settime.Subseconds = 0;
     CFE_TIME_TaskData.ExternalCount = 0;
@@ -1453,7 +1412,7 @@ void Test_External(void)
 
     /* Test setting time data from MET (internal source) */
     UT_InitData();
-    CFE_TIME_TaskData.ClockSource = CFE_TIME_USE_INTERN;
+    CFE_TIME_TaskData.ClockSource = CFE_TIME_SourceSelect_INTERNAL;
     CFE_TIME_TaskData.InternalCount = 0;
     CFE_TIME_ExternalMET(settime);
     UT_Report(__FILE__, __LINE__,
@@ -1490,13 +1449,13 @@ void Test_External(void)
               "*Not tested* External MET (internal source)");
 #endif
 
-#if (CFE_TIME_CFG_SRC_GPS == TRUE)
+#if (CFE_PLATFORM_TIME_CFG_SRC_GPS == TRUE)
     /* Test setting time data from GPS using an external source with the clock
      * state not set
      */
     UT_InitData();
-    CFE_TIME_TaskData.ClockSource = CFE_TIME_USE_EXTERN;
-    CFE_TIME_TaskData.ClockSetState = CFE_TIME_NOT_SET;
+    CFE_TIME_TaskData.ClockSource = CFE_TIME_SourceSelect_EXTERNAL;
+    CFE_TIME_TaskData.ClockSetState = CFE_TIME_SetState_NOT_SET;
     CFE_TIME_TaskData.ExternalCount = 0;
     settime.Seconds = 0;
     settime.Subseconds = 0;
@@ -1510,8 +1469,8 @@ void Test_External(void)
      * state set and time less than the minimum
      */
     UT_InitData();
-    CFE_TIME_TaskData.ClockSource = CFE_TIME_USE_EXTERN;
-    CFE_TIME_TaskData.ClockSetState = CFE_TIME_WAS_SET;
+    CFE_TIME_TaskData.ClockSource = CFE_TIME_SourceSelect_EXTERNAL;
+    CFE_TIME_TaskData.ClockSetState = CFE_TIME_SetState_WAS_SET;
     settime.Seconds = 0;
     settime.Subseconds = 0;
     CFE_TIME_TaskData.InternalCount = 0;
@@ -1538,8 +1497,8 @@ void Test_External(void)
      * state set and time greater than the maximum
      */
     UT_InitData();
-    CFE_TIME_TaskData.ClockSource = CFE_TIME_USE_EXTERN;
-    CFE_TIME_TaskData.ClockSetState = CFE_TIME_WAS_SET;
+    CFE_TIME_TaskData.ClockSource = CFE_TIME_SourceSelect_EXTERNAL;
+    CFE_TIME_TaskData.ClockSetState = CFE_TIME_SetState_WAS_SET;
     settime.Seconds = 20;
     settime.Subseconds = 0;
     CFE_TIME_TaskData.InternalCount = 0;
@@ -1564,8 +1523,8 @@ void Test_External(void)
 
     /* Test setting time data from GPS (external source, state set) */
     UT_InitData();
-    CFE_TIME_TaskData.ClockSource = CFE_TIME_USE_EXTERN;
-    CFE_TIME_TaskData.ClockSetState = CFE_TIME_WAS_SET;
+    CFE_TIME_TaskData.ClockSource = CFE_TIME_SourceSelect_EXTERNAL;
+    CFE_TIME_TaskData.ClockSetState = CFE_TIME_SetState_WAS_SET;
     settime.Seconds = 10;
     settime.Subseconds = 0;
     CFE_TIME_TaskData.ExternalCount = 0;
@@ -1590,7 +1549,7 @@ void Test_External(void)
 
     /* Test setting time data from GPS (internal source) */
     UT_InitData();
-    CFE_TIME_TaskData.ClockSource = CFE_TIME_USE_INTERN;
+    CFE_TIME_TaskData.ClockSource = CFE_TIME_SourceSelect_INTERNAL;
     CFE_TIME_TaskData.InternalCount = 0;
     CFE_TIME_ExternalGPS(settime, 0);
     UT_Report(__FILE__, __LINE__,
@@ -1627,13 +1586,13 @@ void Test_External(void)
               "*Not tested* External GPS (internal source)");
 #endif
 
-#if (CFE_TIME_CFG_SRC_TIME == TRUE)
+#if (CFE_PLATFORM_TIME_CFG_SRC_TIME == TRUE)
     /* Test setting time data from Time using an external source with the clock
      * state not set
      */
     UT_InitData();
-    CFE_TIME_TaskData.ClockSource = CFE_TIME_USE_EXTERN;
-    CFE_TIME_TaskData.ClockSetState = CFE_TIME_NOT_SET;
+    CFE_TIME_TaskData.ClockSource = CFE_TIME_SourceSelect_EXTERNAL;
+    CFE_TIME_TaskData.ClockSetState = CFE_TIME_SetState_NOT_SET;
     CFE_TIME_TaskData.ExternalCount = 0;
     settime.Seconds = 0;
     settime.Subseconds = 0;
@@ -1647,8 +1606,8 @@ void Test_External(void)
      * state set and time less than the minimum
      */
     UT_InitData();
-    CFE_TIME_TaskData.ClockSource = CFE_TIME_USE_EXTERN;
-    CFE_TIME_TaskData.ClockSetState = CFE_TIME_WAS_SET;
+    CFE_TIME_TaskData.ClockSource = CFE_TIME_SourceSelect_EXTERNAL;
+    CFE_TIME_TaskData.ClockSetState = CFE_TIME_SetState_WAS_SET;
     settime.Seconds = 0;
     settime.Subseconds = 0;
     CFE_TIME_TaskData.InternalCount = 0;
@@ -1675,8 +1634,8 @@ void Test_External(void)
      * state set and time greater than the maximum
      */
     UT_InitData();
-    CFE_TIME_TaskData.ClockSource = CFE_TIME_USE_EXTERN;
-    CFE_TIME_TaskData.ClockSetState = CFE_TIME_WAS_SET;
+    CFE_TIME_TaskData.ClockSource = CFE_TIME_SourceSelect_EXTERNAL;
+    CFE_TIME_TaskData.ClockSetState = CFE_TIME_SetState_WAS_SET;
     settime.Seconds = 20;
     settime.Subseconds = 0;
     CFE_TIME_TaskData.InternalCount = 0;
@@ -1701,8 +1660,8 @@ void Test_External(void)
 
     /* Test setting time data from Time (external source, state set) */
     UT_InitData();
-    CFE_TIME_TaskData.ClockSource = CFE_TIME_USE_EXTERN;
-    CFE_TIME_TaskData.ClockSetState = CFE_TIME_WAS_SET;
+    CFE_TIME_TaskData.ClockSource = CFE_TIME_SourceSelect_EXTERNAL;
+    CFE_TIME_TaskData.ClockSetState = CFE_TIME_SetState_WAS_SET;
     settime.Seconds = 10;
     settime.Subseconds = 0;
     CFE_TIME_TaskData.ExternalCount = 0;
@@ -1727,7 +1686,7 @@ void Test_External(void)
 
     /* Test setting time data from Time (internal source) */
     UT_InitData();
-    CFE_TIME_TaskData.ClockSource = CFE_TIME_USE_INTERN;
+    CFE_TIME_TaskData.ClockSource = CFE_TIME_SourceSelect_INTERNAL;
     CFE_TIME_TaskData.InternalCount = 0;
     CFE_TIME_ExternalTime(settime);
     UT_Report(__FILE__, __LINE__,
@@ -1765,7 +1724,7 @@ void Test_External(void)
 #endif
 
     /* Reset to normal value for subsequent tests */
-    CFE_TIME_TaskData.ClockSource = CFE_TIME_USE_INTERN;
+    CFE_TIME_TaskData.ClockSource = CFE_TIME_SourceSelect_INTERNAL;
 }
 
 /*
@@ -1773,16 +1732,30 @@ void Test_External(void)
 */
 void Test_PipeCmds(void)
 {
-    CFE_SB_MsgPtr_t msgptr;
-    CFE_SB_Msg_t message;
-    CFE_TIME_ToneDataCmd_t tonedatacmd;
-    CFE_TIME_StateCmd_t statecmd;
-    CFE_TIME_SourceCmd_t sourcecmd;
-    CFE_TIME_SignalCmd_t signalcmd;
-    CFE_TIME_TimeCmd_t timecmd;
-    CFE_TIME_LeapsCmd_t leapscmd;
-#if (CFE_TIME_CFG_SERVER == TRUE && CFE_TIME_CFG_SOURCE != TRUE && \
-     CFE_TIME_CFG_FAKE_TONE != TRUE)
+    union
+    {
+        CFE_SB_Msg_t message;
+        CCSDS_CommandPacket_t cmd;
+        CFE_TIME_ToneDataCmd_t tonedatacmd;
+        CFE_TIME_Noop_t noopcmd;
+        CFE_TIME_ResetCounters_t resetcountercmd;
+        CFE_TIME_SendDiagnosticTlm_t diagtlmcmd;
+        CFE_TIME_SetState_t statecmd;
+        CFE_TIME_SetSource_t sourcecmd;
+        CFE_TIME_SetSignal_t signalcmd;
+        CFE_TIME_AddDelay_t adddelaycmd;
+        CFE_TIME_SubDelay_t subdelaycmd;
+        CFE_TIME_SetTime_t settimecmd;
+        CFE_TIME_SetMET_t setmetcmd;
+        CFE_TIME_SetSTCF_t setstcfcmd;
+        CFE_TIME_SetLeapSeconds_t leapscmd;
+        CFE_TIME_AddAdjust_t addadjcmd;
+        CFE_TIME_SubAdjust_t subadjcmd;
+        CFE_TIME_Add1HZAdjustment_t add1hzadjcmd;
+        CFE_TIME_Sub1HZAdjustment_t sub1hzadjcmd;
+    } CmdBuf;
+
+#if (CFE_PLATFORM_TIME_CFG_SERVER == TRUE)
     uint32 count;
 #endif
 
@@ -1790,9 +1763,12 @@ void Test_PipeCmds(void)
     UT_Text("Begin Test Pipe Commands\n");
 #endif
 
+    memset(&CmdBuf, 0, sizeof(CmdBuf));
+
     /* Test sending the housekeeping telemetry request command */
     UT_InitData();
-    UT_SendMsg(&message, CFE_TIME_SEND_HK_MID, 0);
+    UT_SetSBTotalMsgLen(sizeof(CmdBuf.cmd));
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_SEND_HK_MID, 0);
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_HK_TLM_MID,
               "CFE_TIME_HousekeepingCmd",
@@ -1800,20 +1776,21 @@ void Test_PipeCmds(void)
 
     /* Test sending the time at the tone "signal" command */
     UT_InitData();
-    CFE_TIME_TaskData.ToneSignalCount = 0;
-    UT_SendMsg(&message, CFE_TIME_TONE_CMD_MID, 0);
+    CFE_TIME_TaskData.ToneSignalCounter = 0;
+    UT_SetSBTotalMsgLen(sizeof(CmdBuf.cmd));
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_TONE_CMD_MID, 0);
     UT_Report(__FILE__, __LINE__,
-              CFE_TIME_TaskData.ToneSignalCount == 1,
+              CFE_TIME_TaskData.ToneSignalCounter == 1,
               "CFE_TIME_ToneSignalCmd",
               "Time at tone signal");
 
     /* Test sending the time at the tone "data" command */
     UT_InitData();
-    CFE_TIME_TaskData.ToneDataCount = 0;
-    msgptr = (CFE_SB_MsgPtr_t) &tonedatacmd;
-    UT_SendMsg(msgptr, CFE_TIME_DATA_CMD_MID, 0);
+    CFE_TIME_TaskData.ToneDataCounter = 0;
+    UT_SetSBTotalMsgLen(sizeof(CmdBuf.tonedatacmd));
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_DATA_CMD_MID, 0);
     UT_Report(__FILE__, __LINE__,
-              CFE_TIME_TaskData.ToneDataCount == 1,
+              CFE_TIME_TaskData.ToneDataCounter == 1,
               "CFE_TIME_ToneDataCmd",
               "Time at tone data");
 
@@ -1822,33 +1799,24 @@ void Test_PipeCmds(void)
     UT_SetBSP_Time(123, 0);
     CFE_TIME_TaskData.ToneSignalLatch.Seconds = 0;
     CFE_TIME_TaskData.ToneSignalLatch.Subseconds = 0;
-    UT_SendMsg(&message, CFE_TIME_FAKE_CMD_MID, 0);
-
-#if (CFE_TIME_CFG_FAKE_TONE == TRUE)
+    CFE_TIME_Tone1HzISR();
     UT_Report(__FILE__, __LINE__,
               CFE_TIME_TaskData.ToneSignalLatch.Seconds == 123 &&
               CFE_TIME_TaskData.ToneSignalLatch.Subseconds == 0,
               "CFE_TIME_FakeToneCmd",
               "Simulated time at tone signal");
-#else
-    UT_Report(__FILE__, __LINE__,
-              SendMsgEventIDRtn.value == CFE_TIME_ID_ERR_EID,
-              "CFE_TIME_FakeToneCmd",
-              "*Command not available* Simulated time at tone signal");
-#endif
 
     /* Test sending the request time at the tone "data" command */
     UT_InitData();
 
-#if (CFE_TIME_CFG_SERVER == TRUE && CFE_TIME_CFG_SOURCE != TRUE && \
-     CFE_TIME_CFG_FAKE_TONE != TRUE)
+#if (CFE_PLATFORM_TIME_CFG_SERVER == TRUE)
     count = CFE_TIME_TaskData.InternalCount;
 #endif
 
-    UT_SendMsg(&message, CFE_TIME_SEND_CMD_MID, 0);
+    UT_SetSBTotalMsgLen(sizeof(CmdBuf.cmd));
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_SEND_CMD_MID, 0);
 
-#if (CFE_TIME_CFG_SERVER == TRUE && CFE_TIME_CFG_SOURCE != TRUE && \
-     CFE_TIME_CFG_FAKE_TONE != TRUE)
+#if (CFE_PLATFORM_TIME_CFG_SERVER == TRUE)
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value != CFE_TIME_ID_ERR_EID &&
               CFE_TIME_TaskData.InternalCount == count + 1,
@@ -1863,7 +1831,8 @@ void Test_PipeCmds(void)
 
     /* Test sending the no-op command */
     UT_InitData();
-    UT_SendMsg(&message, CFE_TIME_CMD_MID, CFE_TIME_NOOP_CC);
+    UT_SetSBTotalMsgLen(sizeof(CmdBuf.noopcmd));
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_CMD_MID, CFE_TIME_NOOP_CC);
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_NOOP_EID,
               "CFE_TIME_NoopCmd",
@@ -1871,15 +1840,17 @@ void Test_PipeCmds(void)
 
     /* Test sending the reset counters command */
     UT_InitData();
-    UT_SendMsg(&message, CFE_TIME_CMD_MID, CFE_TIME_RESET_CC);
+    UT_SetSBTotalMsgLen(sizeof(CmdBuf.resetcountercmd));
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_CMD_MID, CFE_TIME_RESET_COUNTERS_CC);
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_RESET_EID,
-              "CFE_TIME_ResetCmd",
+              "CFE_TIME_ResetCountersCmd",
               "Reset counters");
 
     /* Test sending the request diagnostics command */
     UT_InitData();
-    UT_SendMsg(&message, CFE_TIME_CMD_MID, CFE_TIME_DIAG_TLM_CC);
+    UT_SetSBTotalMsgLen(sizeof(CmdBuf.diagtlmcmd));
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_CMD_MID, CFE_TIME_SEND_DIAGNOSTIC_TLM_CC);
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_DIAG_EID,
               "CFE_TIME_DiagCmd",
@@ -1887,9 +1858,9 @@ void Test_PipeCmds(void)
 
     /* Test sending a clock state = invalid command */
     UT_InitData();
-    msgptr = (CFE_SB_MsgPtr_t)&statecmd;
-    statecmd.Payload.ClockState = CFE_TIME_INVALID;
-    UT_SendMsg(msgptr, CFE_TIME_CMD_MID, CFE_TIME_SET_STATE_CC);
+    UT_SetSBTotalMsgLen(sizeof(CmdBuf.statecmd));
+    CmdBuf.statecmd.Payload.ClockState = CFE_TIME_ClockState_INVALID;
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_CMD_MID, CFE_TIME_SET_STATE_CC);
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_STATE_EID,
               "CFE_TIME_SetStateCmd",
@@ -1897,8 +1868,8 @@ void Test_PipeCmds(void)
 
     /* Test sending a clock state = valid command */
     UT_InitData();
-    statecmd.Payload.ClockState = CFE_TIME_VALID;
-    UT_SendMsg(msgptr, CFE_TIME_CMD_MID, CFE_TIME_SET_STATE_CC);
+    CmdBuf.statecmd.Payload.ClockState = CFE_TIME_ClockState_VALID;
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_CMD_MID, CFE_TIME_SET_STATE_CC);
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_STATE_EID,
               "CFE_TIME_SetStateCmd",
@@ -1906,8 +1877,8 @@ void Test_PipeCmds(void)
 
     /* Test sending a clock state = flywheel command */
     UT_InitData();
-    statecmd.Payload.ClockState = CFE_TIME_FLYWHEEL;
-    UT_SendMsg(msgptr, CFE_TIME_CMD_MID, CFE_TIME_SET_STATE_CC);
+    CmdBuf.statecmd.Payload.ClockState = CFE_TIME_ClockState_FLYWHEEL;
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_CMD_MID, CFE_TIME_SET_STATE_CC);
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_STATE_EID,
               "CFE_TIME_SetStateCmd",
@@ -1917,8 +1888,8 @@ void Test_PipeCmds(void)
      * invalid state
      */
     UT_InitData();
-    statecmd.Payload.ClockState = 99;
-    UT_SendMsg(msgptr, CFE_TIME_CMD_MID, CFE_TIME_SET_STATE_CC);
+    CmdBuf.statecmd.Payload.ClockState = 99;
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_CMD_MID, CFE_TIME_SET_STATE_CC);
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_STATE_ERR_EID,
               "CFE_TIME_SetStateCmd",
@@ -1926,11 +1897,11 @@ void Test_PipeCmds(void)
 
     /* Test sending the set time source = internal command */
     UT_InitData();
-    msgptr = (CFE_SB_MsgPtr_t) &sourcecmd;
-    sourcecmd.Payload.TimeSource = CFE_TIME_USE_INTERN;
-    UT_SendMsg(msgptr, CFE_TIME_CMD_MID, CFE_TIME_SET_SOURCE_CC);
+    UT_SetSBTotalMsgLen(sizeof(CmdBuf.sourcecmd));
+    CmdBuf.sourcecmd.Payload.TimeSource = CFE_TIME_SourceSelect_INTERNAL;
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_CMD_MID, CFE_TIME_SET_SOURCE_CC);
 
-#if (CFE_TIME_CFG_SOURCE == TRUE)
+#if (CFE_PLATFORM_TIME_CFG_SOURCE == TRUE)
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_SOURCE_EID,
               "CFE_TIME_SetSourceCmd",
@@ -1944,10 +1915,10 @@ void Test_PipeCmds(void)
 
     /* Test sending the set time source = external command */
     UT_InitData();
-    sourcecmd.Payload.TimeSource = CFE_TIME_USE_EXTERN;
-    UT_SendMsg(msgptr, CFE_TIME_CMD_MID, CFE_TIME_SET_SOURCE_CC);
+    CmdBuf.sourcecmd.Payload.TimeSource = CFE_TIME_SourceSelect_EXTERNAL;
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_CMD_MID, CFE_TIME_SET_SOURCE_CC);
 
-#if (CFE_TIME_CFG_SOURCE == TRUE)
+#if (CFE_PLATFORM_TIME_CFG_SOURCE == TRUE)
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_SOURCE_EID,
               "CFE_TIME_SetSourceCmd",
@@ -1963,8 +1934,8 @@ void Test_PipeCmds(void)
      * invalid source
      */
     UT_InitData();
-    sourcecmd.Payload.TimeSource = -1;
-    UT_SendMsg(msgptr, CFE_TIME_CMD_MID, CFE_TIME_SET_SOURCE_CC);
+    CmdBuf.sourcecmd.Payload.TimeSource = -1;
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_CMD_MID, CFE_TIME_SET_SOURCE_CC);
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_SOURCE_ERR_EID,
               "CFE_TIME_SetSourceCmd",
@@ -1972,45 +1943,45 @@ void Test_PipeCmds(void)
 
     /* Test sending a set tone signal source = primary command */
     UT_InitData();
-    msgptr = (CFE_SB_MsgPtr_t) &signalcmd;
-    signalcmd.Payload.ToneSource = CFE_TIME_TONE_PRI;
-    CFE_TIME_TaskData.CmdCounter = 0;
-    CFE_TIME_TaskData.ErrCounter = 0;
-    UT_SendMsg(msgptr, CFE_TIME_CMD_MID, CFE_TIME_SET_SIGNAL_CC);
+    UT_SetSBTotalMsgLen(sizeof(CmdBuf.signalcmd));
+    CmdBuf.signalcmd.Payload.ToneSource = CFE_TIME_ToneSignalSelect_PRIMARY;
+    CFE_TIME_TaskData.CommandCounter = 0;
+    CFE_TIME_TaskData.CommandErrorCounter = 0;
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_CMD_MID, CFE_TIME_SET_SIGNAL_CC);
 
-#if (CFE_TIME_CFG_SIGNAL == TRUE)
+#if (CFE_PLATFORM_TIME_CFG_SIGNAL == TRUE)
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_SIGNAL_EID &&
-              CFE_TIME_TaskData.CmdCounter == 1 &&
-              CFE_TIME_TaskData.ErrCounter == 0,
+              CFE_TIME_TaskData.CommandCounter == 1 &&
+              CFE_TIME_TaskData.CommandErrorCounter == 0,
               "CFE_TIME_SetSignalCmd",
               "Set tone signal source = primary");
 #else
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_SIGNAL_CFG_EID &&
-              CFE_TIME_TaskData.ErrCounter == 1,
+              CFE_TIME_TaskData.CommandErrorCounter == 1,
               "CFE_TIME_SetSignalCmd",
               "Set tone source = primary invalid");
 #endif
 
     /* Test sending a set tone signal source = redundant command */
     UT_InitData();
-    signalcmd.Payload.ToneSource = CFE_TIME_TONE_RED;
-    CFE_TIME_TaskData.CmdCounter = 0;
-    CFE_TIME_TaskData.ErrCounter = 0;
-    UT_SendMsg(msgptr, CFE_TIME_CMD_MID, CFE_TIME_SET_SIGNAL_CC);
+    CmdBuf.signalcmd.Payload.ToneSource = CFE_TIME_ToneSignalSelect_REDUNDANT;
+    CFE_TIME_TaskData.CommandCounter = 0;
+    CFE_TIME_TaskData.CommandErrorCounter = 0;
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_CMD_MID, CFE_TIME_SET_SIGNAL_CC);
 
-#if (CFE_TIME_CFG_SIGNAL == TRUE)
+#if (CFE_PLATFORM_TIME_CFG_SIGNAL == TRUE)
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_SIGNAL_EID &&
-              CFE_TIME_TaskData.CmdCounter == 1 &&
-              CFE_TIME_TaskData.ErrCounter == 0,
+              CFE_TIME_TaskData.CommandCounter == 1 &&
+              CFE_TIME_TaskData.CommandErrorCounter == 0,
               "CFE_TIME_SetSignalCmd",
               "Set tone signal source = redundant");
 #else
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_SIGNAL_CFG_EID &&
-              CFE_TIME_TaskData.ErrCounter == 1,
+              CFE_TIME_TaskData.CommandErrorCounter == 1,
               "CFE_TIME_SetSignalCmd",
               "Set tone signal source = redundant invalid");
 #endif
@@ -2019,220 +1990,229 @@ void Test_PipeCmds(void)
      * invalid source
      */
     UT_InitData();
-    signalcmd.Payload.ToneSource = -1;
-    CFE_TIME_TaskData.ErrCounter = 0;
-    UT_SendMsg(msgptr, CFE_TIME_CMD_MID, CFE_TIME_SET_SIGNAL_CC);
+    CmdBuf.signalcmd.Payload.ToneSource = -1;
+    CFE_TIME_TaskData.CommandErrorCounter = 0;
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_CMD_MID, CFE_TIME_SET_SIGNAL_CC);
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_SIGNAL_ERR_EID &&
-            CFE_TIME_TaskData.ErrCounter == 1,
+            CFE_TIME_TaskData.CommandErrorCounter == 1,
               "CFE_TIME_SetSignalCmd",
               "Invalid tone source");
 
     /* Test sending a time tone add delay command */
     UT_InitData();
-    msgptr = (CFE_SB_MsgPtr_t) &timecmd;
-    timecmd.Payload.MicroSeconds = 0;
-    timecmd.Payload.Seconds = 0;
-    CFE_TIME_TaskData.CmdCounter = 0;
-    CFE_TIME_TaskData.ErrCounter = 0;
-    UT_SendMsg(msgptr, CFE_TIME_CMD_MID, CFE_TIME_ADD_DELAY_CC);
+    UT_SetSBTotalMsgLen(sizeof(CmdBuf.adddelaycmd));
+    CmdBuf.adddelaycmd.Payload.MicroSeconds = 0;
+    CmdBuf.adddelaycmd.Payload.Seconds = 0;
+    CFE_TIME_TaskData.CommandCounter = 0;
+    CFE_TIME_TaskData.CommandErrorCounter = 0;
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_CMD_MID, CFE_TIME_ADD_DELAY_CC);
 
-#if (CFE_TIME_CFG_CLIENT == TRUE)
+#if (CFE_PLATFORM_TIME_CFG_CLIENT == TRUE)
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_DELAY_EID &&
-              CFE_TIME_TaskData.CmdCounter == 1 &&
-              CFE_TIME_TaskData.ErrCounter == 0,
+              CFE_TIME_TaskData.CommandCounter == 1 &&
+              CFE_TIME_TaskData.CommandErrorCounter == 0,
               "CFE_TIME_SetDelayCmd",
               "Set tone add delay");
 #else
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_DELAY_CFG_EID &&
-              CFE_TIME_TaskData.CmdCounter == 0 &&
-              CFE_TIME_TaskData.ErrCounter == 1,
+              CFE_TIME_TaskData.CommandCounter == 0 &&
+              CFE_TIME_TaskData.CommandErrorCounter == 1,
               "CFE_TIME_SetDelayCmd",
               "Set tone add delay invalid");
 #endif
 
     /* Test sending a time tone subtract delay command */
     UT_InitData();
-    CFE_TIME_TaskData.CmdCounter = 0;
-    CFE_TIME_TaskData.ErrCounter = 0;
-    UT_SendMsg(msgptr, CFE_TIME_CMD_MID, CFE_TIME_SUB_DELAY_CC);
+    UT_SetSBTotalMsgLen(sizeof(CmdBuf.subdelaycmd));
+    CFE_TIME_TaskData.CommandCounter = 0;
+    CFE_TIME_TaskData.CommandErrorCounter = 0;
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_CMD_MID, CFE_TIME_SUB_DELAY_CC);
 
-#if (CFE_TIME_CFG_CLIENT == TRUE)
+#if (CFE_PLATFORM_TIME_CFG_CLIENT == TRUE)
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_DELAY_EID &&
-              CFE_TIME_TaskData.CmdCounter == 1 &&
-              CFE_TIME_TaskData.ErrCounter == 0,
+              CFE_TIME_TaskData.CommandCounter == 1 &&
+              CFE_TIME_TaskData.CommandErrorCounter == 0,
               "CFE_TIME_SetDelayCmd",
               "Set tone subtract delay");
 #else
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_DELAY_CFG_EID &&
-              CFE_TIME_TaskData.CmdCounter == 0 &&
-              CFE_TIME_TaskData.ErrCounter == 1,
+              CFE_TIME_TaskData.CommandCounter == 0 &&
+              CFE_TIME_TaskData.CommandErrorCounter == 1,
               "CFE_TIME_SetDelayCmd",
               "Set subtract delay invalid");
 #endif
 
     /* Test sending a set time command */
     UT_InitData();
-    CFE_TIME_TaskData.CmdCounter = 0;
-    CFE_TIME_TaskData.ErrCounter = 0;
-    UT_SendMsg(msgptr, CFE_TIME_CMD_MID, CFE_TIME_SET_TIME_CC);
+    UT_SetSBTotalMsgLen(sizeof(CmdBuf.settimecmd));
+    CFE_TIME_TaskData.CommandCounter = 0;
+    CFE_TIME_TaskData.CommandErrorCounter = 0;
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_CMD_MID, CFE_TIME_SET_TIME_CC);
 
-#if (CFE_TIME_CFG_SERVER == TRUE)
+#if (CFE_PLATFORM_TIME_CFG_SERVER == TRUE)
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_TIME_EID &&
-              CFE_TIME_TaskData.CmdCounter == 1 &&
-              CFE_TIME_TaskData.ErrCounter == 0,
+              CFE_TIME_TaskData.CommandCounter == 1 &&
+              CFE_TIME_TaskData.CommandErrorCounter == 0,
               "CFE_TIME_SetTimeCmd",
               "Set time");
 #else
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_TIME_CFG_EID &&
-              CFE_TIME_TaskData.CmdCounter == 0 &&
-              CFE_TIME_TaskData.ErrCounter == 1,
+              CFE_TIME_TaskData.CommandCounter == 0 &&
+              CFE_TIME_TaskData.CommandErrorCounter == 1,
               "CFE_TIME_SetTimeCmd",
               "Set time invalid");
 #endif
 
     /* Test sending a set MET command */
     UT_InitData();
-    CFE_TIME_TaskData.CmdCounter = 0;
-    CFE_TIME_TaskData.ErrCounter = 0;
-    UT_SendMsg(msgptr, CFE_TIME_CMD_MID, CFE_TIME_SET_MET_CC);
+    UT_SetSBTotalMsgLen(sizeof(CmdBuf.setmetcmd));
+    CFE_TIME_TaskData.CommandCounter = 0;
+    CFE_TIME_TaskData.CommandErrorCounter = 0;
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_CMD_MID, CFE_TIME_SET_MET_CC);
 
-#if (CFE_TIME_CFG_SERVER == TRUE)
+#if (CFE_PLATFORM_TIME_CFG_SERVER == TRUE)
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_MET_EID &&
-              CFE_TIME_TaskData.CmdCounter == 1 &&
-              CFE_TIME_TaskData.ErrCounter == 0,
+              CFE_TIME_TaskData.CommandCounter == 1 &&
+              CFE_TIME_TaskData.CommandErrorCounter == 0,
               "CFE_TIME_SetMETCmd",
               "Set MET");
 #else
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_MET_CFG_EID &&
-              CFE_TIME_TaskData.CmdCounter == 0 &&
-              CFE_TIME_TaskData.ErrCounter == 1,
+              CFE_TIME_TaskData.CommandCounter == 0 &&
+              CFE_TIME_TaskData.CommandErrorCounter == 1,
               "CFE_TIME_SetMETCmd",
               "Set MET invalid");
 #endif
 
     /* Test sending a set STCF command */
     UT_InitData();
-    CFE_TIME_TaskData.CmdCounter = 0;
-    CFE_TIME_TaskData.ErrCounter = 0;
-    UT_SendMsg(msgptr, CFE_TIME_CMD_MID, CFE_TIME_SET_STCF_CC);
+    UT_SetSBTotalMsgLen(sizeof(CmdBuf.setstcfcmd));
+    CFE_TIME_TaskData.CommandCounter = 0;
+    CFE_TIME_TaskData.CommandErrorCounter = 0;
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_CMD_MID, CFE_TIME_SET_STCF_CC);
 
-#if (CFE_TIME_CFG_SERVER == TRUE)
+#if (CFE_PLATFORM_TIME_CFG_SERVER == TRUE)
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_STCF_EID &&
-              CFE_TIME_TaskData.CmdCounter == 1 &&
-              CFE_TIME_TaskData.ErrCounter == 0,
+              CFE_TIME_TaskData.CommandCounter == 1 &&
+              CFE_TIME_TaskData.CommandErrorCounter == 0,
               "CFE_TIME_SetSTCFCmd",
               "Set STCF");
 #else
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_STCF_CFG_EID &&
-              CFE_TIME_TaskData.CmdCounter == 0 &&
-              CFE_TIME_TaskData.ErrCounter == 1,
+              CFE_TIME_TaskData.CommandCounter == 0 &&
+              CFE_TIME_TaskData.CommandErrorCounter == 1,
               "CFE_TIME_SetSTCFCmd",
               "Set STCF invalid");
 #endif
 
     /* Test sending an adjust STCF positive command */
     UT_InitData();
-    CFE_TIME_TaskData.CmdCounter = 0;
-    CFE_TIME_TaskData.ErrCounter = 0;
-    UT_SendMsg(msgptr, CFE_TIME_CMD_MID, CFE_TIME_ADD_ADJUST_CC);
+    UT_SetSBTotalMsgLen(sizeof(CmdBuf.addadjcmd));
+    CFE_TIME_TaskData.CommandCounter = 0;
+    CFE_TIME_TaskData.CommandErrorCounter = 0;
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_CMD_MID, CFE_TIME_ADD_ADJUST_CC);
 
-#if (CFE_TIME_CFG_SERVER == TRUE)
+#if (CFE_PLATFORM_TIME_CFG_SERVER == TRUE)
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_DELTA_EID &&
-              CFE_TIME_TaskData.CmdCounter == 1 &&
-              CFE_TIME_TaskData.ErrCounter == 0,
+              CFE_TIME_TaskData.CommandCounter == 1 &&
+              CFE_TIME_TaskData.CommandErrorCounter == 0,
               "CFE_TIME_AdjustCmd",
               "Set STCF adjust positive");
 #else
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_DELTA_CFG_EID &&
-              CFE_TIME_TaskData.CmdCounter == 0 &&
-              CFE_TIME_TaskData.ErrCounter == 1,
+              CFE_TIME_TaskData.CommandCounter == 0 &&
+              CFE_TIME_TaskData.CommandErrorCounter == 1,
               "CFE_TIME_AdjustCmd",
               "Set STCF adjust positive invalid");
 #endif
 
     /* Test sending an adjust STCF negative command */
     UT_InitData();
-    CFE_TIME_TaskData.CmdCounter = 0;
-    CFE_TIME_TaskData.ErrCounter = 0;
-    UT_SendMsg(msgptr, CFE_TIME_CMD_MID, CFE_TIME_SUB_ADJUST_CC);
+    UT_SetSBTotalMsgLen(sizeof(CmdBuf.subadjcmd));
+    CFE_TIME_TaskData.CommandCounter = 0;
+    CFE_TIME_TaskData.CommandErrorCounter = 0;
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_CMD_MID, CFE_TIME_SUB_ADJUST_CC);
 
-#if (CFE_TIME_CFG_SERVER == TRUE)
+#if (CFE_PLATFORM_TIME_CFG_SERVER == TRUE)
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_DELTA_EID &&
-              CFE_TIME_TaskData.CmdCounter == 1 &&
-              CFE_TIME_TaskData.ErrCounter == 0,
+              CFE_TIME_TaskData.CommandCounter == 1 &&
+              CFE_TIME_TaskData.CommandErrorCounter == 0,
               "CFE_TIME_AdjustCmd",
               "Set STCF adjust negative");
 #else
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_DELTA_CFG_EID &&
-              CFE_TIME_TaskData.CmdCounter == 0 &&
-              CFE_TIME_TaskData.ErrCounter == 1,
+              CFE_TIME_TaskData.CommandCounter == 0 &&
+              CFE_TIME_TaskData.CommandErrorCounter == 1,
               "CFE_TIME_AdjustCmd",
               "Set STCF adjust negative invalid");
 #endif
 
     /* Test sending an adjust STCF 1 Hz positive command */
     UT_InitData();
-    CFE_TIME_TaskData.CmdCounter = 0;
-    CFE_TIME_TaskData.ErrCounter = 0;
-    UT_SendMsg(msgptr, CFE_TIME_CMD_MID, CFE_TIME_ADD_1HZADJ_CC);
+    UT_SetSBTotalMsgLen(sizeof(CmdBuf.add1hzadjcmd));
+    CFE_TIME_TaskData.CommandCounter = 0;
+    CFE_TIME_TaskData.CommandErrorCounter = 0;
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_CMD_MID, CFE_TIME_ADD_1HZ_ADJUSTMENT_CC);
 
-#if (CFE_TIME_CFG_SERVER == TRUE)
+#if (CFE_PLATFORM_TIME_CFG_SERVER == TRUE)
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_1HZ_EID &&
-              CFE_TIME_TaskData.CmdCounter == 1 &&
-              CFE_TIME_TaskData.ErrCounter == 0,
+              CFE_TIME_TaskData.CommandCounter == 1 &&
+              CFE_TIME_TaskData.CommandErrorCounter == 0,
               "CFE_TIME_1HzAdjCmd",
               "Set STCF 1Hz adjust positive");
 #else
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_1HZ_CFG_EID &&
-              CFE_TIME_TaskData.CmdCounter == 0 &&
-              CFE_TIME_TaskData.ErrCounter == 1,
+              CFE_TIME_TaskData.CommandCounter == 0 &&
+              CFE_TIME_TaskData.CommandErrorCounter == 1,
               "CFE_TIME_1HzAdjCmd",
               "Set STCF 1Hz adjust positive invalid");
 #endif
 
     /* Test sending an adjust STCF 1 Hz negative command */
     UT_InitData();
-    CFE_TIME_TaskData.CmdCounter = 0;
-    CFE_TIME_TaskData.ErrCounter = 0;
-    UT_SendMsg(msgptr, CFE_TIME_CMD_MID, CFE_TIME_SUB_1HZADJ_CC);
+    UT_SetSBTotalMsgLen(sizeof(CmdBuf.sub1hzadjcmd));
+    CFE_TIME_TaskData.CommandCounter = 0;
+    CFE_TIME_TaskData.CommandErrorCounter = 0;
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_CMD_MID, CFE_TIME_SUB_1HZ_ADJUSTMENT_CC);
 
-#if (CFE_TIME_CFG_SERVER == TRUE)
+#if (CFE_PLATFORM_TIME_CFG_SERVER == TRUE)
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_1HZ_EID &&
-              CFE_TIME_TaskData.CmdCounter == 1 &&
-              CFE_TIME_TaskData.ErrCounter == 0,
+              CFE_TIME_TaskData.CommandCounter == 1 &&
+              CFE_TIME_TaskData.CommandErrorCounter == 0,
               "CFE_TIME_1HzAdjCmd",
               "Set STCF 1Hz adjust negative");
 #else
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_1HZ_CFG_EID &&
-              CFE_TIME_TaskData.CmdCounter == 0 &&
-              CFE_TIME_TaskData.ErrCounter == 1,
+              CFE_TIME_TaskData.CommandCounter == 0 &&
+              CFE_TIME_TaskData.CommandErrorCounter == 1,
               "CFE_TIME_1HzAdjCmd",
               "Set STCF 1Hz adjust negative invalid");
 #endif
 
     /* Test response to sending a tone delay command using an invalid time */
     UT_InitData();
-    timecmd.Payload.MicroSeconds = 1000001;
-    UT_SendMsg(msgptr, CFE_TIME_CMD_MID, CFE_TIME_ADD_DELAY_CC);
+    UT_SetSBTotalMsgLen(sizeof(CmdBuf.adddelaycmd));
+    CmdBuf.adddelaycmd.Payload.MicroSeconds = 1000001;
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_CMD_MID, CFE_TIME_ADD_DELAY_CC);
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_DELAY_ERR_EID,
               "CFE_TIME_SetDelayCmd",
@@ -2240,8 +2220,9 @@ void Test_PipeCmds(void)
 
     /* Test response to sending a set time command using an invalid time */
     UT_InitData();
-    timecmd.Payload.MicroSeconds = 1000001;
-    UT_SendMsg(msgptr, CFE_TIME_CMD_MID, CFE_TIME_SET_TIME_CC);
+    UT_SetSBTotalMsgLen(sizeof(CmdBuf.settimecmd));
+    CmdBuf.settimecmd.Payload.MicroSeconds = 1000001;
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_CMD_MID, CFE_TIME_SET_TIME_CC);
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_TIME_ERR_EID,
               "CFE_TIME_SetTimeCmd",
@@ -2249,8 +2230,9 @@ void Test_PipeCmds(void)
 
     /* Test response to sending a set MET command using an invalid time */
     UT_InitData();
-    timecmd.Payload.MicroSeconds = 1000001;
-    UT_SendMsg(msgptr, CFE_TIME_CMD_MID, CFE_TIME_SET_MET_CC);
+    UT_SetSBTotalMsgLen(sizeof(CmdBuf.setmetcmd));
+    CmdBuf.setmetcmd.Payload.MicroSeconds = 1000001;
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_CMD_MID, CFE_TIME_SET_MET_CC);
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_MET_ERR_EID,
               "CFE_TIME_SetMETCmd",
@@ -2258,8 +2240,9 @@ void Test_PipeCmds(void)
 
     /* Test response to sending a set STCF command using an invalid time */
     UT_InitData();
-    timecmd.Payload.MicroSeconds = 1000001;
-    UT_SendMsg(msgptr, CFE_TIME_CMD_MID, CFE_TIME_SET_STCF_CC);
+    UT_SetSBTotalMsgLen(sizeof(CmdBuf.setstcfcmd));
+    CmdBuf.setstcfcmd.Payload.MicroSeconds = 1000001;
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_CMD_MID, CFE_TIME_SET_STCF_CC);
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_STCF_ERR_EID,
               "CFE_TIME_SetSTCFCmd",
@@ -2267,8 +2250,8 @@ void Test_PipeCmds(void)
 
     /* Test response to sending an adjust STCF command using an invalid time */
     UT_InitData();
-    timecmd.Payload.MicroSeconds = 1000001;
-    UT_SendMsg(msgptr, CFE_TIME_CMD_MID, CFE_TIME_ADD_ADJUST_CC);
+    CmdBuf.setstcfcmd.Payload.MicroSeconds = 1000001;
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_CMD_MID, CFE_TIME_ADD_ADJUST_CC);
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_DELTA_ERR_EID,
               "CFE_TIME_AdjustCmd",
@@ -2276,31 +2259,31 @@ void Test_PipeCmds(void)
 
     /* Test sending a set leap seconds commands */
     UT_InitData();
-    CFE_TIME_TaskData.CmdCounter = 0;
-    CFE_TIME_TaskData.ErrCounter = 0;
-    msgptr = (CFE_SB_MsgPtr_t) &leapscmd;
-    leapscmd.Payload.LeapSeconds = 0;
-    UT_SendMsg(msgptr, CFE_TIME_CMD_MID, CFE_TIME_SET_LEAPS_CC);
+    UT_SetSBTotalMsgLen(sizeof(CmdBuf.leapscmd));
+    CFE_TIME_TaskData.CommandCounter = 0;
+    CFE_TIME_TaskData.CommandErrorCounter = 0;
+    CmdBuf.leapscmd.Payload.LeapSeconds = 0;
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_CMD_MID, CFE_TIME_SET_LEAP_SECONDS_CC);
 
-#if (CFE_TIME_CFG_SERVER == TRUE)
+#if (CFE_PLATFORM_TIME_CFG_SERVER == TRUE)
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_LEAPS_EID &&
-            CFE_TIME_TaskData.CmdCounter == 1 &&
-            CFE_TIME_TaskData.ErrCounter == 0,
-              "CFE_TIME_SetLeapsCmd",
+            CFE_TIME_TaskData.CommandCounter == 1 &&
+            CFE_TIME_TaskData.CommandErrorCounter == 0,
+              "CFE_TIME_SetLeapSecondsCmd",
               "Set leap seconds");
 #else
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_LEAPS_CFG_EID &&
-              CFE_TIME_TaskData.CmdCounter == 0 &&
-              CFE_TIME_TaskData.ErrCounter == 1,
-              "CFE_TIME_SetLeapsCmd",
+              CFE_TIME_TaskData.CommandCounter == 0 &&
+              CFE_TIME_TaskData.CommandErrorCounter == 1,
+              "CFE_TIME_SetLeapSecondsCmd",
               "Set leap seconds invalid");
 #endif
 
     /* Test response to sending an invalid command */
     UT_InitData();
-    UT_SendMsg(&message, CFE_TIME_CMD_MID, 0xffff);
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_CMD_MID, 0xffff);
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_CC_ERR_EID,
               "CFE_TIME_TaskPipe",
@@ -2308,9 +2291,18 @@ void Test_PipeCmds(void)
 
     /* Test response to sending a command using an invalid message ID */
     UT_InitData();
-    UT_SendMsg(&message, 0xffff, 0);
+    UT_SendMsg(&CmdBuf.message, 0xffff, 0);
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_TIME_ID_ERR_EID,
+              "CFE_TIME_TaskPipe",
+              "Invalid message ID");
+
+    /* Test response to sending a command with a bad length */
+    UT_InitData();
+    UT_SetSBTotalMsgLen(sizeof(CmdBuf.leapscmd) - 1);
+    UT_SendMsg(&CmdBuf.message, CFE_TIME_CMD_MID, CFE_TIME_SET_LEAP_SECONDS_CC);
+    UT_Report(__FILE__, __LINE__,
+              SendMsgEventIDRtn.value == CFE_TIME_LEN_ERR_EID,
               "CFE_TIME_TaskPipe",
               "Invalid message ID");
 }
@@ -2329,8 +2321,8 @@ void Test_ResetArea(void)
     /* Test successfully updating the reset area */
     UT_InitData();
     CFE_TIME_TaskData.DataStoreStatus = CFE_TIME_RESET_AREA_EXISTING;
-    CFE_TIME_TaskData.ClockSignal = CFE_TIME_TONE_PRI;
-    UT_CFE_ES_ResetDataPtr->TimeResetVars.ClockSignal = CFE_TIME_TONE_RED;
+    CFE_TIME_TaskData.ClockSignal = CFE_TIME_ToneSignalSelect_PRIMARY;
+    UT_CFE_ES_ResetDataPtr->TimeResetVars.ClockSignal = CFE_TIME_ToneSignalSelect_REDUNDANT;
     CFE_TIME_UpdateResetVars(&Reference);
     UT_Report(__FILE__, __LINE__,
               UT_CFE_ES_ResetDataPtr->TimeResetVars.ClockSignal ==
@@ -2341,7 +2333,7 @@ void Test_ResetArea(void)
     /* Tests existing and good Reset Area */
     UT_InitData();
     UT_SetStatusBSPResetArea(OS_SUCCESS, CFE_TIME_RESET_SIGNATURE,
-                             CFE_TIME_TONE_PRI);
+                             CFE_TIME_ToneSignalSelect_PRIMARY);
     CFE_TIME_QueryResetVars();
     UT_Report(__FILE__, __LINE__,
               CFE_TIME_TaskData.DataStoreStatus ==
@@ -2352,7 +2344,7 @@ void Test_ResetArea(void)
     /* Tests existing and good Reset Area */
     UT_InitData();
     UT_SetStatusBSPResetArea(OS_SUCCESS, CFE_TIME_RESET_SIGNATURE,
-                             CFE_TIME_TONE_RED);
+                             CFE_TIME_ToneSignalSelect_REDUNDANT);
     CFE_TIME_QueryResetVars();
     UT_Report(__FILE__, __LINE__,
               CFE_TIME_TaskData.DataStoreStatus ==
@@ -2363,7 +2355,7 @@ void Test_ResetArea(void)
     /* Test response to a bad reset area */
     UT_InitData();
     UT_SetStatusBSPResetArea(OS_ERROR, CFE_TIME_RESET_SIGNATURE,
-                             CFE_TIME_TONE_PRI);
+                             CFE_TIME_ToneSignalSelect_PRIMARY);
     CFE_TIME_QueryResetVars();
     UT_Report(__FILE__, __LINE__,
               CFE_TIME_TaskData.DataStoreStatus == CFE_TIME_RESET_AREA_BAD,
@@ -2373,7 +2365,7 @@ void Test_ResetArea(void)
     /* Test initializing to default time values */
     UT_InitData();
     UT_SetStatusBSPResetArea(OS_SUCCESS, CFE_TIME_RESET_SIGNATURE + 1,
-                             CFE_TIME_TONE_PRI);
+                             CFE_TIME_ToneSignalSelect_PRIMARY);
     CFE_TIME_QueryResetVars();
     UT_Report(__FILE__, __LINE__,
               CFE_TIME_TaskData.DataStoreStatus == CFE_TIME_RESET_AREA_NEW,
@@ -2383,7 +2375,7 @@ void Test_ResetArea(void)
     /* Test response to a bad clock signal selection parameter */
     UT_InitData();
     UT_SetStatusBSPResetArea(OS_SUCCESS, CFE_TIME_RESET_SIGNATURE,
-                             CFE_TIME_TONE_RED+1);
+                             CFE_TIME_ToneSignalSelect_REDUNDANT+1);
     CFE_TIME_QueryResetVars();
     UT_Report(__FILE__, __LINE__,
               CFE_TIME_TaskData.DataStoreStatus == CFE_TIME_RESET_AREA_NEW,
@@ -2393,8 +2385,8 @@ void Test_ResetArea(void)
     /* Test response to a reset area error */
     UT_InitData();
     CFE_TIME_TaskData.DataStoreStatus = CFE_TIME_RESET_AREA_ERROR;
-    CFE_TIME_TaskData.ClockSignal = CFE_TIME_TONE_PRI;
-    UT_CFE_ES_ResetDataPtr->TimeResetVars.ClockSignal = CFE_TIME_TONE_RED;
+    CFE_TIME_TaskData.ClockSignal = CFE_TIME_ToneSignalSelect_PRIMARY;
+    UT_CFE_ES_ResetDataPtr->TimeResetVars.ClockSignal = CFE_TIME_ToneSignalSelect_REDUNDANT;
     CFE_TIME_UpdateResetVars(&Reference);
     UT_Report(__FILE__, __LINE__,
               UT_CFE_ES_ResetDataPtr->TimeResetVars.ClockSignal !=
@@ -2404,10 +2396,10 @@ void Test_ResetArea(void)
 
     /* Test failure to get reset area updating the reset area */
     UT_InitData();
-    UT_SetStatusBSPResetArea(CFE_PSP_ERROR, 0, CFE_TIME_TONE_PRI);
+    UT_SetStatusBSPResetArea(CFE_PSP_ERROR, 0, CFE_TIME_ToneSignalSelect_PRIMARY);
     CFE_TIME_TaskData.DataStoreStatus = CFE_TIME_RESET_AREA_EXISTING;
-    CFE_TIME_TaskData.ClockSignal = CFE_TIME_TONE_PRI;
-    UT_CFE_ES_ResetDataPtr->TimeResetVars.ClockSignal = CFE_TIME_TONE_RED;
+    CFE_TIME_TaskData.ClockSignal = CFE_TIME_ToneSignalSelect_PRIMARY;
+    UT_CFE_ES_ResetDataPtr->TimeResetVars.ClockSignal = CFE_TIME_ToneSignalSelect_REDUNDANT;
     CFE_TIME_UpdateResetVars(&Reference);
     UT_Report(__FILE__, __LINE__,
               UT_CFE_ES_ResetDataPtr->TimeResetVars.ClockSignal !=
@@ -2433,10 +2425,10 @@ void Test_State(void)
      * in "no flywheel"
      */
     UT_InitData();
-    Reference.ClockSetState = CFE_TIME_WAS_SET;
-    Reference.ClockFlyState = CFE_TIME_NO_FLY;
-    CFE_TIME_TaskData.ServerFlyState = CFE_TIME_NO_FLY;
-    ExpState = CFE_TIME_VALID;
+    Reference.ClockSetState = CFE_TIME_SetState_WAS_SET;
+    Reference.ClockFlyState = CFE_TIME_FlywheelState_NO_FLY;
+    CFE_TIME_TaskData.ServerFlyState = CFE_TIME_FlywheelState_NO_FLY;
+    ExpState = CFE_TIME_ClockState_VALID;
     UT_Report(__FILE__, __LINE__,
               CFE_TIME_CalculateState(&Reference) == ExpState,
               "CFE_TIME_CalculateState",
@@ -2446,13 +2438,13 @@ void Test_State(void)
      * in "flywheel"
      */
     UT_InitData();
-    Reference.ClockSetState = CFE_TIME_WAS_SET;
-    Reference.ClockFlyState = CFE_TIME_NO_FLY;
-    CFE_TIME_TaskData.ServerFlyState = CFE_TIME_IS_FLY;
-#if (CFE_TIME_CFG_CLIENT == TRUE)
-    ExpState = CFE_TIME_FLYWHEEL;
+    Reference.ClockSetState = CFE_TIME_SetState_WAS_SET;
+    Reference.ClockFlyState = CFE_TIME_FlywheelState_NO_FLY;
+    CFE_TIME_TaskData.ServerFlyState = CFE_TIME_FlywheelState_IS_FLY;
+#if (CFE_PLATFORM_TIME_CFG_CLIENT == TRUE)
+    ExpState = CFE_TIME_ClockState_FLYWHEEL;
 #else
-    ExpState = CFE_TIME_VALID;
+    ExpState = CFE_TIME_ClockState_VALID;
 #endif
     UT_Report(__FILE__, __LINE__,
               CFE_TIME_CalculateState(&Reference) == ExpState,
@@ -2461,24 +2453,24 @@ void Test_State(void)
 
     /* Test determining if the clock state = flywheel */
     UT_InitData();
-    Reference.ClockFlyState = CFE_TIME_IS_FLY;
+    Reference.ClockFlyState = CFE_TIME_FlywheelState_IS_FLY;
     UT_Report(__FILE__, __LINE__,
-              CFE_TIME_CalculateState(&Reference) == CFE_TIME_FLYWHEEL,
+              CFE_TIME_CalculateState(&Reference) == CFE_TIME_ClockState_FLYWHEEL,
               "CFE_TIME_CalculateState",
               "Flywheel time state");
 
     /* Test determining if the clock state = invalid */
     UT_InitData();
-    Reference.ClockSetState = CFE_TIME_INVALID;
+    Reference.ClockSetState = CFE_TIME_ClockState_INVALID;
     UT_Report(__FILE__, __LINE__,
-              CFE_TIME_CalculateState(&Reference) == CFE_TIME_INVALID,
+              CFE_TIME_CalculateState(&Reference) == CFE_TIME_ClockState_INVALID,
               "CFE_TIME_CalculateState",
               "Invalid time state");
 
     /* Test converting state data to flag values */
     UT_InitData();
-    CFE_TIME_SetState(CFE_TIME_VALID);
-    CFE_TIME_SetState(CFE_TIME_FLYWHEEL);
+    CFE_TIME_SetState(CFE_TIME_ClockState_VALID);
+    CFE_TIME_SetState(CFE_TIME_ClockState_FLYWHEEL);
     flag = CFE_TIME_GetClockInfo();
     UT_Report(__FILE__, __LINE__,
               CFE_TIME_GetStateFlags() == flag,
@@ -2489,23 +2481,23 @@ void Test_State(void)
     UT_InitData();
 
     /* Add server flag depending on configuration */
-    CFE_TIME_TaskData.ClockSetState = CFE_TIME_NOT_SET;
-    CFE_TIME_TaskData.ClockFlyState = CFE_TIME_NO_FLY;
-    CFE_TIME_TaskData.ClockSource = CFE_TIME_USE_EXTERN;
-    CFE_TIME_TaskData.ClockSignal = CFE_TIME_TONE_RED;
-    CFE_TIME_TaskData.ServerFlyState = CFE_TIME_NO_FLY;
+    CFE_TIME_TaskData.ClockSetState = CFE_TIME_SetState_NOT_SET;
+    CFE_TIME_TaskData.ClockFlyState = CFE_TIME_FlywheelState_NO_FLY;
+    CFE_TIME_TaskData.ClockSource = CFE_TIME_SourceSelect_EXTERNAL;
+    CFE_TIME_TaskData.ClockSignal = CFE_TIME_ToneSignalSelect_REDUNDANT;
+    CFE_TIME_TaskData.ServerFlyState = CFE_TIME_FlywheelState_NO_FLY;
     CFE_TIME_TaskData.Forced2Fly = FALSE;
-    CFE_TIME_TaskData.OneTimeDirection = CFE_TIME_SUB_ADJUST;
-    CFE_TIME_TaskData.OneHzDirection = CFE_TIME_SUB_ADJUST;
-    CFE_TIME_TaskData.DelayDirection = CFE_TIME_SUB_ADJUST;
+    CFE_TIME_TaskData.OneTimeDirection = CFE_TIME_AdjustDirection_SUBTRACT;
+    CFE_TIME_TaskData.OneHzDirection = CFE_TIME_AdjustDirection_SUBTRACT;
+    CFE_TIME_TaskData.DelayDirection = CFE_TIME_AdjustDirection_SUBTRACT;
     flag = CFE_TIME_GetClockInfo();
     UT_Report(__FILE__, __LINE__,
               CFE_TIME_GetStateFlags() == flag,
               "CFE_TIME_GetStateFlags",
               "State data with alternate flags");
 
-    CFE_TIME_TaskData.ClockFlyState = CFE_TIME_IS_FLY;
-    CFE_TIME_TaskData.ClockSource = CFE_TIME_USE_INTERN;
+    CFE_TIME_TaskData.ClockFlyState = CFE_TIME_FlywheelState_IS_FLY;
+    CFE_TIME_TaskData.ClockSource = CFE_TIME_SourceSelect_INTERNAL;
 }
 
 /*
@@ -2569,7 +2561,7 @@ void Test_Tone(void)
     CFE_TIME_SysTime_t time1;
     CFE_TIME_SysTime_t time2;
 
-#if (CFE_TIME_CFG_SERVER == TRUE)
+#if (CFE_PLATFORM_TIME_CFG_SERVER == TRUE)
     int seconds = 7654321;
     int virtualSeconds = 1234567;
 #endif
@@ -2583,9 +2575,9 @@ void Test_Tone(void)
 
     /* Test time at the tone in flywheel mode */
     UT_InitData();
-    CFE_TIME_SetState(CFE_TIME_FLYWHEEL);
+    CFE_TIME_SetState(CFE_TIME_ClockState_FLYWHEEL);
 
-#if (CFE_TIME_CFG_SERVER == TRUE)
+#if (CFE_PLATFORM_TIME_CFG_SERVER == TRUE)
     UT_SetBSP_Time(seconds, 0);
     CFE_TIME_TaskData.AtToneMET.Seconds = 0; /* 20.00000 */
     CFE_TIME_TaskData.AtToneMET.Subseconds = 0;
@@ -2598,24 +2590,43 @@ void Test_Tone(void)
     CFE_TIME_TaskData.ToneDataCmd.Payload.AtToneMET.Subseconds = seconds;
     CFE_TIME_ToneSend();
 
- #if (CFE_TIME_AT_TONE_WILL_BE == TRUE)
+ #if (CFE_MISSION_TIME_AT_TONE_WILL_BE == TRUE)
     seconds++;
  #endif
 
+#ifdef CFE_PLATFORM_TIME_CFG_BIGENDIAN
+    UT_Report(__FILE__, __LINE__,
+              CFE_TIME_TaskData.ToneDataCmd.Payload.AtToneMET.Seconds == CFE_MAKE_BIG32(seconds) &&
+              CFE_TIME_TaskData.ToneDataCmd.Payload.AtToneMET.Subseconds == CFE_MAKE_BIG32(0), /* yes, I know, 0 is 0 in all endians */
+              "CFE_TIME_ToneSend",
+              "Send tone, flywheel ON");
+#else /* !CFE_PLATFORM_TIME_CFG_BIGENDIAN */
     UT_Report(__FILE__, __LINE__,
               CFE_TIME_TaskData.ToneDataCmd.Payload.AtToneMET.Seconds == seconds &&
               CFE_TIME_TaskData.ToneDataCmd.Payload.AtToneMET.Subseconds == 0,
               "CFE_TIME_ToneSend",
               "Send tone, flywheel ON");
+#endif /* CFE_PLATFORM_TIME_CFG_BIGENDIAN */
 
     /* Test time at the tone when not in flywheel mode */
     UT_InitData();
-    CFE_TIME_TaskData.ClockFlyState = CFE_TIME_NO_FLY;
+    CFE_TIME_TaskData.ClockFlyState = CFE_TIME_FlywheelState_NO_FLY;
     CFE_TIME_ToneSend();
 
- #if (CFE_TIME_AT_TONE_WILL_BE == TRUE)
+ #if (CFE_MISSION_TIME_AT_TONE_WILL_BE == TRUE)
     virtualSeconds++;
  #endif
+
+#ifdef CFE_PLATFORM_TIME_CFG_BIGENDIAN
+
+    UT_Report(__FILE__, __LINE__,
+              CFE_TIME_TaskData.ToneDataCmd.Payload.AtToneMET.Seconds ==
+                  CFE_MAKE_BIG32(virtualSeconds) &&
+              CFE_TIME_TaskData.ToneDataCmd.Payload.AtToneMET.Subseconds == CFE_MAKE_BIG32(0), /* yes, I know, 0 is 0 in all endians */
+              "CFE_TIME_ToneSend",
+              "Send tone, flywheel OFF");
+
+#else /* !CFE_PLATFORM_TIME_CFG_BIGENDIAN */
 
     UT_Report(__FILE__, __LINE__,
               CFE_TIME_TaskData.ToneDataCmd.Payload.AtToneMET.Seconds ==
@@ -2623,6 +2634,8 @@ void Test_Tone(void)
               CFE_TIME_TaskData.ToneDataCmd.Payload.AtToneMET.Subseconds == 0,
               "CFE_TIME_ToneSend",
               "Send tone, flywheel OFF");
+
+#endif /* CFE_PLATFORM_TIME_CFG_BIGENDIAN */
 
 #else
     /* Added to prevent a missing test */
@@ -2641,38 +2654,40 @@ void Test_Tone(void)
     time1.Subseconds = 0;
     time2.Seconds = 10;
     time2.Subseconds = 100;
-    CFE_TIME_TaskData.ClockFlyState = CFE_TIME_IS_FLY;
+    CFE_TIME_TaskData.ClockFlyState = CFE_TIME_FlywheelState_IS_FLY;
 
     /* Test tone validation when time 1 < time 2 and Forced2Fly is set to
      * FALSE.  This test also serves to set the internal PrevTime variables
      * to known values
      */
     UT_InitData();
-    CFE_TIME_TaskData.VersionCount = 0; /* Verifies 'ForcedToFly' path */
-    CFE_TIME_TaskData.ToneMatchCount = 0;
+    CFE_TIME_TaskData.PendingVersionCounter = 0;
+    CFE_TIME_TaskData.CompleteVersionCounter = 0; /* Verifies 'ForcedToFly' path */
+    CFE_TIME_TaskData.ToneMatchCounter = 0;
     CFE_TIME_TaskData.Forced2Fly = FALSE; /* Exercises '!ForcedToFly' path */
     CFE_TIME_ToneVerify(time1, time2);
     UT_Report(__FILE__, __LINE__,
-              CFE_TIME_TaskData.VersionCount == 1 &&
-              CFE_TIME_TaskData.ToneMatchCount == 1,
+              CFE_TIME_TaskData.PendingVersionCounter == 1 &&
+              CFE_TIME_TaskData.CompleteVersionCounter == 1 &&
+              CFE_TIME_TaskData.ToneMatchCounter == 1,
               "CFE_TIME_ToneVerify",
               "Time 1 < time 2, Forced2Fly FALSE");
 
     /* Test tone validation when time 1 equals the previous time 1 value */
     UT_InitData();
-    CFE_TIME_TaskData.ToneMatchErrors = 0;
+    CFE_TIME_TaskData.ToneMatchErrorCounter = 0;
     CFE_TIME_ToneVerify(time1, time1);
     UT_Report(__FILE__, __LINE__,
-              CFE_TIME_TaskData.ToneMatchErrors == 1,
+              CFE_TIME_TaskData.ToneMatchErrorCounter == 1,
               "CFE_TIME_ToneVerify",
               "Time 1 same as previous time 1");
 
     /* Test tone validation when time 2 equals the previous time 2 value */
     UT_InitData();
-    CFE_TIME_TaskData.ToneMatchErrors = 0;
+    CFE_TIME_TaskData.ToneMatchErrorCounter = 0;
     CFE_TIME_ToneVerify(time2, time1);
     UT_Report(__FILE__, __LINE__,
-              CFE_TIME_TaskData.ToneMatchErrors == 1,
+              CFE_TIME_TaskData.ToneMatchErrorCounter == 1,
               "CFE_TIME_ToneVerify",
               "Time 2 same as previous time 2");
 
@@ -2684,10 +2699,10 @@ void Test_Tone(void)
     time2.Subseconds = 100;
     CFE_TIME_TaskData.MaxLocalClock.Seconds = 20; /* 1000.00000 */
     CFE_TIME_TaskData.MaxLocalClock.Subseconds = 0;
-    CFE_TIME_TaskData.ToneMatchCount = 0;
+    CFE_TIME_TaskData.ToneMatchCounter = 0;
     CFE_TIME_ToneVerify(time1, time2);
     UT_Report(__FILE__, __LINE__,
-              CFE_TIME_TaskData.ToneMatchCount == 1,
+              CFE_TIME_TaskData.ToneMatchCounter == 1,
               "CFE_TIME_ToneVerify",
               "Time 1 > time 2 (clock rollover)");
 
@@ -2699,10 +2714,10 @@ void Test_Tone(void)
     time2.Seconds = 11;
     time1.Subseconds = 0;
     time2.Subseconds = 0;
-    CFE_TIME_TaskData.ToneMatchErrors = 0;
+    CFE_TIME_TaskData.ToneMatchErrorCounter = 0;
     CFE_TIME_ToneVerify(time2, time1);
     UT_Report(__FILE__, __LINE__,
-              CFE_TIME_TaskData.ToneMatchErrors == 1,
+              CFE_TIME_TaskData.ToneMatchErrorCounter == 1,
               "CFE_TIME_ToneVerify",
               "Elapsed time out of limits (seconds)");
 
@@ -2716,10 +2731,10 @@ void Test_Tone(void)
     time2.Subseconds = 10;
     CFE_TIME_TaskData.MinElapsed = 20;
     CFE_TIME_TaskData.MaxElapsed = 30;
-    CFE_TIME_TaskData.ToneMatchErrors = 0;
+    CFE_TIME_TaskData.ToneMatchErrorCounter = 0;
     CFE_TIME_ToneVerify(time1, time2);
     UT_Report(__FILE__, __LINE__,
-              CFE_TIME_TaskData.ToneMatchErrors == 1,
+              CFE_TIME_TaskData.ToneMatchErrorCounter == 1,
               "CFE_TIME_ToneVerify",
               "Elapsed time out of limits (subseconds low)");
 
@@ -2733,10 +2748,10 @@ void Test_Tone(void)
     time2.Subseconds = 40;
     CFE_TIME_TaskData.MinElapsed = 20;
     CFE_TIME_TaskData.MaxElapsed = 30;
-    CFE_TIME_TaskData.ToneMatchErrors = 0;
+    CFE_TIME_TaskData.ToneMatchErrorCounter = 0;
     CFE_TIME_ToneVerify(time1, time2);
     UT_Report(__FILE__, __LINE__,
-              CFE_TIME_TaskData.ToneMatchErrors == 1,
+              CFE_TIME_TaskData.ToneMatchErrorCounter == 1,
               "CFE_TIME_ToneVerify",
               "Elapsed time out of limits (subseconds high)");
 
@@ -2752,42 +2767,44 @@ void Test_Tone(void)
      * FALSE and the clock source is external
      */
     UT_InitData();
-    CFE_TIME_TaskData.VersionCount = 0; /* Verifies 'ForcedToFly' path */
-    CFE_TIME_TaskData.ToneMatchCount = 0;
+    CFE_TIME_TaskData.PendingVersionCounter = 0;
+    CFE_TIME_TaskData.CompleteVersionCounter = 0; /* Verifies 'ForcedToFly' path */
+    CFE_TIME_TaskData.ToneMatchCounter = 0;
     CFE_TIME_TaskData.Forced2Fly = FALSE; /* Exercises '!ForcedToFly' path */
-    CFE_TIME_TaskData.ClockSource = CFE_TIME_USE_EXTERN;
+    CFE_TIME_TaskData.ClockSource = CFE_TIME_SourceSelect_EXTERNAL;
     CFE_TIME_TaskData.VirtualMET = 5;
     CFE_TIME_TaskData.PendingMET.Seconds = CFE_TIME_TaskData.VirtualMET;
     CFE_TIME_ToneVerify(time1, time2);
     UT_Report(__FILE__, __LINE__,
-              CFE_TIME_TaskData.VersionCount == 1 &&
-              CFE_TIME_TaskData.ToneMatchCount == 1 &&
+              CFE_TIME_TaskData.PendingVersionCounter == 1 &&
+              CFE_TIME_TaskData.CompleteVersionCounter == 1 &&
+              CFE_TIME_TaskData.ToneMatchCounter == 1 &&
               CFE_TIME_TaskData.VirtualMET == 5,
               "CFE_TIME_ToneVerify",
               "Time 1 < time 2, Forced2Fly FALSE, Clock EXTERN");
 
-    CFE_TIME_TaskData.ClockSource = CFE_TIME_USE_INTERN;
+    CFE_TIME_TaskData.ClockSource = CFE_TIME_SourceSelect_INTERNAL;
 
-#if (CFE_TIME_CFG_CLIENT == TRUE)
+#if (CFE_PLATFORM_TIME_CFG_CLIENT == TRUE)
     /* Test tone update using an invalid pending state */
     UT_InitData();
-    CFE_TIME_TaskData.PendingState = CFE_TIME_INVALID;
-    CFE_TIME_TaskData.ClockSetState  = CFE_TIME_WAS_SET;
-    CFE_TIME_TaskData.ServerFlyState = CFE_TIME_IS_FLY;
+    CFE_TIME_TaskData.PendingState = CFE_TIME_ClockState_INVALID;
+    CFE_TIME_TaskData.ClockSetState  = CFE_TIME_SetState_WAS_SET;
+    CFE_TIME_TaskData.ServerFlyState = CFE_TIME_FlywheelState_IS_FLY;
     CFE_TIME_ToneUpdate();
     UT_Report(__FILE__, __LINE__,
-              CFE_TIME_TaskData.ClockSetState == CFE_TIME_NOT_SET &&
-              CFE_TIME_TaskData.ServerFlyState == CFE_TIME_NO_FLY,
+              CFE_TIME_TaskData.ClockSetState == CFE_TIME_SetState_NOT_SET &&
+              CFE_TIME_TaskData.ServerFlyState == CFE_TIME_FlywheelState_NO_FLY,
               "CFE_TIME_ToneUpdate",
               "Invalid pending state");
 
     /* Test tone update using FLYWHEEL as the pending state */
     UT_InitData();
-    CFE_TIME_TaskData.PendingState = CFE_TIME_FLYWHEEL;
-    CFE_TIME_TaskData.ServerFlyState = CFE_TIME_NO_FLY;
+    CFE_TIME_TaskData.PendingState = CFE_TIME_ClockState_FLYWHEEL;
+    CFE_TIME_TaskData.ServerFlyState = CFE_TIME_FlywheelState_NO_FLY;
     CFE_TIME_ToneUpdate();
     UT_Report(__FILE__, __LINE__,
-              CFE_TIME_TaskData.ServerFlyState == CFE_TIME_IS_FLY,
+              CFE_TIME_TaskData.ServerFlyState == CFE_TIME_FlywheelState_IS_FLY,
               "CFE_TIME_ToneUpdate",
               "Pending state is FLYWHEEL");
 
@@ -2811,19 +2828,20 @@ void Test_Tone(void)
 void Test_1Hz(void)
 {
     uint16             Arg;
+    uint16             i;
     uint32             delSec = 3;
     CFE_TIME_SysTime_t time1;
     CFE_TIME_SysTime_t time2;
 
-#if (CFE_TIME_CFG_SERVER == TRUE)
+#if (CFE_PLATFORM_TIME_CFG_SERVER == TRUE)
     /* Test 1Hz STCF adjustment in positive direction */
     UT_InitData();
     CFE_TIME_TaskData.AtToneSTCF.Seconds = 20;
     CFE_TIME_TaskData.AtToneSTCF.Subseconds = 60;
     time1.Seconds = 10;
     time1.Subseconds = 30;
-    CFE_TIME_Set1HzAdj(time1, CFE_TIME_ADD_ADJUST);
-    CFE_TIME_Local1HzISR();
+    CFE_TIME_Set1HzAdj(time1, CFE_TIME_AdjustDirection_ADD);
+    CFE_TIME_Local1HzStateMachine();
     UT_Report(__FILE__, __LINE__,
               CFE_TIME_TaskData.AtToneSTCF.Seconds == 30 &&
               CFE_TIME_TaskData.AtToneSTCF.Subseconds == 90,
@@ -2832,15 +2850,15 @@ void Test_1Hz(void)
 
     /* Test 1Hz STCF adjustment in negative direction */
     UT_InitData();
-    CFE_TIME_Set1HzAdj(time1, CFE_TIME_SUB_ADJUST);
-    CFE_TIME_Local1HzISR();
+    CFE_TIME_Set1HzAdj(time1, CFE_TIME_AdjustDirection_SUBTRACT);
+    CFE_TIME_Local1HzStateMachine();
     UT_Report(__FILE__, __LINE__,
               CFE_TIME_TaskData.AtToneSTCF.Seconds == 20 &&
               CFE_TIME_TaskData.AtToneSTCF.Subseconds == 60,
               "CFE_TIME_Set1HzAdj",
               "Negative adjustment");
 #else
-    /* These prevent missing tests when CFE_TIME_CFG_SERVER is FALSE */
+    /* These prevent missing tests when CFE_PLATFORM_TIME_CFG_SERVER is FALSE */
     UT_Report(__FILE__, __LINE__,
               TRUE,
               "CFE_TIME_Local1HzISR",
@@ -2855,16 +2873,16 @@ void Test_1Hz(void)
      * receiving a time update to automatically change the state to flywheel
      */
     UT_InitData();
-    CFE_TIME_TaskData.ClockFlyState = CFE_TIME_NO_FLY;
+    CFE_TIME_TaskData.ClockFlyState = CFE_TIME_FlywheelState_NO_FLY;
     CFE_TIME_TaskData.AutoStartFly = FALSE;
     CFE_TIME_TaskData.AtToneLatch.Seconds = 1;
     CFE_TIME_TaskData.AtToneLatch.Subseconds = 0;
     CFE_TIME_TaskData.OneHzAdjust.Seconds = 1;
     CFE_TIME_TaskData.OneHzAdjust.Subseconds = 0;
     UT_SetBSP_Time(0, 0);
-    CFE_TIME_TaskData.MaxLocalClock.Seconds = CFE_TIME_CFG_LATCH_FLY - 1;
+    CFE_TIME_TaskData.MaxLocalClock.Seconds = CFE_PLATFORM_TIME_CFG_LATCH_FLY - 1;
     CFE_TIME_TaskData.MaxLocalClock.Subseconds = 0;
-    CFE_TIME_Local1HzISR();
+    CFE_TIME_Local1HzStateMachine();
     UT_Report(__FILE__, __LINE__,
               CFE_TIME_TaskData.AutoStartFly == TRUE,
               "CFE_TIME_Local1HzISR",
@@ -2885,13 +2903,13 @@ void Test_1Hz(void)
     CFE_TIME_TaskData.AtToneLatch.Seconds = time2.Seconds;
     CFE_TIME_TaskData.AtToneLatch.Subseconds = 0;
     UT_SetBSP_Time(0, 0);
-    CFE_TIME_TaskData.MaxLocalClock.Seconds = CFE_TIME_CFG_LATCH_FLY + delSec;
+    CFE_TIME_TaskData.MaxLocalClock.Seconds = CFE_PLATFORM_TIME_CFG_LATCH_FLY + delSec;
     CFE_TIME_TaskData.MaxLocalClock.Subseconds = 0;
-    CFE_TIME_TaskData.ClockFlyState = CFE_TIME_IS_FLY;
-    CFE_TIME_Local1HzISR();
+    CFE_TIME_TaskData.ClockFlyState = CFE_TIME_FlywheelState_IS_FLY;
+    CFE_TIME_Local1HzStateMachine();
     UT_Report(__FILE__, __LINE__,
               CFE_TIME_TaskData.AtToneMET.Seconds == time1.Seconds +
-                                                     CFE_TIME_CFG_LATCH_FLY +
+                                                     CFE_PLATFORM_TIME_CFG_LATCH_FLY +
                                                      delSec - time2.Seconds &&
               CFE_TIME_TaskData.AtToneLatch.Seconds == 0,
               "CFE_TIME_Local1HzISR",
@@ -2917,9 +2935,22 @@ void Test_1Hz(void)
      */
     UT_InitData();
     UT_SetBSP_Time(1, 0);
+    /* Set up the sync callback table with callbacks for 3 apps */
+    for (i = 0; i < (sizeof(CFE_TIME_TaskData.SynchCallback) / sizeof(CFE_TIME_TaskData.SynchCallback[0])); i++)
+    {
+        if (i < 3)
+        {
+            CFE_TIME_TaskData.SynchCallback[i].Ptr = &ut_time_MyCallbackFunc;
+        }
+        else
+        {
+            CFE_TIME_TaskData.SynchCallback[i].Ptr = NULL;
+        }
+    }
+    ut_time_CallbackCalled = 0;
     CFE_TIME_Tone1HzISR();
     UT_Report(__FILE__, __LINE__,
-              ut_time_CallbackCalled == CFE_TIME_MAX_NUM_SYNCH_FUNCS,
+              ut_time_CallbackCalled == 3,
               "CFE_TIME_Tone1HzISR",
               "Proper number of callbacks made");
 
@@ -2928,11 +2959,11 @@ void Test_1Hz(void)
      */
     UT_InitData();
     CFE_TIME_TaskData.AutoStartFly = TRUE;
-    CFE_TIME_TaskData.LocalTaskCount = 0;
+    CFE_TIME_TaskData.LocalTaskCounter = 0;
     UT_SetBinSemFail(2);
     CFE_TIME_Local1HzTask();
     UT_Report(__FILE__, __LINE__,
-              CFE_TIME_TaskData.LocalTaskCount == 1,
+              CFE_TIME_TaskData.LocalTaskCounter == 1,
               "CFE_TIME_Local1HzTask",
               "Semaphore creation pass, then fail");
 
@@ -2940,11 +2971,11 @@ void Test_1Hz(void)
      * second call
      */
     UT_InitData();
-    CFE_TIME_TaskData.ToneTaskCount = 0;
+    CFE_TIME_TaskData.ToneTaskCounter = 0;
     UT_SetBinSemFail(2);
     CFE_TIME_Tone1HzTask();
     UT_Report(__FILE__, __LINE__,
-              CFE_TIME_TaskData.ToneTaskCount == 1,
+              CFE_TIME_TaskData.ToneTaskCounter == 1,
               "CFE_TIME_Tone1HzTask",
               "Semaphore creation pass, then fail");
 
@@ -2990,14 +3021,14 @@ void Test_1Hz(void)
      * receiving a time update to automatically change the state to flywheel
      */
     UT_InitData();
-    CFE_TIME_TaskData.ClockFlyState = CFE_TIME_NO_FLY;
+    CFE_TIME_TaskData.ClockFlyState = CFE_TIME_FlywheelState_NO_FLY;
     CFE_TIME_TaskData.AutoStartFly = FALSE;
     CFE_TIME_TaskData.AtToneLatch.Seconds = 1;
     CFE_TIME_TaskData.AtToneLatch.Subseconds = 0;
     CFE_TIME_TaskData.OneHzAdjust.Seconds = 0;
     CFE_TIME_TaskData.OneHzAdjust.Subseconds = 1;
     UT_SetBSP_Time(0, 0);
-    CFE_TIME_Local1HzISR();
+    CFE_TIME_Local1HzStateMachine();
     UT_Report(__FILE__, __LINE__,
               CFE_TIME_TaskData.AutoStartFly == TRUE,
               "CFE_TIME_Local1HzISR",
@@ -3007,39 +3038,43 @@ void Test_1Hz(void)
      * receiving a time update to automatically change the state to flywheel
      */
     UT_InitData();
-    CFE_TIME_TaskData.ClockFlyState = CFE_TIME_NO_FLY;
-    CFE_TIME_TaskData.VersionCount = 0;
+    CFE_TIME_TaskData.ClockFlyState = CFE_TIME_FlywheelState_NO_FLY;
+    CFE_TIME_TaskData.PendingVersionCounter = 0;
+    CFE_TIME_TaskData.CompleteVersionCounter = 0;
     CFE_TIME_TaskData.OneHzAdjust.Seconds = 0;
     CFE_TIME_TaskData.OneHzAdjust.Subseconds = 0;
     UT_SetBSP_Time(0, 0);
-    CFE_TIME_Local1HzISR();
+    CFE_TIME_Local1HzStateMachine();
     UT_Report(__FILE__, __LINE__,
-              CFE_TIME_TaskData.VersionCount == 0,
+              CFE_TIME_TaskData.PendingVersionCounter == 0 &&
+              CFE_TIME_TaskData.CompleteVersionCounter == 0,
               "CFE_TIME_Local1HzISR",
               "Do not auto start flywheel");
 
     /* Test the local 1Hz task where auto start flywheel is disabled */
     UT_InitData();
-    CFE_TIME_TaskData.LocalTaskCount = 0;
+    CFE_TIME_TaskData.LocalTaskCounter = 0;
     CFE_TIME_TaskData.AutoStartFly = FALSE;
     UT_SetBinSemFail(2);
     CFE_TIME_Local1HzTask();
     UT_Report(__FILE__, __LINE__,
-             CFE_TIME_TaskData.LocalTaskCount == 1 &&
+             CFE_TIME_TaskData.LocalTaskCounter == 1 &&
               !UT_EventIsInHistory(CFE_TIME_FLY_ON_EID),
               "CFE_TIME_Local1HzTask",
               "Do not auto start flywheel");
 
     /* Test the CFE_TIME_Local1HzTimerCallback function */
     UT_InitData();
-    CFE_TIME_TaskData.ClockFlyState = CFE_TIME_NO_FLY;
-    CFE_TIME_TaskData.VersionCount = 0;
+    CFE_TIME_TaskData.ClockFlyState = CFE_TIME_FlywheelState_NO_FLY;
+    CFE_TIME_TaskData.PendingVersionCounter = 0;
+    CFE_TIME_TaskData.CompleteVersionCounter = 0;
     CFE_TIME_TaskData.OneHzAdjust.Seconds = 0;
     CFE_TIME_TaskData.OneHzAdjust.Subseconds = 0;
     UT_SetBSP_Time(0, 0);
     CFE_TIME_Local1HzTimerCallback(123, &Arg);
     UT_Report(__FILE__, __LINE__,
-              CFE_TIME_TaskData.VersionCount == 0,
+              CFE_TIME_TaskData.PendingVersionCounter == 0 &&
+              CFE_TIME_TaskData.CompleteVersionCounter == 0,
               "CFE_TIME_Local1HzTimerCallback",
               "Pass through to CFE_TIME_Local1HzISR");
 }
@@ -3050,10 +3085,7 @@ void Test_1Hz(void)
 void Test_UnregisterSynchCallback(void)
 {
     uint32  i = 0;
-    int32   Result = CFE_SUCCESS;
-    boolean SuccessfulTestResult = TRUE;
-    boolean UnsuccessfulTestResult = TRUE;
-    boolean BadIDResult = TRUE;
+    int32   Result;
 
     ut_time_CallbackCalled = 0;
 
@@ -3066,60 +3098,64 @@ void Test_UnregisterSynchCallback(void)
      */
     UT_InitData();
 
-    for (i = 0; i <= CFE_TIME_MAX_NUM_SYNCH_FUNCS; i++)
-    {
-        Result =
-            CFE_TIME_UnregisterSynchCallback((CFE_TIME_SynchCallbackPtr_t)
-                                             &ut_time_MyCallbackFunc);
 
-        if (i < CFE_TIME_MAX_NUM_SYNCH_FUNCS && Result != CFE_SUCCESS)
+    /* Set up the sync callback table with callbacks for 3 apps */
+    for (i = 0; i < (sizeof(CFE_TIME_TaskData.SynchCallback) / sizeof(CFE_TIME_TaskData.SynchCallback[0])); i++)
+    {
+        if (i < 3)
         {
-            SuccessfulTestResult = FALSE;
+            CFE_TIME_TaskData.SynchCallback[i].Ptr = &ut_time_MyCallbackFunc;
         }
-        else if (i == CFE_TIME_MAX_NUM_SYNCH_FUNCS &&
-                 Result != CFE_TIME_CALLBACK_NOT_REGISTERED)
+        else
         {
-            UnsuccessfulTestResult = FALSE;
+            CFE_TIME_TaskData.SynchCallback[i].Ptr = NULL;
         }
     }
 
+    /* App ID 4 should not have a callback */
+    UT_SetAppID(4);
+
+    Result = CFE_TIME_UnregisterSynchCallback(&ut_time_MyCallbackFunc);
     UT_Report(__FILE__, __LINE__,
-              SuccessfulTestResult,
+              Result == CFE_TIME_CALLBACK_NOT_REGISTERED,
+              "CFE_TIME_UnregisterSynchCallback",
+              "Unregistered result with no callback");
+
+    /*
+     * One callback per application is allowed; the first should succeed,
+     * the second should fail.
+     */
+    /* App ID 2 should have a callback */
+    UT_SetAppID(2);
+
+    Result = CFE_TIME_UnregisterSynchCallback(&ut_time_MyCallbackFunc);
+    UT_Report(__FILE__, __LINE__,
+              Result == CFE_SUCCESS,
               "CFE_TIME_UnregisterSynchCallback",
               "Successfully unregister callback");
 
+    Result = CFE_TIME_UnregisterSynchCallback(&ut_time_MyCallbackFunc);
     UT_Report(__FILE__, __LINE__,
-              UnsuccessfulTestResult,
+              Result == CFE_TIME_CALLBACK_NOT_REGISTERED,
               "CFE_TIME_UnregisterSynchCallback",
-              "Unsuccessful unregister callback");
+              "Unregistered result after successful unregister");
 
     /* Test unregistering the callback function with a bad application ID */
     UT_InitData();
     UT_SetRtnCode(&GetAppIDRtn, -1, 1);
-    CFE_TIME_TaskData.SynchCallback[0].Ptr = NULL;
-
-    if (CFE_TIME_UnregisterSynchCallback((CFE_TIME_SynchCallbackPtr_t)
-                                         &ut_time_MyCallbackFunc) != -1)
-    {
-        BadIDResult = FALSE;
-    }
-
+    Result = CFE_TIME_UnregisterSynchCallback(&ut_time_MyCallbackFunc);
     UT_Report(__FILE__, __LINE__,
-              BadIDResult,
+              Result == -1,
               "CFE_TIME_UnregisterSynchCallback",
               "Bad application ID");
-
-    CFE_TIME_TaskData.SynchCallback[0].App = -1;
-    UT_Report(__FILE__, __LINE__,
-              CFE_TIME_UnregisterSynchCallback((CFE_TIME_SynchCallbackPtr_t)
-              &ut_time_MyCallbackFunc) == CFE_TIME_CALLBACK_NOT_REGISTERED,
-              "CFE_TIME_UnregisterSynchCallback",
-              "Unknown synch callback");
 
     /* Test tone notification with an invalid time synch application */
     UT_InitData();
     CFE_TIME_TaskData.IsToneGood = TRUE;
-    CFE_TIME_TaskData.SynchCallback[0].Ptr = NULL;
+    for (i = 0; i < (sizeof(CFE_TIME_TaskData.SynchCallback) / sizeof(CFE_TIME_TaskData.SynchCallback[0])); i++)
+    {
+        CFE_TIME_TaskData.SynchCallback[i].Ptr = NULL;
+    }
     CFE_TIME_NotifyTimeSynchApps();
     UT_Report(__FILE__, __LINE__,
               ut_time_CallbackCalled == 0,
@@ -3133,8 +3169,8 @@ void Test_UnregisterSynchCallback(void)
 void Test_CleanUpApp(void)
 {
     uint16   i;
-    uint16 Status1 = 0;
-    int32  Status2 = CFE_SUCCESS;
+    uint16 Count;
+    int32  Status = CFE_SUCCESS;
 
 #ifdef UT_VERBOSE
     UT_Text("Begin Test Cleanup App\n");
@@ -3142,31 +3178,72 @@ void Test_CleanUpApp(void)
 
     UT_InitData();
 
-    /* Add multiple entries into callback registry table */
-    Test_RegisterSyncCallback(FALSE);
-
-    /* Clean up callbacks */
-    CFE_TIME_CleanUpApp(UT_AppID);
-
-    for (i = 0; i < CFE_TIME_MAX_NUM_SYNCH_FUNCS; i++)
+    /* Clear out the sync callback table */
+    for (i = 0; i < (sizeof(CFE_TIME_TaskData.SynchCallback) / sizeof(CFE_TIME_TaskData.SynchCallback[0])); i++)
     {
-        Status1 += CFE_TIME_TaskData.SynchCallback[i].App;
+        CFE_TIME_TaskData.SynchCallback[i].Ptr = NULL;
     }
 
-    /* Try to unregister an entry again to make sure all are gone */
-    Status2 = CFE_TIME_UnregisterSynchCallback((CFE_TIME_SynchCallbackPtr_t)
-                                               &ut_time_MyCallbackFunc);
+    /* Add callbacks for 3 apps into callback registry table */
+    UT_SetAppID(1);
+    CFE_TIME_RegisterSynchCallback(&ut_time_MyCallbackFunc);
+    UT_SetAppID(2);
+    CFE_TIME_RegisterSynchCallback(&ut_time_MyCallbackFunc);
+    UT_SetAppID(3);
+    CFE_TIME_RegisterSynchCallback(&ut_time_MyCallbackFunc);
+
+    /* Clean up an app which did not have a callback */
+    UT_SetAppID(4);
+    Status = CFE_TIME_CleanUpApp(UT_AppID);
     UT_Report(__FILE__, __LINE__,
-              Status1 == 0 && Status2 == CFE_TIME_CALLBACK_NOT_REGISTERED,
+              Status == CFE_SUCCESS,
               "CFE_TIME_CleanUpApp",
-              "Removed all callback entries for app");
+              "Successful result");
 
+    Count = 0;
+    for (i = 0; i < (sizeof(CFE_TIME_TaskData.SynchCallback) / sizeof(CFE_TIME_TaskData.SynchCallback[0])); i++)
+    {
+        if (CFE_TIME_TaskData.SynchCallback[i].Ptr != NULL)
+        {
+            ++Count;
+        }
+    }
 
-    /* Test response to a bad application ID */
-    CFE_TIME_TaskData.SynchCallback[0].App = -1;
-    CFE_TIME_CleanUpApp(UT_AppID);
+    /* should not have affected the callback table */
     UT_Report(__FILE__, __LINE__,
-              CFE_TIME_TaskData.SynchCallback[0].App != 0,
+              Count == 3,
+              "CFE_TIME_CleanUpApp",
+              "No Sync Callback entry cleared");
+
+    /* Clean up an app which did have a callback */
+    UT_SetAppID(2);
+    Status = CFE_TIME_CleanUpApp(UT_AppID);
+    UT_Report(__FILE__, __LINE__,
+              Status == CFE_SUCCESS,
+              "CFE_TIME_CleanUpApp",
+              "Successful result");
+
+    Count = 0;
+    for (i = 0; i < (sizeof(CFE_TIME_TaskData.SynchCallback) / sizeof(CFE_TIME_TaskData.SynchCallback[0])); i++)
+    {
+        if (CFE_TIME_TaskData.SynchCallback[i].Ptr != NULL)
+        {
+            ++Count;
+        }
+    }
+
+    UT_Report(__FILE__, __LINE__,
+              Count == 2,
+              "CFE_TIME_CleanUpApp",
+              "Sync Callback entry cleared");
+
+
+    /* Test response to a bad application ID -
+     * This is effectively a no-op but here for coverage */
+    UT_SetAppID(CFE_PLATFORM_ES_MAX_APPLICATIONS);
+    Status = CFE_TIME_CleanUpApp(UT_AppID);
+    UT_Report(__FILE__, __LINE__,
+              Status == CFE_TIME_CALLBACK_NOT_REGISTERED,
               "CFE_TIME_CleanUpApp",
               "Bad application ID");
 }

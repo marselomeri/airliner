@@ -1,11 +1,21 @@
 /*
-**      Copyright (c) 2004-2012, United States government as represented by the
-**      administrator of the National Aeronautics Space Administration.
-**      All rights reserved. This software (cFE) was created at NASA's Goddard
-**      Space Flight Center pursuant to government contracts.
+**      GSC-18128-1, "Core Flight Executive Version 6.6"
 **
-**      This is governed by the NASA Open Source Agreement and may be used,
-**      distributed and modified only pursuant to the terms of that agreement.
+**      Copyright (c) 2006-2019 United States Government as represented by
+**      the Administrator of the National Aeronautics and Space Administration.
+**      All Rights Reserved.
+**
+**      Licensed under the Apache License, Version 2.0 (the "License");
+**      you may not use this file except in compliance with the License.
+**      You may obtain a copy of the License at
+**
+**        http://www.apache.org/licenses/LICENSE-2.0
+**
+**      Unless required by applicable law or agreed to in writing, software
+**      distributed under the License is distributed on an "AS IS" BASIS,
+**      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+**      See the License for the specific language governing permissions and
+**      limitations under the License.
 **
 ** File:
 **    es_UT.h
@@ -194,14 +204,14 @@ void TestShell(void);
 ** \sa #UT_Text, #UT_SetRtnCode, #CFE_ES_TaskMain, #UT_Report, #UT_SetOSFail
 ** \sa #CFE_ES_TaskInit, #UT_SetSBTotalMsgLen, #UT_SendMsg
 ** \sa #UT_SetBSPloadAppFileResult, #UT_SetStatusBSPResetArea
-** \sa #CFE_ES_HousekeepingCmd, #CFE_ES_NoopCmd, #CFE_ES_ResetCmd
+** \sa #CFE_ES_HousekeepingCmd, #CFE_ES_NoopCmd, #CFE_ES_ResetCountersCmd
 ** \sa #CFE_ES_RestartCmd, #CFE_ES_ShellCmd, #CFE_ES_StartAppCmd
 ** \sa #CFE_ES_StopAppCmd, #CFE_ES_RestartAppCmd, #CFE_ES_ReloadAppCmd
 ** \sa #CFE_ES_QueryOneCmd, #CFE_ES_QueryAllCmd, #CFE_ES_QueryAllTasksCmd
 ** \sa #CFE_ES_ClearSyslogCmd, #CFE_ES_OverWriteSyslogCmd
-** \sa #CFE_ES_WriteSyslogCmd, #CFE_ES_ClearERlogCmd, #CFE_ES_WriteERlogCmd
+** \sa #CFE_ES_WriteSyslogCmd, #CFE_ES_ClearERLogCmd, #CFE_ES_WriteERLogCmd
 ** \sa #CFE_ES_ResetPRCountCmd, #CFE_ES_SetMaxPRCountCmd, #CFE_ES_DeleteCDSCmd
-** \sa #CFE_ES_DumpCDSRegCmd, #CFE_ES_TlmPoolStatsCmd, #CFE_ES_TaskPipe
+** \sa #CFE_ES_DumpCDSRegistryCmd, #CFE_ES_SendMemPoolStatsCmd, #CFE_ES_TaskPipe
 **
 ******************************************************************************/
 void TestTask(void);
@@ -222,9 +232,9 @@ void TestTask(void);
 **
 ** \sa #UT_Text, #CFE_ES_SetupPerfVariables, #UT_Report, #UT_SetRtnCode
 ** \sa #UT_SetSBTotalMsgLen, #UT_SendMsg, #UT_SetBSPloadAppFileResult
-** \sa #CFE_ES_PerfLogDump, #CFE_ES_PerfLogAdd, #CFE_ES_PerfStartDataCmd
-** \sa #CFE_ES_PerfStopDataCmd, #CFE_ES_PerfSetFilterMaskCmd
-** \sa #CFE_ES_PerfSetTriggerMaskCmd, #CFE_ES_PerfLogDump, #CFE_ES_PerfLogAdd
+** \sa #CFE_ES_PerfLogDump, #CFE_ES_PerfLogAdd, #CFE_ES_StartPerfDataCmd
+** \sa #CFE_ES_StopPerfDataCmd, #CFE_ES_SetPerfFilterMaskCmd
+** \sa #CFE_ES_SetPerfTriggerMaskCmd, #CFE_ES_PerfLogDump, #CFE_ES_PerfLogAdd
 **
 ******************************************************************************/
 void TestPerf(void);
@@ -327,6 +337,8 @@ void TestCDSMempool(void);
 **
 ******************************************************************************/
 void TestESMempool(void);
+
+void TestSysLog(void);
 
 #ifdef CFE_ARINC653
 /*****************************************************************************/

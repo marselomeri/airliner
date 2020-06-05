@@ -44,6 +44,8 @@
 #include "utlist.h"
 #include "uttools.h"
 #include <string.h>
+#include "ccsds.h"
+#include "cfe_sb_priv.h"
 
 #define UT_CFE_SB_MAX_PIPES    32
 
@@ -233,11 +235,35 @@ int32 Ut_CFE_SB_RcvMsgHook(CFE_SB_MsgPtr_t *BufPtr, CFE_SB_PipeId_t PipeId, int3
 
 void Ut_CFE_SB_InitMsgHook(void *MsgPtr, CFE_SB_MsgId_t MsgId, uint16 Length, boolean Clear)
 {
-#ifdef MESSAGE_FORMAT_IS_CCSDS
+    uint16           SeqCount;
+    CCSDS_PriHdr_t  *PktPtr;
 
-    CCSDS_InitPkt ((CCSDS_PriHdr_t *)MsgPtr,(uint16)MsgId,Length,Clear);
+    PktPtr = (CCSDS_PriHdr_t *) MsgPtr;
 
-#endif
+    /* Save the sequence count in case it must be preserved. */
+    SeqCount = CCSDS_RD_SEQ(*PktPtr);
+
+    /* Zero the entire packet if needed. */
+    if (Clear)
+    { CFE_PSP_MemSet(MsgPtr, 0, Length); }
+        else    /* Clear only the primary header. */
+    {
+        CCSDS_CLR_PRI_HDR(*PktPtr);
+    }
+
+    /* Set the length fields in the primary header. */
+    CCSDS_WR_LEN(*PktPtr, Length);
+
+    /* Always set the secondary header flag as CFS applications are required use it */
+    CCSDS_WR_SHDR(*PktPtr, 1);
+
+    CFE_SB_SetMsgId(MsgPtr, MsgId);
+
+    /* Restore the sequence count if needed. */
+    if (!Clear)
+        CCSDS_WR_SEQ(*PktPtr, SeqCount);
+    else
+        CCSDS_WR_SEQFLG(*PktPtr, CCSDS_INIT_SEQFLG);
 } /* end Ut_CFE_SB_InitMsgHook */
 
 uint16 Ut_CFE_SB_MsgHdrSizeHook(CFE_SB_MsgId_t MsgId)
@@ -275,7 +301,7 @@ void *Ut_CFE_SB_GetUserDataHook(CFE_SB_MsgPtr_t MsgPtr)
 
     BytePtr = (uint8 *)MsgPtr;
     MsgId   = CCSDS_RD_SID(MsgPtr->Hdr);
-    HdrSize = CFE_SB_MsgHdrSize(MsgId);
+    HdrSize = CFE_SB_MsgHdrSize(MsgPtr);
 
     return (BytePtr + HdrSize);
 #endif
@@ -310,7 +336,7 @@ uint16 Ut_CFE_SB_GetUserDataLengthHook(CFE_SB_MsgPtr_t MsgPtr)
 
     MsgId        = CCSDS_RD_SID(MsgPtr->Hdr);
     TotalMsgSize = CFE_SB_GetTotalMsgLength(MsgPtr);
-    HdrSize      = CFE_SB_MsgHdrSize(MsgId);
+    HdrSize      = CFE_SB_MsgHdrSize(MsgPtr);
 
     return (TotalMsgSize - HdrSize);
 #endif
@@ -325,7 +351,7 @@ void Ut_CFE_SB_SetUserDataLengthHook(CFE_SB_MsgPtr_t MsgPtr,uint16 DataLength)
 
     MsgId        = CCSDS_RD_SID(MsgPtr->Hdr);
     TotalMsgSize = CFE_SB_GetTotalMsgLength(MsgPtr);
-    HdrSize      = CFE_SB_MsgHdrSize(MsgId);
+    HdrSize      = CFE_SB_MsgHdrSize(MsgPtr);
 
     TotalMsgSize = HdrSize + DataLength;
 
@@ -527,11 +553,11 @@ void CCSDS_LoadCheckSum (CCSDS_CmdPkt_t *PktPtr)
    uint8    CheckSum;
 
    /* Clear the checksum field so the new checksum is correct. */
-   CCSDS_WR_CHECKSUM(PktPtr->SecHdr, 0);
+   CCSDS_WR_CHECKSUM(PktPtr->Sec, 0);
 
    /* Compute and load new checksum. */
    CheckSum = CCSDS_ComputeCheckSum(PktPtr);
-   CCSDS_WR_CHECKSUM(PktPtr->SecHdr, CheckSum);
+   CCSDS_WR_CHECKSUM(PktPtr->Sec, CheckSum);
 
 } /* END CCSDS_LoadCheckSum() */
 
@@ -544,7 +570,7 @@ boolean CCSDS_ValidCheckSum (CCSDS_CmdPkt_t *PktPtr)
 
 uint8 CCSDS_ComputeCheckSum (CCSDS_CmdPkt_t *PktPtr)
 {
-   uint16   PktLen   = CCSDS_RD_LEN(PktPtr->PriHdr);
+   uint16   PktLen   = CCSDS_RD_LEN(PktPtr->SpacePacket.Hdr);
    uint8   *BytePtr  = (uint8 *)PktPtr;
    uint8    CheckSum;
 

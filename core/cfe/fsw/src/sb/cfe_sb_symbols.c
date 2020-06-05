@@ -34,12 +34,20 @@
 #include "cfe_sb_msg.h"
 
 /* Command messages. */
-CFE_SB_WriteFileInfoCmd_t CFE_SB_WriteFileInfoCmd_S;
-CFE_SB_EnRoutCmd_t        CFE_SB_EnRoutCmd_S;
-CFE_SB_CmdHdr_t           CFE_SB_CmdHdr_S;
+CFE_SB_Noop_t                CFE_SB_Noop_S;
+CFE_SB_ResetCounters_t       CFE_SB_ResetCounters_S;
+CFE_SB_SendSbStats_t         CFE_SB_SendSbStats_S;
+CFE_SB_SendRoutingInfo_t     CFE_SB_SendRoutingInfo_S;
+CFE_SB_EnableRoute_t         CFE_SB_EnableRoute_S;
+CFE_SB_DisableRoute_t        CFE_SB_DisableRoute_S;
+CFE_SB_SendPipeInfo_t        CFE_SB_SendPipeInfo_S;
+CFE_SB_SendMapInfo_t         CFE_SB_SendMapInfo_S;
+CFE_SB_SendPrevSubs_t        CFE_SB_SendPrevSubs_S;
+CFE_SB_EnableSubReporting_t  CFE_SB_EnableSubReporting_S;
+CFE_SB_DisableSubReporting_t CFE_SB_DisableSubReporting_S;
 
 /* Telemetry messages. */
-CFE_SB_PrevSubMsg_t CFE_SB_PrevSubMsg_S;
-CFE_SB_SubRprtMsg_t CFE_SB_SubRprtMsg_S;
-CFE_SB_HKMsg_t      CFE_SB_HKMsg_S;
-CFE_SB_StatMsg_t    CFE_SB_StatMsg_S;
+CFE_SB_PrevSubMsg_t          CFE_SB_PrevSubMsg_S;
+CFE_SB_SubRprtMsg_t          CFE_SB_SubRprtMsg_S;
+CFE_SB_HKMsg_t               CFE_SB_HKMsg_S;
+CFE_SB_StatMsg_t             CFE_SB_StatMsg_S;

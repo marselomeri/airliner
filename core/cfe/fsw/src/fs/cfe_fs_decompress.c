@@ -3,44 +3,29 @@
 **
 **   File: CFE_FS_decompress.c
 **
+**      GSC-18128-1, "Core Flight Executive Version 6.6"
 **
-**      Copyright (c) 2004-2012, United States government as represented by the 
-**      administrator of the National Aeronautics Space Administration.  
-**      All rights reserved. This software(cFE) was created at NASA's Goddard 
-**      Space Flight Center pursuant to government contracts.
+**      Copyright (c) 2006-2019 United States Government as represented by
+**      the Administrator of the National Aeronautics and Space Administration.
+**      All Rights Reserved.
 **
-**      This is governed by the NASA Open Source Agreement and may be used, 
-**      distributed and modified only pursuant to the terms of that agreement.
-** 
+**      Licensed under the Apache License, Version 2.0 (the "License");
+**      you may not use this file except in compliance with the License.
+**      You may obtain a copy of the License at
 **
+**        http://www.apache.org/licenses/LICENSE-2.0
+**
+**      Unless required by applicable law or agreed to in writing, software
+**      distributed under the License is distributed on an "AS IS" BASIS,
+**      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+**      See the License for the specific language governing permissions and
+**      limitations under the License.
 **
 **   Author:   A. Cudmore,    NASA/GSFC Code 582
 **             Ported from JWST, which was ported from Swift/BAT, 
 **             which was ported from the GNU zip sources.
 **
 **   Purpose: cFE Port of the gzunzip software ported from Triana->Swift->JWST 
-**
-** $Log: cfe_fs_decompress.c  $
-** Revision 1.14 2014/04/14 15:21:52GMT-05:00 lwalling 
-** Delete unsuccessful decompression output file
-** Revision 1.13 2012/02/08 14:09:20EST lwalling 
-** Remove unused variable
-** Revision 1.12 2012/01/13 12:11:28EST acudmore 
-** Changed license text to reflect open source
-** Revision 1.11 2012/01/10 18:37:46EST aschoeni 
-** CFE return codes set directly; FS_gz_huft_build return code is now properly redefined
-** Revision 1.10 2011/09/02 14:59:15EDT jmdagost 
-** Added new-line characters where missing in syslog calls.
-** Revision 1.9 2011/07/13 18:24:32EDT lwalling 
-** Initialized local variables r.b, r.e, r.v.n and r.v.t
-** Revision 1.8 2011/07/13 17:42:22EDT lwalling 
-** Initialized local variable huft_index_t
-** Revision 1.7 2011/01/19 18:00:59EST lwalling 
-** Restore use of heritage error codes
-** Revision 1.6 2011/01/19 15:09:17EST lwalling 
-** Change calls from memset() to CFE_PSP_MemSet()
-** Revision 1.5 2010/10/25 18:26:06EDT jmdagost 
-** Added test to while-loop to make sure array index does not go negative.
 **
 */
 
@@ -146,9 +131,9 @@ int32 CFE_FS_Decompress_Reentrant(CFE_FS_Decompress_State_t *State, const char *
       return (CFE_FS_GZIP_OPEN_OUTPUT);
    }
 
-   CFE_PSP_MemSet( State->hufTable,  0, MAX_HUF_TABLES * sizeof(HufTable) );
-   CFE_PSP_MemSet( State->window, 0, WSIZE_X2 );
-   CFE_PSP_MemSet( trace,     0, 3 * sizeof(uint32) ); 
+   memset( State->hufTable,  0, MAX_HUF_TABLES * sizeof(HufTable) );
+   memset( State->window, 0, WSIZE_X2 );
+   memset( trace,     0, 3 * sizeof(uint32) ); 
 		
    /* 
    ** uncompress the file 
@@ -398,7 +383,7 @@ int32 FS_gz_huft_build_Reentrant( CFE_FS_Decompress_State_t *State, uint32 * b, 
 	huft_index_t = 0;
 
 	/*  Generate counts for each bit length  */
-	CFE_PSP_MemSet( (void*)(c), 0, sizeof(c) );
+	memset( (c), 0, sizeof(c) );
 	r.b=0;
 	r.e=0;
 	r.v.n=0;

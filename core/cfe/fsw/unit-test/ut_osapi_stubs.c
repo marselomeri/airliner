@@ -1,12 +1,21 @@
 /*
+**      GSC-18128-1, "Core Flight Executive Version 6.6"
 **
-**      Copyright (c) 2004-2012, United States government as represented by the
-**      administrator of the National Aeronautics Space Administration.
-**      All rights reserved. This software(cFE) was created at NASA's Goddard
-**      Space Flight Center pursuant to government contracts.
+**      Copyright (c) 2006-2019 United States Government as represented by
+**      the Administrator of the National Aeronautics and Space Administration.
+**      All Rights Reserved.
 **
-**      This is governed by the NASA Open Source Agreement and may be used,
-**      distributed and modified only pursuant to the terms of that agreement.
+**      Licensed under the Apache License, Version 2.0 (the "License");
+**      you may not use this file except in compliance with the License.
+**      You may obtain a copy of the License at
+**
+**        http://www.apache.org/licenses/LICENSE-2.0
+**
+**      Unless required by applicable law or agreed to in writing, software
+**      distributed under the License is distributed on an "AS IS" BASIS,
+**      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+**      See the License for the specific language governing permissions and
+**      limitations under the License.
 **
 ** File:
 ** $Id: ut_osapi_stubs.c 1.11 2014/09/05 11:42:11GMT-05:00 acudmore Exp  $
@@ -17,80 +26,6 @@
 ** Notes:
 ** Minimal work is done, only what is required for unit testing
 **
-** $Data:$
-** $Revision: 1.11 $
-** $Log: ut_osapi_stubs.c  $
-** Revision 1.11 2014/09/05 11:42:11GMT-05:00 acudmore 
-** Updated text for ES unit test ( OS_printf text for Syslog entries )
-** Revision 1.10 2014/05/28 09:21:52GMT-05:00 wmoleski 
-** Overwriting cFE Unit Test files with the updated JSC files.
-** Revision 1.9 2012/01/13 13:59:31EST acudmore
-** Added license text
-** Revision 1.8 2010/10/25 18:22:41EDT jmdagost
-** Updated OS_TimerGetInfo() to return a success status.
-** Revision 1.7 2010/09/09 15:06:07EDT jmdagost
-** Update argument definition for OS_TaskCreate().
-** Added dummy functions for OS_TimerGetInfo() and OS_TimerDelete() that currently only return an error.
-** Revision 1.6 2009/08/04 13:34:38EDT aschoeni
-** Added heap information to ES telemetry
-** Revision 1.5 2009/06/25 12:46:02EDT rmcgraw
-** DCR8290:5 cFE API changes to unit test files
-** Revision 1.4 2009/04/27 10:38:32EDT rmcgraw
-** DCR7366:1 Commented out debug messages to prevent flooding output file
-** Revision 1.3 2009/04/01 16:12:03EDT rmcgraw
-** DCR7366:1 Removed the printout of OS_TaskGetId called - it was flooding the output file
-** Revision 1.2 2008/08/15 11:26:56EDT njyanchik
-** Check in of ES Unit Test
-** Revision 1.1 2008/04/17 13:05:46BST ruperera
-** Initial revision
-** Member added to project c:/MKSDATA/MKS-REPOSITORY/MKS-CFE-PROJECT/fsw/cfe-core/unit-test/project.pj
-** Revision 1.27 2007/09/26 15:00:47EDT njyanchik
-** This is the first update of the ES unit tests for 5.0
-** Revision 1.26 2007/07/05 15:04:31EDT David Kobe (dlkobe)
-** Baseline following complete TBL unit testing
-** Revision 1.25 2007/06/04 13:31:57EDT njyanchik
-** Update of the TBL unit test
-** Revision 1.24 2007/05/30 15:15:23EDT njyanchik
-** check in of ES Unit test
-** Revision 1.23 2007/05/30 08:56:41EDT njyanchik
-** Update
-** Revision 1.22 2007/05/25 13:13:43EDT njyanchik
-** update of ES unit test
-** Revision 1.21 2007/05/25 09:17:57EDT njyanchik
-** I added the rmfs call to the OSAL and updated the unit test stubs to match
-** Revision 1.20 2007/05/24 15:48:10EDT njyanchik
-** Update for ES Unit Test
-** Revision 1.19 2007/05/23 10:54:59EDT njyanchik
-** Update again to prevent loss of work
-** Revision 1.18 2007/05/16 11:14:37EDT njyanchik
-** Update ES's unit test driver to match code for build 4.1
-** Revision 1.17 2007/05/04 09:10:33EDT njyanchik
-** Check in of Time UT and related changes
-** Revision 1.15 2007/05/01 13:28:25EDT njyanchik
-** I updated the ut stubs to get the each of the subsytems to compile under the unit test. I did not
-** change the unit tests themselves to cover more of the files, however.
-** Revision 1.14 2007/04/04 09:28:47EDT njyanchik
-** This CP updates the unit test for the changes made to the OS (OS_IntLock/OS_IntUnlock) under
-** this DCR
-** Revision 1.13 2007/03/19 10:49:48EST njyanchik
-** the UT needs to be updated because the API for OS_IntEnableAll changed
-** Revision 1.12 2007/03/02 15:18:06EST njyanchik
-** Jonathan provided me with a newer tbl unit test to check in
-** Revision 1.11 2007/01/17 09:26:09GMT-05:00 njyanchik
-** Check in of ES Unit Test changed files
-** Revision 1.10 2006/11/28 13:01:02GMT-05:00 rjmcgraw
-** Changed OS_write stub to return bytes written
-** Revision 1.9 2006/11/08 09:55:19EST rjmcgraw
-** Added OS_open
-** Revision 1.8 2006/07/28 07:33:03EDT njyanchik
-** These changes change the osapi functions OS_slose, OS_write, and OS_creat to
-** int32 parameters instead of uint32.
-** Revision 1.7 2006/07/26 08:08:27EDT rjmcgraw
-** Changed name MutSemGivRtn to MutSemGiveRtn
-** Revision 1.6 2006/06/08 19:13:59GMT rjmcgraw
-** Added support for function UT_SetRtnCode
-** Revision 1.5 2006/05/22 19:22:22GMT jjhageman
-** Addition of OS_QueueDelete
 */
 
 /*
@@ -173,15 +108,6 @@ UT_SetRtn_t QueueGetRtn;
 UT_SetRtn_t QueuePutRtn;
 UT_SetRtn_t SymbolLookupRtn;
 UT_SetRtn_t UnmountRtn;
-
-UT_SetRtn_t TaskGetInfoRtn;
-UT_SetRtn_t BinSemGetInfoRtn;
-UT_SetRtn_t MutSemGetInfoRtn;
-UT_SetRtn_t CountSemGetInfoRtn;
-UT_SetRtn_t QueueGetInfoRtn;
-UT_SetRtn_t FDGetInfoRtn;
-UT_SetRtn_t TimerDeleteRtn;
-
 
 /*
 ** Functions

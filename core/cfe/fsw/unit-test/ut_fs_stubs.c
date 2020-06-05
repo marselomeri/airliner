@@ -1,12 +1,21 @@
 /*
+**      GSC-18128-1, "Core Flight Executive Version 6.6"
 **
-**      Copyright (c) 2004-2012, United States government as represented by the 
-**      administrator of the National Aeronautics Space Administration.  
-**      All rights reserved. This software(cFE) was created at NASA's Goddard 
-**      Space Flight Center pursuant to government contracts.
+**      Copyright (c) 2006-2019 United States Government as represented by
+**      the Administrator of the National Aeronautics and Space Administration.
+**      All Rights Reserved.
 **
-**      This is governed by the NASA Open Source Agreement and may be used, 
-**      distributed and modified only pursuant to the terms of that agreement. 
+**      Licensed under the Apache License, Version 2.0 (the "License");
+**      you may not use this file except in compliance with the License.
+**      You may obtain a copy of the License at
+**
+**        http://www.apache.org/licenses/LICENSE-2.0
+**
+**      Unless required by applicable law or agreed to in writing, software
+**      distributed under the License is distributed on an "AS IS" BASIS,
+**      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+**      See the License for the specific language governing permissions and
+**      limitations under the License.
 **
 ** File:
 ** $Id: ut_fs_stubs.c 1.6 2014/05/28 09:21:48GMT-05:00 wmoleski Exp  $
@@ -17,35 +26,6 @@
 ** Notes:
 ** Minimal work is done, only what is required for unit testing
 **
-** $Data:$
-** $Revision: 1.6 $
-** $Log: ut_fs_stubs.c  $
-** Revision 1.6 2014/05/28 09:21:48GMT-05:00 wmoleski 
-** Overwriting cFE Unit Test files with the updated JSC files.
-** Revision 1.5 2012/01/13 13:59:30EST acudmore 
-** Added license text
-** Revision 1.4 2010/10/25 18:21:50EDT jmdagost 
-** Updated CFE_FS_ExtractFilenameFromPath().
-** Revision 1.3 2008/08/28 08:52:19EDT apcudmore 
-** changed CFS_ call back to CFE_
-** Revision 1.2 2008/08/15 11:26:53EDT njyanchik 
-** Check in of ES Unit Test
-** Revision 1.1 2008/04/17 13:05:45BST ruperera 
-** Initial revision
-** Member added to project c:/MKSDATA/MKS-REPOSITORY/MKS-CFE-PROJECT/fsw/cfe-core/unit-test/project.pj
-** Revision 1.10 2007/07/05 15:04:28EDT David Kobe (dlkobe) 
-** Baseline following complete TBL unit testing
-** Revision 1.9 2007/05/10 15:14:25EDT njyanchik 
-** Another update of Jonathans UT
-** Revision 1.8 2007/05/01 13:28:15EDT njyanchik 
-** I updated the ut stubs to get the each of the subsytems to compile under the unit test. I did not
-** change the unit tests themselves to cover more of the files, however.
-** Revision 1.7 2007/03/16 15:12:12EST dlkobe 
-** Swapped parameter list for CFE_FS_ReadHeader API.
-** Revision 1.6 2007/03/02 15:18:05EST njyanchik 
-** Jonathan provided me with a newer tbl unit test to check in
-** Revision 1.4 2006/11/08 15:09:27GMT-05:00 rjmcgraw 
-** Changed return in WriteHeader API to sizeof(CFE_FS_Header_t)
 */
 
 /*
@@ -436,5 +416,30 @@ boolean CFE_FS_IsGzFile(const char *FileName)
         }
     }
     
+    return status;
+}
+
+/******************************************************************************
+ *
+ * CFE_FS_GetUncompressedFile stub function
+ * See full description in prototype
+ *
+ ******************************************************************************/
+int32 CFE_FS_GetUncompressedFile(char *OutputNameBuffer, uint32 OutputNameBufferSize,
+        const char *GzipFileName, const char *TempDir)
+{
+    int32 status = UT_DEFAULT_IMPL(CFE_FS_GetUncompressedFile);
+    uint32 copysize;
+
+    /*
+     * ensure that the output buffer sent back to the caller is reasonable
+     */
+    if (status == CFE_SUCCESS && OutputNameBufferSize > 0)
+    {
+        copysize = UT_Stub_CopyToLocal(UT_KEY(CFE_FS_GetUncompressedFile),
+                (uint8*)OutputNameBuffer, OutputNameBufferSize - 1);
+        OutputNameBuffer[copysize] = 0;
+    }
+
     return status;
 }

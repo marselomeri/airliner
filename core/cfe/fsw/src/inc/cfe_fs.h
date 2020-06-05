@@ -1,42 +1,27 @@
 /*
+**      GSC-18128-1, "Core Flight Executive Version 6.6"
+**
+**      Copyright (c) 2006-2019 United States Government as represented by
+**      the Administrator of the National Aeronautics and Space Administration.
+**      All Rights Reserved.
+**
+**      Licensed under the Apache License, Version 2.0 (the "License");
+**      you may not use this file except in compliance with the License.
+**      You may obtain a copy of the License at
+**
+**        http://www.apache.org/licenses/LICENSE-2.0
+**
+**      Unless required by applicable law or agreed to in writing, software
+**      distributed under the License is distributed on an "AS IS" BASIS,
+**      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+**      See the License for the specific language governing permissions and
+**      limitations under the License.
+**
 ** $Id: cfe_fs.h 1.4 2010/10/25 16:50:16GMT-05:00 jmdagost Exp  $
 **
 ** Purpose:  cFE File Services (FS) library API header file
 **
 ** Author:   S.Walling/Microtel
-**
-** $Log: cfe_fs.h  $
-** Revision 1.4 2010/10/25 16:50:16GMT-05:00 jmdagost 
-** Added assumption to CFE_FS_ExtractFilenameFromPath()
-** Revision 1.3 2008/08/28 08:41:10EDT apcudmore 
-** Fixed CFS name ( CFS-->CFE )
-** Revision 1.2 2008/06/20 15:40:26EDT apcudmore 
-** Added support for OSAL based module loader
-**  - Removed calls and references to the BSP based module loader
-** Revision 1.1 2008/04/17 08:05:22EDT ruperera 
-** Initial revision
-** Member added to project c:/MKSDATA/MKS-REPOSITORY/MKS-CFE-PROJECT/fsw/cfe-core/src/inc/project.pj
-** Revision 1.15 2007/09/20 14:47:24EDT apcudmore 
-** Changed CFE_FS_SB_QUERYALLTASKS_SUBTYPE back to CFE_FS_ES_QUERYALLTASKS_SUBTYPE
-** Revision 1.14 2007/09/20 13:17:52EDT David Kobe (dlkobe) 
-** Added documentation for each File SubType identifier
-** Revision 1.13 2007/09/20 10:52:52EDT apcudmore 
-** Added Query All Tasks command, file definition, events, error codes etc.
-** Revision 1.12 2007/05/23 11:21:57EDT dlkobe 
-** Added doxygen formatting
-** Revision 1.11 2007/05/09 12:43:03EDT dlkobe 
-** Added CFE_FS_ES_CDS_REG_SUBTYPE sub type to support Dump CDS Registry Command
-** Revision 1.10 2007/03/29 08:58:09EST rjmcgraw 
-** Added shell subtype define
-** Revision 1.9 2007/03/28 15:18:24EST rjmcgraw 
-** Moved file related defines from cfe_tbl.h to cfe_fs.h
-** Revision 1.8 2007/03/16 15:12:13EST dlkobe 
-** Swapped parameter list for CFE_FS_ReadHeader API.
-** Revision 1.7 2006/11/17 16:46:11GMT-05:00 dlkobe 
-** Updated with Doxygen formatted comments
-** Revision 1.6 2006/07/25 14:37:50GMT-05:00 njyanchik 
-** It turns out the both the FS app and the OSAL were incorrect where file 
-** descriptors are concerned. File descriptors should be int32 across the board.
 **
 */
 
@@ -54,6 +39,7 @@ extern "C" {
 /*
 ** Required header files...
 */
+#include "cfe_fs_extern_typedefs.h"
 #include "common_types.h"
 #include "cfe_time.h"
 
@@ -64,78 +50,35 @@ extern "C" {
 
 #define CFE_FS_FILE_CONTENT_ID  0x63464531  /**< \brief Magic Number for cFE compliant files (= 'cFE1') */
 
-/** \name Standard cFE File Subtype Identifiers */
-/** \{ */
-#define CFE_FS_ES_ERLOG_SUBTYPE         1     /**< \brief Executive Services Exception/Reset Log Type */
-                                              /**< Executive Services Exception/Reset Log File 
-                                                   which is generated in response to a 
-                                                   \link #CFE_ES_WRITE_ERLOG_CC \ES_WRITEERLOG2FILE \endlink
-                                                   command. */
-#define CFE_FS_ES_SYSLOG_SUBTYPE        2     /**< \brief Executive Services System Log Type */
-                                              /**< Executive Services System Log File which is 
-                                                   generated in response to a 
-                                                   \link #CFE_ES_WRITE_SYSLOG_CC \ES_WRITESYSLOG2FILE \endlink
-                                                   command. */
-#define CFE_FS_ES_QUERYALL_SUBTYPE      3     /**< \brief Executive Services Information on All Applications File */
-                                              /**< Executive Services Information on All 
-                                                   Applications File which is generated in response to a 
-                                                   \link #CFE_ES_QUERY_ALL_CC \ES_WRITEAPPINFO2FILE \endlink
-                                                   command. */
-#define CFE_FS_ES_PERFDATA_SUBTYPE      4     /**< \brief Executive Services Performance Data File */
-                                              /**< Executive Services Performance Analyzer Data File 
-                                                   which is generated in response to a 
-                                                   \link #CFE_ES_PERF_STOPDATA_CC \ES_STOPLADATA \endlink
-                                                   command. */
-#define CFE_FS_ES_SHELL_SUBTYPE         5     /**< \brief Executive Services Shell Response File */
-                                              /**< Executive Services Shell Response Data File 
-                                                   which is generated in response to a 
-                                                   \link #CFE_ES_SHELL_CMD_CC \ES_SHELL \endlink
-                                                   command. */
-#define CFE_FS_ES_CDS_REG_SUBTYPE       6     /**< \brief Executive Services Critical Data Store Registry Dump File */
-                                              /**< Executive Services Critical Data Store Registry Dump File 
-                                                   which is generated in response to a 
-                                                   \link #CFE_ES_DUMP_CDS_REG_CC \ES_DUMPCDSREG \endlink
-                                                   command. */
-#define CFE_FS_TBL_REG_SUBTYPE          9     /**  \brief Table Services Registry Dump File */
-                                              /**< Table Services Registry Dump File 
-                                                   which is generated in response to a 
-                                                   \link #CFE_TBL_DUMP_REG_CC \TBL_WRITEREG2FILE \endlink
-                                                   command. */
-#define CFE_FS_TBL_IMG_SUBTYPE          8     /**< \brief Table Services Table Image File */
-                                              /**< Table Services Table Image File 
-                                                   which is generated either on the ground or in response to a 
-                                                   \link #CFE_TBL_DUMP_CC \TBL_DUMP \endlink command. */
-#define CFE_FS_EVS_APPDATA_SUBTYPE      15    /**< \brief Event Services Application Data Dump File */
-                                              /**< Event Services Application Data Dump File 
-                                                   which is generated in response to a 
-                                                   \link #CFE_EVS_FILE_WRITE_APP_DATA_CC \EVS_WRITEAPPDATA2FILE \endlink
-                                                   command. */
-#define CFE_FS_EVS_EVENTLOG_SUBTYPE     16    /**< \brief Event Services Local Event Log Dump File */
-                                              /**< Event Services Local Event Log Dump File 
-                                                   which is generated in response to a 
-                                                   \link #CFE_EVS_FILE_WRITE_LOG_DATA_CC \EVS_WRITELOG2FILE \endlink
-                                                   command. */
-#define CFE_FS_SB_PIPEDATA_SUBTYPE      20    /**< \brief Software Bus Pipe Data Dump File */
-                                              /**< Software Bus Pipe Data Dump File 
-                                                   which is generated in response to a 
-                                                   \link #CFE_SB_SEND_PIPE_INFO_CC \SB_WRITEPIPE2FILE \endlink
-                                                   command. */
-#define CFE_FS_SB_ROUTEDATA_SUBTYPE     21    /**< \brief Software Bus Message Routing Data Dump File */
-                                              /**< Software Bus Message Routing Data Dump File 
-                                                   which is generated in response to a 
-                                                   \link #CFE_SB_SEND_ROUTING_INFO_CC \SB_WRITEROUTING2FILE \endlink
-                                                   command. */
-#define CFE_FS_SB_MAPDATA_SUBTYPE       22    /**< \brief Software Bus Message Mapping Data Dump File */
-                                              /**< Software Bus Message Mapping Data Dump File 
-                                                   which is generated in response to a 
-                                                   \link #CFE_SB_SEND_MAP_INFO_CC \SB_WRITEMAP2FILE \endlink
-                                                   command. */
-#define CFE_FS_ES_QUERYALLTASKS_SUBTYPE 23    /**< \brief Executive Services Query All Tasks Data File */
-                                              /**< Executive Services Query All Tasks Data File 
-                                                   which is generated in response to a 
-                                                   \link #CFE_ES_QUERY_ALL_TASKS_CC \ES_WRITETASKINFO2FILE \endlink
-                                                   command. */
-/** \} */
+
+/*
+ * To preserve source-code compatibility with existing code,
+ * this allows the old enum names to still work.  This should
+ * be turned off after the new names are established.
+ */
+#ifndef CFE_OMIT_DEPRECATED_6_6
+
+/*
+ * Compatibility Macros for the SubType enumeration
+ */
+#define CFE_FS_ES_ERLOG_SUBTYPE             CFE_FS_SubType_ES_ERLOG
+#define CFE_FS_ES_SYSLOG_SUBTYPE            CFE_FS_SubType_ES_SYSLOG
+#define CFE_FS_ES_QUERYALL_SUBTYPE          CFE_FS_SubType_ES_QUERYALL
+#define CFE_FS_ES_PERFDATA_SUBTYPE          CFE_FS_SubType_ES_PERFDATA
+#define CFE_FS_ES_SHELL_SUBTYPE             CFE_FS_SubType_ES_SHELL
+#define CFE_FS_ES_CDS_REG_SUBTYPE           CFE_FS_SubType_ES_CDS_REG
+#define CFE_FS_TBL_REG_SUBTYPE              CFE_FS_SubType_TBL_REG
+#define CFE_FS_TBL_IMG_SUBTYPE              CFE_FS_SubType_TBL_IMG
+#define CFE_FS_EVS_APPDATA_SUBTYPE          CFE_FS_SubType_EVS_APPDATA
+#define CFE_FS_EVS_EVENTLOG_SUBTYPE         CFE_FS_SubType_EVS_EVENTLOG
+#define CFE_FS_SB_PIPEDATA_SUBTYPE          CFE_FS_SubType_SB_PIPEDATA
+#define CFE_FS_SB_ROUTEDATA_SUBTYPE         CFE_FS_SubType_SB_ROUTEDATA
+#define CFE_FS_SB_MAPDATA_SUBTYPE           CFE_FS_SubType_SB_MAPDATA
+#define CFE_FS_ES_QUERYALLTASKS_SUBTYPE     CFE_FS_SubType_ES_QUERYALLTASKS
+
+
+#endif  /* CFE_OMIT_DEPRECATED_6_6 */
+
 
 /**
 ** \brief Standard cFE File header structure definition
@@ -145,7 +88,7 @@ typedef struct
     uint32  ContentType;           /**< \brief Identifies the content type (='cFE1'=0x63464531)*/
     uint32  SubType;               /**< \brief Type of \c ContentType, if necessary */
                                    /**< Standard SubType definitions can be found
-                                        \link #CFE_FS_ES_ERLOG_SUBTYPE here \endlink */
+                                        \link #CFE_FS_SubType_ES_ERLOG here \endlink */
     uint32  Length;                /**< \brief Length of primary header */
     uint32  SpacecraftID;          /**< \brief Spacecraft that generated the file */
     uint32  ProcessorID;           /**< \brief Processor that generated the file */
@@ -359,10 +302,40 @@ int32 CFE_FS_ExtractFilenameFromPath(const char *OriginalPath, char *FileNameOnl
 ******************************************************************************/
 int32 CFE_FS_Decompress( const char * SourceFile, const char * DestinationFile );
 
+
+/*****************************************************************************/
+/**
+** \brief Decompresses the source file to a temporary file created in the temp dir
+**
+** \par Description
+**        This is a wrapper around the CFE_FS_Decompress() function that
+**        formulates a temporary file name based on the gzip file name, saving
+**        the caller from needing to do this.  The temporary file name is
+**        created in the given temp directory.
+**
+** \par Assumptions, External Events, and Notes:
+**        The name passed in as "GzipFileName" is not checked again, it is assumed to
+**        have passed the criteria in CFE_FS_IsGzFile().  If this is not true then
+**        the conversion to a temporary file name may produce incorrect results.
+**
+** \param[in] OutputNameBuffer  A caller-supplied buffer for storing the temp file name
+** \param[in] OutputNameBufferSize  The size of OutputNameBuffer
+** \param[in] GzipFileName  The "gzipped" file to decompress.
+** \param[in] TempDir   The directory in which the temporary file should be created
+**
+** \returns
+** \retstmt CFE_SUCCESS if the file was decompressed sucessfully.  \endstmt
+** \endreturns
+**
+** \sa
+**
+******************************************************************************/
+int32 CFE_FS_GetUncompressedFile(char *OutputNameBuffer, uint32 OutputNameBufferSize,
+        const char *GzipFileName, const char *TempDir);
+
 #ifdef __cplusplus
 }
 #endif
-
 
 #endif /* _cfe_fs_ */
 

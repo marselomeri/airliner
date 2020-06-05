@@ -34,18 +34,34 @@
 #include "cfe_time_msg.h"
 
 /* Telemetry messages. */
-CFE_TIME_HkPacket_t   CFE_TIME_HkPacket_S;
-CFE_TIME_DiagPacket_t CFE_TIME_DiagPacket_S;
+CFE_TIME_HkPacket_t          CFE_TIME_HkPacket_S;
+CFE_TIME_DiagPacket_t        CFE_TIME_DiagPacket_S;
 
 /* Command messages. */
-CFE_TIME_NoArgsCmd_t  CFE_TIME_NoArgsCmd_S;
-CFE_TIME_LeapsCmd_t   CFE_TIME_LeapsCmd_S;
-CFE_TIME_StateCmd_t   CFE_TIME_StateCmd_S;
-CFE_TIME_SourceCmd_t  CFE_TIME_SourceCmd_S;
-CFE_TIME_SignalCmd_t  CFE_TIME_SignalCmd_S;
-CFE_TIME_TimeCmd_t    CFE_TIME_TimeCmd_S;
-CFE_TIME_1HzAdjCmd_t  CFE_TIME_1HzAdjCmd_S;
-CFE_TIME_1HzCmd_t     CFE_TIME_1HzCmd_S;
-CFE_TIME_ToneSignalCmd_t CFE_TIME_ToneSignalCmd_S;
-CFE_TIME_FakeToneCmd_t CFE_TIME_FakeToneCmd_S;
-CFE_TIME_ToneDataCmd_t CFE_TIME_ToneDataCmd_S;
+CFE_TIME_Noop_t              CFE_TIME_Noop_S;
+CFE_TIME_ResetCounters_t     CFE_TIME_ResetCounters_S;
+CFE_TIME_SendDiagnosticTlm_t CFE_TIME_SendDiagnosticTlm_S;
+CFE_TIME_SetState_t          CFE_TIME_SetState_S;
+CFE_TIME_SetSource_t         CFE_TIME_SetSource_S;
+CFE_TIME_SetSignal_t         CFE_TIME_SetSignal_S;
+CFE_TIME_AddDelay_t          CFE_TIME_AddDelay_S;
+CFE_TIME_SubDelay_t          CFE_TIME_SubDelay_S;
+CFE_TIME_SetTime_t           CFE_TIME_SetTime_S;
+CFE_TIME_SetMET_t            CFE_TIME_SetMET_S;
+CFE_TIME_SetSTCF_t           CFE_TIME_SetSTCF_S;
+CFE_TIME_SetLeapSeconds_t    CFE_TIME_SetLeapSeconds_S;
+CFE_TIME_AddAdjust_t         CFE_TIME_AddAdjust_S;
+CFE_TIME_SubAdjust_t         CFE_TIME_SubAdjust_S;
+CFE_TIME_Add1HZAdjustment_t  CFE_TIME_Add1HZAdjustment_S;
+CFE_TIME_Sub1HZAdjustment_t  CFE_TIME_Sub1HZAdjustment_S;
+
+
+
+
+
+
+
+
+
+
+
