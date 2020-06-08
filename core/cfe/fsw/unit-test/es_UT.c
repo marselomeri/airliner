@@ -1877,7 +1877,8 @@ void TestApps(void)
                 "0",
                 "0",
                 "0x0",
-                "0"
+                "0",
+				"0"
         };
         UT_Report(__FILE__, __LINE__,
                   CFE_ES_ParseFileEntry(TokenList, 8) == CFE_SUCCESS,
@@ -3208,7 +3209,7 @@ void TestTask(void)
     UT_SendMsg(msgptr, CFE_ES_CMD_MID, CFE_ES_SET_MAX_PR_COUNT_CC);
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_ES_SET_MAX_PR_COUNT_EID,
-              "CFE_ES_SetMaxPRCountCmd",
+              "CFE_ES_SetMaxPRCount",
               "Set maximum processor reset count");
 
     /* Test failed deletion of specified CDS */
@@ -3618,7 +3619,7 @@ void TestTask(void)
     UT_SendMsg(msgptr, CFE_ES_CMD_MID, CFE_ES_SET_MAX_PR_COUNT_CC);
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_ES_LEN_ERR_EID,
-              "CFE_ES_SetMaxPRCountCmd",
+              "CFE_ES_SetMaxPRCount",
               "Set maximum processor reset count command; invalid "
                 "command length");
 

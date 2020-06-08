@@ -17,7 +17,6 @@
 #define CFE_SB_SEND_HK_MIDX    		3
 #define CFE_TIME_SEND_HK_MIDX  		4
 #define CFE_TBL_SEND_HK_MIDX   		5
-#define CFE_TIME_FAKE_CMD_MIDX		6
 #define SCH_SEND_HK_MIDX       		15
 #define TO_SEND_HK_MIDX				16
 #define HK_SEND_HK_MIDX       		17

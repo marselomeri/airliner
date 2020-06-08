@@ -52,7 +52,7 @@ SCH_MessageEntry_t SCH_DefaultMessageTable[SCH_MAX_MESSAGES] =
    /* Command ID #5 - Table Services HK Request     */
    { { SCH_FIX_HEADER(CFE_TBL_SEND_HK_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #6 */
-   { { SCH_FIX_HEADER(CFE_TIME_FAKE_CMD_MID, 0xC000, 0x0001), 0x0000 } },
+   { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0,0), 0 } },
    /* Command ID #7 - Data storage HK request*/
    { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0,0), 0 } },
    /* Command ID #8 */

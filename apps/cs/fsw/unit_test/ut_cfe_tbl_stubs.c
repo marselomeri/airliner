@@ -340,7 +340,7 @@ int32 CFE_TBL_CleanUpApp (uint32 AppId)
     return CFE_SUCCESS;
 }
 
-int32 CFE_TBL_NotifyByMessage(CFE_TBL_Handle_t TblHandle, uint32 MsgId, uint16 CommandCode, uint32 Parameter)
+int32 CFE_TBL_NotifyByMessage(CFE_TBL_Handle_t TblHandle, CFE_SB_MsgId_t MsgId, uint16 CommandCode, uint32 Parameter)
 {
     /* Check for specified return */
     if (Ut_CFE_TBL_UseReturnCode(UT_CFE_TBL_NOTIFYBYMESSAGE_INDEX))

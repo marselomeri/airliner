@@ -33,7 +33,6 @@ CFE_EVS_SEND_HK_MIDX            1Hz, 25
 CFE_SB_SEND_HK_MIDX             1Hz, 30
 CFE_TIME_SEND_HK_MIDX           1Hz, 35
 CFE_TBL_SEND_HK_MIDX            1Hz, 40
-CFE_TIME_FAKE_CMD_MIDX          ---, ---
 CFE_TIME_TONE_CMD_MIDX          ---, ---
 CFE_TIME_1HZ_CMD_MIDX           ---, ---
 CF_SEND_HK_MIDX                 1Hz, 60

@@ -210,7 +210,7 @@ void TestShell(void);
 ** \sa #CFE_ES_QueryOneCmd, #CFE_ES_QueryAllCmd, #CFE_ES_QueryAllTasksCmd
 ** \sa #CFE_ES_ClearSyslogCmd, #CFE_ES_OverWriteSyslogCmd
 ** \sa #CFE_ES_WriteSyslogCmd, #CFE_ES_ClearERLogCmd, #CFE_ES_WriteERLogCmd
-** \sa #CFE_ES_ResetPRCountCmd, #CFE_ES_SetMaxPRCountCmd, #CFE_ES_DeleteCDSCmd
+** \sa #CFE_ES_ResetPRCountCmd, #CFE_ES_SetMaxPRCount, #CFE_ES_DeleteCDSCmd
 ** \sa #CFE_ES_DumpCDSRegistryCmd, #CFE_ES_SendMemPoolStatsCmd, #CFE_ES_TaskPipe
 **
 ******************************************************************************/

@@ -151,7 +151,7 @@ int32 CFE_ES_WriteSyslogCmd(const CFE_ES_WriteSyslog_t *data);
 int32 CFE_ES_ClearERLogCmd(const CFE_ES_ClearERLog_t *data);
 int32 CFE_ES_WriteERLogCmd(const CFE_ES_WriteERLog_t *data);
 int32 CFE_ES_ResetPRCountCmd(const CFE_ES_ResetPRCount_t *data);
-int32 CFE_ES_SetMaxPRCountCmd(const CFE_ES_SetMaxPRCount_t *data);
+int32 CFE_ES_SetMaxPRCount(const CFE_ES_SetMaxPRCount_t *data);
 int32 CFE_ES_DeleteCDSCmd(const CFE_ES_DeleteCDS_t *data);
 int32 CFE_ES_StartPerfDataCmd(const CFE_ES_StartPerfData_t *data);
 int32 CFE_ES_StopPerfDataCmd(const CFE_ES_StopPerfData_t *data);

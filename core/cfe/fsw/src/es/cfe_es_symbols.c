@@ -34,17 +34,24 @@
 #include "cfe_es_msg.h"
 
 /* Command messages. */
-CFE_ES_Noop_t               CFE_ES_Noop_s;
+CFE_ES_Noop_t               CFE_ES_Noop_S;
+CFE_ES_ResetCounters_t      CFE_ES_Reset_S;
 CFE_ES_Restart_t            CFE_ES_Restart_S;
 CFE_ES_Shell_t              CFE_ES_Shell_S;
 CFE_ES_QueryAll_t           CFE_ES_QueryAll_S;
 CFE_ES_QueryAllTasks_t      CFE_ES_QueryAllTasks_S;
 CFE_ES_WriteSyslog_t        CFE_ES_WriteSyslog_S;
+CFE_ES_ClearSyslog_t        CFE_ES_ClearSyslog_S;
 CFE_ES_WriteERLog_t         CFE_ES_WriteERLog_S;
+CFE_ES_ClearERLog_t         CFE_ES_ClearERLog_S;
 CFE_ES_OverWriteSyslog_t    CFE_ES_OverWriteSyslog_S;
+CFE_ES_ResetPRCount_t       CFE_ES_ResetPRCount_S;
 CFE_ES_StartApp_t           CFE_ES_StartApp_S;
+CFE_ES_StopApp_t            CFE_ES_StopApp_S;
+CFE_ES_RestartApp_t         CFE_ES_RestartApp_S;
 CFE_ES_AppNameCmd_t         CFE_ES_AppNameCmd_S;
 CFE_ES_ReloadApp_t          CFE_ES_ReloadApp_S;
+CFE_ES_QueryOne_t           CFE_ES_QueryOne_S;
 CFE_ES_SetMaxPRCount_t      CFE_ES_SetMaxPRCount_S;
 CFE_ES_DeleteCDS_t          CFE_ES_DeleteCDS_S;
 CFE_ES_StartPerfData_t      CFE_ES_StartPerfData_S;

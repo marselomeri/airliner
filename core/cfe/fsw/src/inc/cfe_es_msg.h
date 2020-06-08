@@ -902,7 +902,7 @@ extern "C" {
 **  \cfecmdmnemonic \ES_SETMAXPRCNT
 **
 **  \par Command Structure
-**       #CFE_ES_SetMaxPRCountCmd_t
+**       #CFE_ES_SetMaxPRCount_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with 
@@ -1309,12 +1309,12 @@ typedef struct
 {
   uint16                MaxPRCount;                     /**< \brief New maximum number of Processor Resets before
                                                                     an automatic Power-On Reset is performed */
-} CFE_ES_SetMaxPRCountCmd_Payload_t;
+} CFE_ES_SetMaxPRCount_Payload_t;
 
 typedef struct
 {
     uint8                               CmdHeader[CFE_SB_CMD_HDR_SIZE];    /**< \brief cFE Software Bus Command Message Header */
-    CFE_ES_SetMaxPRCountCmd_Payload_t   Payload;
+    CFE_ES_SetMaxPRCount_Payload_t   Payload;
 } CFE_ES_SetMaxPRCount_t;
 
 /**

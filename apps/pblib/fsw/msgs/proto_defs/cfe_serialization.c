@@ -42,7 +42,7 @@ uint32 CFE_ES_HkPacket_t_Enc(const CFE_ES_HkPacket_t *inObject, char *inOutBuffe
     pbMsg.Payload.ProcessorResets = inObject->Payload.ProcessorResets;
     pbMsg.Payload.SysLogMode = inObject->Payload.SysLogMode;
     pbMsg.Payload.CFEMinorVersion = inObject->Payload.CFEMinorVersion;
-    pbMsg.Payload.ErrCounter = inObject->Payload.ErrCounter;
+    pbMsg.Payload.CommandErrorCounter = inObject->Payload.CommandErrorCounter;
     pbMsg.Payload.RegisteredLibs = inObject->Payload.RegisteredLibs;
     pbMsg.Payload.CFERevision = inObject->Payload.CFERevision;
     pbMsg.Payload.RegisteredExternalApps = inObject->Payload.RegisteredExternalApps;
@@ -61,7 +61,7 @@ uint32 CFE_ES_HkPacket_t_Enc(const CFE_ES_HkPacket_t *inObject, char *inOutBuffe
     pbMsg.Payload.CFEMissionRevision = inObject->Payload.CFEMissionRevision;
     pbMsg.Payload.RegisteredTasks = inObject->Payload.RegisteredTasks;
     pbMsg.Payload.OSALMinorVersion = inObject->Payload.OSALMinorVersion;
-    pbMsg.Payload.CmdCounter = inObject->Payload.CmdCounter;
+    pbMsg.Payload.CommandCounter = inObject->Payload.CommandCounter;
     pbMsg.Payload.HeapMaxBlockSize = inObject->Payload.HeapMaxBlockSize;
     pbMsg.Payload.CFECoreChecksum = inObject->Payload.CFECoreChecksum;
     pbMsg.Payload.ERLogIndex = inObject->Payload.ERLogIndex;
@@ -138,7 +138,7 @@ uint32 CFE_ES_HkPacket_t_Dec(const char *inBuffer, uint32 inSize, CFE_ES_HkPacke
     inOutObject->Payload.ProcessorResets = pbMsg.Payload.ProcessorResets;
     inOutObject->Payload.SysLogMode = pbMsg.Payload.SysLogMode;
     inOutObject->Payload.CFEMinorVersion = pbMsg.Payload.CFEMinorVersion;
-    inOutObject->Payload.ErrCounter = pbMsg.Payload.ErrCounter;
+    inOutObject->Payload.CommandErrorCounter = pbMsg.Payload.CommandErrorCounter;
     inOutObject->Payload.RegisteredLibs = pbMsg.Payload.RegisteredLibs;
     inOutObject->Payload.CFERevision = pbMsg.Payload.CFERevision;
     inOutObject->Payload.RegisteredExternalApps = pbMsg.Payload.RegisteredExternalApps;
@@ -157,7 +157,7 @@ uint32 CFE_ES_HkPacket_t_Dec(const char *inBuffer, uint32 inSize, CFE_ES_HkPacke
     inOutObject->Payload.CFEMissionRevision = pbMsg.Payload.CFEMissionRevision;
     inOutObject->Payload.RegisteredTasks = pbMsg.Payload.RegisteredTasks;
     inOutObject->Payload.OSALMinorVersion = pbMsg.Payload.OSALMinorVersion;
-    inOutObject->Payload.CmdCounter = pbMsg.Payload.CmdCounter;
+    inOutObject->Payload.CommandCounter = pbMsg.Payload.CommandCounter;
     inOutObject->Payload.HeapMaxBlockSize = pbMsg.Payload.HeapMaxBlockSize;
     inOutObject->Payload.CFECoreChecksum = pbMsg.Payload.CFECoreChecksum;
     inOutObject->Payload.ERLogIndex = pbMsg.Payload.ERLogIndex;
@@ -175,12 +175,12 @@ uint32 CFE_ES_HkPacket_t_Dec(const char *inBuffer, uint32 inSize, CFE_ES_HkPacke
 	return sizeof(CFE_ES_HkPacket_t);
 }
 
-uint32 CFE_ES_SetMaxPRCountCmd_t_Enc(const CFE_ES_SetMaxPRCountCmd_t *inObject, char *inOutBuffer, uint32 inSize)
+uint32 CFE_ES_SetMaxPRCount_t_Enc(const CFE_ES_SetMaxPRCount_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
 	pb_ostream_t stream;
 
-	CFE_ES_SetMaxPRCountCmd_t_pb pbMsg;
+	CFE_ES_SetMaxPRCount_t_pb pbMsg;
 
     /* Unroll indexes */
     pbMsg.CmdHeader_count = 8;
@@ -198,7 +198,7 @@ uint32 CFE_ES_SetMaxPRCountCmd_t_Enc(const CFE_ES_SetMaxPRCountCmd_t *inObject, 
 	stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 	
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, CFE_ES_SetMaxPRCountCmd_t_pb_fields, &pbMsg);
+	status = pb_encode(&stream, CFE_ES_SetMaxPRCount_t_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -210,18 +210,18 @@ uint32 CFE_ES_SetMaxPRCountCmd_t_Enc(const CFE_ES_SetMaxPRCountCmd_t *inObject, 
 	return stream.bytes_written;
 }
 
-uint32 CFE_ES_SetMaxPRCountCmd_t_Dec(const char *inBuffer, uint32 inSize, CFE_ES_SetMaxPRCountCmd_t *inOutObject)
+uint32 CFE_ES_SetMaxPRCount_t_Dec(const char *inBuffer, uint32 inSize, CFE_ES_SetMaxPRCount_t *inOutObject)
 {
 	bool status = false;
 	pb_istream_t stream;
 
-	CFE_ES_SetMaxPRCountCmd_t_pb pbMsg;
+	CFE_ES_SetMaxPRCount_t_pb pbMsg;
 
     /* Create a stream that reads from the buffer. */
 	stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, CFE_ES_SetMaxPRCountCmd_t_pb_fields, &pbMsg); 
+	status = pb_decode(&stream, CFE_ES_SetMaxPRCount_t_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -241,7 +241,7 @@ uint32 CFE_ES_SetMaxPRCountCmd_t_Dec(const char *inBuffer, uint32 inSize, CFE_ES
     inOutObject->CmdHeader[7] = pbMsg.CmdHeader[7];
     inOutObject->Payload.MaxPRCount = pbMsg.Payload.MaxPRCount;
 
-	return sizeof(CFE_ES_SetMaxPRCountCmd_t);
+	return sizeof(CFE_ES_SetMaxPRCount_t);
 }
 
 

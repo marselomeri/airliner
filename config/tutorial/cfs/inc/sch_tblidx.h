@@ -18,7 +18,6 @@
 #define CFE_TIME_SEND_HK_MIDX       4
 #define CFE_TBL_SEND_HK_MIDX        5
 
-#define CFE_TIME_FAKE_CMD_MIDX      6
 #define CFE_TIME_TONE_CMD_MIDX      7
 #define CFE_TIME_1HZ_CMD_MIDX       8
 

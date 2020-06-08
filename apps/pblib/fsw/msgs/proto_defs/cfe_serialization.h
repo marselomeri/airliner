@@ -6,7 +6,7 @@
 #include "pb_lib.h"
 #include "cfe_es_msg.h"
 #include "CFE_ES_HkPacket_t.pb.h"
-#include "CFE_ES_SetMaxPRCountCmd_t.pb.h"
+#include "CFE_ES_SetMaxPRCount_t.pb.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -16,8 +16,8 @@ uint32 CFE_ES_HkPacket_t_Enc(const CFE_ES_HkPacket_t *inObject, char *inOutBuffe
 uint32 CFE_ES_HkPacket_t_Dec(const char *inBuffer, uint32 inSize, CFE_ES_HkPacket_t *inOutObject);
 
 
-uint32 CFE_ES_SetMaxPRCountCmd_t_Enc(const CFE_ES_SetMaxPRCountCmd_t *inObject, char *inOutBuffer, uint32 inSize);
-uint32 CFE_ES_SetMaxPRCountCmd_t_Dec(const char *inBuffer, uint32 inSize, CFE_ES_SetMaxPRCountCmd_t *inOutObject);
+uint32 CFE_ES_SetMaxPRCount_t_Enc(const CFE_ES_SetMaxPRCount_t *inObject, char *inOutBuffer, uint32 inSize);
+uint32 CFE_ES_SetMaxPRCount_t_Dec(const char *inBuffer, uint32 inSize, CFE_ES_SetMaxPRCount_t *inOutObject);
 
 #ifdef __cplusplus
 } /* extern "C" */

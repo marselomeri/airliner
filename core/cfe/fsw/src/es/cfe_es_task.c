@@ -563,7 +563,7 @@ void CFE_ES_TaskPipe(CFE_SB_MsgPtr_t Msg)
                 case CFE_ES_SET_MAX_PR_COUNT_CC:
                     if (CFE_ES_VerifyCmdLength(Msg, sizeof(CFE_ES_SetMaxPRCount_t)))
                     {
-                        CFE_ES_SetMaxPRCountCmd((CFE_ES_SetMaxPRCount_t*)Msg);
+                        CFE_ES_SetMaxPRCount((CFE_ES_SetMaxPRCount_t*)Msg);
                     }
                     break;
 
@@ -1701,13 +1701,13 @@ int32 CFE_ES_ResetPRCountCmd(const CFE_ES_ResetPRCount_t *data)
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */              
 /*                                                                 */              
-/* CFE_ES_SetMaxPRCountCmd() -- Set Maximum Processor reset count  */              
+/* CFE_ES_SetMaxPRCount() -- Set Maximum Processor reset count  */
 /*                                                                 */              
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */              
 
-int32 CFE_ES_SetMaxPRCountCmd(const CFE_ES_SetMaxPRCount_t *data)
+int32 CFE_ES_SetMaxPRCount(const CFE_ES_SetMaxPRCount_t *data)
 {                                                                                  
-    const CFE_ES_SetMaxPRCountCmd_Payload_t *cmd = &data->Payload;
+    const CFE_ES_SetMaxPRCount_Payload_t *cmd = &data->Payload;
 
     /*
     ** Set the MAX Processor reset count

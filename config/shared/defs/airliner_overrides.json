@@ -110,7 +110,6 @@
 	            "CFE_TIME_TONE_CMD_MID":         { "msg_id": "0x1810" },
 	            "CFE_TIME_1HZ_CMD_MID":          { "msg_id": "0x1811" },
 	            "CFE_TIME_DATA_CMD_MID":         { "msg_id": "0x1860" },
-	            "CFE_TIME_FAKE_CMD_MID":         { "msg_id": "0x1861" },
 	            "CFE_TIME_SEND_CMD_MID":         { "msg_id": "0x1862" },
 	            "CFE_ES_HK_TLM_MID":             { "msg_id": "0x0800" },
 	            "CFE_EVS_HK_TLM_MID":            { "msg_id": "0x0801" },

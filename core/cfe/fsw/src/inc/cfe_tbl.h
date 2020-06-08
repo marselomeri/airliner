@@ -36,6 +36,10 @@
 #ifndef _cfe_tbl_
 #define _cfe_tbl_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /********************* Include Files  ************************/
 #include "cfe_tbl_extern_typedefs.h"
 #include "cfe_sb_extern_typedefs.h"

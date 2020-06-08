@@ -50,8 +50,8 @@ add_airliner_app_def(pblib
       	${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/gps_serialization.c
         ${PROTOBUF_MSGS_DIR}/CFE_ES_HkPacket_t.pb.h
         ${PROTOBUF_MSGS_DIR}/CFE_ES_HkPacket_t.pb.c
-        ${PROTOBUF_MSGS_DIR}/CFE_ES_SetMaxPRCountCmd_t.pb.h
-        ${PROTOBUF_MSGS_DIR}/CFE_ES_SetMaxPRCountCmd_t.pb.c
+        ${PROTOBUF_MSGS_DIR}/CFE_ES_SetMaxPRCount_t.pb.h
+        ${PROTOBUF_MSGS_DIR}/CFE_ES_SetMaxPRCount_t.pb.c
         ${PROTOBUF_MSGS_DIR}/sens_hk.pb.h
         ${PROTOBUF_MSGS_DIR}/sens_hk.pb.c
         ${PROTOBUF_MSGS_DIR}/gps_hk.pb.h
@@ -156,7 +156,7 @@ add_airliner_app_def(pblib
 
     PROTOBUF_DEFS
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/CFE_ES_HkPacket_t.proto
-        ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/CFE_ES_SetMaxPRCountCmd_t.proto
+        ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/CFE_ES_SetMaxPRCount_t.proto
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/sens_hk.proto
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/gps_hk.proto
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/PX4_DistanceSensorMsg_t.proto

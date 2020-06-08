@@ -51,7 +51,7 @@ uint32 CFE_ES_RegisterSerializationFuncs()
 	int32 Status = CFE_SUCCESS;
 
 	/* Register each message with PBL */
-	Status = PBLIB_RegisterCmdMessage(0x1806, 20, "CFE_ES_SetMaxPRCountCmd_t"); 
+	Status = PBLIB_RegisterCmdMessage(0x1806, 20, "CFE_ES_SetMaxPRCount_t");
 	if (Status != CFE_SUCCESS)
 	{
 		goto CFE_ES_RegisterSerializationFuncs_Exit_Tag;

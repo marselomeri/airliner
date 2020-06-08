@@ -1,37 +1,3 @@
-/******************************************************************************
-**
-**      GSC-18128-1, "Core Flight Executive Version 6.6"
-**
-**      Copyright (c) 2006-2019 United States Government as represented by
-**      the Administrator of the National Aeronautics and Space Administration.
-**      All Rights Reserved.
-**
-**      Licensed under the Apache License, Version 2.0 (the "License");
-**      you may not use this file except in compliance with the License.
-**      You may obtain a copy of the License at
-**
-**        http://www.apache.org/licenses/LICENSE-2.0
-**
-**      Unless required by applicable law or agreed to in writing, software
-**      distributed under the License is distributed on an "AS IS" BASIS,
-**      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-**      See the License for the specific language governing permissions and
-**      limitations under the License.
-**
-** File: cfe_platform_cfg.h
-**
-** Purpose:
-**   This header file contains the platform configuration parameters.
-** 
-** Notes:
-**   The impact of changing these configurations from their default value is
-**   not yet documented.  Changing these values may impact the performance
-**   and functionality of the system.
-**
-** Author:   R.McGraw/SSI
-**
-******************************************************************************/
-
 #ifndef _cfe_platform_cfg_
 #define _cfe_platform_cfg_
 
@@ -41,11 +7,11 @@
 #include "cfe_mission_cfg.h"
 
 
-#define CFE_ES_START_TASK_FLAGS	    OS_ENABLE_CORE_0
-#define CFE_EVS_START_TASK_FLAGS	OS_ENABLE_CORE_0
+#define CFE_ES_START_TASK_FLAGS     OS_ENABLE_CORE_0
+#define CFE_EVS_START_TASK_FLAGS    OS_ENABLE_CORE_0
 #define CFE_SB_START_TASK_FLAGS	    OS_ENABLE_CORE_0
-#define CFE_TBL_START_TASK_FLAGS	OS_ENABLE_CORE_0
-#define CFE_TIME_START_TASK_FLAGS	OS_ENABLE_CORE_0
+#define CFE_TBL_START_TASK_FLAGS    OS_ENABLE_CORE_0
+#define CFE_TIME_START_TASK_FLAGS   OS_ENABLE_CORE_0
 
 /*
 ** CPU Id for target Processor
@@ -89,7 +55,7 @@
 **       or equal to OS_MAX_QUEUES.
 **
 */
-#define CFE_PLATFORM_SB_MAX_PIPES                64
+#define CFE_PLATFORM_SB_MAX_PIPES                255
 
 
 /**
@@ -529,7 +495,7 @@
 **       AppIDs that are checked against this configuration are defined by a 32 bit
 **       data word.
 */
-#define CFE_PLATFORM_ES_MAX_APPLICATIONS 32
+#define CFE_PLATFORM_ES_MAX_APPLICATIONS 64
 
 
 /**
@@ -761,7 +727,7 @@
 **       There is a lower limit of 8192 and an upper limit of UINT_MAX (4 Gigabytes)
 **       on this configuration paramater.
 */
-#define CFE_PLATFORM_ES_CDS_SIZE                  ( 128 * 1024 )
+#define CFE_PLATFORM_ES_CDS_SIZE                  ( 128 * 2048 )
 
 
 /**
@@ -782,7 +748,7 @@
 **       There is a lower limit of 1024 and an upper limit of UINT_MAX (4 Gigabytes)
 **       on this configuration paramater.
 */
-#define CFE_PLATFORM_ES_USER_RESERVED_SIZE         ( 1024 * 1024 )
+#define CFE_PLATFORM_ES_USER_RESERVED_SIZE         ( 1024 * 2048 )
 
 
 /**
@@ -806,7 +772,7 @@
 **       There is a lower limit of 153600 (150KBytes) and an upper limit of UINT_MAX
 **       (4 Gigabytes) on this configuration paramater.
 */
-#define CFE_PLATFORM_ES_RESET_AREA_SIZE  ( 170 * 1024 )
+#define CFE_PLATFORM_ES_RESET_AREA_SIZE  ( 170 * 2048 )
 
 /**
 **  \cfeescfg Define Memory Pool Alignment Size
@@ -1150,7 +1116,7 @@
 **       is limited by the maximum value allowed by the data type. In this case, the data
 **       type is an unsigned 32-bit integer, so the valid range is 0 to 0xFFFFFFFF.
 */
-#define CFE_PLATFORM_ES_PERF_CHILD_STACK_SIZE              4096
+#define CFE_PLATFORM_ES_PERF_CHILD_STACK_SIZE              16384
 
 /**
 **  \cfeescfg Define Performance Analyzer Child Task Delay
@@ -1191,7 +1157,7 @@
 **       task during operation. It is always a good idea to verify that no more than 1/2
 **       of the stack is used.
 */
-#define CFE_PLATFORM_ES_DEFAULT_STACK_SIZE 8192
+#define CFE_PLATFORM_ES_DEFAULT_STACK_SIZE 16384
 
 /**
 **  \cfeescfg Define cFE Core Exception Function
@@ -1350,8 +1316,8 @@
 **       is always a good idea to verify that no more than 1/2 of the stack is used.
 */
 #define CFE_PLATFORM_TIME_START_TASK_STACK_SIZE            CFE_PLATFORM_ES_DEFAULT_STACK_SIZE
-#define CFE_PLATFORM_TIME_TONE_TASK_STACK_SIZE             4096
-#define CFE_PLATFORM_TIME_1HZ_TASK_STACK_SIZE              8192
+#define CFE_PLATFORM_TIME_TONE_TASK_STACK_SIZE             16384
+#define CFE_PLATFORM_TIME_1HZ_TASK_STACK_SIZE              16384
 
 /**
 **  \cfeescfg Define TBL Task Priority
@@ -1442,8 +1408,8 @@
 #define CFE_PLATFORM_ES_MEM_BLOCK_SIZE_13           4096
 #define CFE_PLATFORM_ES_MEM_BLOCK_SIZE_14           8192
 #define CFE_PLATFORM_ES_MEM_BLOCK_SIZE_15          16384
-#define CFE_PLATFORM_ES_MEM_BLOCK_SIZE_16          32768
-#define CFE_PLATFORM_ES_MAX_BLOCK_SIZE             80000
+#define CFE_PLATFORM_ES_MEM_BLOCK_SIZE_16          80000
+#define CFE_PLATFORM_ES_MAX_BLOCK_SIZE            200000
 
 
 /**
@@ -1486,7 +1452,7 @@
 **       the maximum number of event filters is system dependent and should be
 **       verified.
 */
-#define CFE_PLATFORM_EVS_MAX_EVENT_FILTERS     8
+#define CFE_PLATFORM_EVS_MAX_EVENT_FILTERS     256
 
 
 /**
@@ -1627,7 +1593,7 @@
 **  \par Limits
 **       The cFE does not place a limit on the size of this parameter.
 */
-#define CFE_PLATFORM_TBL_BUF_MEMORY_BYTES        524288
+#define CFE_PLATFORM_TBL_BUF_MEMORY_BYTES        1048576
 
 /**
 **  \cfetblcfg Maximum Size Allowed for a Double Buffered Table
@@ -1639,7 +1605,7 @@
 **       The cFE does not place a limit on the size of this parameter but it must be
 **       less than half of #CFE_PLATFORM_TBL_BUF_MEMORY_BYTES.
 */
-#define CFE_PLATFORM_TBL_MAX_DBL_TABLE_SIZE    16384
+#define CFE_PLATFORM_TBL_MAX_DBL_TABLE_SIZE    65535
 
 /**
 **  \cfetblcfg Maximum Size Allowed for a Single Buffered Table
@@ -1655,7 +1621,7 @@
 **       small enough to allow for #CFE_PLATFORM_TBL_MAX_SIMULTANEOUS_LOADS number of tables
 **       to fit into #CFE_PLATFORM_TBL_BUF_MEMORY_BYTES.
 */
-#define CFE_PLATFORM_TBL_MAX_SNGL_TABLE_SIZE   16384
+#define CFE_PLATFORM_TBL_MAX_SNGL_TABLE_SIZE   65535
 
 /**
 **  \cfetblcfg Maximum Number of Tables Allowed to be Registered
