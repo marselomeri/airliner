@@ -118,6 +118,7 @@ void MD_TableValidationFunc_Test_ResolveError(void)
     strncpy(Table.Entry[0].DwellAddress.SymName, "symname", 10);
 
     Table.Entry[0].DwellAddress.Offset = 0;
+    Table.Entry[0].Length = 4;
 
     /* Set to make MD_CheckTableEntries return MD_RESOLVE_ERROR */
     Ut_OSAPI_SetReturnCode(UT_OSAPI_SYMBOLLOOKUP_INDEX, -1, 1);
