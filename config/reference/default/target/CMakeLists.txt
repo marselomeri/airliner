@@ -10,6 +10,7 @@ initialize_airliner_build(
     CONFIG
         ${PROJECT_SOURCE_DIR}/core/mission_inc/
         ${PROJECT_SOURCE_DIR}/core/platform_inc/
+	    ${PROJECT_SOURCE_DIR}/core/platform_inc/cpu1
     FILESYS
         /cf/apps
         /cf/download
@@ -22,8 +23,8 @@ initialize_airliner_build(
     CONFIG_SOURCES
         ${PROJECT_SOURCE_DIR}/core/mission_inc/cfe_mission_cfg.h
         ${PROJECT_SOURCE_DIR}/core/mission_inc/cfe_msgids.h
-        ${PROJECT_SOURCE_DIR}/core/platform_inc/osconfig.h
-        ${PROJECT_SOURCE_DIR}/core/platform_inc/cfe_platform_cfg.h
+        ${PROJECT_SOURCE_DIR}/core/platform_inc/cpu1/osconfig.h
+        ${PROJECT_SOURCE_DIR}/core/platform_inc/cpu1/cfe_platform_cfg.h
         
     REFERENCE
 )
