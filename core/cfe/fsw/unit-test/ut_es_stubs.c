@@ -528,7 +528,7 @@ int32 CFE_ES_GetPoolBuf(uint32 **BufPtr,
 
     if (flag == FALSE)
     {
-        if (Size > CFE_MISSION_SB_MAX_SB_MSG_SIZE)
+        if (Size > CFE_PLATFORM_ES_MAX_BLOCK_SIZE)
         {
             Block = 0xffffffff;
         }

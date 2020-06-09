@@ -4119,6 +4119,7 @@ void Test_CFE_TBL_Internal(void)
     StdFileHeader.ProcessorID = CFE_PLATFORM_TBL_VALID_PRID_1;
 
     /* Test setup - register a double buffered table */
+    UT_ResetTableRegistry();
     UT_InitData();
     UT_SetAppID(1);
     RtnCode = CFE_TBL_Register(&App1TblHandle2,
@@ -4191,7 +4192,7 @@ void Test_CFE_TBL_Internal(void)
     StdFileHeader.Description[CFE_FS_HDR_DESC_MAX_LEN - 1] = '\0';
     StdFileHeader.ContentType = CFE_FS_FILE_CONTENT_ID;
     StdFileHeader.SubType = CFE_FS_SubType_TBL_IMG;
-    strncpy((char *)TblFileHeader.TableName, "ut_cfe_tbl.UT_Table2",
+    strncpy((char *)TblFileHeader.TableName, "ut_cfe_tbl.UT_Table3",
             sizeof(TblFileHeader.TableName));
     TblFileHeader.NumBytes = sizeof(UT_Table1_t);
     TblFileHeader.Offset = 1;
@@ -4218,7 +4219,7 @@ void Test_CFE_TBL_Internal(void)
     Filename[OS_MAX_PATH_LEN - 1] = '\0';
     StdFileHeader.ContentType = CFE_FS_FILE_CONTENT_ID;
     StdFileHeader.SubType = CFE_FS_SubType_TBL_IMG;
-    strncpy((char *)TblFileHeader.TableName, "ut_cfe_tbl.UT_Table2",
+    strncpy((char *)TblFileHeader.TableName, "ut_cfe_tbl.UT_Table3",
             sizeof(TblFileHeader.TableName));
     TblFileHeader.NumBytes = sizeof(UT_Table1_t);
     TblFileHeader.Offset = 0;
@@ -4246,7 +4247,7 @@ void Test_CFE_TBL_Internal(void)
     Filename[OS_MAX_PATH_LEN - 1] = '\0';
     StdFileHeader.ContentType = CFE_FS_FILE_CONTENT_ID;
     StdFileHeader.SubType = CFE_FS_SubType_TBL_IMG;
-    strncpy((char *)TblFileHeader.TableName, "ut_cfe_tbl.UT_Table2",
+    strncpy((char *)TblFileHeader.TableName, "ut_cfe_tbl.UT_Table3",
             sizeof(TblFileHeader.TableName));
     TblFileHeader.NumBytes = sizeof(UT_Table1_t);
     TblFileHeader.Offset = 0;
@@ -4329,7 +4330,7 @@ void Test_CFE_TBL_Internal(void)
     Filename[OS_MAX_PATH_LEN - 1] = '\0';
     StdFileHeader.ContentType = CFE_FS_FILE_CONTENT_ID;
     StdFileHeader.SubType = CFE_FS_SubType_TBL_IMG;
-    strncpy((char *)TblFileHeader.TableName, "ut_cfe_tbl.UT_Table2",
+    strncpy((char *)TblFileHeader.TableName, "ut_cfe_tbl.UT_Table3",
             sizeof(TblFileHeader.TableName));
     TblFileHeader.NumBytes = sizeof(UT_Table1_t) - 1;
     TblFileHeader.Offset = 0;
@@ -4531,6 +4532,7 @@ void Test_CFE_TBL_Internal(void)
      * restore fails
      */
     UT_InitData();
+    UT_ResetTableRegistry();
     UT_ResetCDS();
     UT_SetRtnCode(&ES_RegisterCDSRtn, CFE_ES_CDS_ALREADY_EXISTS, 1);
     UT_SetRtnCode(&ES_RestoreFromCDSRtn, CFE_ES_CDS_BLOCK_CRC_ERR, 1);

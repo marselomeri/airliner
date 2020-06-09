@@ -269,10 +269,10 @@ void TestInit(void)
 
     /* Set up the startup script for reading */
     strncpy(StartupScript,
-            "CFE_LIB, /cf/apps/tst_lib.bundle, TST_LIB_Init, TST_LIB, 0, 0, 0x0, 1, 0; "
-            "CFE_APP, /cf/apps/ci.bundle, CI_task_main, CI_APP, 70, 4096, 0x0, 1, 0; "
-            "CFE_APP, /cf/apps/sch.bundle, SCH_TaskMain, SCH_APP, 120, 4096, 0x0, 1, 0; "
-            "CFE_APP, /cf/apps/to.bundle, TO_task_main, TO_APP, 74, 4096, 0x0, 1, 0; !",
+            "CFE_LIB, /cf/apps/tst_lib.bundle, TST_LIB_Init, TST_LIB, 0, 0, 0x0, 1, 0, 0; "
+            "CFE_APP, /cf/apps/ci.bundle, CI_task_main, CI_APP, 70, 4096, 0x0, 1, 0, 0; "
+            "CFE_APP, /cf/apps/sch.bundle, SCH_TaskMain, SCH_APP, 120, 4096, 0x0, 1, 0, 0; "
+            "CFE_APP, /cf/apps/to.bundle, TO_task_main, TO_APP, 74, 4096, 0x0, 1, 0, 0; !",
             MAX_STARTUP_SCRIPT);
     StartupScript[MAX_STARTUP_SCRIPT - 1] = '\0';
     UT_SetReadBuffer(StartupScript, strlen(StartupScript));
@@ -1338,7 +1338,7 @@ void TestApps(void)
     CFE_ES_Global.AppTable[Id].StartParams.EntryPoint[OS_MAX_API_NAME - 1] =
         '\0';
     CFE_ES_Global.AppTable[Id].StartParams.Priority = 255;
-    CFE_ES_Global.AppTable[Id].StartParams.StackSize = 8192;
+    CFE_ES_Global.AppTable[Id].StartParams.StackSize = CFE_PLATFORM_ES_DEFAULT_STACK_SIZE;
     CFE_ES_Global.AppTable[Id].StartParams.ExceptionAction = 0;
     OS_TaskCreate(&CFE_ES_Global.AppTable[Id].TaskInfo.MainTaskId, "UT",
                   NULL, NULL, 0, 0, 0);
@@ -1482,7 +1482,7 @@ void TestApps(void)
     CFE_ES_Global.AppTable[Id].StartParams.EntryPoint[OS_MAX_API_NAME - 1] =
         '\0';
     CFE_ES_Global.AppTable[Id].StartParams.Priority = 255;
-    CFE_ES_Global.AppTable[Id].StartParams.StackSize = 8192;
+    CFE_ES_Global.AppTable[Id].StartParams.StackSize = CFE_PLATFORM_ES_DEFAULT_STACK_SIZE;
     CFE_ES_Global.AppTable[Id].StartParams.ExceptionAction = 0;
     OS_ModuleLoad(&CFE_ES_Global.AppTable[Id].StartParams.ModuleId, NULL, NULL);
     CFE_ES_Global.AppTable[Id].StateRecord.AppControlRequest =
@@ -1527,7 +1527,7 @@ void TestApps(void)
     CFE_ES_Global.AppTable[Id].StartParams.EntryPoint[OS_MAX_API_NAME - 1] =
         '\0';
     CFE_ES_Global.AppTable[Id].StartParams.Priority = 255;
-    CFE_ES_Global.AppTable[Id].StartParams.StackSize = 8192;
+    CFE_ES_Global.AppTable[Id].StartParams.StackSize = CFE_PLATFORM_ES_DEFAULT_STACK_SIZE;
     CFE_ES_Global.AppTable[Id].StartParams.ExceptionAction = 0;
     CFE_ES_Global.AppTable[Id].StateRecord.AppControlRequest =
         CFE_ES_RunStatus_SYS_DELETE;
@@ -1554,7 +1554,7 @@ void TestApps(void)
     CFE_ES_Global.AppTable[Id].StartParams.EntryPoint[OS_MAX_API_NAME - 1] =
         '\0';
     CFE_ES_Global.AppTable[Id].StartParams.Priority = 255;
-    CFE_ES_Global.AppTable[Id].StartParams.StackSize = 8192;
+    CFE_ES_Global.AppTable[Id].StartParams.StackSize = CFE_PLATFORM_ES_DEFAULT_STACK_SIZE;
     CFE_ES_Global.AppTable[Id].StartParams.ExceptionAction = 0;
     CFE_ES_Global.AppTable[Id].StateRecord.AppControlRequest =
         CFE_ES_RunStatus_SYS_RESTART;
@@ -1581,7 +1581,7 @@ void TestApps(void)
     CFE_ES_Global.AppTable[Id].StartParams.EntryPoint[OS_MAX_API_NAME - 1] =
         '\0';
     CFE_ES_Global.AppTable[Id].StartParams.Priority = 255;
-    CFE_ES_Global.AppTable[Id].StartParams.StackSize = 8192;
+    CFE_ES_Global.AppTable[Id].StartParams.StackSize = CFE_PLATFORM_ES_DEFAULT_STACK_SIZE;
     CFE_ES_Global.AppTable[Id].StartParams.ExceptionAction = 0;
     CFE_ES_Global.AppTable[Id].StateRecord.AppControlRequest =
         CFE_ES_RunStatus_SYS_RELOAD;
@@ -1610,7 +1610,7 @@ void TestApps(void)
     CFE_ES_Global.AppTable[Id].StartParams.EntryPoint[OS_MAX_API_NAME - 1] =
         '\0';
     CFE_ES_Global.AppTable[Id].StartParams.Priority = 255;
-    CFE_ES_Global.AppTable[Id].StartParams.StackSize = 8192;
+    CFE_ES_Global.AppTable[Id].StartParams.StackSize = CFE_PLATFORM_ES_DEFAULT_STACK_SIZE;
     CFE_ES_Global.AppTable[Id].StartParams.ExceptionAction = 0;
     CFE_ES_Global.AppTable[Id].StateRecord.AppControlRequest =
         CFE_ES_RunStatus_SYS_EXCEPTION;
@@ -2605,8 +2605,9 @@ void TestTask(void)
     strncpy((char *) StartAppCmd.Payload.Application, "appNameIntentionallyTooLongToFitIntoDestinationBuffer",
             sizeof(StartAppCmd.Payload.Application));
     StartAppCmd.Payload.Priority = 160;
-    StartAppCmd.Payload.StackSize = 8192;
+    StartAppCmd.Payload.StackSize = CFE_PLATFORM_ES_DEFAULT_STACK_SIZE;
     StartAppCmd.Payload.ExceptionAction = CFE_ES_ExceptionAction_RESTART_APP;
+    StartAppCmd.Payload.Flags = 0;
     UT_SendMsg(msgptr, CFE_ES_CMD_MID, CFE_ES_START_APP_CC);
     UT_Report(__FILE__, __LINE__,
               SendMsgEventIDRtn.value == CFE_ES_START_INF_EID,
@@ -2631,7 +2632,7 @@ void TestTask(void)
     strncpy((char *) StartAppCmd.Payload.Application, "appName",
             sizeof(StartAppCmd.Payload.Application));
     StartAppCmd.Payload.Priority = 160;
-    StartAppCmd.Payload.StackSize = 12096;
+    StartAppCmd.Payload.StackSize = CFE_PLATFORM_ES_DEFAULT_STACK_SIZE;
     StartAppCmd.Payload.ExceptionAction = CFE_ES_ExceptionAction_RESTART_APP;
     UT_SendMsg(msgptr, CFE_ES_CMD_MID, CFE_ES_START_APP_CC);
     UT_Report(__FILE__, __LINE__,
@@ -2648,7 +2649,7 @@ void TestTask(void)
     strncpy((char *) StartAppCmd.Payload.Application, "appName",
             sizeof(StartAppCmd.Payload.Application));
     StartAppCmd.Payload.Priority = 160;
-    StartAppCmd.Payload.StackSize = 12096;
+    StartAppCmd.Payload.StackSize = CFE_PLATFORM_ES_DEFAULT_STACK_SIZE;
     StartAppCmd.Payload.ExceptionAction = CFE_ES_ExceptionAction_RESTART_APP;
     UT_SendMsg(msgptr, CFE_ES_CMD_MID, CFE_ES_START_APP_CC);
     UT_Report(__FILE__, __LINE__,
@@ -2666,7 +2667,7 @@ void TestTask(void)
     strncpy((char *) StartAppCmd.Payload.Application, "",
             sizeof(StartAppCmd.Payload.Application));
     StartAppCmd.Payload.Priority = 160;
-    StartAppCmd.Payload.StackSize = 12096;
+    StartAppCmd.Payload.StackSize = CFE_PLATFORM_ES_DEFAULT_STACK_SIZE;
     StartAppCmd.Payload.ExceptionAction = CFE_ES_ExceptionAction_RESTART_APP;
     UT_SendMsg(msgptr, CFE_ES_CMD_MID, CFE_ES_START_APP_CC);
     UT_Report(__FILE__, __LINE__,
@@ -2683,7 +2684,7 @@ void TestTask(void)
     strncpy((char *) StartAppCmd.Payload.Application, "appName",
             sizeof(StartAppCmd.Payload.Application));
     StartAppCmd.Payload.Priority = 160;
-    StartAppCmd.Payload.StackSize = 12096;
+    StartAppCmd.Payload.StackSize = CFE_PLATFORM_ES_DEFAULT_STACK_SIZE;
     StartAppCmd.Payload.ExceptionAction = 65534;
     UT_SendMsg(msgptr, CFE_ES_CMD_MID, CFE_ES_START_APP_CC);
     UT_Report(__FILE__, __LINE__,
@@ -2700,7 +2701,7 @@ void TestTask(void)
     strncpy((char *) StartAppCmd.Payload.Application, "appName",
             sizeof(StartAppCmd.Payload.Application));
     StartAppCmd.Payload.Priority = 160;
-    StartAppCmd.Payload.StackSize = 0;
+    StartAppCmd.Payload.StackSize = CFE_PLATFORM_ES_DEFAULT_STACK_SIZE-1;
     StartAppCmd.Payload.ExceptionAction = CFE_ES_ExceptionAction_RESTART_APP;
     UT_SendMsg(msgptr, CFE_ES_CMD_MID, CFE_ES_START_APP_CC);
     UT_Report(__FILE__, __LINE__,
@@ -2717,7 +2718,7 @@ void TestTask(void)
     strncpy((char *) StartAppCmd.Payload.Application, "appName",
             sizeof(StartAppCmd.Payload.Application));
     StartAppCmd.Payload.Priority = 1000;
-    StartAppCmd.Payload.StackSize = 12096;
+    StartAppCmd.Payload.StackSize = CFE_PLATFORM_ES_DEFAULT_STACK_SIZE;
     StartAppCmd.Payload.ExceptionAction = CFE_ES_ExceptionAction_RESTART_APP;
     UT_SendMsg(msgptr, CFE_ES_CMD_MID, CFE_ES_START_APP_CC);
     UT_Report(__FILE__, __LINE__,
@@ -6292,7 +6293,7 @@ void TestESMempool(void)
     UT_Report(__FILE__, __LINE__,
               CFE_ES_GetPoolBuf((uint32 **) &address,
                                 HandlePtr,
-                                75000) == CFE_ES_ERR_MEM_BLOCK_SIZE,
+								CFE_PLATFORM_ES_MAX_BLOCK_SIZE+1) == CFE_ES_ERR_MEM_BLOCK_SIZE,
               "CFE_ES_GetPoolBuf",
               "Requested pool size too large");
 
