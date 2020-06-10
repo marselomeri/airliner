@@ -31,3 +31,40 @@
 #
 #############################################################################
  
+set(PSP_PLATFORM_SRC
+    ${CMAKE_CURRENT_SOURCE_DIR}/main.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_psp_exception.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_psp_memory.c 
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_psp_memtab.c 
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_psp_ssr.c 
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_psp_start.c 
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_psp_support.c 
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_psp_timer.c 
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_psp_voltab.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_psp_watchdog.c
+    PARENT_SCOPE
+)
+
+set(PSP_UNIT_TEST_SRC
+    ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/psp_testcase.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/psp_testrunner.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/stubs.c
+    ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/utassert.c
+    ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/utlist.c
+    ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/uttest.c
+    ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/uttools.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_psp_exception.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_psp_memory.c 
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_psp_memtab.c 
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_psp_ssr.c 
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_psp_start.c 
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_psp_support.c 
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_psp_timer.c 
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_psp_voltab.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_psp_watchdog.c
+    PARENT_SCOPE
+)
+
+set(PSP_UNIT_TEST_COUNT 48 PARENT_SCOPE)
+
+
