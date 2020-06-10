@@ -64,12 +64,15 @@
   Data Storage can then subscribe to these messages making them telemetry.  For 
   the purposes of this document, any references to telemetry assumes that a telemetry 
   application subscribes to the EVS event software bus message and routes it to the 
-  ground as telemetry.
+  ground as telemetry.  Note that short format event messages on the Software Bus
+  have different message lengths than long form messages and do not include
+  any part of the long format message string.
 
   The EVS can be configured via ground command to send event messages out one or 
   more message ports.  These message ports may include ports such as debug, console, 
   and UART.  Messages sent out of the message ports will be in ASCII text format.  
-  This is generally used for lab purposes.
+  This is generally used for lab purposes.  Note that the event mode (short or
+  long) does affect the event message content sent out these message ports.
 
 
   Next: \ref cfeevsuglog <BR>
@@ -87,7 +90,9 @@
   during non-deterministic processor initialization sequences and during failure 
   scenarios.  In order to obtain the contents of the Local Event Log, a command must 
   be sent to write the contents of the buffer to a file which can then be sent to the 
-  ground via a file transfer mechanism.  
+  ground via a file transfer mechanism.  Note that event messages stored in the EVS
+  Local Event Log are always long format messages and are not affected by the
+  event mode (short or long).
 
   EVS provides a command in order to \link #CFE_EVS_CLEAR_LOG_CC clear the Local Event Log \endlink.  
 
