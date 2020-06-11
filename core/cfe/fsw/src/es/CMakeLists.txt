@@ -33,45 +33,66 @@
  
 
 set(CFE_ES_SRC 
-	${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_api.c 
-	${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_apps.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_api.c 
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_apps.c
     ${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_cds.c 
-	${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_cds_mempool.c 
-	${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_erlog.c 
-	${CMAKE_CURRENT_SOURCE_DIR}/cfe_esmempool.c
-	${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_objtab.c 
-	${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_perf.c 
-	${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_shell.c 
-	${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_start.c 
-	${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_syslog.c
-	${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_task.c
-	${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_symbols.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_cds_mempool.c 
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_erlog.c 
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_esmempool.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_objtab.c 
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_perf.c 
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_shell.c 
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_start.c 
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_syslog.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_task.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_symbols.c
 )
 
 	
 add_airliner_cfe_unit_test(cfe-es-ut
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../../unit-test/es_UT.c 
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../unit-test/ut_bsp_stubs.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../../unit-test/ut_evs_stubs.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../../unit-test/ut_sb_stubs.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../../unit-test/ut_fs_stubs.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../../unit-test/ut_tbl_stubs.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../../unit-test/ut_time_stubs.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../unit-test/ut_stubs.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../../unit-test/ut_osprintf_stubs.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../unit-test/ut_support.c
         ${OSAL_UT_ASSERT_DIR}/src/utassert.c
         ${OSAL_UT_ASSERT_DIR}/src/utstubs.c
         ${OSAL_UT_ASSERT_DIR}/src/uttest.c
         ${OSAL_UT_ASSERT_DIR}/src/utlist.c
         ${OSAL_UT_ASSERT_DIR}/src/uttools.c
-        ${OSAL_UT_STUBS_DIR}/osapi_stubs.c
-        ${OSAL_UT_STUBS_DIR}/osfileapi_stubs.c
+        ${OSAL_UT_STUBS_DIR}/osapi-utstub-binsem.c
+        ${OSAL_UT_STUBS_DIR}/osapi-utstub-clock.c
+        ${OSAL_UT_STUBS_DIR}/osapi-utstub-common.c
+        ${OSAL_UT_STUBS_DIR}/osapi-utstub-countsem.c
+        ${OSAL_UT_STUBS_DIR}/osapi-utstub-dir.c
+        ${OSAL_UT_STUBS_DIR}/osapi-utstub-errors.c
+        ${OSAL_UT_STUBS_DIR}/osapi-utstub-file.c
+        ${OSAL_UT_STUBS_DIR}/osapi-utstub-filesys.c
+        ${OSAL_UT_STUBS_DIR}/osapi-utstub-fpu.c
+        ${OSAL_UT_STUBS_DIR}/osapi-utstub-heap.c
+        ${OSAL_UT_STUBS_DIR}/osapi-utstub-idmap.c
+        ${OSAL_UT_STUBS_DIR}/osapi-utstub-interrupts.c
+        ${OSAL_UT_STUBS_DIR}/osapi-utstub-module.c
+        ${OSAL_UT_STUBS_DIR}/osapi-utstub-mutex.c
+        ${OSAL_UT_STUBS_DIR}/osapi-utstub-network.c
+        ${OSAL_UT_STUBS_DIR}/osapi-utstub-printf.c
+        ${OSAL_UT_STUBS_DIR}/osapi-utstub-queue.c
+        ${OSAL_UT_STUBS_DIR}/osapi-utstub-select.c
+        ${OSAL_UT_STUBS_DIR}/osapi-utstub-sockets.c
+        ${OSAL_UT_STUBS_DIR}/osapi-utstub-task.c
+        ${OSAL_UT_STUBS_DIR}/osapi-utstub-timebase.c
+        ${OSAL_UT_STUBS_DIR}/osapi-utstub-time.c
+        ${OSAL_UT_STUBS_DIR}/utstub-helpers.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../unit-test/es_UT.c 
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../../psp/fsw/ut-stubs/ut_psp_stubs.c
         ${CFE_ES_SRC}
         
     INCLUDES
         ${OSAL_UT_ASSERT_DIR}/inc/
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../unit-test/ 
         
     VALGRIND_SUPPRESSION_FILE
         ${CMAKE_CURRENT_SOURCE_DIR}/../../unit-test/cfe_es.supp

@@ -26,6 +26,7 @@
 #define OS_MAX_BIN_SEMAPHORES       100
 #define OS_MAX_MUTEXES              100
 #define OS_MAX_TIMEOUTS				(OS_MAX_QUEUES+OS_MAX_COUNT_SEMAPHORES+OS_MAX_BIN_SEMAPHORES)
+#define OS_MAX_TIMEBASES            10
 
 /*
 ** Maximum length for an absolute path name
@@ -90,6 +91,13 @@
 ** This is the maximum number of open file descriptors allowed at a time 
 */
 #define OS_MAX_NUM_OPEN_FILES 50 
+
+/* 
+** This is the maximum number of open directory descriptors allowed at a time 
+*/
+#define OS_MAX_NUM_OPEN_DIRS 50 
+
+
 
 /* 
 ** This defines the filethe input command of OS_ShellOutputToFile

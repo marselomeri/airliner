@@ -18914,7 +18914,7 @@ Making directories: ram0, ram1, eeprom1 for OSAL mount points
 [ PASS] 06.064 es_UT.c:3174 - CFE_ES_ResetPRCountCmd - Set processor reset count to zero
 [ INFO]   CFE_EVS_SendEvent: 73, 2 - Maximum Processor Reset Count set to: 3
 
-[ PASS] 06.065 es_UT.c:3185 - CFE_ES_SetMaxPRCount - Set maximum processor reset count
+[ PASS] 06.065 es_UT.c:3185 - CFE_ES_SetMaxPRCountCmd - Set maximum processor reset count
 [ INFO] UT 389.389 - CFE_ES:PutCDSBlock-Invalid Memory Handle.
 
 
@@ -19043,7 +19043,7 @@ Making directories: ram0, ram1, eeprom1 for OSAL mount points
 [ PASS] 06.100 es_UT.c:3584 - CFE_ES_ResetPRCountCmd - Reset processor reset count command; invalid command length
 [ INFO]   CFE_EVS_SendEvent: 23, 3 - Invalid cmd length: ID = 0x1806, CC = 20, Exp Len = 10, Len = 0
 
-[ PASS] 06.101 es_UT.c:3595 - CFE_ES_SetMaxPRCount - Set maximum processor reset count command; invalid command length
+[ PASS] 06.101 es_UT.c:3595 - CFE_ES_SetMaxPRCountCmd - Set maximum processor reset count command; invalid command length
 [ INFO]   CFE_EVS_SendEvent: 23, 3 - Invalid cmd length: ID = 0x1806, CC = 21, Exp Len = 46, Len = 0
 
 [ PASS] 06.102 es_UT.c:3607 - CFE_ES_DeleteCDSCmd - Delete CDS command; invalid command length

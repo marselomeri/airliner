@@ -14,25 +14,6 @@
 ** Purpose: Contains functions prototype definitions and variables declarations
 **          for the OS Abstraction Layer, Core OS module
 **
-** $Revision: 1.8 $ 
-**
-** $Date: 2013/07/25 10:02:00GMT-05:00 $
-**
-** $Log: osapi-os-core.h  $
-** Revision 1.8 2013/07/25 10:02:00GMT-05:00 acudmore 
-** removed circular include "osapi.h"
-** Revision 1.7 2012/04/11 09:30:48GMT-05:00 acudmore 
-** Added OS_printf_enable and OS_printf_disable
-** Revision 1.6 2010/11/12 12:00:17EST acudmore 
-** replaced copyright character with (c) and added open source notice where needed.
-** Revision 1.5 2010/11/10 15:33:14EST acudmore 
-** Updated IntAttachHandler prototype
-** Revision 1.4 2010/03/08 12:06:28EST acudmore 
-** added function pointer type to get rid of warnings
-** Revision 1.3 2010/02/01 12:37:15EST acudmore 
-** added return code to OS API init
-** Revision 1.2 2009/08/04 10:49:09EDT acudmore 
-**   
 */
 
 #ifndef _osapi_core_
@@ -41,12 +22,34 @@
 #include <stdarg.h>   /* for va_list */
 #include "osapi-os-rtm.h" 
 
-/* Defines constants for OS_BinSemCreate for state of semaphore  */
+/* Defines constants for making object ID's unique */
+#define OS_OBJECT_INDEX_MASK        0xFFFF
+#define OS_OBJECT_TYPE_SHIFT        16
+
+#define OS_OBJECT_TYPE_UNDEFINED    0x00
+#define OS_OBJECT_TYPE_OS_TASK      0x01
+#define OS_OBJECT_TYPE_OS_QUEUE     0x02
+#define OS_OBJECT_TYPE_OS_COUNTSEM  0x03
+#define OS_OBJECT_TYPE_OS_BINSEM    0x04
+#define OS_OBJECT_TYPE_OS_MUTEX     0x05
+#define OS_OBJECT_TYPE_OS_STREAM    0x06
+#define OS_OBJECT_TYPE_OS_DIR       0x07
+#define OS_OBJECT_TYPE_OS_TIMEBASE  0x08
+#define OS_OBJECT_TYPE_OS_TIMECB    0x09
+#define OS_OBJECT_TYPE_OS_MODULE    0x0A
+#define OS_OBJECT_TYPE_OS_FILESYS   0x0B
+#define OS_OBJECT_TYPE_OS_CONSOLE   0x0C
+#define OS_OBJECT_TYPE_USER         0x10
+
+/* Upper limit for OSAL task priorities */
+#define OS_MAX_TASK_PRIORITY        255
+
+/*difines constants for OS_BinSemCreate for state of semaphore  */
 #define OS_SEM_FULL     1
 #define OS_SEM_EMPTY    0
 
 /* #define for enabling floating point operations on a task*/
-#define OS_FP_ENABLED   0x0001
+#define OS_FP_ENABLED 1
 
 /* Bits 1-8, of the "flags" argument in the OS_TaskCreate function represent
  * per-thread core affinity.  Set all bits to 0 to allow the thread to run on
@@ -69,9 +72,7 @@
 
 /*  tables for the properties of objects */
 
-/** 
-**  \brief Tasks
-*/
+/*tasks */
 typedef struct
 {
     char name [OS_MAX_API_NAME];
@@ -81,18 +82,14 @@ typedef struct
     uint32 OStask_id;
 }OS_task_prop_t;
     
-/** 
-**  \brief Queues
-*/
+/* queues */
 typedef struct
 {
     char name [OS_MAX_API_NAME];
     uint32 creator;
 }OS_queue_prop_t;
 
-/** 
-**  \brief Binary Semaphores
-*/
+/* Binary Semaphores */
 typedef struct
 {                     
     char name [OS_MAX_API_NAME];
@@ -100,9 +97,7 @@ typedef struct
     int32  value;
 }OS_bin_sem_prop_t;
 
-/** 
-**  \brief Counting Semaphores
-*/
+/* Counting Semaphores */
 typedef struct
 {                     
     char name [OS_MAX_API_NAME];
@@ -110,9 +105,7 @@ typedef struct
     int32 value;
 }OS_count_sem_prop_t;
 
-/** 
-**  \brief Mutexes
-*/
+/* Mutexes */
 typedef struct
 {
     char name [OS_MAX_API_NAME];
@@ -120,18 +113,15 @@ typedef struct
 }OS_mut_sem_prop_t;
 
 
-/** 
-**  \brief Struct for #OS_GetLocalTime()
-*/
+/* struct for OS_GetLocalTime() */
+
 typedef struct 
 { 
     uint32 seconds; 
     uint32 microsecs;
 }OS_time_t; 
 
-/** 
-**  \brief Heap info
-*/
+/* heap info */
 typedef struct
 {
     uint32 free_bytes;
@@ -139,7 +129,6 @@ typedef struct
     uint32 largest_free_block;
 }OS_heap_prop_t;
 
-// TODO: what to do for typedef doxy
 
 /* This typedef is for the OS_GetErrorName function, to ensure
  * everyone is making an array of the same length.
@@ -175,16 +164,6 @@ typedef void (*OS_ArgCallback_t)(uint32 object_id, void *arg);
 ** Prototype for application startup function.
 ** This is implemented by the user application
 */
-/************************************************************************/
-/** \brief TODO
-**
-**  \par Description
-**       This function 
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-*************************************************************************/
 void OS_Application_Startup(void);
 
 
@@ -271,6 +250,28 @@ void OS_DeleteAllObjects       (void);
 **
 *************************************************************************/
 void OS_ApplicationShutdown         (uint8 flag);
+
+
+/*
+** Some general purpose helper functions --
+** These are only available when using enhanced object IDs (-ng variants)
+*/
+
+/*
+** OS_IdentifyObject() will return the type of an object given an arbitrary object ID
+*/
+uint32 OS_IdentifyObject       (uint32 object_id);
+
+/*
+** OS_ConvertToArrayIndex() will return a unique integer number in the range of [0,MAX)
+** for any valid object ID.  This may be used by application code as an array index.
+*/
+int32 OS_ConvertToArrayIndex   (uint32 object_id, uint32 *ArrayIndex);
+
+/*
+** OS_ForEachObject() will call the supplied callback function for all valid object IDs.
+*/
+void OS_ForEachObject           (uint32 creator_id, OS_ArgCallback_t callback_ptr, void *callback_arg);
 
 
 /*
@@ -463,31 +464,7 @@ uint32 OS_TaskGetId            (void);
 **
 *************************************************************************/
 int32 OS_TaskGetIdByName       (uint32 *task_id, const char *task_name);
-
-/************************************************************************/
-/** \brief Get task info
-**
-**  \par Description
-**       This function will pass back a pointer to structure that contains 
-**       all of the relevant info (creator, stack size, priority, name) about the 
-**       specified task. 
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]   task_id           #uint32 Task ID number
-**  \param [in/out]   task_prop     #OS_task_prop_t Task properties
-**  
-**  \returns
-**  \retcode #OS_INVALID_POINTER if the pointers passed in are NULL \endcode
-**  \retcode #OS_ERR_INVALID_ID if the ID passed to it is invalid \endcode
-**  \retcode #OS_SUCCESS  \retdesc \copydoc OS_SUCCESS \endcode
-**  \endreturns
-**
-*************************************************************************/
-int32 OS_TaskGetInfo           (uint32 task_id, OS_task_prop_t *);          
-
-
+int32 OS_TaskGetInfo           (uint32 task_id, OS_task_prop_t *task_prop);          
 
 /*
 ** Message Queue API
@@ -1247,89 +1224,51 @@ int32  OS_SetLocalTime         (OS_time_t *time_struct);
 /*
 ** Exception API
 */
-// TODO: not implemented?
+
 int32 OS_ExcAttachHandler      (uint32 ExceptionNumber, 
                                 void (*ExceptionHandler)(uint32, const void *,uint32),
                                 int32 parameter);
-
-
 int32 OS_ExcEnable             (int32 ExceptionNumber);
-
-
 int32 OS_ExcDisable            (int32 ExceptionNumber);
 
 /*
 ** Floating Point Unit API
 */
 
-// TODO: not implemented?
 int32 OS_FPUExcAttachHandler   (uint32 ExceptionNumber, void * ExceptionHandler ,
                                  int32 parameter);
-
-
 int32 OS_FPUExcEnable          (int32 ExceptionNumber);
-
-
 int32 OS_FPUExcDisable         (int32 ExceptionNumber);
-
-
 int32 OS_FPUExcSetMask         (uint32 mask);
-
-
 int32 OS_FPUExcGetMask         (uint32 *mask);
 
 /*
 ** Interrupt API
 */
-// TODO: not implemented?
 int32 OS_IntAttachHandler  (uint32 InterruptNumber, osal_task_entry InterruptHandler, int32 parameter);
-
 int32 OS_IntUnlock         (int32 IntLevel);
-
 int32 OS_IntLock           (void);
 
 int32 OS_IntEnable         (int32 Level);
-
 int32 OS_IntDisable        (int32 Level);
 
-
 int32 OS_IntSetMask        (uint32 mask);
-
-
 int32 OS_IntGetMask        (uint32 *mask);
-
-
 int32 OS_IntAck             (int32 InterruptNumber);
-
-
 
 /*
 ** Shared memory API 
 */
-
-// TODO: not implemented?
 int32 OS_ShMemInit          (void);
-
-
 int32 OS_ShMemCreate        (uint32 *Id, uint32 NBytes, const char* SegName);
-
-
 int32 OS_ShMemSemTake       (uint32 Id);
-
-
 int32 OS_ShMemSemGive       (uint32 Id);
-
-
 int32 OS_ShMemAttach        (cpuaddr * Address, uint32 Id);
-
-
 int32 OS_ShMemGetIdByName   (uint32 *ShMemId, const char *SegName );
 
 /*
 ** Heap API
 */
-// TODO: not implemented?
-
 int32 OS_HeapGetInfo       (OS_heap_prop_t *heap_prop);
 
 /*
@@ -1355,6 +1294,87 @@ int32 OS_HeapGetInfo       (OS_heap_prop_t *heap_prop);
 *************************************************************************/
 int32 OS_GetErrorName      (int32 error_num, os_err_name_t* err_name);
 
+/**
+ * An abstract structure capable of holding several OSAL IDs
+ *
+ * This is part of the select API and is manipulated using the
+ * related API calls.  It should not be modified directly by applications.
+ *
+ * @sa OS_SelectFdZero(), OS_SelectFdAdd(), OS_SelectFdClear(), OS_SelectFdIsSet()
+ */
+typedef struct
+{
+   uint8 object_ids[(OS_MAX_NUM_OPEN_FILES + 7) / 8];
+} OS_FdSet;
+
+/**
+ * Wait for any of the given sets of IDs to be become readable or writable
+ *
+ * This function will block until any of the following occurs:
+ *  - At least one OSAL ID in the ReadSet is readable
+ *  - At least one OSAL ID in the WriteSet is writable
+ *  - The timeout has elapsed
+ *
+ * The sets are input/output parameters.  On entry, these indicate the
+ * file handle(s) to wait for.  On exit, these are set to the actual
+ * file handle(s) that have activity.
+ *
+ * If the timeout occurs this returns an error code and all output sets
+ * should be empty.
+ *
+ * @note This does not lock or otherwise protect the file handles in the
+ * given sets.  If a filehandle supplied via one of the FdSet arguments
+ * is closed or modified by another while this function is in progress,
+ * the results are undefined.  Because of this limitation, it is recommended
+ * to use OS_SelectSingle() whenever possible.
+ */
+int32 OS_SelectMultiple(OS_FdSet *ReadSet, OS_FdSet *WriteSet, int32 msecs);
+
+/**
+ * Wait for a single OSAL filehandle to change state
+ *
+ * This function can be used to wait for a single OSAL stream ID
+ * to become readable or writable.   On entry, the "StateFlags"
+ * parameter should be set to the desired state (readble or writable)
+ * and upon return the flags will be set to the state actually
+ * detected.
+ *
+ * As this operates on a single ID, the filehandle is protected
+ * during this call, such that another thread accessing the same
+ * handle will return an error.  However, it is important to note that
+ * once the call returns then other threads may then also read/write
+ * and affect the state before the current thread can service it.
+ *
+ * To mitigate this risk the application may prefer to use
+ * the OS_TimedRead/OS_TimedWrite calls.
+ */
+int32 OS_SelectSingle(uint32 objid, uint32 *StateFlags, int32 msecs);
+
+/**
+ * Clear a FdSet structure
+ *
+ * After this call the set will contain no OSAL IDs
+ */
+int32 OS_SelectFdZero(OS_FdSet *Set);
+
+/**
+ * Add an ID to an FdSet structure
+ *
+ * After this call the set will contain the given OSAL ID
+ */
+int32 OS_SelectFdAdd(OS_FdSet *Set, uint32 objid);
+
+/**
+ * Clear an ID from an FdSet structure
+ *
+ * After this call the set will no longer contain the given OSAL ID
+ */
+int32 OS_SelectFdClear(OS_FdSet *Set, uint32 objid);
+
+/**
+ * Check if an FdSet structure contains a given ID
+ */
+bool OS_SelectFdIsSet(OS_FdSet *Set, uint32 objid);
 
 /* 
 ** Abstraction for printf statements 
@@ -1398,19 +1418,11 @@ void OS_printf_disable(void);
 *************************************************************************/
 void OS_printf_enable(void);
 
-/************************************************************************/
-/** \brief Exit running application
-**
-**  \par Description
-**       Indicates that the OSAL application should exit and return control to the OS
-**       This is intended for e.g. scripted unit testing where the test needs to end
-**       without user intervention.  This function does not return
-**
-**  \par Assumptions, External Events, and Notes:
-**       This exits the entire process including tasks that have been created.
-**       It does not return.  Production embedded code typically would not ever call this.
-**
-*************************************************************************/
+/*
+** Call to exit the running application
+** Normally embedded applications run forever, but for debugging purposes
+** (unit testing for example) this is needed in order to end the test
+*/
 void OS_ApplicationExit(int32 Status);
 
 #endif

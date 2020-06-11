@@ -39,21 +39,17 @@ set(CFE_FS_SRC
 add_airliner_cfe_unit_test(cfe-fs-ut
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../../unit-test/fs_UT.c 
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../unit-test/ut_bsp_stubs.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../../unit-test/ut_es_stubs.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../../unit-test/ut_evs_stubs.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../../unit-test/ut_sb_stubs.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../../unit-test/ut_tbl_stubs.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../../unit-test/ut_time_stubs.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../unit-test/ut_stubs.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../../unit-test/ut_osprintf_stubs.c
         ${OSAL_UT_ASSERT_DIR}/src/utassert.c
         ${OSAL_UT_ASSERT_DIR}/src/utstubs.c
         ${OSAL_UT_ASSERT_DIR}/src/uttest.c
         ${OSAL_UT_ASSERT_DIR}/src/utlist.c
         ${OSAL_UT_ASSERT_DIR}/src/uttools.c
-        ${OSAL_UT_STUBS_DIR}/osapi_stubs.c
-        ${OSAL_UT_STUBS_DIR}/osfileapi_stubs.c
         ${CFE_FS_SRC}
     INCLUDES
         ${OSAL_UT_ASSERT_DIR}/inc/

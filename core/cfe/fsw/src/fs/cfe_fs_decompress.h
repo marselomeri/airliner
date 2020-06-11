@@ -1,25 +1,25 @@
 /*
-** $Id: cfe_fs_decompress.h 1.7 2012/01/13 12:11:28GMT-05:00 acudmore Exp  $
+**  GSC-18128-1, "Core Flight Executive Version 6.6"
 **
+**  Copyright (c) 2006-2019 United States Government as represented by
+**  the Administrator of the National Aeronautics and Space Administration.
+**  All Rights Reserved.
+**
+**  Licensed under the Apache License, Version 2.0 (the "License");
+**  you may not use this file except in compliance with the License.
+**  You may obtain a copy of the License at
+**
+**    http://www.apache.org/licenses/LICENSE-2.0
+**
+**  Unless required by applicable law or agreed to in writing, software
+**  distributed under the License is distributed on an "AS IS" BASIS,
+**  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+**  See the License for the specific language governing permissions and
+**  limitations under the License.
+*/
+
+/*
 **   File: cfe_fs_decompress.h
-**
-**      GSC-18128-1, "Core Flight Executive Version 6.6"
-**
-**      Copyright (c) 2006-2019 United States Government as represented by
-**      the Administrator of the National Aeronautics and Space Administration.
-**      All Rights Reserved.
-**
-**      Licensed under the Apache License, Version 2.0 (the "License");
-**      you may not use this file except in compliance with the License.
-**      You may obtain a copy of the License at
-**
-**        http://www.apache.org/licenses/LICENSE-2.0
-**
-**      Unless required by applicable law or agreed to in writing, software
-**      distributed under the License is distributed on an "AS IS" BASIS,
-**      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-**      See the License for the specific language governing permissions and
-**      limitations under the License.
 **
 **   Author:   A. Cudmore,    NASA/GSFC Code 582
 **             Ported from JWST, which was ported from Swift/BAT, 
@@ -38,6 +38,10 @@
 
 #ifndef CFE_FS_decompress_H
 #define CFE_FS_decompress_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #include "cfe.h"
 #include "cfe_fs_priv.h"
@@ -150,6 +154,10 @@ int32  FS_gz_inflate_dynamic_Reentrant( CFE_FS_Decompress_State_t *State );
 int32  FS_gz_inflate_fixed_Reentrant( CFE_FS_Decompress_State_t *State );
 int32  FS_gz_inflate_stored_Reentrant( CFE_FS_Decompress_State_t *State );
 int32  FS_gz_unzip_Reentrant( CFE_FS_Decompress_State_t *State );
+
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif /* CFE_FS_decompress_H */

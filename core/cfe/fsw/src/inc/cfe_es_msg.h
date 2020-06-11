@@ -1,25 +1,25 @@
 /*
-**  File: 
-**  cfe_es_msg.h
-**  $Id: cfe_es_msg.h 1.13 2014/08/19 13:30:55GMT-05:00 sstrege Exp  $
+**  GSC-18128-1, "Core Flight Executive Version 6.6"
 **
-**      GSC-18128-1, "Core Flight Executive Version 6.6"
+**  Copyright (c) 2006-2019 United States Government as represented by
+**  the Administrator of the National Aeronautics and Space Administration.
+**  All Rights Reserved.
 **
-**      Copyright (c) 2006-2019 United States Government as represented by
-**      the Administrator of the National Aeronautics and Space Administration.
-**      All Rights Reserved.
+**  Licensed under the Apache License, Version 2.0 (the "License");
+**  you may not use this file except in compliance with the License.
+**  You may obtain a copy of the License at
 **
-**      Licensed under the Apache License, Version 2.0 (the "License");
-**      you may not use this file except in compliance with the License.
-**      You may obtain a copy of the License at
+**    http://www.apache.org/licenses/LICENSE-2.0
 **
-**        http://www.apache.org/licenses/LICENSE-2.0
-**
-**      Unless required by applicable law or agreed to in writing, software
-**      distributed under the License is distributed on an "AS IS" BASIS,
-**      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-**      See the License for the specific language governing permissions and
-**      limitations under the License.
+**  Unless required by applicable law or agreed to in writing, software
+**  distributed under the License is distributed on an "AS IS" BASIS,
+**  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+**  See the License for the specific language governing permissions and
+**  limitations under the License.
+*/
+
+/*
+**  File: cfe_es_msg.h
 **
 **  Purpose:
 **  cFE Executive Services (ES) Command and Telemetry packet definition file.
@@ -902,7 +902,7 @@ extern "C" {
 **  \cfecmdmnemonic \ES_SETMAXPRCNT
 **
 **  \par Command Structure
-**       #CFE_ES_SetMaxPRCount_t
+**       #CFE_ES_SetMaxPRCountCmd_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with 
@@ -1146,8 +1146,8 @@ typedef CFE_ES_NoArgsCmd_t      CFE_ES_ResetPRCount_t;
 **/
 typedef struct
 {
-  uint16                RestartType;                       /**< \brief #CFE_ES_PROCESSOR_RESET=Processor Reset
-                                                                or #CFE_ES_POWERON_RESET=Power-On Reset        */
+  uint16                RestartType;                       /**< \brief #CFE_PSP_RST_TYPE_PROCESSOR=Processor Reset
+                                                                or #CFE_PSP_RST_TYPE_POWERON=Power-On Reset        */
 } CFE_ES_RestartCmd_Payload_t;
 
 typedef struct
@@ -1309,12 +1309,12 @@ typedef struct
 {
   uint16                MaxPRCount;                     /**< \brief New maximum number of Processor Resets before
                                                                     an automatic Power-On Reset is performed */
-} CFE_ES_SetMaxPRCount_Payload_t;
+} CFE_ES_SetMaxPRCountCmd_Payload_t;
 
 typedef struct
 {
     uint8                               CmdHeader[CFE_SB_CMD_HDR_SIZE];    /**< \brief cFE Software Bus Command Message Header */
-    CFE_ES_SetMaxPRCount_Payload_t   Payload;
+    CFE_ES_SetMaxPRCountCmd_Payload_t   Payload;
 } CFE_ES_SetMaxPRCount_t;
 
 /**

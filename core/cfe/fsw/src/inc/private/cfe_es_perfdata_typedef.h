@@ -1,22 +1,22 @@
 /*
- *  GSC-18128-1, "Core Flight Executive Version 6.6"
- *
- *  Copyright (c) 2006-2019 United States Government as represented by
- *  the Administrator of the National Aeronautics and Space Administration.
- *  All Rights Reserved.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
+**  GSC-18128-1, "Core Flight Executive Version 6.6"
+**
+**  Copyright (c) 2006-2019 United States Government as represented by
+**  the Administrator of the National Aeronautics and Space Administration.
+**  All Rights Reserved.
+**
+**  Licensed under the Apache License, Version 2.0 (the "License");
+**  you may not use this file except in compliance with the License.
+**  You may obtain a copy of the License at
+**
+**    http://www.apache.org/licenses/LICENSE-2.0
+**
+**  Unless required by applicable law or agreed to in writing, software
+**  distributed under the License is distributed on an "AS IS" BASIS,
+**  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+**  See the License for the specific language governing permissions and
+**  limitations under the License.
+*/
 
 /**
  * \file cfe_es_perfdata_typedef.h
@@ -29,6 +29,10 @@
 
 #ifndef CFE_ES_PERFDATA_TYPEDEF_H_
 #define CFE_ES_PERFDATA_TYPEDEF_H_
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #include <common_types.h>
 #include "cfe_mission_cfg.h"  /* Required for CFE_MISSION_ES_PERF_MAX_IDS */
@@ -66,6 +70,8 @@ typedef struct {
     CFE_ES_PerfDataEntry_t         DataBuffer[CFE_PLATFORM_ES_PERF_DATA_BUFFER_SIZE];
 } CFE_ES_PerfData_t;
 
-
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* CFE_ES_PERFDATA_TYPEDEF_H_ */

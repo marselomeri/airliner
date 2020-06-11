@@ -1,25 +1,27 @@
 /*
+**  GSC-18128-1, "Core Flight Executive Version 6.6"
+**
+**  Copyright (c) 2006-2019 United States Government as represented by
+**  the Administrator of the National Aeronautics and Space Administration.
+**  All Rights Reserved.
+**
+**  Licensed under the Apache License, Version 2.0 (the "License");
+**  you may not use this file except in compliance with the License.
+**  You may obtain a copy of the License at
+**
+**    http://www.apache.org/licenses/LICENSE-2.0
+**
+**  Unless required by applicable law or agreed to in writing, software
+**  distributed under the License is distributed on an "AS IS" BASIS,
+**  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+**  See the License for the specific language governing permissions and
+**  limitations under the License.
+*/
+
+/*
 **  File:  
 **    cfe_es_log.h
 **
-**      GSC-18128-1, "Core Flight Executive Version 6.6"
-**
-**      Copyright (c) 2006-2019 United States Government as represented by
-**      the Administrator of the National Aeronautics and Space Administration.
-**      All Rights Reserved.
-**
-**      Licensed under the Apache License, Version 2.0 (the "License");
-**      you may not use this file except in compliance with the License.
-**      You may obtain a copy of the License at
-**
-**        http://www.apache.org/licenses/LICENSE-2.0
-**
-**      Unless required by applicable law or agreed to in writing, software
-**      distributed under the License is distributed on an "AS IS" BASIS,
-**      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-**      See the License for the specific language governing permissions and
-**      limitations under the License.
-** 
 **  Purpose:  
 **    This file contains definitions needed for the cFE ES Logs. The 
 **    logs include the Mode Transition log, the System Log, and the
@@ -52,6 +54,20 @@ extern "C" {
 /*
 ** Macro Definitions
 */
+
+/**
+ * Buffer size for system log messages
+ *
+ * This is based on the EVS maximum event message size, plus a time stamp
+ * and required extra formatting characters.
+ *
+ * Two extra characters are necessary:
+ *   - for the space between the timestamp and the message in the system log
+ *   - to enforce a newline character at the end of the string
+ *
+ * note that a null terminator byte is accounted for in "CFE_TIME_PRINTED_STRING_SIZE"
+ */
+#define CFE_ES_MAX_SYSLOG_MSG_SIZE  (CFE_MISSION_EVS_MAX_MESSAGE_LENGTH + CFE_TIME_PRINTED_STRING_SIZE + 2)
 
 
 /**

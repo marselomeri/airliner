@@ -1,25 +1,25 @@
 /*
-**  File: 
-**  cfe_es_task.h
-**  $Id: cfe_es_task.h 1.3 2012/01/13 11:50:06GMT-05:00 acudmore Exp  $
+**  GSC-18128-1, "Core Flight Executive Version 6.6"
 **
-**      GSC-18128-1, "Core Flight Executive Version 6.6"
+**  Copyright (c) 2006-2019 United States Government as represented by
+**  the Administrator of the National Aeronautics and Space Administration.
+**  All Rights Reserved.
 **
-**      Copyright (c) 2006-2019 United States Government as represented by
-**      the Administrator of the National Aeronautics and Space Administration.
-**      All Rights Reserved.
+**  Licensed under the Apache License, Version 2.0 (the "License");
+**  you may not use this file except in compliance with the License.
+**  You may obtain a copy of the License at
 **
-**      Licensed under the Apache License, Version 2.0 (the "License");
-**      you may not use this file except in compliance with the License.
-**      You may obtain a copy of the License at
+**    http://www.apache.org/licenses/LICENSE-2.0
 **
-**        http://www.apache.org/licenses/LICENSE-2.0
-**
-**      Unless required by applicable law or agreed to in writing, software
-**      distributed under the License is distributed on an "AS IS" BASIS,
-**      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-**      See the License for the specific language governing permissions and
-**      limitations under the License.
+**  Unless required by applicable law or agreed to in writing, software
+**  distributed under the License is distributed on an "AS IS" BASIS,
+**  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+**  See the License for the specific language governing permissions and
+**  limitations under the License.
+*/
+
+/*
+**  File: cfe_es_task.h
 **
 **  Purpose:
 **  cFE Executive Services (ES) task header file
@@ -151,7 +151,7 @@ int32 CFE_ES_WriteSyslogCmd(const CFE_ES_WriteSyslog_t *data);
 int32 CFE_ES_ClearERLogCmd(const CFE_ES_ClearERLog_t *data);
 int32 CFE_ES_WriteERLogCmd(const CFE_ES_WriteERLog_t *data);
 int32 CFE_ES_ResetPRCountCmd(const CFE_ES_ResetPRCount_t *data);
-int32 CFE_ES_SetMaxPRCount(const CFE_ES_SetMaxPRCount_t *data);
+int32 CFE_ES_SetMaxPRCountCmd(const CFE_ES_SetMaxPRCount_t *data);
 int32 CFE_ES_DeleteCDSCmd(const CFE_ES_DeleteCDS_t *data);
 int32 CFE_ES_StartPerfDataCmd(const CFE_ES_StartPerfData_t *data);
 int32 CFE_ES_StopPerfDataCmd(const CFE_ES_StopPerfData_t *data);
@@ -163,8 +163,8 @@ int32 CFE_ES_DumpCDSRegistryCmd(const CFE_ES_DumpCDSRegistry_t *data);
 /*
 ** Message Handler Helper Functions
 */
-boolean CFE_ES_ValidateHandle(CFE_ES_MemHandle_t  Handle);
-boolean CFE_ES_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength);
+bool CFE_ES_ValidateHandle(CFE_ES_MemHandle_t  Handle);
+bool CFE_ES_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength);
 void CFE_ES_FileWriteByteCntErr(const char *Filename,uint32 Requested,uint32 Actual);
 
 /*************************************************************************/
