@@ -51,5 +51,6 @@ set(CFE_INC_DIRS
     ${CFE_CORE_SRC}/time
 )
 
+set(CFE_VERSION "v6.7.0")
 
 

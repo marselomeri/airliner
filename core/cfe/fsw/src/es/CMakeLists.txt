@@ -87,7 +87,6 @@ add_airliner_cfe_unit_test(cfe-es-ut
         ${OSAL_UT_STUBS_DIR}/osapi-utstub-timebase.c
         ${OSAL_UT_STUBS_DIR}/osapi-utstub-time.c
         ${OSAL_UT_STUBS_DIR}/utstub-helpers.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../unit-test/es_UT.c 
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../../psp/fsw/ut-stubs/ut_psp_stubs.c
         ${CFE_ES_SRC}
         

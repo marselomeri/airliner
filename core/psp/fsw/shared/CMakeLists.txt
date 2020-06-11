@@ -32,10 +32,18 @@
 #############################################################################
  
 set(PSP_SHARED_SRC
+	${CMAKE_CURRENT_LIST_DIR}/cfe_psp_configdata.c
 	${CMAKE_CURRENT_LIST_DIR}/cfe_psp_eeprom.c
 	${CMAKE_CURRENT_LIST_DIR}/cfe_psp_memrange.c
 	${CMAKE_CURRENT_LIST_DIR}/cfe_psp_memutils.c
+	${CMAKE_CURRENT_LIST_DIR}/cfe_psp_module.c
 	${CMAKE_CURRENT_LIST_DIR}/cfe_psp_port.c
 	${CMAKE_CURRENT_LIST_DIR}/cfe_psp_ram.c
+    ${CMAKE_CURRENT_LIST_DIR}/target_config.c
+	PARENT_SCOPE
+)
+ 
+set(PSP_SHARED_INC
+	${CMAKE_CURRENT_LIST_DIR}
 	PARENT_SCOPE
 )

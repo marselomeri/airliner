@@ -83,6 +83,23 @@ function(psp_initialize_airliner_build)
         set_property(GLOBAL PROPERTY IS_REFERENCE_BUILD true)
     endif()
     
+    # Add a custom command that produces version.h, plus
+    # a dummy output that's not actually produced, in order
+    # to force version.cmake to always be re-run before the build
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/version.c
+               ${CMAKE_CURRENT_BINARY_DIR}/_version.c
+        COMMAND ${CMAKE_COMMAND}
+                -DBUILDNAME:STRING='${BUILDNAME}'
+                -DOSAL:STRING='${PARSED_ARGS_OSAL}' 
+                -DPSP:STRING='${PARSED_ARGS_PSP}'
+                -DOSAL:STRING='${PARSED_ARGS_OSAL}' 
+                -DCFE_VERSION:STRING='${CFE_VERSION}' 
+                -DOSAL_VERSION:STRING='${OSAL_VERSION}' 
+                -DPSP_VERSION:STRING='${PSP_VERSION}' 
+                -P ${PROJECT_SOURCE_DIR}/core/psp/make/version.cmake
+    )
+    
     if(NOT TARGET rsm)   
         add_custom_target(rsm)
     endif()
@@ -130,14 +147,17 @@ function(psp_initialize_airliner_build)
         add_subdirectory(${PARSED_ARGS_OSAL} osal)
  
 	    # Now build CFE using the various source files that just parsed.
-	    add_executable(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} ${CFE_SRC} ${OSAL_SRC} ${PSP_PLATFORM_SRC} ${PSP_SHARED_SRC})
+	    add_executable(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} ${CMAKE_CURRENT_BINARY_DIR}/version.c ${CFE_SRC} ${OSAL_SRC} ${PSP_PLATFORM_SRC} ${PSP_SHARED_SRC} )
 	    set_target_properties(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} PROPERTIES OUTPUT_NAME ${CFE_EXEC_FILE})
+	    
+	    target_include_directories(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} PUBLIC ${PSP_SHARED_INC} ${CMAKE_CURRENT_BINARY_DIR})
 	    
 	    if(PARSED_ARGS_REFERENCE)
 	        target_include_directories(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} PUBLIC 
 	            ${PROJECT_SOURCE_DIR}/core/mission_inc 
 	            ${PROJECT_SOURCE_DIR}/core/platform_inc 
-	            ${PROJECT_SOURCE_DIR}/core/platform_inc/cpu1)
+	            ${PROJECT_SOURCE_DIR}/core/platform_inc/cpu1
+	        )
         endif()
 	    
 	    # Add the OSAL include paths, if any. 
@@ -178,7 +198,7 @@ function(psp_initialize_airliner_build)
 	        configure_file(${CFE_DOCS_DIR}/user_doxy.in ${CMAKE_CURRENT_BINARY_DIR}/user_doxy @ONLY)
 	        configure_file(${CFE_DOCS_DIR}/detail_doxy.in ${CMAKE_CURRENT_BINARY_DIR}/detail_doxy @ONLY)
 	
-                add_custom_target(${PARSED_ARGS_PREFIX}cfe-docs
+            add_custom_target(${PARSED_ARGS_PREFIX}cfe-docs
 	            COMMAND mkdir -p ${CFS_DOCS_HTML_DIR}/detailed_design/cfe/
 	            COMMAND mkdir -p ${CFS_DOCS_HTML_DIR}/users_guide/cfe/
 	            COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/detail_doxy

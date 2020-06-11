@@ -31,6 +31,9 @@
 #
 #############################################################################
  
+include(${CMAKE_CURRENT_LIST_DIR}/src/os/portable/set-paths.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/src/os/shared/set-paths.cmake)
+
 # Set some paths that we'll use later in the CFE build.
 set(OSAL_INC_DIRS ${CMAKE_CURRENT_LIST_DIR}/inc)
 set(OSAL_UT_ASSERT_DIR ${CMAKE_CURRENT_LIST_DIR}/ut_assert)
@@ -38,4 +41,5 @@ set(OSAL_UT_STUBS_DIR ${CMAKE_CURRENT_LIST_DIR}/src/ut-stubs)
 set(OSAL_BLACK_BOX_TEST_DIR ${CMAKE_CURRENT_LIST_DIR}/src/tests)
 set(OSAL_COMMON_BUILD_FUNC_DIR ${CMAKE_CURRENT_LIST_DIR}/make) 
 set(OSAL_TARGET_DIR ${CMAKE_CURRENT_LIST_DIR}/src/os)
+set(OSAL_VERSION "5.0.0-bv")
 

@@ -96,7 +96,6 @@
 #include "osapi-os-net.h"
 #include "osapi-os-loader.h"
 #include "osapi-os-timer.h"
-#include "osapi-os-rtm.h"
 
 /*
  ******************************************************************************

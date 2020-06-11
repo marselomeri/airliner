@@ -88,128 +88,16 @@ typedef OS_module_prop_t OS_module_record_t;
 /*
 ** Loader API
 */
-
-/************************************************************************/
-/** \brief Initialization of module table
-**
-**  \par Description
-**       Initialize the table that the OS loader uses to keep track of information
-**       about objects
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**  
-**  \returns
-**  \retcode #OS_SUCCESS  \retdesc \copydoc OS_SUCCESS \endcode
-**  \retcode #OS_ERROR  \retdesc \copydoc OS_ERROR \endcode
-**  \endreturns
-**
-*************************************************************************/
 int32 OS_ModuleTableInit ( void );
 
-/************************************************************************/
-/** \brief Symbol Lookup
-**
-**  \par Description
-**       Find the Address of a Symbol 
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in/out]    symbol_address           #cpuaddr Pointer to symbol with passed name
-**  \param [in]        symbol_name              Symbol name to lookup
-**  
-**  \returns
-**  \retcode #OS_INVALID_POINTER if the pointer passed in is invalid \endcode
-**  \retcode #OS_SUCCESS  \retdesc \copydoc OS_SUCCESS \endcode
-**  \retcode #OS_ERROR  \retdesc \copydoc OS_ERROR \endcode
-**  \endreturns
-**
-*************************************************************************/
 int32 OS_SymbolLookup (cpuaddr *symbol_address, const char *symbol_name );
 
-/************************************************************************/
-/** \brief Symbol table dump
-**
-**  \par Description
-**       Dumps the system symbol table to a file
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]        filename              Name of file to write to
-**  \param [in/out]    size_limit            #uint32 Size limit of file
-**  
-**  \returns
-**  \retcode #OS_INVALID_FILE if the file could not be opened or written \endcode
-**  \retcode #OS_SUCCESS  \retdesc \copydoc OS_SUCCESS \endcode
-**  \retcode #OS_ERROR  \retdesc \copydoc OS_ERROR \endcode
-**  \endreturns
-**
-*************************************************************************/
 int32 OS_SymbolTableDump ( const char *filename, uint32 size_limit );
 
-/************************************************************************/
-/** \brief Module load
-**
-**  \par Description
-**       Loads an object file into the running operating system
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]        filename              Name of file to write to
-**  \param [in]        size_limit            #uint32 Size limit of file
-**  
-**  \returns
-**  \retcode #OS_ERROR  \retdesc \copydoc OS_ERROR \endcode
-**  \retcode #OS_INVALID_POINTER if the pointer passed in is invalid \endcode
-**  \retcode #OS_ERR_NAME_TAKEN if the name is in use \endcode
-**  \retcode #OS_ERR_NO_FREE_IDS if the module table is full \endcode
-**  \retcode #OS_SUCCESS  \retdesc \copydoc OS_SUCCESS \endcode
-**  \endreturns
-**
-*************************************************************************/
 int32 OS_ModuleLoad ( uint32 *module_id, const char *module_name, const char *filename );
 
-/************************************************************************/
-/** \brief Module unload
-**
-**  \par Description
-**       Unloads the module file from the running operating system
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]        module_id              #uint32 ID of module to unload
-**  
-**  \returns
-**  \retcode #OS_ERROR  \retdesc \copydoc OS_ERROR \endcode
-**  \retcode #OS_SUCCESS  \retdesc \copydoc OS_SUCCESS \endcode
-**  \endreturns
-**
-*************************************************************************/
 int32 OS_ModuleUnload ( uint32 module_id );
 
-/************************************************************************/
-/** \brief Get module info
-**
-**  \par Description
-**       Returns information about the loadable module
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]        filename              Name of file to write to
-**  \param [in]        size_limit            #uint32 Size limit of file
-**  
-**  \returns
-**  \retcode #OS_ERR_INVALID_ID if the module id invalid \endcode
-**  \retcode #OS_INVALID_POINTER if the pointer passed in is invalid \endcode
-**  \retcode #OS_SUCCESS  \retdesc \copydoc OS_SUCCESS \endcode
-**  \endreturns
-**
-*************************************************************************/
 int32 OS_ModuleInfo ( uint32 module_id, OS_module_prop_t *module_info );
 
 

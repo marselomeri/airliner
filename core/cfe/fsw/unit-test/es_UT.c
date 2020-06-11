@@ -2719,7 +2719,7 @@ void TestTask(void)
     strncpy((char *) CmdBuf.StartAppCmd.Payload.Application, "appNameIntentionallyTooLongToFitIntoDestinationBuffer",
             sizeof(CmdBuf.StartAppCmd.Payload.Application));
     CmdBuf.StartAppCmd.Payload.Priority = 160;
-    CmdBuf.StartAppCmd.Payload.StackSize = 8192;
+    CmdBuf.StartAppCmd.Payload.StackSize = CFE_PLATFORM_ES_DEFAULT_STACK_SIZE;
     CmdBuf.StartAppCmd.Payload.ExceptionAction = CFE_ES_ExceptionAction_RESTART_APP;
     UT_CallTaskPipe(CFE_ES_TaskPipe, &CmdBuf.Msg, sizeof(CFE_ES_StartApp_t),
             UT_TPID_CFE_ES_CMD_START_APP_CC);
@@ -2805,7 +2805,7 @@ void TestTask(void)
     strncpy((char *) CmdBuf.StartAppCmd.Payload.Application, "appName",
             sizeof(CmdBuf.StartAppCmd.Payload.Application));
     CmdBuf.StartAppCmd.Payload.Priority = 160;
-    CmdBuf.StartAppCmd.Payload.StackSize = 12096;
+    CmdBuf.StartAppCmd.Payload.StackSize = CFE_PLATFORM_ES_DEFAULT_STACK_SIZE;
     CmdBuf.StartAppCmd.Payload.ExceptionAction = 255;
     UT_CallTaskPipe(CFE_ES_TaskPipe, &CmdBuf.Msg, sizeof(CFE_ES_StartApp_t),
             UT_TPID_CFE_ES_CMD_START_APP_CC);
@@ -2843,7 +2843,7 @@ void TestTask(void)
     strncpy((char *) CmdBuf.StartAppCmd.Payload.Application, "appName",
             sizeof(CmdBuf.StartAppCmd.Payload.Application));
     CmdBuf.StartAppCmd.Payload.Priority = 1000;
-    CmdBuf.StartAppCmd.Payload.StackSize = 12096;
+    CmdBuf.StartAppCmd.Payload.StackSize = CFE_PLATFORM_ES_DEFAULT_STACK_SIZE;
     CmdBuf.StartAppCmd.Payload.ExceptionAction = CFE_ES_ExceptionAction_RESTART_APP;
     UT_CallTaskPipe(CFE_ES_TaskPipe, &CmdBuf.Msg, sizeof(CFE_ES_StartApp_t),
             UT_TPID_CFE_ES_CMD_START_APP_CC);
@@ -6444,7 +6444,7 @@ void TestESMempool(void)
     UT_Report(__FILE__, __LINE__,
               CFE_ES_GetPoolBuf((uint32 **) &address,
                                 HandlePtr,
-                                75000) == CFE_ES_ERR_MEM_BLOCK_SIZE,
+								CFE_PLATFORM_ES_MAX_BLOCK_SIZE+1) == CFE_ES_ERR_MEM_BLOCK_SIZE,
               "CFE_ES_GetPoolBuf",
               "Requested pool size too large");
 

@@ -83,7 +83,7 @@ typedef enum
 typedef struct
 {
     uint32 LastIssueNumber;
-    uint8 ValidBits[OSAL_MAX_VALID_PER_TYPE];
+    uint32 ValidBits[OSAL_MAX_VALID_PER_TYPE];
 } UT_ObjTypeState_t;
 
 

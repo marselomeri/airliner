@@ -47,23 +47,6 @@ typedef struct
 /*
 ** Timer API
 */
-
-/************************************************************************/
-/** \brief Initialization of API
-**
-**  \par Description
-**       Initialize the tables that the OS API uses to keep track of information
-**       about objects
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \returns
-**  \retcode #OS_SUCCESS  \retdesc \copydoc OS_SUCCESS \endcode
-**  \retcode #OS_ERROR  \retdesc \copydoc OS_ERROR \endcode
-**  \endreturns
-**
-*************************************************************************/
 int32  OS_TimerAPIInit          (void);
 
 int32 OS_TimeBaseCreate         (uint32 *timebase_id, const char *timebase_name, OS_TimerSync_t external_sync);

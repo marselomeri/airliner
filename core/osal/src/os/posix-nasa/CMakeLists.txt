@@ -40,7 +40,9 @@ set(OSAL_SRC
     ${CMAKE_CURRENT_SOURCE_DIR}/osfilesys.c 
     ${CMAKE_CURRENT_SOURCE_DIR}/osloader.c 
     ${CMAKE_CURRENT_SOURCE_DIR}/osnetwork.c 
+    ${CMAKE_CURRENT_SOURCE_DIR}/osselect.c 
     ${CMAKE_CURRENT_SOURCE_DIR}/ostimer.c
+    ${OSAL_SHARED_SRC}
 )
 
 osal_set_blackbox_unit_tests(

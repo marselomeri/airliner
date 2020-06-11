@@ -322,44 +322,19 @@ int32 OS_SocketGetInfo (uint32 sock_id, OS_socket_prop_t *sock_prop);
 ** OS_NetworkGetID is currently [[deprecated]] as its behavior is
 ** unknown and not consistent across operating systems.
 */
-
-/************************************************************************/
-/** \brief Get network id
-**
-**  \par Description
-**       Gets the ID of the current Network 
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]   Mode    #OS_RunTimeModeEnum_t
-**  
-**  \returns
-**      OS_ERROR if the  host id could not be found
-        32 bit host id if success
-**  \endreturns
-**
-*************************************************************************/
 int32 OS_NetworkGetID             (void);
 
-/************************************************************************/
-/** \brief Get network hostname
-**
-**  \par Description
-**       Gets the name of the current host
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in/out]   host_name      Name of host
-**  \param [in]       name_len       Max length of name
-**  
-**  \returns
-**  \retcode #OS_SUCCESS  \retdesc \copydoc OS_SUCCESS \endcode
-**  \retcode #OS_ERROR  \retdesc \copydoc OS_ERROR \endcode
-**  \endreturns
-**
-*************************************************************************/
+
+/**
+ * Gets the local machine network host name
+ *
+ * If configured in the underlying network stack,
+ * this function retrieves the local hostname of the system.
+ *
+ * @param  host_name    Buffer to hold name information
+ * @param  name_len     Maximum length of host name buffer
+ * @returns OS_SUCCESS if successful
+ */
 int32 OS_NetworkGetHostName       (char *host_name, uint32 name_len);
 
 #endif

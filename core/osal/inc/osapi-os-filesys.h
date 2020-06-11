@@ -200,145 +200,32 @@ typedef OS_file_prop_t     OS_FDTableEntry;
 /*
  * Initializes the File System functions 
 */
-/************************************************************************/
-/** \brief Initialization of API
-**
-**  \par Description
-**       Initialize the tables that the OS FS API uses to keep track of information
-**       about objects
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**  
-**  \returns
-**  \retcode #OS_SUCCESS  \retdesc \copydoc OS_SUCCESS \endcode
-**  \retcode #OS_ERROR  \retdesc \copydoc OS_ERROR \endcode
-**  \endreturns
-**
-*************************************************************************/
+
 int32           OS_FS_Init(void);
 
-/************************************************************************/
-/** \brief Create file
-**
-**  \par Description
-**       Creates a file specified by const char *path, with read/write 
-**       permissions by access. The file is also automatically opened by the
-**       create call.
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]   path         File path
-**  \param [in]   access       #OS_WRITE_ONLY or #OS_READ_WRITE
-**  
-**  \returns
-**  \retcode #OS_FS_ERR_INVALID_POINTER if path is NULL \endcode
-**  \retcode #OS_FS_ERR_PATH_TOO_LONG if path exceeds the maximum number of chars \endcode
-**  \retcode #OS_FS_ERR_PATH_INVALID if path cannot be parsed \endcode
-**  \retcode #OS_FS_ERR_NAME_TOO_LONG if the name of the file is too long \endcode
-**  \retcode #OS_FS_ERROR if permissions are unknown or OS call fails \endcode
-**  \retcode #OS_FS_ERR_NO_FREE_FDS if there are no free file descripors left \endcode
-**  \retcode #OS_FS_SUCCESS if success \endcode
-**  \endreturns
-**
-*************************************************************************/
+/*
+ * Creates a file specified by path
+*/
 int32           OS_creat  (const char *path, int32  access);
 
-/************************************************************************/
-/** \brief Open file
-**
-**  \par Description
-**       Opens a file. access parameters are OS_READ_ONLY,OS_WRITE_ONLY, or 
-**       OS_READ_WRITE
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]   path         File path
-**  \param [in]   access       #OS_READ_ONLY, #OS_WRITE_ONLY, or #OS_READ_WRITE
-**  \param [in]   mode         #uint32 bitmask for permissions
-**  
-**  \returns
-**  \retcode #OS_FS_ERR_INVALID_POINTER if path is NULL \endcode
-**  \retcode #OS_FS_ERR_PATH_TOO_LONG if path exceeds the maximum number of chars \endcode
-**  \retcode #OS_FS_ERR_PATH_INVALID if path cannot be parsed \endcode
-**  \retcode #OS_FS_ERR_NAME_TOO_LONG if the name of the file is too long \endcode
-**  \retcode #OS_FS_ERROR if permissions are unknown or OS call fails \endcode
-**  \retcode #OS_FS_ERR_NO_FREE_FDS if there are no free file descripors left \endcode
-**  \retcode #OS_FS_SUCCESS if success \endcode
-**  File descriptor if success
-**  \endreturns
-**
-*************************************************************************/
+/*
+ * Opend a file for reading/writing. Returns file descriptor
+*/
 int32           OS_open   (const char *path,  int32 access,  uint32 mode);
 
-/************************************************************************/
-/** \brief Close file
-**
-**  \par Description
-**       Closes a file. 
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]   filedes         #int32 File descriptor
-**  
-**  \returns
-**  \retcode #OS_FS_ERR_INVALID_FD if the file descriptor passed in is invalid \endcode
-**  \retcode #OS_FS_ERROR  if file  descriptor could not be closed \endcode
-**  \retcode #OS_FS_SUCCESS if success \endcode
-**  File descriptor if success
-**  \endreturns
-**
-*************************************************************************/
+/*
+ * Closes an open file.
+*/
 int32           OS_close  (uint32  filedes);
 
-/************************************************************************/
-/** \brief Read file
-**
-**  \par Description
-**       Reads up to nbytes from a file, and puts them into buffer. 
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]       filedes        #int32 File descriptor
-**  \param [in/out]   buffer         Pointer to buffer to populate
-**  \param [in]       nbytes         #uint32 Bytes to read
-**  
-**  \returns
-**  \retcode #OS_FS_ERR_INVALID_POINTER if buffer is a null pointer \endcode
-**  \retcode #OS_FS_ERR_INVALID_FD if the file descriptor passed in is invalid \endcode
-**  \retcode #OS_FS_ERROR  if file  descriptor could not be closed \endcode
-**  Number of bytes read if success
-**  \endreturns
-**
-*************************************************************************/
+/*
+ * Reads nbytes bytes from file into buffer
+*/
 int32           OS_read   (uint32  filedes, void *buffer, uint32 nbytes);
 
-/************************************************************************/
-/** \brief Write to file
-**
-**  \par Description
-**       Writes to a file. Copies up to a maximum of nbtyes of buffer to the file
-**       described in filedes
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]       filedes        #int32 File descriptor
-**  \param [in/out]   buffer         Pointer to buffer to write from
-**  \param [in]       nbytes         #uint32 Bytes to write
-**  
-**  \returns
-**  \retcode #OS_FS_ERR_INVALID_POINTER if buffer is a null pointer \endcode
-**  \retcode #OS_FS_ERR_INVALID_FD if the file descriptor passed in is invalid \endcode
-**  \retcode #OS_FS_ERROR  if file  descriptor could not be closed \endcode
-**  Number of bytes read if success
-**  \endreturns
-**
-*************************************************************************/
+/*
+ * Write nybytes bytes of buffer into the file
+*/
 int32           OS_write  (uint32  filedes, const void *buffer, uint32 nbytes);
 
 /**
@@ -385,239 +272,59 @@ int32           OS_TimedRead(uint32  filedes, void *buffer, uint32 nbytes, int32
  */
 int32           OS_TimedWrite(uint32  filedes, const void *buffer, uint32 nbytes, int32 timeout);
 
-/************************************************************************/
-/** \brief Chmod file
-**
-**  \par Description
-**       Writes to a file. Copies up to a maximum of nbtyes of buffer to the file
-**       described in filedes
-**
-**  \par Assumptions, External Events, and Notes:
-**       Not implemented
-**
-**  \param [in]   path         File path
-**  \param [in]   access       #OS_READ_ONLY, #OS_WRITE_ONLY, or #OS_READ_WRITE
-**  
-*************************************************************************/
+/*
+ * Changes the permissions of a file
+*/
 int32           OS_chmod  (const char *path, uint32 access);
 
-/************************************************************************/
-/** \brief Open file
-**
-**  \par Description
-**       Returns information about a file or directory in a os_fs_stat structure
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]       path         File path
-**  \param [in/out]   filestats    #os_fstat_t Stats struct
-**  
-**  \returns
-**  \retcode #OS_FS_ERR_INVALID_POINTER if path is NULL \endcode
-**  \retcode #OS_FS_ERR_PATH_TOO_LONG if path exceeds the maximum number of chars \endcode
-**  \retcode #OS_FS_ERR_PATH_INVALID if path cannot be parsed \endcode
-**  \retcode #OS_FS_ERR_NAME_TOO_LONG if the name of the file is too long \endcode
-**  \retcode #OS_FS_ERROR if permissions are unknown or OS call fails \endcode
-**  \retcode #OS_FS_SUCCESS if success \endcode
-**  File descriptor if success
-**  \endreturns
-**
-*************************************************************************/
+/*
+ * Returns file status information in filestats
+*/
 int32           OS_stat   (const char *path, os_fstat_t  *filestats);
 
-/************************************************************************/
-/** \brief File offset
-**
-**  \par Description
-**       Sets the read/write pointer to a specific offset in a specific file. 
-**       Whence is either OS_SEEK_SET, OS_SEEK_CUR, or OS_SEEK_END
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]       filedes        #int32 File descriptor
-**  \param [in]       offset         #int32 Offset amount
-**  \param [in]       whence         #uint32 Offset type
-**  
-**  \returns
-**  \retcode #OS_FS_ERR_INVALID_FD if the file descriptor passed in is invalid \endcode
-**  the new offset from the beginning of the file
-**  \endreturns
-**
-*************************************************************************/
+/*
+ * Seeks to the specified position of an open file 
+*/
 int32           OS_lseek  (uint32  filedes, int32 offset, uint32 whence);
 
-/************************************************************************/
-/** \brief Remove file
-**
-**  \par Description
-**       Removes a given filename from the drive
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]       path         File path
-**  
-**  \returns
-**  \retcode #OS_FS_ERR_INVALID_POINTER if path is NULL \endcode
-**  \retcode #OS_FS_ERR_PATH_TOO_LONG if path exceeds the maximum number of chars \endcode
-**  \retcode #OS_FS_ERR_PATH_INVALID if path cannot be parsed \endcode
-**  \retcode #OS_FS_ERR_NAME_TOO_LONG if the name of the file is too long \endcode
-**  \retcode #OS_FS_ERROR if permissions are unknown or OS call fails \endcode
-**  \retcode #OS_FS_SUCCESS if success \endcode
-**  \endreturns
-**
-*************************************************************************/
+/*
+ * Removes a file from the file system
+*/
 int32           OS_remove (const char *path);
 
-/************************************************************************/
-/** \brief Rename file
-**
-**  \par Description
-**       Renames a file
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]       path         File path
-**  
-**  \returns
-**  \retcode #OS_FS_ERR_INVALID_POINTER if path is NULL \endcode
-**  \retcode #OS_FS_ERR_PATH_TOO_LONG if path exceeds the maximum number of chars \endcode
-**  \retcode #OS_FS_ERR_PATH_INVALID if path cannot be parsed \endcode
-**  \retcode #OS_FS_ERR_NAME_TOO_LONG if the name of the file is too long \endcode
-**  \retcode #OS_FS_ERROR if permissions are unknown or OS call fails \endcode
-**  \retcode #OS_FS_SUCCESS if success \endcode
-**  \endreturns
-**
-*************************************************************************/
+/*
+ * Renames a file in the file system
+*/
 int32           OS_rename (const char *old_filename, const char *new_filename);
 
-/************************************************************************/
-/** \brief Copy file
-**
-**  \par Description
-**       Copies a single file from src to dest
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]       src         Source file path
-**  \param [in]       dest        Destination file path
-**  
-**  \returns
-**  \retcode #OS_FS_ERR_INVALID_POINTER if path is NULL \endcode
-**  \retcode #OS_FS_ERR_PATH_TOO_LONG if path exceeds the maximum number of chars \endcode
-**  \retcode #OS_FS_ERR_PATH_INVALID if path cannot be parsed \endcode
-**  \retcode #OS_FS_ERR_NAME_TOO_LONG if the name of the file is too long \endcode
-**  \retcode #OS_FS_ERROR if permissions are unknown or OS call fails \endcode
-**  \retcode #OS_FS_SUCCESS if success \endcode
-**  \endreturns
-**
-*************************************************************************/
+/* 
+ * copies a single file from src to dest
+*/
 int32 OS_cp (const char *src, const char *dest);
 
-/************************************************************************/
-/** \brief Move file
-**
-**  \par Description
-**       Moves a single file from src to dest
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]       src         Source file path
-**  \param [in]       dest        Destination file path
-**  
-**  \returns
-**  \retcode #OS_FS_ERR_INVALID_POINTER if path is NULL \endcode
-**  \retcode #OS_FS_ERR_PATH_TOO_LONG if path exceeds the maximum number of chars \endcode
-**  \retcode #OS_FS_ERR_PATH_INVALID if path cannot be parsed \endcode
-**  \retcode #OS_FS_ERR_NAME_TOO_LONG if the name of the file is too long \endcode
-**  \retcode #OS_FS_ERROR if permissions are unknown or OS call fails \endcode
-**  \retcode #OS_FS_SUCCESS if success \endcode
-**  \endreturns
-**
-*************************************************************************/
+/* 
+ * moves a single file from src to dest
+*/
 int32 OS_mv (const char *src, const char *dest);
 
-/************************************************************************/
-/** \brief Get file info
-**
-**  \par Description
-**       Copies the information of the given file descriptor into a structure passed in
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]       filedes        #int32 File descriptor
-**  \param [in]       fd_prop        #OS_FDTableEntry Pointer to file property struct
-**  
-**  \returns
-**  \retcode #OS_FS_ERR_INVALID_FD if the file descriptor passed in is invalid \endcode
-**  \retcode #OS_FS_SUCCESS if success \endcode
-**  \endreturns
-**
-*************************************************************************/
+/*
+ * Copies the info of an open file to the structure
+*/
 int32 OS_FDGetInfo (uint32 filedes, OS_file_prop_t *fd_prop);
 
-/************************************************************************/
-/** \brief File open check
-**
-**  \par Description
-**       Checks to see if a file is open 
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]       Filename         File path
-**  
-**  \returns
-**  \retcode #OS_FS_ERROR if the file is not open  \endcode
-**  \retcode #OS_FS_SUCCESS if the file is open  \endcode
-**  \endreturns
-**
-*************************************************************************/
+/*
+** Check to see if a file is open
+*/
 int32 OS_FileOpenCheck(const char *Filename);
 
-/************************************************************************/
-/** \brief Close all files
-**
-**  \par Description
-**       Closes All open files that were opened through the OSAL 
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \returns
-**  \retcode #OS_FS_ERROR if one or more file close returned an error  \endcode
-**  \retcode #OS_FS_SUCCESS if the files were all closed without error  \endcode
-**  \endreturns
-**
-*************************************************************************/
+/*
+** Close all open files
+*/
 int32 OS_CloseAllFiles(void);
 
-/************************************************************************/
-/** \brief Close file by name
-**
-**  \par Description
-**       Allows a file to be closed by name.
-**
-**  \par Assumptions, External Events, and Notes:
-**       This will only work if the name passed in is the same name used to open 
-**       the file.
-**
-**  \param [in]       src         Source file path
-**  \param [in]       dest        Destination file path
-**  
-**  \returns
-**  \retcode #OS_FS_ERR_PATH_INVALID if path cannot be parsed \endcode
-**  \retcode #OS_FS_ERROR if the file close returned an error \endcode
-**  \retcode #OS_FS_SUCCESS if success \endcode
-**  \endreturns
-**
-*************************************************************************/
+/*
+** Close a file by filename
+*/
 int32 OS_CloseFileByName(const char *Filename);
 
 
@@ -626,76 +333,24 @@ int32 OS_CloseFileByName(const char *Filename);
 ******************************************************************************/
 
 #ifndef OSAL_OMIT_DEPRECATED
-/************************************************************************/
-/** \brief Open directory
-**
-**  \par Description
-**       Opens a directory for searching
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]   path         File path
-**  
-**  \returns
-**  NULL if there is an error  
-**  Pointer to a directory if success
-**  \endreturns
-**
-*************************************************************************/
+/*
+ * Opens a directory for searching
+*/
 os_dirp_t       OS_opendir (const char *path);
 
-/************************************************************************/
-/** \brief Close directory
-**
-**  \par Description
-**       Closes a directory
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]   path         File path
-**  \param [in]   access       #OS_READ_ONLY, #OS_WRITE_ONLY, or #OS_READ_WRITE
-**  
-**  \returns
-**  \retcode #OS_FS_ERROR if permissions are unknown or OS call fails \endcode
-**  \retcode #OS_FS_SUCCESS if success \endcode
-**  \endreturns
-**
-*************************************************************************/
+/*
+ * Closes an open directory
+*/
 int32           OS_closedir(os_dirp_t directory);
 
-/************************************************************************/
-/** \brief Rewind directory
-**
-**  \par Description
-**       Rewinds the directory pointer
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]   directory         #os_dirp_t 
-**  
-*************************************************************************/
+/*
+ * Rewinds an open directory
+*/
 void            OS_rewinddir(os_dirp_t directory);
 
-/************************************************************************/
-/** \brief Get next directory entry
-**
-**  \par Description
-**       Obtains directory entry data for the next file from an open directory
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]   directory         #os_dirp_t 
-**  
-**  \returns
-**  a pointer to the next entry for success
-**  NULL if error or end of directory is reached
-**  \endreturns
-**
-*************************************************************************/
+/*
+ * Reads the next object in the directory
+*/
 os_dirent_t *   OS_readdir (os_dirp_t directory);
 
 #endif
@@ -725,78 +380,26 @@ int32           OS_DirectoryRewind(uint32 dir_id);
  */
 int32           OS_DirectoryRead(uint32 dir_id, os_dirent_t *dirent);
 
-/************************************************************************/
-/** \brief Make directory
-**
-**  \par Description
-**       Makes a directory specified by path.
-**
-**  \par Assumptions, External Events, and Notes:
-**       The access parameter is currently unused.
-**
-**  \param [in]   path         File path
-**  \param [in]   access       #OS_READ_ONLY, #OS_WRITE_ONLY, or #OS_READ_WRITE
-**  
-**  \returns
-**  \retcode #OS_FS_ERR_INVALID_POINTER if path is NULL \endcode
-**  \retcode #OS_FS_ERR_PATH_TOO_LONG if path exceeds the maximum number of chars \endcode
-**  \retcode #OS_FS_ERR_PATH_INVALID if path cannot be parsed \endcode
-**  \retcode #OS_FS_ERROR if permissions are unknown or OS call fails \endcode
-**  \retcode #OS_FS_SUCCESS if success \endcode
-**  \endreturns
-**
-*************************************************************************/
+/*
+ * Makes a new directory
+*/
 int32           OS_mkdir   (const char *path, uint32 access);
 
-/************************************************************************/
-/** \brief Remove directory
-**
-**  \par Description
-**       Removes a directory from  the structure (must be an empty directory)
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]   path         File path
-**  
-**  \returns
-**  \retcode #OS_FS_ERR_INVALID_POINTER if path is NULL \endcode
-**  \retcode #OS_FS_ERR_PATH_TOO_LONG if path exceeds the maximum number of chars \endcode
-**  \retcode #OS_FS_ERR_PATH_INVALID if path cannot be parsed \endcode
-**  \retcode #OS_FS_ERROR if permissions are unknown or OS call fails \endcode
-**  \retcode #OS_FS_SUCCESS if success \endcode
-**  \endreturns
-**
-*************************************************************************/
+/*
+ * Removes an empty directory from the file system.
+ */
 int32           OS_rmdir   (const char *path);
 
 /******************************************************************************
 ** System Level API 
 ******************************************************************************/
 
-/************************************************************************/
-/** \brief Make file system
-**
-**  \par Description
-**       Makes a file system on the target
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]   address         TODO: Not used
-**  \param [in]   devname         Name of device
-**  \param [in]   volname         Name of volume
-**  \param [in]   blocksize       Block size for file system
-**  \param [in]   numblocks       Number of blocks
-**  
-**  \returns
-**  \retcode #OS_FS_ERR_INVALID_POINTER if path is NULL \endcode
-**  \retcode #OS_FS_ERR_DRIVE_NOT_CREATED if the OS calls to create the the drive failed \endcode
-**  \retcode #OS_FS_ERR_DEVICE_NOT_FREE if the volume table is full \endcode
-**  \retcode #OS_FS_SUCCESS if success \endcode
-**  \endreturns
-**
-*************************************************************************/
+/*
+ * Create a fixed mapping between an existing directory and a virtual OSAL mount point.
+ *
+ * This mimics the behavior of a "FS_BASED" entry in the VolumeTable but is registered
+ * at runtime.  It is intended to be called by the PSP/BSP prior to starting the
+ */
 int32           OS_FileSysAddFixedMap(uint32 *filesys_id, const char *phys_path,
                                 const char *virt_path);
 
@@ -805,225 +408,62 @@ int32           OS_FileSysAddFixedMap(uint32 *filesys_id, const char *phys_path,
 */
 int32           OS_mkfs        (char *address, const char *devname, const char *volname,
                                 uint32 blocksize, uint32 numblocks);
-
-/************************************************************************/
-/** \brief Mount file system
-**
-**  \par Description
-**       Mounts a drive.
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]   devname         Name of device
-**  \param [in]   mountpoint      Mount point for the file system
-**  
-**  \returns
-**  \retcode #OS_FS_ERR_INVALID_POINTER if path is NULL \endcode
-**  \retcode #OS_FS_ERR_PATH_TOO_LONG if path exceeds the maximum number of chars \endcode
-**  \retcode #OS_FS_ERROR if permissions are unknown or OS call fails \endcode
-**  \retcode #OS_FS_SUCCESS if success \endcode
-**  \endreturns
-**
-*************************************************************************/
+/*
+ * Mounts a file system
+*/
 int32           OS_mount       (const char *devname, const char *mountpoint);
 
-/************************************************************************/
-/** \brief Initialize file system
-**
-**  \par Description
-**       Inititalizes a file system on the target
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]   address         TODO: Not used
-**  \param [in]   devname         Name of device
-**  \param [in]   volname         Name of volume
-**  \param [in]   blocksize       Block size for file system
-**  \param [in]   numblocks       Number of blocks
-**  
-**  \returns
-**  \retcode #OS_FS_ERR_INVALID_POINTER if path is NULL \endcode
-**  \retcode #OS_FS_ERR_PATH_TOO_LONG if path exceeds the maximum number of chars \endcode
-**  \retcode #OS_FS_ERR_DEVICE_NOT_FREE if the volume table is full \endcode
-**  \retcode #OS_FS_ERR_DRIVE_NOT_CREATED on error \endcode
-**  \retcode #OS_FS_SUCCESS if success \endcode
-**  \endreturns
-**
-*************************************************************************/
+/*
+ * Initializes an existing file system
+*/
 int32           OS_initfs      (char *address, const char *devname, const char *volname,
                                 uint32 blocksize, uint32 numblocks);
 
-/************************************************************************/
-/** \brief Initialize file system
-**
-**  \par Description
-**       Inititalizes a file system on the target
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]   devname         Name of device
-**  
-**  \returns
-**  \retcode #OS_FS_ERR_INVALID_POINTER if path is NULL \endcode
-**  \retcode #OS_FS_ERROR is the drive specified cannot be located \endcode
-**  \retcode #OS_FS_SUCCESS if success \endcode
-**  \endreturns
-**
-*************************************************************************/
+/*
+ * removes a file system 
+*/
 int32           OS_rmfs        (const char *devname);
 
-/************************************************************************/
-/** \brief Unmount file system
-**
-**  \par Description
-**       Unmounts a drive.
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]   mountpoint      Mount point for the file system
-**  
-**  \returns
-**  \retcode #OS_FS_ERR_INVALID_POINTER if path is NULL \endcode
-**  \retcode #OS_FS_ERR_PATH_TOO_LONG if path exceeds the maximum number of chars \endcode
-**  \retcode #OS_FS_ERROR if permissions are unknown or OS call fails \endcode
-**  \retcode #OS_FS_SUCCESS if success \endcode
-**  \endreturns
-**
-*************************************************************************/
+/*
+ * Unmounts a mounted file system
+*/
 int32           OS_unmount     (const char *mountpoint);
 
-/************************************************************************/
-/** \brief Get blocks free
-**
-**  \par Description
-**       Returns the number of free blocks in a volume
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]   name         Name of volume
-**  
-**  \returns
-**  \retcode #OS_FS_ERR_INVALID_POINTER if path is NULL \endcode
-**  \retcode #OS_FS_ERR_PATH_TOO_LONG if path exceeds the maximum number of chars \endcode
-**  \retcode #OS_FS_ERROR if permissions are unknown or OS call fails \endcode
-**  The number of blocks free in a volume if success
-**  \endreturns
-**
-*************************************************************************/
+/*
+ * Returns the number of free blocks in a file system
+*/
 int32           OS_fsBlocksFree (const char *name);
 
-/************************************************************************/
-/** \brief Get bytes free
-**
-**  \par Description
-**       Returns the number of free bytes in a volume
-**
-**  \par Assumptions, External Events, and Notes:
-**       The 64 bit data type to support filesystems that
-**       are greater than 4 Gigabytes
-**
-**  \param [in]   name         Name of volume
-**  
-**  \returns
-**  \retcode #OS_FS_ERR_INVALID_POINTER if path is NULL \endcode
-**  \retcode #OS_FS_ERR_PATH_TOO_LONG if path exceeds the maximum number of chars \endcode
-**  \retcode #OS_FS_ERROR if permissions are unknown or OS call fails \endcode
-**  The number of blocks free in a volume if success
-**  \endreturns
-**
-*************************************************************************/
+/*
+** Returns the number of free bytes in a file system 
+** Note the 64 bit data type to support filesystems that
+** are greater than 4 Gigabytes
+*/
 int32 OS_fsBytesFree (const char *name, uint64 *bytes_free);
 
-/************************************************************************/
-/** \brief Check filesystem
-**
-**  \par Description
-**       Checks the drives for inconsisenties and either repairs it or not
-**
-**  \par Assumptions, External Events, and Notes:
-**       Not implemented
-**
-**  \param [in]   name         Name of volume
-**  \param [in]   repair       #boolean Repair flag
-**  
-**  \returns
-**  \retcode #OS_FS_ERR_INVALID_POINTER if path is NULL \endcode
-**  \retcode #OS_FS_ERROR if permissions are unknown or OS call fails \endcode
-**  \retcode #OS_FS_SUCCESS if success \endcode
-**  \endreturns
-**
-*************************************************************************/
+/*
+ * Checks the health of a file system and repairs it if necessary
+ *
+ * Modified to return an "int32" like all other functions - this used to
+ * have its own dedicated return typedef, which was also an integer,
+ * even though the same OSAL return codes seem to be used.
+ * (VxWorks is the only OS that currently does something in this call)
+ */
 int32   OS_chkfs       (const char *name, bool repair);
 
-/************************************************************************/
-/** \brief Get drive name
-**
-**  \par Description
-**       Returns the name of the physical volume associated with the drive,
-**       when given the OSAL mount point of the drive
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in/out]   PhysDriveName         Name of volume
-**  \param [in]       MountPoint            Mount point for the file system
-**  
-**  \returns
-**  \retcode #OS_FS_ERR_INVALID_POINTER if path is NULL \endcode
-**  \retcode #OS_FS_ERROR if permissions are unknown or OS call fails \endcode
-**  \retcode #OS_FS_SUCCESS if success \endcode
-**  \endreturns
-**
-*************************************************************************/
+/*
+ * Returns in the parameter the physical drive underneith the mount point 
+*/
 int32       OS_FS_GetPhysDriveName  (char * PhysDriveName, const char * MountPoint);
 
-/************************************************************************/
-/** \brief Translate path
-**
-**  \par Description
-**       Because of the abstraction of the filesystem across OSes, we have to change
-**       the name of the {file, directory, drive} to be what the OS can actually 
-**       accept
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in]           VirtualPath         Path to convert
-**  \param [in/out]       LocalPath           Converted path
-**  
-**  \returns
-**  \retcode #OS_FS_ERR_INVALID_POINTER if path is NULL \endcode
-**  \retcode #OS_FS_ERR_PATH_TOO_LONG if path exceeds the maximum number of chars \endcode
-**  \retcode #OS_FS_ERR_PATH_INVALID if path cannot be parsed \endcode
-**  \retcode #OS_FS_SUCCESS if success \endcode
-**  \endreturns
-**
-*************************************************************************/
+/*
+** Translates a OSAL Virtual file system path to a host Local path
+*/
 int32       OS_TranslatePath ( const char *VirtualPath, char *LocalPath);
 
-
-/************************************************************************/
-/** \brief Get file system info
-**
-**  \par Description
-**       Returns information about the file system in an os_fsinfo_t
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \param [in/out]       filesys_info        #os_fsinfo_t Pointer to info struct
-**  
-**  \returns
-**  \retcode #OS_FS_ERR_INVALID_POINTER if path is NULL \endcode
-**  \retcode #OS_FS_SUCCESS if success \endcode
-**  \endreturns
-**
-*************************************************************************/
+/*             
+**  Returns information about the file system in an os_fsinfo_t
+*/
 int32       OS_GetFsInfo(os_fsinfo_t  *filesys_info);
 
 /******************************************************************************
@@ -1032,15 +472,6 @@ int32       OS_GetFsInfo(os_fsinfo_t  *filesys_info);
 
 /* executes the shell command passed into is and writes the output of that 
  * command to the file specified by the given OSAPI file descriptor */
-/* --------------------------------------------------------------------------------------
-    Name: OS_ShellOutputToFile
-    
-    Purpose: Takes a shell command in and writes the output of that command to the specified file
-    
-    Returns: OS_FS_ERROR if the command was not executed properly
-             OS_FS_ERR_INVALID_FD if the file descriptor passed in is invalid
-             OS_SUCCESS if success
- ---------------------------------------------------------------------------------------*/
 int32 OS_ShellOutputToFile(const char* Cmd, uint32 filedes);
 
 #endif
