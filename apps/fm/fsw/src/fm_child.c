@@ -36,10 +36,10 @@
 /************************************************************************
 ** OSAL Compatibility for directory name access
 ** New OSAL version have an access macro to get the string.  If that
-** macro is defined, use it, otherwise assume "d_name" structure member.
+** macro is defined, use it, otherwise assume "FileName" structure member.
 *************************************************************************/
 #ifndef OS_DIRENTRY_NAME
-#define OS_DIRENTRY_NAME(x)     ((x).d_name)
+#define OS_DIRENTRY_NAME(x)     ((x).FileName)
 #endif
 
 
@@ -1615,14 +1615,14 @@ int32 FM_ChildSizeTimeMode(const char *Filename, uint32 *FileSize, uint32 *FileT
     }
     else
     {
-        FileStatTime = FileStatus.st_mtime;
+        FileStatTime = FileStatus.FileTime;
 
         /* Convert the file system time to spacecraft time */
         *FileTime = CFE_TIME_FS2CFESeconds(FileStatTime);
 
-        *FileSize = FileStatus.st_size;
+        *FileSize = FileStatus.FileSize;
         
-        *FileMode = FileStatus.st_mode;
+        *FileMode = FileStatus.FileModeBits;
         
     }
 

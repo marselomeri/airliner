@@ -559,7 +559,7 @@
 **       to exceed the max length.
 **
 */
-#define CFE_MISSION_TBL_MAX_FULL_NAME_LEN         (CFE_MISSION_TBL_MAX_NAME_LENGTH + CFE_MISSION_MAX_API_LEN + 2)
+#define CFE_MISSION_TBL_MAX_FULL_NAME_LEN         (CFE_MISSION_TBL_MAX_NAME_LENGTH + CFE_MISSION_MAX_API_LEN + 4)
 
 /**
 **  \cfesbcfg Maximum Number of pipes that SB command/telemetry messages may hold
@@ -601,6 +601,31 @@
 #define CFE_MISSION_MAX_PATH_LEN      64
 
 /**
+**  \cfemissioncfg cFE Maximum length for filenames within data exchange structures
+**
+**  \par Description:
+**       The value of this constant dictates the size of filenames within all structures
+**       used for external data exchange, such as Software bus messages and table definitions.
+**       This is typically the same as OS_MAX_FILE_LEN but that is OSAL dependent --
+**       and as such it definable on a per-processor/OS basis and hence may be different
+**       across multiple processors.  It is recommended to set this to the value of the
+**       largest OS_MAX_FILE_LEN in use on any CPU on the mission.
+**
+**       This affects only the layout of command/telemetry messages and table definitions;
+**       internal allocation may use the platform-specific OS_MAX_FILE_LEN value.
+**
+**  \par Limits
+**       All CPUs within the same SB domain (mission) and ground tools must share the
+**       same definition.
+**       Note this affects the size of messages, so it must not cause any message
+**       to exceed the max length.
+**
+**       This value should be kept as a multiple of 4, to maintain alignment of
+**       any possible neighboring fields without implicit padding.
+*/
+#define CFE_MISSION_MAX_FILE_LEN      20
+
+/**
 **  \cfemissioncfg cFE Maximum length for API names in messages
 **
 **  \par Description:
@@ -635,7 +660,7 @@
 **       Note this affects the size of messages, so it must not cause any message
 **       to exceed the max length.
 */
-#define CFE_MISSION_ES_CDS_MAX_NAME_LEN       (CFE_MISSION_ES_CDS_MAX_NAME_LENGTH + CFE_MISSION_MAX_API_LEN + 2)
+#define CFE_MISSION_ES_CDS_MAX_NAME_LEN       (CFE_MISSION_ES_CDS_MAX_NAME_LENGTH + CFE_MISSION_MAX_API_LEN + 4)
 
 
 /*

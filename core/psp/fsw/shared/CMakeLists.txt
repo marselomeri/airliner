@@ -39,7 +39,6 @@ set(PSP_SHARED_SRC
 	${CMAKE_CURRENT_LIST_DIR}/cfe_psp_module.c
 	${CMAKE_CURRENT_LIST_DIR}/cfe_psp_port.c
 	${CMAKE_CURRENT_LIST_DIR}/cfe_psp_ram.c
-    ${CMAKE_CURRENT_LIST_DIR}/target_config.c
 	PARENT_SCOPE
 )
  

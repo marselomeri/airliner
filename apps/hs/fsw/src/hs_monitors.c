@@ -2,7 +2,7 @@
 ** File:
 **   $Id: hs_monitors.c 1.4 2016/09/07 18:49:18EDT mdeschu Exp  $
 **
-**   Copyright © 2007-2014 United States Government as represented by the 
+**   Copyright ï¿½ 2007-2014 United States Government as represented by the 
 **   Administrator of the National Aeronautics and Space Administration. 
 **   All Other Rights Reserved.  
 **
@@ -811,7 +811,7 @@ int32 HS_ValidateMATable(void *TableData)
             EntryResult = HS_MATVAL_ERR_ENA;
             BadCount++;
         }
-        else if (MessageID > CFE_SB_HIGHEST_VALID_MSGID)
+        else if (MessageID > CFE_PLATFORM_SB_HIGHEST_VALID_MSGID)
         {
             /*
             ** Message ID is too high

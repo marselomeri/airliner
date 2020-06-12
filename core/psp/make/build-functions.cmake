@@ -83,12 +83,12 @@ function(psp_initialize_airliner_build)
         set_property(GLOBAL PROPERTY IS_REFERENCE_BUILD true)
     endif()
     
-    # Add a custom command that produces version.h, plus
+    # Add a custom command that produces target_config.c, plus
     # a dummy output that's not actually produced, in order
-    # to force version.cmake to always be re-run before the build
+    # to force target_config.cmake to always be re-run before the build
     add_custom_command(
-        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/version.c
-               ${CMAKE_CURRENT_BINARY_DIR}/_version.c
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/target_config.c
+               ${CMAKE_CURRENT_BINARY_DIR}/_target_config.c
         COMMAND ${CMAKE_COMMAND}
                 -DBUILDNAME:STRING='${BUILDNAME}'
                 -DOSAL:STRING='${PARSED_ARGS_OSAL}' 
@@ -97,7 +97,7 @@ function(psp_initialize_airliner_build)
                 -DCFE_VERSION:STRING='${CFE_VERSION}' 
                 -DOSAL_VERSION:STRING='${OSAL_VERSION}' 
                 -DPSP_VERSION:STRING='${PSP_VERSION}' 
-                -P ${PROJECT_SOURCE_DIR}/core/psp/make/version.cmake
+                -P ${PROJECT_SOURCE_DIR}/core/psp/make/target_config.cmake
     )
     
     if(NOT TARGET rsm)   
@@ -147,7 +147,7 @@ function(psp_initialize_airliner_build)
         add_subdirectory(${PARSED_ARGS_OSAL} osal)
  
 	    # Now build CFE using the various source files that just parsed.
-	    add_executable(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} ${CMAKE_CURRENT_BINARY_DIR}/version.c ${CFE_SRC} ${OSAL_SRC} ${PSP_PLATFORM_SRC} ${PSP_SHARED_SRC} )
+	    add_executable(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} ${CMAKE_CURRENT_BINARY_DIR}/target_config.c ${CFE_SRC} ${OSAL_SRC} ${PSP_PLATFORM_SRC} ${PSP_SHARED_SRC} )
 	    set_target_properties(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} PROPERTIES OUTPUT_NAME ${CFE_EXEC_FILE})
 	    
 	    target_include_directories(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} PUBLIC ${PSP_SHARED_INC} ${CMAKE_CURRENT_BINARY_DIR})

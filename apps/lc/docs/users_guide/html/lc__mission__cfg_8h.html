@@ -69,7 +69,7 @@
 <dl class="user"><dt><b>Description:</b></dt><dd>Message ID that will be used by the /LC_ExecuteRTS function to construct the RTS request message.</dd></dl>
 <p>We define this here to allow the LC application to be built without including headers from the application (e.g. SC) that will receive the command. Obviously, this definition must match the message ID expectyed by the receiving application.</p>
 <p>A mission may choose to modify the /LC_ExecuteRTS function not to use this or define it using a message ID constant that is defined numerically elsewhere.</p>
-<dl class="user"><dt><b>Limits:</b></dt><dd>This parameter shouldn't be larger than the value set for CFE_SB_HIGHEST_VALID_MSGID. </dd></dl>
+<dl class="user"><dt><b>Limits:</b></dt><dd>This parameter shouldn't be larger than the value set for CFE_PLATFORM_SB_HIGHEST_VALID_MSGID. </dd></dl>
 
 <p>Definition at line <a class="el" href="lc__mission__cfg_8h_source.html#l00043">43</a> of file <a class="el" href="lc__mission__cfg_8h_source.html">lc_mission_cfg.h</a>.</p>
 

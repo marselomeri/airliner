@@ -34,8 +34,8 @@
     #error LC_RTS_REQ_MID must be defined!
   #elif LC_RTS_REQ_MID < 1
     #error LC_RTS_REQ_MID must be greater than zero
-  #elif LC_RTS_REQ_MID > CFE_SB_HIGHEST_VALID_MSGID
-    #error LC_RTS_REQ_MID must not exceed CFE_SB_HIGHEST_VALID_MSGID
+  #elif LC_RTS_REQ_MID > CFE_PLATFORM_SB_HIGHEST_VALID_MSGID
+    #error LC_RTS_REQ_MID must not exceed CFE_PLATFORM_SB_HIGHEST_VALID_MSGID
   #endif 
 
   /*

@@ -140,7 +140,7 @@ extern "C" {
 **  \cfecmdmnemonic \ES_RESET
 **
 **  \par Command Structure
-**       #CFE_ES_RestartCmd_t
+**       #CFE_ES_RestartCmd_Payload_t
 **
 **  \par Command Verification
 **       Successful execution of this command (as a Processor Reset)  
@@ -156,7 +156,7 @@ extern "C" {
 **  \par Error Conditions
 **       This command may fail for the following reason(s):
 **       - The command packet length is incorrect
-**       - The \link #CFE_ES_RestartCmd_t.RestartType Restart Type \endlink was
+**       - The \link #CFE_ES_RestartCmd_Payload_t Restart Type \endlink was
 **         not a recognized value. 
 **       
 **       Evidence of failure may be found in the following telemetry:
@@ -188,7 +188,7 @@ extern "C" {
 **  \cfecmdmnemonic \ES_SHELL
 **
 **  \par Command Structure
-**       #CFE_ES_ShellCmd_t
+**       #CFE_ES_Shell_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with 
@@ -231,7 +231,7 @@ extern "C" {
 **  \cfecmdmnemonic \ES_STARTAPP
 **
 **  \par Command Structure
-**       #CFE_ES_StartAppCmd_t
+**       #CFE_ES_StartApp_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with 
@@ -374,7 +374,7 @@ extern "C" {
 **  \cfecmdmnemonic \ES_RELOADAPP
 **
 **  \par Command Structure
-**       #CFE_ES_AppReloadCmd_t
+**       #CFE_ES_ReloadApp_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with 
@@ -454,7 +454,7 @@ extern "C" {
 **  \cfecmdmnemonic \ES_WRITEAPPINFO2FILE
 **
 **  \par Command Structure
-**       #CFE_ES_QueryAllCmd_t
+**       #CFE_ES_FileNameCmd_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with 
@@ -534,7 +534,7 @@ extern "C" {
 **  \cfecmdmnemonic \ES_WRITESYSLOG2FILE
 **
 **  \par Command Structure
-**       #CFE_ES_WriteSyslogCmd_t
+**       #CFE_ES_FileNameCmd_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with 
@@ -614,7 +614,7 @@ extern "C" {
 **  \cfecmdmnemonic \ES_WRITEERLOG2FILE
 **
 **  \par Command Structure
-**       #CFE_ES_WriteERlogCmd_t
+**       #CFE_ES_FileNameCmd_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with 
@@ -655,7 +655,7 @@ extern "C" {
 **  \cfecmdmnemonic \ES_STARTLADATA
 **
 **  \par Command Structure
-**       #CFE_ES_PerfStartCmd_t
+**       #CFE_ES_StartPerfData_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with 
@@ -701,7 +701,7 @@ extern "C" {
 **  \cfecmdmnemonic \ES_STOPLADATA
 **
 **  \par Command Structure
-**       #CFE_ES_PerfStopCmd_t
+**       #CFE_ES_StopPerfData_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with 
@@ -744,14 +744,14 @@ extern "C" {
 **  \cfecmdmnemonic \ES_LAFILTERMASK
 **
 **  \par Command Structure
-**       #CFE_ES_PerfSetFilterMaskCmd_t
+**       #CFE_ES_SetPerfFilterMask_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with 
 **       the following telemetry:
 **       - \b \c \ES_CMDPC - command execution counter will 
 **         increment
-**       - \B \C \ES_PERFFLTRMASK - the current performance filter mask
+**       - \b \c \ES_PERFFLTRMASK - the current performance filter mask
 **         value(s) should reflect the commanded value
 **       - The #CFE_ES_PERF_FILTMSKCMD_EID debug event message will be 
 **         generated.
@@ -782,7 +782,7 @@ extern "C" {
 **  \cfecmdmnemonic \ES_LATRIGGERMASK
 **
 **  \par Command Structure
-**       #CFE_ES_PerfSetTrigMaskCmd_t
+**       #CFE_ES_SetPerfTriggerMask_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with 
@@ -822,7 +822,7 @@ extern "C" {
 **  \cfecmdmnemonic \ES_OVERWRITESYSLOGMODE
 **
 **  \par Command Structure
-**       #CFE_ES_OverWriteSysLogCmd_t
+**       #CFE_ES_OverWriteSyslog_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with 
@@ -902,7 +902,7 @@ extern "C" {
 **  \cfecmdmnemonic \ES_SETMAXPRCNT
 **
 **  \par Command Structure
-**       #CFE_ES_SetMaxPRCountCmd_t
+**       #CFE_ES_SetMaxPRCount_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with 
@@ -943,7 +943,7 @@ extern "C" {
 **  \cfecmdmnemonic \ES_DELETECDS
 **
 **  \par Command Structure
-**       #CFE_ES_DeleteCDSCmd_t
+**       #CFE_ES_DeleteCDS_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with 
@@ -986,7 +986,7 @@ extern "C" {
 **  \cfecmdmnemonic \ES_TLMPOOLSTATS
 **
 **  \par Command Structure
-**       #CFE_ES_TlmPoolStatsCmd_t
+**       #CFE_ES_SendMemPoolStats_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with 
@@ -1028,7 +1028,7 @@ extern "C" {
 **  \cfecmdmnemonic \ES_DUMPCDSREG
 **
 **  \par Command Structure
-**       #CFE_ES_DumpCDSRegCmd_t
+**       #CFE_ES_DumpCDSRegistry_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with 
@@ -1069,7 +1069,7 @@ extern "C" {
 **  \cfecmdmnemonic \ES_WRITETASKINFO2FILE
 **
 **  \par Command Structure
-**       #CFE_ES_QueryAllTasksCmd_t
+**       #CFE_ES_FileNameCmd_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with 

@@ -1661,7 +1661,7 @@ int32 CFE_ES_SetGenCount(uint32 CounterId, uint32 Count)
    int32 Status = CFE_ES_BAD_ARGUMENT;
 
    if((CounterId < CFE_PLATFORM_ES_MAX_GEN_COUNTERS) &&
-      (CFE_ES_Global.CounterTable[CounterId].RecordUsed == TRUE))
+      (CFE_ES_Global.CounterTable[CounterId].RecordUsed == true))
    {
       CFE_ES_Global.CounterTable[CounterId].Counter = Count;
       Status = CFE_SUCCESS;

@@ -72,8 +72,6 @@ osal_add_whitebox_unit_test(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../osapi.c
         ${CMAKE_CURRENT_SOURCE_DIR}/ut_oscore_binsem_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/ut_oscore_countsem_test.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/ut_oscore_exception_test.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/ut_oscore_interrupt_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/ut_oscore_misc_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/ut_oscore_mutex_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/ut_oscore_queue_test.c

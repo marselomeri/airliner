@@ -31,6 +31,8 @@
 #
 #############################################################################
  
+set(OSAL_SHARED_DIR ${CMAKE_CURRENT_LIST_DIR})
+
 set(OSAL_SHARED_SRC 
     ${CMAKE_CURRENT_LIST_DIR}/osapi-binsem.c
     ${CMAKE_CURRENT_LIST_DIR}/osapi-clock.c

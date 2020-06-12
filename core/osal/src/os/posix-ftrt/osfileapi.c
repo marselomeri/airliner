@@ -1262,7 +1262,7 @@ int32 OS_check_name_length(const char *path)
              OS_FS_ERR_INVALID_FD if the file descriptor passed in is invalid
              OS_SUCCESS if success
  ---------------------------------------------------------------------------------------*/
-int32 OS_ShellOutputToFile(const char* Cmd, int32 OS_fd)
+int32 OS_ShellOutputToFile(const char* Cmd, uint32 filedes)
 {
     
     /* 

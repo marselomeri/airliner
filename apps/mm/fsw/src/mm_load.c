@@ -2,7 +2,7 @@
 ** File:
 **   $Id: mm_load.c 1.4 2016/10/30 00:48:49EDT mdeschu Exp  $
 **
-**   Copyright © 2007-2014 United States Government as represented by the 
+**   Copyright ï¿½ 2007-2014 United States Government as represented by the 
 **   Administrator of the National Aeronautics and Space Administration. 
 **   All Other Rights Reserved.  
 **
@@ -947,7 +947,7 @@ boolean MM_VerifyLoadFileSize(char                    *FileName,
 #ifdef OS_FILESTAT_SIZE
       ActualSize   = OS_FILESTAT_SIZE(FileStats);
 #else
-      ActualSize   = FileStats.st_size;
+      ActualSize   = FileStats.FileSize;
 #endif
       ExpectedSize = FileHeader->NumOfBytes + sizeof(CFE_FS_Header_t) 
                                             + sizeof(MM_LoadDumpFileHeader_t);
@@ -957,7 +957,7 @@ boolean MM_VerifyLoadFileSize(char                    *FileName,
          MM_AppData.ErrCounter++;
 
          /*
-         ** Note: passing FileStats.st_size in this event message will cause
+         ** Note: passing FileStats.FileSize in this event message will cause
          ** a segmentation fault under cygwin during unit testing, so we added 
          ** the variable ActualSize to this function.
          */

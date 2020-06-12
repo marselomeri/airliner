@@ -96,7 +96,7 @@ int32 OS_fsBytesFree(const char* name, uint64* bytes_free)
 
 /*--------------------------------------------------------------------------------*/
 
-int32 OS_FS_GetPhysDriveName(char* PhysDriveName, char* MountPoint)
+int32 OS_FS_GetPhysDriveName(char* PhysDriveName, const char* MountPoint)
 {
     return (g_fsGetPhysDriveName.value);
 }

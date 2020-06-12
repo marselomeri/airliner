@@ -100,22 +100,22 @@ int32 UT_FM_CFE_OSFILEAPI_ReadHookCPUHogging(int32  filedes, void *buffer, uint3
 
 int32 UT_FM_CHILD_TEST_CFE_OSFILEAPI_StatHookIsDirectory(const char *path, os_fstat_t  *filestats)
 {
-    filestats->st_mode = S_IFDIR;
+    filestats->FileModeBits = S_IFDIR;
 
     return CFE_SUCCESS;
 } /* end UT_FM_CHILD_TEST_CFE_OSFILEAPI_StatHookIsDirectory */
 
 int32 UT_FM_CHILD_TEST_CFE_OSFILEAPI_StatHookIsFile(const char *path, os_fstat_t  *filestats)
 {
-    filestats->st_mode = S_IFREG;
+    filestats->FileModeBits = S_IFREG;
 
     return CFE_SUCCESS;
 } /* end UT_FM_CHILD_TEST_CFE_OSFILEAPI_StatHookIsFile */
 
 int32 UT_FM_CHILD_TEST_CFE_OSFILEAPI_StatHookSetSize(const char *path, os_fstat_t  *filestats)
 {
-    filestats->st_size = 5;
-    filestats->st_mode = 0777;
+    filestats->FileSize = 5;
+    filestats->FileModeBits = 0777;
 
     return CFE_SUCCESS;
 } /* end UT_FM_CHILD_TEST_CFE_OSFILEAPI_StatHookSetSize */
@@ -127,7 +127,7 @@ os_dirent_t *UT_FM_CFE_OSFILEAPI_ReadDirHook1(os_dirp_t directory)
     UT_FM_CFE_OSFILEAPI_ReadDirHookRunCount += 1;
 
     if (UT_FM_CFE_OSFILEAPI_ReadDirHookRunCount == 1)
-        strncpy (UT_FM_GLOBAL_DirEntry.d_name, "filename", 256);
+        strncpy (UT_FM_GLOBAL_DirEntry.FileName, "filename", 256);
     else
         return NULL;
 
@@ -144,10 +144,10 @@ os_dirent_t *UT_FM_CFE_OSFILEAPI_ReadDirHook2(os_dirp_t directory)
     {
         for (i = 0; i < OS_MAX_PATH_LEN - 1; i++)
         {
-            UT_FM_GLOBAL_DirEntry.d_name[i] = 'a';
+            UT_FM_GLOBAL_DirEntry.FileName[i] = 'a';
         }
 
-        UT_FM_GLOBAL_DirEntry.d_name[OS_MAX_PATH_LEN - 1] = '\0';
+        UT_FM_GLOBAL_DirEntry.FileName[OS_MAX_PATH_LEN - 1] = '\0';
     }
     else
         return NULL;
@@ -160,7 +160,7 @@ os_dirent_t *UT_FM_CFE_OSFILEAPI_ReadDirHook3(os_dirp_t directory)
     UT_FM_CFE_OSFILEAPI_ReadDirHookRunCount += 1;
 
     if (UT_FM_CFE_OSFILEAPI_ReadDirHookRunCount == 1)
-        strncpy (UT_FM_GLOBAL_DirEntry.d_name, "", 256);
+        strncpy (UT_FM_GLOBAL_DirEntry.FileName, "", 256);
     else
         return NULL;
 
@@ -837,7 +837,7 @@ void FM_ChildDeleteAllCmd_Test_Nominal(void)
     /* Set to fail condition "DirPtr == NULL" */
     Ut_OSFILEAPI_SetReturnCode(UT_OSFILEAPI_OPENDIR_INDEX, 100, 1);
 
-    /* Causes while-loop to run exactly one time, and sets DirEntry->d_name so nominal case is reached */
+    /* Causes while-loop to run exactly one time, and sets DirEntry->FileName so nominal case is reached */
     Ut_OSFILEAPI_SetFunctionHook(UT_OSFILEAPI_READDIR_INDEX, &UT_FM_CFE_OSFILEAPI_ReadDirHook1);
 
     UT_FM_CFE_OSFILEAPI_ReadDirHookRunCount = 0;
@@ -907,7 +907,7 @@ void FM_ChildDeleteAllCmd_Test_FilesNotDeletedFilenameTooLarge(void)
     /* Set to fail condition "DirPtr == NULL" */
     Ut_OSFILEAPI_SetReturnCode(UT_OSFILEAPI_OPENDIR_INDEX, 100, 1);
 
-    /* Causes while-loop to run exactly one time, and sets DirEntry->d_name to satisfy strcmp condition */
+    /* Causes while-loop to run exactly one time, and sets DirEntry->FileName to satisfy strcmp condition */
     Ut_OSFILEAPI_SetFunctionHook(UT_OSFILEAPI_READDIR_INDEX, &UT_FM_CFE_OSFILEAPI_ReadDirHook1);
     UT_FM_CFE_OSFILEAPI_ReadDirHookRunCount = 0;
 
@@ -983,7 +983,7 @@ void FM_ChildDeleteAllCmd_Test_FilesNotDeletedNameIsNotInUse(void)
     /* Set to fail condition "DirPtr == NULL" */
     Ut_OSFILEAPI_SetReturnCode(UT_OSFILEAPI_OPENDIR_INDEX, 100, 1);
 
-    /* Causes while-loop to run exactly one time, and sets DirEntry->d_name to satisfy strcmp condition */
+    /* Causes while-loop to run exactly one time, and sets DirEntry->FileName to satisfy strcmp condition */
     Ut_OSFILEAPI_SetFunctionHook(UT_OSFILEAPI_READDIR_INDEX, &UT_FM_CFE_OSFILEAPI_ReadDirHook1);
     UT_FM_CFE_OSFILEAPI_ReadDirHookRunCount = 0;
 
@@ -1024,7 +1024,7 @@ void FM_ChildDeleteAllCmd_Test_FilesNotDeletedFileOpen(void)
     /* Set to fail condition "DirPtr == NULL" */
     Ut_OSFILEAPI_SetReturnCode(UT_OSFILEAPI_OPENDIR_INDEX, 100, 1);
 
-    /* Causes while-loop to run exactly one time, and sets DirEntry->d_name to satisfy strcmp condition */
+    /* Causes while-loop to run exactly one time, and sets DirEntry->FileName to satisfy strcmp condition */
     Ut_OSFILEAPI_SetFunctionHook(UT_OSFILEAPI_READDIR_INDEX, &UT_FM_CFE_OSFILEAPI_ReadDirHook1);
     UT_FM_CFE_OSFILEAPI_ReadDirHookRunCount = 0;
 
@@ -1068,7 +1068,7 @@ void FM_ChildDeleteAllCmd_Test_FilesNotDeletedFileClosed(void)
     /* Set to fail condition "DirPtr == NULL" */
     Ut_OSFILEAPI_SetReturnCode(UT_OSFILEAPI_OPENDIR_INDEX, 100, 1);
 
-    /* Causes while-loop to run exactly one time, and sets DirEntry->d_name to satisfy strcmp condition */
+    /* Causes while-loop to run exactly one time, and sets DirEntry->FileName to satisfy strcmp condition */
     Ut_OSFILEAPI_SetFunctionHook(UT_OSFILEAPI_READDIR_INDEX, &UT_FM_CFE_OSFILEAPI_ReadDirHook1);
     UT_FM_CFE_OSFILEAPI_ReadDirHookRunCount = 0;
 
@@ -1109,7 +1109,7 @@ void FM_ChildDeleteAllCmd_Test_DirectorySkipped(void)
     /* Set to fail condition "DirPtr == NULL" */
     Ut_OSFILEAPI_SetReturnCode(UT_OSFILEAPI_OPENDIR_INDEX, 100, 1);
 
-    /* Causes while-loop to run exactly one time, and sets DirEntry->d_name to satisfy strcmp condition */
+    /* Causes while-loop to run exactly one time, and sets DirEntry->FileName to satisfy strcmp condition */
     Ut_OSFILEAPI_SetFunctionHook(UT_OSFILEAPI_READDIR_INDEX, &UT_FM_CFE_OSFILEAPI_ReadDirHook1);
     UT_FM_CFE_OSFILEAPI_ReadDirHookRunCount = 0;
 
@@ -1904,7 +1904,7 @@ void FM_ChildDirListPktCmd_Test_Nominal(void)
 
     FM_GlobalData.DirListPkt.TotalFiles = FM_GlobalData.DirListPkt.FirstFile + 1;
 
-    /* Sets DirEntry->d_name to pass strcmp conditions that check its value */
+    /* Sets DirEntry->FileName to pass strcmp conditions that check its value */
     Ut_OSFILEAPI_SetFunctionHook(UT_OSFILEAPI_READDIR_INDEX, &UT_FM_CFE_OSFILEAPI_ReadDirHook1);
     UT_FM_CFE_OSFILEAPI_ReadDirHookRunCount = 0;
 
@@ -1920,8 +1920,8 @@ void FM_ChildDirListPktCmd_Test_Nominal(void)
     UtAssert_True (FM_GlobalData.DirListPkt.FirstFile == 0, "FM_GlobalData.DirListPkt.FirstFile == 0");
     UtAssert_True (FM_GlobalData.DirListPkt.TotalFiles == 1, "FM_GlobalData.DirListPkt.TotalFiles == 1");
     UtAssert_True
-        (strncmp(FM_GlobalData.DirListPkt.FileList[0].EntryName, UT_FM_GLOBAL_DirEntry.d_name, OS_MAX_PATH_LEN) == 0,
-        "strncmp(FM_GlobalData.DirListPkt.FileList[0].EntryName, UT_FM_GLOBAL_DirEntry.d_name, OS_MAX_PATH_LEN) == 0");
+        (strncmp(FM_GlobalData.DirListPkt.FileList[0].EntryName, UT_FM_GLOBAL_DirEntry.FileName, OS_MAX_PATH_LEN) == 0,
+        "strncmp(FM_GlobalData.DirListPkt.FileList[0].EntryName, UT_FM_GLOBAL_DirEntry.FileName, OS_MAX_PATH_LEN) == 0");
 
     UtAssert_True (FM_GlobalData.DirListPkt.PacketFiles == 1, "FM_GlobalData.DirListPkt.PacketFiles == 1");
 
@@ -1987,7 +1987,7 @@ void FM_ChildDirListPktCmd_Test_DirPlusEntryTooLong(void)
 
     FM_GlobalData.DirListPkt.TotalFiles = FM_GlobalData.DirListPkt.FirstFile + 1;
 
-    /* Sets DirEntry->d_name to pass strcmp conditions that check its value */
+    /* Sets DirEntry->FileName to pass strcmp conditions that check its value */
     Ut_OSFILEAPI_SetFunctionHook(UT_OSFILEAPI_READDIR_INDEX, &UT_FM_CFE_OSFILEAPI_ReadDirHook1);
     UT_FM_CFE_OSFILEAPI_ReadDirHookRunCount = 0;
 
@@ -2131,7 +2131,7 @@ void FM_ChildDirListFileLoop_Test_Nominal(void)
     os_dirp_t DirPtr = 0;
     uint8 getSizeTimeMode = TRUE;
 
-    /* Sets DirEntry->d_name to pass strcmp conditions that check its value */
+    /* Sets DirEntry->FileName to pass strcmp conditions that check its value */
     Ut_OSFILEAPI_SetFunctionHook(UT_OSFILEAPI_READDIR_INDEX, &UT_FM_CFE_OSFILEAPI_ReadDirHook1);
     UT_FM_CFE_OSFILEAPI_ReadDirHookRunCount = 0;
 
@@ -2162,7 +2162,7 @@ void FM_ChildDirListFileLoop_Test_ExcludeFileTimeSizeMode(void)
     os_dirp_t DirPtr = 0;
     uint8 getSizeTimeMode = FALSE;
 
-    /* Sets DirEntry->d_name to pass strcmp conditions that check its value */
+    /* Sets DirEntry->FileName to pass strcmp conditions that check its value */
     Ut_OSFILEAPI_SetFunctionHook(UT_OSFILEAPI_READDIR_INDEX, &UT_FM_CFE_OSFILEAPI_ReadDirHook1);
     UT_FM_CFE_OSFILEAPI_ReadDirHookRunCount = 0;
 
@@ -2196,7 +2196,7 @@ void FM_ChildDirListFileLoop_Test_WriteEntryFailed(void)
     char EventMessage[CFE_EVS_MAX_MESSAGE_LENGTH];
     uint8 getSizeTimeMode = TRUE;
 
-    /* Sets DirEntry->d_name to pass strcmp conditions that check its value */
+    /* Sets DirEntry->FileName to pass strcmp conditions that check its value */
     Ut_OSFILEAPI_SetFunctionHook(UT_OSFILEAPI_READDIR_INDEX, &UT_FM_CFE_OSFILEAPI_ReadDirHook1);
     UT_FM_CFE_OSFILEAPI_ReadDirHookRunCount = 0;
 
@@ -2272,7 +2272,7 @@ void FM_ChildDirListFileLoop_Test_WriteUpdateStatsFailed(void)
     uint8 getSizeTimeMode = TRUE;
     char EventMessage[CFE_EVS_MAX_MESSAGE_LENGTH];
 
-    /* Sets DirEntry->d_name to pass strcmp conditions that check its value */
+    /* Sets DirEntry->FileName to pass strcmp conditions that check its value */
     Ut_OSFILEAPI_SetFunctionHook(UT_OSFILEAPI_READDIR_INDEX, &UT_FM_CFE_OSFILEAPI_ReadDirHook1);
     UT_FM_CFE_OSFILEAPI_ReadDirHookRunCount = 0;
 
@@ -2304,7 +2304,7 @@ void FM_ChildSizeAndTime_Test_Nominal(void)
     uint32 FileTime = 1;
     uint32 FileMode = 0555;
 
-    /* Sets FileStatus->st_size = 5, which FileSize is then set to.  FileSize is verified in a UtAssert statement below. */
+    /* Sets FileStatus->FileSize = 5, which FileSize is then set to.  FileSize is verified in a UtAssert statement below. */
     Ut_OSFILEAPI_SetFunctionHook(UT_OSFILEAPI_STAT_INDEX, &UT_FM_CHILD_TEST_CFE_OSFILEAPI_StatHookSetSize);
 
     /* Set to return a specific value, which is checked in a UtAssert statement below */
@@ -2410,7 +2410,7 @@ void FM_ChildSleepStat_Test_GetStatsAndDoNotSleep(void)
 
     strncpy(Filename, "/source1", OS_MAX_PATH_LEN);
     
-    /* Sets FileStatus->st_size = 5, which FileSize is then set to.  FileSize is verified in a UtAssert statement below. */
+    /* Sets FileStatus->FileSize = 5, which FileSize is then set to.  FileSize is verified in a UtAssert statement below. */
     Ut_OSFILEAPI_SetFunctionHook(UT_OSFILEAPI_STAT_INDEX, &UT_FM_CHILD_TEST_CFE_OSFILEAPI_StatHookSetSize);
 
     /* Set to return a specific value, which is checked in a UtAssert statement below */
@@ -2442,7 +2442,7 @@ void FM_ChildSleepStat_Test_GetStatsAndSleep(void)
 
     strncpy(Filename, "/source1", OS_MAX_PATH_LEN);
     
-    /* Sets FileStatus->st_size = 5, which FileSize is then set to.  FileSize is verified in a UtAssert statement below. */
+    /* Sets FileStatus->FileSize = 5, which FileSize is then set to.  FileSize is verified in a UtAssert statement below. */
     Ut_OSFILEAPI_SetFunctionHook(UT_OSFILEAPI_STAT_INDEX, &UT_FM_CHILD_TEST_CFE_OSFILEAPI_StatHookSetSize);
 
     /* Set to return a specific value, which is checked in a UtAssert statement below */
@@ -2477,7 +2477,7 @@ void FM_ChildSleepStat_Test_DoNotGetStats(void)
     
     strncpy(Filename, "/source1", OS_MAX_PATH_LEN);
     
-    /* Sets FileStatus->st_size = 5, which FileSize is then set to.  FileSize is verified in a UtAssert statement below. */
+    /* Sets FileStatus->FileSize = 5, which FileSize is then set to.  FileSize is verified in a UtAssert statement below. */
     Ut_OSFILEAPI_SetFunctionHook(UT_OSFILEAPI_STAT_INDEX, &UT_FM_CHILD_TEST_CFE_OSFILEAPI_StatHookSetSize);
 
     /* Set to return a specific value, which is checked in a UtAssert statement below */

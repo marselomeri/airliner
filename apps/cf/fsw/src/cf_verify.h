@@ -2,7 +2,7 @@
 ** File:
 **   $Id: cf_verify.h 1.11.1.1 2015/03/06 15:30:44EST sstrege Exp  $
 **
-**   Copyright © 2007-2014 United States Government as represented by the 
+**   Copyright ï¿½ 2007-2014 United States Government as represented by the 
 **   Administrator of the National Aeronautics and Space Administration. 
 **   All Other Rights Reserved.  
 **
@@ -52,8 +52,8 @@
     #error CF_PIPE_DEPTH must be defined!
 #elif (CF_PIPE_DEPTH  <  1)
     #error CF_PIPE_DEPTH cannot be less than 1!
-#elif (CF_PIPE_DEPTH  >  CFE_SB_MAX_PIPE_DEPTH)
-    #error CF_PIPE_DEPTH cannot be greater than CFE_SB_MAX_PIPE_DEPTH!
+#elif (CF_PIPE_DEPTH  >  CFE_PLATFORM_SB_MAX_PIPE_DEPTH)
+    #error CF_PIPE_DEPTH cannot be greater than CFE_PLATFORM_SB_MAX_PIPE_DEPTH!
 #endif
 
 #ifndef CF_PIPE_NAME

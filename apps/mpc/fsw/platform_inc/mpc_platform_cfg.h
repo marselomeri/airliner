@@ -27,7 +27,7 @@ extern "C" {
 /** \brief Pipe depth for the Scheduler pipe 
 **
 **  \par Limits:
-**       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
+**       minimum of 1, max of CFE_PLATFORM_SB_MAX_PIPE_DEPTH.
 */
 #define MPC_SCH_PIPE_DEPTH             (15)
 
@@ -51,7 +51,7 @@ extern "C" {
 /** \brief The number of WAKEUP messages to reserve on the Scheduler pipe.
 **
 **  \par Limits:
-**       minimum of 1, max limited to CFE_SB_MAX_PIPE_DEPTH-1.  Note the
+**       minimum of 1, max limited to CFE_PLATFORM_SB_MAX_PIPE_DEPTH-1.  Note the
 **       MPC_WAKEUP_MID_MAX_MSG_COUNT and MPC_SEND_HK_MID_MAX_MSG_COUNT
 **       must be less than MPC_SCH_PIPE_DEPTH.
 */
@@ -60,7 +60,7 @@ extern "C" {
 /** \brief The number of SEND_HK messages to reserve on the Scheduler pipe.
 **
 **  \par Limits:
-**       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.  Note the
+**       minimum of 1, max of CFE_PLATFORM_SB_MAX_PIPE_DEPTH.  Note the
 **       MPC_WAKEUP_MID_MAX_MSG_COUNT and MPC_SEND_HK_MID_MAX_MSG_COUNT
 **       must be less than MPC_SCH_PIPE_DEPTH.
 */
@@ -69,7 +69,7 @@ extern "C" {
 /** \brief Pipe depth for the command pipe
 **
 **  \par Limits:
-**       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
+**       minimum of 1, max of CFE_PLATFORM_SB_MAX_PIPE_DEPTH.
 */
 #define MPC_CMD_PIPE_DEPTH             (4)
 

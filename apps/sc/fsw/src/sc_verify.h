@@ -2,7 +2,7 @@
  ** File:
  **   $Id: sc_verify.h 1.2 2015/10/08 15:21:11EDT sstrege Exp  $
  **
- **  Copyright © 2007-2014 United States Government as represented by the 
+ **  Copyright ï¿½ 2007-2014 United States Government as represented by the 
  **  Administrator of the National Aeronautics and Space Administration. 
  **  All Other Rights Reserved.  
  **
@@ -151,8 +151,8 @@
 
 #ifndef SC_PIPE_DEPTH
     #error SC_PIPE_DEPTH must be defined!
-#elif (SC_PIPE_DEPTH > CFE_SB_MAX_PIPE_DEPTH)
-    #error SC_PIPE_DEPTH cannot be greater than CFE_SB_MAX_PIPE_DEPTH!
+#elif (SC_PIPE_DEPTH > CFE_PLATFORM_SB_MAX_PIPE_DEPTH)
+    #error SC_PIPE_DEPTH cannot be greater than CFE_PLATFORM_SB_MAX_PIPE_DEPTH!
 #elif (SC_PIPE_DEPTH < 1)
     #error SC_PIPE_DEPTH cannot be less than 1!
 #endif 

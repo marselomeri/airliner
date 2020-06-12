@@ -605,14 +605,14 @@ int32 CF_ValidateCFConfigTable (void * TblPtr)
 
     for(i=0;i<CF_NUM_INPUT_CHANNELS;i++)
     {        
-        if(Tbl->InCh[0].IncomingPDUMsgId > CFE_SB_HIGHEST_VALID_MSGID)    
+        if(Tbl->InCh[0].IncomingPDUMsgId > CFE_PLATFORM_SB_HIGHEST_VALID_MSGID)
         {        
             TblValidationErrs++;
 
             if(TblValidationErrs == 1)
                 CFE_EVS_SendEvent(CF_TBL_VAL_ERR2_EID, CFE_EVS_ERROR,
-                    "Cannot set IncomingPDUMsgId 0x%X > CFE_SB_HIGHEST_VALID_MSGID 0x%X",
-                    Tbl->InCh[0].IncomingPDUMsgId,CFE_SB_HIGHEST_VALID_MSGID);          
+                    "Cannot set IncomingPDUMsgId 0x%X > CFE_PLATFORM_SB_HIGHEST_VALID_MSGID 0x%X",
+                    Tbl->InCh[0].IncomingPDUMsgId,CFE_PLATFORM_SB_HIGHEST_VALID_MSGID);
         }
 
     }
@@ -659,14 +659,14 @@ int32 CF_ValidateCFConfigTable (void * TblPtr)
 
 
             /* Validate Downlink MsgId for this channel */
-            if(Tbl->OuCh[i].OutgoingPduMsgId > CFE_SB_HIGHEST_VALID_MSGID)
+            if(Tbl->OuCh[i].OutgoingPduMsgId > CFE_PLATFORM_SB_HIGHEST_VALID_MSGID)
             {
                 TblValidationErrs++;
 
                 if(TblValidationErrs == 1)
                     CFE_EVS_SendEvent(CF_TBL_VAL_ERR7_EID, CFE_EVS_ERROR,
-                        "Cannot set Ch%d OutgoingPduMsgId 0x%X > CFE_SB_HIGHEST_VALID_MSGID 0x%X",
-                        i,Tbl->OuCh[i].OutgoingPduMsgId,CFE_SB_HIGHEST_VALID_MSGID);
+                        "Cannot set Ch%d OutgoingPduMsgId 0x%X > CFE_PLATFORM_SB_HIGHEST_VALID_MSGID 0x%X",
+                        i,Tbl->OuCh[i].OutgoingPduMsgId,CFE_PLATFORM_SB_HIGHEST_VALID_MSGID);
             }
 
                 

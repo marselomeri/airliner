@@ -1377,7 +1377,7 @@ void HS_ValidateMATable_Test_MessageIDTooHigh(void)
     {
         HS_AppData.MATablePtr[i].EnableState = HS_MAT_STATE_ENABLED;
 
-        CFE_SB_InitMsg ((HS_NoArgsCmd_t *)&HS_AppData.MATablePtr[i].Message, CFE_SB_HIGHEST_VALID_MSGID + 1, sizeof(HS_NoArgsCmd_t), TRUE);
+        CFE_SB_InitMsg ((HS_NoArgsCmd_t *)&HS_AppData.MATablePtr[i].Message, CFE_PLATFORM_SB_HIGHEST_VALID_MSGID + 1, sizeof(HS_NoArgsCmd_t), TRUE);
     }
 
     /* Execute the function being tested */

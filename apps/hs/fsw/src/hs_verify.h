@@ -2,7 +2,7 @@
 ** File:
 **   $Id: hs_verify.h 1.3 2016/08/05 17:40:38EDT mdeschu Exp  $
 **
-**   Copyright © 2007-2014 United States Government as represented by the 
+**   Copyright ï¿½ 2007-2014 United States Government as represented by the 
 **   Administrator of the National Aeronautics and Space Administration. 
 **   All Other Rights Reserved.  
 **
@@ -166,10 +166,10 @@
 #endif
 /*
  * JPH 2015-06-29 - Removed check of:
- *  HS_CMD_PIPE_DEPTH > CFE_SB_MAX_PIPE_DEPTH
+ *  HS_CMD_PIPE_DEPTH > CFE_PLATFORM_SB_MAX_PIPE_DEPTH
  *
  * This is not a valid check anymore, as the HS app does not have knowledge
- * of CFE_SB_MAX_PIPE_DEPTH.  But if the configuration violates this rule it will
+ * of CFE_PLATFORM_SB_MAX_PIPE_DEPTH.  But if the configuration violates this rule it will
  * show up as an obvious run-time error so the compile-time check is redundant.
  */
 
@@ -178,10 +178,10 @@
 #endif
 /*
  * JPH 2015-06-29 - Removed check of:
- *  HS_EVENT_PIPE_DEPTH > CFE_SB_MAX_PIPE_DEPTH
+ *  HS_EVENT_PIPE_DEPTH > CFE_PLATFORM_SB_MAX_PIPE_DEPTH
  *
  * This is not a valid check anymore, as the HS app does not have knowledge
- * of CFE_SB_MAX_PIPE_DEPTH.  But if the configuration violates this rule it will
+ * of CFE_PLATFORM_SB_MAX_PIPE_DEPTH.  But if the configuration violates this rule it will
  * show up as an obvious run-time error so the compile-time check is redundant.
  */
 
@@ -190,10 +190,10 @@
 #endif
 /*
  * JPH 2015-06-29 - Removed check of:
- *  HS_WAKEUP_PIPE_DEPTH > CFE_SB_MAX_PIPE_DEPTH
+ *  HS_WAKEUP_PIPE_DEPTH > CFE_PLATFORM_SB_MAX_PIPE_DEPTH
  *
  * This is not a valid check anymore, as the HS app does not have knowledge
- * of CFE_SB_MAX_PIPE_DEPTH.  But if the configuration violates this rule it will
+ * of CFE_PLATFORM_SB_MAX_PIPE_DEPTH.  But if the configuration violates this rule it will
  * show up as an obvious run-time error so the compile-time check is redundant.
  */
 

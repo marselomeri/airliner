@@ -876,7 +876,7 @@ PASS: FM_GlobalData.ChildCurrentCC == 0
 PASS: strncmp(FM_GlobalData.DirListPkt.DirName, 'source1', OS_MAX_PATH_LEN) == 0
 PASS: FM_GlobalData.DirListPkt.FirstFile == 0
 PASS: FM_GlobalData.DirListPkt.TotalFiles == 1
-PASS: strncmp(FM_GlobalData.DirListPkt.FileList[0].EntryName, UT_FM_GLOBAL_DirEntry.d_name, OS_MAX_PATH_LEN) == 0
+PASS: strncmp(FM_GlobalData.DirListPkt.FileList[0].EntryName, UT_FM_GLOBAL_DirEntry.FileName, OS_MAX_PATH_LEN) == 0
 PASS: FM_GlobalData.DirListPkt.PacketFiles == 1
 PASS: Directory List to Packet command: offset = 0, dir = source1
 PASS: Ut_CFE_EVS_GetEventQueueDepth() == 1

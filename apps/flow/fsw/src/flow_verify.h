@@ -38,8 +38,8 @@
 	#error FLOW_GYRO_PIPE_DEPTH must be defined.
 #elif (FLOW_GYRO_PIPE_DEPTH  <  1)
     #error FLOW_GYRO_PIPE_DEPTH cannot be less than 1!
-#elif (FLOW_GYRO_PIPE_DEPTH  >  CFE_SB_MAX_PIPE_DEPTH)
-    #error FLOW_GYRO_PIPE_DEPTH cannot be greater than CFE_SB_MAX_PIPE_DEPTH!
+#elif (FLOW_GYRO_PIPE_DEPTH  >  CFE_PLATFORM_SB_MAX_PIPE_DEPTH)
+    #error FLOW_GYRO_PIPE_DEPTH cannot be greater than CFE_PLATFORM_SB_MAX_PIPE_DEPTH!
 #endif
 
 #ifndef FLOW_GYRO_PIPE_NAME
@@ -50,8 +50,8 @@
 	#error FLOW_SCH_PIPE_DEPTH must be defined.
 #elif (FLOW_SCH_PIPE_DEPTH  <  1)
     #error FLOW_SCH_PIPE_DEPTH cannot be less than 1!
-#elif (FLOW_SCH_PIPE_DEPTH  >  CFE_SB_MAX_PIPE_DEPTH)
-    #error FLOW_SCH_PIPE_DEPTH cannot be greater than CFE_SB_MAX_PIPE_DEPTH!
+#elif (FLOW_SCH_PIPE_DEPTH  >  CFE_PLATFORM_SB_MAX_PIPE_DEPTH)
+    #error FLOW_SCH_PIPE_DEPTH cannot be greater than CFE_PLATFORM_SB_MAX_PIPE_DEPTH!
 #endif
 
 #ifndef FLOW_SCH_PIPE_NAME
@@ -62,8 +62,8 @@
 	#error FLOW_CMD_PIPE_DEPTH must be defined.
 #elif (FLOW_CMD_PIPE_DEPTH  <  1)
     #error FLOW_CMD_PIPE_DEPTH cannot be less than 1!
-#elif (FLOW_CMD_PIPE_DEPTH  >  CFE_SB_MAX_PIPE_DEPTH)
-    #error FLOW_CMD_PIPE_DEPTH cannot be greater than CFE_SB_MAX_PIPE_DEPTH!
+#elif (FLOW_CMD_PIPE_DEPTH  >  CFE_PLATFORM_SB_MAX_PIPE_DEPTH)
+    #error FLOW_CMD_PIPE_DEPTH cannot be greater than CFE_PLATFORM_SB_MAX_PIPE_DEPTH!
 #endif
 
 #ifndef FLOW_CMD_PIPE_NAME
@@ -82,8 +82,8 @@
 	#error FLOW_WAKEUP_MID_MAX_MSG_COUNT must be defined.
 #elif (FLOW_WAKEUP_MID_MAX_MSG_COUNT  <  1)
     #error FLOW_WAKEUP_MID_MAX_MSG_COUNT cannot be less than 1!
-#elif (FLOW_WAKEUP_MID_MAX_MSG_COUNT  >  CFE_SB_MAX_PIPE_DEPTH-1)
-    #error FLOW_WAKEUP_MID_MAX_MSG_COUNT cannot be greater than CFE_SB_MAX_PIPE_DEPTH-1!
+#elif (FLOW_WAKEUP_MID_MAX_MSG_COUNT  >  CFE_PLATFORM_SB_MAX_PIPE_DEPTH-1)
+    #error FLOW_WAKEUP_MID_MAX_MSG_COUNT cannot be greater than CFE_PLATFORM_SB_MAX_PIPE_DEPTH-1!
 #endif
 
 

@@ -169,7 +169,7 @@ uint32 FM_GetFilenameState(char *Filename, uint32 BufferSize, boolean FileInfoCm
 #ifdef OS_FILESTAT_ISDIR
             if (OS_FILESTAT_ISDIR(FileStatus))
 #else
-            if (S_ISDIR(FileStatus.st_mode))
+            if (S_ISDIR(FileStatus.FileModeBits))
 #endif
             {
                 /* Filename is a directory */
@@ -202,12 +202,12 @@ uint32 FM_GetFilenameState(char *Filename, uint32 BufferSize, boolean FileInfoCm
 #ifdef OS_FILESTAT_TIME
                 FM_GlobalData.FileStatTime = OS_FILESTAT_TIME(FileStatus);
 #else
-                FM_GlobalData.FileStatTime = FileStatus.st_mtime;
+                FM_GlobalData.FileStatTime = FileStatus.FileTime;
 #endif
 #ifdef OS_FILESTAT_SIZE
                 FM_GlobalData.FileStatSize = OS_FILESTAT_SIZE(FileStatus);
 #else
-                FM_GlobalData.FileStatSize = FileStatus.st_size;
+                FM_GlobalData.FileStatSize = FileStatus.FileSize;
 #endif
             }
         }

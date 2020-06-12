@@ -1475,7 +1475,7 @@ void LC_ValidateWDT_Test_BadMessageID(void)
     {
         LC_OperData.WDTPtr[TableIndex].DataType = LC_DATA_BYTE;
         LC_OperData.WDTPtr[TableIndex].OperatorID = LC_OPER_LT;
-        LC_OperData.WDTPtr[TableIndex].MessageID = CFE_SB_HIGHEST_VALID_MSGID + 1;
+        LC_OperData.WDTPtr[TableIndex].MessageID = CFE_PLATFORM_SB_HIGHEST_VALID_MSGID + 1;
         LC_OperData.WDTPtr[TableIndex].ComparisonValue.Unsigned32 = 3;
     }
     
@@ -1506,7 +1506,7 @@ void LC_ValidateWDT_Test_NaN(void)
     {
         LC_OperData.WDTPtr[TableIndex].DataType = LC_DATA_FLOAT_LE;
         LC_OperData.WDTPtr[TableIndex].OperatorID = LC_OPER_LT;
-        LC_OperData.WDTPtr[TableIndex].MessageID = CFE_SB_HIGHEST_VALID_MSGID;
+        LC_OperData.WDTPtr[TableIndex].MessageID = CFE_PLATFORM_SB_HIGHEST_VALID_MSGID;
         LC_OperData.WDTPtr[TableIndex].ComparisonValue.Unsigned32 = 0x7F8FFFFF;
     }
     
@@ -1537,7 +1537,7 @@ void LC_ValidateWDT_Test_Inf(void)
     {
         LC_OperData.WDTPtr[TableIndex].DataType = LC_DATA_FLOAT_LE;
         LC_OperData.WDTPtr[TableIndex].OperatorID = LC_OPER_LT;
-        LC_OperData.WDTPtr[TableIndex].MessageID = CFE_SB_HIGHEST_VALID_MSGID;
+        LC_OperData.WDTPtr[TableIndex].MessageID = CFE_PLATFORM_SB_HIGHEST_VALID_MSGID;
         LC_OperData.WDTPtr[TableIndex].ComparisonValue.Unsigned32 = 0x7F800000;
     }
     
@@ -1568,7 +1568,7 @@ void LC_ValidateWDT_Test_FloatingPointPassed(void)
     {
         LC_OperData.WDTPtr[TableIndex].DataType = LC_DATA_FLOAT_LE;
         LC_OperData.WDTPtr[TableIndex].OperatorID = LC_OPER_LT;
-        LC_OperData.WDTPtr[TableIndex].MessageID = CFE_SB_HIGHEST_VALID_MSGID;
+        LC_OperData.WDTPtr[TableIndex].MessageID = CFE_PLATFORM_SB_HIGHEST_VALID_MSGID;
         LC_OperData.WDTPtr[TableIndex].ComparisonValue.Unsigned32 = 1;
     }
     
@@ -1595,7 +1595,7 @@ void LC_ValidateWDT_Test_NonFloatingPointPassed(void)
     {
         LC_OperData.WDTPtr[TableIndex].DataType = LC_DATA_BYTE;
         LC_OperData.WDTPtr[TableIndex].OperatorID = LC_OPER_LT;
-        LC_OperData.WDTPtr[TableIndex].MessageID = CFE_SB_HIGHEST_VALID_MSGID;
+        LC_OperData.WDTPtr[TableIndex].MessageID = CFE_PLATFORM_SB_HIGHEST_VALID_MSGID;
         LC_OperData.WDTPtr[TableIndex].ComparisonValue.Unsigned32 = 1;
     }
     

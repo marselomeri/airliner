@@ -31,14 +31,14 @@ extern UT_OsLogInfo_t  g_logInfo;
 char* g_fsAddrPtr = NULL;
 
 int32  g_skipTestCase = -1;
-char*  g_skipTestCaseResult = " ";
+const char*  g_skipTestCaseResult = " ";
 
 char  g_longPathName[OS_MAX_PATH_LEN+5];
 char  g_longFileName[OS_MAX_PATH_LEN];
 char  g_invalidPath[OS_MAX_PATH_LEN];
 
-char* g_devName = "/ramdev3";
-char* g_mntName = "/drive3";
+const char* g_devName = "/ramdev3";
+const char* g_mntName = "/drive3";
 
 /*--------------------------------------------------------------------------------*
 ** External function prototypes
@@ -125,17 +125,17 @@ void OS_Application_Startup(void)
         UT_os_init_file_misc();
 
         /* Directory I/O APIs */
-        //UT_os_makedir_test();
+        UT_os_makedir_test();
         UT_os_opendir_test();
         UT_os_closedir_test();
 
         UT_os_readdir_test();
         UT_os_rewinddir_test();
-        //UT_os_removedir_test();
+        UT_os_removedir_test();
 
         /* File I/O APIs */
-        //UT_os_createfile_test();
-        //UT_os_openfile_test();
+        UT_os_createfile_test();
+        UT_os_openfile_test();
         UT_os_closefile_test();
 
         UT_os_readfile_test();
@@ -143,12 +143,12 @@ void OS_Application_Startup(void)
         UT_os_lseekfile_test();
 
         UT_os_chmodfile_test();
-        //UT_os_statfile_test();
+        UT_os_statfile_test();
 
-        //UT_os_removefile_test();
-        //UT_os_renamefile_test();
-        //UT_os_copyfile_test();
-        //UT_os_movefile_test();
+        UT_os_removefile_test();
+        UT_os_renamefile_test();
+        UT_os_copyfile_test();
+        UT_os_movefile_test();
 
         UT_os_outputtofile_test();
 

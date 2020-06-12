@@ -3,6 +3,8 @@ find_package(Git QUIET REQUIRED)
 execute_process(COMMAND git log --pretty=format:'%h' -n 1
                 OUTPUT_VARIABLE GIT_REV
                 ERROR_QUIET)
+                 
+string(TIMESTAMP BUILD_DATE "%m/%d/%Y")
 
 # Check whether we got any revision (which isn't
 # always the case, e.g. when someone downloaded a zip
@@ -30,4 +32,4 @@ else()
     string(STRIP "${GIT_BRANCH}" GIT_BRANCH)
 endif()
 
-configure_file(${CMAKE_CURRENT_LIST_DIR}/version.h.in ${CMAKE_CURRENT_BINARY_DIR}/version.c @ONLY)
+configure_file(${CMAKE_CURRENT_LIST_DIR}/target_config.c.in ${CMAKE_CURRENT_BINARY_DIR}/target_config.c @ONLY)

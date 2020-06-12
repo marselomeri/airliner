@@ -462,7 +462,7 @@ os_fshealth_t OS_chkfs (const char *name, boolean repair)
              OS_SUCCESS if success
              OS_FS_ERROR if the mountpoint could not be found
 ---------------------------------------------------------------------------------------*/
-int32 OS_FS_GetPhysDriveName(char * PhysDriveName, char * MountPoint)
+int32 OS_FS_GetPhysDriveName(char* PhysDriveName, const char* MountPoint)
 {
     int32 ReturnCode;
     int   i;

@@ -1,6 +1,6 @@
 /* FILE: default_filestore.c    Default interface to the Virtual Filestore.
  *
- *  Copyright © 2007-2014 United States Government as represented by the 
+ *  Copyright ï¿½ 2007-2014 United States Government as represented by the 
  *  Administrator of the National Aeronautics and Space Administration. 
  *  All Other Rights Reserved.  
  *

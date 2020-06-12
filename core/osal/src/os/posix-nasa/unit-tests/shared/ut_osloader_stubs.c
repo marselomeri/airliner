@@ -50,7 +50,7 @@ int32 OS_ModuleTableInit()
 
 /*--------------------------------------------------------------------------------*/
 
-int32 OS_ModuleLoad(uint32* module_id, const char* module_name, const char* filename)
+int32 OS_ModuleLoad(uint32* module_id, char* module_name, char* filename)
 {
     return (g_moduleLoad.value);
 }
@@ -71,14 +71,14 @@ int32 OS_ModuleInfo(uint32 module_id, OS_module_prop_t* module_info)
 
 /*--------------------------------------------------------------------------------*/
 
-int32 OS_SymbolLookup(uint32* SymbolAddress, const char* SymbolName)
+int32 OS_SymbolLookup(uint32* SymbolAddress, char* SymbolName)
 {
     return (g_symbolTblLookup.value);
 }
 
 /*--------------------------------------------------------------------------------*/
 
-int32 OS_SymbolTableDump(const char* filename, uint32 SizeLimit)
+int32 OS_SymbolTableDump(char* filename, uint32 SizeLimit)
 {
     return (g_symbolTblDump.value);
 }

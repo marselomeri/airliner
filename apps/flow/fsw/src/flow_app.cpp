@@ -1384,7 +1384,7 @@ uint32 FLOW::ComputeFlow(const uint8 *Image1, const uint8 *Image2)
 	/* Constants */
 	const int16 winmin = -ConfigTblPtr->FLOW_DEFAULT_SEARCH_SIZE;
 	const int16 winmax = ConfigTblPtr->FLOW_DEFAULT_SEARCH_SIZE;
-	const uint16 hist_size = 2 * (winmax - winmin + 1) + 1;
+	const uint16 hiFileSize = 2 * (winmax - winmin + 1) + 1;
 
 	/* Variables */
 	uint16 pixLo = ConfigTblPtr->FLOW_DEFAULT_SEARCH_SIZE + 1;
@@ -1395,9 +1395,9 @@ uint32 FLOW::ComputeFlow(const uint8 *Image1, const uint8 *Image2)
 	/* Subpixels */
 	uint32 acc[8];
 	/* Counter for x shift */
-	uint16 histx[hist_size];
+	uint16 histx[hiFileSize];
 	/* Counter for y shift */
-	uint16 histy[hist_size];
+	uint16 histy[hiFileSize];
 	/* Shift directions in x */
 	int8  dirsx[64];
 	/* Shift directions in y */
@@ -1426,7 +1426,7 @@ uint32 FLOW::ComputeFlow(const uint8 *Image1, const uint8 *Image2)
 	uint8 qual;
 
 	/* Initialize with 0 */
-	for (j = 0; j < hist_size; j++)
+	for (j = 0; j < hiFileSize; j++)
 	{
 		histx[j] = 0;
 		histy[j] = 0;

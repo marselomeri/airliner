@@ -51,7 +51,7 @@ void OS_Application_Startup(void)
 
     OS_API_Init();
 
-    //UT_os_module_load_test();
+    UT_os_module_load_test();
     UT_os_module_unload_test();
     UT_os_module_info_test();
 

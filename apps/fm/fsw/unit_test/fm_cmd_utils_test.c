@@ -56,17 +56,17 @@
 
 int32 UT_FM_CMD_UTILS_TEST_CFE_OSFILEAPI_StatHookIsFile(const char *path, os_fstat_t  *filestats)
 {
-    filestats->st_mode = S_IFREG;
+    filestats->FileModeBits = S_IFREG;
 
     return CFE_SUCCESS;
 } /* end UT_FM_CMD_UTILS_TEST_CFE_OSFILEAPI_StatHookIsFile */
 
 int32 UT_FM_CMD_UTILS_TEST_CFE_OSFILEAPI_StatHookIsDirectory(const char *path, os_fstat_t  *filestats)
 {
-    filestats->st_mode = S_IFDIR;
+    filestats->FileModeBits = S_IFDIR;
 
-    filestats->st_mtime = 1;
-    filestats->st_size = 2;
+    filestats->FileTime = 1;
+    filestats->FileSize = 2;
 
     return CFE_SUCCESS;
 } /* end UT_FM_CMD_UTILS_TEST_CFE_OSFILEAPI_StatHookIsDirectory */
@@ -170,7 +170,7 @@ void FM_GetFilenameState_Test_IsDirectory(void)
 {
     uint32 Result;
 
-    /* Satisfies condition "if (S_ISDIR(FileStatus.st_mode))" */
+    /* Satisfies condition "if (S_ISDIR(FileStatus.FileModeBits))" */
     Ut_OSFILEAPI_SetFunctionHook(UT_OSFILEAPI_STAT_INDEX, &UT_FM_CMD_UTILS_TEST_CFE_OSFILEAPI_StatHookIsDirectory);
 
     /* Execute the function being tested */

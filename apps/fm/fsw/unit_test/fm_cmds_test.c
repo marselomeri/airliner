@@ -56,14 +56,14 @@
 
 int32 UT_FM_CMDS_TEST_CFE_OSFILEAPI_StatHookIsDirectory(const char *path, os_fstat_t  *filestats)
 {
-    filestats->st_mode = S_IFDIR;
+    filestats->FileModeBits = S_IFDIR;
 
     return CFE_SUCCESS;
 } /* end UT_FM_CMDS_TEST_CFE_OSFILEAPI_StatHookIsDirectory */
 
 int32 UT_FM_CMDS_TEST_CFE_OSFILEAPI_StatHookIsFile(const char *path, os_fstat_t  *filestats)
 {
-    filestats->st_mode = S_IFREG;
+    filestats->FileModeBits = S_IFREG;
 
     return CFE_SUCCESS;
 } /* end UT_FM_CMDS_TEST_CFE_OSFILEAPI_StatHookIsFile */
@@ -74,9 +74,9 @@ int32 UT_FM_CFE_OSFILEAPI_StatHook3(const char *path, os_fstat_t  *filestats)
     UT_FM_CFE_OSFILEAPI_StatStatHook3RunCount++;
 
     if (UT_FM_CFE_OSFILEAPI_StatStatHook3RunCount == 1)
-        filestats->st_mode = S_IFDIR;
+        filestats->FileModeBits = S_IFDIR;
     else
-        filestats->st_mode = S_IFREG;
+        filestats->FileModeBits = S_IFREG;
 
     return CFE_SUCCESS;
 } /* end UT_FM_CFE_OSFILEAPI_StatHook3 */

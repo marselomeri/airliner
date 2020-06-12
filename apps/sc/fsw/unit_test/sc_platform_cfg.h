@@ -161,7 +161,7 @@
 **
 **  \par Limits:
 **       This parameter must be greater than zero and less than or equal to
-**       CFE_SB_MAX_PIPE_DEPTH.
+**       CFE_PLATFORM_SB_MAX_PIPE_DEPTH.
 */
 #define SC_PIPE_DEPTH                   12  
 

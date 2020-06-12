@@ -1088,7 +1088,7 @@
       176: 1084:            BadCount++;
       176: 1085:            EntryResult = LC_WDTVAL_ERR_OPER;
         -: 1086:        }
-      880: 1087:        else if (MessageID > CFE_SB_HIGHEST_VALID_MSGID)
+      880: 1087:        else if (MessageID > CFE_PLATFORM_SB_HIGHEST_VALID_MSGID)
         -: 1088:        {
         -: 1089:            /*
         -: 1090:            ** Bad message ID (limit set by configuration parameter,

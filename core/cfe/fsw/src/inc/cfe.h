@@ -60,6 +60,8 @@ extern "C" {
 
 #include "cfe_psp.h"          /* Define Platform Support Package API */
 
+#include "cfe_platform_cfg.h"
+
 #ifdef __cplusplus
 }
 #endif

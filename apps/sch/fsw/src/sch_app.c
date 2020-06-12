@@ -244,8 +244,8 @@ void SCH_AppMain(void)
             RunStatus = CFE_ES_APP_ERROR;
         }
 
-        SCH_CheckDeadlines();
 #ifdef SCH_RTM_SUPPORTED
+        SCH_CheckDeadlines();
         OS_RtmEndFrame();
 #endif
     } /* End of while */
@@ -285,7 +285,7 @@ void SCH_AppMain(void)
 } /* End of SH_AppMain() */
 
 
-
+#ifdef SCH_RTM_SUPPORTED
 uint32 SCH_GetOutstandingActivityCount(uint32 Slot)
 {
 	uint32 count = 0;
@@ -323,7 +323,6 @@ void SCH_CheckDeadlines(void)
     	slot--;
     }
 
-#ifdef SCH_RTM_SUPPORTED
     if(OS_RtmGetRunMode() == OS_RUNTIME_MODE_NONREALTIME)
     {
     	while(SCH_GetOutstandingActivityCount(slot))
@@ -331,9 +330,9 @@ void SCH_CheckDeadlines(void)
     		OS_BinSemTake(SCH_AppData.ADHoldupSemaphore);
     	}
     }
-#endif
 }
 
+#endif
 
 
 /*******************************************************************
@@ -406,6 +405,7 @@ int32 SCH_AppInit(void)
         return(Status);
     }
 
+#ifdef SCH_RTM_SUPPORTED
     /*
     ** Initialize child task
     */
@@ -414,6 +414,7 @@ int32 SCH_AppInit(void)
     {
     	return(Status);
     }
+#endif
 
     /*
     ** Application startup event message
@@ -506,6 +507,7 @@ int32 SCH_SbInit(void)
         return(Status);
     }
 
+#ifdef SCH_RTM_SUPPORTED
     /*
     ** Create Software Bus message pipe
     */
@@ -516,6 +518,7 @@ int32 SCH_SbInit(void)
                           "Error Creating SB Pipe, RC=0x%08lX", Status);
         return(Status);
     }
+#endif
 
     /*
     ** Subscribe to Housekeeping request commands
@@ -624,6 +627,7 @@ int32 SCH_TblInit(void)
         return(Status);
     }
 
+#ifdef SCH_RTM_SUPPORTED
     /*
     ** Register the dump only deadline table.
     */
@@ -635,6 +639,7 @@ int32 SCH_TblInit(void)
                 "Error Registering Deadline, RC=0x%08lX", Status);
         return(Status);
     }
+#endif
 
     /*
     ** Load default schedule definition table data
@@ -680,6 +685,7 @@ int32 SCH_TblInit(void)
         return(Status);
     }
 
+#ifdef SCH_RTM_SUPPORTED
     /*
     ** Initialize the table.  Since this is a dump only table, the contents
     ** are undefined.
@@ -695,6 +701,7 @@ int32 SCH_TblInit(void)
 			Activity->State = SCH_DEADLINE_STATE_UNKNOWN;
 		}
 	}
+#endif
 
     return(Status);
 
@@ -1121,7 +1128,7 @@ void SCH_ProcessNextEntry(SCH_ScheduleEntry_t *NextEntry, int32 EntryNumber)
 } /* End of SCH_ProcessNextEntry() */
 
 
-
+#ifdef SCH_RTM_SUPPORTED
 SCH_ActivityDeadlineStatus_t* SCH_GetAvailableActivityDeadline(uint32 DeadlineSlot)
 {
 	uint32 i = 0;
@@ -1141,6 +1148,7 @@ SCH_ActivityDeadlineStatus_t* SCH_GetAvailableActivityDeadline(uint32 DeadlineSl
     OS_MutSemTake(SCH_AppData.ADChildTaskMutex);
 	return 0;
 }
+#endif
 
 
 /*******************************************************************
@@ -1500,6 +1508,7 @@ int32 SCH_ValidateMessageData(void *TableData)
 
 
 
+#ifdef SCH_RTM_SUPPORTED
 int32 SCH_ChildTaskInit(void)
 {
 	uint32 Status = CFE_SUCCESS;
@@ -1610,6 +1619,7 @@ void SCH_ProcessActivityComplete(CFE_SB_MsgId_t MsgID)
 	}
     OS_MutSemGive(SCH_AppData.ADChildTaskMutex);
 }
+#endif
 
 /************************/
 /*  End of File Comment */

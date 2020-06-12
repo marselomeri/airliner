@@ -61,7 +61,7 @@ extern "C" {
 /** \brief Pipe depth for the data pipe
 **
 **  \par Limits:
-**       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
+**       minimum of 1, max of CFE_PLATFORM_SB_MAX_PIPE_DEPTH.
 */
 #define BAT_DATA_PIPE_DEPTH            (2)
 

@@ -357,6 +357,29 @@ extern "C" {
     #error CFE_PLATFORM_ES_START_TASK_STACK_SIZE must be greater than or equal to 2048
 #endif
 
+
+#if ((CFE_MISSION_MAX_API_LEN % 4) != 0)
+    #error CFE_MISSION_MAX_API_LEN must be a multiple of 4
+#endif
+#if ((CFE_MISSION_MAX_PATH_LEN % 4) != 0)
+    #error CFE_MISSION_MAX_PATH_LEN must be a multiple of 4
+#endif
+#if ((CFE_MISSION_MAX_FILE_LEN % 4) != 0)
+    #error CFE_MISSION_MAX_FILE_LEN must be a multiple of 4
+#endif
+#if ((CFE_MISSION_ES_MAX_SHELL_CMD % 4) != 0)
+    #error CFE_MISSION_ES_MAX_SHELL_CMD must be a multiple of 4
+#endif
+#if ((CFE_MISSION_ES_MAX_SHELL_PKT % 4) != 0)
+    #error CFE_MISSION_ES_MAX_SHELL_PKT must be a multiple of 4
+#endif
+#if ((CFE_MISSION_ES_CDS_MAX_NAME_LENGTH % 4) != 0)
+    #error CFE_MISSION_ES_CDS_MAX_NAME_LENGTH must be a multiple of 4
+#endif
+#if ((CFE_MISSION_ES_CDS_MAX_NAME_LEN % 4) != 0)
+    #error CFE_MISSION_ES_CDS_MAX_NAME_LEN must be a multiple of 4
+#endif
+
 #ifdef __cplusplus
 }
 #endif

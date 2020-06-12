@@ -214,13 +214,13 @@ s create_tbl_file_from_cvt("$CPU", cfgAppid, "Bad Peer Entity ID2", "$cpu_cf_bad
 
 ;; Set the invalid Peer Entity ID back to valid
 $SC_$CPU_CF_TBLPBCHAN[1].PollDir[0].PeerEntityID = "0.23"
-$SC_$CPU_CF_TBLUPCHAN[0].IncomingPduMID = CFE_SB_HIGHEST_VALID_MSGID + 1
+$SC_$CPU_CF_TBLUPCHAN[0].IncomingPduMID = CFE_PLATFORM_SB_HIGHEST_VALID_MSGID + 1
 
 s create_tbl_file_from_cvt("$CPU", cfgAppid, "Bad Incoming MID", "$cpu_cf_badimid.tbl", cfgTblName, "$SC_$CPU_CF_TBLID[1]", endMnemonic)
 
 ;; Set the Incoming MID back to valid
 $SC_$CPU_CF_TBLUPCHAN[0].IncomingPduMID = CF_INCOMING_PDU_MID
-$SC_$CPU_CF_TBLPBCHAN[1].DnlinkPDUMsgID = CFE_SB_HIGHEST_VALID_MSGID + 1
+$SC_$CPU_CF_TBLPBCHAN[1].DnlinkPDUMsgID = CFE_PLATFORM_SB_HIGHEST_VALID_MSGID + 1
 
 s create_tbl_file_from_cvt("$CPU", cfgAppid, "Bad Downlink MID", "$cpu_cf_baddmid.tbl", cfgTblName, "$SC_$CPU_CF_TBLID[1]", endMnemonic)
 

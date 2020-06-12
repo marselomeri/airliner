@@ -98,7 +98,7 @@ int32 OS_statHook(const char *path, os_fstat_t *filestats);
 int32 OS_statHook(const char *path, os_fstat_t *filestats)
 {
 
-    filestats->st_size = 123;
+    filestats->FileSize = 123;
     
     return OS_FS_SUCCESS;
 }
@@ -124,33 +124,33 @@ os_dirent_t *  OS_readdirHook (os_dirp_t directory)
     
     if(ReaddirHookCallCnt == 1){
     
-      strcpy(ReaddirHookDirEntry.d_name,".");
+      strcpy(ReaddirHookDirEntry.FileName,".");
     
     }else if(ReaddirHookCallCnt == 2){
     
-      strcpy(ReaddirHookDirEntry.d_name,"..");
+      strcpy(ReaddirHookDirEntry.FileName,"..");
     
     }else if(ReaddirHookCallCnt == 3){
       
-      strcpy(ReaddirHookDirEntry.d_name,"filename1.txt");
+      strcpy(ReaddirHookDirEntry.FileName,"filename1.txt");
       ReaddirHookDirEntry.d_type = DT_DIR;
     
     }else if(ReaddirHookCallCnt == 4){
       
-      strcpy(ReaddirHookDirEntry.d_name,"ThisFilenameIsTooLongItExceeds64ThisFilenameIsTooLongItIs65charas");
+      strcpy(ReaddirHookDirEntry.FileName,"ThisFilenameIsTooLongItExceeds64ThisFilenameIsTooLongItIs65charas");
       ReaddirHookDirEntry.d_type = 5;
     
     }else if(ReaddirHookCallCnt == 5){
       
-      strcpy(ReaddirHookDirEntry.d_name, "ThisFilenameIsTooLongWhenThePathIsAttachedToIt.ItIs63Characters");
+      strcpy(ReaddirHookDirEntry.FileName, "ThisFilenameIsTooLongWhenThePathIsAttachedToIt.ItIs63Characters");
                                           
     }else if(ReaddirHookCallCnt == 6){
       
-      strcpy(ReaddirHookDirEntry.d_name,"testfile.txt");
+      strcpy(ReaddirHookDirEntry.FileName,"testfile.txt");
     
     }else if(ReaddirHookCallCnt == 7){
       
-      strcpy(ReaddirHookDirEntry.d_name,"filename5.txt");
+      strcpy(ReaddirHookDirEntry.FileName,"filename5.txt");
     
     }else{
       return NULL;

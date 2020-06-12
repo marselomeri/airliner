@@ -65,3 +65,4 @@ typedef struct
 #define CFE_PSP_NUM_EEPROM_BANKS 1
 
 #endif
+

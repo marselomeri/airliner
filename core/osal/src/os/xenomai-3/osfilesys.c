@@ -99,7 +99,7 @@ os_fshealth_t OS_chkfs (const char *name, boolean repair)
 
 
 
-int32 OS_FS_GetPhysDriveName(char * PhysDriveName, char * MountPoint)
+int32 OS_FS_GetPhysDriveName(char* PhysDriveName, const char* MountPoint)
 {
 
     return OS_FS_UNIMPLEMENTED;

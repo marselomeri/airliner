@@ -53,29 +53,27 @@ osal_set_blackbox_unit_tests(
         ${CMAKE_CURRENT_SOURCE_DIR}/osloader.c
         ${CMAKE_CURRENT_SOURCE_DIR}/osnetwork.c
         ${CMAKE_CURRENT_SOURCE_DIR}/ostimer.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/osselect.c 
+        ${OSAL_SHARED_SRC}
 )
 
 osal_add_whitebox_unit_test(
     oscore-test
     SOURCE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/osnetwork.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/osfilesys.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/osloader.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/ostimer.c
         ${CMAKE_CURRENT_SOURCE_DIR}/osapi.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/osfileapi.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/oscore-test/ut_oscore_binsem_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/oscore-test/ut_oscore_countsem_test.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/oscore-test/ut_oscore_exception_test.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/oscore-test/ut_oscore_interrupt_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/oscore-test/ut_oscore_misc_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/oscore-test/ut_oscore_mutex_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/oscore-test/ut_oscore_queue_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/oscore-test/ut_oscore_task_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/oscore-test/ut_oscore_test.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_osloader_stubs.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_osfile_stubs.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_osfilesys_stubs.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_osloader_stubs.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_osnetwork_stubs.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_os_stubs.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_ostimer_stubs.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_psp_voltab_stubs.c
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared
 )

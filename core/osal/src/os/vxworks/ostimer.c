@@ -76,6 +76,9 @@ typedef struct
     TASK_ID             handler_task;
     timer_t             host_timerid;
     enum OS_TimerState  timer_state;
+    uint32              configured_start_time;
+    uint32              configured_interval_time;
+    bool                reset_flag;
 } OS_impl_timebase_internal_record_t;
 
 /****************************************************************************************
@@ -90,16 +93,41 @@ static uint32      OS_ClockAccuracyNsec;
                                 INTERNAL FUNCTIONS
 ****************************************************************************************/
 
+                        
+/*----------------------------------------------------------------
+ *
+ * Function: OS_TimeBaseLock_Impl
+ *
+ *  Purpose: Implemented per internal OSAL API
+ *           See prototype in os-impl.h for argument/return detail
+ *
+ *-----------------------------------------------------------------*/
 void OS_TimeBaseLock_Impl(uint32 local_id)
 {
     semTake(OS_impl_timebase_table[local_id].handler_mutex, WAIT_FOREVER);
-}
-
+} /* end OS_TimeBaseLock_Impl */
+                        
+/*----------------------------------------------------------------
+ *
+ * Function: OS_TimeBaseUnlock_Impl
+ *
+ *  Purpose: Implemented per internal OSAL API
+ *           See prototype in os-impl.h for argument/return detail
+ *
+ *-----------------------------------------------------------------*/
 void OS_TimeBaseUnlock_Impl(uint32 local_id)
 {
     semGive(OS_impl_timebase_table[local_id].handler_mutex);
-}
+} /* end OS_TimeBaseUnlock_Impl */
 
+                        
+/*----------------------------------------------------------------
+ *
+ * Function: OS_Impl_UsecToTimespec
+ *
+ *  Purpose: Local helper routine, not part of OSAL API.
+ *
+ *-----------------------------------------------------------------*/
 static void OS_Impl_UsecToTimespec(uint32 usecs, struct timespec *time_spec)
 {
    if ( usecs < 1000000 )
@@ -112,21 +140,30 @@ static void OS_Impl_UsecToTimespec(uint32 usecs, struct timespec *time_spec)
       time_spec->tv_sec = usecs / 1000000;
       time_spec->tv_nsec = (usecs % 1000000) * 1000;
    }
-}
+} /* end OS_Impl_UsecToTimespec */
 
+                        
+/*----------------------------------------------------------------
+ *
+ * Function: OS_VxWorks_SigWait
+ *
+ *  Purpose: Local helper routine, not part of OSAL API.
+ *           Blocks the calling task until the timer tick arrives
+ *
+ *-----------------------------------------------------------------*/
 static uint32 OS_VxWorks_SigWait(uint32 local_id)
 {
     OS_impl_timebase_internal_record_t *local;
     OS_common_record_t *global;
     uint32 active_id;
-    uint32 interval_time;
+    uint32 tick_time;
     int signo;
     int ret;
 
     local = &OS_impl_timebase_table[local_id];
     global = &OS_global_timebase_table[local_id];
     active_id = global->active_id;
-    interval_time = 0;
+    tick_time = 0;
 
     if (active_id != 0 && local->assigned_signal > 0)
     {
@@ -156,13 +193,30 @@ static uint32 OS_VxWorks_SigWait(uint32 local_id)
         if (ret == OK && signo == local->assigned_signal &&
                 global->active_id == active_id)
         {
-            interval_time = OS_timebase_table[local_id].nominal_interval_time;
+            if (local->reset_flag)
+            {
+                /* first interval after reset, use start time */
+                tick_time = local->configured_start_time;
+                local->reset_flag = false;
+            }
+            else
+            {
+                tick_time = local->configured_interval_time;
+            }
         }
     }
 
-    return interval_time;
-}
+    return tick_time;
+} /* end OS_VxWorks_SigWait */
 
+                        
+/*----------------------------------------------------------------
+ *
+ * Function: OS_VxWorks_RegisterTimer
+ *
+ *  Purpose: Local helper routine, not part of OSAL API.
+ *
+ *-----------------------------------------------------------------*/
 static void OS_VxWorks_RegisterTimer(uint32 local_id)
 {
     OS_impl_timebase_internal_record_t *local;
@@ -198,11 +252,19 @@ static void OS_VxWorks_RegisterTimer(uint32 local_id)
     {
         local->timer_state = OS_TimerRegState_SUCCESS;
     }
-}
+} /* end OS_VxWorks_RegisterTimer */
 
 /****************************************************************************************
                       Entry point for helper thread
 ****************************************************************************************/
+                        
+/*----------------------------------------------------------------
+ *
+ * Function: OS_VxWorks_TimeBaseTask
+ *
+ *  Purpose: Local helper routine, not part of OSAL API.
+ *
+ *-----------------------------------------------------------------*/
 static int OS_VxWorks_TimeBaseTask(int arg)
 {
     uint32 local_id;
@@ -214,7 +276,7 @@ static int OS_VxWorks_TimeBaseTask(int arg)
     }
 
     return 0;
-}
+} /* end OS_VxWorks_TimeBaseTask */
 
 
 
@@ -222,6 +284,14 @@ static int OS_VxWorks_TimeBaseTask(int arg)
 /****************************************************************************************
                                 INITIALIZATION FUNCTION
 ****************************************************************************************/
+                        
+/*----------------------------------------------------------------
+ *
+ * Function: OS_VxWorks_TimeBaseAPI_Impl_Init
+ *
+ *  Purpose: Local helper routine, not part of OSAL API.
+ *
+ *-----------------------------------------------------------------*/
 int32  OS_VxWorks_TimeBaseAPI_Impl_Init ( void )
 {
     int clockRate;
@@ -257,21 +327,21 @@ int32  OS_VxWorks_TimeBaseAPI_Impl_Init ( void )
     OS_SharedGlobalVars.MicroSecPerTick = (OS_ClockAccuracyNsec + 500) / 1000;
 
     return(OS_SUCCESS);
-}
+} /* end OS_VxWorks_TimeBaseAPI_Impl_Init */
 
 /****************************************************************************************
                                    Time Base API
 ****************************************************************************************/
 
-/******************************************************************************
-**  Function:  OS_TimeBaseCreate
-**
-**  Purpose:  Create a new OSAL Time base
-**
-**  Arguments:
-**
-**  Return:
-*/
+                        
+/*----------------------------------------------------------------
+ *
+ * Function: OS_TimeBaseCreate_Impl
+ *
+ *  Purpose: Implemented per internal OSAL API
+ *           See prototype in os-impl.h for argument/return detail
+ *
+ *-----------------------------------------------------------------*/
 int32 OS_TimeBaseCreate_Impl(uint32 timer_id)
 {
     /*
@@ -296,6 +366,7 @@ int32 OS_TimeBaseCreate_Impl(uint32 timer_id)
     local->handler_mutex = (SEM_ID)0;
     local->host_timerid = 0;
     local->timer_state = OS_TimerRegState_INIT;
+    local->reset_flag = false;
 
     /*
      * Set up the necessary OS constructs
@@ -443,19 +514,17 @@ int32 OS_TimeBaseCreate_Impl(uint32 timer_id)
 
 
     return return_code;
-}
+} /* end OS_TimeBaseCreate_Impl */
 
-/******************************************************************************
-**  Function:  OS_TimeBaseSet
-**
-**  Purpose:
-**
-**  Arguments:
-**    (none)
-**
-**  Return:
-**    (none)
-*/
+                        
+/*----------------------------------------------------------------
+ *
+ * Function: OS_TimeBaseSet_Impl
+ *
+ *  Purpose: Implemented per internal OSAL API
+ *           See prototype in os-impl.h for argument/return detail
+ *
+ *-----------------------------------------------------------------*/
 int32 OS_TimeBaseSet_Impl(uint32 timer_id, int32 start_time, int32 interval_time)
 {
     OS_impl_timebase_internal_record_t *local;
@@ -487,28 +556,74 @@ int32 OS_TimeBaseSet_Impl(uint32 timer_id, int32 start_time, int32 interval_time
         if (status == OK)
         {
             return_code = OS_SUCCESS;
+
+            /*
+             * VxWorks will round the interval up to the next higher
+             * system tick interval.  Sometimes this can make a substantial
+             * difference in the actual time, particularly as the error
+             * accumulates over time.
+             *
+             * timer_gettime() will reveal the actual interval programmed,
+             * after all rounding/adjustments, which can be used to determine
+             * the actual start_time/interval_time that will be realized.
+             *
+             * If this actual interval is different than the intended value,
+             * it may indicate the need for better tuning on the app/config/bsp
+             * side, and so a DEBUG message is generated.
+             */
+            status = timer_gettime(local->host_timerid, &timeout);
+            if (status == OK)
+            {
+                local->configured_start_time =
+                    (timeout.it_value.tv_sec * 1000000) +
+                        (timeout.it_value.tv_nsec / 1000);
+                local->configured_interval_time =
+                        (timeout.it_interval.tv_sec * 1000000) +
+                            (timeout.it_interval.tv_nsec / 1000);
+
+                if (local->configured_start_time != start_time)
+                {
+                    OS_DEBUG("WARNING: timer %lu start_time requested=%luus, configured=%luus\n",
+                            (unsigned long)timer_id,
+                            (unsigned long)start_time,
+                            (unsigned long)local->configured_start_time);
+                }
+                if (local->configured_interval_time != interval_time)
+                {
+                    OS_DEBUG("WARNING: timer %lu interval_time requested=%luus, configured=%luus\n",
+                            (unsigned long)timer_id,
+                            (unsigned long)interval_time,
+                            (unsigned long)local->configured_interval_time);
+                }
+
+            }
+
         }
         else
         {
             return_code = OS_TIMER_ERR_INVALID_ARGS;
         }
+
+    }
+
+    if (!local->reset_flag && return_code == OS_SUCCESS)
+    {
+        local->reset_flag = true;
     }
 
     return return_code;
-}
+} /* end OS_TimeBaseSet_Impl */
 
 
-/******************************************************************************
-**  Function:  OS_TimerDelete
-**
-**  Purpose:
-**
-**  Arguments:
-**    (none)
-**
-**  Return:
-**    (none)
-*/
+                        
+/*----------------------------------------------------------------
+ *
+ * Function: OS_TimeBaseDelete_Impl
+ *
+ *  Purpose: Implemented per internal OSAL API
+ *           See prototype in os-impl.h for argument/return detail
+ *
+ *-----------------------------------------------------------------*/
 int32 OS_TimeBaseDelete_Impl(uint32 timer_id)
 {
     OS_impl_timebase_internal_record_t *local;
@@ -533,23 +648,22 @@ int32 OS_TimeBaseDelete_Impl(uint32 timer_id)
     local->handler_task = 0;
 
     return return_code;
-}
+} /* end OS_TimeBaseDelete_Impl */
 
-/***************************************************************************************
-**    Name: OS_TimerGetInfo
-**
-**    Purpose: This function will pass back a pointer to structure that contains
-**             all of the relevant info( name and creator) about the specified timer.
-**
-**    Returns: OS_ERR_INVALID_ID if the id passed in is not a valid timer
-**             OS_INVALID_POINTER if the timer_prop pointer is null
-**             OS_SUCCESS if success
-*/
+                        
+/*----------------------------------------------------------------
+ *
+ * Function: OS_TimeBaseGetInfo_Impl
+ *
+ *  Purpose: Implemented per internal OSAL API
+ *           See prototype in os-impl.h for argument/return detail
+ *
+ *-----------------------------------------------------------------*/
 int32 OS_TimeBaseGetInfo_Impl (uint32 timer_id, OS_timebase_prop_t *timer_prop)
 {
     return OS_SUCCESS;
 
-} /* end OS_TimerGetInfo */
+} /* end OS_TimeBaseGetInfo_Impl */
 
 /****************************************************************************************
                   Other Time-Related API Implementation

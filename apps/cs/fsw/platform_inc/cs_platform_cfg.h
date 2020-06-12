@@ -95,7 +95,7 @@
 **
 **  \par Limits:
 **		 The value must be greater than zero and cannot exceed the
-**       definition of #CFE_SB_MAX_PIPE_DEPTH.
+**       definition of #CFE_PLATFORM_SB_MAX_PIPE_DEPTH.
 */
 #define CS_PIPE_DEPTH                   12
 

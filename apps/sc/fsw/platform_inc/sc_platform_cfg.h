@@ -2,7 +2,7 @@
  ** File:
  **   $Id: sc_platform_cfg.h 1.2 2015/11/20 12:03:20EST sstrege Exp  $
  **
- **  Copyright © 2007-2014 United States Government as represented by the 
+ **  Copyright ï¿½ 2007-2014 United States Government as represented by the 
  **  Administrator of the National Aeronautics and Space Administration. 
  **  All Other Rights Reserved.  
  **
@@ -169,7 +169,7 @@
 **
 **  \par Limits:
 **       This parameter must be greater than zero and less than or equal to
-**       CFE_SB_MAX_PIPE_DEPTH.
+**       CFE_PLATFORM_SB_MAX_PIPE_DEPTH.
 */
 #define SC_PIPE_DEPTH                   12  
 

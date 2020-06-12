@@ -42,3 +42,5 @@ set(OSAL_PORTABLE_SRC
     ${CMAKE_CURRENT_LIST_DIR}/os-impl-posix-gettime.c
     ${CMAKE_CURRENT_LIST_DIR}/os-impl-posix-io.c
 )
+
+set(OSAL_PORTABLE_DIR ${CMAKE_CURRENT_LIST_DIR})

@@ -637,7 +637,7 @@ UT_os_openfile_test_exit_tag:
 }
 
 /*--------------------------------------------------------------------------------*
-** Syntax: int32 OS_close(int32 filedes)
+** Syntax: int32 OS_close(uint32 filedes)
 ** Purpose: Closes a file of a given file descriptor
 ** Parameters: filedes - a file descriptor value
 ** Returns: OS_FS_ERR_INVALID_FD if the file descriptor passed in invalid
@@ -1085,7 +1085,7 @@ UT_os_writefile_test_exit_tag:
 }
 
 /*--------------------------------------------------------------------------------*
-** Syntax: int32 OS_lseek(int32 filedes, int32 offset, uint32 whence)
+** Syntax: int32 OS_lseek(uint32 filedes, int32 offset, uint32 whence)
 ** Purpose: Moves the read/write pointer of a given file descriptor to the given offset
 ** Parameters: filedes - file descriptor of the given file
 **             offset - number of bytes to offset the read/write pointer from its position

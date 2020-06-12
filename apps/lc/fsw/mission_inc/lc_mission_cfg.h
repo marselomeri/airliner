@@ -38,7 +38,7 @@
 **
 **  \par Limits:
 **       This parameter shouldn't be larger than the value set for 
-**       #CFE_SB_HIGHEST_VALID_MSGID.
+**       #CFE_PLATFORM_SB_HIGHEST_VALID_MSGID.
 */
 #define LC_RTS_REQ_MID                    0x18A9
 

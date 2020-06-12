@@ -6,8 +6,6 @@
 
 #include "ut_os_stubs.h"
 
-#include "ut_os_stub_platforms.h"
-
 /*--------------------------------------------------------------------------------*
 ** Macros
 **--------------------------------------------------------------------------------*/
@@ -75,6 +73,7 @@ void UT_os_teardown(const char* testSuiteName)
         g_logInfo.logFD = NULL;
     }
 #endif  /* !OS_USE_EMBEDDED_PRINTF */
+
     OS_printf("\n%s HAS %d tests total.\n", testSuiteName, (int)g_logInfo.totalTstCnt);
     OS_printf("%s PASSED %d tests.\n", testSuiteName, (int)g_logInfo.nPassed);
     OS_printf("%s FAILED %d tests.\n", testSuiteName, (int)g_logInfo.nFailed);
@@ -306,36 +305,11 @@ void UT_os_log_test_result_category(const char* catName, const char* catKey, uin
 }
 
 /*--------------------------------------------------------------------------------*
-** Print OS_FDTable[]
-**--------------------------------------------------------------------------------*/
-void UT_os_print_fdtable(const char* outputDesc)
-{
-#ifdef UT_VERBOSE
-    uint32 j;
-
-    if (outputDesc)
-        UT_OS_LOG_MACRO("%s", outputDesc)
-
-    UT_OS_LOG_MACRO("\n----------------------------------------------------------\n")
-    UT_OS_LOG_MACRO("        %-6s%-30s%-8s%s", "FD", "PATH", "USERID", "VALID?")
-    UT_OS_LOG_MACRO("\n----------------------------------------------------------\n")
-
-    for (j=0; j < OS_MAX_NUM_OPEN_FILES; j++)
-    {
-        /* UT_OS_PRINT_FDTABLE_CONTENT_MACRO */
-        UT_OS_LOG_MACRO("        %-6s%-30s%-8s%s\n", "FD", "PATH", "USERID", "VALID?")
-    }
-
-    UT_OS_LOG_MACRO("\n")
-#endif  /* UT_VERBOSE */
-}
-
-/*--------------------------------------------------------------------------------*
 ** Print OS_VolumeTable[]
 **--------------------------------------------------------------------------------*/
 void UT_os_print_volumetable(const char* outputDesc)
 {
-#ifdef UT_VERBOSE2
+#ifdef UT_VERBOSE
     int j;
 
     if (outputDesc)

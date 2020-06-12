@@ -9,8 +9,6 @@
 **--------------------------------------------------------------------------------*/
 
 #include "ut_ostimer_test.h"
-#define __USE_UNIX98
-#include <pthread.h>
 
 /*--------------------------------------------------------------------------------*
 ** Macros
@@ -31,15 +29,16 @@ extern UT_OsLogInfo_t  g_logInfo;
 **--------------------------------------------------------------------------------*/
 
 int32  g_skipTestCase = -1;
-char*  g_skipTestCaseResult = " ";
-char*  g_timerNames[UT_OS_TIMER_LIST_LEN];
+const char*  g_skipTestCaseResult = " ";
+
+const char*  g_timerNames[UT_OS_TIMER_LIST_LEN];
 char   g_longTimerName[OS_MAX_API_NAME+5];
+
 uint32  g_cbLoopCntMax = 5;
 uint32  g_toleranceVal = 0;
 uint32  g_timerFirst   = 0;
 int32   g_status  = 0;
 uint32  g_timerId = 0;
-pthread_mutex_t g_lock;
 
 /*--------------------------------------------------------------------------------*
 ** Local function prototypes
@@ -65,10 +64,7 @@ void UT_os_timercallback(uint32 timerId)
     static uint32 prevIntervalTime = 0;
     static uint32 currIntervalTime = 0;
     static OS_time_t currTime = {0,0}, endTime = {0,0};
-    sigset_t  previous;
-    sigset_t  mask;
 
-    OS_InterruptSafeLock(&g_lock, &mask, &previous);
     if (timerId == g_timerId)
     {
         if (g_timerFirst)
@@ -117,28 +113,15 @@ void UT_os_timercallback(uint32 timerId)
             g_status = (res == 0) ? 1 : -1;
 
             /* slow the timer down so the main test thread can continue */
-            OS_InterruptSafeUnlock(&g_lock, &previous);
             res = OS_TimerSet(g_timerId, 1000, 500000);
-            OS_InterruptSafeLock(&g_lock, &mask, &previous);
         }
     }
-    OS_InterruptSafeUnlock(&g_lock, &previous);
 }
 
 /*--------------------------------------------------------------------------------*/
 
 void UT_os_init_timer_misc()
 {
-
-    /*
-    ** Create the Timer Table mutex
-    */
-	pthread_mutexattr_t attr;
-	pthread_mutexattr_init(&attr);
-	pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
-	pthread_mutexattr_settype(&attr, PTHREAD_PRIO_INHERIT);
-    pthread_mutex_init((pthread_mutex_t *) & g_lock, &attr);
-
     memset(g_longTimerName, 'Y', sizeof(g_longTimerName));
     g_longTimerName[sizeof(g_longTimerName)-1] = '\0';
 }
@@ -222,17 +205,14 @@ void UT_timertest_task(void)
    UT_os_setup_timergetinfo_test();
    UT_os_timergetinfo_test();
 
-   /* Don't test for tolerance.  PC-Linux is not a hard real time system
-    * so a tolerance test would periodically fail.
-    */
-   //UT_os_setup_timerset_test();
-   //UT_OS_LOG_MACRO("\n============================================\n")
-   //UT_os_timerset_test();
-   //UT_OS_LOG_MACRO("============================================\n")
+   UT_os_setup_timerset_test();
+   UT_OS_LOG_MACRO("\n============================================\n")
+   UT_os_timerset_test();
+   UT_OS_LOG_MACRO("============================================\n")
 
    UT_os_teardown("ut_ostimer");
 
-   OS_ApplicationShutdown(TRUE);
+   OS_ApplicationShutdown(true);
    OS_ApplicationExit(g_logInfo.nFailed > 0);
 }
 

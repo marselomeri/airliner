@@ -2,7 +2,7 @@
 ** File:
 **   $Id: cf_platform_cfg.h 1.3.1.1 2015/03/06 15:30:42EST sstrege Exp  $
 **
-**   Copyright © 2007-2014 United States Government as represented by the 
+**   Copyright ï¿½ 2007-2014 United States Government as represented by the 
 **   Administrator of the National Aeronautics and Space Administration. 
 **   All Other Rights Reserved.  
 **
@@ -69,7 +69,7 @@
 **  \par Limits:
 **		 The minimum size of this paramater is 1
 **       The maximum size dictated by cFE platform configuration 
-**		 parameter is CFE_SB_MAX_PIPE_DEPTH
+**		 parameter is CFE_PLATFORM_SB_MAX_PIPE_DEPTH
 */
 #define CF_PIPE_DEPTH                       40
 

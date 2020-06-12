@@ -47,12 +47,6 @@ extern "C" {
 
 
 
-/******************* Macro Definitions ***********************/
-#define CFE_FS_HDR_DESC_MAX_LEN 32 /**< \brief Max length of description field in a standard cFE File Header */
-
-#define CFE_FS_FILE_CONTENT_ID  0x63464531  /**< \brief Magic Number for cFE compliant files (= 'cFE1') */
-
-
 /*
  * To preserve source-code compatibility with existing code,
  * this allows the old enum names to still work.  This should
@@ -80,29 +74,6 @@ extern "C" {
 
 
 #endif  /* CFE_OMIT_DEPRECATED_6_6 */
-
-
-/**
-** \brief Standard cFE File header structure definition
-*/
-typedef struct
-{
-    uint32  ContentType;           /**< \brief Identifies the content type (='cFE1'=0x63464531)*/
-    uint32  SubType;               /**< \brief Type of \c ContentType, if necessary */
-                                   /**< Standard SubType definitions can be found
-                                        \link #CFE_FS_SubType_ES_ERLOG here \endlink */
-    uint32  Length;                /**< \brief Length of primary header */
-    uint32  SpacecraftID;          /**< \brief Spacecraft that generated the file */
-    uint32  ProcessorID;           /**< \brief Processor that generated the file */
-    uint32  ApplicationID;         /**< \brief Application that generated the file */
-  
-    uint32  TimeSeconds;           /**< \brief File creation timestamp (seconds) */
-    uint32  TimeSubSeconds;        /**< \brief File creation timestamp (sub-seconds) */
-
-    char    Description[CFE_FS_HDR_DESC_MAX_LEN];       /**< \brief File description */
-
-} CFE_FS_Header_t;
-
 
 /*
 ** File header access functions...
@@ -146,8 +117,12 @@ int32 CFE_FS_ReadHeader(CFE_FS_Header_t *Hdr, int32 FileDes);
 **        This API will clear the specified #CFE_FS_Header_t variable and
 **        initialize the description field with the specified value
 **
-** \param[in] Hdr     Pointer to a variable of type #CFE_FS_Header_t that will be
-**                    cleared and initialized
+** \param[in] Hdr          Pointer to a variable of type #CFE_FS_Header_t that will be
+**                         cleared and initialized
+**
+** \param[in] *Description Initializes Header's Description
+**
+** \param[in]  SubType     Initializes Header's SubType
 **
 ** \sa #CFE_FS_WriteHeader
 **

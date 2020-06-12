@@ -6444,7 +6444,7 @@ void TestESMempool(void)
     UT_Report(__FILE__, __LINE__,
               CFE_ES_GetPoolBuf((uint32 **) &address,
                                 HandlePtr,
-								CFE_PLATFORM_ES_MAX_BLOCK_SIZE+1) == CFE_ES_ERR_MEM_BLOCK_SIZE,
+                                CFE_PLATFORM_ES_MAX_BLOCK_SIZE+1) == CFE_ES_ERR_MEM_BLOCK_SIZE,
               "CFE_ES_GetPoolBuf",
               "Requested pool size too large");
 

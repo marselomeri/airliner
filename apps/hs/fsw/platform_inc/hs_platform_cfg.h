@@ -2,7 +2,7 @@
 ** File:
 **   $Id: hs_platform_cfg.h 1.3 2016/08/05 09:40:27EDT mdeschu Exp  $
 **
-**   Copyright © 2007-2014 United States Government as represented by the 
+**   Copyright ï¿½ 2007-2014 United States Government as represented by the 
 **   Administrator of the National Aeronautics and Space Administration. 
 **   All Other Rights Reserved.  
 **
@@ -310,7 +310,7 @@
 **       Used during initialization in the call to #CFE_SB_CreatePipe
 **
 **  \par Limits:
-**       This parameter can't be larger than #CFE_SB_MAX_PIPE_DEPTH
+**       This parameter can't be larger than #CFE_PLATFORM_SB_MAX_PIPE_DEPTH
 **
 **       This parameter must be greater than 0.
 */
@@ -325,7 +325,7 @@
 **       #CFE_SB_CreatePipe
 **
 **  \par Limits:
-**       This parameter can't be larger than #CFE_SB_MAX_PIPE_DEPTH
+**       This parameter can't be larger than #CFE_PLATFORM_SB_MAX_PIPE_DEPTH
 **
 **       This parameter must be greater than 0.
 */
@@ -338,7 +338,7 @@
 **       Used during initialization in the call to #CFE_SB_CreatePipe
 **
 **  \par Limits:
-**       This parameter can't be larger than #CFE_SB_MAX_PIPE_DEPTH
+**       This parameter can't be larger than #CFE_PLATFORM_SB_MAX_PIPE_DEPTH
 **
 **       This parameter must be greater than 0.
 */

@@ -29,9 +29,9 @@ extern UT_OsLogInfo_t  g_logInfo;
 **--------------------------------------------------------------------------------*/
 
 int32  g_skipTestCase = -1;
-char*  g_skipTestCaseResult = " ";
+const char*  g_skipTestCaseResult = " ";
 
-char* g_task_names[UT_OS_TASK_LIST_LEN];
+const char* g_task_names[UT_OS_TASK_LIST_LEN];
 char  g_long_task_name[OS_MAX_API_NAME+5];
 
 /*--------------------------------------------------------------------------------*
@@ -49,6 +49,7 @@ void UT_os_setup_install_delete_handler_test(void);
 void UT_os_init_task_exit_test(void);
 void UT_os_init_task_delay_test(void);
 void UT_os_init_task_set_priority_test(void);
+void UT_os_init_task_register_test(void);
 void UT_os_init_task_get_id_test(void);
 void UT_os_init_task_get_id_by_name_test(void);
 void UT_os_init_task_get_info_test(void);
@@ -192,7 +193,7 @@ void OS_Application_Startup(void)
     UT_os_bin_sem_flush_test();
     UT_os_bin_sem_give_test();
     UT_os_bin_sem_take_test();
-//    UT_os_bin_sem_timed_wait_test();
+    UT_os_bin_sem_timed_wait_test();
     UT_os_bin_sem_get_id_by_name_test();
     UT_os_bin_sem_get_info_test();
 
@@ -200,7 +201,7 @@ void OS_Application_Startup(void)
     UT_os_count_sem_delete_test();
     UT_os_count_sem_give_test();
     UT_os_count_sem_take_test();
-//    UT_os_count_sem_timed_wait_test();
+    UT_os_count_sem_timed_wait_test();
     UT_os_count_sem_get_id_by_name_test();
     UT_os_count_sem_get_info_test();
 
@@ -214,7 +215,7 @@ void OS_Application_Startup(void)
     UT_os_queue_create_test();
     UT_os_queue_delete_test();
     UT_os_queue_put_test();
-//    //UT_os_queue_get_test();
+    UT_os_queue_get_test();
     UT_os_queue_get_id_by_name_test();
     UT_os_queue_get_info_test();
 

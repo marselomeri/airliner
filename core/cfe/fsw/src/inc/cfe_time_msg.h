@@ -186,7 +186,7 @@ extern "C" {
 **  \cfecmdmnemonic \TIME_SETSOURCE
 **
 **  \par Command Structure
-**       #CFE_TIME_SourceCmd_t
+**       #CFE_TIME_SetSource_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with the 
@@ -237,7 +237,7 @@ extern "C" {
 **  \cfecmdmnemonic \TIME_SETSTATE
 **
 **  \par Command Structure
-**       #CFE_TIME_StateCmd_t
+**       #CFE_TIME_SetState_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with the 
@@ -591,7 +591,7 @@ extern "C" {
 **  \cfecmdmnemonic \TIME_ADD1HZSTCF
 **
 **  \par Command Structure
-**       #CFE_TIME_1HzAdjCmd_t
+**       #CFE_TIME_Add1HZAdjustment_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with the 
@@ -637,7 +637,7 @@ extern "C" {
 **  \cfecmdmnemonic \TIME_SUB1HZSTCF
 **
 **  \par Command Structure
-**       #CFE_TIME_1HzAdjCmd_t
+**       #CFE_TIME_Sub1HZAdjustment_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with the 
@@ -679,7 +679,7 @@ extern "C" {
 **  \cfecmdmnemonic \TIME_SETSIGNAL
 **
 **  \par Command Structure
-**       #CFE_TIME_SignalCmd_t
+**       #CFE_TIME_SetSignal_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with the 

@@ -1540,7 +1540,6 @@ int32 CFE_ES_ListResourcesDebug(void)
 
 }
 
-
 /*
 **---------------------------------------------------------------------------------------
 **   Name: CFE_ES_GetAppInfoInternal

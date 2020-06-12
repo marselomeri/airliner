@@ -124,12 +124,18 @@ extern Target_CfeConfigData GLOBAL_CFE_CONFIGDATA;
  */
 typedef const struct
 {
-    const char *MissionVersion; /**< Version string acquired from version control system at build time */
-    const char *CfeVersion;     /**< Version string acquired from version control system at build time */
-    const char *OsalVersion;    /**< Version string acquired from version control system at build time */
-    const char *Config;  /**< Configuration used for build */
-    const char *Date;    /**< Date and time of build */
-    const char *User;    /**< User ID and build machine */
+	const char *Commit;
+	const char *Tag;
+	const char *Branch;
+	const char *Config;
+	const char *CfeVersion;
+	const char *OsalPath;
+	const char *OsalVersion;
+	const char *PspPath;
+	const char *PspVersion;
+	const char *Date;
+	const char *MissionVersion;
+	const char *User;
 
     /*
      * Default values for CPU ID and CPU Name

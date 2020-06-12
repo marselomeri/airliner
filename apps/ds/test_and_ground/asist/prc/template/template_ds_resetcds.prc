@@ -703,7 +703,7 @@ for i = 0 to DS_PACKETS_IN_FILTER_TABLE-1 do
   if (filterMsgID <> 0) then
     filterEntries = filterEntries + 1
     write "== Looking for msgID = ", %hex(filterMsgId,4)
-    for sbIndex = 1 to CFE_SB_HIGHEST_VALID_MSGID do
+    for sbIndex = 1 to CFE_PLATFORM_SB_HIGHEST_VALID_MSGID do
       if  ($SC_$CPU_SB_RouteEntry[sbIndex].SB_AppName = DSAppName) AND ;;
           ($SC_$CPU_SB_RouteEntry[sbIndex].SB_MsgID = filterMsgID) then
         foundSubscription = foundSubscription + 1
@@ -1045,7 +1045,7 @@ for i = 0 to DS_PACKETS_IN_FILTER_TABLE-1 do
   if (filterMsgID <> 0) then
     filterEntries = filterEntries + 1
     write "== Looking for msgID = ", %hex(filterMsgId,4)
-    for sbIndex = 1 to CFE_SB_HIGHEST_VALID_MSGID do
+    for sbIndex = 1 to CFE_PLATFORM_SB_HIGHEST_VALID_MSGID do
       if  ($SC_$CPU_SB_RouteEntry[sbIndex].SB_AppName = DSAppName) AND ;;
           ($SC_$CPU_SB_RouteEntry[sbIndex].SB_MsgID = filterMsgID) then
         foundSubscription = foundSubscription + 1

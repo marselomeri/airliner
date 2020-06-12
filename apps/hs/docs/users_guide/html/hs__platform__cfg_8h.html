@@ -163,7 +163,7 @@
 <div class="memdoc">
 <dl class="cfshscfg"><dt><b><a class="el" href="cfshscfg.html#_cfshscfg000015">Purpose:</a></b></dt><dd>Software bus command pipe depth</dd></dl>
 <dl class="user"><dt><b>Description:</b></dt><dd>Depth of the software bus pipe HS uses for commands and HK requests. Used during initialization in the call to CFE_SB_CreatePipe</dd></dl>
-<dl class="user"><dt><b>Limits:</b></dt><dd>This parameter can't be larger than CFE_SB_MAX_PIPE_DEPTH</dd></dl>
+<dl class="user"><dt><b>Limits:</b></dt><dd>This parameter can't be larger than CFE_PLATFORM_SB_MAX_PIPE_DEPTH</dd></dl>
 <p>This parameter must be greater than 0. </p>
 
 <p>Definition at line <a class="el" href="hs__platform__cfg_8h_source.html#l00317">317</a> of file <a class="el" href="hs__platform__cfg_8h_source.html">hs_platform_cfg.h</a>.</p>
@@ -254,7 +254,7 @@
 <div class="memdoc">
 <dl class="cfshscfg"><dt><b><a class="el" href="cfshscfg.html#_cfshscfg000016">Purpose:</a></b></dt><dd>Software bus event pipe depth</dd></dl>
 <dl class="user"><dt><b>Description:</b></dt><dd>Depth of the software bus pipe HS uses for event monitoring. This should be set to supply sufficient room for the expected event message load per second. Used during initialization in the call to CFE_SB_CreatePipe</dd></dl>
-<dl class="user"><dt><b>Limits:</b></dt><dd>This parameter can't be larger than CFE_SB_MAX_PIPE_DEPTH</dd></dl>
+<dl class="user"><dt><b>Limits:</b></dt><dd>This parameter can't be larger than CFE_PLATFORM_SB_MAX_PIPE_DEPTH</dd></dl>
 <p>This parameter must be greater than 0. </p>
 
 <p>Definition at line <a class="el" href="hs__platform__cfg_8h_source.html#l00332">332</a> of file <a class="el" href="hs__platform__cfg_8h_source.html">hs_platform_cfg.h</a>.</p>
@@ -869,7 +869,7 @@
 <div class="memdoc">
 <dl class="cfshscfg"><dt><b><a class="el" href="cfshscfg.html#_cfshscfg000017">Purpose:</a></b></dt><dd>Software bus wakeup pipe depth</dd></dl>
 <dl class="user"><dt><b>Description:</b></dt><dd>Depth of the software bus pipe HS uses for wakeup messages. Used during initialization in the call to CFE_SB_CreatePipe</dd></dl>
-<dl class="user"><dt><b>Limits:</b></dt><dd>This parameter can't be larger than CFE_SB_MAX_PIPE_DEPTH</dd></dl>
+<dl class="user"><dt><b>Limits:</b></dt><dd>This parameter can't be larger than CFE_PLATFORM_SB_MAX_PIPE_DEPTH</dd></dl>
 <p>This parameter must be greater than 0. </p>
 
 <p>Definition at line <a class="el" href="hs__platform__cfg_8h_source.html#l00345">345</a> of file <a class="el" href="hs__platform__cfg_8h_source.html">hs_platform_cfg.h</a>.</p>

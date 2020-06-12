@@ -17,7 +17,7 @@
  **   Remove references to temporary header file mm_test_exports.h
  **   Revision 1.5 2016/10/31 22:09:12EDT mdeschu 
  **   Adding std=c99 to unit test makefile as per babelfish ticket #39 caused compiler error with unknown
- **   Symbol S_IFREG.  Removed setting File stat st_mode to S_IFREG in StatHook1. Has no effect on unit tests.
+ **   Symbol S_IFREG.  Removed setting File stat FileModeBits to S_IFREG in StatHook1. Has no effect on unit tests.
  **   Revision 1.4 2016/10/24 18:35:23EDT czogby 
  **   Code Walkthough Updates
  **   Revision 1.3 2016/05/04 19:01:15EDT czogby 
@@ -138,7 +138,7 @@ int32 UT_MM_CFE_OSFILEAPI_ReadHook3(int32  filedes, void *buffer, uint32 nbytes)
 
 int32 UT_MM_CMD_UTILS_TEST_CFE_OSFILEAPI_StatHook1(const char *path, os_fstat_t  *filestats)
 {
-    filestats->st_size = 4 + sizeof(CFE_FS_Header_t) + sizeof(MM_LoadDumpFileHeader_t);
+    filestats->FileSize = 4 + sizeof(CFE_FS_Header_t) + sizeof(MM_LoadDumpFileHeader_t);
 
     return OS_FS_SUCCESS;
 } /* end UT_MM_CMD_UTILS_TEST_CFE_OSFILEAPI_StatHook1 */

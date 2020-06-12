@@ -59,7 +59,7 @@
 **  \par Limits
 **		 The minimum size of this paramater is 1
 **       The maximum size dictated by cFE platform configuration 
-**		 parameter  CFE_SB_MAX_PIPE_DEPTH
+**		 parameter  CFE_PLATFORM_SB_MAX_PIPE_DEPTH
 */
 #define HK_PIPE_DEPTH       40
 

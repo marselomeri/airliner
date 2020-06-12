@@ -1052,7 +1052,7 @@ int32 LC_ValidateWDT(void *TableData)
             BadCount++;
             EntryResult = LC_WDTVAL_ERR_OPER;
         }
-        else if (MessageID > CFE_SB_HIGHEST_VALID_MSGID)
+        else if (MessageID > CFE_PLATFORM_SB_HIGHEST_VALID_MSGID)
         {
             /*
             ** Bad message ID (limit set by configuration parameter,
