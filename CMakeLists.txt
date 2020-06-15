@@ -41,6 +41,8 @@ set( CTEST_MEMORYCHECK_COMMAND_OPTIONS "--tool=memcheck --leak-check=full --show
 set( CTEST_VALGRIND_COMMAND_OPTIONS "--tool=memcheck --leak-check=full --show-reachable=yes --undef-value-errors=yes --track-origins=no --child-silent-after-fork=no --trace-children=no --xml=yes --xml-file=memcheck-%p.xml")
 enable_testing()
 
+set(ELF2CFETBL_BIN ${PROJECT_BINARY_DIR}/host/tools/elf2cfetbl)
+
 # Set paths from all 3 major core components:  CFE, OSAL, and PSP.
 include(core/cfe/set-paths.cmake)
 include(core/osal/set-paths.cmake)

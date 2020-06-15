@@ -87,18 +87,24 @@ Target_CfeConfigData GLOBAL_CFE_CONFIGDATA =
  */
 Target_ConfigData GLOBAL_CONFIGDATA =
 {
-    .Commit         = "@GIT_REV@",
-    .Tag            = "@GIT_TAG@",
-    .Branch         = "@GIT_BRANCH@",
-    .Config         = "@BUILDNAME@",
-    .CfeVersion     = "@CFE_VERSION@",
-    .OsalPath       = "@OSAL@",
-    .OsalVersion    = "@OSAL_VERSION@",
-    .PspPath        = "@PSP@",
-    .PspVersion     = "@PSP_VERSION@",
-    .Date           = "@BUILD_DATE@",
-    .MissionVersion = "",
-    .User           = ""
+    .Commit          = "@GIT_REV@",
+    .Tag             = "@GIT_TAG@",
+    .Branch          = "@GIT_BRANCH@",
+    .Config          = "@BUILDNAME@",
+    .CfeVersion      = "@CFE_VERSION@",
+    .OsalPath        = "@OSAL@",
+    .OsalVersion     = "@OSAL_VERSION@",
+    .PspPath         = "@PSP@",
+    .PspVersion      = "@PSP_VERSION@",
+    .Date            = "@BUILD_DATE@",
+    .MissionVersion  = "",
+    .User            = "",
+    
+    .Default_CpuName = CFE_CPU_NAME_VALUE,
+    .Default_CpuId = CFE_CPU_ID_VALUE,
+    .Default_SpacecraftId = CFE_SPACECRAFT_ID_VALUE,
+    .CfeConfig = &GLOBAL_CFE_CONFIGDATA,
+    .PspConfig = &GLOBAL_PSP_CONFIGDATA
 };
 
 
