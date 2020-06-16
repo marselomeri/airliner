@@ -62,7 +62,7 @@
     "merge": "1.2.1",
     "merge-json": "0.1.0-b.3",
     "milsymbol": "2.0.0",
-    "minimist": "1.2.0",
+    "minimist": "1.2.5",
     "morgan": "1.9.1",
     "node-int64": "0.4.0",
     "overlayscrollbars": "1.7.1",
