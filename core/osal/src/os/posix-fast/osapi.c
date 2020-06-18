@@ -68,6 +68,13 @@
 
 #define OS_SHUTDOWN_MAGIC_NUMBER    0xABADC0DE
 
+/*
+ * Added SEM_VALUE_MAX Define
+ */
+#ifndef SEM_VALUE_MAX
+#define SEM_VALUE_MAX       (UINT32_MAX/2)
+#endif
+
 
 /* To remove the "implicit declaration of function ‘pthread_setname_np’" warning. */
 extern int pthread_setname_np (pthread_t __target_thread, const char *__name);

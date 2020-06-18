@@ -36,6 +36,7 @@ S
 #include "cfe_es.h"            /* For reset types */
 #include "cfe_platform_cfg.h"  /* for processor ID */
 #include "cfe_psp.h"
+#include "cfe_psp_config.h"
 
 /*
 ** Types and prototypes for this module

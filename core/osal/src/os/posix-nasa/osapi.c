@@ -1195,7 +1195,6 @@ int32 OS_QueueCreate_Impl (uint32 queue_id, uint32 flags)
    queueDesc = mq_open(name, O_CREAT | O_RDWR, 0666, &queueAttr);
    if ( queueDesc == (mqd_t)(-1) )
    {
-	   printf("OS_QueueCreate Error. errno = %d (%s)\n",errno,strerror(errno));
       OS_DEBUG("OS_QueueCreate Error. errno = %d (%s)\n",errno,strerror(errno));
       if( errno == EINVAL )
       {

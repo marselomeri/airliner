@@ -285,7 +285,7 @@ endfunction(psp_initialize_airliner_build)
 function(psp_add_test)
     set(TEST_NAME ${ARGV0})
     # Define the function arguments.
-    cmake_parse_arguments(PARSED_ARGS "NO_MEMCHECK;NO_HELGRIND;NO_MASSIF" "VALGRIND_SUPPRESSION_FILE" "SOURCES;LIBS;INCLUDES;WRAPPERS" ${ARGN})
+    cmake_parse_arguments(PARSED_ARGS "NO_MEMCHECK;NO_HELGRIND;NO_MASSIF" "VALGRIND_SUPPRESSION_FILE" "SOURCES;LIBS;INCLUDES;WRAPPERS;DEFINES" ${ARGN})
     
     get_property(AIRLINER_BUILD_PREFIX GLOBAL PROPERTY AIRLINER_BUILD_PREFIX_PROPERTY)
     
@@ -319,10 +319,12 @@ function(psp_add_test)
     target_compile_definitions(${AIRLINER_BUILD_PREFIX}${TEST_NAME}
         PUBLIC
         UT_VERBOSE
+        ${PARSED_ARGS_DEFINES}
     )
     target_compile_definitions(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov
         PUBLIC
         UT_VERBOSE
+        ${PARSED_ARGS_DEFINES}
     )
     
     target_include_directories(${AIRLINER_BUILD_PREFIX}${TEST_NAME} PUBLIC ${PARSED_ARGS_INCLUDES})
@@ -495,10 +497,6 @@ endfunction(psp_add_airliner_app)
 #    INCLUDES
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../src/
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../public_inc/
-#   
-#    UNIT_TEST_SOURCES
-#
-#    UNIT_TEST_INCLUDES
 #)
 function(psp_add_airliner_app_def)
     set(PARSED_ARGS_TARGET ${ARGV0})
@@ -745,12 +743,12 @@ function(psp_add_airliner_cfe_unit_test)
 
     add_executable(${AIRLINER_BUILD_PREFIX}${TEST_NAME} EXCLUDE_FROM_ALL
         ${PARSED_ARGS_SOURCES}
-        ${PSP_UNIT_TEST_SRC_DIR}/bsp_ut.c
+        ${PSP_BB_UT_BSP_SRC}
     )
 
     add_executable(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov EXCLUDE_FROM_ALL
         ${PARSED_ARGS_SOURCES}
-        ${PSP_UNIT_TEST_SRC_DIR}/bsp_ut.c
+        ${PSP_BB_UT_BSP_SRC}
     )
 
     target_include_directories(${AIRLINER_BUILD_PREFIX}${TEST_NAME} PUBLIC ${PARSED_ARGS_INCLUDES})

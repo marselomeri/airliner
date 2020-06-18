@@ -141,10 +141,6 @@ endfunction(add_airliner_app)
 #    INCLUDES
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../src/
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../public_inc/
-#   
-#    UNIT_TEST_SOURCES
-#
-#    UNIT_TEST_INCLUDES
 #)
 function(add_airliner_app_def)
     set(PARSED_ARGS_TARGET ${ARGV0})

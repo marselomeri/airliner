@@ -360,7 +360,7 @@ int32 OS_open   (const char *path,  int32 access,  uint32  mode)
              OS_FS_SUCCESS if success
 ---------------------------------------------------------------------------------------*/
 
-int32 OS_close (int32  filedes)
+int32 OS_close (uint32  filedes)
 {
     int       status;
     sigset_t  previous;
@@ -424,7 +424,7 @@ int32 OS_close (int32  filedes)
              OS_FS_ERR_INVALID_FD if the file descriptor passed in is invalid
              number of bytes read if success
 ---------------------------------------------------------------------------------------*/
-int32 OS_read  (int32  filedes, void *buffer, uint32 nbytes)
+int32 OS_read  (uint32  filedes, void *buffer, uint32 nbytes)
 {
     int32 status;
 
@@ -460,7 +460,7 @@ int32 OS_read  (int32  filedes, void *buffer, uint32 nbytes)
              number of bytes written if success
 ---------------------------------------------------------------------------------------*/
 
-int32 OS_write (int32  filedes, const void *buffer, uint32 nbytes)
+int32 OS_write (uint32  filedes, const void *buffer, uint32 nbytes)
 {
     int32 status;
 
@@ -555,7 +555,7 @@ int32 OS_stat   (const char *path, os_fstat_t  *filestats)
              OS_FS_ERROR if OS call failed
 ---------------------------------------------------------------------------------------*/
 
-int32 OS_lseek  (int32  filedes, int32 offset, uint32 whence)
+int32 OS_lseek  (uint32  filedes, int32 offset, uint32 whence)
 {
      off_t status;
      int where;
@@ -1278,7 +1278,7 @@ int32 OS_ShellOutputToFile(const char* Cmd, uint32 filedes)
     /* 
     ** Make sure the file descriptor is valid before using it 
     */
-    if (OS_fd < 0 || OS_fd >= OS_MAX_NUM_OPEN_FILES || OS_FDTable[OS_fd].IsValid == FALSE)
+    if (filedes < 0 || filedes >= OS_MAX_NUM_OPEN_FILES || OS_FDTable[filedes].IsValid == FALSE)
     {
         return OS_FS_ERR_INVALID_FD;
     }
@@ -1287,14 +1287,14 @@ int32 OS_ShellOutputToFile(const char* Cmd, uint32 filedes)
         strncpy(LocalCmd,Cmd,OS_MAX_CMD_LEN +OS_REDIRECTSTRSIZE);
     
         /* Make sure that we are able to access this file */
-        fchmod(OS_FDTable[OS_fd].OSfd,0777);
+        fchmod(OS_FDTable[filedes].OSfd,0777);
   
         /* 
         ** add in the extra chars necessary to perform the redirection
         ** 1 for stdout and 2 for stderr. they are redirected to the 
         ** file descriptor passed in
         */
-        sprintf(String, " 1>&%d 2>&%d",(int)OS_FDTable[OS_fd].OSfd, (int)OS_FDTable[OS_fd].OSfd);
+        sprintf(String, " 1>&%d 2>&%d",(int)OS_FDTable[filedes].OSfd, (int)OS_FDTable[filedes].OSfd);
         strcat(LocalCmd, String);
     
         Result = system(LocalCmd);
@@ -1322,7 +1322,7 @@ Returns: OS_FS_ERR_INVALID_FD if the file descriptor passed in is invalid
          OS_FS_SUCCESS if the copying was successfull
  ---------------------------------------------------------------------------------------*/
 
-int32 OS_FDGetInfo (int32 filedes, OS_FDTableEntry *fd_prop)
+int32 OS_FDGetInfo (uint32 filedes, OS_FDTableEntry *fd_prop)
 {
 
     if (fd_prop == NULL)
@@ -1352,7 +1352,7 @@ int32 OS_FDGetInfo (int32 filedes, OS_FDTableEntry *fd_prop)
    Returns: OS_FS_ERROR if the file is not open 
             OS_FS_SUCCESS if the file is open 
  ---------------------------------------------------------------------------------------*/
-int32 OS_FileOpenCheck(char *Filename)
+int32 OS_FileOpenCheck(const char *Filename)
 {
     uint32    i;
     sigset_t  previous;
@@ -1391,7 +1391,7 @@ int32 OS_FileOpenCheck(char *Filename)
             OS_FS_ERROR   if the file close returned an error
             OS_FS_SUCCESS if the file close suceeded  
  ---------------------------------------------------------------------------------------*/
-int32 OS_CloseFileByName(char *Filename)
+int32 OS_CloseFileByName(const char *Filename)
 {
     uint32    i;
     int       status;

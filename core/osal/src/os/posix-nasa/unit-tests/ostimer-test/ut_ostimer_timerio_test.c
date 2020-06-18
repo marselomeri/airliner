@@ -584,7 +584,7 @@ void UT_os_timerset_test()
     UT_OsApiInfo_t apiInfo;
     const char* testDesc=NULL;
     char text[UT_OS_LG_TEXT_LEN];
-    uint32 startTime=0, intervalTime=0;
+    uint32 startTime=1, intervalTime=1;
 
     UT_OS_CLEAR_API_INFO_MACRO(apiInfo, idx)
 

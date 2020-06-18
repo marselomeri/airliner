@@ -120,6 +120,7 @@ typedef struct
 
 typedef struct
 {
+    int32   OSfd;                   /* The underlying OS's file descriptor */
     char Path[OS_MAX_PATH_LEN];
     uint32 User;
     uint8 IsValid;                /* For backward compatibility -- always true if OS_FDGetInfo returned true */

@@ -20,6 +20,7 @@
 #define _osapi_core_
 
 #include <stdarg.h>   /* for va_list */
+#include "osapi-os-rtm.h" 
 
 /* Defines constants for making object ID's unique */
 #define OS_OBJECT_INDEX_MASK        0xFFFF
@@ -169,6 +170,27 @@ void OS_Application_Startup(void);
 /*
 ** Exported Functions
 */
+
+
+/************************************************************************/
+/** \brief Initialization of API
+**
+**  \par Description
+**       Initialize the tables that the OS API uses to keep track of information
+**       about objects
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+**  \param [in]   Mode    #OS_RunTimeModeEnum_t
+**  
+**  \returns
+**  \retcode #OS_SUCCESS  \retdesc \copydoc OS_SUCCESS \endcode
+**  \retcode #OS_ERROR  \retdesc \copydoc OS_ERROR \endcode
+**  \endreturns
+**
+*************************************************************************/
+int32 OS_API_InitEx (OS_RunTimeModeEnum_t Mode);
 
 /*-------------------------------------------------------------------------------------*/
 /**

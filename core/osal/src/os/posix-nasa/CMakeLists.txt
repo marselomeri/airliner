@@ -59,13 +59,7 @@ osal_set_blackbox_unit_tests(
 
 osal_add_whitebox_unit_test(
     oscore-test
-    SOURCE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/osnetwork.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/osfilesys.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/osloader.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/ostimer.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/osapi.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/osfileapi.c
+    SOURCE         
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/oscore-test/ut_oscore_binsem_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/oscore-test/ut_oscore_countsem_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/oscore-test/ut_oscore_misc_test.c
@@ -74,23 +68,25 @@ osal_add_whitebox_unit_test(
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/oscore-test/ut_oscore_task_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/oscore-test/ut_oscore_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_os_stubs.c
+        ${OSAL_SRC}
+        ${OSAL_SHARED_SRC}
+
     INCLUDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../ut_assert/inc
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared
 )
 
 osal_add_whitebox_unit_test(
     osfileapi-test
     SOURCE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/osapi.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/osfileapi.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/osfile-test/ut_osfile_dirio_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/osfile-test/ut_osfile_fileio_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/osfile-test/ut_osfile_test.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_osloader_stubs.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_osfilesys_stubs.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_os_stubs.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_ostimer_stubs.c
+        ${OSAL_SRC}
+        ${OSAL_SHARED_SRC}
     INCLUDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../ut_assert/inc
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared
 )
         
@@ -98,55 +94,59 @@ osal_add_whitebox_unit_test(
 osal_add_whitebox_unit_test(
     osfilesys-test
     SOURCE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/osapi.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/osfilesys.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/osfilesys-test/ut_osfilesys_diskio_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/osfilesys-test/ut_osfilesys_test.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_osloader_stubs.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_osfile_stubs.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_os_stubs.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_ostimer_stubs.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_psp_voltab_stubs.c
+        ${OSAL_SRC}
+        ${OSAL_SHARED_SRC}
     INCLUDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../ut_assert/inc
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared
     FILESYS
-        /ram4
+        /ram3
 )
 
 
 osal_add_whitebox_unit_test(
     osloader-test
     SOURCE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/osloader.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/osapi.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/osloader-test/ut_osloader_module_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/osloader-test/ut_osloader_symtable_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/osloader-test/ut_osloader_test.c
-        #${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_oscore_stubs.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_osfile_stubs.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_osfilesys_stubs.c
-        #${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_osloader_stubs.c
-        #${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_osnetwork_stubs.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_os_stubs.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_ostimer_stubs.c
-        #${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_psp_voltab_stubs.c
+        ${OSAL_SRC}
+        ${OSAL_SHARED_SRC}
     INCLUDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../ut_assert/inc
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared
 )
+
+
+get_property(AIRLINER_BUILD_PREFIX GLOBAL PROPERTY AIRLINER_BUILD_PREFIX_PROPERTY)
+
+set(MOD 32)
+while(MOD GREATER 0)
+  math(EXPR MOD "${MOD} - 1")
+  add_library(${AIRLINER_BUILD_PREFIX}osal-wb-osloader-test-MODULE${MOD} SHARED EXCLUDE_FROM_ALL ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/osloader-test/ut_module.c)
+  set_target_properties(${AIRLINER_BUILD_PREFIX}osal-wb-osloader-test-MODULE${MOD} PROPERTIES 
+    COMPILE_DEFINITIONS "MODULE_NAME=module${MOD}" 
+    PREFIX ""
+    OUTPUT_NAME MODULE${MOD}
+    LIBRARY_OUTPUT_DIRECTORY eeprom1)
+  add_dependencies(${PARSED_ARGS_PREFIX}osal-wb-osloader-test ${AIRLINER_BUILD_PREFIX}osal-wb-osloader-test-MODULE${MOD})
+endwhile(MOD GREATER 0)
 
 
 osal_add_whitebox_unit_test(
     osnetwork-test
     SOURCE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/osapi.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/osnetwork.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/osnetwork-test/ut_osnetwork_misc_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/osnetwork-test/ut_osnetwork_test.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_osfile_stubs.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_osloader_stubs.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_os_stubs.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_ostimer_stubs.c
+        ${OSAL_SRC}
+        ${OSAL_SHARED_SRC}
     INCLUDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../ut_assert/inc
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared
 )
 
@@ -191,14 +191,13 @@ osal_add_whitebox_unit_test(
 osal_add_whitebox_unit_test(
     ostimer-test
     SOURCE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/osapi.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/ostimer.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/ostimer-test/ut_ostimer_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/ostimer-test/ut_ostimer_timerio_test.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_osloader_stubs.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_osfile_stubs.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_os_stubs.c
+        ${OSAL_SRC}
+        ${OSAL_SHARED_SRC}
     INCLUDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../ut_assert/inc
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared
 )
 

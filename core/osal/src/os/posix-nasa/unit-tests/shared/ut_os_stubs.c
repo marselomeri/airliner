@@ -103,6 +103,9 @@ void UT_os_teardown(const char* testSuiteName)
     }
 
     OS_printf("\n");
+
+    /* Yield to allow the console thread to complete writing to the console. */
+    OS_TaskDelay(2000);
 }
 
 /*--------------------------------------------------------------------------------*

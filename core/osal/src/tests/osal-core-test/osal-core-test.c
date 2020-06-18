@@ -208,11 +208,6 @@ void TestQueues(void)
 
     InitializeQIds();
     memset(msgq_ids,0xFF,sizeof(msgq_ids));
-
-    for (qnum = 0; qnum < (OS_MAX_QUEUES + 1); ++qnum)
-    {
-       OS_QueueDelete( msgq_ids[qnum] );
-    }
     
     for (qnum = 0; qnum < (OS_MAX_QUEUES + 1); ++qnum)
     {

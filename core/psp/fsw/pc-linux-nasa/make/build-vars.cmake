@@ -48,9 +48,9 @@ set(CMAKE_SYSTEM_NAME Linux)
 
 # which compilers to use for C and C++
 set(CMAKE_C_COMPILER gcc)
-set(CMAKE_C_FLAGS ${CMAKE_C_FLAGS} "-m32 -g -O0 -Wno-pointer-to-int-cast")
+set(CMAKE_C_FLAGS ${CMAKE_C_FLAGS} "-m32 -g -O0 -Wno-pointer-to-int-cast -D_LINUX_OS_")
 set(CMAKE_CXX_COMPILER g++)
-set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-m32 -g -fstack-protector-all -O0 -std=c++11")
+set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-m32 -g -fstack-protector-all -O0 -std=c++11 -D_LINUX_OS_")
 
 set(INSTALL_DIR	      ${CMAKE_CURRENT_BINARY_DIR}/exe/cf/apps)
 set(CFE_INSTALL_DIR   ${CMAKE_CURRENT_BINARY_DIR}/exe)
@@ -80,11 +80,14 @@ set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} PARENT_SCOPE)
 
 set(PSP_UNIT_TEST_SRC_DIR ${CMAKE_CURRENT_LIST_DIR}/../unit_test)
 
-set(PSP_OSAL_UT_BSP_SRC ${PSP_UNIT_TEST_SRC_DIR}/bsp_start.c)
+set(PSP_WB_UT_BSP_SRC
+    ${PSP_UNIT_TEST_SRC_DIR}/bsp_start.c
+    ${PSP_UNIT_TEST_SRC_DIR}/bsp_voltab.c 
+)
 
-set(PSP_OSAL_UTASSERT_BSP_SRC 
-    ${PSP_UNIT_TEST_SRC_DIR}/bsp_voltab.c
+set(PSP_BB_UT_BSP_SRC
     ${PSP_UNIT_TEST_SRC_DIR}/bsp_ut.c
+    ${PSP_UNIT_TEST_SRC_DIR}/bsp_voltab.c 
 )
 
 set(MEMCHECK_COMMAND ${MEMCHECK_COMMAND} PARENT_SCOPE)

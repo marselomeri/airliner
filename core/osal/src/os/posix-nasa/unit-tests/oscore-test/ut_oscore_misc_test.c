@@ -10,6 +10,7 @@
 
 #include "ut_oscore_misc_test.h"
 #include "ut_oscore_test_platforms.h"
+#include "common_types.h"
 
 /*--------------------------------------------------------------------------------*
 ** Macros
