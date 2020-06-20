@@ -609,7 +609,7 @@ void CF_Indication (INDICATION_TYPE IndType, TRANS_STATUS TransInfo)
 **
 ** Function Name: CF_PduOutputOpen
 **
-** Purpose: Return TRUE
+** Purpose: Return true
 **
 ** Input arguments:
 **    Spacecraft Entity ID, and Destination Entity ID
@@ -661,7 +661,7 @@ boolean CF_PduOutputReady (PDU_TYPE PduType, TRANSACTION TransInfo,ID Destinatio
                 ** Must let the engine release the undirected pdu. 
                 ** Report error in CF_PduOutputSend         
                 */                
-                return TRUE;
+                return true;
             }
         }        
                     
@@ -680,7 +680,7 @@ boolean CF_PduOutputReady (PDU_TYPE PduType, TRANSACTION TransInfo,ID Destinatio
                 ** Must let the engine release the undirected pdu. 
                 ** Report error in CF_PduOutputSend         
                 */
-                return TRUE;
+                return true;
             }
         } 
 
@@ -693,7 +693,7 @@ boolean CF_PduOutputReady (PDU_TYPE PduType, TRANSACTION TransInfo,ID Destinatio
         ** Must let the engine release the undirected pdu. 
         ** Report error in CF_PduOutputSend         
         */
-        return TRUE;
+        return true;
     
     }
                 
@@ -702,7 +702,7 @@ boolean CF_PduOutputReady (PDU_TYPE PduType, TRANSACTION TransInfo,ID Destinatio
     if(CF_AppData.Chan[Chan].HandshakeSemId == CF_INVALID)
     {        
         CF_AppData.Hk.Chan[Chan].GreenLightCntr++;
-        return TRUE;
+        return true;
                 
     }/* end if */
         
@@ -712,7 +712,7 @@ boolean CF_PduOutputReady (PDU_TYPE PduType, TRANSACTION TransInfo,ID Destinatio
     if(SemTakeRtn == OS_SUCCESS){
             
         CF_AppData.Hk.Chan[Chan].GreenLightCntr++;
-        return TRUE;
+        return true;
             
     }else{
         
@@ -858,7 +858,7 @@ void CF_PduOutputSend (TRANSACTION TransInfo,ID DestinationId, CFDP_DATA *PduPtr
     /* TotalMsgLength calculated above */
     CFE_SB_InitMsg(CF_AppData.Chan[Chan].ZeroCpyMsgPtr,
                     (CFE_SB_MsgId_t)CF_AppData.Tbl->OuCh[Chan].OutgoingPduMsgId,
-                    0, TRUE);
+                    0, true);
     
     CFE_SB_SetTotalMsgLength(CF_AppData.Chan[Chan].ZeroCpyMsgPtr,
                              (uint16)TotalMsgLength);

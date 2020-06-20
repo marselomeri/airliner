@@ -4,7 +4,7 @@
 **
 ** $Id: ut_cfe_evs_hooks.c 1.2 2015/03/06 14:37:09EST sstrege Exp  $
 **
-**  Copyright © 2007-2014 United States Government as represented by the 
+**  Copyright ï¿½ 2007-2014 United States Government as represented by the 
 **  Administrator of the National Aeronautics and Space Administration. 
 **  All Other Rights Reserved.  
 **
@@ -112,7 +112,7 @@ boolean Ut_CFE_EVS_EventSent(uint16 EventID, uint16 EventType, char *EventText)
         if ((EventMessagePtr->EventID == EventID) &&
             (EventMessagePtr->EventType == EventType) &&
             (strncmp(EventText, EventMessagePtr->EventText, strlen(EventText)) == 0)) {
-            return(TRUE);
+            return(true);
         }
         CurrentNode = CurrentNode->Next;
     }

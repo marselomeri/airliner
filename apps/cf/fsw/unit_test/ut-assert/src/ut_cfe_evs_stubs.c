@@ -4,7 +4,7 @@
 **
 ** $Id: ut_cfe_evs_stubs.c 1.2 2015/03/06 14:37:11EST sstrege Exp  $
 **
-**  Copyright © 2007-2014 United States Government as represented by the 
+**  Copyright ï¿½ 2007-2014 United States Government as represented by the 
 **  Administrator of the National Aeronautics and Space Administration. 
 **  All Other Rights Reserved.  
 **
@@ -74,7 +74,7 @@ boolean Ut_CFE_EVS_UseReturnCode(uint32 Index)
     if (Ut_CFE_EVS_ReturnCodeTable[Index].Count > 0) {
         Ut_CFE_EVS_ReturnCodeTable[Index].Count--;
         if (Ut_CFE_EVS_ReturnCodeTable[Index].Count == 0)
-            return(TRUE);
+            return(true);
     }
     
     return(FALSE);

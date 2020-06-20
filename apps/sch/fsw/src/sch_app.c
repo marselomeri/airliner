@@ -1096,7 +1096,9 @@ void SCH_ProcessNextEntry(SCH_ScheduleEntry_t *NextEntry, int32 EntryNumber)
                 	{
                 		DeadlineSlot -= SCH_TOTAL_SLOTS;
                 	}
-        		    OS_MutSemTake(SCH_AppData.ADChildTaskMutex);
+
+#ifdef SCH_RTM_SUPPORTED        		
+                        OS_MutSemTake(SCH_AppData.ADChildTaskMutex);
                 	SCH_ActivityDeadlineStatus_t *ActivityDeadline = SCH_GetAvailableActivityDeadline(DeadlineSlot);
                 	if(ActivityDeadline == 0)
                 	{
@@ -1109,7 +1111,8 @@ void SCH_ProcessNextEntry(SCH_ScheduleEntry_t *NextEntry, int32 EntryNumber)
                 		ActivityDeadline->State = SCH_DEADLINE_STATE_PENDED;
                 		ActivityDeadline->MsgID = CFE_SB_GetMsgId((CFE_SB_MsgPtr_t)Message);
                 	}
-        		    OS_MutSemGive(SCH_AppData.ADChildTaskMutex);
+                        OS_MutSemGive(SCH_AppData.ADChildTaskMutex);
+#endif
                 }
             }
             else

@@ -135,7 +135,7 @@ int32 OS_open   (const char *path,  int32 access,  uint32  mode)
     return OS_FS_SUCCESS;
 }
 
-int32 OS_close (int32  filedes)
+int32 OS_close (uint32  filedes)
 {
     /* Check for specified return */
     if (Ut_OSFILEAPI_UseReturnCode(UT_OSFILEAPI_CLOSE_INDEX))
@@ -148,7 +148,7 @@ int32 OS_close (int32  filedes)
     return OS_FS_SUCCESS;
 }
 
-int32 OS_read  (int32  filedes, void *buffer, uint32 nbytes)
+int32 OS_read  (uint32  filedes, void *buffer, uint32 nbytes)
 {
     /* Check for specified return */
     if (Ut_OSFILEAPI_UseReturnCode(UT_OSFILEAPI_READ_INDEX))
@@ -161,7 +161,7 @@ int32 OS_read  (int32  filedes, void *buffer, uint32 nbytes)
     return OS_FS_SUCCESS;
 }
 
-int32 OS_write (int32  filedes, const void *buffer, uint32 nbytes)
+int32 OS_write (uint32  filedes, const void *buffer, uint32 nbytes)
 {
     /* Check for specified return */
     if (Ut_OSFILEAPI_UseReturnCode(UT_OSFILEAPI_WRITE_INDEX))
@@ -200,7 +200,7 @@ int32 OS_stat   (const char *path, os_fstat_t *filestats)
     return OS_FS_SUCCESS;
 }
 
-int32 OS_lseek  (int32  filedes, int32 offset, uint32 whence)
+int32 OS_lseek  (uint32  filedes, int32 offset, uint32 whence)
 {
     /* Check for specified return */
     if (Ut_OSFILEAPI_UseReturnCode(UT_OSFILEAPI_LSEEK_INDEX))
@@ -356,7 +356,7 @@ int32 OS_check_name_length(const char *path)
     return OS_FS_SUCCESS;
 }
 
-int32 OS_ShellOutputToFile(const char* Cmd, int32 OS_fd)
+int32 OS_ShellOutputToFile(const char* Cmd, uint32 OS_fd)
 {
     /* Check for specified return */
     if (Ut_OSFILEAPI_UseReturnCode(UT_OSFILEAPI_SHELLOUTPUTTOFILE_INDEX))
@@ -369,7 +369,7 @@ int32 OS_ShellOutputToFile(const char* Cmd, int32 OS_fd)
     return OS_FS_SUCCESS;
 }
 
-int32 OS_FDGetInfo (int32 filedes, OS_FDTableEntry *fd_prop)
+int32 OS_FDGetInfo (uint32 filedes, OS_FDTableEntry *fd_prop)
 {
     /* Check for specified return */
     if (Ut_OSFILEAPI_UseReturnCode(UT_OSFILEAPI_FDGETINFO_INDEX))

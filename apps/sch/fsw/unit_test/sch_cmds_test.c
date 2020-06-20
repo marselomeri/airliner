@@ -300,8 +300,8 @@ void SCH_HousekeepingCmd_Test(void)
     SCH_AppData.MinorFramesSinceTone = 16;
     SCH_AppData.NextSlotNumber = 17;
     SCH_AppData.LastSyncMETSlot = 18;
-    SCH_AppData.IgnoreMajorFrame = 19;
-    SCH_AppData.UnexpectedMajorFrame = 20;
+    SCH_AppData.IgnoreMajorFrame = true;
+    SCH_AppData.UnexpectedMajorFrame = true;
     SCH_AppData.SyncToMET = 21;
     SCH_AppData.MajorFrameSource = 22;
 
@@ -327,8 +327,8 @@ void SCH_HousekeepingCmd_Test(void)
     UtAssert_True(SCH_AppData.HkPacket.MinorFramesSinceTone == 16, "SCH_AppData.HkPacket.MinorFramesSinceTone == 16");
     UtAssert_True(SCH_AppData.HkPacket.NextSlotNumber == 17, "SCH_AppData.HkPacket.NextSlotNumber == 17");
     UtAssert_True(SCH_AppData.HkPacket.LastSyncMETSlot == 18, "SCH_AppData.HkPacket.LastSyncMETSlot == 18");
-    UtAssert_True(SCH_AppData.HkPacket.IgnoreMajorFrame == 19, "SCH_AppData.HkPacket.IgnoreMajorFrame == 19");
-    UtAssert_True(SCH_AppData.HkPacket.UnexpectedMajorFrame == 20, "SCH_AppData.HkPacket.UnexpectedMajorFrame == 20");
+    UtAssert_True(SCH_AppData.HkPacket.IgnoreMajorFrame == true, "SCH_AppData.HkPacket.IgnoreMajorFrame == true");
+    UtAssert_True(SCH_AppData.HkPacket.UnexpectedMajorFrame == true, "SCH_AppData.HkPacket.UnexpectedMajorFrame == true");
     UtAssert_True(SCH_AppData.HkPacket.SyncToMET == 21, "SCH_AppData.HkPacket.SyncToMET == 21");
     UtAssert_True(SCH_AppData.HkPacket.MajorFrameSource == 22, "SCH_AppData.HkPacket.MajorFrameSource == 22");
 

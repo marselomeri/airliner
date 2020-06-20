@@ -60,7 +60,7 @@
 #define UNINITIALIZED 0
 #define MAX_PRIORITY 255
 #ifndef PTHREAD_STACK_MIN
-   #define PTHREAD_STACK_MIN 8092
+   #define PTHREAD_STACK_MIN 16384
 #endif
 
 #define OS_API_UNINITIALIZED 0
@@ -173,8 +173,8 @@ pthread_mutex_t OS_bin_sem_table_mut;
 pthread_mutex_t OS_mut_sem_table_mut;
 pthread_mutex_t OS_count_sem_table_mut;
 
-uint32          OS_printf_enabled = TRUE;
-volatile uint32 OS_shutdown = FALSE;
+uint32          OS_printf_enabled = true;
+volatile uint32 OS_shutdown = false;
 
 
 /*
@@ -226,7 +226,7 @@ int32 OS_API_InitEx(OS_RunTimeModeEnum_t RunMode)
 
    for(i = 0; i < OS_MAX_TASKS; i++)
    {
-        OS_task_table[i].free                = TRUE;
+        OS_task_table[i].free                = true;
         OS_task_table[i].creator             = UNINITIALIZED;
         OS_task_table[i].delete_hook_pointer = NULL;
         strcpy(OS_task_table[i].name,"");    
@@ -236,7 +236,7 @@ int32 OS_API_InitEx(OS_RunTimeModeEnum_t RunMode)
 
     for(i = 0; i < OS_MAX_QUEUES; i++)
     {
-        OS_queue_table[i].free        = TRUE;
+        OS_queue_table[i].free        = true;
         OS_queue_table[i].creator     = UNINITIALIZED;
         strcpy(OS_queue_table[i].name,""); 
     }
@@ -245,7 +245,7 @@ int32 OS_API_InitEx(OS_RunTimeModeEnum_t RunMode)
 
     for(i = 0; i < OS_MAX_BIN_SEMAPHORES; i++)
     {
-        OS_bin_sem_table[i].free        = TRUE;
+        OS_bin_sem_table[i].free        = true;
         OS_bin_sem_table[i].creator     = UNINITIALIZED;
         strcpy(OS_bin_sem_table[i].name,"");
     }
@@ -253,7 +253,7 @@ int32 OS_API_InitEx(OS_RunTimeModeEnum_t RunMode)
     /* Initialize Counting Semaphores */
     for(i = 0; i < OS_MAX_COUNT_SEMAPHORES; i++)
     {
-        OS_count_sem_table[i].free        = TRUE;
+        OS_count_sem_table[i].free        = true;
         OS_count_sem_table[i].creator     = UNINITIALIZED;
         strcpy(OS_count_sem_table[i].name,"");
     }
@@ -261,7 +261,7 @@ int32 OS_API_InitEx(OS_RunTimeModeEnum_t RunMode)
     /* Initialize Mutex Semaphore Table */
     for(i = 0; i < OS_MAX_MUTEXES; i++)
     {
-        OS_mut_sem_table[i].free        = TRUE;
+        OS_mut_sem_table[i].free        = true;
         OS_mut_sem_table[i].creator     = UNINITIALIZED;
         strcpy(OS_mut_sem_table[i].name,"");
     }
@@ -515,7 +515,7 @@ void OS_IdleLoop()
 ---------------------------------------------------------------------------------------*/
 void OS_ApplicationShutdown(uint8 flag)
 {
-   if (flag == TRUE)
+   if (flag == true)
    {
       OS_shutdown = OS_SHUTDOWN_MAGIC_NUMBER;
    }
@@ -600,14 +600,14 @@ int32 OS_TaskCreate (uint32 *task_id, const char *task_name, osal_task_entry fun
 
     for(possible_taskid = 0; possible_taskid < OS_MAX_TASKS; possible_taskid++)
     {
-        if (OS_task_table[possible_taskid].free == TRUE)
+        if (OS_task_table[possible_taskid].free == true)
         {
             break;
         }
     }
 
     /* Check to see if the id is out of bounds */
-    if( possible_taskid >= OS_MAX_TASKS || OS_task_table[possible_taskid].free != TRUE)
+    if( possible_taskid >= OS_MAX_TASKS || OS_task_table[possible_taskid].free != true)
     {
         OS_InterruptSafeUnlock(&OS_task_table_mut, &previous);
         return OS_ERR_NO_FREE_IDS;
@@ -616,7 +616,7 @@ int32 OS_TaskCreate (uint32 *task_id, const char *task_name, osal_task_entry fun
     /* Check to see if the name is already taken */ 
     for (i = 0; i < OS_MAX_TASKS; i++)
     {
-        if ((OS_task_table[i].free == FALSE) &&
+        if ((OS_task_table[i].free == false) &&
            ( strcmp((char*) task_name, OS_task_table[i].name) == 0)) 
         {       
             OS_InterruptSafeUnlock(&OS_task_table_mut, &previous);
@@ -628,7 +628,7 @@ int32 OS_TaskCreate (uint32 *task_id, const char *task_name, osal_task_entry fun
     ** Set the possible task Id to not free so that
     ** no other task can try to use it 
     */
-    OS_task_table[possible_taskid].free = FALSE;
+    OS_task_table[possible_taskid].free = false;
     
     if ( stack_size < PTHREAD_STACK_MIN )
     {
@@ -646,7 +646,7 @@ int32 OS_TaskCreate (uint32 *task_id, const char *task_name, osal_task_entry fun
     memset(&custom_attr, 0, sizeof(custom_attr));
     if(pthread_attr_init(&custom_attr))
     {  
-        OS_task_table[possible_taskid].free = TRUE;
+        OS_task_table[possible_taskid].free = true;
         OS_InterruptSafeUnlock(&OS_task_table_mut, &previous);
         
         #ifdef OS_DEBUG_PRINTF
@@ -747,7 +747,7 @@ int32 OS_TaskCreate (uint32 *task_id, const char *task_name, osal_task_entry fun
              * and return an error.
              */
             pthread_cancel(OS_task_table[possible_taskid].id);
-            OS_task_table[possible_taskid].free = TRUE;
+            OS_task_table[possible_taskid].free = true;
             OS_InterruptSafeUnlock(&OS_task_table_mut, &previous);
             #ifdef OS_DEBUG_PRINTF
                 printf("pthread_attr_setaffinity_np error in OS_TaskCreate, Task ID = %d\n", possible_taskid);
@@ -765,7 +765,7 @@ int32 OS_TaskCreate (uint32 *task_id, const char *task_name, osal_task_entry fun
                                  (void *)0);
     if (return_code != 0)
     {
-        OS_task_table[possible_taskid].free = TRUE;
+        OS_task_table[possible_taskid].free = true;
         OS_InterruptSafeUnlock(&OS_task_table_mut, &previous); 
         #ifdef OS_DEBUG_PRINTF
            printf("pthread_create error in OS_TaskCreate, Task ID = %d\n",possible_taskid);
@@ -810,7 +810,7 @@ int32 OS_TaskCreate (uint32 *task_id, const char *task_name, osal_task_entry fun
     /* 
     ** Initialize the table entries 
     */
-    OS_task_table[possible_taskid].free = FALSE;
+    OS_task_table[possible_taskid].free = false;
     strcpy(OS_task_table[*task_id].name, (char*) task_name);
     OS_task_table[possible_taskid].creator = OS_FindCreator();
     OS_task_table[possible_taskid].stack_size = stack_size;
@@ -847,7 +847,7 @@ int32 OS_TaskDelete (uint32 task_id)
     /* 
     ** Check to see if the task_id given is valid 
     */
-    if (task_id >= OS_MAX_TASKS || OS_task_table[task_id].free == TRUE)
+    if (task_id >= OS_MAX_TASKS || OS_task_table[task_id].free == true)
     {
         return OS_ERR_INVALID_ID;
     }
@@ -879,7 +879,7 @@ int32 OS_TaskDelete (uint32 task_id)
     */
     OS_InterruptSafeLock(&OS_task_table_mut, &mask, &previous); 
 
-    OS_task_table[task_id].free = TRUE;
+    OS_task_table[task_id].free = true;
     strcpy(OS_task_table[task_id].name, "");
     OS_task_table[task_id].creator = UNINITIALIZED;
     OS_task_table[task_id].stack_size = UNINITIALIZED;
@@ -911,7 +911,7 @@ void OS_TaskExit()
 
     OS_InterruptSafeLock(&OS_task_table_mut, &mask, &previous); 
 
-    OS_task_table[task_id].free = TRUE;
+    OS_task_table[task_id].free = true;
     strcpy(OS_task_table[task_id].name, "");
     OS_task_table[task_id].creator = UNINITIALIZED;
     OS_task_table[task_id].stack_size = UNINITIALIZED;
@@ -987,7 +987,7 @@ int32 OS_TaskSetPriority (uint32 task_id, uint32 new_priority)
     	return OS_ERROR;
     }
 
-    if(task_id >= OS_MAX_TASKS || OS_task_table[task_id].free == TRUE)
+    if(task_id >= OS_MAX_TASKS || OS_task_table[task_id].free == true)
     {
         return OS_ERR_INVALID_ID;
     }
@@ -1142,7 +1142,7 @@ int32 OS_TaskGetIdByName (uint32 *task_id, const char *task_name)
 
     for (i = 0; i < OS_MAX_TASKS; i++)
     {
-        if((OS_task_table[i].free != TRUE) &&
+        if((OS_task_table[i].free != true) &&
                 (strcmp(OS_task_table[i].name,(char*) task_name) == 0 ))
         {
             *task_id = i;
@@ -1181,7 +1181,7 @@ int32 OS_TaskGetInfo (uint32 task_id, OS_task_prop_t *task_prop)
     /* 
     ** Check to see that the id given is valid 
     */
-    if (task_id >= OS_MAX_TASKS || OS_task_table[task_id].free == TRUE)
+    if (task_id >= OS_MAX_TASKS || OS_task_table[task_id].free == true)
     {
        return OS_ERR_INVALID_ID;
     }
@@ -1235,7 +1235,7 @@ int32 OS_TaskInstallDeleteHandler(osal_task_entry function_pointer)
 
     OS_InterruptSafeLock(&OS_task_table_mut, &mask, &previous); 
 
-    if ( OS_task_table[task_id].free != FALSE )
+    if ( OS_task_table[task_id].free != false )
     {
        /* 
        ** Somehow the calling task is not registered 
@@ -1311,11 +1311,11 @@ int32 OS_QueueCreate (uint32 *queue_id, const char *queue_name, uint32 queue_dep
 
     for(possible_qid = 0; possible_qid < OS_MAX_QUEUES; possible_qid++)
     {
-        if (OS_queue_table[possible_qid].free == TRUE)
+        if (OS_queue_table[possible_qid].free == true)
             break;
     }
 
-    if( possible_qid >= OS_MAX_QUEUES || OS_queue_table[possible_qid].free != TRUE)
+    if( possible_qid >= OS_MAX_QUEUES || OS_queue_table[possible_qid].free != true)
     {
         OS_InterruptSafeUnlock(&OS_queue_table_mut, &previous);
         return OS_ERR_NO_FREE_IDS;
@@ -1324,7 +1324,7 @@ int32 OS_QueueCreate (uint32 *queue_id, const char *queue_name, uint32 queue_dep
     /* Check to see if the name is already taken */
     for (i = 0; i < OS_MAX_QUEUES; i++)
     {
-        if ((OS_queue_table[i].free == FALSE) &&
+        if ((OS_queue_table[i].free == false) &&
             strcmp ((char*) queue_name, OS_queue_table[i].name) == 0)
         {
             OS_InterruptSafeUnlock(&OS_queue_table_mut, &previous);
@@ -1336,7 +1336,7 @@ int32 OS_QueueCreate (uint32 *queue_id, const char *queue_name, uint32 queue_dep
      * no other task can try to use it */
     *queue_id = possible_qid;
 
-    OS_queue_table[*queue_id].free = FALSE;
+    OS_queue_table[*queue_id].free = false;
 
     ret = pthread_cond_init(&(OS_queue_table[possible_qid].cv), NULL);
 	if ( ret != 0 )
@@ -1345,7 +1345,7 @@ int32 OS_QueueCreate (uint32 *queue_id, const char *queue_name, uint32 queue_dep
         return OS_ERROR;
 	}
 
-    OS_queue_table[*queue_id].free = FALSE;
+    OS_queue_table[*queue_id].free = false;
     OS_queue_table[*queue_id].max_size = data_size;
     strcpy( OS_queue_table[*queue_id].name, (char*) queue_name);
     OS_queue_table[*queue_id].creator = OS_FindCreator();
@@ -1387,7 +1387,7 @@ int32 OS_QueueDelete (uint32 queue_id)
 
     /* Check to see if the queue_id given is valid */
 
-    if (queue_id >= OS_MAX_QUEUES || OS_queue_table[queue_id].free == TRUE)
+    if (queue_id >= OS_MAX_QUEUES || OS_queue_table[queue_id].free == true)
     {
        return OS_ERR_INVALID_ID;
     }
@@ -1405,7 +1405,7 @@ int32 OS_QueueDelete (uint32 queue_id)
         return OS_ERROR;
 	}
 
-    OS_queue_table[queue_id].free = TRUE;
+    OS_queue_table[queue_id].free = true;
     strcpy(OS_queue_table[queue_id].name, "");
     OS_queue_table[queue_id].creator = UNINITIALIZED;
     OS_queue_table[queue_id].max_size = 0;
@@ -1452,7 +1452,7 @@ int32 OS_QueueGet (uint32 queue_id, void *data, uint32 size, uint32 *size_copied
     /*
     ** Check Parameters
     */
-    if(queue_id >= OS_MAX_QUEUES || OS_queue_table[queue_id].free == TRUE)
+    if(queue_id >= OS_MAX_QUEUES || OS_queue_table[queue_id].free == true)
     {
 	    OS_InterruptSafeUnlock(&OS_queue_table_mut, &previous);
         return OS_ERR_INVALID_ID;
@@ -1603,7 +1603,7 @@ int32 OS_QueuePut (uint32 queue_id, const void *data, uint32 size, uint32 flags)
     /*
     ** Check Parameters
     */
-    if(queue_id >= OS_MAX_QUEUES || OS_queue_table[queue_id].free == TRUE)
+    if(queue_id >= OS_MAX_QUEUES || OS_queue_table[queue_id].free == true)
     {
 		OS_InterruptSafeUnlock(&OS_queue_table_mut, &previous);
         return OS_ERR_INVALID_ID;
@@ -1702,7 +1702,7 @@ int32 OS_QueueGetIdByName (uint32 *queue_id, const char *queue_name)
 
     for (i = 0; i < OS_MAX_QUEUES; i++)
     {
-        if (OS_queue_table[i].free != TRUE &&
+        if (OS_queue_table[i].free != true &&
            (strcmp(OS_queue_table[i].name, (char*) queue_name) == 0 ))
         {
             *queue_id = i;
@@ -1743,7 +1743,7 @@ int32 OS_QueueGetInfo (uint32 queue_id, OS_queue_prop_t *queue_prop)
         return OS_INVALID_POINTER;
     }
     
-    if (queue_id >= OS_MAX_QUEUES || OS_queue_table[queue_id].free == TRUE)
+    if (queue_id >= OS_MAX_QUEUES || OS_queue_table[queue_id].free == true)
     {
         return OS_ERR_INVALID_ID;
     }
@@ -1817,12 +1817,12 @@ int32 OS_BinSemCreate (uint32 *sem_id, const char *sem_name, uint32 sem_initial_
 
     for (possible_semid = 0; possible_semid < OS_MAX_BIN_SEMAPHORES; possible_semid++)
     {
-        if (OS_bin_sem_table[possible_semid].free == TRUE)    
+        if (OS_bin_sem_table[possible_semid].free == true)
             break;
     }
 
     if((possible_semid >= OS_MAX_BIN_SEMAPHORES) ||  
-       (OS_bin_sem_table[possible_semid].free != TRUE))
+       (OS_bin_sem_table[possible_semid].free != true))
     {
         OS_InterruptSafeUnlock(&OS_bin_sem_table_mut, &previous); 
         return OS_ERR_NO_FREE_IDS;
@@ -1831,7 +1831,7 @@ int32 OS_BinSemCreate (uint32 *sem_id, const char *sem_name, uint32 sem_initial_
     /* Check to see if the name is already taken */
     for (i = 0; i < OS_MAX_BIN_SEMAPHORES; i++)
     {
-        if ((OS_bin_sem_table[i].free == FALSE) &&
+        if ((OS_bin_sem_table[i].free == false) &&
                 strcmp ((char*) sem_name, OS_bin_sem_table[i].name) == 0)
         {
             OS_InterruptSafeUnlock(&OS_bin_sem_table_mut, &previous); 
@@ -1886,7 +1886,7 @@ int32 OS_BinSemCreate (uint32 *sem_id, const char *sem_name, uint32 sem_initial_
     
                 OS_bin_sem_table[*sem_id].max_value = 1;
                 OS_bin_sem_table[*sem_id].current_value = sem_initial_value;
-                OS_bin_sem_table[*sem_id].free = FALSE;
+                OS_bin_sem_table[*sem_id].free = false;
    
                 /* Unlock table */ 
                 OS_InterruptSafeUnlock(&OS_bin_sem_table_mut, &previous); 
@@ -1955,7 +1955,7 @@ int32 OS_BinSemDelete (uint32 sem_id)
     }
 
     /* Check to see if this sem_id is valid */
-    if (sem_id >= OS_MAX_BIN_SEMAPHORES || OS_bin_sem_table[sem_id].free == TRUE)
+    if (sem_id >= OS_MAX_BIN_SEMAPHORES || OS_bin_sem_table[sem_id].free == true)
     {
         return OS_ERR_INVALID_ID;
     }
@@ -1966,7 +1966,7 @@ int32 OS_BinSemDelete (uint32 sem_id)
     /* Remove the Id from the table, and its name, so that it cannot be found again */
     pthread_mutex_destroy(&(OS_bin_sem_table[sem_id].id));
     pthread_cond_destroy(&(OS_bin_sem_table[sem_id].cv));
-    OS_bin_sem_table[sem_id].free = TRUE;
+    OS_bin_sem_table[sem_id].free = true;
     strcpy(OS_bin_sem_table[sem_id].name , "");
     OS_bin_sem_table[sem_id].creator = UNINITIALIZED;
     OS_bin_sem_table[sem_id].max_value = 0;
@@ -2008,7 +2008,7 @@ int32 OS_BinSemGive ( uint32 sem_id )
     }
 
     /* Check Parameters */
-    if(sem_id >= OS_MAX_BIN_SEMAPHORES || OS_bin_sem_table[sem_id].free == TRUE)
+    if(sem_id >= OS_MAX_BIN_SEMAPHORES || OS_bin_sem_table[sem_id].free == true)
     {
         return OS_ERR_INVALID_ID;
     }
@@ -2059,7 +2059,7 @@ int32 OS_BinSemFlush (uint32 sem_id)
     }
 
     /* Check Parameters */
-    if(sem_id >= OS_MAX_BIN_SEMAPHORES || OS_bin_sem_table[sem_id].free == TRUE)
+    if(sem_id >= OS_MAX_BIN_SEMAPHORES || OS_bin_sem_table[sem_id].free == true)
     {
         return OS_ERR_INVALID_ID;
     }
@@ -2117,7 +2117,7 @@ int32 OS_BinSemTake ( uint32 sem_id )
     }
 
     /* Check parameters */ 
-    if(sem_id >= OS_MAX_BIN_SEMAPHORES  || OS_bin_sem_table[sem_id].free == TRUE)
+    if(sem_id >= OS_MAX_BIN_SEMAPHORES  || OS_bin_sem_table[sem_id].free == true)
     {
         return OS_ERR_INVALID_ID;
     }
@@ -2197,7 +2197,7 @@ int32 OS_BinSemTimedWait ( uint32 sem_id, uint32 msecs )
     	return OS_ERROR;
     }
 
-    if( (sem_id >= OS_MAX_BIN_SEMAPHORES) || (OS_bin_sem_table[sem_id].free == TRUE) )
+    if( (sem_id >= OS_MAX_BIN_SEMAPHORES) || (OS_bin_sem_table[sem_id].free == true) )
     {
        return OS_ERR_INVALID_ID;
     }
@@ -2292,7 +2292,7 @@ int32 OS_BinSemGetIdByName (uint32 *sem_id, const char *sem_name)
 
     for (i = 0; i < OS_MAX_BIN_SEMAPHORES; i++)
     {
-        if (OS_bin_sem_table[i].free != TRUE &&
+        if (OS_bin_sem_table[i].free != true &&
                 (strcmp (OS_bin_sem_table[i].name , (char*) sem_name) == 0))
         {
             *sem_id = i;
@@ -2329,7 +2329,7 @@ int32 OS_BinSemGetInfo (uint32 sem_id, OS_bin_sem_prop_t *bin_prop)
     }
 
     /* Check parameters */
-    if (sem_id >= OS_MAX_BIN_SEMAPHORES || OS_bin_sem_table[sem_id].free == TRUE)
+    if (sem_id >= OS_MAX_BIN_SEMAPHORES || OS_bin_sem_table[sem_id].free == true)
     {
         return OS_ERR_INVALID_ID;
     }
@@ -2417,12 +2417,12 @@ int32 OS_CountSemCreate (uint32 *sem_id, const char *sem_name, uint32 sem_initia
 
     for (possible_semid = 0; possible_semid < OS_MAX_COUNT_SEMAPHORES; possible_semid++)
     {
-        if (OS_count_sem_table[possible_semid].free == TRUE)    
+        if (OS_count_sem_table[possible_semid].free == true)
             break;
     }
 
     if((possible_semid >= OS_MAX_COUNT_SEMAPHORES) ||  
-       (OS_count_sem_table[possible_semid].free != TRUE))
+       (OS_count_sem_table[possible_semid].free != true))
     {
         OS_InterruptSafeUnlock(&OS_count_sem_table_mut, &previous); 
         return OS_ERR_NO_FREE_IDS;
@@ -2431,7 +2431,7 @@ int32 OS_CountSemCreate (uint32 *sem_id, const char *sem_name, uint32 sem_initia
     /* Check to see if the name is already taken */
     for (i = 0; i < OS_MAX_COUNT_SEMAPHORES; i++)
     {
-        if ((OS_count_sem_table[i].free == FALSE) &&
+        if ((OS_count_sem_table[i].free == false) &&
                 strcmp ((char*) sem_name, OS_count_sem_table[i].name) == 0)
         {
             OS_InterruptSafeUnlock(&OS_count_sem_table_mut, &previous); 
@@ -2474,7 +2474,7 @@ int32 OS_CountSemCreate (uint32 *sem_id, const char *sem_name, uint32 sem_initia
     
                 OS_count_sem_table[*sem_id].max_value = SEM_VALUE_MAX;
                 OS_count_sem_table[*sem_id].current_value = sem_initial_value;
-                OS_count_sem_table[*sem_id].free = FALSE;
+                OS_count_sem_table[*sem_id].free = false;
    
                 /* Unlock table */ 
                 OS_InterruptSafeUnlock(&OS_count_sem_table_mut, &previous); 
@@ -2543,7 +2543,7 @@ int32 OS_CountSemDelete (uint32 sem_id)
     }
 
     /* Check to see if this sem_id is valid */
-    if (sem_id >= OS_MAX_COUNT_SEMAPHORES || OS_count_sem_table[sem_id].free == TRUE)
+    if (sem_id >= OS_MAX_COUNT_SEMAPHORES || OS_count_sem_table[sem_id].free == true)
     {
         return OS_ERR_INVALID_ID;
     }
@@ -2554,7 +2554,7 @@ int32 OS_CountSemDelete (uint32 sem_id)
     /* Remove the Id from the table, and its name, so that it cannot be found again */
     pthread_mutex_destroy(&(OS_count_sem_table[sem_id].id));
     pthread_cond_destroy(&(OS_count_sem_table[sem_id].cv));
-    OS_count_sem_table[sem_id].free = TRUE;
+    OS_count_sem_table[sem_id].free = true;
     strcpy(OS_count_sem_table[sem_id].name , "");
     OS_count_sem_table[sem_id].creator = UNINITIALIZED;
     OS_count_sem_table[sem_id].max_value = 0;
@@ -2595,7 +2595,7 @@ int32 OS_CountSemGive ( uint32 sem_id )
     }
 
     /* Check Parameters */
-    if(sem_id >= OS_MAX_COUNT_SEMAPHORES || OS_count_sem_table[sem_id].free == TRUE)
+    if(sem_id >= OS_MAX_COUNT_SEMAPHORES || OS_count_sem_table[sem_id].free == true)
     {
         return OS_ERR_INVALID_ID;
     }
@@ -2654,7 +2654,7 @@ int32 OS_CountSemTake ( uint32 sem_id )
     }
 
     /* Check parameters */ 
-    if(sem_id >= OS_MAX_COUNT_SEMAPHORES  || OS_count_sem_table[sem_id].free == TRUE)
+    if(sem_id >= OS_MAX_COUNT_SEMAPHORES  || OS_count_sem_table[sem_id].free == true)
     {
         return OS_ERR_INVALID_ID;
     }
@@ -2733,7 +2733,7 @@ int32 OS_CountSemTimedWait ( uint32 sem_id, uint32 msecs )
     	return OS_ERROR;
     }
 
-    if( (sem_id >= OS_MAX_COUNT_SEMAPHORES) || (OS_count_sem_table[sem_id].free == TRUE) )
+    if( (sem_id >= OS_MAX_COUNT_SEMAPHORES) || (OS_count_sem_table[sem_id].free == true) )
     {
        return OS_ERR_INVALID_ID;
     }
@@ -2827,7 +2827,7 @@ int32 OS_CountSemGetIdByName (uint32 *sem_id, const char *sem_name)
 
     for (i = 0; i < OS_MAX_COUNT_SEMAPHORES; i++)
     {
-        if (OS_count_sem_table[i].free != TRUE &&
+        if (OS_count_sem_table[i].free != true &&
                 (strcmp (OS_count_sem_table[i].name , (char*) sem_name) == 0))
         {
             *sem_id = i;
@@ -2866,7 +2866,7 @@ int32 OS_CountSemGetInfo (uint32 sem_id, OS_count_sem_prop_t *count_prop)
     /* 
     ** Check to see that the id given is valid 
     */
-    if (sem_id >= OS_MAX_COUNT_SEMAPHORES || OS_count_sem_table[sem_id].free == TRUE)
+    if (sem_id >= OS_MAX_COUNT_SEMAPHORES || OS_count_sem_table[sem_id].free == true)
     {
         return OS_ERR_INVALID_ID;
     }
@@ -2945,12 +2945,12 @@ int32 OS_MutSemCreate (uint32 *sem_id, const char *sem_name, uint32 options)
 
     for (possible_semid = 0; possible_semid < OS_MAX_MUTEXES; possible_semid++)
     {
-        if (OS_mut_sem_table[possible_semid].free == TRUE)    
+        if (OS_mut_sem_table[possible_semid].free == true)
             break;
     }
     
     if( (possible_semid == OS_MAX_MUTEXES) ||
-        (OS_mut_sem_table[possible_semid].free != TRUE) )
+        (OS_mut_sem_table[possible_semid].free != true) )
     {
         OS_InterruptSafeUnlock(&OS_mut_sem_table_mut, &previous); 
         return OS_ERR_NO_FREE_IDS;
@@ -2960,7 +2960,7 @@ int32 OS_MutSemCreate (uint32 *sem_id, const char *sem_name, uint32 options)
 
     for (i = 0; i < OS_MAX_MUTEXES; i++)
     {
-        if ((OS_mut_sem_table[i].free == FALSE) &&
+        if ((OS_mut_sem_table[i].free == false) &&
                 strcmp ((char*) sem_name, OS_mut_sem_table[i].name) == 0)
         {
             OS_InterruptSafeUnlock(&OS_mut_sem_table_mut, &previous); 
@@ -2969,7 +2969,7 @@ int32 OS_MutSemCreate (uint32 *sem_id, const char *sem_name, uint32 options)
     }
 
     /* Set the free flag to false to make sure no other task grabs it */
-    OS_mut_sem_table[possible_semid].free = FALSE;
+    OS_mut_sem_table[possible_semid].free = false;
 
     /* 
     ** initialize the attribute with default values 
@@ -2978,7 +2978,7 @@ int32 OS_MutSemCreate (uint32 *sem_id, const char *sem_name, uint32 options)
     if ( return_code != 0 )
     {
         /* Since the call failed, set free back to true */
-        OS_mut_sem_table[possible_semid].free = TRUE;
+        OS_mut_sem_table[possible_semid].free = true;
         OS_InterruptSafeUnlock(&OS_mut_sem_table_mut, &previous); 
  
        
@@ -2995,7 +2995,7 @@ int32 OS_MutSemCreate (uint32 *sem_id, const char *sem_name, uint32 options)
     if ( return_code != 0 )
     {
         /* Since the call failed, set free back to true */
-        OS_mut_sem_table[possible_semid].free = TRUE;
+        OS_mut_sem_table[possible_semid].free = true;
         OS_InterruptSafeUnlock(&OS_mut_sem_table_mut, &previous); 
 
         #ifdef OS_DEBUG_PRINTF  
@@ -3010,7 +3010,7 @@ int32 OS_MutSemCreate (uint32 *sem_id, const char *sem_name, uint32 options)
     if ( return_code != 0 )
     {
         /* Since the call failed, set free back to true */
-        OS_mut_sem_table[possible_semid].free = TRUE;
+        OS_mut_sem_table[possible_semid].free = true;
         OS_InterruptSafeUnlock(&OS_mut_sem_table_mut, &previous); 
 
         #ifdef OS_DEBUG_PRINTF  
@@ -3027,7 +3027,7 @@ int32 OS_MutSemCreate (uint32 *sem_id, const char *sem_name, uint32 options)
     if ( return_code != 0 )
     {
         /* Since the call failed, set free back to true */
-        OS_mut_sem_table[possible_semid].free = TRUE;
+        OS_mut_sem_table[possible_semid].free = true;
         OS_InterruptSafeUnlock(&OS_mut_sem_table_mut, &previous); 
 
         #ifdef OS_DEBUG_PRINTF  
@@ -3043,7 +3043,7 @@ int32 OS_MutSemCreate (uint32 *sem_id, const char *sem_name, uint32 options)
        *sem_id = possible_semid;
     
        strcpy(OS_mut_sem_table[*sem_id].name, (char*) sem_name);
-       OS_mut_sem_table[*sem_id].free = FALSE;
+       OS_mut_sem_table[*sem_id].free = false;
        OS_mut_sem_table[*sem_id].creator = OS_FindCreator();
     
        OS_InterruptSafeUnlock(&OS_mut_sem_table_mut, &previous); 
@@ -3078,7 +3078,7 @@ int32 OS_MutSemDelete (uint32 sem_id)
     }
 
     /* Check to see if this sem_id is valid   */
-    if (sem_id >= OS_MAX_MUTEXES || OS_mut_sem_table[sem_id].free == TRUE)
+    if (sem_id >= OS_MAX_MUTEXES || OS_mut_sem_table[sem_id].free == true)
     {
         return OS_ERR_INVALID_ID;
     }
@@ -3093,7 +3093,7 @@ int32 OS_MutSemDelete (uint32 sem_id)
    
     OS_InterruptSafeLock(&OS_mut_sem_table_mut, &mask, &previous); 
 
-    OS_mut_sem_table[sem_id].free = TRUE;
+    OS_mut_sem_table[sem_id].free = true;
     strcpy(OS_mut_sem_table[sem_id].name , "");
     OS_mut_sem_table[sem_id].creator = UNINITIALIZED;
     
@@ -3130,7 +3130,7 @@ int32 OS_MutSemGive ( uint32 sem_id )
 
     /* Check Parameters */
 
-    if(sem_id >= OS_MAX_MUTEXES || OS_mut_sem_table[sem_id].free == TRUE)
+    if(sem_id >= OS_MAX_MUTEXES || OS_mut_sem_table[sem_id].free == true)
     {
         return OS_ERR_INVALID_ID;
     }
@@ -3176,7 +3176,7 @@ int32 OS_MutSemTake ( uint32 sem_id )
     /* 
     ** Check Parameters
     */  
-    if(sem_id >= OS_MAX_MUTEXES || OS_mut_sem_table[sem_id].free == TRUE)
+    if(sem_id >= OS_MAX_MUTEXES || OS_mut_sem_table[sem_id].free == true)
     {
        return OS_ERR_INVALID_ID;
     }
@@ -3239,7 +3239,7 @@ int32 OS_MutSemGetIdByName (uint32 *sem_id, const char *sem_name)
 
     for (i = 0; i < OS_MAX_MUTEXES; i++)
     {
-        if ((OS_mut_sem_table[i].free != TRUE) &&
+        if ((OS_mut_sem_table[i].free != true) &&
            (strcmp (OS_mut_sem_table[i].name, (char*) sem_name) == 0) )
         {
             *sem_id = i;
@@ -3279,7 +3279,7 @@ int32 OS_MutSemGetInfo (uint32 sem_id, OS_mut_sem_prop_t *mut_prop)
 
     /* Check to see that the id given is valid */
     
-    if (sem_id >= OS_MAX_MUTEXES || OS_mut_sem_table[sem_id].free == TRUE)
+    if (sem_id >= OS_MAX_MUTEXES || OS_mut_sem_table[sem_id].free == true)
     {
         return OS_ERR_INVALID_ID;
     }
@@ -3703,7 +3703,7 @@ void OS_printf( const char *String, ...)
     va_list     ptr;
     char msg_buffer [OS_BUFFER_SIZE];
 
-    if ( OS_printf_enabled == TRUE )
+    if ( OS_printf_enabled == true )
     {
        va_start(ptr,String);
        vsnprintf(&msg_buffer[0], (size_t)OS_BUFFER_SIZE, String, ptr);
@@ -3724,7 +3724,7 @@ void OS_printf( const char *String, ...)
  ---------------------------------------------------------------------------*/
 void OS_printf_disable(void)
 {
-   OS_printf_enabled = FALSE;
+   OS_printf_enabled = false;
 }/* end OS_printf_disable*/
 
 /* ---------------------------------------------------------------------------
@@ -3735,7 +3735,7 @@ void OS_printf_disable(void)
  ---------------------------------------------------------------------------*/
 void OS_printf_enable(void)
 {
-   OS_printf_enabled = TRUE;
+   OS_printf_enabled = true;
 }/* end OS_printf_enable*/
 
 /*---------------------------------------------------------------------------------------
@@ -3982,3 +3982,30 @@ void OS_InterruptSafeUnlock(pthread_mutex_t *lock, sigset_t *previous)
     sigdelset(previous, 0);
 }
 
+
+
+
+
+
+
+
+
+
+int32 OS_ConvertToArrayIndex(uint32 object_id, uint32 *ArrayIndex)
+{
+    return object_id;
+} /* end OS_ConvertToArrayIndex */
+
+
+
+uint32 OS_IdentifyObject       (uint32 object_id)
+{
+	return OS_OBJECT_TYPE_USER;
+}
+
+
+
+void OS_ForEachObject (uint32 creator_id, OS_ArgCallback_t callback_ptr, void *callback_arg)
+{
+
+}

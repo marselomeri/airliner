@@ -77,11 +77,11 @@ int32               Ut_CFE_SB_RcvMsgHook(CFE_SB_MsgPtr_t *BufPtr, CFE_SB_PipeId_
 void                Ut_CFE_SB_InitMsgHook(void *MsgPtr,CFE_SB_MsgId_t MsgId, uint16 Length, boolean Clear);
 uint16              Ut_CFE_SB_MsgHdrSizeHook(CFE_SB_MsgId_t MsgId);
 void               *Ut_CFE_SB_GetUserDataHook(CFE_SB_MsgPtr_t MsgPtr);
-CFE_SB_MsgId_t      Ut_CFE_SB_GetMsgIdHook(CFE_SB_MsgPtr_t MsgPtr);
+CFE_SB_MsgId_t      Ut_CFE_SB_GetMsgIdHook(const CFE_SB_Msg_t *MsgPtr);
 void                Ut_CFE_SB_SetMsgIdHook(CFE_SB_MsgPtr_t MsgPtr,CFE_SB_MsgId_t MsgId);
-uint16              Ut_CFE_SB_GetUserDataLengthHook(CFE_SB_MsgPtr_t MsgPtr);
+uint16              Ut_CFE_SB_GetUserDataLengthHook(const CFE_SB_Msg_t *MsgPtr);
 void                Ut_CFE_SB_SetUserDataLengthHook(CFE_SB_MsgPtr_t MsgPtr,uint16 DataLength);
-uint16              Ut_CFE_SB_GetTotalMsgLengthHook(CFE_SB_MsgPtr_t MsgPtr);
+uint16              Ut_CFE_SB_GetTotalMsgLengthHook(const CFE_SB_Msg_t *MsgPtr);
 void                Ut_CFE_SB_SetTotalMsgLengthHook(CFE_SB_MsgPtr_t MsgPtr,uint16 TotalLength);
 CFE_TIME_SysTime_t  Ut_CFE_SB_GetMsgTimeHook(CFE_SB_MsgPtr_t MsgPtr);
 int32               Ut_CFE_SB_SetMsgTimeHook(CFE_SB_MsgPtr_t MsgPtr,CFE_TIME_SysTime_t Time);

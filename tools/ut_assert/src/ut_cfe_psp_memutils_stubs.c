@@ -98,7 +98,7 @@ void Ut_CFE_PSP_MEMUTILS_ContinueReturnCodeAfterCountZero(uint32 Index)
     Ut_CFE_PSP_MEMUTILS_ReturnCodeTable[Index].ContinueReturnCodeAfterCountZero = TRUE;
 }
 
-int32 CFE_PSP_MemCpy(void *Dest, void *Src, uint32 Size)
+int32 CFE_PSP_MemCpy(void *Dest, const void *Src, uint32 Size)
 {
     /* Check for specified return */
     if (Ut_CFE_PSP_MEMUTILS_UseReturnCode(UT_CFE_PSP_MEMUTILS_MEMCPY_INDEX))

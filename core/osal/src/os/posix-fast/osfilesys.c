@@ -111,7 +111,7 @@ int32 OS_mkfs (char *address, const char *devname, const char * volname, uint32 
     /* find an open entry in the Volume Table */
     for (i = 0; i < NUM_TABLE_ENTRIES; i++)
     {
-        if (OS_VolumeTable[i].FreeFlag == TRUE && OS_VolumeTable[i].IsMounted == FALSE
+        if (OS_VolumeTable[i].FreeFlag == true && OS_VolumeTable[i].IsMounted == false
             && strcmp(OS_VolumeTable[i].DeviceName, devname) == 0)
             break;
     }
@@ -126,7 +126,7 @@ int32 OS_mkfs (char *address, const char *devname, const char * volname, uint32 
     if (OS_VolumeTable[i].VolumeType == FS_BASED)
     {
        /* now enter the info in the table */
-       OS_VolumeTable[i].FreeFlag = FALSE;
+       OS_VolumeTable[i].FreeFlag = false;
        strcpy(OS_VolumeTable[i].VolumeName, volname);
        OS_VolumeTable[i].BlockSize = blocksize;
     
@@ -167,7 +167,7 @@ int32 OS_rmfs (const char *devname)
         /* find this entry in the Volume Table */
         for (i = 0; i < NUM_TABLE_ENTRIES; i++)
         {
-            if (OS_VolumeTable[i].FreeFlag == FALSE && OS_VolumeTable[i].IsMounted == FALSE
+            if (OS_VolumeTable[i].FreeFlag == false && OS_VolumeTable[i].IsMounted == false
                 && strcmp(OS_VolumeTable[i].DeviceName, devname) == 0)
             {
                 break;
@@ -182,7 +182,7 @@ int32 OS_rmfs (const char *devname)
         else
         {
             /* Free this entry in the table */
-            OS_VolumeTable[i].FreeFlag = TRUE;
+            OS_VolumeTable[i].FreeFlag = true;
             
             /* desconstruction of the filesystem to come later */
 
@@ -223,7 +223,7 @@ int32 OS_initfs (char *address,const char *devname, const char *volname,
     /* find an open entry in the Volume Table */
     for (i = 0; i < NUM_TABLE_ENTRIES; i++)
     {
-        if (OS_VolumeTable[i].FreeFlag == TRUE && OS_VolumeTable[i].IsMounted == FALSE
+        if (OS_VolumeTable[i].FreeFlag == true && OS_VolumeTable[i].IsMounted == false
             && strcmp(OS_VolumeTable[i].DeviceName, devname) == 0)
             break;
     }
@@ -238,7 +238,7 @@ int32 OS_initfs (char *address,const char *devname, const char *volname,
     if (OS_VolumeTable[i].VolumeType == FS_BASED)
     {
        /* now enter the info in the table */
-       OS_VolumeTable[i].FreeFlag = FALSE;
+       OS_VolumeTable[i].FreeFlag = false;
        strcpy(OS_VolumeTable[i].VolumeName, volname);
        OS_VolumeTable[i].BlockSize = blocksize;
     } 
@@ -276,7 +276,7 @@ int32 OS_mount (const char *devname, const char* mountpoint)
     /* find the device in the table */
     for (i = 0; i < NUM_TABLE_ENTRIES; i++)
     {
-        if (OS_VolumeTable[i].FreeFlag == FALSE && OS_VolumeTable[i].IsMounted == FALSE
+        if (OS_VolumeTable[i].FreeFlag == false && OS_VolumeTable[i].IsMounted == false
             && strcmp(OS_VolumeTable[i].DeviceName, devname) == 0)
             break;
     }
@@ -289,7 +289,7 @@ int32 OS_mount (const char *devname, const char* mountpoint)
 
     /* attach the mountpoint */
     strcpy(OS_VolumeTable[i].MountPoint, mountpoint);
-    OS_VolumeTable[i].IsMounted = TRUE;
+    OS_VolumeTable[i].IsMounted = true;
 
     return OS_FS_SUCCESS;
 
@@ -323,7 +323,7 @@ int32 OS_unmount (const char *mountpoint)
 
     for (i = 0; i < NUM_TABLE_ENTRIES; i++)
     {
-        if (OS_VolumeTable[i].FreeFlag == FALSE && OS_VolumeTable[i].IsMounted == TRUE
+        if (OS_VolumeTable[i].FreeFlag == false && OS_VolumeTable[i].IsMounted == true
              && strcmp(OS_VolumeTable[i].MountPoint, mountpoint) == 0)
             break;
     }
@@ -335,7 +335,7 @@ int32 OS_unmount (const char *mountpoint)
     }
 
     /* release the informationm from the table */
-    OS_VolumeTable[i].IsMounted = FALSE;
+    OS_VolumeTable[i].IsMounted = false;
     strcpy(OS_VolumeTable[i].MountPoint, "");
     
     return OS_FS_SUCCESS;
@@ -482,7 +482,7 @@ int32 OS_FS_GetPhysDriveName(char* PhysDriveName, const char* MountPoint)
     */
     for (i = 0; i < NUM_TABLE_ENTRIES; i++)
     {
-        if (OS_VolumeTable[i].FreeFlag == FALSE &&
+        if (OS_VolumeTable[i].FreeFlag == false &&
             strncmp(OS_VolumeTable[i].MountPoint, MountPoint, OS_MAX_PATH_LEN) == 0)
         {
             break;
@@ -604,7 +604,7 @@ int32 OS_TranslatePath(const char *VirtualPath, char *LocalPath)
     */
     for (i = 0; i < NUM_TABLE_ENTRIES; i++)
     {
-        if (OS_VolumeTable[i].FreeFlag == FALSE && 
+        if (OS_VolumeTable[i].FreeFlag == false &&
             strncmp(OS_VolumeTable[i].MountPoint, devname,NumChars) == 0)
         {
             break;
@@ -708,7 +708,7 @@ int32 OS_GetFsInfo(os_fsinfo_t  *filesys_info)
    filesys_info->FreeFds = 0;
    for ( i = 0; i < OS_MAX_NUM_OPEN_FILES; i++ )
    {
-      if ( OS_FDTable[i].IsValid == FALSE)
+      if ( OS_FDTable[i].IsValid == false)
       {
          filesys_info->FreeFds++;
       }
@@ -718,7 +718,7 @@ int32 OS_GetFsInfo(os_fsinfo_t  *filesys_info)
    filesys_info->FreeVolumes = 0;
    for ( i = 0; i < NUM_TABLE_ENTRIES; i++ )
    {
-      if (OS_VolumeTable[i].FreeFlag == TRUE )
+      if (OS_VolumeTable[i].FreeFlag == true )
       {
          filesys_info->FreeVolumes++;
       }

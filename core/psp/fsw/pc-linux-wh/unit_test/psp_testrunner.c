@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
     int opt = 0;
     int longIndex = 0;
     int rc = 0;
-    boolean runTests = TRUE;
+    boolean runTests = true;
 
     /* Call AddTestSuite or AddTestCase functions here */
     PSP_AddTestCases();
@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
 	        case 'C':
 	        {
 	            rc = UtTestDataBase.NumberOfEntries;
-	            runTests = FALSE;
+	            runTests = false;
 	            printf("%d\n", rc);
 	            break;
 	        }
@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
 	        case 'h':
 	        {
 	            PSP_UT_DisplayUsage(argv[0]);
-	            runTests = FALSE;
+	            runTests = false;
 	            break;
 	        }
 
@@ -120,7 +120,7 @@ int main(int argc, char *argv[])
         opt = getopt_long( argc, argv, optString, longOpts, &longIndex );
 	} /* end while */
 
-	if(runTests == TRUE)
+	if(runTests == true)
 	{
 		if(testCaseNumber == 0)
 		{

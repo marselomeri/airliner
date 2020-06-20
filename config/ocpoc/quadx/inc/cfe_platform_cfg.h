@@ -55,7 +55,7 @@
 **       or equal to OS_MAX_QUEUES.
 **
 */
-#define CFE_PLATFORM_SB_MAX_PIPES                255
+#define CFE_PLATFORM_SB_MAX_PIPES                OS_MAX_QUEUES
 
 
 /**

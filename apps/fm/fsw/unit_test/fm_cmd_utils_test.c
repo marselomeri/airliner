@@ -63,8 +63,11 @@ int32 UT_FM_CMD_UTILS_TEST_CFE_OSFILEAPI_StatHookIsFile(const char *path, os_fst
 
 int32 UT_FM_CMD_UTILS_TEST_CFE_OSFILEAPI_StatHookIsDirectory(const char *path, os_fstat_t  *filestats)
 {
+#ifdef OS_FILESTAT_ISDIR
+    filestats->FileModeBits = OS_FILESTAT_MODE_DIR;
+#else
     filestats->FileModeBits = S_IFDIR;
-
+#endif
     filestats->FileTime = 1;
     filestats->FileSize = 2;
 

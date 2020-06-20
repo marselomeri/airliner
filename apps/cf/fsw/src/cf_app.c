@@ -177,7 +177,7 @@ void CF_AppMain(void)
     /*
     ** Application Main Loop.
     */
-    while(CFE_ES_RunLoop(&CF_AppData.RunStatus) == TRUE)
+    while(CFE_ES_RunLoop(&CF_AppData.RunStatus) == true)
     {
         /*
         ** Performance Log Exit Stamp.
@@ -237,13 +237,13 @@ int32 CF_AppInit(void)
     CF_AppData.RunStatus = CFE_ES_APP_RUN;
 
     /* Initialize Housekeeping packet  */
-    CFE_SB_InitMsg(&CF_AppData.Hk,CF_HK_TLM_MID,sizeof(CF_HkPacket_t),TRUE);
+    CFE_SB_InitMsg(&CF_AppData.Hk,CF_HK_TLM_MID,sizeof(CF_HkPacket_t),true);
     
     /* Initialize Transaction packet  */
-    CFE_SB_InitMsg(&CF_AppData.Trans,CF_TRANS_TLM_MID,sizeof(CF_TransPacket_t),TRUE);
+    CFE_SB_InitMsg(&CF_AppData.Trans,CF_TRANS_TLM_MID,sizeof(CF_TransPacket_t),true);
     
     /* Initialize Configuration Parameters packet  */
-    CFE_SB_InitMsg(&CF_AppData.CfgPkt,CF_CONFIG_TLM_MID,sizeof(CF_ConfigPacket_t),TRUE); 
+    CFE_SB_InitMsg(&CF_AppData.CfgPkt,CF_CONFIG_TLM_MID,sizeof(CF_ConfigPacket_t),true);
 
     /* Process the platform cfg file events to be filtered */
     if(CF_FILTERED_EVENT1 != 0){

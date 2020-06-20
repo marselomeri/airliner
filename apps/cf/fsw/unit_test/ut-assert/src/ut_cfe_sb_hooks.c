@@ -4,7 +4,7 @@
 **
 ** $Id: ut_cfe_sb_hooks.c 1.2 2015/03/06 14:37:08EST sstrege Exp  $
 **
-**  Copyright © 2007-2014 United States Government as represented by the 
+**  Copyright ï¿½ 2007-2014 United States Government as represented by the 
 **  Administrator of the National Aeronautics and Space Administration. 
 **  All Other Rights Reserved.  
 **
@@ -95,7 +95,7 @@ boolean Ut_CFE_SB_PacketSent(uint16 MessageID)
     while (CurrentNode) {
         MessagePtr = CurrentNode->Data;
         if (MessageID == CFE_SB_GetMsgId(MessagePtr)) {
-            return(TRUE);
+            return(true);
         }
         CurrentNode = CurrentNode->Next;
     }

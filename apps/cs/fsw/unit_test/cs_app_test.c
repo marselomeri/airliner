@@ -1680,8 +1680,8 @@ void CS_HousekeepingCmd_Test_Nominal(void)
     CS_AppData.TablesCSState        = 7;
     CS_AppData.OSCSState            = 8;
     CS_AppData.CfeCoreCSState       = 9;
-    CS_AppData.RecomputeInProgress  = 10;
-    CS_AppData.OneShotInProgress    = 11;
+    CS_AppData.RecomputeInProgress  = true;
+    CS_AppData.OneShotInProgress    = true;
     CS_AppData.EepromCSErrCounter   = 12;
     CS_AppData.MemoryCSErrCounter   = 13;
     CS_AppData.AppCSErrCounter      = 14;
@@ -1711,8 +1711,8 @@ void CS_HousekeepingCmd_Test_Nominal(void)
     UtAssert_True (CS_AppData.HkPacket.TablesCSState == 7, "CS_AppData.HkPacket.TablesCSState == 7");
     UtAssert_True (CS_AppData.HkPacket.OSCSState == 8, "CS_AppData.HkPacket.OSCSState == 8");
     UtAssert_True (CS_AppData.HkPacket.CfeCoreCSState == 9, "CS_AppData.HkPacket.CfeCoreCSState == 9");
-    UtAssert_True (CS_AppData.HkPacket.RecomputeInProgress == 10, "CS_AppData.HkPacket.ChildTaskInUse == 10");
-    UtAssert_True (CS_AppData.HkPacket.OneShotInProgress == 11, "CS_AppData.HkPacket.OneShotInProgress == 11");
+    UtAssert_True (CS_AppData.HkPacket.RecomputeInProgress == 1, "CS_AppData.HkPacket.ChildTaskInUse == 10");
+    UtAssert_True (CS_AppData.HkPacket.OneShotInProgress == 1, "CS_AppData.HkPacket.OneShotInProgress == 11");
     UtAssert_True (CS_AppData.HkPacket.EepromCSErrCounter == 12, "CS_AppData.HkPacket.EepromCSErrCounter == 12");
     UtAssert_True (CS_AppData.HkPacket.MemoryCSErrCounter == 13, "CS_AppData.HkPacket.MemoryCSErrCounter == 13");
     UtAssert_True (CS_AppData.HkPacket.AppCSErrCounter == 14, "CS_AppData.HkPacket.AppCSErrCounter == 14");

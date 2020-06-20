@@ -100,7 +100,11 @@ int32 UT_FM_CFE_OSFILEAPI_ReadHookCPUHogging(int32  filedes, void *buffer, uint3
 
 int32 UT_FM_CHILD_TEST_CFE_OSFILEAPI_StatHookIsDirectory(const char *path, os_fstat_t  *filestats)
 {
+#ifdef OS_FILESTAT_ISDIR
+    filestats->FileModeBits = OS_FILESTAT_MODE_DIR;
+#else
     filestats->FileModeBits = S_IFDIR;
+#endif
 
     return CFE_SUCCESS;
 } /* end UT_FM_CHILD_TEST_CFE_OSFILEAPI_StatHookIsDirectory */
@@ -127,7 +131,7 @@ os_dirent_t *UT_FM_CFE_OSFILEAPI_ReadDirHook1(os_dirp_t directory)
     UT_FM_CFE_OSFILEAPI_ReadDirHookRunCount += 1;
 
     if (UT_FM_CFE_OSFILEAPI_ReadDirHookRunCount == 1)
-        strncpy (UT_FM_GLOBAL_DirEntry.FileName, "filename", 256);
+        strncpy (UT_FM_GLOBAL_DirEntry.FileName, "filename", OS_MAX_PATH_LEN);
     else
         return NULL;
 
@@ -160,7 +164,7 @@ os_dirent_t *UT_FM_CFE_OSFILEAPI_ReadDirHook3(os_dirp_t directory)
     UT_FM_CFE_OSFILEAPI_ReadDirHookRunCount += 1;
 
     if (UT_FM_CFE_OSFILEAPI_ReadDirHookRunCount == 1)
-        strncpy (UT_FM_GLOBAL_DirEntry.FileName, "", 256);
+        strncpy (UT_FM_GLOBAL_DirEntry.FileName, "", OS_MAX_PATH_LEN);
     else
         return NULL;
 

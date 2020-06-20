@@ -104,7 +104,7 @@ int32 TO_Custom_Init(void)
      * UDP development interface
      */
     TO_AppCustomData.Channel[0].Mode = TO_CHANNEL_ENABLED;
-    strncpy(TO_AppCustomData.Channel[0].IP, "192.168.2.215", INET_ADDRSTRLEN);
+    strncpy(TO_AppCustomData.Channel[0].IP, "127.0.0.1", INET_ADDRSTRLEN);
     TO_AppCustomData.Channel[0].DstPort = 5011;
     TO_AppCustomData.Channel[0].Priority = TO_UDP_CHANNEL_TASK_PRIORITY;
     TO_AppCustomData.Channel[0].ListenerTask = TO_OutputChannel_UDPChannelTask;

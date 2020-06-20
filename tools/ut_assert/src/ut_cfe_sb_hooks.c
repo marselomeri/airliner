@@ -307,7 +307,7 @@ void *Ut_CFE_SB_GetUserDataHook(CFE_SB_MsgPtr_t MsgPtr)
 #endif
 }/* end Ut_CFE_SB_GetUserDataHook */
 
-CFE_SB_MsgId_t Ut_CFE_SB_GetMsgIdHook(CFE_SB_MsgPtr_t MsgPtr)
+CFE_SB_MsgId_t Ut_CFE_SB_GetMsgIdHook(const CFE_SB_Msg_t *MsgPtr)
 {
 #ifdef MESSAGE_FORMAT_IS_CCSDS
 
@@ -326,7 +326,7 @@ void Ut_CFE_SB_SetMsgIdHook(CFE_SB_MsgPtr_t MsgPtr,
 #endif
 }/* end Ut_CFE_SB_SetMsgIdHook */
 
-uint16 Ut_CFE_SB_GetUserDataLengthHook(CFE_SB_MsgPtr_t MsgPtr)
+uint16 Ut_CFE_SB_GetUserDataLengthHook(const CFE_SB_Msg_t *MsgPtr)
 {
 #ifdef MESSAGE_FORMAT_IS_CCSDS
     uint16 TotalMsgSize;

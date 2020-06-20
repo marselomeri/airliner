@@ -4,7 +4,7 @@
 **
 ** $Id: ut_cfe_es_hooks.c 1.2 2015/03/06 14:37:17EST sstrege Exp  $
 **
-**  Copyright © 2007-2014 United States Government as represented by the 
+**  Copyright ï¿½ 2007-2014 United States Government as represented by the 
 **  Administrator of the National Aeronautics and Space Administration. 
 **  All Other Rights Reserved.  
 **
@@ -35,7 +35,7 @@
 int32 Ut_CFE_ES_RunLoopHook(uint32 *ExitStatus)
 {
     if (*ExitStatus == CFE_ES_APP_RUN) {
-        return(TRUE);
+        return(true);
     }
     else { /* CFE_ES_APP_EXIT, CFE_ES_APP_ERROR */
         return(FALSE);

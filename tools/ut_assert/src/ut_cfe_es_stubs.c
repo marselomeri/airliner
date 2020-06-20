@@ -55,6 +55,7 @@
 */
 
 #include "cfe.h"
+#include "cfe_es_log.h"
 #include "utassert.h"
 #include "ut_cfe_es_stubs.h"
 #include "ut_cfe_es_hooks.h"
@@ -224,7 +225,7 @@ void CFE_ES_ExitApp(uint32 ExitStatus)
     return;
 }
 
-int32 CFE_ES_RunLoop(uint32 *ExitStatus)
+bool CFE_ES_RunLoop(uint32 *ExitStatus)
 {
     /* Check for specified return */
     if (Ut_CFE_ES_UseReturnCode(UT_CFE_ES_RUNLOOP_INDEX))

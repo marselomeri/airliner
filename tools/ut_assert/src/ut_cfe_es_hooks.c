@@ -36,6 +36,7 @@
 */
 
 #include "cfe.h"
+#include "cfe_es_log.h"
 #include "utlist.h"
 #include "uttools.h"
 #include <string.h>

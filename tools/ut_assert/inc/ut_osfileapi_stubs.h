@@ -78,17 +78,17 @@ typedef enum
 typedef struct
 {
     int32 (*OS_creat)(const char *,int32);
-    int32 (*OS_write)(int32, const void *, uint32);
-    int32 (*OS_read)(int32, void *, uint32);
+    int32 (*OS_write)(uint32, const void *, uint32);
+    int32 (*OS_read)(uint32, void *, uint32);
     os_dirp_t (*OS_opendir)(const char *path);
     os_dirent_t* (*OS_readdir)(os_dirp_t directory);
-    int32 (*OS_close)(int32  filedes);
+    int32 (*OS_close)(uint32  filedes);
     int32 (*OS_open)(const char *path,  int32 access,  uint32  mode);
     int32 (*OS_closedir)(os_dirp_t directory);
     int32 (*OS_stat)(const char *path, os_fstat_t *filestats);    
-    int32 (*OS_FDGetInfo) (int32 filedes, OS_FDTableEntry *fd_prop);
+    int32 (*OS_FDGetInfo) (uint32 filedes, OS_FDTableEntry *fd_prop);
     int32 (*OS_chmod)(const char *path, uint32 access);
-    int32 (*OS_lseek)(int32  filedes, int32 offset, uint32 whence);
+    int32 (*OS_lseek)(uint32  filedes, int32 offset, uint32 whence);
     int32 (*OS_remove)(const char *path);
     int32 (*OS_rename)(const char *old_file, const char *new_file);
     int32 (*OS_cp)(const char *src, const char *dest);
@@ -97,7 +97,7 @@ typedef struct
     int32 (* OS_rmdir)(const char *path);
     int32 (*OS_check_name_length)(const char *path);
     void  (*OS_rewinddir)(os_dirp_t directory);
-    int32 (*OS_ShellOutputToFile)(const char* Cmd, int32 OS_fd);
+    int32 (*OS_ShellOutputToFile)(const char* Cmd, uint32 OS_fd);
     int32 (*OS_fsBytesFree)(const char *name, uint64 *bytes_free);
 } Ut_OSFILEAPI_HookTable_t;
 

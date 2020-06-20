@@ -126,7 +126,7 @@ int32  OS_TimerAPIInit ( void )
    */
    for ( i = 0; i < OS_MAX_TIMERS; i++ )
    {
-      OS_timer_table[i].free      = TRUE;
+      OS_timer_table[i].free      = true;
       OS_timer_table[i].creator   = UNINITIALIZED;
       strcpy(OS_timer_table[i].name,"");
 
@@ -177,7 +177,7 @@ void OS_TimerSignalHandler(int signum)
 
    if ( timer_id  < OS_MAX_TIMERS )
    {
-      if ( OS_timer_table[timer_id].free == FALSE )
+      if ( OS_timer_table[timer_id].free == false )
       {
          (OS_timer_table[timer_id].callback_ptr)(timer_id);
       }
@@ -280,12 +280,12 @@ int32 OS_TimerCreate(uint32 *timer_id, const char *timer_name, uint32 *clock_acc
     
    for(possible_tid = 0; possible_tid < OS_MAX_TIMERS; possible_tid++)
    {
-      if (OS_timer_table[possible_tid].free == TRUE)
+      if (OS_timer_table[possible_tid].free == true)
          break;
    }
 
 
-   if( possible_tid >= OS_MAX_TIMERS || OS_timer_table[possible_tid].free != TRUE)
+   if( possible_tid >= OS_MAX_TIMERS || OS_timer_table[possible_tid].free != true)
    {
         OS_InterruptSafeUnlock(&OS_timer_table_mut, &previous);
         return OS_ERR_NO_FREE_IDS;
@@ -296,7 +296,7 @@ int32 OS_TimerCreate(uint32 *timer_id, const char *timer_name, uint32 *clock_acc
    */
    for (i = 0; i < OS_MAX_TIMERS; i++)
    {
-       if ((OS_timer_table[i].free == FALSE) &&
+       if ((OS_timer_table[i].free == false) &&
             strcmp ((char*) timer_name, OS_timer_table[i].name) == 0)
        {
             OS_InterruptSafeUnlock(&OS_timer_table_mut, &previous);
@@ -317,7 +317,7 @@ int32 OS_TimerCreate(uint32 *timer_id, const char *timer_name, uint32 *clock_acc
    ** Set the possible timer Id to not free so that
    ** no other task can try to use it 
    */
-   OS_timer_table[possible_tid].free = FALSE;
+   OS_timer_table[possible_tid].free = false;
    OS_InterruptSafeUnlock(&OS_timer_table_mut, &previous);
 
    OS_timer_table[possible_tid].creator = OS_FindCreator();
@@ -345,7 +345,7 @@ int32 OS_TimerCreate(uint32 *timer_id, const char *timer_name, uint32 *clock_acc
    status = timer_create(CLOCK_REALTIME, &evp, (timer_t *)&(OS_timer_table[possible_tid].host_timerid));
    if (status < 0) 
    {
-      OS_timer_table[possible_tid].free = TRUE;
+      OS_timer_table[possible_tid].free = true;
       return ( OS_TIMER_ERR_UNAVAILABLE);
    }
    
@@ -386,7 +386,7 @@ int32 OS_TimerSet(uint32 timer_id, uint32 start_time, uint32 interval_time)
    /* 
    ** Check to see if the timer_id given is valid 
    */
-   if (timer_id >= OS_MAX_TIMERS || OS_timer_table[timer_id].free == TRUE)
+   if (timer_id >= OS_MAX_TIMERS || OS_timer_table[timer_id].free == true)
    {
       return OS_ERR_INVALID_ID;
    }
@@ -450,7 +450,7 @@ int32 OS_TimerDelete(uint32 timer_id)
    /* 
    ** Check to see if the timer_id given is valid 
    */
-   if (timer_id >= OS_MAX_TIMERS || OS_timer_table[timer_id].free == TRUE)
+   if (timer_id >= OS_MAX_TIMERS || OS_timer_table[timer_id].free == true)
    {
       return OS_ERR_INVALID_ID;
    }
@@ -459,7 +459,7 @@ int32 OS_TimerDelete(uint32 timer_id)
    ** Delete the timer 
    */
    status = timer_delete((timer_t)(OS_timer_table[timer_id].host_timerid));
-   OS_timer_table[timer_id].free = TRUE;
+   OS_timer_table[timer_id].free = true;
    if (status < 0)
    {
       return ( OS_TIMER_ERR_INTERNAL);
@@ -501,7 +501,7 @@ int32 OS_TimerGetIdByName (uint32 *timer_id, const char *timer_name)
 
     for (i = 0; i < OS_MAX_TIMERS; i++)
     {
-        if (OS_timer_table[i].free != TRUE &&
+        if (OS_timer_table[i].free != true &&
                 (strcmp (OS_timer_table[i].name , (char*) timer_name) == 0))
         {
             *timer_id = i;
@@ -535,7 +535,7 @@ int32 OS_TimerGetInfo (uint32 timer_id, OS_timer_prop_t *timer_prop)
     /* 
     ** Check to see that the id given is valid 
     */
-    if (timer_id >= OS_MAX_TIMERS || OS_timer_table[timer_id].free == TRUE)
+    if (timer_id >= OS_MAX_TIMERS || OS_timer_table[timer_id].free == true)
     {
        return OS_ERR_INVALID_ID;
     }

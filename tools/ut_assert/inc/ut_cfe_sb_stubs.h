@@ -100,11 +100,11 @@ typedef struct
     int32 (*CFE_SB_InitMsg)(void *MsgPtr,CFE_SB_MsgId_t MsgId, uint16 Length, boolean Clear); 
     int32 (*CFE_SB_MsgHdrSize)(CFE_SB_MsgId_t MsgId);
     void *(*CFE_SB_GetUserData)(CFE_SB_MsgPtr_t MsgPtr);
-    int32 (*CFE_SB_GetMsgId)(CFE_SB_MsgPtr_t MsgPtr);
+    int32 (*CFE_SB_GetMsgId)(const CFE_SB_Msg_t *MsgPtr);
     int32 (*CFE_SB_SetMsgId)(CFE_SB_MsgPtr_t MsgPtr,CFE_SB_MsgId_t MsgId);
-    int32 (*CFE_SB_GetUserDataLength)(CFE_SB_MsgPtr_t MsgPtr);
+    int32 (*CFE_SB_GetUserDataLength)(const CFE_SB_Msg_t *MsgPtr);
     int32 (*CFE_SB_SetUserDataLength)(CFE_SB_MsgPtr_t MsgPtr,uint16 DataLength);
-    int32 (*CFE_SB_GetTotalMsgLength)(CFE_SB_MsgPtr_t MsgPtr);
+    int32 (*CFE_SB_GetTotalMsgLength)(const CFE_SB_Msg_t *MsgPtr);
     int32 (*CFE_SB_SetTotalMsgLength)(CFE_SB_MsgPtr_t MsgPtr,uint16 TotalLength);
     CFE_TIME_SysTime_t (*CFE_SB_GetMsgTime)(CFE_SB_MsgPtr_t MsgPtr);
     int32 (*CFE_SB_SetMsgTime)(CFE_SB_MsgPtr_t MsgPtr,CFE_TIME_SysTime_t Time);

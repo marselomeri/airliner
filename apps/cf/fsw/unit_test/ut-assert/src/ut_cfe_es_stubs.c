@@ -113,7 +113,7 @@ boolean Ut_CFE_ES_UseReturnCode(uint32 Index)
     if (Ut_CFE_ES_ReturnCodeTable[Index].Count > 0) {
         Ut_CFE_ES_ReturnCodeTable[Index].Count--;
         if (Ut_CFE_ES_ReturnCodeTable[Index].Count == 0)
-            return(TRUE);
+            return(true);
     }
     
     return(FALSE);
@@ -170,7 +170,7 @@ int32 CFE_ES_RunLoop(uint32 *ExitStatus)
     if (Ut_CFE_ES_HookTable.CFE_ES_RunLoop)
         return Ut_CFE_ES_HookTable.CFE_ES_RunLoop(ExitStatus);
 
-    return TRUE;
+    return true;
 }
 
 void CFE_ES_WaitForStartupSync(uint32 TimeOutMilliseconds)

@@ -891,7 +891,7 @@ void *CFE_SB_GetUserData(CFE_SB_MsgPtr_t MsgPtr)
     return  NULL;    
 }
 
-CFE_SB_MsgId_t CFE_SB_GetMsgId (CFE_SB_MsgPtr_t MsgPtr)
+CFE_SB_MsgId_t CFE_SB_GetMsgId (const CFE_SB_Msg_t *MsgPtr)
 {
     /* Check for specified return */
     if (Ut_CFE_SB_UseReturnCode(UT_CFE_SB_GETMSGID_INDEX))
@@ -915,7 +915,7 @@ void  CFE_SB_SetMsgId (CFE_SB_MsgPtr_t MsgPtr, CFE_SB_MsgId_t MsgId)
     return;
 }
 
-uint16 CFE_SB_GetUserDataLength(CFE_SB_MsgPtr_t MsgPtr)
+uint16 CFE_SB_GetUserDataLength(const CFE_SB_Msg_t *MsgPtr)
 {
     /* Check for specified return */
     if (Ut_CFE_SB_UseReturnCode(UT_CFE_SB_GETUSERDATALENGTH_INDEX))
@@ -939,7 +939,7 @@ void CFE_SB_SetUserDataLength(CFE_SB_MsgPtr_t MsgPtr,uint16 DataLength)
     return;
 }
 
-uint16 CFE_SB_GetTotalMsgLength(CFE_SB_MsgPtr_t MsgPtr)
+uint16 CFE_SB_GetTotalMsgLength(const CFE_SB_Msg_t *MsgPtr)
 {
     /* Check for specified return */
     if (Ut_CFE_SB_UseReturnCode(UT_CFE_SB_GETTOTALMSGLENGTH_INDEX))

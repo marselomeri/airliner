@@ -47,7 +47,7 @@ typedef enum
 
 typedef struct
 {
-    int32 (*CFE_PSP_MemCpy)(void *Dest, void *Src, uint32 Size);
+    int32 (*CFE_PSP_MemCpy)(void *Dest, const void *Src, uint32 Size);
     int32 (*CFE_PSP_MemSet)(void *Dest, uint8 Value, uint32 Size);
 } Ut_CFE_PSP_MEMUTILS_HookTable_t;
 

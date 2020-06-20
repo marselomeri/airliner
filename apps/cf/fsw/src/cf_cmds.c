@@ -2,7 +2,7 @@
 ** File:
 **   $Id: cf_cmds.c 1.27.1.1 2015/03/06 15:30:46EST sstrege Exp  $
 **
-**   Copyright © 2007-2014 United States Government as represented by the 
+**   Copyright ï¿½ 2007-2014 United States Government as represented by the 
 **   Administrator of the National Aeronautics and Space Administration. 
 **   All Other Rights Reserved.  
 **
@@ -592,7 +592,7 @@ void CF_SetMibCmd(CFE_SB_MsgPtr_t MessagePtr)
         }
 
         /* if the engine took the new parameter and returned success... */
-        if(cfdp_set_mib_parameter(&CmdPtr->Param[0],&CmdPtr->Value[0]) == TRUE)  
+        if(cfdp_set_mib_parameter(&CmdPtr->Param[0],&CmdPtr->Value[0]) == true)
         {                                   
             /* update table with new value */
             if(strcmp(CmdPtr->Param,"ACK_LIMIT")==0)
@@ -683,7 +683,7 @@ void CF_GetMibCmd(CFE_SB_MsgPtr_t MessagePtr)
             return;
         }
 
-        if (cfdp_get_mib_parameter(&CmdPtr->Param[0], &Value[0]) == TRUE)
+        if (cfdp_get_mib_parameter(&CmdPtr->Param[0], &Value[0]) == true)
         {  
             CFE_EVS_SendEvent(CF_GET_MIB_CMD_EID, 
                   CFE_EVS_INFORMATION,

@@ -404,13 +404,16 @@ int32 CF_QueueDirectoryFiles(CF_QueueDirFiles_t  *Ptr)
     char            FullDstName[OS_MAX_PATH_LEN];
     CF_QueueEntry_t *NewQueueEntry;
     uint32          SrcPathLength,DstPathLength,FilenameLength;
+    int32           status;
+    uint32          dir_id;
 
     CFE_ES_PerfLogEntry(CF_QDIRFILES_PERF_ID);
                                         
     /* parameters have been checked earlier */
             
     /* open the directory to access the files */
-    if((dirp = OS_opendir(Ptr->SrcPath)) == NULL) /* directory is invalid */
+    status = OS_DirectoryOpen(&dir_id, Ptr->SrcPath);
+    if(status) /* directory is invalid */
     {
         CFE_EVS_SendEvent(CF_OPEN_DIR_ERR_EID,CFE_EVS_ERROR,
             "Playback Dir Error %d,cannot open directory %s",dirp,Ptr->SrcPath);
