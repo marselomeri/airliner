@@ -105,6 +105,8 @@ void TestTasks(void)
              (tasknum >= OS_MAX_TASKS && status != OS_SUCCESS), "OS_TaskDelete, nominal");
     }
     
+    OS_TaskDelay(1000);
+
     /* These next few tasks were deleted already, testing a "redelete" */
     UtAssert_True(OS_TaskDelete(TaskData[1].task_id) != OS_SUCCESS, "OS_TaskDelete, redelete 1");
     UtAssert_True(OS_TaskDelete(TaskData[2].task_id) != OS_SUCCESS, "OS_TaskDelete, redelete 2");
