@@ -2,7 +2,6 @@
 #include <dirent.h>
 
 
-
 #define OS_MAX_OBJECT_COUNT  (0x07ff)
 
 
@@ -103,11 +102,14 @@ typedef struct
 /* Open directory objects */
 typedef struct
 {
-    uint32        ID;
-    char          Name[OS_MAX_PATH_LEN];
-    DIR           *Desc;
-    bool          free;
-    int           creator;
+    uint32         ID;
+    char           Name[OS_MAX_PATH_LEN];
+    DIR            *Desc;
+    bool           free;
+    int            creator;
+#ifndef OSAL_OMIT_DEPRECATED
+    struct dirent  *entry;
+#endif
 } OS_open_dir_record_t;
 
 /* Module objects */

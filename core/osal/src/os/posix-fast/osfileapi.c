@@ -75,9 +75,6 @@ extern void   OS_InterruptSafeUnlock(pthread_mutex_t *lock, sigset_t *previous);
                                    GLOBAL DATA
 ****************************************************************************************/
 
-
-
-
 OS_open_file_record_t OS_open_file_table[OS_MAX_NUM_OPEN_FILES];
 OS_open_dir_record_t  OS_open_dir_table[OS_MAX_NUM_OPEN_DIRS];
 pthread_mutex_t       OS_open_file_table_mut;
@@ -1202,6 +1199,10 @@ int32 OS_DirectoryRead(uint32 dir_id, os_dirent_t *dirent)
     sigset_t      previous;
     sigset_t      mask;
 
+#ifndef OSAL_OMIT_DEPRECATED
+  	OS_open_dir_table[dir_id].entry = 0;
+#endif
+
     if (dirent == NULL)
     {
     	return OS_FS_ERR_INVALID_POINTER;
@@ -1219,6 +1220,10 @@ int32 OS_DirectoryRead(uint32 dir_id, os_dirent_t *dirent)
     }
 
     strncpy(dirent->FileName, dirEntPtr->d_name, sizeof(dirent->FileName));
+
+#ifndef OSAL_OMIT_DEPRECATED
+  	OS_open_dir_table[dir_id].entry = dirEntPtr;
+#endif
 
     return OS_FS_SUCCESS;
 } /* end OS_readdir */
@@ -1241,6 +1246,7 @@ int32 OS_DirectoryRewind(uint32 dir_id)
 
     return OS_FS_SUCCESS;
 }
+
 /*--------------------------------------------------------------------------------------
     Name: OS_rmdir
     
@@ -1252,7 +1258,6 @@ int32 OS_DirectoryRewind(uint32 dir_id)
              OS_FS_SUCCESS on success
              OS_FS_ERROR if the directory remove operation failed
 ---------------------------------------------------------------------------------------*/
-
 int32  OS_rmdir (const char *path)
 {
     int status;
@@ -1515,6 +1520,7 @@ int32 OS_CloseFileByName(const char *Filename)
            ** to free up that slot
            */
            OS_open_file_table[i].OSfd    =    -1;
+           OS_open_file_table[i].ID      =     0;
            strcpy(OS_open_file_table[i].Path, "\0");
            OS_open_file_table[i].creator =     UNINITIALIZED;
            OS_open_file_table[i].free    =     true;
@@ -1573,6 +1579,7 @@ int32 OS_CloseAllFiles(void)
            strcpy(OS_open_file_table[i].Path, "\0");
            OS_open_file_table[i].creator =  UNINITIALIZED;
            OS_open_file_table[i].free    =  true;
+           OS_open_file_table[i].ID    =  0;
            if (status == ERROR)
            {
               return_status = OS_FS_ERROR;
@@ -1586,3 +1593,106 @@ int32 OS_CloseAllFiles(void)
 
 }/* end OS_CloseAllFiles */
 
+
+
+#ifndef OSAL_OMIT_DEPRECATED
+
+/*----------------------------------------------------------------
+
+ * Function: OS_opendir
+ *
+ *  Purpose: Open a directory.  Deprecated function.
+ *
+ *-----------------------------------------------------------------*/
+os_dirp_t OS_opendir (const char *path)
+{
+    uint32 dir_id;
+
+    if(OS_DirectoryOpen(&dir_id, path) != OS_FS_SUCCESS)
+    {
+        return NULL;
+    }
+
+    return (os_dirp_t)OS_open_dir_table[dir_id].Desc;
+} /* end OS_opendir */
+
+
+uint32 OS_GetOpenDirIDFromDesc(DIR *dir)
+{
+	uint32 i;
+
+    for ( i = 0; i < OS_MAX_NUM_OPEN_DIRS; ++i)
+    {
+        if( OS_open_dir_table[i].free == false)
+        {
+        	if(OS_open_dir_table[i].Desc == dir)
+        	{
+        		return i;
+        	}
+        }
+    }
+
+    return OS_MAX_NUM_OPEN_DIRS;
+}
+
+
+/*----------------------------------------------------------------
+ *
+ * Function: OS_closedir
+ *
+ *  Purpose: closes a directory.  Deprecated function.
+ *
+ *-----------------------------------------------------------------*/
+int32 OS_closedir (os_dirp_t dirp)
+{
+	uint32 index;
+
+	index = OS_GetOpenDirIDFromDesc((DIR*)dirp);
+
+	return OS_DirectoryClose(index);
+} /* end OS_closedir */
+
+
+/*----------------------------------------------------------------
+ *
+ * Function: OS_readdir
+ *
+ *  Purpose: read a directory.  Deprecated function.
+ *
+ *  NOTE: this function is not thread-safe, and it cannot ever be thread-safe,
+ *  which is one reason why this is deprecated.
+ *
+ *-----------------------------------------------------------------*/
+os_dirent_t *OS_readdir (os_dirp_t dirp)
+{
+    os_dirent_t tempptr;
+	uint32      index;
+
+	index = OS_GetOpenDirIDFromDesc((DIR*)dirp);
+
+    if (OS_DirectoryRead(index, &tempptr) != OS_SUCCESS)
+    {
+        return 0;
+    }
+
+    return (os_dirent_t*)OS_open_dir_table[index].entry;
+} /* end OS_readdir */
+
+
+/*----------------------------------------------------------------
+ *
+ * Function: OS_rewinddir
+ *
+ *  Purpose: Rewinds the directory pointer.  Deprecated Function.
+ *
+ *-----------------------------------------------------------------*/
+void  OS_rewinddir(os_dirp_t dirp)
+{
+	uint32      index;
+
+	index = OS_GetOpenDirIDFromDesc((DIR*)dirp);
+
+    OS_DirectoryRewind(index);
+} /* end OS_rewinddir */
+
+#endif
