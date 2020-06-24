@@ -47,6 +47,7 @@
 #include <sys/signal.h>
 #include <sys/errno.h>
 #include <pthread.h>
+#include "osapi_private.h"
 
 /****************************************************************************************
                                 EXTERNAL FUNCTION PROTOTYPES
@@ -86,19 +87,6 @@ void  OS_UsecToTimespec(uint32 usecs, struct timespec *time_spec);
                                     LOCAL TYPEDEFS 
 ****************************************************************************************/
 
-typedef struct 
-{
-   uint32              free;
-   char                name[OS_MAX_API_NAME];
-   uint32              creator;
-   uint32              start_time;
-   uint32              interval_time;
-   uint32              accuracy;
-   OS_TimerCallback_t  callback_ptr;
-   uint32              host_timerid;
-
-} OS_timer_record_t;
-
 /****************************************************************************************
                                    GLOBAL DATA
 ****************************************************************************************/
@@ -116,48 +104,48 @@ pthread_mutex_t    OS_timer_table_mut;
 ****************************************************************************************/
 int32  OS_TimerAPIInit ( void )
 {
-   int    i;   
-   int    status;
-   struct timespec clock_resolution;
-   int32  return_code = OS_SUCCESS;
+    int    i;
+    int    status;
+    struct timespec clock_resolution;
+    int32  return_code = OS_SUCCESS;
 
-   /*
-   ** Mark all timers as available
-   */
-   for ( i = 0; i < OS_MAX_TIMERS; i++ )
-   {
-      OS_timer_table[i].free      = true;
-      OS_timer_table[i].creator   = UNINITIALIZED;
-      strcpy(OS_timer_table[i].name,"");
+    /*
+    ** Mark all timers as available
+    */
+    for ( i = 0; i < OS_MAX_TIMERS; i++ )
+    {
+    	OS_timer_table[i].ID        = 0;
+        OS_timer_table[i].free      = true;
+        OS_timer_table[i].creator   = UNINITIALIZED;
+        strcpy(OS_timer_table[i].name,"");
+    }
 
-   }
-
-   /*
-   ** get the resolution of the realtime clock
-   */
-   status = clock_getres(CLOCK_REALTIME, &clock_resolution);
-   if ( status < 0 )
-   {
-      return_code = OS_ERROR;
-   }  
-   else
-   { 
-      /*
-      ** Convert to microseconds
-      */
-      OS_TimespecToUsec(clock_resolution, &os_clock_accuracy);
+    /*
+    ** get the resolution of the realtime clock
+    */
+    status = clock_getres(CLOCK_REALTIME, &clock_resolution);
+    if ( status < 0 )
+    {
+        return_code = OS_ERROR;
+    }
+    else
+    {
+        /*
+        ** Convert to microseconds
+        */
+        OS_TimespecToUsec(clock_resolution, &os_clock_accuracy);
    
-      /*
-      ** Create the Timer Table mutex
-      */
-      status = pthread_mutex_init((pthread_mutex_t *) & OS_timer_table_mut,NULL); 
-      if ( status < 0 )
-      {
-         return_code = OS_ERROR;
-      }
-   }
-   return(return_code);
+        /*
+        ** Create the Timer Table mutex
+        */
+        status = pthread_mutex_init((pthread_mutex_t *) & OS_timer_table_mut,NULL);
+        if ( status < 0 )
+        {
+            return_code = OS_ERROR;
+        }
+    }
 
+    return(return_code);
 }
 
 /****************************************************************************************
@@ -179,7 +167,7 @@ void OS_TimerSignalHandler(int signum)
    {
       if ( OS_timer_table[timer_id].free == false )
       {
-         (OS_timer_table[timer_id].callback_ptr)(timer_id);
+         (OS_timer_table[timer_id].callback_ptr)(OS_timer_table[timer_id].ID);
       }
    }
 
@@ -248,7 +236,7 @@ void  OS_TimespecToUsec(struct timespec time_spec, uint32 *usecs)
 **
 **  Return:
 */
-int32 OS_TimerCreate(uint32 *timer_id, const char *timer_name, uint32 *clock_accuracy, OS_TimerCallback_t  callback_ptr)
+int32 OS_TimerCreate(uint32 *timer_id, const char *timer_name, uint32 *clock_accuracy, OS_TimerCallback_t callback_ptr)
 {
    uint32    possible_tid;
    int32     i;
@@ -313,6 +301,9 @@ int32 OS_TimerCreate(uint32 *timer_id, const char *timer_name, uint32 *clock_acc
       return OS_TIMER_ERR_INVALID_ARGS;
    }    
 
+   /* Allocate an ID */
+   OS_AllocateID(OS_OBJECT_TYPE_OS_TIMECB, possible_tid, &OS_timer_table[possible_tid].ID);
+
    /* 
    ** Set the possible timer Id to not free so that
    ** no other task can try to use it 
@@ -362,7 +353,7 @@ int32 OS_TimerCreate(uint32 *timer_id, const char *timer_name, uint32 *clock_acc
    /*
    ** Return timer ID 
    */
-   *timer_id = possible_tid;
+   *timer_id = OS_timer_table[possible_tid].ID;
 
    return OS_SUCCESS;
 }
@@ -380,55 +371,55 @@ int32 OS_TimerCreate(uint32 *timer_id, const char *timer_name, uint32 *clock_acc
 */
 int32 OS_TimerSet(uint32 timer_id, uint32 start_time, uint32 interval_time)
 {
-   int    status;
-   struct itimerspec timeout;
+    int    status;
+    struct itimerspec timeout;
+    int32  rc;
+    uint32 index = 0;
 
-   /* 
-   ** Check to see if the timer_id given is valid 
-   */
-   if (timer_id >= OS_MAX_TIMERS || OS_timer_table[timer_id].free == true)
-   {
-      return OS_ERR_INVALID_ID;
-   }
+    rc = OS_ConvertToArrayIndex(timer_id, &index);
+    if(rc != OS_SUCCESS)
+    {
+   	    return rc;
+    }
 
-   /*
-   ** Round up the accuracy of the start time and interval times 
-   */
-   if (( start_time > 0 ) && ( start_time < os_clock_accuracy ))
-   {
-      start_time = os_clock_accuracy;
-   }
+    /*
+    ** Round up the accuracy of the start time and interval times
+    */
+    if (( start_time > 0 ) && ( start_time < os_clock_accuracy ))
+    {
+        start_time = os_clock_accuracy;
+    }
  
-   if (( interval_time > 0) && ( interval_time < os_clock_accuracy ))
-   {
-      interval_time = os_clock_accuracy;
-   }
+    if (( interval_time > 0) && ( interval_time < os_clock_accuracy ))
+    {
+        interval_time = os_clock_accuracy;
+    }
 
-   /*
-   ** Save the start and interval times 
-   */
-   OS_timer_table[timer_id].start_time = start_time;
-   OS_timer_table[timer_id].interval_time = interval_time;
+    /*
+    ** Save the start and interval times
+    */
+    OS_timer_table[index].start_time = start_time;
+    OS_timer_table[index].interval_time = interval_time;
 
-   /*
-   ** Convert from Microseconds to timespec structures
-   */
-   OS_UsecToTimespec(start_time, &(timeout.it_value));
-   OS_UsecToTimespec(interval_time, &(timeout.it_interval));
+    /*
+    ** Convert from Microseconds to timespec structures
+    */
+    OS_UsecToTimespec(start_time, &(timeout.it_value));
+    OS_UsecToTimespec(interval_time, &(timeout.it_interval));
 	
-   /*
-   ** Program the real timer
-   */
-   status = timer_settime((timer_t)(OS_timer_table[timer_id].host_timerid), 
+    /*
+    ** Program the real timer
+    */
+    status = timer_settime((timer_t)(OS_timer_table[index].host_timerid),
                              0,              /* Flags field can be zero */
                              &timeout,       /* struct itimerspec */
 		            		 0);         /* Oldvalue */
-   if (status < 0) 
-   {
-      return ( OS_TIMER_ERR_INTERNAL);
-   }
+    if (status < 0)
+    {
+        return ( OS_TIMER_ERR_INTERNAL);
+    }
 	
-   return OS_SUCCESS;
+    return OS_SUCCESS;
 }
 
 
@@ -445,27 +436,27 @@ int32 OS_TimerSet(uint32 timer_id, uint32 start_time, uint32 interval_time)
 */
 int32 OS_TimerDelete(uint32 timer_id)
 {
-   int status;
+    int status;
+    int32  rc;
+    uint32 index = 0;
 
-   /* 
-   ** Check to see if the timer_id given is valid 
-   */
-   if (timer_id >= OS_MAX_TIMERS || OS_timer_table[timer_id].free == true)
-   {
-      return OS_ERR_INVALID_ID;
-   }
+    rc = OS_ConvertToArrayIndex(timer_id, &index);
+    if(rc != OS_SUCCESS)
+    {
+    	return rc;
+    }
 
-   /*
-   ** Delete the timer 
-   */
-   status = timer_delete((timer_t)(OS_timer_table[timer_id].host_timerid));
-   OS_timer_table[timer_id].free = true;
-   if (status < 0)
-   {
-      return ( OS_TIMER_ERR_INTERNAL);
-   }
+    /*
+    ** Delete the timer
+    */
+    status = timer_delete((timer_t)(OS_timer_table[index].host_timerid));
+    OS_timer_table[index].free = true;
+    if (status < 0)
+    {
+        return ( OS_TIMER_ERR_INTERNAL);
+    }
 	
-   return OS_SUCCESS;
+    return OS_SUCCESS;
 }
 
 /***********************************************************************************
@@ -502,9 +493,9 @@ int32 OS_TimerGetIdByName (uint32 *timer_id, const char *timer_name)
     for (i = 0; i < OS_MAX_TIMERS; i++)
     {
         if (OS_timer_table[i].free != true &&
-                (strcmp (OS_timer_table[i].name , (char*) timer_name) == 0))
+                (strcmp (OS_timer_table[i].name, (char*) timer_name) == 0))
         {
-            *timer_id = i;
+            *timer_id = OS_timer_table[i].ID;
             return OS_SUCCESS;
         }
     }
@@ -531,18 +522,18 @@ int32 OS_TimerGetInfo (uint32 timer_id, OS_timer_prop_t *timer_prop)
 {
     sigset_t  previous;
     sigset_t  mask;
-
-    /* 
-    ** Check to see that the id given is valid 
-    */
-    if (timer_id >= OS_MAX_TIMERS || OS_timer_table[timer_id].free == true)
-    {
-       return OS_ERR_INVALID_ID;
-    }
+    int32  rc;
+    uint32 index = 0;
 
     if (timer_prop == NULL)
     {
         return OS_INVALID_POINTER;
+    }
+
+    rc = OS_ConvertToArrayIndex(timer_id, &index);
+    if(rc != OS_SUCCESS)
+    {
+    	return rc;
     }
 
     /* 
@@ -550,11 +541,11 @@ int32 OS_TimerGetInfo (uint32 timer_id, OS_timer_prop_t *timer_prop)
     */
     OS_InterruptSafeLock(&OS_timer_table_mut, &mask, &previous);
 
-    timer_prop ->creator       = OS_timer_table[timer_id].creator;
-    strcpy(timer_prop-> name, OS_timer_table[timer_id].name);
-    timer_prop ->start_time    = OS_timer_table[timer_id].start_time;
-    timer_prop ->interval_time = OS_timer_table[timer_id].interval_time;
-    timer_prop ->accuracy      = OS_timer_table[timer_id].accuracy;
+    timer_prop ->creator       = OS_timer_table[index].creator;
+    strcpy(timer_prop-> name, OS_timer_table[index].name);
+    timer_prop ->start_time    = OS_timer_table[index].start_time;
+    timer_prop ->interval_time = OS_timer_table[index].interval_time;
+    timer_prop ->accuracy      = OS_timer_table[index].accuracy;
     
     OS_InterruptSafeUnlock(&OS_timer_table_mut, &previous);
 

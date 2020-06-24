@@ -53,13 +53,6 @@ UT_OsReturnCode_t  g_dirRead = {0,0};
 UT_OsReturnCode_t  g_dirRewind = {0,0};
 UT_OsReturnCode_t  g_dirRemove = {0,0};
 
-/* As defined in osfileapi.c */
-OS_FDTableEntry  OS_FDTable[OS_MAX_NUM_OPEN_FILES];
-
-#ifdef _LINUX_OS_
-pthread_mutex_t  OS_FDTableMutex;
-#endif
-
 /*--------------------------------------------------------------------------------*
 ** Local function prototypes
 **--------------------------------------------------------------------------------*/
@@ -89,21 +82,21 @@ int32 OS_open(const char* path, int32 access, uint32  mode)
 
 /*--------------------------------------------------------------------------------*/
 
-int32 OS_close(uint32 filedes)
+int32 OS_close(int32 filedes)
 {
     return (g_fileClose.value);
 }
 
 /*--------------------------------------------------------------------------------*/
 
-int32 OS_read(uint32  filedes, void *buffer, uint32 nbytes)
+int32 OS_read(int32 filedes, void* buffer, uint32 nbytes)
 {
     return (g_fileRead.value);
 }
 
 /*--------------------------------------------------------------------------------*/
 
-int32 OS_write(uint32 filedes, const void* buffer, uint32 nbytes)
+int32 OS_write(int32 filedes, void* buffer, uint32 nbytes)
 {
     return (g_fileWrite.value);
 }
@@ -124,7 +117,7 @@ int32 OS_stat(const char* path, os_fstat_t* filestats)
 
 /*--------------------------------------------------------------------------------*/
 
-int32 OS_lseek(uint32 filedes, int32 offset, uint32 whence)
+int32 OS_lseek(int32 filedes, int32 offset, uint32 whence)
 {
     return (g_fileSeek.value);
 }
@@ -158,28 +151,21 @@ int32 OS_mv(const char* src, const char* dest)
 
 /*--------------------------------------------------------------------------------*/
 
-int32 OS_ShellOutputToFile(const char* Cmd, uint32 filedes)
+int32 OS_ShellOutputToFile(char* Cmd, int32 OS_fd)
 {
     return (g_shellOutputToFile.value);
 }
 
 /*--------------------------------------------------------------------------------*/
 
-int32 OS_FDGetInfo (uint32 filedes, OS_file_prop_t *fd_prop)
-{
-    return (g_getFdInfo.value);
-}
-
-/*--------------------------------------------------------------------------------*/
-
-int32 OS_FileOpenCheck(const char* filename)
+int32 OS_FileOpenCheck(char* filename)
 {
     return (g_fileOpenCheck.value);
 }
 
 /*--------------------------------------------------------------------------------*/
 
-int32 OS_CloseFileByName(const char* filename)
+int32 OS_CloseFileByName(char* filename)
 {
     return (g_closeFileByName.value);
 }

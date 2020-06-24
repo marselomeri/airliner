@@ -51,6 +51,7 @@ osal_set_blackbox_unit_tests(
         ${CMAKE_CURRENT_SOURCE_DIR}/osloader.c
         ${CMAKE_CURRENT_SOURCE_DIR}/osnetwork.c
         ${CMAKE_CURRENT_SOURCE_DIR}/ostimer.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/osidmap.c
         
     VALGRIND_SUPPRESSION_DIR
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/bb-suppressions
@@ -74,7 +75,7 @@ osal_add_whitebox_unit_test(
         ${CMAKE_CURRENT_SOURCE_DIR}/osfileapi.c
         ${CMAKE_CURRENT_SOURCE_DIR}/ostimer.c
         ${CMAKE_CURRENT_SOURCE_DIR}/osnetwork.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_psp_voltab_stubs.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/osidmap.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_os_stubs.c
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared
@@ -95,7 +96,7 @@ osal_add_whitebox_unit_test(
         ${CMAKE_CURRENT_SOURCE_DIR}/osfileapi.c
         ${CMAKE_CURRENT_SOURCE_DIR}/ostimer.c
         ${CMAKE_CURRENT_SOURCE_DIR}/osnetwork.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_psp_voltab_stubs.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/osidmap.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_os_stubs.c
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared
@@ -116,7 +117,7 @@ osal_add_whitebox_unit_test(
         ${CMAKE_CURRENT_SOURCE_DIR}/osfileapi.c
         ${CMAKE_CURRENT_SOURCE_DIR}/ostimer.c
         ${CMAKE_CURRENT_SOURCE_DIR}/osnetwork.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_psp_voltab_stubs.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/osidmap.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_os_stubs.c
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared
@@ -138,7 +139,7 @@ osal_add_whitebox_unit_test(
         ${CMAKE_CURRENT_SOURCE_DIR}/osfileapi.c
         ${CMAKE_CURRENT_SOURCE_DIR}/ostimer.c
         ${CMAKE_CURRENT_SOURCE_DIR}/osnetwork.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_psp_voltab_stubs.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/osidmap.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_os_stubs.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/osloader-test/ut_osloader_module_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/osloader-test/ut_osloader_symtable_test.c
@@ -153,16 +154,17 @@ osal_add_whitebox_unit_test(
 )
 
 get_property(AIRLINER_BUILD_PREFIX GLOBAL PROPERTY AIRLINER_BUILD_PREFIX_PROPERTY)
-    
+
 set(MOD 32)
 while(MOD GREATER 0)
   math(EXPR MOD "${MOD} - 1")
-  add_library(${AIRLINER_BUILD_PREFIX}osal-wb-osloader-test-MODULE${MOD} SHARED ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/osloader-test/ut_module.c)
+  add_library(${AIRLINER_BUILD_PREFIX}osal-wb-osloader-test-MODULE${MOD} SHARED EXCLUDE_FROM_ALL ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/osloader-test/ut_module.c)
   set_target_properties(${AIRLINER_BUILD_PREFIX}osal-wb-osloader-test-MODULE${MOD} PROPERTIES 
     COMPILE_DEFINITIONS "MODULE_NAME=module${MOD}" 
     PREFIX ""
     OUTPUT_NAME MODULE${MOD}
     LIBRARY_OUTPUT_DIRECTORY eeprom1)
+  add_dependencies(${PARSED_ARGS_PREFIX}osal-wb-osloader-test ${AIRLINER_BUILD_PREFIX}osal-wb-osloader-test-MODULE${MOD})
 endwhile(MOD GREATER 0)
 
 
@@ -177,7 +179,7 @@ osal_add_whitebox_unit_test(
         ${CMAKE_CURRENT_SOURCE_DIR}/osfileapi.c
         ${CMAKE_CURRENT_SOURCE_DIR}/ostimer.c
         ${CMAKE_CURRENT_SOURCE_DIR}/osnetwork.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_psp_voltab_stubs.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/osidmap.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_os_stubs.c
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared
@@ -219,7 +221,6 @@ osal_add_whitebox_unit_test(
 #        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_osnetwork_stubs.c
 #        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_os_stubs.c
 #        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_ostimer_stubs.c
-#        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_psp_voltab_stubs.c
 #    INCLUDES
 #        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared
 #)
@@ -236,7 +237,7 @@ osal_add_whitebox_unit_test(
         ${CMAKE_CURRENT_SOURCE_DIR}/osfileapi.c
         ${CMAKE_CURRENT_SOURCE_DIR}/ostimer.c
         ${CMAKE_CURRENT_SOURCE_DIR}/osnetwork.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_psp_voltab_stubs.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/osidmap.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_os_stubs.c
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared

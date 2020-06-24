@@ -48,6 +48,7 @@
 
 #include "common_types.h"
 #include "osapi.h"
+#include "osapi_private.h"
 
 #include <sys/vfs.h>
 /****************************************************************************************
@@ -68,7 +69,7 @@ extern OS_VolumeInfo_t OS_VolumeTable [NUM_TABLE_ENTRIES];
 /*
 ** Fd Table
 */
-extern OS_FDTableEntry OS_FDTable[OS_MAX_NUM_OPEN_FILES];
+extern OS_open_file_record_t OS_open_file_table[OS_MAX_NUM_OPEN_FILES];
 
 /****************************************************************************************
                                 Filesys API
@@ -446,9 +447,8 @@ int32 OS_fsBytesFree (const char *name, uint64 *bytes_free)
              OS_FS_ERROR if the OS calls fail
 
 ---------------------------------------------------------------------------------------*/
-os_fshealth_t OS_chkfs (const char *name, boolean repair)
+int32 OS_chkfs (const char *name, bool repair)
 {
- 
     return OS_FS_UNIMPLEMENTED;
 
 }/* end OS_chkfs */
@@ -708,7 +708,7 @@ int32 OS_GetFsInfo(os_fsinfo_t  *filesys_info)
    filesys_info->FreeFds = 0;
    for ( i = 0; i < OS_MAX_NUM_OPEN_FILES; i++ )
    {
-      if ( OS_FDTable[i].IsValid == false)
+      if ( OS_open_file_table[i].free == true)
       {
          filesys_info->FreeFds++;
       }

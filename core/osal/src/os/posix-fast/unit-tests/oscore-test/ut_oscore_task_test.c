@@ -205,6 +205,7 @@ void UT_os_task_create_test()
     res = OS_TaskCreate(NULL, g_task_names[1], generic_test_task, g_task_stacks[1],
                         UT_TASK_STACK_SIZE, UT_TASK_PRIORITY, 0);
     if (res == OS_INVALID_POINTER)
+        /* cppcheck-suppress syntaxError */
         UT_OS_SET_TEST_RESULT_MACRO(apiInfo, idx, testDesc, UT_OS_PASSED)
     else
         UT_OS_SET_TEST_RESULT_MACRO(apiInfo, idx, testDesc, UT_OS_FAILED)
@@ -918,6 +919,7 @@ void getid_test_task(void)
     memset(text, '\0', sizeof(text));
     UT_OS_LOG_MACRO("OS_TaskGetId() - #1 Nominal [This is the returned task Id=%d]\n",
     		            (int)task_id);
+
     while (1)
     {
         OS_TaskDelay(1000);

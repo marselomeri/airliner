@@ -47,28 +47,28 @@ UT_OsReturnCode_t  g_fsTranslatePath = {0,0};
 ** Function definitions
 **--------------------------------------------------------------------------------*/
 
-int32 OS_mkfs(char* address, const char* devname, const char* volname, uint32 blocksize, uint32 numblocks)
+int32 OS_mkfs(char* address, char* devname,char* volname, uint32 blocksize, uint32 numblocks)
 {
     return (g_fsMake.value);
 }
 
 /*--------------------------------------------------------------------------------*/
 
-int32 OS_rmfs(const char* devname)
+int32 OS_rmfs(char* devname)
 {
     return (g_fsRemove.value);
 }
 
 /*--------------------------------------------------------------------------------*/
 
-int32 OS_initfs(char* address, const char* devname, const char* volname, uint32 blocksize, uint32 numblocks)
+int32 OS_initfs(char* address,char* devname, char* volname, uint32 blocksize, uint32 numblocks)
 {
     return (g_fsInit.value);
 }
 
 /*--------------------------------------------------------------------------------*/
 
-int32 OS_mount(const char* devname, const char* mountpoint)
+int32 OS_mount(const char* devname, char* mountpoint)
 {
     return (g_fsMount.value);
 }
@@ -96,7 +96,7 @@ int32 OS_fsBytesFree(const char* name, uint64* bytes_free)
 
 /*--------------------------------------------------------------------------------*/
 
-int32 OS_FS_GetPhysDriveName(char* PhysDriveName, const char* MountPoint)
+int32 OS_FS_GetPhysDriveName(char* PhysDriveName, char* MountPoint)
 {
     return (g_fsGetPhysDriveName.value);
 }

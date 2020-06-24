@@ -53,6 +53,7 @@
 */
 #include "common_types.h"
 #include "osapi.h"
+#include "osapi_private.h"
 
 /*
 ** Defines
@@ -79,6 +80,11 @@
 /* To remove the "implicit declaration of function ‘pthread_setname_np’" warning. */
 extern int pthread_setname_np (pthread_t __target_thread, const char *__name);
 
+extern OS_open_file_record_t   OS_open_file_table [OS_MAX_NUM_OPEN_FILES];
+extern OS_open_dir_record_t    OS_open_dir_table  [OS_MAX_NUM_OPEN_DIRS];
+extern OS_module_record_priv_t OS_module_table    [OS_MAX_MODULES];
+extern OS_timer_record_t       OS_timer_table     [OS_MAX_TIMERS];
+
 
 /*
 ** Global data for the API
@@ -89,81 +95,15 @@ extern int pthread_setname_np (pthread_t __target_thread, const char *__name);
 */
 uint32 OS_API_Initialized = OS_API_UNINITIALIZED;
 
-/*tasks */
-typedef struct
-{
-    int       free;
-    pthread_t id;
-    char      name [OS_MAX_API_NAME];
-    int       creator;
-    uint32    stack_size;
-    uint32    priority;
-    void     *delete_hook_pointer;
-}OS_task_record_t;
-    
-/* queues */
-typedef struct
-{
-	uint32	size;
-	char buffer[OS_MAX_QUEUE_WIDTH];
-}OS_queue_data_t;
-
-typedef struct
-{
-    int    			free;
-    OS_queue_data_t	qData[OS_MAX_QUEUE_DEPTH];
-    uint32 			max_size;
-    char   			name [OS_MAX_API_NAME];
-    int    			creator;
-    pthread_cond_t  cv;
-    int32	  		head;
-    int32   		tail;
-    uint32   		width;
-    uint32   		depth;
-}OS_queue_record_t;
-
-/* Binary Semaphores */
-typedef struct
-{
-    int             free;
-    pthread_mutex_t id;
-    pthread_cond_t  cv;
-    char            name [OS_MAX_API_NAME];
-    int             creator;
-    int             max_value;
-    int             current_value;
-}OS_bin_sem_record_t;
-
-/*Counting Semaphores */
-typedef struct
-{
-    int             free;
-    pthread_mutex_t id;
-    pthread_cond_t  cv;
-    char            name [OS_MAX_API_NAME];
-    int             creator;
-    int             max_value;
-    int             current_value;
-}OS_count_sem_record_t;
-
-/* Mutexes */
-typedef struct
-{
-    int             free;
-    pthread_mutex_t id;
-    char            name [OS_MAX_API_NAME];
-    int             creator;
-}OS_mut_sem_record_t;
-
 /* function pointer type */
 typedef void (*FuncPtr_t)(void);
 
 /* Tables where the OS object information is stored */
-OS_task_record_t    OS_task_table          [OS_MAX_TASKS];
-OS_queue_record_t   OS_queue_table         [OS_MAX_QUEUES];
-OS_bin_sem_record_t OS_bin_sem_table       [OS_MAX_BIN_SEMAPHORES];
-OS_count_sem_record_t OS_count_sem_table   [OS_MAX_COUNT_SEMAPHORES];
-OS_mut_sem_record_t OS_mut_sem_table       [OS_MAX_MUTEXES];
+OS_task_record_t      OS_task_table      [OS_MAX_TASKS];
+OS_queue_record_t     OS_queue_table     [OS_MAX_QUEUES];
+OS_bin_sem_record_t   OS_bin_sem_table   [OS_MAX_BIN_SEMAPHORES];
+OS_count_sem_record_t OS_count_sem_table [OS_MAX_COUNT_SEMAPHORES];
+OS_mut_sem_record_t   OS_mut_sem_table   [OS_MAX_MUTEXES];
 
 pthread_key_t    thread_key;
 
@@ -172,6 +112,7 @@ pthread_mutex_t OS_queue_table_mut;
 pthread_mutex_t OS_bin_sem_table_mut;
 pthread_mutex_t OS_mut_sem_table_mut;
 pthread_mutex_t OS_count_sem_table_mut;
+pthread_mutex_t OS_object_count_mut;
 
 uint32          OS_printf_enabled = true;
 volatile uint32 OS_shutdown = false;
@@ -184,8 +125,6 @@ void    OS_CompAbsDelayTime( uint32 milli_second , struct timespec * tm);
 void    OS_ThreadKillHandler(int sig );
 uint32  OS_FindCreator(void);
 int32   OS_PriorityRemap(uint32 InputPri);
-int     OS_InterruptSafeLock(pthread_mutex_t *lock, sigset_t *set, sigset_t *previous);
-void    OS_InterruptSafeUnlock(pthread_mutex_t *lock, sigset_t *previous);
 
 /*---------------------------------------------------------------------------------------
    Name: OS_API_Init
@@ -200,11 +139,6 @@ int32 OS_API_Init(void)
 	return OS_API_InitEx(OS_RUNTIME_MODE_REALTIME);
 }
 
-void rek(double test[100])
-{
-	rek(test);
-}
-
 /*---------------------------------------------------------------------------------------
    Name: OS_API_InitEx
 
@@ -215,17 +149,20 @@ void rek(double test[100])
 ---------------------------------------------------------------------------------------*/
 int32 OS_API_InitEx(OS_RunTimeModeEnum_t RunMode)
 {
-   int                 i;
-   int                 ret;
-   pthread_mutexattr_t mutex_attr ;    
-   int32               return_code = OS_SUCCESS;
-   struct sched_param  param;
-   int                 sched_policy;
+    int                 i;
+    int                 ret;
+    pthread_mutexattr_t mutex_attr ;
+    int32               return_code = OS_SUCCESS;
+    struct sched_param  param;
+    int                 sched_policy;
 
-   /* Initialize Task Table */
+    OS_IDMapInit();
 
-   for(i = 0; i < OS_MAX_TASKS; i++)
-   {
+    /* Initialize Task Table */
+
+    for(i = 0; i < OS_MAX_TASKS; i++)
+    {
+        OS_task_table[i].ID                  = 0;
         OS_task_table[i].free                = true;
         OS_task_table[i].creator             = UNINITIALIZED;
         OS_task_table[i].delete_hook_pointer = NULL;
@@ -236,6 +173,7 @@ int32 OS_API_InitEx(OS_RunTimeModeEnum_t RunMode)
 
     for(i = 0; i < OS_MAX_QUEUES; i++)
     {
+    	OS_queue_table[i].ID          = 0;
         OS_queue_table[i].free        = true;
         OS_queue_table[i].creator     = UNINITIALIZED;
         strcpy(OS_queue_table[i].name,""); 
@@ -245,6 +183,7 @@ int32 OS_API_InitEx(OS_RunTimeModeEnum_t RunMode)
 
     for(i = 0; i < OS_MAX_BIN_SEMAPHORES; i++)
     {
+    	OS_bin_sem_table[i].ID          = 0;
         OS_bin_sem_table[i].free        = true;
         OS_bin_sem_table[i].creator     = UNINITIALIZED;
         strcpy(OS_bin_sem_table[i].name,"");
@@ -253,6 +192,7 @@ int32 OS_API_InitEx(OS_RunTimeModeEnum_t RunMode)
     /* Initialize Counting Semaphores */
     for(i = 0; i < OS_MAX_COUNT_SEMAPHORES; i++)
     {
+    	OS_count_sem_table[i].ID          = 0;
         OS_count_sem_table[i].free        = true;
         OS_count_sem_table[i].creator     = UNINITIALIZED;
         strcpy(OS_count_sem_table[i].name,"");
@@ -261,149 +201,171 @@ int32 OS_API_InitEx(OS_RunTimeModeEnum_t RunMode)
     /* Initialize Mutex Semaphore Table */
     for(i = 0; i < OS_MAX_MUTEXES; i++)
     {
+    	OS_mut_sem_table[i].ID          = 0;
         OS_mut_sem_table[i].free        = true;
         OS_mut_sem_table[i].creator     = UNINITIALIZED;
         strcpy(OS_mut_sem_table[i].name,"");
     }
 
-   /*
-   ** Initialize the module loader
-   */
-   #ifdef OS_INCLUDE_MODULE_LOADER
-      return_code = OS_ModuleTableInit();
-      if ( return_code == OS_ERROR )
-      {
-         return(return_code);
-      }
-   #endif
+    /*
+    ** Initialize the module loader
+    */
+#ifdef OS_INCLUDE_MODULE_LOADER
+    return_code = OS_ModuleTableInit();
+    if ( return_code == OS_ERROR )
+    {
+        return(return_code);
+    }
+#endif
 
-   /*
-   ** Initialize the Timer API
-   */
-   return_code = OS_TimerAPIInit();
-   if ( return_code == OS_ERROR )
-   {
-      return(return_code);
-   }
+    /*
+    ** Initialize the Timer API
+    */
+    return_code = OS_TimerAPIInit();
+    if ( return_code == OS_ERROR )
+    {
+        return(return_code);
+    }
 
-   ret = pthread_key_create(&thread_key, NULL );
-   if ( ret != 0 )
-   {
-      #ifdef OS_DEBUG_PRINTF
+    ret = pthread_key_create(&thread_key, NULL );
+    if ( ret != 0 )
+    {
+#ifdef OS_DEBUG_PRINTF
         printf("Error creating thread key\n");
-      #endif
-      return_code = OS_ERROR;
-      return(return_code);
-   }
+#endif
+        return_code = OS_ERROR;
+        return(return_code);
+    }
 
-   /* 
-   ** initialize the pthread mutex attribute structure with default values 
-   */
-   return_code = pthread_mutexattr_init(&mutex_attr); 
-   if ( return_code != 0 )
-   {
-      #ifdef OS_DEBUG_PRINTF
-         printf("Error: pthread_mutexattr_init failed\n");
-      #endif
-      return_code = OS_ERROR;
-      return (return_code);
-   }
+    /*
+    ** initialize the pthread mutex attribute structure with default values
+    */
+    return_code = pthread_mutexattr_init(&mutex_attr);
+    if ( return_code != 0 )
+    {
+#ifdef OS_DEBUG_PRINTF
+        printf("Error: pthread_mutexattr_init failed\n");
+#endif
+       return_code = OS_ERROR;
+       return (return_code);
+    }
 
-   /*
-   ** Allow the mutex to use priority inheritance  
-   */  
-   return_code = pthread_mutexattr_setprotocol(&mutex_attr,PTHREAD_PRIO_INHERIT) ;
-   if ( return_code != 0 )
-   {
-      #ifdef OS_DEBUG_PRINTF
-         printf("Error: pthread_mutexattr_setprotocol failed\n");
-      #endif
-      return_code = OS_ERROR;
-      return (return_code);
-   }	
+    /*
+    ** Allow the mutex to use priority inheritance
+    */
+    return_code = pthread_mutexattr_setprotocol(&mutex_attr,PTHREAD_PRIO_INHERIT) ;
+    if ( return_code != 0 )
+    {
+#ifdef OS_DEBUG_PRINTF
+        printf("Error: pthread_mutexattr_setprotocol failed\n");
+#endif
+        return_code = OS_ERROR;
+        return (return_code);
+    }
 
-   /*
-   **  Set the mutex type to RECURSIVE so a thread can do nested locks
-   */
-   return_code = pthread_mutexattr_settype(&mutex_attr, PTHREAD_MUTEX_RECURSIVE);
-   if ( return_code != 0 )
-   {
-      #ifdef OS_DEBUG_PRINTF
-         printf("Error: pthread_mutexattr_settype failed\n");
-      #endif
-      return_code = OS_ERROR;
-      return (return_code);
-   }
+    /*
+    **  Set the mutex type to RECURSIVE so a thread can do nested locks
+    */
+    return_code = pthread_mutexattr_settype(&mutex_attr, PTHREAD_MUTEX_RECURSIVE);
+    if ( return_code != 0 )
+    {
+#ifdef OS_DEBUG_PRINTF
+        printf("Error: pthread_mutexattr_settype failed\n");
+#endif
+        return_code = OS_ERROR;
+        return (return_code);
+    }
 
-   /*
-   ** create the mutexes that protect the OSAPI structures 
-   ** the function returns on error, since we dont want to go through
-   ** the extra trouble of creating and deleting resoruces for nothing
-   */   
-   ret = pthread_mutex_init((pthread_mutex_t *) & OS_task_table_mut,&mutex_attr);
-   if ( ret != 0 )
-   {
-      return_code = OS_ERROR;
-      return(return_code);
-   }
-   ret = pthread_mutex_init((pthread_mutex_t *) & OS_queue_table_mut,&mutex_attr); 
-   if ( ret != 0 )
-   {
-      return_code = OS_ERROR;
-      return(return_code);
-   }
-   ret = pthread_mutex_init((pthread_mutex_t *) & OS_bin_sem_table_mut,&mutex_attr); 
-   if ( ret != 0 )
-   {
-      return_code = OS_ERROR;
-      return(return_code);
-   }
-   ret = pthread_mutex_init((pthread_mutex_t *) & OS_count_sem_table_mut,&mutex_attr); 
-   if ( ret != 0 )
-   {
-      return_code = OS_ERROR;
-      return(return_code);
-   }
-   ret = pthread_mutex_init((pthread_mutex_t *) & OS_mut_sem_table_mut,&mutex_attr); 
-   if ( ret != 0 )
-   {
-      return_code = OS_ERROR;
-      return(return_code);
-   }
+    /*
+    ** Create the mutexes that protect the OSAPI structures
+    ** the function returns on error, since we dont want to go through
+    ** the extra trouble of creating and deleting resoruces for nothing
+    */
+    ret = pthread_mutex_init((pthread_mutex_t *) &OS_task_table_mut, &mutex_attr);
+    if ( ret != 0 )
+    {
+        return_code = OS_ERROR;
+        return(return_code);
+    }
 
-   /*
-   ** File system init
-   */
-   return_code = OS_FS_Init();
+    ret = pthread_mutex_init((pthread_mutex_t *) &OS_queue_table_mut, &mutex_attr);
+    if ( ret != 0 )
+    {
+        return_code = OS_ERROR;
+        return(return_code);
+    }
 
-   /*
-   ** Check to see if this application is running as root
-   **  It must be root in order to set the scheduling policy, stacks, and priorities of
-   **  the pthreads
-   */
-   if (geteuid() != 0 )
-   {
-      #ifdef OS_DEBUG_PRINTF
-         printf("OS_API_Init: Note: Not running as root. Task scheduling policy, stack sizes, or priorities will not be set\n");
-      #endif
-   }
-   else
-   {
-       param.sched_priority = 50;
-       sched_policy = SCHED_FIFO;
+    ret = pthread_mutex_init((pthread_mutex_t *) &OS_bin_sem_table_mut, &mutex_attr);
+    if ( ret != 0 )
+    {
+        return_code = OS_ERROR;
+        return(return_code);
+    }
 
-       return_code = pthread_setschedparam(pthread_self(), sched_policy, &param);
-       #ifdef OS_DEBUG_PRINTF
-          if (return_code != 0)
-          {
-             printf("OS_API_Init: Could not set scheduleparam in main thread\n");
-          }
-       #endif
-   }
+    ret = pthread_mutex_init((pthread_mutex_t *) &OS_count_sem_table_mut, &mutex_attr);
+    if ( ret != 0 )
+    {
+        return_code = OS_ERROR;
+        return(return_code);
+    }
 
-   OS_API_Initialized = OS_API_INITIALIZED;
+    ret = pthread_mutex_init((pthread_mutex_t *) &OS_mut_sem_table_mut, &mutex_attr);
+    if ( ret != 0 )
+    {
+        return_code = OS_ERROR;
+        return(return_code);
+    }
 
-   return(return_code);
+    ret = pthread_mutex_init((pthread_mutex_t *) &OS_mut_sem_table_mut, &mutex_attr);
+    if ( ret != 0 )
+    {
+        return_code = OS_ERROR;
+        return(return_code);
+    }
+
+
+    /* Initial object counter mutex. */
+    ret = pthread_mutex_init((pthread_mutex_t *) &OS_object_count_mut, &mutex_attr);
+    if ( ret != 0 )
+    {
+        return_code = OS_ERROR;
+        return(return_code);
+    }
+
+
+    /*
+    ** File system init
+    */
+    return_code = OS_FS_Init();
+
+    /*
+    ** Check to see if this application is running as root
+    **  It must be root in order to set the scheduling policy, stacks, and priorities of
+    **  the pthreads
+    */
+    if (geteuid() != 0 )
+    {
+#ifdef OS_DEBUG_PRINTF
+        printf("OS_API_Init: Note: Not running as root. Task scheduling policy, stack sizes, or priorities will not be set\n");
+#endif
+    }
+    else
+    {
+        param.sched_priority = 50;
+        sched_policy = SCHED_FIFO;
+
+        return_code = pthread_setschedparam(pthread_self(), sched_policy, &param);
+#ifdef OS_DEBUG_PRINTF
+        if (return_code != 0)
+        {
+            printf("OS_API_Init: Could not set scheduleparam in main thread\n");
+        }
+#endif
+    }
+
+    OS_API_Initialized = OS_API_INITIALIZED;
+
+    return(return_code);
 }
 
 
@@ -446,35 +408,42 @@ void OS_DeleteAllObjects       (void)
 
     for (i = 0; i < OS_MAX_TASKS; ++i)
     {
-        OS_TaskDelete(i);
+        OS_TaskDelete(OS_task_table[i].ID);
     }
+
     for (i = 0; i < OS_MAX_QUEUES; ++i)
     {
-        OS_QueueDelete(i);
+        OS_QueueDelete(OS_queue_table[i].ID);
     }
+
     for (i = 0; i < OS_MAX_MUTEXES; ++i)
     {
-        OS_MutSemDelete(i);
+        OS_MutSemDelete(OS_mut_sem_table[i].ID);
     }
+
     for (i = 0; i < OS_MAX_COUNT_SEMAPHORES; ++i)
     {
-        OS_CountSemDelete(i);
+        OS_CountSemDelete(OS_count_sem_table[i].ID);
     }
+
     for (i = 0; i < OS_MAX_BIN_SEMAPHORES; ++i)
     {
-        OS_BinSemDelete(i);
+        OS_BinSemDelete(OS_bin_sem_table[i].ID);
     }
+
     for (i = 0; i < OS_MAX_TIMERS; ++i)
     {
-        OS_TimerDelete(i);
+        OS_TimerDelete(OS_timer_table[i].ID);
     }
+
     for (i = 0; i < OS_MAX_MODULES; ++i)
     {
-        OS_ModuleUnload(i);
+        OS_ModuleUnload(OS_module_table[i].ID);
     }
+
     for (i = 0; i < OS_MAX_NUM_OPEN_FILES; ++i)
     {
-        OS_close(i);
+        OS_close(OS_open_file_table[i].ID);
     }
 }
 
@@ -557,8 +526,8 @@ int32 OS_TaskCreate (uint32 *task_id, const char *task_name, osal_task_entry fun
                       uint32 flags)
 {
     int                return_code = 0;
-    pthread_attr_t     custom_attr ;
-    struct sched_param priority_holder ;
+    pthread_attr_t     custom_attr;
+    struct sched_param priority_holder;
     int                possible_taskid;
     int                i;
     uint32             local_stack_size;
@@ -569,7 +538,8 @@ int32 OS_TaskCreate (uint32 *task_id, const char *task_name, osal_task_entry fun
     sigset_t           mask;
     
     /* Ensure the OSAL API is initialized first. */
-    if(OS_API_Initialized != OS_API_INITIALIZED) {
+    if(OS_API_Initialized != OS_API_INITIALIZED)
+    {
     	return OS_ERROR;
     }
 
@@ -579,7 +549,7 @@ int32 OS_TaskCreate (uint32 *task_id, const char *task_name, osal_task_entry fun
         return OS_INVALID_POINTER;
     }
     
-    /* we don't want to allow names too long*/
+    /* We don't want to allow names too long*/
     /* if truncated, two names might be the same */
     if (strlen(task_name) >= OS_MAX_API_NAME)
     {
@@ -623,6 +593,9 @@ int32 OS_TaskCreate (uint32 *task_id, const char *task_name, osal_task_entry fun
             return OS_ERR_NAME_TAKEN;
         }
     }
+
+    /* Allocate an ID */
+    OS_AllocateID(OS_OBJECT_TYPE_OS_TASK, possible_taskid, &OS_task_table[possible_taskid].ID);
     
     /* 
     ** Set the possible task Id to not free so that
@@ -746,7 +719,7 @@ int32 OS_TaskCreate (uint32 *task_id, const char *task_name, osal_task_entry fun
             /* This is a critical error.  Terminate the newly created thread
              * and return an error.
              */
-            pthread_cancel(OS_task_table[possible_taskid].id);
+            pthread_cancel(OS_task_table[possible_taskid].osId);
             OS_task_table[possible_taskid].free = true;
             OS_InterruptSafeUnlock(&OS_task_table_mut, &previous);
             #ifdef OS_DEBUG_PRINTF
@@ -759,7 +732,7 @@ int32 OS_TaskCreate (uint32 *task_id, const char *task_name, osal_task_entry fun
     /*
     ** Create thread
     */
-    return_code = pthread_create(&(OS_task_table[possible_taskid].id),
+    return_code = pthread_create(&(OS_task_table[possible_taskid].osId),
                                  &custom_attr,
                                  (void* (*)(void*))function_pointer,
                                  (void *)0);
@@ -775,12 +748,12 @@ int32 OS_TaskCreate (uint32 *task_id, const char *task_name, osal_task_entry fun
 
     /* Set thread name so its easier to identify in the debugger.  No need to
      * check for errors.  If it fails, just keep going.  No big deal. */
-    pthread_setname_np(OS_task_table[possible_taskid].id, task_name);
+    pthread_setname_np(OS_task_table[possible_taskid].osId, task_name);
 
     /*
     ** Free the resources that are no longer needed when the thread is terminated.
     */
-    pthread_detach(OS_task_table[possible_taskid].id);
+    pthread_detach(OS_task_table[possible_taskid].osId);
     if (return_code !=0)
     {
     	/* This is not a critical error, so just generate a debug statement
@@ -805,13 +778,13 @@ int32 OS_TaskCreate (uint32 *task_id, const char *task_name, osal_task_entry fun
     /*
     ** Assign the task ID
     */
-    *task_id = possible_taskid;
+    *task_id = OS_task_table[possible_taskid].ID;
 
     /* 
     ** Initialize the table entries 
     */
     OS_task_table[possible_taskid].free = false;
-    strcpy(OS_task_table[*task_id].name, (char*) task_name);
+    strcpy(OS_task_table[possible_taskid].name, (char*) task_name);
     OS_task_table[possible_taskid].creator = OS_FindCreator();
     OS_task_table[possible_taskid].stack_size = stack_size;
     /* Use the abstracted priority, not the OS one */
@@ -838,40 +811,57 @@ int32 OS_TaskDelete (uint32 task_id)
     FuncPtr_t FunctionPointer;
     sigset_t  previous;
     sigset_t  mask;
+    int32     rc;
+    uint32    index;
 
     /* Ensure the OSAL API is initialized first. */
-    if(OS_API_Initialized != OS_API_INITIALIZED) {
+    if(OS_API_Initialized != OS_API_INITIALIZED)
+    {
     	return OS_ERROR;
     }
     
-    /* 
-    ** Check to see if the task_id given is valid 
-    */
-    if (task_id >= OS_MAX_TASKS || OS_task_table[task_id].free == true)
+    rc = OS_ConvertToArrayIndex(task_id, &index);
+    if(rc != OS_SUCCESS)
     {
-        return OS_ERR_INVALID_ID;
+    	return rc;
     }
 
     /*
     ** Call the thread Delete hook if there is one.
     */
-    if ( OS_task_table[task_id].delete_hook_pointer != NULL)
+    if ( OS_task_table[index].delete_hook_pointer != NULL)
     {
-       FunctionPointer = (FuncPtr_t)(OS_task_table[task_id].delete_hook_pointer);
+       FunctionPointer = (FuncPtr_t)(OS_task_table[index].delete_hook_pointer);
        (*FunctionPointer)();
     }
 
     /* 
     ** Try to delete the task 
     */
-    ret = pthread_cancel(OS_task_table[task_id].id);
+    ret = pthread_cancel(OS_task_table[index].osId);
     if (ret != 0)
     {
-        #ifdef OS_DEBUG_PRINTF
-           printf("FAILED PTHREAD CANCEL %d, %d \n",ret, ESRCH);
-        #endif
-        return OS_ERROR;
+    	if(errno == EINVAL)
+    	{
+    		/* This is not a problem.  This is probably because the thread ran
+    		 * to completion.  Return an error but continue execution.
+    		 */
+    		rc = OS_ERROR;
+    	}
+    	else
+    	{
+    		/* This is a problem.  This should never happen. */
+#ifdef OS_DEBUG_PRINTF
+            printf("FAILED PTHREAD CANCEL %d, %d \n",ret, ESRCH);
+#endif
+            return OS_ERROR;
+    	}
     }    
+    else
+    {
+    	/* The delete was successful. */
+    	rc = OS_SUCCESS;
+    }
     
     /*
     ** Now that the task is deleted, remove its 
@@ -879,17 +869,18 @@ int32 OS_TaskDelete (uint32 task_id)
     */
     OS_InterruptSafeLock(&OS_task_table_mut, &mask, &previous); 
 
-    OS_task_table[task_id].free = true;
-    strcpy(OS_task_table[task_id].name, "");
-    OS_task_table[task_id].creator = UNINITIALIZED;
-    OS_task_table[task_id].stack_size = UNINITIALIZED;
-    OS_task_table[task_id].priority = UNINITIALIZED;    
-    OS_task_table[task_id].id = UNINITIALIZED;
-    OS_task_table[task_id].delete_hook_pointer = NULL;
+    OS_task_table[index].ID = 0;
+    OS_task_table[index].free = true;
+    strcpy(OS_task_table[index].name, "");
+    OS_task_table[index].creator = UNINITIALIZED;
+    OS_task_table[index].stack_size = UNINITIALIZED;
+    OS_task_table[index].priority = UNINITIALIZED;
+    OS_task_table[index].osId = UNINITIALIZED;
+    OS_task_table[index].delete_hook_pointer = NULL;
     
     OS_InterruptSafeUnlock(&OS_task_table_mut, &previous); 
 
-    return OS_SUCCESS;
+    return rc;
     
 }/* end OS_TaskDelete */
 
@@ -903,21 +894,21 @@ int32 OS_TaskDelete (uint32 task_id)
 
 void OS_TaskExit()
 {
-    uint32    task_id;
+    uint32    index;
     sigset_t  previous;
     sigset_t  mask;
 
-    task_id = OS_TaskGetId();
+    index = OS_TaskGetIndex();
 
     OS_InterruptSafeLock(&OS_task_table_mut, &mask, &previous); 
 
-    OS_task_table[task_id].free = true;
-    strcpy(OS_task_table[task_id].name, "");
-    OS_task_table[task_id].creator = UNINITIALIZED;
-    OS_task_table[task_id].stack_size = UNINITIALIZED;
-    OS_task_table[task_id].priority = UNINITIALIZED;
-    OS_task_table[task_id].id = UNINITIALIZED;
-    OS_task_table[task_id].delete_hook_pointer = NULL;
+    OS_task_table[index].free = true;
+    strcpy(OS_task_table[index].name, "");
+    OS_task_table[index].creator = UNINITIALIZED;
+    OS_task_table[index].stack_size = UNINITIALIZED;
+    OS_task_table[index].priority = UNINITIALIZED;
+    OS_task_table[index].osId = UNINITIALIZED;
+    OS_task_table[index].delete_hook_pointer = NULL;
     
     OS_InterruptSafeUnlock(&OS_task_table_mut, &previous); 
 
@@ -979,15 +970,24 @@ int32 OS_TaskDelay(uint32 millisecond )
 ---------------------------------------------------------------------------------------*/
 int32 OS_TaskSetPriority (uint32 task_id, uint32 new_priority)
 {
-    int                os_priority;
-    int                ret;
+    int    os_priority;
+    int    ret;
+    int32  rc;
+    uint32 index = 0;
 
     /* Ensure the OSAL API is initialized first. */
-    if(OS_API_Initialized != OS_API_INITIALIZED) {
+    if(OS_API_Initialized != OS_API_INITIALIZED)
+    {
     	return OS_ERROR;
     }
 
-    if(task_id >= OS_MAX_TASKS || OS_task_table[task_id].free == true)
+    rc = OS_ConvertToArrayIndex(task_id, &index);
+    if(rc != OS_SUCCESS)
+    {
+    	return rc;
+    }
+
+    if(index >= OS_MAX_TASKS || OS_task_table[index].free == true)
     {
         return OS_ERR_INVALID_ID;
     }
@@ -1005,12 +1005,12 @@ int32 OS_TaskSetPriority (uint32 task_id, uint32 new_priority)
        /* 
        ** Set priority
        */
-       ret = pthread_setschedprio(OS_task_table[task_id].id, os_priority);
+       ret = pthread_setschedprio(OS_task_table[index].osId, os_priority);
        if( ret != 0 )
        {
           #ifdef OS_DEBUG_PRINTF
              printf("pthread_setschedprio err in OS_TaskSetPriority, Task ID = %lu, prio = %d, errno = %s\n",
-                        task_id,os_priority ,strerror(errno));
+                        task_id, os_priority, strerror(errno));
           #endif
           return(OS_ERROR);
        }
@@ -1018,7 +1018,7 @@ int32 OS_TaskSetPriority (uint32 task_id, uint32 new_priority)
 
     /* Use the abstracted priority, not the OS one */
     /* Change the priority in the table as well */
-    OS_task_table[task_id].priority = new_priority;
+    OS_task_table[index].priority = new_priority;
 
    return OS_SUCCESS;
 } /* end OS_TaskSetPriority */
@@ -1042,7 +1042,8 @@ int32 OS_TaskRegister (void)
     pthread_t    pthread_id;
 
     /* Ensure the OSAL API is initialized first. */
-    if(OS_API_Initialized != OS_API_INITIALIZED) {
+    if(OS_API_Initialized != OS_API_INITIALIZED)
+    {
     	return OS_ERROR;
     }
 
@@ -1056,7 +1057,7 @@ int32 OS_TaskRegister (void)
     */
     for(i = 0; i < OS_MAX_TASKS; i++)
     {
-       if(OS_task_table[i].id == pthread_id)
+       if(OS_task_table[i].osId == pthread_id)
        {
           break;
        }
@@ -1094,6 +1095,16 @@ int32 OS_TaskRegister (void)
 ---------------------------------------------------------------------------------------*/
 uint32 OS_TaskGetId (void)
 { 
+	uint32 index = 0;
+
+	index = OS_TaskGetIndex();
+
+	return (OS_task_table[index].ID);
+}/* end OS_TaskGetId */
+
+
+uint32 OS_TaskGetIndex (void)
+{
    void*   task_id;
    int     task_id_int;
    uint32   task_key;
@@ -1105,7 +1116,7 @@ uint32 OS_TaskGetId (void)
    task_key = task_id_int & 0xFFFF;
    
    return(task_key);
-}/* end OS_TaskGetId */
+}/* end OS_TaskGetIndex */
 
 /*--------------------------------------------------------------------------------------
     Name: OS_TaskGetIdByName
@@ -1123,7 +1134,8 @@ int32 OS_TaskGetIdByName (uint32 *task_id, const char *task_name)
     uint32 i;
 
     /* Ensure the OSAL API is initialized first. */
-    if(OS_API_Initialized != OS_API_INITIALIZED) {
+    if(OS_API_Initialized != OS_API_INITIALIZED)
+    {
     	return OS_ERROR;
     }
 
@@ -1145,7 +1157,7 @@ int32 OS_TaskGetIdByName (uint32 *task_id, const char *task_name)
         if((OS_task_table[i].free != true) &&
                 (strcmp(OS_task_table[i].name,(char*) task_name) == 0 ))
         {
-            *task_id = i;
+            *task_id = OS_task_table[i].ID;
             return OS_SUCCESS;
         }
     }
@@ -1170,20 +1182,21 @@ int32 OS_TaskGetIdByName (uint32 *task_id, const char *task_name)
 ---------------------------------------------------------------------------------------*/
 int32 OS_TaskGetInfo (uint32 task_id, OS_task_prop_t *task_prop)  
 {
-    sigset_t  previous;
-    sigset_t  mask;
+    sigset_t previous;
+    sigset_t mask;
+    int32    rc;
+    uint32   index = 0;
 
     /* Ensure the OSAL API is initialized first. */
-    if(OS_API_Initialized != OS_API_INITIALIZED) {
+    if(OS_API_Initialized != OS_API_INITIALIZED)
+    {
     	return OS_ERROR;
     }
 
-    /* 
-    ** Check to see that the id given is valid 
-    */
-    if (task_id >= OS_MAX_TASKS || OS_task_table[task_id].free == true)
+    rc = OS_ConvertToArrayIndex(task_id, &index);
+    if(rc != OS_SUCCESS)
     {
-       return OS_ERR_INVALID_ID;
+    	return rc;
     }
 
     if( task_prop == NULL)
@@ -1194,12 +1207,12 @@ int32 OS_TaskGetInfo (uint32 task_id, OS_task_prop_t *task_prop)
     /* put the info into the stucture */
     OS_InterruptSafeLock(&OS_task_table_mut, &mask, &previous); 
 
-    task_prop -> creator =    OS_task_table[task_id].creator;
-    task_prop -> stack_size = OS_task_table[task_id].stack_size;
-    task_prop -> priority =   OS_task_table[task_id].priority;
-    task_prop -> OStask_id =  (uint32) OS_task_table[task_id].id;
+    task_prop -> creator =    OS_task_table[index].creator;
+    task_prop -> stack_size = OS_task_table[index].stack_size;
+    task_prop -> priority =   OS_task_table[index].priority;
+    task_prop -> OStask_id =  (uint32) OS_task_table[index].osId;
     
-    strcpy(task_prop-> name, OS_task_table[task_id].name);
+    strcpy(task_prop-> name, OS_task_table[index].name);
 
     OS_InterruptSafeUnlock(&OS_task_table_mut, &previous); 
     
@@ -1217,25 +1230,21 @@ int32 OS_TaskGetInfo (uint32 task_id, OS_task_prop_t *task_prop)
 
 int32 OS_TaskInstallDeleteHandler(osal_task_entry function_pointer)
 {
-    uint32    task_id;
+    uint32    index;
     sigset_t  previous;
     sigset_t  mask;
 
     /* Ensure the OSAL API is initialized first. */
-    if(OS_API_Initialized != OS_API_INITIALIZED) {
+    if(OS_API_Initialized != OS_API_INITIALIZED)
+    {
     	return OS_ERROR;
     }
 
-    task_id = OS_TaskGetId();
-
-    if ( task_id >= OS_MAX_TASKS )
-    {
-       return(OS_ERR_INVALID_ID);
-    }
+    index = OS_TaskGetIndex();
 
     OS_InterruptSafeLock(&OS_task_table_mut, &mask, &previous); 
 
-    if ( OS_task_table[task_id].free != false )
+    if ( OS_task_table[index].free != false )
     {
        /* 
        ** Somehow the calling task is not registered 
@@ -1247,7 +1256,7 @@ int32 OS_TaskInstallDeleteHandler(osal_task_entry function_pointer)
     /*
     ** Install the pointer
     */
-    OS_task_table[task_id].delete_hook_pointer = function_pointer;    
+    OS_task_table[index].delete_hook_pointer = function_pointer;
     
     OS_InterruptSafeUnlock(&OS_task_table_mut, &previous); 
 
@@ -1282,7 +1291,8 @@ int32 OS_QueueCreate (uint32 *queue_id, const char *queue_name, uint32 queue_dep
     sigset_t                mask;
 
     /* Ensure the OSAL API is initialized first. */
-    if(OS_API_Initialized != OS_API_INITIALIZED) {
+    if(OS_API_Initialized != OS_API_INITIALIZED)
+    {
     	return OS_ERROR;
     }
 
@@ -1315,6 +1325,7 @@ int32 OS_QueueCreate (uint32 *queue_id, const char *queue_name, uint32 queue_dep
             break;
     }
 
+    /* Check to see if the id is out of bounds */
     if( possible_qid >= OS_MAX_QUEUES || OS_queue_table[possible_qid].free != true)
     {
         OS_InterruptSafeUnlock(&OS_queue_table_mut, &previous);
@@ -1332,11 +1343,10 @@ int32 OS_QueueCreate (uint32 *queue_id, const char *queue_name, uint32 queue_dep
         }
     }
 
-    /* Set the possible task Id to not free so that
-     * no other task can try to use it */
-    *queue_id = possible_qid;
+    /* Allocate an ID */
+    OS_AllocateID(OS_OBJECT_TYPE_OS_QUEUE, possible_qid, &OS_queue_table[possible_qid].ID);
 
-    OS_queue_table[*queue_id].free = false;
+    OS_queue_table[possible_qid].free = false;
 
     ret = pthread_cond_init(&(OS_queue_table[possible_qid].cv), NULL);
 	if ( ret != 0 )
@@ -1345,14 +1355,19 @@ int32 OS_QueueCreate (uint32 *queue_id, const char *queue_name, uint32 queue_dep
         return OS_ERROR;
 	}
 
-    OS_queue_table[*queue_id].free = false;
-    OS_queue_table[*queue_id].max_size = data_size;
-    strcpy( OS_queue_table[*queue_id].name, (char*) queue_name);
-    OS_queue_table[*queue_id].creator = OS_FindCreator();
-	OS_queue_table[*queue_id].width = data_size;
-	OS_queue_table[*queue_id].depth = queue_depth;
-	OS_queue_table[*queue_id].head = -1;
-	OS_queue_table[*queue_id].tail = -1;
+    OS_queue_table[possible_qid].free = false;
+    OS_queue_table[possible_qid].max_size = data_size;
+    strcpy( OS_queue_table[possible_qid].name, (char*) queue_name);
+    OS_queue_table[possible_qid].creator = OS_FindCreator();
+	OS_queue_table[possible_qid].width = data_size;
+	OS_queue_table[possible_qid].depth = queue_depth;
+	OS_queue_table[possible_qid].head = -1;
+	OS_queue_table[possible_qid].tail = -1;
+
+    /*
+    ** Assign the queue ID
+    */
+    *queue_id = OS_queue_table[possible_qid].ID;
 
     OS_InterruptSafeUnlock(&OS_queue_table_mut, &previous);
 
@@ -1376,41 +1391,40 @@ int32 OS_QueueCreate (uint32 *queue_id, const char *queue_name, uint32 queue_dep
  ---------------------------------------------------------------------------------------*/
 int32 OS_QueueDelete (uint32 queue_id)
 {
-	int			ret;
-    sigset_t   	previous;
-    sigset_t   	mask;
+	int      ret;
+    sigset_t previous;
+    sigset_t mask;
+    int32    rc;
+    uint32   index = 0;
 
     /* Ensure the OSAL API is initialized first. */
-    if(OS_API_Initialized != OS_API_INITIALIZED) {
+    if(OS_API_Initialized != OS_API_INITIALIZED)
+    {
     	return OS_ERROR;
     }
 
-    /* Check to see if the queue_id given is valid */
-
-    if (queue_id >= OS_MAX_QUEUES || OS_queue_table[queue_id].free == true)
+    rc = OS_ConvertToArrayIndex(queue_id, &index);
+    if(rc != OS_SUCCESS)
     {
-       return OS_ERR_INVALID_ID;
+    	return rc;
     }
 
-    /*
-     * Now that the queue is deleted, remove its "presence"
-     * in OS_message_q_table and OS_message_q_name_table
-     */
     OS_InterruptSafeLock(&OS_queue_table_mut, &mask, &previous);
 
-    ret = pthread_cond_destroy(&(OS_queue_table[queue_id].cv));
+    ret = pthread_cond_destroy(&(OS_queue_table[index].cv));
 	if ( ret != 0 )
 	{
         OS_InterruptSafeUnlock(&OS_queue_table_mut, &previous);
         return OS_ERROR;
 	}
 
-    OS_queue_table[queue_id].free = true;
-    strcpy(OS_queue_table[queue_id].name, "");
-    OS_queue_table[queue_id].creator = UNINITIALIZED;
-    OS_queue_table[queue_id].max_size = 0;
-	OS_queue_table[queue_id].head = -1;
-	OS_queue_table[queue_id].tail = -1;
+    OS_queue_table[index].ID = 0;
+    OS_queue_table[index].free = true;
+    strcpy(OS_queue_table[index].name, "");
+    OS_queue_table[index].creator = UNINITIALIZED;
+    OS_queue_table[index].max_size = 0;
+	OS_queue_table[index].head = -1;
+	OS_queue_table[index].tail = -1;
 
     OS_InterruptSafeUnlock(&OS_queue_table_mut, &previous);
 
@@ -1440,6 +1454,8 @@ int32 OS_QueueGet (uint32 queue_id, void *data, uint32 size, uint32 *size_copied
     sigset_t   		mask;
 	int32 			headIndex;
 	OS_queue_data_t *qData = 0;
+    int32           rc;
+    uint32          index = 0;
 
     /* Ensure the OSAL API is initialized first. */
     if(OS_API_Initialized != OS_API_INITIALIZED)
@@ -1447,12 +1463,18 @@ int32 OS_QueueGet (uint32 queue_id, void *data, uint32 size, uint32 *size_copied
     	return OS_ERROR;
     }
 
+    rc = OS_ConvertToArrayIndex(queue_id, &index);
+    if(rc != OS_SUCCESS)
+    {
+    	return rc;
+    }
+
     OS_InterruptSafeLock(&OS_queue_table_mut, &mask, &previous);
 
     /*
     ** Check Parameters
     */
-    if(queue_id >= OS_MAX_QUEUES || OS_queue_table[queue_id].free == true)
+    if(index >= OS_MAX_QUEUES || OS_queue_table[index].free == true)
     {
 	    OS_InterruptSafeUnlock(&OS_queue_table_mut, &previous);
         return OS_ERR_INVALID_ID;
@@ -1462,7 +1484,7 @@ int32 OS_QueueGet (uint32 queue_id, void *data, uint32 size, uint32 *size_copied
 	    OS_InterruptSafeUnlock(&OS_queue_table_mut, &previous);
         return OS_INVALID_POINTER;
     }
-    else if( size < OS_queue_table[queue_id].max_size )
+    else if( size < OS_queue_table[index].max_size )
     {
         /*
         ** The buffer that the user is passing in is potentially too small
@@ -1473,7 +1495,7 @@ int32 OS_QueueGet (uint32 queue_id, void *data, uint32 size, uint32 *size_copied
         return OS_QUEUE_INVALID_SIZE;
     }
 
-    if(OS_queue_table[queue_id].head == -1)
+    if(OS_queue_table[index].head == -1)
     {
     	if (timeout == OS_PEND)
     	{
@@ -1483,14 +1505,14 @@ int32 OS_QueueGet (uint32 queue_id, void *data, uint32 size, uint32 *size_copied
     		 */
     		do
     		{
-    			ret = pthread_cond_wait(&OS_queue_table[queue_id].cv, &OS_queue_table_mut);
+    			ret = pthread_cond_wait(&OS_queue_table[index].cv, &OS_queue_table_mut);
     			if(ret < 0)
     			{
     				*size_copied = 0;
     			    OS_InterruptSafeUnlock(&OS_queue_table_mut, &previous);
     				return OS_ERROR;
     			}
-    		} while ((OS_queue_table[queue_id].head == -1));
+    		} while ((OS_queue_table[index].head == -1));
     	}
     	else if (timeout == OS_CHECK)
     	{
@@ -1505,14 +1527,14 @@ int32 OS_QueueGet (uint32 queue_id, void *data, uint32 size, uint32 *size_copied
 
     		do
 			{
-				ret = pthread_cond_timedwait(&OS_queue_table[queue_id].cv, &OS_queue_table_mut, &ts);
+				ret = pthread_cond_timedwait(&OS_queue_table[index].cv, &OS_queue_table_mut, &ts);
 				if(ret < 0)
 				{
     				*size_copied = 0;
     				OS_InterruptSafeUnlock(&OS_queue_table_mut, &previous);
     				return OS_ERROR;
 				}
-			} while ((OS_queue_table[queue_id].head == -1) && (ret != ETIMEDOUT));
+			} while ((OS_queue_table[index].head == -1) && (ret != ETIMEDOUT));
 
     		if(ret == ETIMEDOUT)
     		{
@@ -1524,8 +1546,8 @@ int32 OS_QueueGet (uint32 queue_id, void *data, uint32 size, uint32 *size_copied
     }
 
 	/* The queue is not empty.  Pop an object from the head. */
-	headIndex = OS_queue_table[queue_id].head;
-	qData = &OS_queue_table[queue_id].qData[headIndex];
+	headIndex = OS_queue_table[index].head;
+	qData = &OS_queue_table[index].qData[headIndex];
 	memcpy(data, &qData->buffer[0], qData->size);
 	if(qData->size != size)
 	{
@@ -1538,28 +1560,28 @@ int32 OS_QueueGet (uint32 queue_id, void *data, uint32 size, uint32 *size_copied
 	*size_copied = qData->size;
 
 	/* Check to see if there are more objects in the queue. */
-	if(OS_queue_table[queue_id].tail == headIndex)
+	if(OS_queue_table[index].tail == headIndex)
 	{
 		/* There are no more objects in the queue.  Set the queue to empty
 		 * by setting the head to -1.
 		 */
-		OS_queue_table[queue_id].head = -1;
+		OS_queue_table[index].head = -1;
 	}
 	else
 	{
 
 		/* There are more objects in the queue.  Move the head to the next
 		 * object. */
-		if((headIndex + 1) >= OS_queue_table[queue_id].depth)
+		if((headIndex + 1) >= OS_queue_table[index].depth)
 		{
 			/* The head is at the end of the array.  Move it back to the
 			 * beginning.
 			 */
-			OS_queue_table[queue_id].head = 0;
+			OS_queue_table[index].head = 0;
 		}
 		else
 		{
-			OS_queue_table[queue_id].head++;
+			OS_queue_table[index].head++;
 		}
 	}
 
@@ -1590,7 +1612,8 @@ int32 OS_QueuePut (uint32 queue_id, const void *data, uint32 size, uint32 flags)
     sigset_t   		mask;
     OS_queue_data_t *qData;
     int				ret;
-
+    int32           rc;
+    uint32          index = 0;
 
     /* Ensure the OSAL API is initialized first. */
     if(OS_API_Initialized != OS_API_INITIALIZED)
@@ -1598,16 +1621,13 @@ int32 OS_QueuePut (uint32 queue_id, const void *data, uint32 size, uint32 flags)
     	return OS_ERROR;
     }
 
-    OS_InterruptSafeLock(&OS_queue_table_mut, &mask, &previous);
-
-    /*
-    ** Check Parameters
-    */
-    if(queue_id >= OS_MAX_QUEUES || OS_queue_table[queue_id].free == true)
+    rc = OS_ConvertToArrayIndex(queue_id, &index);
+    if(rc != OS_SUCCESS)
     {
-		OS_InterruptSafeUnlock(&OS_queue_table_mut, &previous);
-        return OS_ERR_INVALID_ID;
+    	return rc;
     }
+
+    OS_InterruptSafeLock(&OS_queue_table_mut, &mask, &previous);
 
     if (data == NULL)
     {
@@ -1615,45 +1635,45 @@ int32 OS_QueuePut (uint32 queue_id, const void *data, uint32 size, uint32 flags)
         return OS_INVALID_POINTER;
     }
 
-    if(size > OS_queue_table[queue_id].width)
+    if(size > OS_queue_table[index].width)
     {
 		OS_InterruptSafeUnlock(&OS_queue_table_mut, &previous);
     	return OS_QUEUE_INVALID_SIZE;
     }
 
     /* Check if queue is full. */
-    if(((OS_queue_table[queue_id].head == 0) && (OS_queue_table[queue_id].tail == (OS_queue_table[queue_id].depth-1))) ||
-       (OS_queue_table[queue_id].tail == (OS_queue_table[queue_id].head - 1)))
+    if(((OS_queue_table[index].head == 0) && (OS_queue_table[index].tail == (OS_queue_table[index].depth-1))) ||
+       (OS_queue_table[index].tail == (OS_queue_table[index].head - 1)))
     {
     	OS_InterruptSafeUnlock(&OS_queue_table_mut, &previous);
     	return OS_QUEUE_FULL;
     }
 
-    if(OS_queue_table[queue_id].head == -1)
+    if(OS_queue_table[index].head == -1)
     {
-    	OS_queue_table[queue_id].head = 0;
-    	OS_queue_table[queue_id].tail = 0;
+    	OS_queue_table[index].head = 0;
+    	OS_queue_table[index].tail = 0;
     }
     else
     {
 		/* Determine where to move the tail. */
-		if((OS_queue_table[queue_id].tail + 1) >= OS_queue_table[queue_id].depth)
+		if((OS_queue_table[index].tail + 1) >= OS_queue_table[index].depth)
 		{
 			/* The tail is at the end of the array.  Move it back to the beginning.
 			 */
-			OS_queue_table[queue_id].tail = 0;
+			OS_queue_table[index].tail = 0;
 		}
 		else
 		{
-			OS_queue_table[queue_id].tail++;
+			OS_queue_table[index].tail++;
 		}
     }
 
     /* Copy the data to the new tail object. */
-    qData = &OS_queue_table[queue_id].qData[OS_queue_table[queue_id].tail];
+    qData = &OS_queue_table[index].qData[OS_queue_table[index].tail];
     memcpy(&qData->buffer, data, size);
     qData->size = size;
-    ret = pthread_cond_signal(&OS_queue_table[queue_id].cv);
+    ret = pthread_cond_signal(&OS_queue_table[index].cv);
 	OS_InterruptSafeUnlock(&OS_queue_table_mut, &previous);
     if(ret < 0)
     {
@@ -1683,7 +1703,8 @@ int32 OS_QueueGetIdByName (uint32 *queue_id, const char *queue_name)
     uint32 i;
 
     /* Ensure the OSAL API is initialized first. */
-    if(OS_API_Initialized != OS_API_INITIALIZED) {
+    if(OS_API_Initialized != OS_API_INITIALIZED)
+    {
     	return OS_ERROR;
     }
 
@@ -1705,7 +1726,7 @@ int32 OS_QueueGetIdByName (uint32 *queue_id, const char *queue_name)
         if (OS_queue_table[i].free != true &&
            (strcmp(OS_queue_table[i].name, (char*) queue_name) == 0 ))
         {
-            *queue_id = i;
+            *queue_id = OS_queue_table[i].ID;
             return OS_SUCCESS;
         }
     }
@@ -1728,31 +1749,33 @@ int32 OS_QueueGetIdByName (uint32 *queue_id, const char *queue_name)
 ---------------------------------------------------------------------------------------*/
 int32 OS_QueueGetInfo (uint32 queue_id, OS_queue_prop_t *queue_prop)  
 {
-    sigset_t   previous;
-    sigset_t   mask;
+    sigset_t previous;
+    sigset_t mask;
+    int32    rc;
+    uint32   index = 0;
 
     /* Ensure the OSAL API is initialized first. */
-    if(OS_API_Initialized != OS_API_INITIALIZED) {
+    if(OS_API_Initialized != OS_API_INITIALIZED)
+    {
     	return OS_ERROR;
     }
-
-    /* Check to see that the id given is valid */
     
     if (queue_prop == NULL)
     {
         return OS_INVALID_POINTER;
     }
     
-    if (queue_id >= OS_MAX_QUEUES || OS_queue_table[queue_id].free == true)
+    rc = OS_ConvertToArrayIndex(queue_id, &index);
+    if(rc != OS_SUCCESS)
     {
-        return OS_ERR_INVALID_ID;
+    	return rc;
     }
 
     /* put the info into the stucture */
     OS_InterruptSafeLock(&OS_queue_table_mut, &mask, &previous); 
 
-    queue_prop -> creator =   OS_queue_table[queue_id].creator;
-    strcpy(queue_prop -> name, OS_queue_table[queue_id].name);
+    queue_prop->creator =   OS_queue_table[index].creator;
+    strcpy(queue_prop->name, OS_queue_table[index].name);
 
     OS_InterruptSafeUnlock(&OS_queue_table_mut, &previous); 
 
@@ -1792,7 +1815,8 @@ int32 OS_BinSemCreate (uint32 *sem_id, const char *sem_name, uint32 sem_initial_
     sigset_t            mask;
 
     /* Ensure the OSAL API is initialized first. */
-    if(OS_API_Initialized != OS_API_INITIALIZED) {
+    if(OS_API_Initialized != OS_API_INITIALIZED)
+    {
     	return OS_ERROR;
     }
 
@@ -1827,6 +1851,9 @@ int32 OS_BinSemCreate (uint32 *sem_id, const char *sem_name, uint32 sem_initial_
         OS_InterruptSafeUnlock(&OS_bin_sem_table_mut, &previous); 
         return OS_ERR_NO_FREE_IDS;
     }
+
+    /* Allocate an ID */
+    OS_AllocateID(OS_OBJECT_TYPE_OS_BINSEM, possible_semid, &OS_bin_sem_table[possible_semid].ID);
     
     /* Check to see if the name is already taken */
     for (i = 0; i < OS_MAX_BIN_SEMAPHORES; i++)
@@ -1867,7 +1894,7 @@ int32 OS_BinSemCreate (uint32 *sem_id, const char *sem_name, uint32 sem_initial_
           /*
           ** Initialize the mutex that is used with the condition variable
           */
-          Status = pthread_mutex_init(&(OS_bin_sem_table[possible_semid].id), &mutex_attr);
+          Status = pthread_mutex_init(&(OS_bin_sem_table[possible_semid].osId), &mutex_attr);
           if( Status == 0 )
           {
              /*
@@ -1879,14 +1906,15 @@ int32 OS_BinSemCreate (uint32 *sem_id, const char *sem_name, uint32 sem_initial_
                 /*
                 ** fill out the proper OSAL table fields
                 */
-                *sem_id = possible_semid;
 
-                strcpy(OS_bin_sem_table[*sem_id].name , (char*) sem_name);
-                OS_bin_sem_table[*sem_id].creator = OS_FindCreator();
+                strcpy(OS_bin_sem_table[possible_semid].name , (char*) sem_name);
+                OS_bin_sem_table[possible_semid].creator = OS_FindCreator();
     
-                OS_bin_sem_table[*sem_id].max_value = 1;
-                OS_bin_sem_table[*sem_id].current_value = sem_initial_value;
-                OS_bin_sem_table[*sem_id].free = false;
+                OS_bin_sem_table[possible_semid].max_value = 1;
+                OS_bin_sem_table[possible_semid].current_value = sem_initial_value;
+                OS_bin_sem_table[possible_semid].free = false;
+
+            	*sem_id = OS_bin_sem_table[possible_semid].ID;
    
                 /* Unlock table */ 
                 OS_InterruptSafeUnlock(&OS_bin_sem_table_mut, &previous); 
@@ -1946,31 +1974,35 @@ int32 OS_BinSemCreate (uint32 *sem_id, const char *sem_name, uint32 sem_initial_
 ---------------------------------------------------------------------------------------*/
 int32 OS_BinSemDelete (uint32 sem_id)
 {
-    sigset_t            previous;
-    sigset_t            mask;
+    sigset_t previous;
+    sigset_t mask;
+    int32    rc;
+    uint32   index = 0;
 
     /* Ensure the OSAL API is initialized first. */
-    if(OS_API_Initialized != OS_API_INITIALIZED) {
+    if(OS_API_Initialized != OS_API_INITIALIZED)
+    {
     	return OS_ERROR;
     }
 
-    /* Check to see if this sem_id is valid */
-    if (sem_id >= OS_MAX_BIN_SEMAPHORES || OS_bin_sem_table[sem_id].free == true)
+    rc = OS_ConvertToArrayIndex(sem_id, &index);
+    if(rc != OS_SUCCESS)
     {
-        return OS_ERR_INVALID_ID;
+    	return rc;
     }
 
     /* Lock table */
     OS_InterruptSafeLock(&OS_bin_sem_table_mut, &mask, &previous); 
    
     /* Remove the Id from the table, and its name, so that it cannot be found again */
-    pthread_mutex_destroy(&(OS_bin_sem_table[sem_id].id));
-    pthread_cond_destroy(&(OS_bin_sem_table[sem_id].cv));
-    OS_bin_sem_table[sem_id].free = true;
-    strcpy(OS_bin_sem_table[sem_id].name , "");
-    OS_bin_sem_table[sem_id].creator = UNINITIALIZED;
-    OS_bin_sem_table[sem_id].max_value = 0;
-    OS_bin_sem_table[sem_id].current_value = 0;
+    pthread_mutex_destroy(&(OS_bin_sem_table[index].osId));
+    pthread_cond_destroy(&(OS_bin_sem_table[index].cv));
+    OS_bin_sem_table[index].free = true;
+    strcpy(OS_bin_sem_table[index].name , "");
+    OS_bin_sem_table[index].creator = UNINITIALIZED;
+    OS_bin_sem_table[index].max_value = 0;
+    OS_bin_sem_table[index].current_value = 0;
+    OS_bin_sem_table[index].ID = 0;
 
     /* Unlock table */
     OS_InterruptSafeUnlock(&OS_bin_sem_table_mut, &previous); 
@@ -1989,7 +2021,6 @@ int32 OS_BinSemDelete (uint32 sem_id)
              waiting for the semaphore to become unlocked; the semaphore value is
              simply incremented for this semaphore.
 
-    
     Returns: OS_SEM_FAILURE the semaphore was not previously  initialized or is not
              in the array of semaphores defined by the system
              OS_ERR_INVALID_ID if the id passed in is not a binary semaphore
@@ -2001,20 +2032,23 @@ int32 OS_BinSemGive ( uint32 sem_id )
     int       ret;
     sigset_t  previous;
     sigset_t  mask;
+    int32     rc;
+    uint32    index = 0;
 
     /* Ensure the OSAL API is initialized first. */
-    if(OS_API_Initialized != OS_API_INITIALIZED) {
+    if(OS_API_Initialized != OS_API_INITIALIZED)
+    {
     	return OS_ERROR;
     }
 
-    /* Check Parameters */
-    if(sem_id >= OS_MAX_BIN_SEMAPHORES || OS_bin_sem_table[sem_id].free == true)
+    rc = OS_ConvertToArrayIndex(sem_id, &index);
+    if(rc != OS_SUCCESS)
     {
-        return OS_ERR_INVALID_ID;
+    	return rc;
     }
 
     /* Lock the mutex ( not the table! ) */    
-    ret = OS_InterruptSafeLock(&(OS_bin_sem_table[sem_id].id), &mask, &previous);
+    ret = OS_InterruptSafeLock(&(OS_bin_sem_table[index].osId), &mask, &previous);
     if ( ret != 0 )
     {
        return(OS_SEM_FAILURE);
@@ -2023,12 +2057,12 @@ int32 OS_BinSemGive ( uint32 sem_id )
     /* 
     ** If the sem value is not full ( 1 ) then increment it.
     */
-    if ( OS_bin_sem_table[sem_id].current_value  < OS_bin_sem_table[sem_id].max_value )
+    if ( OS_bin_sem_table[index].current_value  < OS_bin_sem_table[index].max_value )
     {
-         OS_bin_sem_table[sem_id].current_value ++;
-         pthread_cond_signal(&(OS_bin_sem_table[sem_id].cv));
+         OS_bin_sem_table[index].current_value ++;
+         pthread_cond_signal(&(OS_bin_sem_table[index].cv));
     }
-    OS_InterruptSafeUnlock(&(OS_bin_sem_table[sem_id].id), &previous);
+    OS_InterruptSafeUnlock(&(OS_bin_sem_table[index].osId), &previous);
     return (OS_SUCCESS);
 
 }/* end OS_BinSemGive */
@@ -2052,20 +2086,23 @@ int32 OS_BinSemFlush (uint32 sem_id)
     int32     ret = 0;
     sigset_t  previous;
     sigset_t  mask;
+    int32     rc;
+    uint32    index = 0;
 
     /* Ensure the OSAL API is initialized first. */
-    if(OS_API_Initialized != OS_API_INITIALIZED) {
+    if(OS_API_Initialized != OS_API_INITIALIZED)
+    {
     	return OS_ERROR;
     }
 
-    /* Check Parameters */
-    if(sem_id >= OS_MAX_BIN_SEMAPHORES || OS_bin_sem_table[sem_id].free == true)
+    rc = OS_ConvertToArrayIndex(sem_id, &index);
+    if(rc != OS_SUCCESS)
     {
-        return OS_ERR_INVALID_ID;
+    	return rc;
     }
 
     /* Lock the mutex ( not the table! ) */    
-    ret = OS_InterruptSafeLock(&(OS_bin_sem_table[sem_id].id), &mask, &previous);
+    ret = OS_InterruptSafeLock(&(OS_bin_sem_table[index].osId), &mask, &previous);
     if ( ret != 0 )
     {
        return(OS_SEM_FAILURE);
@@ -2074,17 +2111,17 @@ int32 OS_BinSemFlush (uint32 sem_id)
     /* 
     ** Release all threads waiting on the binary semaphore 
     */
-    ret = pthread_cond_broadcast(&(OS_bin_sem_table[sem_id].cv));
+    ret = pthread_cond_broadcast(&(OS_bin_sem_table[index].cv));
     if ( ret == 0 )
     {
        ret_val = OS_SUCCESS ;
-       OS_bin_sem_table[sem_id].current_value = OS_bin_sem_table[sem_id].max_value;
+       OS_bin_sem_table[index].current_value = OS_bin_sem_table[index].max_value;
     }
     else
     {
        ret_val = OS_SEM_FAILURE;
     }
-    OS_InterruptSafeUnlock(&(OS_bin_sem_table[sem_id].id), &previous);
+    OS_InterruptSafeUnlock(&(OS_bin_sem_table[index].osId), &previous);
 
     return(ret_val);
 
@@ -2110,20 +2147,23 @@ int32 OS_BinSemTake ( uint32 sem_id )
     int       ret;
     sigset_t  previous;
     sigset_t  mask;
+    int32     rc;
+    uint32    index = 0;
 
     /* Ensure the OSAL API is initialized first. */
-    if(OS_API_Initialized != OS_API_INITIALIZED) {
+    if(OS_API_Initialized != OS_API_INITIALIZED)
+    {
     	return OS_ERROR;
     }
 
-    /* Check parameters */ 
-    if(sem_id >= OS_MAX_BIN_SEMAPHORES  || OS_bin_sem_table[sem_id].free == true)
+    rc = OS_ConvertToArrayIndex(sem_id, &index);
+    if(rc != OS_SUCCESS)
     {
-        return OS_ERR_INVALID_ID;
+    	return rc;
     }
         
     /* Lock the mutex */    
-    ret = OS_InterruptSafeLock(&(OS_bin_sem_table[sem_id].id), &mask, &previous);
+    ret = OS_InterruptSafeLock(&(OS_bin_sem_table[index].osId), &mask, &previous);
     if ( ret != 0 )
     {
        return(OS_SEM_FAILURE);
@@ -2134,21 +2174,21 @@ int32 OS_BinSemTake ( uint32 sem_id )
     ** wait until it is available
     ** If the value is max (1), then grab the resource without waiting
     */
-    if ( OS_bin_sem_table[sem_id].current_value < OS_bin_sem_table[sem_id].max_value )
+    if ( OS_bin_sem_table[index].current_value < OS_bin_sem_table[index].max_value )
     {
        /*
        ** Wait on the condition variable. Calling this function unlocks the mutex and 
        ** re-aquires the mutex when the function returns. This allows the function that
        ** calls the pthread_cond_signal or pthread_cond_broadcast to aquire the mutex
        */
-       ret = pthread_cond_wait(&(OS_bin_sem_table[sem_id].cv),&(OS_bin_sem_table[sem_id].id));
+       ret = pthread_cond_wait(&(OS_bin_sem_table[index].cv),&(OS_bin_sem_table[index].osId));
        if ( ret == 0 )
        {
           ret_val = OS_SUCCESS;
           /*
           ** Decrement the counter
           */
-          OS_bin_sem_table[sem_id].current_value --;
+          OS_bin_sem_table[index].current_value --;
        }
        else
        {
@@ -2158,12 +2198,12 @@ int32 OS_BinSemTake ( uint32 sem_id )
     }
     else
     {
-       OS_bin_sem_table[sem_id].current_value --;
+       OS_bin_sem_table[index].current_value --;
        ret_val = OS_SUCCESS;
     }
 
     /* Unlock the mutex */
-    OS_InterruptSafeUnlock(&(OS_bin_sem_table[sem_id].id), &previous);
+    OS_InterruptSafeUnlock(&(OS_bin_sem_table[index].osId), &previous);
     
     return (ret_val);
 
@@ -2191,15 +2231,19 @@ int32 OS_BinSemTimedWait ( uint32 sem_id, uint32 msecs )
     struct timespec  ts;
     sigset_t         previous;
     sigset_t         mask;
+    int32            rc;
+    uint32           index = 0;
 
     /* Ensure the OSAL API is initialized first. */
-    if(OS_API_Initialized != OS_API_INITIALIZED) {
+    if(OS_API_Initialized != OS_API_INITIALIZED)
+    {
     	return OS_ERROR;
     }
 
-    if( (sem_id >= OS_MAX_BIN_SEMAPHORES) || (OS_bin_sem_table[sem_id].free == true) )
+    rc = OS_ConvertToArrayIndex(sem_id, &index);
+    if(rc != OS_SUCCESS)
     {
-       return OS_ERR_INVALID_ID;
+    	return rc;
     }
 
     /*
@@ -2208,7 +2252,7 @@ int32 OS_BinSemTimedWait ( uint32 sem_id, uint32 msecs )
     OS_CompAbsDelayTime(msecs, &ts);
 
     /* Lock the mutex */    
-    ret = OS_InterruptSafeLock(&(OS_bin_sem_table[sem_id].id), &mask, &previous);
+    ret = OS_InterruptSafeLock(&(OS_bin_sem_table[index].osId), &mask, &previous);
     if ( ret != 0 )
     {
        return(OS_SEM_FAILURE);
@@ -2219,19 +2263,19 @@ int32 OS_BinSemTimedWait ( uint32 sem_id, uint32 msecs )
     ** wait until it is available
     ** If the value is max (1), then grab the resource
     */
-    if ( OS_bin_sem_table[sem_id].current_value < OS_bin_sem_table[sem_id].max_value )
+    if ( OS_bin_sem_table[index].current_value < OS_bin_sem_table[index].max_value )
     {
        /*
        ** Wait on the condition variable. Calling this function unlocks the mutex and 
        ** re-aquires the mutex when the function returns. This allows the function that
        ** calls the pthread_cond_signal or pthread_cond_broadcast to aquire the mutex
        */
-       ret = pthread_cond_timedwait(&(OS_bin_sem_table[sem_id].cv), &(OS_bin_sem_table[sem_id].id), &ts);
+       ret = pthread_cond_timedwait(&(OS_bin_sem_table[index].cv), &(OS_bin_sem_table[index].osId), &ts);
        if ( ret == 0 )
        {
           ret_val = OS_SUCCESS;
           /* Decrement the counter */
-          OS_bin_sem_table[sem_id].current_value --;
+          OS_bin_sem_table[index].current_value --;
        }
        else if ( ret == ETIMEDOUT )
        {
@@ -2245,12 +2289,12 @@ int32 OS_BinSemTimedWait ( uint32 sem_id, uint32 msecs )
     }
     else
     {
-       OS_bin_sem_table[sem_id].current_value --;
+       OS_bin_sem_table[index].current_value --;
        ret_val = OS_SUCCESS;
     }
 
     /* Unlock the mutex */
-    OS_InterruptSafeUnlock(&(OS_bin_sem_table[sem_id].id), &previous);
+    OS_InterruptSafeUnlock(&(OS_bin_sem_table[index].osId), &previous);
 
     return ret_val;
 }
@@ -2271,7 +2315,8 @@ int32 OS_BinSemGetIdByName (uint32 *sem_id, const char *sem_name)
     uint32 i;
 
     /* Ensure the OSAL API is initialized first. */
-    if(OS_API_Initialized != OS_API_INITIALIZED) {
+    if(OS_API_Initialized != OS_API_INITIALIZED)
+    {
     	return OS_ERROR;
     }
 
@@ -2295,7 +2340,7 @@ int32 OS_BinSemGetIdByName (uint32 *sem_id, const char *sem_name)
         if (OS_bin_sem_table[i].free != true &&
                 (strcmp (OS_bin_sem_table[i].name , (char*) sem_name) == 0))
         {
-            *sem_id = i;
+            *sem_id = OS_bin_sem_table[i].ID;
             return OS_SUCCESS;
         }
     }
@@ -2320,30 +2365,35 @@ int32 OS_BinSemGetIdByName (uint32 *sem_id, const char *sem_name)
 
 int32 OS_BinSemGetInfo (uint32 sem_id, OS_bin_sem_prop_t *bin_prop)  
 {
-    sigset_t    previous;
-    sigset_t    mask;
+    sigset_t previous;
+    sigset_t mask;
+    int32    rc;
+    uint32   index = 0;
 
     /* Ensure the OSAL API is initialized first. */
-    if(OS_API_Initialized != OS_API_INITIALIZED) {
+    if(OS_API_Initialized != OS_API_INITIALIZED)
+    {
     	return OS_ERROR;
     }
 
     /* Check parameters */
-    if (sem_id >= OS_MAX_BIN_SEMAPHORES || OS_bin_sem_table[sem_id].free == true)
-    {
-        return OS_ERR_INVALID_ID;
-    }
     if (bin_prop == NULL)
     {
         return OS_INVALID_POINTER;
     }
 
+    rc = OS_ConvertToArrayIndex(sem_id, &index);
+    if(rc != OS_SUCCESS)
+    {
+    	return rc;
+    }
+
     /* put the info into the stucture */
     OS_InterruptSafeLock(&OS_bin_sem_table_mut, &mask, &previous); 
 
-    bin_prop ->creator =    OS_bin_sem_table[sem_id].creator;
-    bin_prop -> value = OS_bin_sem_table[sem_id].current_value ;
-    strcpy(bin_prop-> name, OS_bin_sem_table[sem_id].name);
+    bin_prop ->creator =    OS_bin_sem_table[index].creator;
+    bin_prop -> value = OS_bin_sem_table[index].current_value ;
+    strcpy(bin_prop-> name, OS_bin_sem_table[index].name);
     
     OS_InterruptSafeUnlock(&OS_bin_sem_table_mut, &previous); 
 
@@ -2380,7 +2430,8 @@ int32 OS_CountSemCreate (uint32 *sem_id, const char *sem_name, uint32 sem_initia
     sigset_t            mask;
 
     /* Ensure the OSAL API is initialized first. */
-    if(OS_API_Initialized != OS_API_INITIALIZED) {
+    if(OS_API_Initialized != OS_API_INITIALIZED)
+    {
     	return OS_ERROR;
     }
 
@@ -2421,10 +2472,10 @@ int32 OS_CountSemCreate (uint32 *sem_id, const char *sem_name, uint32 sem_initia
             break;
     }
 
-    if((possible_semid >= OS_MAX_COUNT_SEMAPHORES) ||  
+    if((possible_semid >= OS_MAX_COUNT_SEMAPHORES) ||
        (OS_count_sem_table[possible_semid].free != true))
     {
-        OS_InterruptSafeUnlock(&OS_count_sem_table_mut, &previous); 
+        OS_InterruptSafeUnlock(&OS_count_sem_table_mut, &previous);
         return OS_ERR_NO_FREE_IDS;
     }
     
@@ -2455,7 +2506,7 @@ int32 OS_CountSemCreate (uint32 *sem_id, const char *sem_name, uint32 sem_initia
           /*
           ** Initialize the mutex that is used with the condition variable
           */
-          Status = pthread_mutex_init(&(OS_count_sem_table[possible_semid].id), &mutex_attr);
+          Status = pthread_mutex_init(&(OS_count_sem_table[possible_semid].osId), &mutex_attr);
           if( Status == 0 )
           {
              /*
@@ -2464,30 +2515,33 @@ int32 OS_CountSemCreate (uint32 *sem_id, const char *sem_name, uint32 sem_initia
              Status = pthread_cond_init(&(OS_count_sem_table[possible_semid].cv), NULL);
              if ( Status == 0 )
              {
-                /*
-                ** fill out the proper OSAL table fields
-                */
-                *sem_id = possible_semid;
+                 /* Allocate an ID */
+            	 OS_AllocateID(OS_OBJECT_TYPE_OS_COUNTSEM, possible_semid, &OS_count_sem_table[possible_semid].ID);
 
-                strcpy(OS_count_sem_table[*sem_id].name , (char*) sem_name);
-                OS_count_sem_table[*sem_id].creator = OS_FindCreator();
+                 /*
+                 ** fill out the proper OSAL table fields
+                 */
+                 *sem_id = OS_count_sem_table[possible_semid].ID;
+
+                 strcpy(OS_count_sem_table[possible_semid].name , (char*) sem_name);
+                 OS_count_sem_table[possible_semid].creator = OS_FindCreator();
     
-                OS_count_sem_table[*sem_id].max_value = SEM_VALUE_MAX;
-                OS_count_sem_table[*sem_id].current_value = sem_initial_value;
-                OS_count_sem_table[*sem_id].free = false;
+                 OS_count_sem_table[possible_semid].max_value = SEM_VALUE_MAX;
+                 OS_count_sem_table[possible_semid].current_value = sem_initial_value;
+                 OS_count_sem_table[possible_semid].free = false;
    
-                /* Unlock table */ 
-                OS_InterruptSafeUnlock(&OS_count_sem_table_mut, &previous); 
+                 /* Unlock table */
+                 OS_InterruptSafeUnlock(&OS_count_sem_table_mut, &previous);
 
-                return OS_SUCCESS;
+                 return OS_SUCCESS;
              } 
              else
              {
-                OS_InterruptSafeUnlock(&OS_count_sem_table_mut, &previous); 
-                #ifdef OS_DEBUG_PRINTF
-                   printf("Error: pthread_cond_init failed\n");
-                #endif
-                return (OS_SEM_FAILURE);
+                 OS_InterruptSafeUnlock(&OS_count_sem_table_mut, &previous);
+                 #ifdef OS_DEBUG_PRINTF
+                     printf("Error: pthread_cond_init failed\n");
+                 #endif
+                 return (OS_SEM_FAILURE);
              }
           }
           else
@@ -2534,31 +2588,35 @@ int32 OS_CountSemCreate (uint32 *sem_id, const char *sem_name, uint32 sem_initia
 ---------------------------------------------------------------------------------------*/
 int32 OS_CountSemDelete (uint32 sem_id)
 {
-    sigset_t            previous;
-    sigset_t            mask;
+    sigset_t previous;
+    sigset_t mask;
+    int32    rc;
+    uint32   index = 0;
 
     /* Ensure the OSAL API is initialized first. */
-    if(OS_API_Initialized != OS_API_INITIALIZED) {
+    if(OS_API_Initialized != OS_API_INITIALIZED)
+    {
     	return OS_ERROR;
     }
 
-    /* Check to see if this sem_id is valid */
-    if (sem_id >= OS_MAX_COUNT_SEMAPHORES || OS_count_sem_table[sem_id].free == true)
+    rc = OS_ConvertToArrayIndex(sem_id, &index);
+    if(rc != OS_SUCCESS)
     {
-        return OS_ERR_INVALID_ID;
+    	return rc;
     }
 
     /* Lock table */
     OS_InterruptSafeLock(&OS_count_sem_table_mut, &mask, &previous); 
    
     /* Remove the Id from the table, and its name, so that it cannot be found again */
-    pthread_mutex_destroy(&(OS_count_sem_table[sem_id].id));
-    pthread_cond_destroy(&(OS_count_sem_table[sem_id].cv));
-    OS_count_sem_table[sem_id].free = true;
-    strcpy(OS_count_sem_table[sem_id].name , "");
-    OS_count_sem_table[sem_id].creator = UNINITIALIZED;
-    OS_count_sem_table[sem_id].max_value = 0;
-    OS_count_sem_table[sem_id].current_value = 0;
+    pthread_mutex_destroy(&(OS_count_sem_table[index].osId));
+    pthread_cond_destroy(&(OS_count_sem_table[index].cv));
+    OS_count_sem_table[index].free = true;
+    strcpy(OS_count_sem_table[index].name , "");
+    OS_count_sem_table[index].creator = UNINITIALIZED;
+    OS_count_sem_table[index].max_value = 0;
+    OS_count_sem_table[index].current_value = 0;
+    OS_count_sem_table[index].ID = 0;
 
     /* Unlock table */
     OS_InterruptSafeUnlock(&OS_count_sem_table_mut, &previous); 
@@ -2585,23 +2643,25 @@ int32 OS_CountSemDelete (uint32 sem_id)
 ---------------------------------------------------------------------------------------*/
 int32 OS_CountSemGive ( uint32 sem_id )
 {
-    int       ret;
-    sigset_t  previous;
-    sigset_t  mask;
+    int      ret;
+    sigset_t previous;
+    sigset_t mask;
+    int32    rc;
+    uint32   index = 0;
 
     /* Ensure the OSAL API is initialized first. */
-    if(OS_API_Initialized != OS_API_INITIALIZED) {
+    if(OS_API_Initialized != OS_API_INITIALIZED)
+    {
     	return OS_ERROR;
     }
 
-    /* Check Parameters */
-    if(sem_id >= OS_MAX_COUNT_SEMAPHORES || OS_count_sem_table[sem_id].free == true)
+    rc = OS_ConvertToArrayIndex(sem_id, &index);
+    if(rc != OS_SUCCESS)
     {
-        return OS_ERR_INVALID_ID;
+    	return rc;
     }
-
     /* Lock the mutex ( not the table! ) */    
-    ret = OS_InterruptSafeLock(&(OS_count_sem_table[sem_id].id), &mask, &previous);
+    ret = OS_InterruptSafeLock(&(OS_count_sem_table[index].osId), &mask, &previous);
     if ( ret != 0 )
     {
        return(OS_SEM_FAILURE);
@@ -2611,17 +2671,17 @@ int32 OS_CountSemGive ( uint32 sem_id )
     ** If the sem value is less than or equal to 0, there are waiters.
     ** If the count is from 1 to max, there are no waiters
     */
-    if ( OS_count_sem_table[sem_id].current_value  <= 0 )
+    if ( OS_count_sem_table[index].current_value  <= 0 )
     {
-         OS_count_sem_table[sem_id].current_value ++;
-         pthread_cond_signal(&(OS_count_sem_table[sem_id].cv));
+         OS_count_sem_table[index].current_value ++;
+         pthread_cond_signal(&(OS_count_sem_table[index].cv));
     }
-    else if ( OS_count_sem_table[sem_id].current_value  < OS_count_sem_table[sem_id].max_value )
+    else if ( OS_count_sem_table[index].current_value  < OS_count_sem_table[index].max_value )
     {
-         OS_count_sem_table[sem_id].current_value ++;
+         OS_count_sem_table[index].current_value ++;
     }
 
-    OS_InterruptSafeUnlock(&(OS_count_sem_table[sem_id].id), &previous);
+    OS_InterruptSafeUnlock(&(OS_count_sem_table[index].osId), &previous);
 
     return (OS_SUCCESS);
 
@@ -2643,24 +2703,27 @@ int32 OS_CountSemGive ( uint32 sem_id )
 ----------------------------------------------------------------------------------------*/
 int32 OS_CountSemTake ( uint32 sem_id )
 {
-    uint32    ret_val;
-    int       ret;
-    sigset_t  previous;
-    sigset_t  mask;
+    uint32   ret_val;
+    int      ret;
+    sigset_t previous;
+    sigset_t mask;
+    int32    rc;
+    uint32   index = 0;
 
     /* Ensure the OSAL API is initialized first. */
-    if(OS_API_Initialized != OS_API_INITIALIZED) {
+    if(OS_API_Initialized != OS_API_INITIALIZED)
+    {
     	return OS_ERROR;
     }
 
-    /* Check parameters */ 
-    if(sem_id >= OS_MAX_COUNT_SEMAPHORES  || OS_count_sem_table[sem_id].free == true)
+    rc = OS_ConvertToArrayIndex(sem_id, &index);
+    if(rc != OS_SUCCESS)
     {
-        return OS_ERR_INVALID_ID;
+    	return rc;
     }
         
     /* Lock the mutex */    
-    ret = OS_InterruptSafeLock(&(OS_count_sem_table[sem_id].id), &mask, &previous);
+    ret = OS_InterruptSafeLock(&(OS_count_sem_table[index].osId), &mask, &previous);
     if ( ret != 0 )
     {
        return(OS_SEM_FAILURE);
@@ -2670,21 +2733,21 @@ int32 OS_CountSemTake ( uint32 sem_id )
     ** If the value is <= 0, then wait until the semaphore is available 
     ** If the value is > 1, then grab the resource without waiting
     */
-    if ( OS_count_sem_table[sem_id].current_value <= 0 )
+    if ( OS_count_sem_table[index].current_value <= 0 )
     {
        /*
        ** Wait on the condition variable. Calling this function unlocks the mutex and 
        ** re-aquires the mutex when the function returns. This allows the function that
        ** calls the pthread_cond_signal or pthread_cond_broadcast to aquire the mutex
        */
-       ret = pthread_cond_wait(&(OS_count_sem_table[sem_id].cv),&(OS_count_sem_table[sem_id].id));
+       ret = pthread_cond_wait(&(OS_count_sem_table[index].cv),&(OS_count_sem_table[index].osId));
        if ( ret == 0 )
        {
           ret_val = OS_SUCCESS;
           /*
           ** Decrement the counter
           */
-          OS_count_sem_table[sem_id].current_value --;
+          OS_count_sem_table[index].current_value --;
        }
        else
        {
@@ -2694,12 +2757,12 @@ int32 OS_CountSemTake ( uint32 sem_id )
     }
     else /* Grab the sem */
     {
-       OS_count_sem_table[sem_id].current_value --;
+       OS_count_sem_table[index].current_value --;
        ret_val = OS_SUCCESS;
     }
 
     /* Unlock the mutex */
-    OS_InterruptSafeUnlock(&(OS_count_sem_table[sem_id].id), &previous);
+    OS_InterruptSafeUnlock(&(OS_count_sem_table[index].osId), &previous);
     
     return (ret_val);
 
@@ -2720,22 +2783,26 @@ int32 OS_CountSemTake ( uint32 sem_id )
              OS_ERR_INVALID_ID if the ID passed in is not a valid semaphore ID
 
 ----------------------------------------------------------------------------------------*/
-int32 OS_CountSemTimedWait ( uint32 sem_id, uint32 msecs )
+int32 OS_CountSemTimedWait( uint32 sem_id, uint32 msecs )
 {
-    int              ret;
-    uint32           ret_val;
-    struct timespec  ts;
-    sigset_t         previous;
-    sigset_t         mask;
+    int             ret;
+    uint32          ret_val;
+    struct timespec ts;
+    sigset_t        previous;
+    sigset_t        mask;
+    int32           rc;
+    uint32          index = 0;
 
     /* Ensure the OSAL API is initialized first. */
-    if(OS_API_Initialized != OS_API_INITIALIZED) {
+    if(OS_API_Initialized != OS_API_INITIALIZED)
+    {
     	return OS_ERROR;
     }
 
-    if( (sem_id >= OS_MAX_COUNT_SEMAPHORES) || (OS_count_sem_table[sem_id].free == true) )
+    rc = OS_ConvertToArrayIndex(sem_id, &index);
+    if(rc != OS_SUCCESS)
     {
-       return OS_ERR_INVALID_ID;
+    	return rc;
     }
 
     /*
@@ -2744,7 +2811,7 @@ int32 OS_CountSemTimedWait ( uint32 sem_id, uint32 msecs )
     OS_CompAbsDelayTime(msecs, &ts);
 
     /* Lock the mutex */    
-    ret = OS_InterruptSafeLock(&(OS_count_sem_table[sem_id].id), &mask, &previous);
+    ret = OS_InterruptSafeLock(&(OS_count_sem_table[index].osId), &mask, &previous);
     if ( ret != 0 )
     {
        return(OS_SEM_FAILURE);
@@ -2754,19 +2821,19 @@ int32 OS_CountSemTimedWait ( uint32 sem_id, uint32 msecs )
     ** If the value is <= 0, then wait until the semaphore is available 
     ** If the value is > 1, then grab the resource without waiting
     */
-    if ( OS_count_sem_table[sem_id].current_value <= 0 )
+    if ( OS_count_sem_table[index].current_value <= 0 )
     {
        /*
        ** Wait on the condition variable. Calling this function unlocks the mutex and 
        ** re-aquires the mutex when the function returns. This allows the function that
        ** calls the pthread_cond_signal or pthread_cond_broadcast to aquire the mutex
        */
-       ret = pthread_cond_timedwait(&(OS_count_sem_table[sem_id].cv), &(OS_count_sem_table[sem_id].id), &ts);
+       ret = pthread_cond_timedwait(&(OS_count_sem_table[index].cv), &(OS_count_sem_table[index].osId), &ts);
        if ( ret == 0 )
        {
           ret_val = OS_SUCCESS;
           /* Decrement the counter */
-          OS_count_sem_table[sem_id].current_value --;
+          OS_count_sem_table[index].current_value --;
        }
        else if ( ret == ETIMEDOUT )
        {
@@ -2780,12 +2847,12 @@ int32 OS_CountSemTimedWait ( uint32 sem_id, uint32 msecs )
     }
     else /* Grab the sem */ 
     {
-       OS_count_sem_table[sem_id].current_value --;
+       OS_count_sem_table[index].current_value --;
        ret_val = OS_SUCCESS;
     }
 
     /* Unlock the mutex */
-    OS_InterruptSafeUnlock(&(OS_count_sem_table[sem_id].id), &previous);
+    OS_InterruptSafeUnlock(&(OS_count_sem_table[index].osId), &previous);
 
     return ret_val;
 }
@@ -2807,7 +2874,8 @@ int32 OS_CountSemGetIdByName (uint32 *sem_id, const char *sem_name)
     uint32 i;
 
     /* Ensure the OSAL API is initialized first. */
-    if(OS_API_Initialized != OS_API_INITIALIZED) {
+    if(OS_API_Initialized != OS_API_INITIALIZED)
+    {
     	return OS_ERROR;
     }
 
@@ -2830,7 +2898,7 @@ int32 OS_CountSemGetIdByName (uint32 *sem_id, const char *sem_name)
         if (OS_count_sem_table[i].free != true &&
                 (strcmp (OS_count_sem_table[i].name , (char*) sem_name) == 0))
         {
-            *sem_id = i;
+            *sem_id = OS_count_sem_table[i].ID;
             return OS_SUCCESS;
         }
     }
@@ -2847,6 +2915,7 @@ int32 OS_CountSemGetIdByName (uint32 *sem_id, const char *sem_name)
     Purpose: This function will pass back a pointer to structure that contains 
              all of the relevant info( name and creator) about the specified counting
              semaphore.
+
              
     Returns: OS_ERR_INVALID_ID if the id passed in is not a valid semaphore 
              OS_INVALID_POINTER if the count_prop pointer is null
@@ -2855,25 +2924,26 @@ int32 OS_CountSemGetIdByName (uint32 *sem_id, const char *sem_name)
 
 int32 OS_CountSemGetInfo (uint32 sem_id, OS_count_sem_prop_t *count_prop)  
 {
-    sigset_t    previous;
-    sigset_t    mask;
+    sigset_t previous;
+    sigset_t mask;
+    int32    rc;
+    uint32   index = 0;
 
     /* Ensure the OSAL API is initialized first. */
-    if(OS_API_Initialized != OS_API_INITIALIZED) {
-    	return OS_ERROR;
-    }
-
-    /* 
-    ** Check to see that the id given is valid 
-    */
-    if (sem_id >= OS_MAX_COUNT_SEMAPHORES || OS_count_sem_table[sem_id].free == true)
+    if(OS_API_Initialized != OS_API_INITIALIZED)
     {
-        return OS_ERR_INVALID_ID;
+    	return OS_ERROR;
     }
 
     if (count_prop == NULL)
     {
         return OS_INVALID_POINTER;
+    }
+
+    rc = OS_ConvertToArrayIndex(sem_id, &index);
+    if(rc != OS_SUCCESS)
+    {
+    	return rc;
     }
 
     /*
@@ -2882,10 +2952,9 @@ int32 OS_CountSemGetInfo (uint32 sem_id, OS_count_sem_prop_t *count_prop)
     OS_InterruptSafeLock(&OS_count_sem_table_mut, &mask, &previous); 
     
     /* put the info into the stucture */
-    count_prop -> value = OS_count_sem_table[sem_id].current_value;
-    
-    count_prop -> creator =    OS_count_sem_table[sem_id].creator;
-    strcpy(count_prop-> name, OS_count_sem_table[sem_id].name);
+    count_prop->value = OS_count_sem_table[index].current_value;
+    count_prop->creator = OS_count_sem_table[index].creator;
+    strcpy(count_prop->name, OS_count_sem_table[index].name);
    
     /*
     ** Unlock
@@ -2924,7 +2993,8 @@ int32 OS_MutSemCreate (uint32 *sem_id, const char *sem_name, uint32 options)
     sigset_t            mask;
 
     /* Ensure the OSAL API is initialized first. */
-    if(OS_API_Initialized != OS_API_INITIALIZED) {
+    if(OS_API_Initialized != OS_API_INITIALIZED)
+    {
     	return OS_ERROR;
     }
 
@@ -2957,7 +3027,6 @@ int32 OS_MutSemCreate (uint32 *sem_id, const char *sem_name, uint32 options)
     }
 
     /* Check to see if the name is already taken */
-
     for (i = 0; i < OS_MAX_MUTEXES; i++)
     {
         if ((OS_mut_sem_table[i].free == false) &&
@@ -2967,6 +3036,9 @@ int32 OS_MutSemCreate (uint32 *sem_id, const char *sem_name, uint32 options)
             return OS_ERR_NAME_TAKEN;
         }
     }
+
+    /* Allocate an ID */
+    OS_AllocateID(OS_OBJECT_TYPE_OS_MUTEX, possible_semid, &OS_mut_sem_table[possible_semid].ID);
 
     /* Set the free flag to false to make sure no other task grabs it */
     OS_mut_sem_table[possible_semid].free = false;
@@ -2981,7 +3053,6 @@ int32 OS_MutSemCreate (uint32 *sem_id, const char *sem_name, uint32 options)
         OS_mut_sem_table[possible_semid].free = true;
         OS_InterruptSafeUnlock(&OS_mut_sem_table_mut, &previous); 
  
-       
         #ifdef OS_DEBUG_PRINTF  
            printf("Error: Mutex could not be created. pthread_mutexattr_init failed ID = %lu\n",possible_semid);
         #endif
@@ -3023,7 +3094,7 @@ int32 OS_MutSemCreate (uint32 *sem_id, const char *sem_name, uint32 options)
     ** create the mutex 
     ** upon successful initialization, the state of the mutex becomes initialized and unlocked 
     */
-    return_code =  pthread_mutex_init((pthread_mutex_t *) &OS_mut_sem_table[possible_semid].id,&mutex_attr); 
+    return_code =  pthread_mutex_init((pthread_mutex_t *) &OS_mut_sem_table[possible_semid].osId,&mutex_attr);
     if ( return_code != 0 )
     {
         /* Since the call failed, set free back to true */
@@ -3040,12 +3111,12 @@ int32 OS_MutSemCreate (uint32 *sem_id, const char *sem_name, uint32 options)
        /*
        ** Mark mutex as initialized
        */
-       *sem_id = possible_semid;
-    
-       strcpy(OS_mut_sem_table[*sem_id].name, (char*) sem_name);
-       OS_mut_sem_table[*sem_id].free = false;
-       OS_mut_sem_table[*sem_id].creator = OS_FindCreator();
-    
+       strcpy(OS_mut_sem_table[possible_semid].name, (char*) sem_name);
+       OS_mut_sem_table[possible_semid].free = false;
+       OS_mut_sem_table[possible_semid].creator = OS_FindCreator();
+
+       *sem_id = OS_mut_sem_table[possible_semid].ID;
+
        OS_InterruptSafeUnlock(&OS_mut_sem_table_mut, &previous); 
 
        return OS_SUCCESS;
@@ -3071,31 +3142,36 @@ int32 OS_MutSemDelete (uint32 sem_id)
     int       status=-1;
     sigset_t  previous;
     sigset_t  mask;
+    int32     rc;
+    uint32    index = 0;
 
     /* Ensure the OSAL API is initialized first. */
-    if(OS_API_Initialized != OS_API_INITIALIZED) {
+    if(OS_API_Initialized != OS_API_INITIALIZED)
+    {
     	return OS_ERROR;
     }
 
-    /* Check to see if this sem_id is valid   */
-    if (sem_id >= OS_MAX_MUTEXES || OS_mut_sem_table[sem_id].free == true)
+    rc = OS_ConvertToArrayIndex(sem_id, &index);
+    if(rc != OS_SUCCESS)
     {
-        return OS_ERR_INVALID_ID;
+    	return rc;
     }
 
-    status = pthread_mutex_destroy( &(OS_mut_sem_table[sem_id].id)); /* 0 = success */   
+    status = pthread_mutex_destroy( &(OS_mut_sem_table[index].osId)); /* 0 = success */
     
     if( status != 0)
     {
         return OS_SEM_FAILURE;
     }
+
     /* Delete its presence in the table */
    
     OS_InterruptSafeLock(&OS_mut_sem_table_mut, &mask, &previous); 
 
-    OS_mut_sem_table[sem_id].free = true;
-    strcpy(OS_mut_sem_table[sem_id].name , "");
-    OS_mut_sem_table[sem_id].creator = UNINITIALIZED;
+    OS_mut_sem_table[index].ID = 0;
+    OS_mut_sem_table[index].free = true;
+    strcpy(OS_mut_sem_table[index].name , "");
+    OS_mut_sem_table[index].creator = UNINITIALIZED;
     
     OS_InterruptSafeUnlock(&OS_mut_sem_table_mut, &previous); 
     
@@ -3121,24 +3197,26 @@ int32 OS_MutSemDelete (uint32 sem_id)
 
 int32 OS_MutSemGive ( uint32 sem_id )
 {
-    uint32 ret_val ;
+    uint32 ret_val;
+    int32  rc;
+    uint32 index = 0;
 
     /* Ensure the OSAL API is initialized first. */
-    if(OS_API_Initialized != OS_API_INITIALIZED) {
+    if(OS_API_Initialized != OS_API_INITIALIZED)
+    {
     	return OS_ERROR;
     }
 
-    /* Check Parameters */
-
-    if(sem_id >= OS_MAX_MUTEXES || OS_mut_sem_table[sem_id].free == true)
+    rc = OS_ConvertToArrayIndex(sem_id, &index);
+    if(rc != OS_SUCCESS)
     {
-        return OS_ERR_INVALID_ID;
+    	return rc;
     }
 
     /*
     ** Unlock the mutex
     */
-    if(pthread_mutex_unlock(&(OS_mut_sem_table[sem_id].id)))
+    if(pthread_mutex_unlock(&(OS_mut_sem_table[index].osId)))
     {
         ret_val = OS_SEM_FAILURE ;
     }
@@ -3166,42 +3244,42 @@ int32 OS_MutSemGive ( uint32 sem_id )
 ---------------------------------------------------------------------------------------*/
 int32 OS_MutSemTake ( uint32 sem_id )
 {
-    int status;
+    int    status;
+    int32  rc;
+    uint32 index = 0;
 
     /* Ensure the OSAL API is initialized first. */
-    if(OS_API_Initialized != OS_API_INITIALIZED) {
+    if(OS_API_Initialized != OS_API_INITIALIZED)
+    {
     	return OS_ERROR;
     }
 
-    /* 
-    ** Check Parameters
-    */  
-    if(sem_id >= OS_MAX_MUTEXES || OS_mut_sem_table[sem_id].free == true)
+    rc = OS_ConvertToArrayIndex(sem_id, &index);
+    if(rc != OS_SUCCESS)
     {
-       return OS_ERR_INVALID_ID;
+    	return rc;
     }
  
     /*
     ** Lock the mutex - unlike the sem calls, the pthread mutex call
     ** should not be interrupted by a signal
     */
-    status = pthread_mutex_lock(&(OS_mut_sem_table[sem_id].id));
+    status = pthread_mutex_lock(&(OS_mut_sem_table[index].osId));
     if( status == EINVAL )
     {
-      return OS_SEM_FAILURE ;
+        return OS_SEM_FAILURE ;
     }
     else if ( status == EDEADLK )
     {
-       //#ifdef OS_DEBUG_PRINTF
-          printf("Task would deadlock--nested mutex call!\n");
-       //#endif
-       return OS_SUCCESS ;
+        //#ifdef OS_DEBUG_PRINTF
+        printf("Task would deadlock--nested mutex call!\n");
+        //#endif
+        return OS_SUCCESS ;
     }
     else
     {
-      return OS_SUCCESS;
+        return OS_SUCCESS;
     }
-
 }
 /*--------------------------------------------------------------------------------------
     Name: OS_MutSemGetIdByName
@@ -3220,7 +3298,8 @@ int32 OS_MutSemGetIdByName (uint32 *sem_id, const char *sem_name)
     uint32 i;
 
     /* Ensure the OSAL API is initialized first. */
-    if(OS_API_Initialized != OS_API_INITIALIZED) {
+    if(OS_API_Initialized != OS_API_INITIALIZED)
+    {
     	return OS_ERROR;
     }
 
@@ -3242,7 +3321,7 @@ int32 OS_MutSemGetIdByName (uint32 *sem_id, const char *sem_name)
         if ((OS_mut_sem_table[i].free != true) &&
            (strcmp (OS_mut_sem_table[i].name, (char*) sem_name) == 0) )
         {
-            *sem_id = i;
+            *sem_id = OS_mut_sem_table[i].ID;
             return OS_SUCCESS;
         }
     }
@@ -3269,32 +3348,35 @@ int32 OS_MutSemGetIdByName (uint32 *sem_id, const char *sem_name)
 
 int32 OS_MutSemGetInfo (uint32 sem_id, OS_mut_sem_prop_t *mut_prop)  
 {
-    sigset_t  previous;
-    sigset_t  mask;
+    sigset_t previous;
+    sigset_t mask;
+    int32    rc;
+    uint32   index = 0;
 
     /* Ensure the OSAL API is initialized first. */
-    if(OS_API_Initialized != OS_API_INITIALIZED) {
+    if(OS_API_Initialized != OS_API_INITIALIZED)
+    {
     	return OS_ERROR;
     }
 
     /* Check to see that the id given is valid */
-    
-    if (sem_id >= OS_MAX_MUTEXES || OS_mut_sem_table[sem_id].free == true)
-    {
-        return OS_ERR_INVALID_ID;
-    }
-
     if (mut_prop == NULL)
     {
         return OS_INVALID_POINTER;
+    }
+
+    rc = OS_ConvertToArrayIndex(sem_id, &index);
+    if(rc != OS_SUCCESS)
+    {
+    	return rc;
     }
     
     /* put the info into the stucture */    
     
     OS_InterruptSafeLock(&OS_mut_sem_table_mut, &mask, &previous); 
 
-    mut_prop -> creator =   OS_mut_sem_table[sem_id].creator;
-    strcpy(mut_prop-> name, OS_mut_sem_table[sem_id].name);
+    mut_prop->creator =   OS_mut_sem_table[index].creator;
+    strcpy(mut_prop->name, OS_mut_sem_table[index].name);
 
     OS_InterruptSafeUnlock(&OS_mut_sem_table_mut, &previous); 
     
@@ -3648,7 +3730,7 @@ uint32 OS_FindCreator(void)
     */
     for (i = 0; i < OS_MAX_TASKS; i++)
     {
-        if (pthread_equal(pthread_id, OS_task_table[i].id) != 0 )
+        if (pthread_equal(pthread_id, OS_task_table[i].osId) != 0 )
         {
             break;
         }
@@ -3980,32 +4062,4 @@ void OS_InterruptSafeUnlock(pthread_mutex_t *lock, sigset_t *previous)
     /* Restore previous signals */
     pthread_sigmask(SIG_SETMASK, previous, 0);
     sigdelset(previous, 0);
-}
-
-
-
-
-
-
-
-
-
-
-int32 OS_ConvertToArrayIndex(uint32 object_id, uint32 *ArrayIndex)
-{
-    return object_id;
-} /* end OS_ConvertToArrayIndex */
-
-
-
-uint32 OS_IdentifyObject       (uint32 object_id)
-{
-	return OS_OBJECT_TYPE_USER;
-}
-
-
-
-void OS_ForEachObject (uint32 creator_id, OS_ArgCallback_t callback_ptr, void *callback_arg)
-{
-
 }

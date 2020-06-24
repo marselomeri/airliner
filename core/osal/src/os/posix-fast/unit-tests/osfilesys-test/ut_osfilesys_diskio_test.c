@@ -217,6 +217,7 @@ void UT_os_initfs_test()
          OS_FS_ERR_INVALID_POINTER) &&
         (OS_initfs(g_fsAddrPtr, g_devNames[1], NULL, 0, 0) ==
          OS_FS_ERR_INVALID_POINTER))
+        /* cppcheck-suppress syntaxError */
         UT_OS_SET_TEST_RESULT_MACRO(apiInfo, idx, testDesc, UT_OS_PASSED)
     else
         UT_OS_SET_TEST_RESULT_MACRO(apiInfo, idx, testDesc, UT_OS_FAILED)
@@ -809,7 +810,7 @@ void UT_os_getphysdrivename_test()
     int32 res=0, idx=0;
     UT_OsApiInfo_t apiInfo;
     const char* testDesc=NULL;
-    char physDevName[UT_OS_LG_TEXT_LEN] = "";
+    char physDevName[UT_OS_LG_TEXT_LEN];
 
     UT_OS_CLEAR_API_INFO_MACRO(apiInfo, idx)
 
@@ -1075,11 +1076,11 @@ UT_os_translatepath_test_exit_tag:
 }
 
 /*--------------------------------------------------------------------------------*
-** Syntax: os_fshealth_t OS_chkfs(const char *name, boolean repair)
+** Syntax: os_fshealth_t OS_chkfs(const char *name, bool repair)
 ** Purpose: Checks the integrity of the file system, and may or may not repair it,
 **          depending on repair
 ** Parameters: *name - the name of the drive to check
-**             repair - boolean flag to repair or not to repair
+**             repair - bool flag to repair or not to repair
 ** Returns: OS_FS_ERR_INVALID_POINTER if the pointer passed in is NULL
 **          OS_FS_ERROR if the OS call failed
 **          OS_FS_SUCCESS if succeeded
