@@ -60,7 +60,7 @@ OS_VolumeInfo_t OS_VolumeTable [NUM_TABLE_ENTRIES] =
 /*{"/eedev0",  "CF:0",      FS_BASED,        FALSE,     FALSE,     TRUE,     "CF",      "/cf",     512        },*/
 
 /* map non-volatile disk to mounted host disk (tgtsvr) since there is not currently a local flash disk */
-{"/eedev0",  "/tmp/cf",      FS_BASED,        FALSE,     FALSE,     TRUE,     "CF",      "/cf",     1024        },
+{"/eedev0",  "/home/aitech/exe/cf",      FS_BASED,        FALSE,     FALSE,     TRUE,     "CF",      "/cf",     1024        },
 
 /* 
 ** Spare RAM disks to be used for SSR and other RAM disks 

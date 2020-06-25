@@ -1,11 +1,5 @@
 /* TODO: this is from the s950 PSP, need to update for SP0
  *
- * The WD functions must not be the same as the s950
- * ld<cfe-core.o
-Warning: module 0x461d010 holds reference to undefined symbol watchDogDisable.
-Warning: module 0x461d010 holds reference to undefined symbol watchDogRate.
-Warning: module 0x461d010 holds reference to undefined symbol watchDogEnable.
-Warning: module 0x461d010 holds reference to undefined symbol watchDogToggle.
  * */
 
 
@@ -63,7 +57,10 @@ Warning: module 0x461d010 holds reference to undefined symbol watchDogToggle.
 #include "usrLib.h"
 #include "cacheLib.h"
 
-/* TODO: for 950 BSP functions, needs to be in -I path #include "sys950Lib.h" */
+/*
+ * SP0-S BSP Include
+ */
+#include "sysApi.h"
 
 /*
 ** Types and prototypes for this module
@@ -93,8 +90,8 @@ uint32 CFE_PSP_WatchdogValue = 20000; /* 5 seconds */
 */
 void CFE_PSP_WatchdogInit(void)
 {
-	/* in ms in this code, but S950 WG can only be set in terms of seconds */  
-	/* watchDogRate(CFE_PSP_WatchdogValue / 1000);*/
+	/* TODO: */
+	//watchDogRate(CFE_PSP_WatchdogValue / 1000);
 }
 
 
@@ -118,7 +115,8 @@ void CFE_PSP_WatchdogEnable(void)
 	 * reset on watchdog failure 
 	 * Second argument: BOOL enable_nmi - if true enable non-maskable 
 	 * interrupt on watchdog failure */
-	/*watchDogEnable(TRUE, FALSE);*/
+	/* TODO: */
+	//watchDogEnable(TRUE, FALSE);
 }
 
 
@@ -134,7 +132,8 @@ void CFE_PSP_WatchdogEnable(void)
 */
 void CFE_PSP_WatchdogDisable(void)
 {
-	/*watchDogDisable();*/
+	/* TODO: */
+	//watchDogDisable();
 }
 
 /******************************************************************************
@@ -157,7 +156,9 @@ void CFE_PSP_WatchdogService(void)
 	 * called at least once every watchdog timer period if the watchdog timer 
 	 * is enabled.  Otherwise, the board will perform a reset once the timer
 	 * expires */
-	/*watchDogToggle();*/
+
+	/* TODO: */
+	//watchDogToggle();
 }
 /******************************************************************************
 **  Function:  CFE_PSP_WatchdogGet
@@ -199,7 +200,7 @@ void CFE_PSP_WatchdogSet(uint32 WatchdogValue)
 {
     CFE_PSP_WatchdogValue = WatchdogValue;
     
-	/* in ms in this code, but S950 WG can only be set in terms of seconds */  
-	/*watchDogRate(CFE_PSP_WatchdogValue / 1000);*/
+    /* TODO: */
+    //watchDogRate(CFE_PSP_WatchdogValue / 1000);
 }
 

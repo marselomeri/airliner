@@ -23,6 +23,7 @@
 
 #include "common_types.h"
 #include "cfe_psp.h"
+#include "cfe_psp_config.h"
 
 
 /*

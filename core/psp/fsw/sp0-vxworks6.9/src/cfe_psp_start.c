@@ -36,6 +36,7 @@
 #include "errnoLib.h"
 #include "usrLib.h"
 #include "cacheLib.h"
+#include <string.h>
 
 /*
 ** cFE includes
@@ -51,8 +52,17 @@
 #include "cfe_psp.h"
 #include "cfe_psp_memory.h"
 
-#define CFE_PSP_TASK_PRIORITY    (30)
 #define CFE_PSP_TASK_STACK_SIZE  (20 * 1024)
+
+#define CFE_PSP_TASK_PRIORITY          (30)
+#define CFE_PSP_TLOGTASK_PRIORITY      (0)
+#define CFE_PSP_TSHELL0_PRIORITY       (201)
+#define CFE_PSP_TWDBTASK_PRIORITY      (203)
+#define CFE_PSP_TVXDBGTASK_PRIORITY    (200)
+#define CFE_PSP_TNET0_PRIORITY         (110) /****** should be set right below CI/TO */
+#define CFE_PSP_IPFTPS_PRIORITY        (202)
+#define CFE_PSP_IPCOMSYSLOGD_PRIORITY  (205)
+#define CFE_PSP_IPCOMTELNETD_PRIORITY  (204)
 
 
 /*
@@ -64,7 +74,6 @@ extern void CFE_TIME_SetState(int16);
 
 extern CFE_PSP_ReservedMemory_t *CFE_PSP_ReservedMemoryPtr;
 
-void CFE_PSP_Main(uint32 ModeId, char *StartupFilePath);
 uint32 CFE_PSP_GetRestartType(uint32 *restartSubType);
 
 /*
@@ -77,8 +86,29 @@ static void CFE_PSP_Start(uint32 ModeId, char *StartupFilePath);
 static void CFE_PSP_SysInit(uint32* psp_reset_type, uint32* psp_reset_subtype,
         uint32 last_bsp_reset_type);
 static void SetSysTasksPrio(void);
-static void ResetSysTasksPrio(void);
 static void SetTaskPrio(char* tName, const int32 tgtPrio);
+
+
+void CFE_PSP_PrepRamDisk(void)
+{
+    OS_mkdir("/ram/downlink", 0);
+    OS_mkdir("/ram/downlink/noncrit", 0);
+    OS_mkdir("/ram/downlink/noncrit/0", 0);
+    OS_mkdir("/ram/downlink/noncrit/0/perm", 0);
+    OS_mkdir("/ram/downlink/noncrit/0/tmp", 0);
+    OS_mkdir("/ram/downlink/noncrit/1", 0);
+    OS_mkdir("/ram/downlink/noncrit/1/perm", 0);
+    OS_mkdir("/ram/downlink/noncrit/1/tmp", 0);
+    OS_mkdir("/ram/downlink/noncrit/2", 0);
+    OS_mkdir("/ram/downlink/noncrit/2/perm", 0);
+    OS_mkdir("/ram/downlink/noncrit/2/tmp", 0);
+    OS_mkdir("/ram/downlink/crit", 0);
+    OS_mkdir("/ram/downlink/crit/0", 0);
+    OS_mkdir("/ram/downlink/crit/1", 0);
+    OS_mkdir("/ram/downlink/crit/2", 0);
+}
+
+
 
 /******************************************************************************
 **  Function:  CFE_PSP_Main()
@@ -93,28 +123,26 @@ static void SetTaskPrio(char* tName, const int32 tgtPrio);
 **  Return:
 **    (none)
 */
-void CFE_PSP_Main(uint32 ModeId, char *StartupFilePath)
+void CFE_PSP_Main(void)
 {
     int32 root_task_id;
 
-
-  /* had to add VX_FP_TASK (all tasks should just be created with it...
-   * to deal with an "SPE unknown exception" error as soon as this task
-   * would start on the SP0/PPC8548
-   * NOTE: when using e500vx_gnu tool chain, including VX_FP_TASK implicitly
-   * includes VX_SPE_TASK, which is needed when starting tasks that might
-   * use floating point on this processor.
-  */
-  root_task_id = taskSpawn("PSP_START", CFE_PSP_TASK_PRIORITY,
+    /* had to add VX_FP_TASK (all tasks should just be created with it...
+     * to deal with an "SPE unknown exception" error as soon as this task
+     * would start on the SP0/PPC8548
+     * NOTE: when using e500vx_gnu tool chain, including VX_FP_TASK implicitly
+     * includes VX_SPE_TASK, which is needed when starting tasks that might
+     * use floating point on this processor.
+    */
+    root_task_id = taskSpawn("PSP_START", CFE_PSP_TASK_PRIORITY,
                             VX_FP_TASK, CFE_PSP_TASK_STACK_SIZE,
-                            (FUNCPTR) (void *)CFE_PSP_Start, ModeId,
-                            (int)StartupFilePath,0,0,0,0,0,0,0,0);
+                            (FUNCPTR) CFE_PSP_Start, 0,
+                            (int)"/cf/apps/cfe_es_startup.scr",0,0,0,0,0,0,0,0);
 
-  if ( root_task_id == ERROR )
-  {
-     printf("CFE_PSP_Main: ERROR - unable to spawn PSP_START task");
-  }
-
+    if ( root_task_id == ERROR )
+    {
+        printf("CFE_PSP_Main: ERROR - unable to spawn PSP_START task");
+    }
 }
 
 /******************************************************************************
@@ -232,6 +260,8 @@ static void CFE_PSP_Start(uint32 ModeId, char *StartupFilePath)
      */
     CFE_ES_Main(reset_type, reset_subtype, ModeId, (char *) StartupFilePath);
 
+    CFE_PSP_PrepRamDisk();
+
      /*
      * Initializing the 1Hz timer connects the cFE 1Hz ISR for providing the
      * CFS 1Hz time sync, sync the scheduler's 1Hz major frame start to the
@@ -310,29 +340,6 @@ static void SetTaskPrio(char* tName, const int32 tgtPrio)
     }
 }
 
-/******************************************************************************
- **  Function:  ResetSysTasksPrio()
- **
- **  Purpose:
- **    reset changed task priorities back to defaults
- **
- **  Arguments: none
- **
- **  Return: none
- **
- */
-static void ResetSysTasksPrio(void)
-{
-    printf("\nResetting system tasks' priority to default\n");
-    SetTaskPrio("tLogTask", 0);
-    SetTaskPrio("tShell0", 1);
-    SetTaskPrio("tWdbTask", 3);
-    SetTaskPrio("tVxdbgTask", 25);
-    SetTaskPrio("tNet0", 50);
-    SetTaskPrio("ipftps", 50);
-    SetTaskPrio("ipcom_syslogd", 50);
-    SetTaskPrio("ipcom_telnetd", 50);
-}
 
 /******************************************************************************
  **  Function:  SetSysTasksPrio()
@@ -352,14 +359,14 @@ static void ResetSysTasksPrio(void)
 static void SetSysTasksPrio(void)
 {
     printf("\nSetting system tasks' priorities\n");
-    SetTaskPrio("tLogTask", 0);
-    SetTaskPrio("tShell0", 201);
-    SetTaskPrio("tWdbTask", 203);
-    SetTaskPrio("tVxdbgTask", 200);
-    SetTaskPrio("tNet0", 130); /****** should be set right below CI/TO */
-    SetTaskPrio("ipftps", 202);
-    SetTaskPrio("ipcom_syslogd", 205);
-    SetTaskPrio("ipcom_telnetd", 204);
+    SetTaskPrio("tLogTask", CFE_PSP_TLOGTASK_PRIORITY);
+    SetTaskPrio("tShell0", CFE_PSP_TSHELL0_PRIORITY);
+    SetTaskPrio("tWdbTask", CFE_PSP_TWDBTASK_PRIORITY);
+    SetTaskPrio("tVxdbgTask", CFE_PSP_TVXDBGTASK_PRIORITY);
+    SetTaskPrio("tNet0", CFE_PSP_TNET0_PRIORITY); 
+    SetTaskPrio("ipftps", CFE_PSP_IPFTPS_PRIORITY);
+    SetTaskPrio("ipcom_syslogd", CFE_PSP_IPCOMSYSLOGD_PRIORITY);
+    SetTaskPrio("ipcom_telnetd", CFE_PSP_IPCOMTELNETD_PRIORITY);
 }
 
 /* undefined symbols ----------------------------------------------------------

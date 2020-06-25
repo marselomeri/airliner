@@ -131,6 +131,29 @@ function(add_airliner_app)
 endfunction(add_airliner_app)
 
 
+
+#build_airliner_cfe_host_tools(
+#    PSP pc-linux
+#    OSAL posix
+#    CONFIG
+#        ${CMAKE_CURRENT_SOURCE_DIR}/inc
+#        ${CMAKE_CURRENT_SOURCE_DIR}/../../shared/inc
+#)
+# Build all the host tools.  Currently, this is just the elf2cfetbl.
+function(build_airliner_cfe_host_tools)
+    cmake_parse_arguments(PARSED_ARGS "" "PSP;OSAL;" "CONFIG" ${ARGN})
+
+    include_directories(${PARSED_ARGS_CONFIG})
+    include_directories(${CFE_INC_DIRS})
+    include_directories(${OSAL_INC_DIRS})
+    include_directories(${PSP_INC_DIRS})
+    include_directories(${PARSED_ARGS_PSP}/inc)
+
+    add_subdirectory(${CFE_TOOLS}/elf2cfetbl ${ELF2CFETBL_BIN})
+
+endfunction(build_airliner_cfe_host_tools)
+
+
 #add_airliner_app_def(sch
 #    FILE SCH
 #    SOURCES

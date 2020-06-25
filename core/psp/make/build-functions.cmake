@@ -180,9 +180,6 @@ function(psp_initialize_airliner_build)
 	
 	# Specify where the files are going to, defined at the top of this file.
 	set_target_properties(${PARSED_ARGS_PREFIX}${CFE_EXEC_FILE} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CFE_INSTALL_DIR})
-
-        # Build host tools
-        add_subdirectory(${CFE_TOOLS}/elf2cfetbl ${ELF2CFETBL_BIN})
 	    
 	## Generate documentation
 	find_package(Doxygen)

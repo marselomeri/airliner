@@ -31,25 +31,3 @@
 #
 #############################################################################
  
-include(${OSAL_COMMON_BUILD_FUNC_DIR}/build-functions.cmake)
-
-osal_add_whitebox_unit_test(
-    osloader-test
-    SOURCE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../osloader.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../osapi.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/ut_osloader_module_test.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/ut_osloader_symtable_test.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/ut_osloader_test.c
-        #${CMAKE_CURRENT_SOURCE_DIR}/../shared/ut_oscore_stubs.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../shared/ut_osfile_stubs.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../shared/ut_osfilesys_stubs.c
-        #${CMAKE_CURRENT_SOURCE_DIR}/../shared/ut_osloader_stubs.c
-        #${CMAKE_CURRENT_SOURCE_DIR}/../shared/ut_osnetwork_stubs.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../shared/ut_os_stubs.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../shared/ut_ostimer_stubs.c
-        #${CMAKE_CURRENT_SOURCE_DIR}/../shared/ut_psp_voltab_stubs.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../shared/ut_osrtm_stubs.c
-    INCLUDES
-        ${CMAKE_CURRENT_SOURCE_DIR}/../shared
-)

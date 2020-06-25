@@ -45,17 +45,21 @@
  */
 #include "cfe_psp.h"
 #include "cfe_psp_memory.h"
+#include "cfe_platform_cfg.h"
 
-/*
- ** Define the cFE Core loadable module name
- */
 #define CFE_MODULE_NAME "cfe-core.o"
 
-/*
- **  External Declarations
- */
-extern unsigned int GetWrsKernelTextStart(void);
-extern unsigned int GetWrsKernelTextEnd(void);
+
+unsigned int GetWrsKernelTextStart(void)
+{
+    return 0;
+}
+
+
+unsigned int GetWrsKernelTextEnd(void)
+{
+    return 0;
+}
 
 /*
  ** Global variables
@@ -114,7 +118,7 @@ int32 CFE_PSP_GetCDSSize(uint32 *SizeOfCDS)
  **  Return:
  **    (none)
  */
-int32 CFE_PSP_WriteToCDS(void *PtrToDataToWrite, uint32 CDSOffset,
+int32 CFE_PSP_WriteToCDS(const void *PtrToDataToWrite, uint32 CDSOffset,
         uint32 NumBytes)
 {
     uint8 *CopyPtr = NULL;

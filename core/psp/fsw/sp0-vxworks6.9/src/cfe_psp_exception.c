@@ -58,28 +58,30 @@
 #include "cfe.h"
 #include "cfe_psp_memory.h"
 #include "cfe_platform_cfg.h"  /* for processor ID */
+#include "cfe_psp_config.h"
 
 
 extern FUNCPTR  _func_excTrapRtn;   /* pointer exported by VxWorks */
 
 void user_defined_trap_rtn( ESFPPC *esf, REG_SET regs, int a, int b)
 {
-	  FP_CONTEXT fpContext;
-	  long           my_task_id;
-	  CFE_EVS_LogFileCmd_t Cmd;
-
-	  my_task_id  = taskIdSelf();
-
-	  CFE_EVS_SendEvent(24, CFE_EVS_ERROR, "Exception: task %s: vector: 0x%.08X",taskName(my_task_id),(int)esf->vecOffset);
-
-	  speSave(&fpContext);
-	  fpContext.fpcsr &= 0x000000ff;
-	  speRestore(&fpContext);
-
-	  strcpy((char *) Cmd.Payload.LogFilename,"\/cf\/log\/nvlog");
-	  CFE_EVS_WriteLogFileCmd(&Cmd);
-
-	  taskSuspend(my_task_id);
+	/* TODO:  Fix this later.  Exception handling needs a complete rewrite. */
+//	  FP_CONTEXT fpContext;
+//	  long           my_task_id;
+//	  CFE_EVS_LogFileCmd_t Cmd;
+//
+//	  my_task_id  = taskIdSelf();
+//
+//	  CFE_EVS_SendEvent(24, CFE_EVS_ERROR, "Exception: task %s: vector: 0x%.08X",taskName(my_task_id),(int)esf->vecOffset);
+//
+//	  speSave(&fpContext);
+//	  fpContext.fpcsr &= 0x000000ff;
+//	  speRestore(&fpContext);
+//
+//	  strcpy((char *) Cmd.Payload.LogFilename, "/cf/downlink/noncrit/1/tmp/nvlog");
+//	  CFE_EVS_WriteLogFileCmd(&Cmd);
+//
+//	  taskSuspend(my_task_id);
 }
 
 /*
@@ -139,9 +141,11 @@ void CFE_PSP_ExceptionHook ( int task_id, int vector, ESFPPC* pEsf );
 
 void CFE_PSP_AttachExceptions(void)
 {
-	_func_excTrapRtn = (FUNCPTR)user_defined_trap_rtn;
-    excHookAdd((FUNCPTR)CFE_PSP_ExceptionHook);
-    OS_printf("CFE_PSP: Attached cFE Exception Handler. Context Size = %d bytes.\n",CFE_PSP_CPU_CONTEXT_SIZE);
+	/* TODO:  Fix this later.  Exception handling needs a complete rewrite. */
+
+//	_func_excTrapRtn = (FUNCPTR)user_defined_trap_rtn;
+//    excHookAdd((FUNCPTR)CFE_PSP_ExceptionHook);
+//    OS_printf("CFE_PSP: Attached cFE Exception Handler. Context Size = %d bytes.\n",CFE_PSP_CPU_CONTEXT_SIZE);
 }
 
 

@@ -41,6 +41,7 @@
 #include "errnoLib.h"
 #include "usrLib.h"
 #include "cacheLib.h"
+#include "sysApi.h"
 
 #include "time.h"
 
@@ -58,7 +59,6 @@
 */
 
 void CFE_PSP_Init1HzTimer(void);
-void CFE_PSP_PPSHandler(int num);
 void CFE_PSP_AuxClkHandler(int arg);
 
 /* External Declarations
@@ -69,7 +69,11 @@ extern void CFE_TIME_Tone1HzISR(void);
 
 /******************* Macro Definitions ***********************/
 
-/* This corresponds to a 41.625 MHz time base register(TB or TBR) clock
+/* NOTE: this macro is from an older PSP for the sp0.  The values
+ * might not be correct for the SP0-S but the time base register
+ * description is useful.
+ * 
+ * This corresponds to a 41.625 MHz time base register(TB or TBR) clock
  *  - which runs at 1/8 of the CCB (e500 Core
  *  Complex Bus clock or platform clock (the system clock drives the CCB clock))
  *  local bus which runs at 333 MHz.  The TB register is a 64-bit register that
@@ -91,11 +95,8 @@ extern void CFE_TIME_Tone1HzISR(void);
  * time stamp returned by CFE_PSP_Get_Timebase in timer ticks per second.
  * The timer resolution for accuracy should not be any slower than 1000000
  * ticks per second or 1 us per tick */
-#define CFE_PSP_TIMER_TICKS_PER_SECOND       41625000
+/* #define CFE_PSP_TIMER_TICKS_PER_SECOND       41625000 */
 
-/* So a TB tick or period is 1 / 41625000 sec = 0.000000024 sec
- * or 24 ns per tick */
-#define CFE_PSP_TIMER_PERIOD 0.000000024
 
 /* The number that the least significant 32 bits of the 64 bit
 time stamp returned by CFE_PSP_Get_Timebase rolls over.  If the lower 32
@@ -103,9 +104,6 @@ bits rolls at 1 second, then the CFE_PSP_TIMER_LOW32_ROLLOVER will be 1000000.
 if the lower 32 bits rolls at its maximum value (2^32) then
 CFE_PSP_TIMER_LOW32_ROLLOVER will be 0. */
 #define CFE_PSP_TIMER_LOW32_ROLLOVER         0
-
-/* The number of ticks or interrupts per second */
-#define CFE_PSP_TIMER_AUX_TICK_PER_SEC       100
 
 #define CFE_PSP_TIMER_PRINT_DBG              TRUE
 
@@ -119,19 +117,20 @@ CFE_PSP_TIMER_LOW32_ROLLOVER will be 0. */
 void CFE_PSP_InitLocalTime(void)
 {
 	   /* Set the sys clock rate */
-	   sysClkRateSet(200);
+	   sysClkRateSet(CFE_PSP_SYS_CLK_INTS_PER_SEC);
 
 	   /*
-	   ** Disable the Aux timer interrupt
-	   */
+	    * Disable the Aux timer interrupt (SP0-S BSP docs note this disables
+	    * the aux clock itself).
+	    */
 	   sysAuxClkDisable();
 
 	   /*
 	   ** Set the Aux timer rate
 	   */
-	   if(sysAuxClkRateGet() != CFE_PSP_TIMER_AUX_TICK_PER_SEC)
+	   if(sysAuxClkRateGet() != CFE_PSP_AUX_CLK_INTS_PER_SEC)
 	   {
-	      if(sysAuxClkRateSet(CFE_PSP_TIMER_AUX_TICK_PER_SEC) == ERROR)
+	      if(sysAuxClkRateSet(CFE_PSP_AUX_CLK_INTS_PER_SEC) == ERROR)
 	      {
 	         OS_printf("CFE_PSP: Unable to set Aux Clock Rate!\n");
 	      }
@@ -147,11 +146,6 @@ void CFE_PSP_InitLocalTime(void)
 **  Function:  CFE_PSP_Init1HzTimer()
 **
 **  Purpose: Initializes the 1Hz Timer and connects it to the cFE TIME 1Hz routine
-**  		 The S950 was setup to use the PPS signal as it was on Morpheus,
-**  		 where the PPS signal was driven by the GPS PPS.  If this signal
-**  		 is not driven, then the 1Hz ISR will not run.  So you can use the
-**  		 AuxClk instead.  Comment out/uncomment either the Aux clk
-**  		 connect or the PPS connect to choose the one you want to use.
 **
 **  NOTE: This function has to be called after CFE_ES_Main() in CFE_PSP_Start()
 **  because the 1Hz ISR has a semaphore that is created in CFE_ES_Main().
@@ -161,72 +155,61 @@ void CFE_PSP_InitLocalTime(void)
 void CFE_PSP_Init1HzTimer(void)
 {
     /*
-    ** Attach a handler to the timer interrupt
+    ** Attach a handler to the aux clock timer interrupt
     */
 
-	/* Either the Aux clock */
-    if(sysAuxClkConnect((FUNCPTR)CFE_PSP_AuxClkHandler,
-                         CFE_PSP_TIMER_AUX_TICK_PER_SEC) == ERROR)
+    /* Use the Aux clock */
+    if(sysAuxClkConnect((FUNCPTR)CFE_PSP_AuxClkHandler,	0) == ERROR)
     {
-       printf("CFE_PSP: Unable to connect handler to Aux Clock!\n");
+        printf("CFE_PSP: Unable to connect handler to Aux Clock!\n");
     }
 
     sysAuxClkEnable();
 
-    /* Or the PPS interrupt available on the S950 board *
-    ppsIntConnect((VOIDFUNCPTR)CFE_PSP_PPSHandler);
-    ppsIntEnable();
-    */
-
 }/* end CFE_PSP_Init1HzTimer */
 
-/******************************************************************************
-**  Function:  CFE_PSP_PPSHandler()
-**
-**  Purpose:
-**    PPS 1Hz ISR handler used on Morpheus with the 1PPS interrupt
-**
-**  Arguments:
-**
-**  Return:
-*/
-void CFE_PSP_PPSHandler(int num)
-{
-	/* Morpheus called this function, not sure why.  All other PSPs
-	 * call CFE_TIME_Local1HzISR() */
-	CFE_TIME_Tone1HzISR();
 
-	/* CFE_TIME_Local1HzISR(); */
-}
 
 /******************************************************************************
 **  Function:  CFE_PSP_AuxClkHandler()
 **
 **  Purpose:
-**    A timer int handler to keep track of seconds.
+**    A timer int handler to keep track of seconds using the aux clock interrupt.
+**    This calls the cFE TIME 1Hz routine.
 **
-**  Arguments:
+**  Arguments: unused
 **
-**  Return:
 */
 void CFE_PSP_AuxClkHandler(int arg)
 {
-   static int auxCount = 0;
+    static int auxCount = 0;
+    (void) arg;
 
-   if(++auxCount >= CFE_PSP_TIMER_AUX_TICK_PER_SEC)
-   {
-      auxCount = 0;
-      CFE_TIME_Local1HzISR();
+    /* IMPORTANT: Always use this call to get the rate.  The aux clock might not be
+     * what is requested. 
+     */
+    if(++auxCount >= sysAuxClkRateGet())
+    {
+        /*
+        static UINT32 prevTick = 0;
+	UINT32 tick = 0;
+	UINT32 deltaTick = 0;
+	*/
 
-      /* FOR DEBUG
-      OS_time_t LocalTime;
-      CFE_PSP_GetTime(&LocalTime);
-      logMsg("aux clk handler: %d.%d\n", LocalTime.seconds,LocalTime.microsecs,0,0,0,0);
-      */
+        auxCount = 0;
+        CFE_TIME_Local1HzISR();
+
+        OS_time_t LocalTime;
+        CFE_PSP_GetTime(&LocalTime);
+        /*
+        tick = tickGet();
+        deltaTick = tick - prevTick;
+        prevTick = tick;
+        logMsg("CFE_PSP_AuxClkHandler:  %d.%d  tick=%u (%u)\n", LocalTime.seconds,LocalTime.microsecs,tick,deltaTick,0,0);
+        */
    }
-
-   return;
 }
+
 /******************************************************************************
 **  Function:  CFE_PSP_GetTime()
 **
@@ -238,26 +221,41 @@ void CFE_PSP_AuxClkHandler(int arg)
 ******************************************************************************/
 void CFE_PSP_GetTime( OS_time_t *LocalTime)
 {
-	UINT32 tbu;
-	UINT32 tbl;
+	UINT32 tbu = 0;
+	UINT32 tbl = 0;
+	/* UINT32 tmp = 0; For inline ASM, below */
 	unsigned long long tb;
+	const unsigned long long ticksPerSecond = sysClkFreqGet() / 8;
 
+	/* See "IBM : PowerPC Microprocessor Family:
+	 *            The Programming Environments Manual for
+	 *            32 and 64-bit Microprocessors"
+	 *
+	 *            v 2.3
+	 *
+	 * Section 2.2.1, page 60
+	 *
+	 * __asm volatile ( "loop: "
+	 * 	    "mftbu %0;     #load from TBU"
+	 * 		"mftb  %1;     #load from TBL"
+	 * 		"mftbu %2;     #load from TBU"
+	 * 		"cmpw  %2,%0;  #see if 'old' = 'new'"
+	 * 		"bne   loop;   #loop if carry occurred"
+	 * 		: "=r"(tbu), "=r"(tbl), "=r"(tmp) :
+	 * 		  );
+     */
 	vxTimeBaseGet(&tbu, &tbl);
 
 	/* reassemble 64-bit count */
 	tb = ((unsigned long long)tbu << 32) | (unsigned long long) tbl;
 
 	/* convert to seconds and microseconds using only integer computations */
-	LocalTime->seconds = tb / CFE_PSP_TIMER_TICKS_PER_SECOND;
-	LocalTime->microsecs = ((tb % CFE_PSP_TIMER_TICKS_PER_SECOND) * 1000000 / CFE_PSP_TIMER_TICKS_PER_SECOND);
+	LocalTime->seconds = tb / ticksPerSecond;
+	LocalTime->microsecs = ((tb % ticksPerSecond) * 1000000 / ticksPerSecond);
 
 	/* could compute seconds.fraction_of_sec to better than 1 us
 	 * resolution as follows, but CFS time is based on sec, usec.  Also, if the
 	 * time functions are called by an ISR, floating point is not allowed */
-	/*
-	double sec = tb * CFE_PSP_TIMER_PERIOD;
-	OS_printf("sec: %f\n", sec);
-	*/
 
 	/*
 	OS_printf("tb: 0x%016llX  tb: %llu tbu: 0x%08X  tbl: 0x%08X\n", tb, tb, tbu, tbl);
@@ -302,7 +300,7 @@ uint32 CFE_PSP_Get_Timer_Tick(void)
 */
 uint32 CFE_PSP_GetTimerTicksPerSecond(void)
 {
-    return(CFE_PSP_TIMER_TICKS_PER_SECOND);
+    return(sysClkFreqGet() / 8);
 }
 
 /******************************************************************************
@@ -323,7 +321,7 @@ uint32 CFE_PSP_GetTimerTicksPerSecond(void)
 */
 uint32 CFE_PSP_GetTimerLow32Rollover(void)
 {
-    return(CFE_PSP_TIMER_LOW32_ROLLOVER);
+    return(0xffffffff);
 }
 
 /******************************************************************************
