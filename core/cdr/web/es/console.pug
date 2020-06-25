@@ -29,7 +29,7 @@ script.
     //  $("#CFE_ES_LastUpdate").text($.format.date(timeStamp, "MM/dd/yyyy HH:mm:ss.") + timeStamp.getMilliseconds().toString().paddingLeft("000"));
     //});
     
-    session.subscribe([{name:'/CFE/CFE_ES_ShellPacket_t/Payload.ShellOutput'}], function(obj) {
+    session.subscribe([{name:'/CFE/CFE_ES_ShellTlm_t/Payload.ShellOutput'}], function(obj) {
         var output = obj[0].sample[0].value;
         
         $('#CFE_ES_ConsoleOutput').val($('#CFE_ES_ConsoleOutput').val() + output);
@@ -40,7 +40,7 @@ script.
     $('#CFE_ES_ConsoleSendCmdBtn').click(function(){
       var cmdText = $('#CFE_ES_ConsoleCommand').val();
       var fileNameText = $('#CFE_ES_ConsoleOutputFile').val();
-      var cmdObj = {ops_path:'/CFE/CFE_ES_ShellCmd_t', args:{'Payload.CmdString': cmdText, 'Payload.OutputFilename': ''}};
+      var cmdObj = {ops_path:'/CFE/CFE_ES_Shell_t', args:{'Payload.CmdString': cmdText, 'Payload.OutputFilename': ''}};
             
       session.sendCommand(cmdObj);
       

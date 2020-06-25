@@ -3,35 +3,35 @@ table.table.table-condensed
     tr
       th Bytes Free:
       td
-        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.HeapBytesFree'}]}) ---
+        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HousekeepingTlm_t/Payload.HeapBytesFree'}]}) ---
     tr
       th Blocks Free:
       td 
-        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.HeapBlocksFree'}]}) ---
+        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HousekeepingTlm_t/Payload.HeapBlocksFree'}]}) ---
     tr
       th Maximum:
       td
-        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.HeapMaxBlockSize'}]}) ---
+        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HousekeepingTlm_t/Payload.HeapMaxBlockSize'}]}) ---
     tr
       th Pool handle
       td 
-        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_PoolStatsTlm_t/Payload.PoolHandle', format:'0x%08x'}]}) ---
+        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_MemStatsTlm_t/Payload.PoolHandle', format:'0x%08x'}]}) ---
     tr
       th Pool size
       td 
-        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_PoolStatsTlm_t/Payload.PoolStats.PoolSize'}]}) ---
+        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_MemStatsTlm_t/Payload.PoolStats.PoolSize'}]}) ---
     tr
       th Num blocks requested
       td 
-        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_PoolStatsTlm_t/Payload.PoolStats.NumBlocksRequested'}]}) ---
+        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_MemStatsTlm_t/Payload.PoolStats.NumBlocksRequested'}]}) ---
     tr
       th Check error count
       td 
-        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_PoolStatsTlm_t/Payload.PoolStats.CheckErrCtr'}]}) ---
+        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_MemStatsTlm_t/Payload.PoolStats.CheckErrCtr'}]}) ---
     tr
       th Num free bytes
       td
-        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_PoolStatsTlm_t/Payload.PoolStats.NumFreeBytes'}]}) ---       
+        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_MemStatsTlm_t/Payload.PoolStats.NumFreeBytes'}]}) ---       
 table.table.table-striped.table-condensed.table-memory
   thead
     th(style='width:50px') #
@@ -40,9 +40,9 @@ table.table.table-striped.table-condensed.table-memory
     th(style='width:75px') Free
   tbody
     - for (var i = 0; i < 17; ++i) {
-      - var size = '/CFE/CFE_ES_PoolStatsTlm_t/Payload.PoolStats.BlockStats[' + i + '].BlockSize'
-      - var numCreated = '/CFE/CFE_ES_PoolStatsTlm_t/Payload.PoolStats.BlockStats[' + i + '].NumCreated'
-      - var numFree = '/CFE/CFE_ES_PoolStatsTlm_t/Payload.PoolStats.BlockStats[' + i + '].NumFree'
+      - var size = '/CFE/CFE_ES_MemStatsTlm_t/Payload.PoolStats.BlockStats[' + i + '].BlockSize'
+      - var numCreated = '/CFE/CFE_ES_MemStatsTlm_t/Payload.PoolStats.BlockStats[' + i + '].NumCreated'
+      - var numFree = '/CFE/CFE_ES_MemStatsTlm_t/Payload.PoolStats.BlockStats[' + i + '].NumFree'
       tr
         th #{i}
         td 
@@ -55,6 +55,6 @@ table.table.table-striped.table-condensed.table-memory
     
 footer
  .btn-group
-   button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_TlmPoolStatsCmd_t'}}) Send Stats
-   button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_DumpCDSRegCmd_t'}}) Dump CDS
-   button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_DeleteCDSCmd_t'}}) Delete CDS
+   button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_SendMemPoolStats_t'}}) Send Stats
+   button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_DumpCDSRegistry_t'}}) Dump CDS
+   button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_DeleteCDS_t'}}) Delete CDS

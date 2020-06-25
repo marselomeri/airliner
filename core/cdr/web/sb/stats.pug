@@ -1,64 +1,64 @@
-button.btn.cdr-primary.cdr-in-panel-header(data-cdr={cmd:{name:'/CFE/CFE_SB_SendStats'}}) Send
+button.btn.cdr-primary.cdr-in-panel-header(data-cdr={cmd:{name:'/CFE/CFE_SB_SendSbStats_t'}}) Send
 div.widget-body.table-responsive
         table.table.table-condensed
           tbody
             tr 
               th  Msg IDs in Use
               td
-                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_StatMsg_t/Payload.MsgIdsInUse'}]}) ---
+                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_StatsTlm_t/Payload.MsgIdsInUse'}]}) ---
             tr  
               th Peak Msg IDs in Use
               td 
-                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_StatMsg_t/Payload.PeakMsgIdsInUse'}]}) ---
+                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_StatsTlm_t/Payload.PeakMsgIdsInUse'}]}) ---
             tr  
               th Max Msg Ids Allowed
               td 
-                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_StatMsg_t/Payload.MaxMsgIdsAllowed'}]}) ---
+                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_StatsTlm_t/Payload.MaxMsgIdsAllowed'}]}) ---
             tr  
               th Pipes in Use
               td 
-                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_StatMsg_t/Payload.PipesInUse'}]}) ---
+                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_StatsTlm_t/Payload.PipesInUse'}]}) ---
             tr  
               th Peak Pipes in Use
               td 
-                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_StatMsg_t/Payload.PeakPipesInUse'}]}) ---
+                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_StatsTlm_t/Payload.PeakPipesInUse'}]}) ---
             tr  
               th Max Pipes Allowed
               td 
-                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_StatMsg_t/Payload.MaxPipesAllowed'}]}) ---
+                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_StatsTlm_t/Payload.MaxPipesAllowed'}]}) ---
             tr  
               th Memory in Use
               td 
-                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_StatMsg_t/Payload.MemInUse'}]}) ---
+                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_StatsTlm_t/Payload.MemInUse'}]}) ---
             tr  
               th Peak Memory in Use
               td 
-                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_StatMsg_t/Payload.PeakMemInUse'}]}) ---
+                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_StatsTlm_t/Payload.PeakMemInUse'}]}) ---
             tr  
               th Max Memory Allowed
               td 
-                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_StatMsg_t/Payload.MaxMemAllowed'}]}) ---
+                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_StatsTlm_t/Payload.MaxMemAllowed'}]}) ---
             tr  
               th Subscriptions in Use
               td 
-                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_StatMsg_t/Payload.SubscriptionsInUse'}]}) ---
+                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_StatsTlm_t/Payload.SubscriptionsInUse'}]}) ---
             tr  
               th Peak Subscriptions in Use
               td 
-                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_StatMsg_t/Payload.PeakSubscriptionsInUse'}]}) ---
+                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_StatsTlm_t/Payload.PeakSubscriptionsInUse'}]}) ---
             tr  
               th Max Subscriptions Allowed
               td 
-                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_StatMsg_t/Payload.MaxSubscriptionsAllowed'}]}) ---
+                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_StatsTlm_t/Payload.MaxSubscriptionsAllowed'}]}) ---
             tr  
               th SB Buffers In Use
               td 
-                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_StatMsg_t/Payload.SBBuffersInUse'}]}) ---
+                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_StatsTlm_t/Payload.SBBuffersInUse'}]}) ---
             tr  
               th Peak SB Buffers In Use
               td 
-                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_StatMsg_t/Payload.PeakSBBuffersInUse'}]}) ---
+                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_StatsTlm_t/Payload.PeakSBBuffersInUse'}]}) ---
             tr  
               th Max Pipe Depth Allowed
               td 
-                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_StatMsg_t/Payload.MaxPipeDepthAllowed'}]}) ---
+                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_StatsTlm_t/Payload.MaxPipeDepthAllowed'}]}) ---

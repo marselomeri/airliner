@@ -82,7 +82,7 @@ script.
                 );
             };
             
-            session.subscribe([{name:'/CFE/CFE_ES_HkPacket_t/Payload.PerfFilterMask'}], function(obj) {
+            session.subscribe([{name:'/CFE/CFE_ES_HousekeepingTlm_t/Payload.PerfFilterMask'}], function(obj) {
                 var mask = obj[0].sample[0].value;
                 
                 for(var iWord = 0; iWord < 4; ++iWord) {

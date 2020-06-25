@@ -1,4 +1,4 @@
-button.btn.cdr-primary.cdr-in-panel-header(data-cdr={cmd:{name:'/CFE/CFE_SB_SendStats'}}) Send
+button.btn.cdr-primary.cdr-in-panel-header(data-cdr={cmd:{name:'/CFE/CFE_SB_SendSbStats_t'}}) Send
 div.widget-body.table-responsive
         table.table.table-bordered.table-condensed
           thead
@@ -9,10 +9,10 @@ div.widget-body.table-responsive
               th Peak In Use
           tbody
             - for (var i = 0; i < 64; ++i) {
-              - var PipeId = '/CFE/CFE_SB_StatMsg_t/Payload.PipeDepthStats[' + i + '].PipeId'
-              - var Depth = '/CFE/CFE_SB_StatMsg_t/Payload.PipeDepthStats[' + i + '].Depth'
-              - var InUse = '/CFE/CFE_SB_StatMsg_t/Payload.PipeDepthStats[' + i + '].InUse'
-              - var PeakInUse = '/CFE/CFE_SB_StatMsg_t/Payload.PipeDepthStats[' + i + '].PeakInUse'
+              - var PipeId = '/CFE/CFE_SB_StatsTlm_t/Payload.PipeDepthStats[' + i + '].PipeId'
+              - var Depth = '/CFE/CFE_SB_StatsTlm_t/Payload.PipeDepthStats[' + i + '].Depth'
+              - var InUse = '/CFE/CFE_SB_StatsTlm_t/Payload.PipeDepthStats[' + i + '].InUse'
+              - var PeakInUse = '/CFE/CFE_SB_StatsTlm_t/Payload.PipeDepthStats[' + i + '].PeakInUse'
               tr
                 td 
                   span(data-cdr={tlm:[{name:PipeId}]}) ---

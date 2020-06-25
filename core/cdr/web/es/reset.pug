@@ -3,7 +3,7 @@ table.table.table-condensed
     tr
       th Reset Type:
       td
-        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.ResetType', calibration: {type:'enumeration', 
+        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HousekeepingTlm_t/Payload.ResetType', calibration: {type:'enumeration', 
           enumerations:[
            {value:1, name:'PROCESSOR'},
            {value:2, name:'POWERUP'}
@@ -12,7 +12,7 @@ table.table.table-condensed
     tr
       th Reset Subtype:
       td
-        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.ResetSubtype', calibration: {type:'enumeration', 
+        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HousekeepingTlm_t/Payload.ResetSubtype', calibration: {type:'enumeration', 
           enumerations:[
             {value:1, name:'POWER_CYCLE'},
             {value:2, name:'PUSH_BUTTON'},
@@ -28,20 +28,20 @@ table.table.table-condensed
     tr
       th Proc Reset Cnt:
       td
-        span.sage-tlm(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.ProcessorResets'}]}) ---
+        span.sage-tlm(data-cdr={tlm: [{name: '/CFE/CFE_ES_HousekeepingTlm_t/Payload.ProcessorResets'}]}) ---
       td
-        button.btn.cdr-primary(data-cdr={cmd: {name:'/CFE/CFE_ES_ResetPrCount'}}) Reset
+        button.btn.cdr-primary(data-cdr={cmd: {name:'/CFE/CFE_ES_ResetPRCount_t'}}) Reset PR Count
     tr
       th Max Proc Resets:
       td
-        span.sage-tlm(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.MaxProcessorResets'}]}) ---
+        span.sage-tlm(data-cdr={tlm: [{name: '/CFE/CFE_ES_HousekeepingTlm_t/Payload.MaxProcessorResets'}]}) ---
       td
-        button.btn.cdr-primary(data-cdr={cmd: {name:'/CFE/CFE_ES_SetMaxPRCountCmd_t'}}) Set
+        button.btn.cdr-primary(data-cdr={cmd: {name:'/CFE/CFE_ES_SetMaxPRCount_t'}}) Set
     tr
       th Boot Source:
       td
-        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.BootSource'}]}) ---
+        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HousekeepingTlm_t/Payload.BootSource'}]}) ---
       td
 footer.btn-group(role="group")              
-  button.btn.cdr-danger(data-cdr={cmd: {name: '/CFE/CFE_ES_RestartCmd_t', argument:[{name:'Type', value:'PROC'}]}}) Proc Reset
-  button.btn.cdr-danger(data-cdr={cmd: {name: '/CFE/CFE_ES_RestartCmd_t', argument:[{name:'Type', value:'POWER-ON'}]}}) Power Reset
+  button.btn.cdr-danger(data-cdr={cmd: {name: '/CFE/CFE_ES_Restart_t', argument:[{name:'Type', value:'PROC'}]}}) Proc Reset
+  button.btn.cdr-danger(data-cdr={cmd: {name: '/CFE/CFE_ES_Restart_t', argument:[{name:'Type', value:'POWER-ON'}]}}) Power Reset

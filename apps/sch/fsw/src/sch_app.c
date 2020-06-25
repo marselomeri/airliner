@@ -310,10 +310,10 @@ uint32 SCH_GetOutstandingActivityCount(uint32 Slot)
 
 void SCH_CheckDeadlines(void)
 {
-	uint32 slot = SCH_AppData.NextSlotNumber;
-	uint32 pendingActivityCount = 0;
+    uint32 slot = SCH_AppData.NextSlotNumber;
+    uint32 pendingActivityCount = 0;
 
-	/* Get the previous slot */
+    /* Get the previous slot */
     if (slot == 0)
     {
         slot = SCH_TOTAL_SLOTS;
@@ -544,6 +544,7 @@ int32 SCH_SbInit(void)
         return(Status);
     }
 
+#ifdef SCH_RTM_SUPPORTED
     /*
     ** Subscribe to SCH activity done messages
     */
@@ -555,6 +556,7 @@ int32 SCH_SbInit(void)
 				SCH_ACTIVITY_DONE_MID, Status);
         return(Status);
     }
+#endif
 
     return(Status);
     
@@ -1089,31 +1091,31 @@ void SCH_ProcessNextEntry(SCH_ScheduleEntry_t *NextEntry, int32 EntryNumber)
             {
                 SCH_AppData.ScheduleActivitySuccessCount++;
 
+#ifdef SCH_RTM_SUPPORTED
                 if(NextEntry->Deadline)
                 {
-                	uint32 DeadlineSlot = SCH_AppData.NextSlotNumber + NextEntry->Deadline;
-                	if(DeadlineSlot >= SCH_TOTAL_SLOTS)
-                	{
-                		DeadlineSlot -= SCH_TOTAL_SLOTS;
-                	}
-
-#ifdef SCH_RTM_SUPPORTED        		
-                        OS_MutSemTake(SCH_AppData.ADChildTaskMutex);
-                	SCH_ActivityDeadlineStatus_t *ActivityDeadline = SCH_GetAvailableActivityDeadline(DeadlineSlot);
-                	if(ActivityDeadline == 0)
-                	{
+                    uint32 DeadlineSlot = SCH_AppData.NextSlotNumber + NextEntry->Deadline;
+                    if(DeadlineSlot >= SCH_TOTAL_SLOTS)
+                    {
+                        DeadlineSlot -= SCH_TOTAL_SLOTS;
+                    }
+      		
+                    OS_MutSemTake(SCH_AppData.ADChildTaskMutex);
+                    SCH_ActivityDeadlineStatus_t *ActivityDeadline = SCH_GetAvailableActivityDeadline(DeadlineSlot);
+                    if(ActivityDeadline == 0)
+                    {
                         CFE_EVS_SendEvent(SCH_SLOT_DEADLINE_FULL_ERR_EID, CFE_EVS_ERROR,
                                           "Slot deadline full: slot = %d, entry = %ld, err = 0x%08lX",
                                           SCH_AppData.NextSlotNumber, EntryNumber, Status);
-                	}
-                	else
-                	{
-                		ActivityDeadline->State = SCH_DEADLINE_STATE_PENDED;
-                		ActivityDeadline->MsgID = CFE_SB_GetMsgId((CFE_SB_MsgPtr_t)Message);
-                	}
-                        OS_MutSemGive(SCH_AppData.ADChildTaskMutex);
-#endif
+                    }
+                    else
+                    {
+                        ActivityDeadline->State = SCH_DEADLINE_STATE_PENDED;
+                        ActivityDeadline->MsgID = CFE_SB_GetMsgId((CFE_SB_MsgPtr_t)Message);
+                    }
+                    OS_MutSemGive(SCH_AppData.ADChildTaskMutex);
                 }
+#endif
             }
             else
             {
@@ -1289,56 +1291,58 @@ int32 SCH_ValidateScheduleData(void *TableData)
             {
                 EntryResult = SCH_SDT_BAD_MSG_INDEX;
             }
+#ifdef SCH_RTM_SUPPORTED
             else
             {
                 boolean FoundNextEntry = FALSE;
 
-				/* If deadline is set to 0 we don't care about it */
-				if (Deadline == 0)
-				{
-					FoundNextEntry = TRUE;
-				}
+                /* If deadline is set to 0 we don't care about it */
+                if (Deadline == 0)
+                {
+                    FoundNextEntry = TRUE;
+                }
 
-				/* Search for next occurrence of this message */
-				DeadlineSearchIndex = TableIndex + 1;
-				SearchMinorFrames = 0;
-				while(!FoundNextEntry)
-				{
-					/* Need an index safeguard in case rollover into next major frame */
-					if(DeadlineSearchIndex >= SCH_TABLE_ENTRIES)
-					{
-						DeadlineSearchIndex = DeadlineSearchIndex % SCH_TABLE_ENTRIES;
-					}
+                /* Search for next occurrence of this message */
+                DeadlineSearchIndex = TableIndex + 1;
+                SearchMinorFrames = 0;
+                while(!FoundNextEntry)
+                {
+                    /* Need an index safeguard in case rollover into next major frame */
+                    if(DeadlineSearchIndex >= SCH_TABLE_ENTRIES)
+                    {
+                        DeadlineSearchIndex = DeadlineSearchIndex % SCH_TABLE_ENTRIES;
+                    }
 
-					/* Update search minor frame number */
-					if (DeadlineSearchIndex % SCH_ENTRIES_PER_SLOT == 0)
-					{
-						SearchMinorFrames++;
-					}
+                    /* Update search minor frame number */
+                    if (DeadlineSearchIndex % SCH_ENTRIES_PER_SLOT == 0)
+                    {
+                        SearchMinorFrames++;
+                    }
 
-					/* If we've already checked every frame within the deadline without finding
-					 * it we can stop looking */
-					if(SearchMinorFrames > Deadline)
-					{
-						FoundNextEntry = TRUE;
-					}
+                    /* If we've already checked every frame within the deadline without finding
+                     * it we can stop looking */
+                    if(SearchMinorFrames > Deadline)
+                    {
+                        FoundNextEntry = TRUE;
+                    }
 
-					/* Get message index for the current search index */
-					SearchMessageIndex = TableArray[DeadlineSearchIndex].MessageIndex;
+                    /* Get message index for the current search index */
+                    SearchMessageIndex = TableArray[DeadlineSearchIndex].MessageIndex;
 
-					if(SearchMessageIndex == MessageIndex)
-					{
-						/* We found the next occurrence, did it overlap? */
-						if(SearchMinorFrames < Deadline)
-						{
-							EntryResult = SCH_SDT_BAD_DEADLINE;
-						}
-						FoundNextEntry = TRUE;
-					}
+                    if(SearchMessageIndex == MessageIndex)
+                    {
+                        /* We found the next occurrence, did it overlap? */
+                        if(SearchMinorFrames < Deadline)
+                        {
+                            EntryResult = SCH_SDT_BAD_DEADLINE;
+                        }
+                        FoundNextEntry = TRUE;
+                    }
 
-					DeadlineSearchIndex++;
-				}
+                    DeadlineSearchIndex++;
+                }
             }
+#endif
 
             if (EntryResult != CFE_SUCCESS)
             {

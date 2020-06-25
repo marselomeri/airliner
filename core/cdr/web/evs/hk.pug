@@ -3,87 +3,88 @@ table.table.table-condensed
     tr
       th(style={width: '150px'}) Cmd Count:
       td(style={width: '80px'})
-        span(data-cdr={tlm: [{name: '/CFE/CFE_EVS_TlmPkt_t/Payload.CommandCounter'}]}) ---
+        span(data-cdr={tlm: [{name: '/CFE/CFE_EVS_HousekeepingTlm_t/Payload.CommandCounter'}]}) ---
       td(style={width: '150px'})
         .btn-group
-          button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_EVS_Noop'}, indicator:'cmd'}) No-Op
-          button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_EVS_Reset'}, indicator:'cmd'}) Reset
+          button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_EVS_Noop_t'}}) No-Op
+          button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_EVS_ResetCounters_t'}}) Reset
+          button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_EVS_WriteAppDataFile_t'}}) Write App Data File
     tr
       th Cmd Error Count:
       td
-        span(data-cdr={tlm: [{name: '/CFE/CFE_EVS_TlmPkt_t/Payload.CommandErrCounter'}]}) ---
+        span(data-cdr={tlm: [{name: '/CFE/CFE_EVS_HousekeepingTlm_t/Payload.CommandErrCounter'}]}) ---
       td
     tr
       th Msg Format
       td
-        span(data-cdr={tlm:[{name:'/CFE/CFE_EVS_TlmPkt_t/Payload.MessageFormatMode', calibration: {type:'enumeration', 
+        span(data-cdr={tlm:[{name:'/CFE/CFE_EVS_HousekeepingTlm_t/Payload.MessageFormatMode', calibration: {type:'enumeration', 
           enumerations:[
             {value:0, name:'SHORT'},
             {value:1, name:'LONG'}
           ]}}]}) ---
       td
         .btn-group
-          button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_SetEventFormatMode', argument:[{name:'Payload.Mode', value:'0'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Short 
-          button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_SetEventFormatMode', argument:[{name:'Payload.Mode', value:'1'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Long
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_SetEventFormatMode', argument:[{name:'Payload.Mode', value:'0'},{name:'Payload.Spare', value:'0'}]}}) Short 
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_SetEventFormatMode', argument:[{name:'Payload.Mode', value:'1'},{name:'Payload.Spare', value:'0'}]}}) Long
     tr
       th Truncated Msgs
       td
-        span(data-cdr={tlm:[{name:'/CFE/CFE_EVS_TlmPkt_t/Payload.MessageTruncCounter'}]}) ---
+        span(data-cdr={tlm:[{name:'/CFE/CFE_EVS_HousekeepingTlm_t/Payload.MessageTruncCounter'}]}) ---
       td
     tr
       th Unregistered Apps
       td
-        span(data-cdr={tlm:[{name:'/CFE/CFE_EVS_TlmPkt_t/Payload.UnregisteredAppCounter'}]}) ---
+        span(data-cdr={tlm:[{name:'/CFE/CFE_EVS_HousekeepingTlm_t/Payload.UnregisteredAppCounter'}]}) ---
       td
     tr
       th Output Port
       td
-        span(data-cdr={tlm:[{name:'/CFE/CFE_EVS_TlmPkt_t/Payload.OutputPort'}]}) ---
+        span(data-cdr={tlm:[{name:'/CFE/CFE_EVS_HousekeepingTlm_t/Payload.OutputPort'}]}) ---
       td
         .btn-group
-          button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_EnablePorts', argument:[{name:'Payload.BitMask', value:'1'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Enable 0
-          button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_DisablePorts', argument:[{name:'Payload.BitMask', value:'1'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Disable 0
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_EnablePorts', argument:[{name:'Payload.BitMask', value:'1'},{name:'Payload.Spare', value:'0'}]}}) Enable 0
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_DisablePorts', argument:[{name:'Payload.BitMask', value:'1'},{name:'Payload.Spare', value:'0'}]}}) Disable 0
         .btn-group
-          button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_EnablePorts', argument:[{name:'Payload.BitMask', value:'2'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Enable 1
-          button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_DisablePorts', argument:[{name:'Payload.BitMask', value:'2'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Disable 1
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_EnablePorts', argument:[{name:'Payload.BitMask', value:'2'},{name:'Payload.Spare', value:'0'}]}}) Enable 1
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_DisablePorts', argument:[{name:'Payload.BitMask', value:'2'},{name:'Payload.Spare', value:'0'}]}}) Disable 1
         .btn-group
-          button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_EnablePorts', argument:[{name:'Payload.BitMask', value:'4'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Enable 2
-          button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_DisablePorts', argument:[{name:'Payload.BitMask', value:'4'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Disable 2
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_EnablePorts', argument:[{name:'Payload.BitMask', value:'4'},{name:'Payload.Spare', value:'0'}]}}) Enable 2
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_DisablePorts', argument:[{name:'Payload.BitMask', value:'4'},{name:'Payload.Spare', value:'0'}]}}) Disable 2
         .btn-group
-          button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_EnablePorts', argument:[{name:'Payload.BitMask', value:'8'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Enable 3
-          button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_DisablePorts', argument:[{name:'Payload.BitMask', value:'8'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Disable 3
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_EnablePorts', argument:[{name:'Payload.BitMask', value:'8'},{name:'Payload.Spare', value:'0'}]}}) Enable 3
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_DisablePorts', argument:[{name:'Payload.BitMask', value:'8'},{name:'Payload.Spare', value:'0'}]}}) Disable 3
     tr
       th Log Full
       td
-        span(data-cdr={tlm:[{name:'/CFE/CFE_EVS_TlmPkt_t/Payload.LogFullFlag'}]}) ---
+        span(data-cdr={tlm:[{name:'/CFE/CFE_EVS_HousekeepingTlm_t/Payload.LogFullFlag'}]}) ---
       td
         .btn-group
-          button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_EVS_LogFileCmd_t'}, indicator:'cmd'}) Write Log
-          button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_EVS_ClearLog'}, indicator:'cmd'}) Clear Log
+          button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_EVS_WriteLogDataFile_t'}}) Write Log
+          button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_EVS_ClearLog_t'}}) Clear Log
     tr
       th Log Mode
       td
-        span(data-cdr={tlm:[{name:'/CFE/CFE_EVS_TlmPkt_t/Payload.LogMode', calibration: {type:'enumeration', 
+        span(data-cdr={tlm:[{name:'/CFE/CFE_EVS_HousekeepingTlm_t/Payload.LogMode', calibration: {type:'enumeration', 
           enumerations:[
             {value:0, name:'OVERWRITE'},
             {value:1, name:'DISCARD'}
           ]}}]}) ---
       td
         .btn-group
-          button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_SetLogMode', argument:[{name:'Payload.Mode', value:'0'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Overwrite
-          button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_SetLogMode', argument:[{name:'Payload.Mode', value:'1'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Discard
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_SetLogMode_t', argument:[{name:'Payload.Mode', value:'0'},{name:'Payload.Spare', value:'0'}]}}) Overwrite
+          button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_SetLogMode_t', argument:[{name:'Payload.Mode', value:'1'},{name:'Payload.Spare', value:'0'}]}}) Discard
     tr
       th Msg Send Counter
       td
-        span(data-cdr={tlm:[{name:'/CFE/CFE_EVS_TlmPkt_t/Payload.MessageSendCounter'}]}) ---
+        span(data-cdr={tlm:[{name:'/CFE/CFE_EVS_HousekeepingTlm_t/Payload.MessageSendCounter'}]}) ---
       td
     tr
       th Overflow Count
       td
-        span(data-cdr={tlm:[{name:'/CFE/CFE_EVS_TlmPkt_t/Payload.LogOverflowCounter'}]}) ---
+        span(data-cdr={tlm:[{name:'/CFE/CFE_EVS_HousekeepingTlm_t/Payload.LogOverflowCounter'}]}) ---
       td
     tr
       th Log Enabled
       td
-        span(data-cdr={tlm:[{name:'/CFE/CFE_EVS_TlmPkt_t/Payload.LogEnabled'}]}) ---
+        span(data-cdr={tlm:[{name:'/CFE/CFE_EVS_HousekeepingTlm_t/Payload.LogEnabled'}]}) ---
       td

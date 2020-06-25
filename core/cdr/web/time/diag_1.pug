@@ -1,47 +1,47 @@
-button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SendDiag'}, indicator:'cmd'}) Telemeter Diag
+button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SendDiagnosticTlm_t'}}) Telemeter Diag
 
 table.table.table-condensed
         tbody
           tr
             th At Tone MET
             td 
-              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.AtToneMET.Seconds'}], indicator:'text'}) ---
+              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.AtToneMET.Seconds'}]}) ---
           tr
             th 
             td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.AtToneMET.Subseconds'}], indicator:'text'}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.AtToneMET.Subseconds'}]}) ---
           tr
             th At Tone STCF
             td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.AtToneSTCF.Seconds'}], indicator:'text'}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.AtToneSTCF.Seconds'}]}) ---
           tr
             th 
             td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.AtToneSTCF.Subseconds'}], indicator:'text'}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.AtToneSTCF.Subseconds'}]}) ---
           tr
             th At Tone Delay
             td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.AtToneDelay.Seconds'}], indicator:'text'}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.AtToneDelay.Seconds'}]}) ---
           tr
             th 
             td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.AtToneDelay.Subseconds'}], indicator:'text'}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.AtToneDelay.Subseconds'}]}) ---
           tr
             th At Tone Latch
             td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.AtToneLatch.Seconds'}], indicator:'text'}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.AtToneLatch.Seconds'}]}) ---
           tr
             th 
             td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.AtToneLatch.Subseconds'}], indicator:'text'}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.AtToneLatch.Subseconds'}]}) ---
           tr
             th At Tone Leaps
             td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.AtToneLeaps'}], indicator:'text'}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.AtToneLeaps'}]}) ---
           tr
             th Clock API State
             td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.ClockStateAPI', calibration: {type:'enumeration', 
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.ClockStateAPI', calibration: {type:'enumeration', 
                 enumerations:[
                   {value:-1, name:'INVALID'},
                   {value:0, name:'VALID'},
@@ -50,34 +50,34 @@ table.table.table-condensed
           tr
             th Time Since Tone
             td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.TimeSinceTone.Seconds'}], indicator:'text'}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.TimeSinceTone.Seconds'}]}) ---
           tr
             th 
             td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.TimeSinceTone.Subseconds'}], indicator:'text'}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.TimeSinceTone.Subseconds'}]}) ---
           tr
             th Current Latch
             td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.CurrentLatch.Seconds'}], indicator:'text'}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.CurrentLatch.Seconds'}]}) ---
           tr
             th 
             td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.CurrentLatch.Subseconds'}], indicator:'text'}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.CurrentLatch.Subseconds'}]}) ---
           tr
             th Current MET
             td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.CurrentMET.Seconds'}], indicator:'text'}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.CurrentMET.Seconds'}]}) ---
           tr
             th 
             td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.CurrentMET.Subseconds'}], indicator:'text'}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.CurrentMET.Subseconds'}]}) ---
           tr
             th Current TAI
             td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.CurrentTAI.Seconds'}], indicator:'text'}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.CurrentTAI.Seconds'}]}) ---
           tr
             th 
             td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.CurrentTAI.Subseconds'}], indicator:'text'}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.CurrentTAI.Subseconds'}]}) ---
 
                       

@@ -105,7 +105,11 @@ int32 SCH_CustomLateInit(void)
         ** to start processing.  If the Major Frame Sync fails to arrive, then we will
         ** start when this timer expires and synch ourselves to the MET clock.
         */
+
+#ifdef SCH_RTM_SUPPORTED
 	OS_RtmHoldFrameOnTimer(SCH_AppData.TimerId);
+#endif
+
         Status = OS_TimerSet(SCH_AppData.TimerId, SCH_STARTUP_PERIOD, 0);
     }
 
@@ -302,7 +306,9 @@ void SCH_MajorFrameCallback(void)
             ** time to allow the Major Frame source to resynchronize timing) and start
             ** it again with nominal Minor Frame timing
             */
+#ifdef SCH_RTM_SUPPORTED
 	    OS_RtmHoldFrameOnTimer(SCH_AppData.TimerId);
+#endif
             OS_TimerSet(SCH_AppData.TimerId, SCH_NORMAL_SLOT_PERIOD, SCH_NORMAL_SLOT_PERIOD);
     
             /*
@@ -373,7 +379,11 @@ void SCH_MinorFrameCallback(uint32 TimerId)
         (SCH_AppData.MajorFrameSource == SCH_MAJOR_FS_MINOR_FRAME_TIMER))
     {
         /* Whether we have found the Major Frame Start or not, wait another slot */
+
+#ifdef SCH_RTM_SUPPORTED
 	OS_RtmHoldFrameOnTimer(SCH_AppData.TimerId);
+#endif
+
         OS_TimerSet(SCH_AppData.TimerId, SCH_NORMAL_SLOT_PERIOD, SCH_NORMAL_SLOT_PERIOD);
 
         /* Determine if this was the last attempt */
@@ -413,7 +423,9 @@ void SCH_MinorFrameCallback(uint32 TimerId)
         ** It also means that we may now need a "short slot"
         ** timer to make up for the previous long one
         */
+#ifdef SCH_RTM_SUPPORTED
 	OS_RtmHoldFrameOnTimer(SCH_AppData.TimerId);
+#endif
         OS_TimerSet(SCH_AppData.TimerId, SCH_SHORT_SLOT_PERIOD, SCH_NORMAL_SLOT_PERIOD);
         
         SCH_AppData.MinorFramesSinceTone = 0;
@@ -429,7 +441,9 @@ void SCH_MinorFrameCallback(uint32 TimerId)
         /*
         ** Start "long slot" timer (should be stopped by Major Frame Callback)
         */
+#ifdef SCH_RTM_SUPPORTED
 	OS_RtmHoldFrameOnTimer(SCH_AppData.TimerId);
+#endif
         OS_TimerSet(SCH_AppData.TimerId, SCH_SYNC_SLOT_PERIOD, 0);
     }
     

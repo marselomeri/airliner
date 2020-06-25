@@ -1,47 +1,47 @@
-button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SendDiag'}, indicator:'cmd'}) Telemeter Diag
+button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SendDiagnosticTlm_t'}}) Telemeter Diag
 
 table.table.table-condensed
         tbody
           tr
             th Current UTC
             td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.CurrentUTC.Seconds'}], indicator:'text'}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.CurrentUTC.Seconds'}]}) ---
           tr
             th 
             td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.CurrentUTC.Subseconds'}], indicator:'text'}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.CurrentUTC.Subseconds'}]}) ---
           tr
             th Set State
             td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.ClockSetState'}], indicator:'led'}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.ClockSetState'}]}) ---
           tr
             th Fly State
             td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.ClockFlyState'}], indicator:'led'}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.ClockFlyState'}]}) ---
           tr
             th Source
             td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.ClockSource'}], indicator:'led'}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.ClockSource'}]}) ---
           tr
             th Signal
             td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.ClockSignal'}], indicator:'led'}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.ClockSignal'}]}) ---
           tr
             th Server Fly State
             td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.ServerFlyState'}], indicator:'led'}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.ServerFlyState'}]}) ---
           tr
             th Forced to Fly
             td 
-              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.Forced2Fly'}], indicator:'led'}) ---
+              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.Forced2Fly'}]}) ---
           tr
             th Clock State Flags
             td 
-              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.ClockStateFlags'}], indicator:'text'}) ---
+              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.ClockStateFlags'}]}) ---
           tr
             th One Time Direction
             td 
-              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.OneTimeDirection', calibration: {type:'enumeration', 
+              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.OneTimeDirection', calibration: {type:'enumeration', 
                 enumerations:[
                   {value:1, name:'ADD'},
                   {value:2, name:'SUBTRACT'}
@@ -49,7 +49,7 @@ table.table.table-condensed
           tr
             th 1Hz Direction
             td 
-              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.OneHzDirection', calibration: {type:'enumeration', 
+              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.OneHzDirection', calibration: {type:'enumeration', 
                 enumerations:[
                   {value:1, name:'ADD'},
                   {value:2, name:'SUBTRACT'}
@@ -57,7 +57,7 @@ table.table.table-condensed
           tr
             th Delay Direction
             td 
-              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.DelayDirection', calibration: {type:'enumeration', 
+              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.DelayDirection', calibration: {type:'enumeration', 
                 enumerations:[
                   {value:1, name:'ADD'},
                   {value:2, name:'SUBTRACT'}
@@ -65,26 +65,26 @@ table.table.table-condensed
           tr
             th One Time Adjust
             td 
-              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.OneTimeAdjust.Seconds'}], indicator:'text'}) ---
+              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.OneTimeAdjust.Seconds'}]}) ---
           tr
             th 
             td 
-              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.OneTimeAdjust.Subseconds'}], indicator:'text'}) ---
+              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.OneTimeAdjust.Subseconds'}]}) ---
           tr
             th 1Hz Adjust
             td 
-              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.OneHzAdjust.Seconds'}], indicator:'text'}) ---
+              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.OneHzAdjust.Seconds'}]}) ---
           tr
             th 
             td 
-              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.OneHzAdjust.Subseconds'}], indicator:'text'}) ---
+              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.OneHzAdjust.Subseconds'}]}) ---
           tr
             th Tone Signal Latch
             td 
-              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.ToneSignalLatch.Seconds'}], indicator:'text'}) ---
+              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.ToneSignalLatch.Seconds'}]}) ---
           tr
             th 
             td 
-              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.ToneSignalLatch.Subseconds'}], indicator:'text'}) ---
+              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagnosticTlm_t/Payload.ToneSignalLatch.Subseconds'}]}) ---
       
                       

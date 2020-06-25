@@ -3,35 +3,35 @@ table.table.table-condensed
     tr
       th Bytes Used:
       td 
-        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.SysLogBytesUsed'}]}) ---
+        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HousekeepingTlm_t/Payload.SysLogBytesUsed'}]}) ---
       td
     tr
       th Entries:
       td
-        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.SysLogEntries'}]}) ---
+        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HousekeepingTlm_t/Payload.SysLogEntries'}]}) ---
       td
         .btn-group
-          button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_ClearSysLog'}}) Clear SysLog
-          button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_WriteSyslogCmd_t'}}) Write SysLog
+          button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_ClearSyslog_t'}}) Clear SysLog
+          button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_WriteSyslog_t'}}) Write SysLog
     tr 
       th Mode:
       td
-        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.SysLogMode', calibration: {type:'enumeration', 
+        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HousekeepingTlm_t/Payload.SysLogMode', calibration: {type:'enumeration', 
           enumerations:[
             {value:0, name:'OVERWRITE'},
             {value:1, name:'DISCARD'}]}  }]}) ---
       td
-        button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_OverWriteSysLogCmd_t'}}) Set Mode
+        button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_OverWriteSyslog_t'}}) Set Mode
     tr
       th Index:
       td
-        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.ERLogIndex'}]}) ---
+        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HousekeepingTlm_t/Payload.ERLogIndex'}]}) ---
       td
     tr 
       th Entries:
       td
-        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.ERLogEntries'}]}) ---
+        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HousekeepingTlm_t/Payload.ERLogEntries'}]}) ---
       td
         .btn-group
-          button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_ClearErLog'}}) Clear ERLog
-          button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_WriteERlogCmd_t'}}) Write ERLog
+          button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_ClearERLog_t'}}) Clear ER Log
+          button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_WriteERLog_t'}}) Write ER Log

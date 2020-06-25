@@ -5,27 +5,27 @@ table.table.table-condensed
     tr
       th Cmd Count
       td
-        div(data-cdr={tlm:[{name:'/CFE/CFE_ES_HkPacket_t/Payload.CmdCounter'}]}) ---
+        div(data-cdr={tlm:[{name:'/CFE/CFE_ES_HousekeepingTlm_t/Payload.CommandCounter'}]}) ---
     tr
       th Error Count
       td
-        div(data-cdr={tlm:[{name:'/CFE/CFE_ES_HkPacket_t/Payload.ErrCounter'}]}) ---
+        div(data-cdr={tlm:[{name:'/CFE/CFE_ES_HousekeepingTlm_t/Payload.CommandErrorCounter'}]}) ---
     tr
       th Core Apps
       td
-        span(data-cdr={tlm:[{name:'/CFE/CFE_ES_HkPacket_t/Payload.RegisteredCoreApps'}]}) ---
+        span(data-cdr={tlm:[{name:'/CFE/CFE_ES_HousekeepingTlm_t/Payload.RegisteredCoreApps'}]}) ---
     tr
       th External Apps
       td
-        span(data-cdr={tlm:[{name:'/CFE/CFE_ES_HkPacket_t/Payload.RegisteredExternalApps'}]}) ---
+        span(data-cdr={tlm:[{name:'/CFE/CFE_ES_HousekeepingTlm_t/Payload.RegisteredExternalApps'}]}) ---
     tr
       th Tasks
       td
-        span(data-cdr={tlm:[{name:'/CFE/CFE_ES_HkPacket_t/Payload.RegisteredTasks'}]}) ---
+        span(data-cdr={tlm:[{name:'/CFE/CFE_ES_HousekeepingTlm_t/Payload.RegisteredTasks'}]}) ---
     tr
       th Libs
       td
-        span(data-cdr={tlm:[{name:'/CFE/CFE_ES_HkPacket_t/Payload.RegisteredLibs'}]}) ---
+        span(data-cdr={tlm:[{name:'/CFE/CFE_ES_HousekeepingTlm_t/Payload.RegisteredLibs'}]}) ---
     tr
       th App ID
       td
@@ -117,15 +117,15 @@ table.table.table-condensed
                 
 footer.btn-group(role="group")    
   - if(typeof appName === 'undefined') {   
-    button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_ES_QueryOne'}}) Query
-    button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_ES_StartAppCmd_t'}}) Start 
-    button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_ES_RestartApp'}}) Restart
-    button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_ES_AppReloadCmd_t'}}) Reload  
-    button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_ES_StopApp'}}) Stop
+    button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_ES_QueryOne_t'}}) Query
+    button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_ES_StartApp_t'}}) Start 
+    button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_ES_RestartApp_t'}}) Restart
+    button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_ES_ReloadApp_t'}}) Reload  
+    button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_ES_StopApp_t'}}) Stop
   - } else {
-    button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_ES_QueryOne', argument: [{name: 'Payload.Application', value: appName}]}}) Query
-    button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_ES_StartAppCmd_t', argument: [{name: 'Payload.Application', value: appName}]}}) Start 
-    button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_ES_RestartApp', argument: [{name: 'Payload.Application', value: appName}]}}) Restart
-    button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_ES_AppReloadCmd_t', argument: [{name: 'Payload.Application', value: appName}]}}) Reload  
-    button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_ES_StopApp', argument: [{name: 'Payload.Application', value: appName}]}}) Stop
+    button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_ES_QueryOne_t', argument: [{name: 'Payload.Application', value: appName}]}}) Query
+    button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_ES_StartApp_t', argument: [{name: 'Payload.Application', value: appName}]}}) Start 
+    button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_ES_RestartApp_t', argument: [{name: 'Payload.Application', value: appName}]}}) Restart
+    button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_ES_ReloadApp_t', argument: [{name: 'Payload.Application', value: appName}]}}) Reload  
+    button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_ES_StopApp_t', argument: [{name: 'Payload.Application', value: appName}]}}) Stop
   - }

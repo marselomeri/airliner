@@ -730,7 +730,10 @@ int32 SCH_AcquirePointers(void)
     */
     CFE_TBL_Manage(SCH_AppData.ScheduleTableHandle);
     CFE_TBL_Manage(SCH_AppData.MessageTableHandle);
+
+#ifdef SCH_RTM_SUPPORTED
     CFE_TBL_Manage(SCH_AppData.DeadlineTableHandle);
+#endif
 
     /*
     ** Get a pointer to the schedule table
@@ -759,6 +762,7 @@ int32 SCH_AcquirePointers(void)
         }
     }
 
+#ifdef SCH_RTM_SUPPORTED
     /*
     ** Repeat the process for the deadline table
     */
@@ -772,6 +776,7 @@ int32 SCH_AcquirePointers(void)
     		Result = CFE_SUCCESS;
     	}
     }
+#endif
 
     return(Result);
 

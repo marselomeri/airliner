@@ -2,35 +2,35 @@ table.table.table-condensed
   tbody
     tr
       th State
-      td(data-cdr={tlm:[{name:'/CFE/CFE_ES_HkPacket_t/Payload.PerfState'}]}) --- 
+      td(data-cdr={tlm:[{name:'/CFE/CFE_ES_HousekeepingTlm_t/Payload.PerfState'}]}) --- 
     tr
       th Mode
-      td(data-cdr={tlm:[{name:'/CFE/CFE_ES_HkPacket_t/Payload.PerfMode'}]}) ---
+      td(data-cdr={tlm:[{name:'/CFE/CFE_ES_HousekeepingTlm_t/Payload.PerfMode'}]}) ---
     tr
       th Trigger Count
-      td(data-cdr={tlm:[{name:'/CFE/CFE_ES_HkPacket_t/Payload.PerfTriggerCount'}]}) ---
+      td(data-cdr={tlm:[{name:'/CFE/CFE_ES_HousekeepingTlm_t/Payload.PerfTriggerCount'}]}) ---
     tr
       th Start
-      td(data-cdr={tlm:[{name:'/CFE/CFE_ES_HkPacket_t/Payload.PerfDataStart'}]}) ---
+      td(data-cdr={tlm:[{name:'/CFE/CFE_ES_HousekeepingTlm_t/Payload.PerfDataStart'}]}) ---
     tr
       th End
-      td(data-cdr={tlm:[{name:'/CFE/CFE_ES_HkPacket_t/Payload.PerfDataEnd'}]}) ---
+      td(data-cdr={tlm:[{name:'/CFE/CFE_ES_HousekeepingTlm_t/Payload.PerfDataEnd'}]}) ---
     tr
       th Count
-      td(data-cdr={tlm:[{name:'/CFE/CFE_ES_HkPacket_t/Payload.PerfDataCount'}]}) ---
+      td(data-cdr={tlm:[{name:'/CFE/CFE_ES_HousekeepingTlm_t/Payload.PerfDataCount'}]}) ---
     tr
       th Data to Write
-      td(data-cdr={tlm:[{name:'/CFE/CFE_ES_HkPacket_t/Payload.PerfDataToWrite'}]}) ---
+      td(data-cdr={tlm:[{name:'/CFE/CFE_ES_HousekeepingTlm_t/Payload.PerfDataToWrite'}]}) ---
     tr
       th Filter Mask
-      td(data-cdr={tlm:[{name:'/CFE/CFE_ES_HkPacket_t/Payload.PerfFilterMask'}]}) ---
+      td(data-cdr={tlm:[{name:'/CFE/CFE_ES_HousekeepingTlm_t/Payload.PerfFilterMask'}]}) ---
     tr
       th Trigger Mask
-      td(data-cdr={tlm:[{name:'/CFE/CFE_ES_HkPacket_t/Payload.PerfTriggerMask'}]}) ---
+      td(data-cdr={tlm:[{name:'/CFE/CFE_ES_HousekeepingTlm_t/Payload.PerfTriggerMask'}]}) ---
 
 footer.btn-group(role='group')      
   .btn-group.dropup
-    button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_PerfStartCmd_t'}}) Start
-    button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_PerfStopCmd_t'}}) Stop/Write
-    button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_PerfSetFilterMaskCmd_t'}}) Set Mask
-    button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_PerfSetTrigMaskCmd_t'}}) Set Trigger
+    button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_StartPerfData_t'}}) Start
+    button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_StopPerfData_t'}}) Stop/Write
+    button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_SetPerfFilterMask_t'}}) Set Mask
+    button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_SetPerfTriggerMask_t'}}) Set Trigger

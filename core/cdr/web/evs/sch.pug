@@ -43,8 +43,8 @@
                 - var strEntryID = '' + entryID;
                 - var tlmEntryState = {tlm:[{name:'/CFE/SCH/EntryState_'+entryID}]};
                 - var tlmMsgID = {tlm:[{name:'/CFE/SCH/MsgID_'+entryID}]};
-                - var cmdEnableEntry = {cmd: {name:'/CFE/SCH/EnableEntry', argument:[{name:'Slot', value:strSlotID},{name:'Entry', value:strActID}]}, indicator:'cmd'};
-                - var cmdDisableEntry = {cmd: {name:'/CFE/SCH/DisableEntry', argument:[{name:'Slot', value:strSlotID},{name:'Entry', value:strActID}]}, indicator:'cmd'};
+                - var cmdEnableEntry = {cmd: {name:'/CFE/SCH/EnableEntry', argument:[{name:'Slot', value:strSlotID},{name:'Entry', value:strActID}]}};
+                - var cmdDisableEntry = {cmd: {name:'/CFE/SCH/DisableEntry', argument:[{name:'Slot', value:strSlotID},{name:'Entry', value:strActID}]}};
                 tr
                   td #{slotID}
                   td #{strActID}
@@ -69,8 +69,8 @@
               - var grpName = schDef.groups[grpIdx].name;
               - var grpID = schDef.groups[grpIdx].id;
               - var strGrpID = '0x' + grpID.toString(16);
-              - var cmdEnableGroup = {cmd: {name:'/CFE/SCH/EnableGroup', argument:[{name:'Group', value:strGrpID}]}, indicator:'cmd'};
-              - var cmdDisableGroup = {cmd: {name:'/CFE/SCH/DisableGroup', argument:[{name:'Group', value:strGrpID}]}, indicator:'cmd'};
+              - var cmdEnableGroup = {cmd: {name:'/CFE/SCH/EnableGroup', argument:[{name:'Group', value:strGrpID}]}};
+              - var cmdDisableGroup = {cmd: {name:'/CFE/SCH/DisableGroup', argument:[{name:'Group', value:strGrpID}]}};
               tr
                 td #{grpName}
                 td(style='font-family: monospace') #{strGrpID}

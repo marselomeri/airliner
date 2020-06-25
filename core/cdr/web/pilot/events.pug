@@ -36,14 +36,14 @@ script.
 
   /* CFE/EVENTS */  
   var CFE_Packet = [
-  '/CFE/CFE_EVS_Packet_t/Payload.Spare1',
-  '/CFE/CFE_EVS_Packet_t/Payload.PacketID.AppName',
-  '/CFE/CFE_EVS_Packet_t/Payload.PacketID.EventType',
-  '/CFE/CFE_EVS_Packet_t/Payload.Message',
-  '/CFE/CFE_EVS_Packet_t/Payload.PacketID.EventID',
-  '/CFE/CFE_EVS_Packet_t/Payload.PacketID.ProcessorID',
-  '/CFE/CFE_EVS_Packet_t/Payload.Spare2',
-  '/CFE/CFE_EVS_Packet_t/Payload.PacketID.SpacecraftID',
+  '/CFE/CFE_EVS_LongEventTlm_t/Payload.Spare1',
+  '/CFE/CFE_EVS_LongEventTlm_t/Payload.PacketID.AppName',
+  '/CFE/CFE_EVS_LongEventTlm_t/Payload.PacketID.EventType',
+  '/CFE/CFE_EVS_LongEventTlm_t/Payload.Message',
+  '/CFE/CFE_EVS_LongEventTlm_t/Payload.PacketID.EventID',
+  '/CFE/CFE_EVS_LongEventTlm_t/Payload.PacketID.ProcessorID',
+  '/CFE/CFE_EVS_LongEventTlm_t/Payload.Spare2',
+  '/CFE/CFE_EVS_LongEventTlm_t/Payload.PacketID.SpacecraftID',
   ]
   
   CFE_Packet.forEach((opsPath)=>{
@@ -55,14 +55,14 @@ script.
 
 
   session.subscribe([
-    {name:'/CFE/CFE_EVS_Packet_t/Payload.Spare1'},
-    {name:'/CFE/CFE_EVS_Packet_t/Payload.PacketID.AppName'},
-    {name:'/CFE/CFE_EVS_Packet_t/Payload.PacketID.EventType'},
-    {name:'/CFE/CFE_EVS_Packet_t/Payload.Message'},
-    {name:'/CFE/CFE_EVS_Packet_t/Payload.PacketID.EventID'},
-    {name:'/CFE/CFE_EVS_Packet_t/Payload.PacketID.ProcessorID'},
-    {name:'/CFE/CFE_EVS_Packet_t/Payload.Spare2'},
-    {name:'/CFE/CFE_EVS_Packet_t/Payload.PacketID.SpacecraftID'},
+    {name:'/CFE/CFE_EVS_LongEventTlm_t/Payload.Spare1'},
+    {name:'/CFE/CFE_EVS_LongEventTlm_t/Payload.PacketID.AppName'},
+    {name:'/CFE/CFE_EVS_LongEventTlm_t/Payload.PacketID.EventType'},
+    {name:'/CFE/CFE_EVS_LongEventTlm_t/Payload.Message'},
+    {name:'/CFE/CFE_EVS_LongEventTlm_t/Payload.PacketID.EventID'},
+    {name:'/CFE/CFE_EVS_LongEventTlm_t/Payload.PacketID.ProcessorID'},
+    {name:'/CFE/CFE_EVS_LongEventTlm_t/Payload.Spare2'},
+    {name:'/CFE/CFE_EVS_LongEventTlm_t/Payload.PacketID.SpacecraftID'},
   ], (paramArr)=>{
     
     try {
@@ -73,16 +73,16 @@ script.
           
           switch (fieldObj.opsPath){
             
-            case '/CFE/CFE_EVS_Packet_t/Payload.Spare1':
+            case '/CFE/CFE_EVS_LongEventTlm_t/Payload.Spare1':
               break;
             
-            case '/CFE/CFE_EVS_Packet_t/Payload.PacketID.AppName':
+            case '/CFE/CFE_EVS_LongEventTlm_t/Payload.PacketID.AppName':
             
               orderedTablerowStrArray['APPNAME'] = (fieldObj.sample[fieldObj.sample.length -1]).value;
               
               break;
             
-            case '/CFE/CFE_EVS_Packet_t/Payload.PacketID.EventType':
+            case '/CFE/CFE_EVS_LongEventTlm_t/Payload.PacketID.EventType':
             
                 var eventType = (fieldObj.sample[fieldObj.sample.length -1]).value;
                 /* get event type */
@@ -109,28 +109,28 @@ script.
                 orderedTablerowStrArray['GRNDTIME'] = (fieldObj.sample[fieldObj.sample.length -1]).gndTime;
               break;
             
-            case '/CFE/CFE_EVS_Packet_t/Payload.Message':
+            case '/CFE/CFE_EVS_LongEventTlm_t/Payload.Message':
             
               orderedTablerowStrArray['MSG'] = (fieldObj.sample[fieldObj.sample.length -1]).value;
               
               break;
             
-            case '/CFE/CFE_EVS_Packet_t/Payload.PacketID.EventID':
+            case '/CFE/CFE_EVS_LongEventTlm_t/Payload.PacketID.EventID':
             
               orderedTablerowStrArray['EVENTID'] = (fieldObj.sample[fieldObj.sample.length -1]).value;
               
               break;
             
-            case '/CFE/CFE_EVS_Packet_t/Payload.PacketID.ProcessorID':
+            case '/CFE/CFE_EVS_LongEventTlm_t/Payload.PacketID.ProcessorID':
             
               orderedTablerowStrArray['PROCID'] = (fieldObj.sample[fieldObj.sample.length -1]).value;
               
               break;
             
-            case '/CFE/CFE_EVS_Packet_t/Payload.Spare2':
+            case '/CFE/CFE_EVS_LongEventTlm_t/Payload.Spare2':
               break;
             
-            case '/CFE/CFE_EVS_Packet_t/Payload.PacketID.SpacecraftID':
+            case '/CFE/CFE_EVS_LongEventTlm_t/Payload.PacketID.SpacecraftID':
             
               orderedTablerowStrArray['SPCRFTID'] = (fieldObj.sample[fieldObj.sample.length -1]).value;
               

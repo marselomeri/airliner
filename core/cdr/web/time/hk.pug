@@ -4,25 +4,25 @@ div.widget-body
           tr
             th(style='width:100px') Cmd Count
             td(style='width:100px') 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HkPacket_t/Payload.CmdCounter'}], indicator:'text'}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HousekeepingTlm_t/Payload.CmdCounter'}]}) ---
             td(style='width:100px') 
               .btn-group
-                button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_Noop'}, indicator:'cmd'}) No-Op
-                button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_Reset'}, indicator:'cmd'}) Reset
+                button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_Noop_t'}}) No-Op
+                button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_ResetCounters_t'}}) Reset
           tr
             th Cmd Error Count
-            td
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HkPacket_t/Payload.ErrCounter'}], indicator:'text'}) ---
+            tdCFE_TIME_HousekeepingTlm_t
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HousekeepingTlm_t/Payload.ErrCounter'}]}) ---
             td
           tr
             th Clock State Flags
             td 
-              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HkPacket_t/Payload.ClockStateFlags'}], indicator:'text'})
+              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HousekeepingTlm_t/Payload.ClockStateFlags'}]})
             td
           tr
             th Clock State API
             td 
-              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HkPacket_t/Payload.ClockStateAPI', calibration: {type:'enumeration', 
+              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HousekeepingTlm_t/Payload.ClockStateAPI', calibration: {type:'enumeration', 
                 enumerations:[
                   {value:-1, name:'INVALID'},
                   {value:0, name:'VALID'},
@@ -32,50 +32,52 @@ div.widget-body
           tr
             th Leap Seconds
             td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HkPacket_t/Payload.LeapSeconds'}], indicator:'text'}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HousekeepingTlm_t/Payload.LeapSeconds'}]}) ---
             td
-              button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SetLeapsCmd'}, indicator:'cmd'}) Set
+              button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SetLeapSeconds_t'}}) Set
           tr
             th MET
             td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HkPacket_t/Payload.SecondsMET'}], indicator:'text'}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HousekeepingTlm_t/Payload.SecondsMET'}]}) ---
             td
-              button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SetMetCmd'}, indicator:'cmd'}) Set
+              button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SetMetCmd'}}) Set
           tr
             th
             td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HkPacket_t/Payload.SubsecsMET'}], indicator:'text'}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HousekeepingTlm_t/Payload.SubsecsMET'}]}) ---
             td
           tr
             th STCF
             td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HkPacket_t/Payload.SecondsSTCF'}], indicator:'text'}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HousekeepingTlm_t/Payload.SecondsSTCF'}]}) ---
             td
-              button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SetStcfCmd'}, indicator:'cmd'}) Set
+              button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SetStcfCmd'}}) Set
           tr
             th
             td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HkPacket_t/Payload.SubsecsSTCF'}], indicator:'text'}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HousekeepingTlm_t/Payload.SubsecsSTCF'}]}) ---
             td
           tr
             th 1Hz Adjust
             td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HkPacket_t/Payload.Seconds1HzAdj'}], indicator:'text'}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HousekeepingTlm_t/Payload.Seconds1HzAdj'}]}) ---
             td
-              button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_Add1HzAdjCmd'}, indicator:'cmd'}) Add
-              button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_Sub1HzAdjCmd'}, indicator:'cmd'}) Sub
+              button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_Add1HZAdjustment_t'}}) Add
+              button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_Sub1HZAdjustment_t'}}) Sub
           tr
             th 
             td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HkPacket_t/Payload.Subsecs1HzAdj'}], indicator:'text'}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HousekeepingTlm_t/Payload.Subsecs1HzAdj'}]}) ---
             td
 footer
   .btn-group
-     button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_StateCmd_t'}, indicator:'cmd'}) Set State
-     button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SourceCmd_t'}, indicator:'cmd'}) Set Source
-     button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SetSignalCmd'}, indicator:'cmd'}) Set Signal
-     button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SetTimeCmd'}, indicator:'cmd'}) Set Time
-     button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SetMetCmd'}, indicator:'cmd'}) Set MET
-     button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SetStcfCmd'}, indicator:'cmd'}) Set STCF
-     button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_AddAdjustCmd'}, indicator:'cmd'}) Add Adjust
-     button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SubAdjustCmd'}, indicator:'cmd'}) Sub Adjust
+     button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SetState_t'}}) Set State
+     button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SetSource_t'}}) Set Source
+     button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SetSignal_t'}}) Set Signal
+     button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SetTime_t'}}) Set Time
+     button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SetMET_t'}}) Set MET
+     button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SetSTCF_t'}}) Set STCF
+     button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_AddAdjust_t'}}) Add Adjust
+     button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SubAdjust_t'}}) Sub Adjust
+     button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_AddDelay_t'}}) Add Delay
+     button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SubDelay_t'}}) Sub Delay
