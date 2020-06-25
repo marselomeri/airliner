@@ -1,3 +1,4 @@
 src/*
-cookiecutter.json
+**/*.json
 merged.json
+temp/**
