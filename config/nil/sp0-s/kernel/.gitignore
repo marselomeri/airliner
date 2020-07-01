@@ -1,0 +1,12 @@
+Makefile
+Makefile.mk
+compObjs.lst
+default
+linkSyms.c
+prjComps.h
+prjConfig.c
+prjExtraModules.lst
+prjObjs.lst
+prjParams.h
+content.romfs
+

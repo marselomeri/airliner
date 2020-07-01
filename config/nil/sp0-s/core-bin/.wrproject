@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wrxml>
+    <properties platform="" root="1" type=""/>
+    <attributes>
+        <mapAttribute>
+            <intAttribute key="BuildSupportEnabled" value="2"/>
+            <stringAttribute key="BLD::Info|cmd" value="make -C ../../../.."/>
+            <intAttribute key="BLD::Info|refreshType" value="0"/>
+            <listAttribute key="BLD::Info|BuildRules">
+                <stringAttribute value="dice sp0-s"/>
+            </listAttribute>
+            <stringAttribute key="BLD::Info|BuildRule|dice sp0-s|value" value="dice/sp0-s"/>
+            <booleanAttribute key="BLD::Info|BuildRule|dice sp0-s|isCommand" value="false"/>
+            <intAttribute key="BLD::Info|BuildRule|dice sp0-s|refreshType" value="4"/>
+            <stringAttribute key="BLD::Info|buildRule" value="dice/sp0-s"/>
+            <stringAttribute key="BLD::Info|folderBuildRule" value=""/>
+            <stringAttribute key="BLD::Info|cleanRule" value="clean"/>
+            <stringAttribute key="BLD::Info|folderCleanRule" value="clean"/>
+            <stringAttribute key="BLD::Info|rebuildRule" value="clean all"/>
+        </mapAttribute>
+    </attributes>
+</wrxml>
