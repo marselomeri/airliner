@@ -182,7 +182,7 @@ osal_add_whitebox_unit_test(
 #        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_osnetwork_stubs.c
 #        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_os_stubs.c
 #        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_ostimer_stubs.c
-#        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_psp_voltab_stubs.c
+#        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_psp_voltab_stubs_vxworkx.c
 #    INCLUDES
 #        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared
 #)

@@ -1,5 +1,5 @@
 /*
-**  GSC-18128-1, "Core Flight Executive Version 6.6"
+**  GSC-18128-1, "Core Flight Executive Version 6.7"
 **
 **  Copyright (c) 2006-2019 United States Government as represented by
 **  the Administrator of the National Aeronautics and Space Administration.
@@ -79,17 +79,6 @@
     #error The length (including NULL terminator) of CFE_PLATFORM_TBL_DEFAULT_REG_DUMP_FILE cannot be greater than OS_MAX_PATH_LEN
 #endif
 */
-
-/*
- * For configuration values that should be multiples of 4
- * as noted in the documentation, this confirms that they are.
- */
-#if ((CFE_MISSION_TBL_MAX_NAME_LENGTH % 4) != 0)
-    #error CFE_MISSION_TBL_MAX_NAME_LENGTH must be a multiple of 4
-#endif
-#if ((CFE_MISSION_TBL_MAX_FULL_NAME_LEN % 4) != 0)
-    #error CFE_MISSION_TBL_MAX_FULL_NAME_LEN must be a multiple of 4
-#endif
 
 #endif /* _cfe_tbl_verify_ */
 /*****************************************************************************/

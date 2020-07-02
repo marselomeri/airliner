@@ -1,27 +1,39 @@
 /*
-** File   :	osapi.c
-**
-**      Copyright (c) 2004-2015, United States government as represented by the
-**      administrator of the National Aeronautics Space Administration.
-**      All rights reserved. This software was created at NASA Glenn
-**      Research Center pursuant to government contracts.
-**
-**      This is governed by the NASA Open Source Agreement and may be used,
-**      distributed and modified only pursuant to the terms of that agreement.
-**
-** Author : Joe Hickey based on original VxWorks implementation by Ezra Yeheskeli
-**
-** Purpose:
-**      This file contains some of the OS APIs abstraction layer for VxWorks
-**      This has been tested against the current VxWorks 4.11 release branch
-**      
-**      NOTE: This uses only the "Classic" VxWorks API.  It is intended to
-**      work on VxWorks targets that do not provide the POSIX API, i.e.
-**      when "--disable-posix" is given during the configuration stage.
-**
-**      If the VxWorks POSIX API is enabled, then it should be possible to
-**      use the POSIX OSAL which is more full featured.
-*/
+ *  NASA Docket No. GSC-18,370-1, and identified as "Operating System Abstraction Layer"
+ *
+ *  Copyright (c) 2019 United States Government as represented by
+ *  the Administrator of the National Aeronautics and Space Administration.
+ *  All Rights Reserved.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
+/*
+ * File   :	osapi.c
+ *
+ * Author : Joe Hickey based on original VxWorks implementation by Ezra Yeheskeli
+ *
+ * Purpose:
+ *      This file contains some of the OS APIs abstraction layer for VxWorks
+ *      This has been tested against the current VxWorks 4.11 release branch
+ *      
+ *      NOTE: This uses only the "Classic" VxWorks API.  It is intended to
+ *      work on VxWorks targets that do not provide the POSIX API, i.e.
+ *      when "--disable-posix" is given during the configuration stage.
+ *
+ *      If the VxWorks POSIX API is enabled, then it should be possible to
+ *      use the POSIX OSAL which is more full featured.
+ */
 /****************************************************************************************
                                     INCLUDE FILES
 ****************************************************************************************/
@@ -1151,6 +1163,12 @@ int32 OS_CountSemCreate_Impl (uint32 sem_id, uint32 sem_initial_value, uint32 op
 {
     SEM_ID tmp_sem_id;
 
+    /* Verify the initial value */
+    if(sem_initial_value >= SEM_VALUE_MAX)
+    {
+    	return OS_INVALID_SEM_VALUE;
+    }
+
     /* Initialize VxWorks Semaphore.
      * The memory for this sem is statically allocated. */
     tmp_sem_id = semCInitialize(OS_impl_count_sem_table[sem_id].cmem, SEM_Q_PRIORITY, sem_initial_value);
@@ -1619,6 +1637,12 @@ int32 OS_FPUExcGetMask_Impl(uint32 *mask)
 {
     int32 Status;
 
+    /* Verify mask */
+    if(mask == 0)
+    {
+    	return OS_INVALID_POINTER;
+    }
+
 #if defined(_PPC_) && CPU != PPC440
     *mask = vxFpscrGet();
     Status = OS_SUCCESS;
@@ -1759,7 +1783,7 @@ int32 OS_ConsoleCreate_Impl(uint32 local_id)
                     (FUNCPTR)OS_ConsoleTask_Entry,
                     local_id,0,0,0,0,0,0,0,0,0);
 
-            if (local->taskid == (TASK_ID)ERROR)
+            if (local->taskid == (TASK_ID)0)
             {
                 OS_DEBUG("taskSpawn() - vxWorks errno %d\n",errno);
                 return_code = OS_ERROR;

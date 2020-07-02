@@ -36,7 +36,7 @@ UT_OsReturnCode_t  g_apiInit = {0,0};
 ** Function definitions
 **--------------------------------------------------------------------------------*/
 
-int32 OS_API_Init(OS_RunTimeModeEnum_t RunMode)
+int32 OS_API_Init()
 {
     return (g_apiInit.value);
 }

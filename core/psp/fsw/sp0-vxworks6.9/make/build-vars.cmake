@@ -60,7 +60,7 @@ set(CMAKE_SHARED_MODULE_CREATE_CXX_FLAGS "")
 
 
 # Set compiler flags for apps and the main executable.
-set(COMPILE_FLAGS "-D_VXWORKS_OS_ -D_PPC_ -D__PPC__  -g -te500v2 -mhard-float \
+set(COMPILE_FLAGS "-D_VXWORKS_OS_ -D_PPC_ -D__PPC__  -g -te500v2 -mhard-float -DOS_LOG_TO_STDOUT_TOO -DOS_DEBUG_PRINTF \
                    -fno-implicit-fp -mstrict-align -fno-builtin \
                    -fno-zero-initialized-in-bss  -Wall    -MD -MP -pedantic \
                    -DCPU=_VX_PPC85XX -DTOOL_FAMILY=gnu \

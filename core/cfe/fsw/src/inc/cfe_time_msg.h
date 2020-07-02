@@ -1,5 +1,5 @@
 /*
-**  GSC-18128-1, "Core Flight Executive Version 6.6"
+**  GSC-18128-1, "Core Flight Executive Version 6.7"
 **
 **  Copyright (c) 2006-2019 United States Government as represented by
 **  the Administrator of the National Aeronautics and Space Administration.
@@ -186,7 +186,7 @@ extern "C" {
 **  \cfecmdmnemonic \TIME_SETSOURCE
 **
 **  \par Command Structure
-**       #CFE_TIME_SetSource_t
+**       #CFE_TIME_SourceCmd_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with the 
@@ -237,7 +237,7 @@ extern "C" {
 **  \cfecmdmnemonic \TIME_SETSTATE
 **
 **  \par Command Structure
-**       #CFE_TIME_SetState_t
+**       #CFE_TIME_StateCmd_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with the 
@@ -591,7 +591,7 @@ extern "C" {
 **  \cfecmdmnemonic \TIME_ADD1HZSTCF
 **
 **  \par Command Structure
-**       #CFE_TIME_Add1HZAdjustment_t
+**       #CFE_TIME_1HzAdjCmd_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with the 
@@ -637,7 +637,7 @@ extern "C" {
 **  \cfecmdmnemonic \TIME_SUB1HZSTCF
 **
 **  \par Command Structure
-**       #CFE_TIME_Sub1HZAdjustment_t
+**       #CFE_TIME_1HzAdjCmd_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with the 
@@ -679,7 +679,7 @@ extern "C" {
 **  \cfecmdmnemonic \TIME_SETSIGNAL
 **
 **  \par Command Structure
-**       #CFE_TIME_SetSignal_t
+**       #CFE_TIME_SignalCmd_t
 **
 **  \par Command Verification
 **       Successful execution of this command may be verified with the 

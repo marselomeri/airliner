@@ -1,5 +1,5 @@
 /*
-**  GSC-18128-1, "Core Flight Executive Version 6.6"
+**  GSC-18128-1, "Core Flight Executive Version 6.7"
 **
 **  Copyright (c) 2006-2019 United States Government as represented by
 **  the Administrator of the National Aeronautics and Space Administration.
@@ -68,12 +68,11 @@ extern "C" {
 
 #define CFE_TBL_OPT_DEFAULT      (CFE_TBL_OPT_SNGL_BUFFER | CFE_TBL_OPT_LOAD_DUMP)
 
-/*
- * The full length of table names is defined at the mission scope.
- * This is defined here to support applications that depend on cfe_tbl.h
- * providing this value.
- */
-#define CFE_TBL_MAX_FULL_NAME_LEN (CFE_MISSION_TBL_MAX_FULL_NAME_LEN)
+/** Computation for maximum length allowed for a table name. <BR>
+** NOTE: "+2" is for NULL Character and "." (i.e. - "AppName.TblName") */
+#define CFE_TBL_MAX_FULL_NAME_LEN_COMP (CFE_MISSION_TBL_MAX_NAME_LENGTH + OS_MAX_API_NAME + 2)
+/* Ensure the table name falls on a 4-byte boundary */
+#define CFE_TBL_MAX_FULL_NAME_LEN (((CFE_TBL_MAX_FULL_NAME_LEN_COMP + 3)/4)*4)
 
 #define CFE_TBL_BAD_TABLE_HANDLE  (CFE_TBL_Handle_t) 0xFFFF
 

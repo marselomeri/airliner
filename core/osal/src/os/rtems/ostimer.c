@@ -1,11 +1,21 @@
 /*
- *      Copyright (c) 2018, United States government as represented by the
- *      administrator of the National Aeronautics Space Administration.
- *      All rights reserved. This software was created at NASA Glenn
- *      Research Center pursuant to government contracts.
+ *  NASA Docket No. GSC-18,370-1, and identified as "Operating System Abstraction Layer"
  *
- *      This is governed by the NASA Open Source Agreement and may be used,
- *      distributed and modified only according to the terms of that agreement.
+ *  Copyright (c) 2019 United States Government as represented by
+ *  the Administrator of the National Aeronautics and Space Administration.
+ *  All Rights Reserved.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
  */
 
 /**
@@ -63,8 +73,6 @@ typedef struct
     uint8               simulate_flag;
     uint8               reset_flag;
     rtems_interval      interval_ticks;
-    uint32              configured_start_time;
-    uint32              configured_interval_time;
 } OS_impl_timebase_internal_record_t;
 
 /****************************************************************************************
@@ -152,14 +160,9 @@ static rtems_timer_service_routine OS_TimeBase_ISR(rtems_id rtems_timer_id, void
 static uint32 OS_TimeBase_WaitImpl(uint32 local_id)
 {
     OS_impl_timebase_internal_record_t *local;
-    uint32 tick_time;
+    uint32 interval_time;
 
     local = &OS_impl_timebase_table[local_id];
-
-    /*
-     * Pend for the tick arrival
-     */
-    rtems_semaphore_obtain(local->tick_sem, RTEMS_WAIT, RTEMS_NO_TIMEOUT);
 
     /*
      * Determine how long this tick was.
@@ -170,16 +173,21 @@ static uint32 OS_TimeBase_WaitImpl(uint32 local_id)
      */
     if (local->reset_flag == 0)
     {
-        tick_time = local->configured_interval_time;
+        interval_time = OS_timebase_table[local_id].nominal_interval_time;
     }
     else
     {
-        tick_time = local->configured_start_time;
+        interval_time = OS_timebase_table[local_id].nominal_start_time;
         local->reset_flag = 0;
     }
 
+    /*
+     * Pend for the tick arrival
+     */
+    rtems_semaphore_obtain(local->tick_sem, RTEMS_WAIT, RTEMS_NO_TIMEOUT);
 
-    return tick_time;
+
+    return interval_time;
 } /* end OS_TimeBase_WaitImpl */
 
 
@@ -471,34 +479,13 @@ int32 OS_TimeBaseSet_Impl(uint32 timer_id, int32 start_time, int32 interval_time
            }
            else
            {
-               local->configured_start_time = (10000 * start_ticks) / OS_SharedGlobalVars.TicksPerSecond;
-               local->configured_interval_time = (10000 * local->interval_ticks) / OS_SharedGlobalVars.TicksPerSecond;
-               local->configured_start_time *= 100;
-               local->configured_interval_time *= 100;
-
-               if (local->configured_start_time != start_time)
-               {
-                   OS_DEBUG("WARNING: timer %lu start_time requested=%luus, configured=%luus\n",
-                           (unsigned long)timer_id,
-                           (unsigned long)start_time,
-                           (unsigned long)local->configured_start_time);
-               }
-               if (local->configured_interval_time != interval_time)
-               {
-                   OS_DEBUG("WARNING: timer %lu interval_time requested=%luus, configured=%luus\n",
-                           (unsigned long)timer_id,
-                           (unsigned long)interval_time,
-                           (unsigned long)local->configured_interval_time);
-               }
-
                if (local->interval_ticks > 0)
                {
-                   OS_timebase_table[timer_id].accuracy_usec = local->configured_interval_time;
+                   start_ticks = local->interval_ticks;
                }
-               else
-               {
-                   OS_timebase_table[timer_id].accuracy_usec = local->configured_start_time;
-               }
+
+               OS_timebase_table[timer_id].accuracy_usec = (start_ticks * 100000) / OS_SharedGlobalVars.TicksPerSecond;
+               OS_timebase_table[timer_id].accuracy_usec *= 10;
            }
         }
     }

@@ -1,5 +1,5 @@
 /*
-**  GSC-18128-1, "Core Flight Executive Version 6.6"
+**  GSC-18128-1, "Core Flight Executive Version 6.7"
 **
 **  Copyright (c) 2006-2019 United States Government as represented by
 **  the Administrator of the National Aeronautics and Space Administration.
@@ -1302,7 +1302,7 @@ static inline CFE_SB_MsgId_Atom_t CFE_SB_MsgIdToValue(CFE_SB_MsgId_t MsgId)
  * @par Description:
  *    In cases where the CFE_SB_MsgId_t type is not a simple integer
  *    type, it is not possible to directly use an integer value
- *    supplied via a define or similar method.
+ *    supplied via a #define or similar method.
  *
  *    This inline function provides the ability to map an integer value
  *    into a corresponding CFE_SB_MsgId_t value.

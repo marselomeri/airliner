@@ -1,3 +1,23 @@
+/*
+ *  NASA Docket No. GSC-18,370-1, and identified as "Operating System Abstraction Layer"
+ *
+ *  Copyright (c) 2019 United States Government as represented by
+ *  the Administrator of the National Aeronautics and Space Administration.
+ *  All Rights Reserved.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 /* Calculate offset, breakpoint, and skip values for the cFE and cFE unit
  * test variadic functions.  Note that some "dummy" function calls from
  * the original function are needed in order for the correct offset,
@@ -378,6 +398,7 @@ int32 CalcOffset_CFE_ES_WriteToSysLog(const char *SpecStringPtr, ...)
 
     va_start(Ptr, SpecStringPtr, 0, 0, 0);
     OS_vsnprintfDummy(MsgWithoutTime, 1, SpecStringPtr, Ptr);
+    va_end(Ptr);
     CFE_TIME_PrintDummy(TmpString, time);
     strcatDummy(TmpString, " ");
     strncatDummy(TmpString, MsgWithoutTime, 1);
@@ -391,7 +412,6 @@ int32 CalcOffset_CFE_ES_WriteToSysLog(const char *SpecStringPtr, ...)
 
     UT_Text("\nCFE_ES_WriteToSysLog Argument Calculation:\n");
     UT_CheckArgumentOffset(Ptr, 0);
-    va_end(Ptr);
     return 0;
 }
 
@@ -409,12 +429,12 @@ int32 CalcOffset_EVS_SendEvent(uint16 EventID,
     CFE_SB_InitMsgDummy(&EVS_Packet, 1, sizeof(CFE_EVS_Packet_t), 1);
     va_start(Ptr, Spec, 0, 0, 0);
     OS_vsnprintfDummy(EVS_Packet.Message, 1, Spec, Ptr);
+    va_end(Ptr);
     CFE_TIME_GetTimeDummy();
     EVS_SendPacketDummy(0, Time, &EVS_Packet);
 
     UT_Text("\nEVS_SendEvent Argument Calculation:\n");
     UT_CheckArgumentOffset(Ptr, 1);
-    va_end(Ptr);
     return 0;
 }
 
@@ -435,12 +455,12 @@ int32 CalcOffset_CFE_EVS_SendEvent(uint16 EventID,
     CFE_SB_InitMsgDummy(&EVS_Packet, 1, sizeof(CFE_EVS_Packet_t), 1);
     va_start(Ptr, Spec, 0, 0, 0);
     OS_vsnprintfDummy(EVS_Packet.Message, 1, Spec, Ptr);
+    va_end(Ptr);
     CFE_TIME_GetTimeDummy();
     EVS_SendPacketDummy(AppID, Time, &EVS_Packet);
 
     UT_Text("\nCFE_EVS_SendEvent Argument Calculation:\n");
     UT_CheckArgumentOffset(Ptr, 2);
-    va_end(Ptr);
     return 0;
 }
 
@@ -461,12 +481,12 @@ int32 CalcOffset_CFE_EVS_SendEventWithAppID(uint16 EventID,
     CFE_SB_InitMsgDummy(&EVS_Packet, 1, sizeof(CFE_EVS_Packet_t), 1);
     va_start(Ptr, Spec, 0, 0, 0);
     OS_vsnprintfDummy(EVS_Packet.Message, 1, Spec, Ptr);
+    va_end(Ptr);
     CFE_TIME_GetTimeDummy();
     EVS_SendPacketDummy(AppID, Time, &EVS_Packet);
 
     UT_Text("\nCFE_EVS_SendEventWithAppID Argument Calculation:\n");
     UT_CheckArgumentOffset(Ptr, 3);
-    va_end(Ptr);
     return 0;
 }
 
@@ -487,11 +507,11 @@ int32 CalcOffset_CFE_EVS_SendTimedEvent(CFE_TIME_SysTime_t Time,
     CFE_SB_InitMsgDummy(&EVS_Packet, 0, sizeof(CFE_EVS_Packet_t), 0);
     va_start(Ptr, Spec, 0, 0, 0);
     OS_vsnprintfDummy(EVS_Packet.Message, 0, Spec, Ptr);
+    va_end(Ptr);
     EVS_SendPacketDummy(AppID, Time, &EVS_Packet);
 
     UT_Text("\nCFE_EVS_SendTimedEvent Argument Calculation:\n");
     UT_CheckArgumentOffset(Ptr, 4);
-    va_end(Ptr);
     return 0;
 }
 
@@ -501,11 +521,11 @@ void CalcOffset_OS_printf(const char *format, ...)
     va_list varg;
 
     va_start(varg, format, 0, 0, 0);
-    OS_vsnprintfDummy(0, -1, format, varg)
+    OS_vsnprintfDummy(0, -1, format, varg);
+    va_end(varg);
 
     UT_Text("\nOS_printf Argument Calculation:\n");
     UT_CheckArgumentOffset(varg, 5);
-    va_end(varg);
 }
 
 /* Mimic actual and stub OS_sprintf() */
@@ -516,10 +536,10 @@ int CalcOffset_OS_sprintf(char *out, const char *format, ...)
 
     va_start(varg, format, 0, 0, 0);
     length = OS_vsnprintfDummy(out, -1, format, varg);
+    va_end(varg);
 
     UT_Text("\nOS_sprintf Argument Calculation:\n");
     UT_CheckArgumentOffset(varg, 6);
-    va_end(varg);
     return(length);
 }
 
@@ -531,10 +551,10 @@ int CalcOffset_OS_snprintf(char *out, unsigned max_len, const char *format, ...)
 
     va_start(varg, format, 0, 0, 0);
     length = OS_vsnprintfDummy(out, (int) max_len - 1, format, varg);
+    va_end(varg);
 
     UT_Text("\nOS_snprintf Argument Calculation:\n");
     UT_CheckArgumentOffset(varg, 7);
-    va_end(varg);
     return(length);
 }
 
@@ -546,10 +566,10 @@ void CalcOffset_OS_printf_stub(const char *string, ...)
 
     va_start(ptr, string, 0, 0, 0);
     OS_vsnprintfDummy(tmpString, CFE_ES_MAX_SYSLOG_MSG_SIZE * 2, string, ptr);
+    va_end(ptr);
 
     UT_Text("\nOS_printf Stub Argument Calculation:\n");
     UT_CheckArgumentOffset(ptr, 8);
-    va_end(ptr);
 }
 
 int32 CalcOffset_CFE_ES_WriteToSysLog_stub(const char *pSpecString, ...)
@@ -559,10 +579,10 @@ int32 CalcOffset_CFE_ES_WriteToSysLog_stub(const char *pSpecString, ...)
 
     va_start(ap, pSpecString, 0, 0, 0);
     OS_vsnprintfDummy(tmpString, CFE_ES_MAX_SYSLOG_MSG_SIZE, pSpecString, ap);
+    va_end(ap);
 
     UT_Text("\nCFE_ES_WriteToSysLog Stub Argument Calculation:\n");
     UT_CheckArgumentOffset(ap, 9);
-    va_end(ap);
     return 0;
 }
 
@@ -577,11 +597,11 @@ int32 CalcOffset_CFE_EVS_SendEvent_stub(uint16 EventID,
 
     va_start(Ptr, Spec, 0, 0, 0);
     OS_vsnprintfDummy(BigBuf, CFE_EVS_MAX_MESSAGE_LENGTH, Spec, Ptr);
+    va_end(Ptr);
     UT_AddEventToHistoryDummy(EventID);
 
     UT_Text("\nCFE_EVS_SendEvent Stub Argument Calculation:\n");
     UT_CheckArgumentOffset(Ptr, 10);
-    va_end(Ptr);
     return 0;
 }
 
@@ -597,6 +617,7 @@ int32 CalcOffset_CFE_EVS_SendEventWithAppID_stub(uint16 EventID,
 
     va_start(Ptr, Spec, 0, 0, 0);
     OS_vsnprintfDummy(BigBuf, CFE_EVS_MAX_MESSAGE_LENGTH, Spec, Ptr);
+    va_end(Ptr);
     UT_AddEventToHistoryDummy(EventID);
     OS_snprintfDummy(cMsg, UT_MAX_MESSAGE_LENGTH,
                      "  CFE_EVS_SendEvent from app %lu: %u, %u - %s",
@@ -604,7 +625,6 @@ int32 CalcOffset_CFE_EVS_SendEventWithAppID_stub(uint16 EventID,
 
     UT_Text("\nCFE_EVS_SendEventWithAppID Stub Argument Calculation:\n");
     UT_CheckArgumentOffset(Ptr, 11);
-    va_end(Ptr);
     return 0;
 }
 

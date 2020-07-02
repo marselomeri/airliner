@@ -1,5 +1,5 @@
 /*
-**  GSC-18128-1, "Core Flight Executive Version 6.6"
+**  GSC-18128-1, "Core Flight Executive Version 6.7"
 **
 **  Copyright (c) 2006-2019 United States Government as represented by
 **  the Administrator of the National Aeronautics and Space Administration.
@@ -963,8 +963,8 @@ extern "C" {
 **  This event message is generated in response to receiving an Executive Services
 **  \link #CFE_ES_START_PERF_DATA_CC Start Performance Analyzer Data Collection Command \endlink
 **
-**  The \c 'd' field identifies the requested trigger mode.  Valid values are \link #CFE_ES_PerfMode_t CFE_ES_PERF_TRIGGER_START (0) \endlink,
-**  \link #CFE_ES_PerfMode_t CFE_ES_PERF_TRIGGER_CENTER (1) \endlink, and \link #CFE_ES_PerfMode_t CFE_ES_PERF_TRIGGER_END (2) \endlink
+**  The \c 'd' field identifies the requested trigger mode.  Valid values are #CFE_ES_PerfMode_t CFE_ES_PERF_TRIGGER_START (0),
+**  #CFE_ES_PerfMode_t CFE_ES_PERF_TRIGGER_CENTER (1), and #CFE_ES_PerfMode_t CFE_ES_PERF_TRIGGER_END (2)
 **/
 #define CFE_ES_PERF_STARTCMD_EID      57
 

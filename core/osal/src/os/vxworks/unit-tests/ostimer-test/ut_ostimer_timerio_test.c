@@ -203,6 +203,7 @@ void UT_os_timerinit_test()
     {
         res = OS_TimerCreate(&g_timerIds[0], "Timer #0", &g_clkAccuracy, &UT_os_timercallback);
         if (res == OS_SUCCESS)
+            /* cppcheck-suppress syntaxError */
             UT_OS_SET_TEST_RESULT_MACRO(apiInfo, idx, testDesc, UT_OS_PASSED)
         else
             UT_OS_SET_TEST_RESULT_MACRO(apiInfo, idx, testDesc, UT_OS_FAILED)
@@ -583,7 +584,7 @@ void UT_os_timerset_test()
     UT_OsApiInfo_t apiInfo;
     const char* testDesc=NULL;
     char text[UT_OS_LG_TEXT_LEN];
-    uint32 startTime=0, intervalTime=0;
+    uint32 startTime=1, intervalTime=1;
 
     UT_OS_CLEAR_API_INFO_MACRO(apiInfo, idx)
 

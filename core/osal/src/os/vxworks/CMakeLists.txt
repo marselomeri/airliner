@@ -62,11 +62,13 @@ osal_add_whitebox_unit_test(
     SOURCE         
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/oscore-test/ut_oscore_binsem_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/oscore-test/ut_oscore_countsem_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/oscore-test/ut_oscore_exception_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/oscore-test/ut_oscore_interrupt_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/oscore-test/ut_oscore_misc_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/oscore-test/ut_oscore_mutex_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/oscore-test/ut_oscore_queue_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/oscore-test/ut_oscore_task_test.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/oscore-test/ut_oscore_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/oscore-test/ut_oscore_test_vxworks.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_os_stubs.c
         ${OSAL_SRC}
         ${OSAL_SHARED_SRC}
@@ -95,7 +97,7 @@ osal_add_whitebox_unit_test(
     osfilesys-test
     SOURCE 
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/osfilesys-test/ut_osfilesys_diskio_test.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/osfilesys-test/ut_osfilesys_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/osfilesys-test/ut_osfilesys_test_vxworks.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_os_stubs.c
         ${OSAL_SRC}
         ${OSAL_SHARED_SRC}
@@ -182,7 +184,7 @@ osal_add_whitebox_unit_test(
 #        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_osnetwork_stubs.c
 #        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_os_stubs.c
 #        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_ostimer_stubs.c
-#        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_psp_voltab_stubs.c
+#        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared/ut_psp_voltab_stubs_vxworks.c
 #    INCLUDES
 #        ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/shared
 #)

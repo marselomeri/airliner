@@ -1,4 +1,24 @@
 /*
+ *  NASA Docket No. GSC-18,370-1, and identified as "Operating System Abstraction Layer"
+ *
+ *  Copyright (c) 2019 United States Government as represented by
+ *  the Administrator of the National Aeronautics and Space Administration.
+ *  All Rights Reserved.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
+/*
 ** timertest.c
 **
 ** This program is an OSAL sample that tests the OSAL timer functions. 
@@ -92,7 +112,7 @@ void TimerTestTask(void)
 {
    
    int              i = 0;
-   int32            TimerStatus[NUMBER_OF_TIMERS];
+   int32            TimerStatus;
    uint32           TableId;
    uint32           TimerID[NUMBER_OF_TIMERS];
    char             TimerName[NUMBER_OF_TIMERS][20] = {"TIMER1","TIMER2","TIMER3","TIMER4"};
@@ -101,38 +121,25 @@ void TimerTestTask(void)
 
    for ( i = 0; i < NUMBER_OF_TIMERS; i++ )
    {
-      TimerStatus[i] = OS_TimerCreate(&TimerID[i], TimerName[i], &ClockAccuracy, &(test_func));
-      UtAssert_True(TimerStatus[i] == OS_SUCCESS, "Timer %d Created RC=%d ID=%d", i, (int)TimerStatus[i], (int)TimerID[i]);
+      TimerStatus = OS_TimerCreate(&TimerID[i], TimerName[i], &ClockAccuracy, &(test_func));
+      UtAssert_True(TimerStatus == OS_SUCCESS, "Timer %d Created RC=%d ID=%d", i, (int)TimerStatus, (int)TimerID[i]);
 
       UtPrintf("Timer %d Accuracy = %d microseconds \n",i ,(int)ClockAccuracy);
 
+      TimerStatus  =  OS_TimerSet(TimerID[i], TimerStart[i], TimerInterval[i]);
+      UtAssert_True(TimerStatus == OS_SUCCESS, "Timer %d programmed RC=%d", i, (int)TimerStatus);
+
       OS_ConvertToArrayIndex(TimerID[i], &TableId);
+
       timer_idlookup[TableId] = i;
    }
 
-   /* Sample the clock now, before starting any timer */
-   OS_GetLocalTime(&StartTime);
-   for ( i = 0; i < NUMBER_OF_TIMERS; i++ )
-   {
-      /*
-       * to ensure that all timers are started as closely as possible,
-       * this just stores the result and does not assert/printf now
-       */
-      TimerStatus[i]  =  OS_TimerSet(TimerID[i], TimerStart[i], TimerInterval[i]);
-   }
-
-   /*
-    * Now the actual OS_TimerSet() return code can be checked.
-    */
-   for ( i = 0; i < NUMBER_OF_TIMERS; i++ )
-   {
-       UtAssert_True(TimerStatus[i] == OS_SUCCESS, "Timer %d programmed RC=%d", i, (int)TimerStatus[i]);
-   }
 
    /*
    ** Let the main thread sleep 
    */     
    UtPrintf("Starting Delay loop.\n");
+   OS_GetLocalTime(&StartTime);
    for (i = 0 ; i < 30; i++ )
    {
       /* 
@@ -147,13 +154,9 @@ void TimerTestTask(void)
 
    for ( i = 0; i < NUMBER_OF_TIMERS; i++ )
    {
-       TimerStatus[i] =  OS_TimerDelete(TimerID[i]);
-   }
-
-   for ( i = 0; i < NUMBER_OF_TIMERS; i++ )
-   {
-       UtAssert_True(TimerStatus[i] == OS_SUCCESS, "Timer %d delete RC=%d. Count total = %d",
-               i, (int)TimerStatus[i], (int)timer_counter[i]);
+       TimerStatus =  OS_TimerDelete(TimerID[i]);
+       UtAssert_True(TimerStatus == OS_SUCCESS, "Timer %d delete RC=%d. Count total = %d",
+               i, (int)TimerStatus, (int)timer_counter[i]);
    }
 
    OS_ApplicationShutdown(true);
@@ -182,11 +185,7 @@ void TimerTestCheck(void)
    /* Make sure the ratio of the timers are OK */
    for ( i = 0; i < NUMBER_OF_TIMERS; i++ )
    {
-      /*
-       * Expect one tick after the start time (i.e. first tick)
-       * Plus one tick for every interval that occurred during the test
-       */
-      expected = 1 + (microsecs - TimerStart[i]) / TimerInterval[i];
+      expected = (microsecs - TimerStart[i]) / TimerInterval[i];
       UtAssert_True(expected > 0, "Expected ticks = %u", (unsigned int)expected);
 
       /*

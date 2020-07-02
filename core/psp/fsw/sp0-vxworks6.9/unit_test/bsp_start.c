@@ -91,14 +91,20 @@ STUB them for now to build.  These are FPU exception handler functions that
 are currently not used
  * *******/
 
+unsigned int bsp_ut_FPMask = 0;
+
 unsigned int vxFpscrGet(void)
 {
     printf("%s->%s<stub>:%d:\n", __FILE__, __func__, __LINE__);
-    return(0);
+
+    return(bsp_ut_FPMask);
 }
 
 void vxFpscrSet(unsigned int x)
 {
     printf("%s->%s<stub>:%d:\n", __FILE__, __func__, __LINE__);
+
+    bsp_ut_FPMask = x;
 }
+
 

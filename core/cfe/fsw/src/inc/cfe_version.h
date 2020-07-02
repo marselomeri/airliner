@@ -1,5 +1,5 @@
 /*
-**  GSC-18128-1, "Core Flight Executive Version 6.6"
+**  GSC-18128-1, "Core Flight Executive Version 6.7"
 **
 **  Copyright (c) 2006-2019 United States Government as represented by
 **  the Administrator of the National Aeronautics and Space Administration.
@@ -85,7 +85,7 @@ extern "C" {
 */
 #define CFE_MAJOR_VERSION         6
 #define CFE_MINOR_VERSION         7
-#define CFE_REVISION              3
+#define CFE_REVISION              0
 
 #ifdef __cplusplus
 }
