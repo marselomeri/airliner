@@ -1,9 +1,11 @@
+include(../set-vars.cmake)
+
 # Put target specific functions here.  This is where we build most everything.  Everything that either uses the
 # cross toolchain or has target independent functions.
 
 initialize_airliner_build(
-    PSP ${PSP_TARGET_DIR}/pc-linux-nasa
-    OSAL ${OSAL_TARGET_DIR}/posix-nasa
+    PSP ${PSP}
+    OSAL ${OSAL}
     CORE_TOOLS ${CMAKE_CURRENT_SOURCE_DIR}/tools
     CONFIG
         ${CMAKE_CURRENT_SOURCE_DIR}/inc

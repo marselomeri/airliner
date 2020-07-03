@@ -72,7 +72,7 @@ void UT_ClearAllStubObjects (void)
 uint32 UT_AllocStubObjId(UT_ObjType_t ObjType)
 {
     UT_ObjTypeState_t *StatePtr;
-    uint8 ObjMask;
+    uint32 ObjMask;
     uint32 Result;
 
     UT_Stub_CallOnce(UT_ClearAllStubObjects);

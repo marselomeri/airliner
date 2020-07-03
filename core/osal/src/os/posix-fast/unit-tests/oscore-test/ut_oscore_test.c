@@ -1,3 +1,23 @@
+/*
+ *  NASA Docket No. GSC-18,370-1, and identified as "Operating System Abstraction Layer"
+ *
+ *  Copyright (c) 2019 United States Government as represented by
+ *  the Administrator of the National Aeronautics and Space Administration.
+ *  All Rights Reserved.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 /*================================================================================*
 ** File:  ut_oscore_test.c
 ** Owner: Tam Ngo/Alan Cudmore
@@ -198,70 +218,70 @@ void OS_Application_Startup(void)
     UT_os_bin_sem_get_info_test();
 
     UT_os_count_sem_create_test();
-//    UT_os_count_sem_delete_test();
-//    UT_os_count_sem_give_test();
-//    UT_os_count_sem_take_test();
-//    UT_os_count_sem_timed_wait_test();
-//    UT_os_count_sem_get_id_by_name_test();
-//    UT_os_count_sem_get_info_test();
-//
-//    UT_os_mut_sem_create_test();
-//    UT_os_mut_sem_delete_test();
-//    UT_os_mut_sem_give_test();
-//    UT_os_mut_sem_take_test();
-//    UT_os_mut_sem_get_id_by_name_test();
-//    UT_os_mut_sem_get_info_test();
-//
-//    UT_os_queue_create_test();
-//    UT_os_queue_delete_test();
-//    UT_os_queue_put_test();
-//    UT_os_queue_get_test();
-//    UT_os_queue_get_id_by_name_test();
-//    UT_os_queue_get_info_test();
-//
-//    UT_os_init_task_misc();
-//
-//    UT_os_init_task_create_test();
-//    UT_os_task_create_test();
-//
-//    UT_os_init_task_delete_test();
-//    UT_os_task_delete_test();
-//
-//    UT_os_setup_install_delete_handler_test();
-//    UT_os_task_install_delete_handler_test();
-//
-//    UT_os_init_task_exit_test();
-//    UT_os_task_exit_test();
-//
-//    UT_os_init_task_delay_test();
-//    UT_os_task_delay_test();
-//
-//    UT_os_init_task_set_priority_test();
-//    UT_os_task_set_priority_test();
-//
-//    UT_os_init_task_register_test();
-//    UT_os_task_register_test();
-//
-//    UT_os_init_task_get_id_test();
-//    UT_OS_LOG_MACRO("\n============================================\n")
-//    UT_os_task_get_id_test();
-//    UT_OS_LOG_MACRO("============================================\n")
-//
-//    UT_os_init_task_get_id_by_name_test();
-//    UT_os_task_get_id_by_name_test();
-//
-//    UT_os_init_task_get_info_test();
-//    UT_os_task_get_info_test();
-//
-//    UT_os_geterrorname_test();
-//
-//    UT_os_tick2micros_test();
-//    UT_os_milli2ticks_test();
-//
-//    UT_OS_LOG_MACRO("\n============================================")
-//    UT_os_getlocaltime_test();
-//    UT_OS_LOG_MACRO("============================================\n")
-//    UT_os_setlocaltime_test();
+    UT_os_count_sem_delete_test();
+    UT_os_count_sem_give_test();
+    UT_os_count_sem_take_test();
+    UT_os_count_sem_timed_wait_test();
+    UT_os_count_sem_get_id_by_name_test();
+    UT_os_count_sem_get_info_test();
+
+    UT_os_mut_sem_create_test();
+    UT_os_mut_sem_delete_test();
+    UT_os_mut_sem_give_test();
+    UT_os_mut_sem_take_test();
+    UT_os_mut_sem_get_id_by_name_test();
+    UT_os_mut_sem_get_info_test();
+
+    UT_os_queue_create_test();
+    UT_os_queue_delete_test();
+    UT_os_queue_put_test();
+    UT_os_queue_get_test();
+    UT_os_queue_get_id_by_name_test();
+    UT_os_queue_get_info_test();
+
+    UT_os_init_task_misc();
+
+    UT_os_init_task_create_test();
+    UT_os_task_create_test();
+
+    UT_os_init_task_delete_test();
+    UT_os_task_delete_test();
+
+    UT_os_setup_install_delete_handler_test();
+    UT_os_task_install_delete_handler_test();
+
+    UT_os_init_task_exit_test();
+    UT_os_task_exit_test();
+
+    UT_os_init_task_delay_test();
+    UT_os_task_delay_test();
+
+    UT_os_init_task_set_priority_test();
+    UT_os_task_set_priority_test();
+
+    UT_os_init_task_register_test();
+    UT_os_task_register_test();
+
+    UT_os_init_task_get_id_test();
+    UT_OS_LOG_MACRO("\n============================================\n")
+    UT_os_task_get_id_test();
+    UT_OS_LOG_MACRO("============================================\n")
+
+    UT_os_init_task_get_id_by_name_test();
+    UT_os_task_get_id_by_name_test();
+
+    UT_os_init_task_get_info_test();
+    UT_os_task_get_info_test();
+
+    UT_os_geterrorname_test();
+
+    UT_os_tick2micros_test();
+    UT_os_milli2ticks_test();
+
+    UT_OS_LOG_MACRO("\n============================================")
+    UT_os_getlocaltime_test();
+    UT_OS_LOG_MACRO("============================================\n")
+    UT_os_setlocaltime_test();
 
     UT_os_teardown("ut_oscore");
 
