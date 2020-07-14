@@ -77,10 +77,10 @@ add_airliner_app_def(cs
 
 
 
-add_airliner_app_unit_test(cs-ut   
-    NO_MEMCHECK       
+add_airliner_app_unit_test(cs-ut 
     NO_HELGRIND     
-    NO_MASSIF     
+    NO_MASSIF  
+   
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_app_cmds_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_app_cmds_test.h
@@ -149,7 +149,7 @@ add_airliner_app_unit_test(cs-ut
         ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_osfileapi_stubs.c
         ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/uttest.c
         ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/uttools.c
-        
+
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/

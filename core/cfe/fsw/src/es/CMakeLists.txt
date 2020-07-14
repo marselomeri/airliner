@@ -33,22 +33,25 @@
  
 
 set(CFE_ES_SRC 
-	${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_api.c 
-	${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_apps.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_api.c 
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_apps.c
     ${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_cds.c 
-	${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_cds_mempool.c 
-	${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_erlog.c 
-	${CMAKE_CURRENT_SOURCE_DIR}/cfe_esmempool.c
-	${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_objtab.c 
-	${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_perf.c 
-	${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_shell.c 
-	${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_start.c 
-	${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_task.c
-	${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_symbols.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_cds_mempool.c 
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_erlog.c 
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_esmempool.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_objtab.c 
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_perf.c 
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_shell.c 
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_start.c 
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_task.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_symbols.c
 )
 
 	
 add_airliner_cfe_unit_test(cfe-es-ut
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../../unit-test/es_UT.c 
         ${CMAKE_CURRENT_SOURCE_DIR}/../../unit-test/ut_bsp_stubs.c

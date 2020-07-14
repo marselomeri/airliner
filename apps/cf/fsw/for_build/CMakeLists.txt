@@ -120,6 +120,9 @@ add_airliner_app_def(cf
 
 #add_airliner_app_unit_test(cf-ut
 #    UTASSERT 
+#    NO_HELGRIND
+#    NO_MASSIF
+#        
 #    SOURCES
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cf_app.c
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cf_app.h
@@ -189,7 +192,7 @@ add_airliner_app_def(cf
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cf_platform_cfg.h
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cf_testcase.c
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cf_testrunner.c
-#        
+#
 #    INCLUDES
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../mission_inc/
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../platform_inc/

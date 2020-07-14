@@ -71,6 +71,9 @@ add_airliner_app_def(mm
 
 add_airliner_app_unit_test(mm-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mm_app_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mm_app_test.h

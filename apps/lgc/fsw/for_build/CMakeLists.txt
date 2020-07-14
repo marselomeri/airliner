@@ -28,6 +28,9 @@ add_airliner_app_def(lgc
 
 add_airliner_app_unit_test(lgc-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/lgc_app_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/lgc_app_test.h

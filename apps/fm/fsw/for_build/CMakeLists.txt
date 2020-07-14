@@ -70,6 +70,9 @@ add_airliner_app_def(fm
 
 add_airliner_app_unit_test(fm-ut
     UTASSERT 
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/fm_app_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/fm_app_test.h

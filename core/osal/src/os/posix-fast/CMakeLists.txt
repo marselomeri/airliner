@@ -157,12 +157,13 @@ get_property(AIRLINER_BUILD_PREFIX GLOBAL PROPERTY AIRLINER_BUILD_PREFIX_PROPERT
 set(MOD 32)
 while(MOD GREATER 0)
   math(EXPR MOD "${MOD} - 1")
-  add_library(${AIRLINER_BUILD_PREFIX}osal-wb-osloader-test-MODULE${MOD} SHARED ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/osloader-test/ut_module.c)
+  add_library(${AIRLINER_BUILD_PREFIX}osal-wb-osloader-test-MODULE${MOD} SHARED EXCLUDE_FROM_ALL ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests/osloader-test/ut_module.c)
   set_target_properties(${AIRLINER_BUILD_PREFIX}osal-wb-osloader-test-MODULE${MOD} PROPERTIES 
     COMPILE_DEFINITIONS "MODULE_NAME=module${MOD}" 
     PREFIX ""
     OUTPUT_NAME MODULE${MOD}
     LIBRARY_OUTPUT_DIRECTORY eeprom1)
+  add_dependencies(${PARSED_ARGS_PREFIX}osal-wb-osloader-test ${AIRLINER_BUILD_PREFIX}osal-wb-osloader-test-MODULE${MOD})
 endwhile(MOD GREATER 0)
 
 

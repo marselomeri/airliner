@@ -67,6 +67,9 @@ add_airliner_app_def(sch
 )
 
 add_airliner_app_unit_test(sch-ut
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/sch_api.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/sch_apipriv.h

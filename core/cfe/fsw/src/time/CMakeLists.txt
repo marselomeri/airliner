@@ -40,6 +40,9 @@ set(CFE_TIME_SRC
 )
 	
 add_airliner_cfe_unit_test(cfe-time-ut
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../../unit-test/time_UT.c 
         ${CMAKE_CURRENT_SOURCE_DIR}/../../unit-test/ut_bsp_stubs.c
@@ -58,6 +61,7 @@ add_airliner_cfe_unit_test(cfe-time-ut
         ${OSAL_UT_STUBS_DIR}/osapi_stubs.c
         ${OSAL_UT_STUBS_DIR}/osfileapi_stubs.c
         ${CFE_TIME_SRC}
+
     INCLUDES
         ${OSAL_UT_ASSERT_DIR}/inc/
 )

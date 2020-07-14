@@ -83,6 +83,9 @@ add_airliner_app_unit_test(cvt-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/cvt_app.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/cvt_cds_utils.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/cvt_config_utils.c
+
+    NO_HELGRIND
+    NO_MASSIF
         
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
@@ -94,6 +97,9 @@ add_airliner_app_unit_test(cvt-ut
 
 add_airliner_app_unit_test(cvtlib-ut
     UTASSERT 
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cvtlib_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cvtlib_testrunner.c

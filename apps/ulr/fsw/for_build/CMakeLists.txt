@@ -28,6 +28,9 @@ add_airliner_app_def(ulr
 
 add_airliner_app_unit_test(ulr-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ulr_app_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ulr_app_test.h

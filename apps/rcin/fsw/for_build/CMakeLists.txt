@@ -59,6 +59,9 @@ add_airliner_app_def(rcin
 
 add_airliner_app_unit_test(rcin-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/rcin_app_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/rcin_app_test.h

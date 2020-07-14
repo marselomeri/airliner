@@ -30,6 +30,9 @@ add_airliner_app_def(ld
 
 add_airliner_app_unit_test(ld-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ld_app_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ld_app_test.h

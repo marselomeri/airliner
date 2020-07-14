@@ -61,6 +61,8 @@ add_airliner_app_def(ms5611
 
 add_airliner_app_unit_test(ms5611-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ms5611_app_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ms5611_app_test.h

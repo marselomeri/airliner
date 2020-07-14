@@ -61,6 +61,9 @@ add_airliner_app_def(gps
 
 add_airliner_app_unit_test(gps-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/gps_app_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/gps_app_test.h
