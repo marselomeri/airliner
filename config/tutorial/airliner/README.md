@@ -16,6 +16,11 @@
 * Java 11.0.2
 
 ***
+## Assumptions for this README:
+***
+* The repository name for airliner is airliner, denoted as <airliner\>
+
+***
 ## VirtualBox setup in Windows:
 ***
 
@@ -40,13 +45,11 @@ end
 
 5. Perform a `vagrant up` at destination of Vagrantfile
 
-	**NOTE:** This command must be run **ANY TIME** that you want to boot up the Virtual Machine
+**NOTE:** This command must be run **ANY TIME** that you want to boot up the Virtual Machine
 
 ***
 ## Airliner Initial Install & Setup:
 ***
-
-
 1. Ensure the auto update feature is off in Ubuntu as this has been known to cause version conflicts with Airliner
 
 2. [Generate an SSH key](https://docs.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
@@ -55,19 +58,21 @@ end
 
 4. Go to Windhover Lab's [Airliner repository](https://github.com/WindhoverLabs/airliner) and [clone the repository](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) using an SSH key
 
-5. Once the Airliner repository has been cloned, navigate to airliner/tools/commander directory and preform an `npm install`  
+5. Once the Airliner repository has been cloned, navigate to <airliner\>/tools/commander directory and preform an `npm install`  
 ```shell
-$~/airliner/tools/commander$ npm install
+$ /<airliner>/tools/commander$ npm install
 ```
 The following npm warnings are expected:
 
 ![2](resources/npm_install.PNG "NPM Warnings")
 
-6. To show all the options of targets available to make, use command `make` within the airliner directory
+**NOTE:** The previous steps only need to be completed **once** 
+
+6. To show all the options of targets available to make, use command `make` within the <airliner\> directory
 
 The following options are the targets currently available to make:
 ```shell
-$~/airliner$ make
+$ /<airliner>$ make
 bebop2/sitl bebop2/default ocpoc/default ocpoc/quadx shared/cvt_perfids.h tutorial/airliner tutorial/cfs typhoon_h480/sitl reference/default
 Specify a target to build.  Available targets are:
 bebop2/sitl
@@ -84,17 +89,17 @@ reference/default
 ***
 ## Airliner Target Installation & Simulation for bebop2/sitl
 ***
-1. Within the airliner directory, make the target bebop2/sitl
+1. Within the <airliner\> directory, make the target bebop2/sitl
 ```shell
-$~/airliner$ make bebop2/sitl
+$ /<airliner>$ make bebop2/sitl
 ```
 2. Navigate into the bebop2/sitl directory and `make ground_tools`
 ```shell
-$~/airliner/build/bebop2/sitl$ make ground_tools
+$ /<airliner>/build/bebop2/sitl$ make ground_tools
 ```
 3. Open three terminals starting at the following location: 
 ```shell
-$~/airliner/build/bebop2/sitl$
+$ /<airliner>/build/bebop2/sitl$
 ``` 
 
 ### Terminal 1: Simulation
@@ -102,11 +107,11 @@ $~/airliner/build/bebop2/sitl$
 1. Navigate to the host directory
 2. **Simulate using Gazebo 8**: At the moment this option is too slow to run in a VM, but feel free to try it 
 ```shell
-$~/airliner/build/bebop2/sitl/host$ ./start-gazebo
+$ /<airliner>/build/bebop2/sitl/host$ ./start-gazebo
 ``` 
 3. **Simulate using Jmavsim**: This option should always work 
 ```shell
-$~/airliner/build/bebop2/sitl/host$ ./start-jmavsim
+$ /<airliner>/build/bebop2/sitl/host$ ./start-jmavsim
 ``` 
 
 Your jmavsim simulation should look as follows if working properly:
@@ -117,14 +122,14 @@ Your jmavsim simulation should look as follows if working properly:
 ### Terminal 2: Ground System
 1. Make sure you are in teh specified location and `make start-commander`
 ```shell
-$~/airliner/build/bebop2/sitl$ make start-commander
+$ /<airliner>/build/bebop2/sitl$ make start-commander
 ```
 2. Open a web browser within Virtual Box and go to [http://localhost:3000](http://localhost:3000 "localhost:3000") for the commander interface
 
 
 ### Terminal 3: Flight Shell
 1. Navigate to the target/exe directory
-2. Run Airliner
+2. Run airliner
 ```shell
-$~/airliner/build/bebop2/sitl/target/exe$ ./airliner
+$ /<airliner>/build/bebop2/sitl/target/exe$ ./airliner
 ```
