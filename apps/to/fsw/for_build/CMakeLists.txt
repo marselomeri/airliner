@@ -97,8 +97,6 @@ add_airliner_app_unit_test(to-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ut_cfe_es_hooks_ex.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ut_cfe_es_hooks_ex.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/to_table_names.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/to_wrap_pbl.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/to_wrap_pbl.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/to_app.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/to_app.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/to_channel.c
@@ -120,9 +118,6 @@ add_airliner_app_unit_test(to-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
 
-	WRAPPERS
-		PBLIB_GetTlmSerializationFunc
-        
     VALGRIND_SUPPRESSION_FILE
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/valgrind.supp    
     
