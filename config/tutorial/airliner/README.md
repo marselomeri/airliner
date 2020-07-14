@@ -1,8 +1,7 @@
-# Airliner Setup in Windows
+# Airliner Setup in Linux
 ***
 ## Assumptions for the use of Airliner:
 ***
-* User has sudo privileges
 * User can navigate Windows Command Prompt
 * User is familiar with navigating Linux Shells
 * User is comfortable using git and navigating GitHub
@@ -25,12 +24,12 @@
 2. Within Windows, create a directory for your environment
 3. Within that directory perform a `vagrant init`
 4. Open the newly generated Vagrantfile in a text editor and uncomment/edit the following lines: 
-	
-	Line 15 of Vagrantfile:
+
+Line 15 of Vagrantfile:
 
 <pre><code>config.vm.box = "windhoverlabs/workshop"</code></pre>
 
-	Lines 52-58 of Vagrantfile:
+Lines 52-58 of Vagrantfile:
 
 <pre><code>config.vm.provider "virtualbox" do |vb|
             # Display the VirtualBox GUI when booting the machine
@@ -85,4 +84,4 @@ end</code></pre>
 
 ### Terminal 3: Flight Shell
 1. <pre><code>$~/git/airliner/build/bebop2/sitl$ cd target/exe </code></pre>
-2. <pre><code>$~/git/airliner/build/bebop2/sitl/target/exe$ sudo ./airliner </code></pre>
+2. <pre><code>$~/git/airliner/build/bebop2/sitl/target/exe$ ./airliner </code></pre>
