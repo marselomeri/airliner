@@ -171,9 +171,9 @@ function(psp_initialize_airliner_build)
 	    configure_file(${CFE_DOCS_DIR}/user_doxy.in ${CMAKE_CURRENT_BINARY_DIR}/user_doxy @ONLY)
 	    configure_file(${CFE_DOCS_DIR}/detail_doxy.in ${CMAKE_CURRENT_BINARY_DIR}/detail_doxy @ONLY)
 	
-            add_custom_target(${PARSED_ARGS_PREFIX}cfe-docs
-	        COMMAND mkdir -p ${CFS_DOCS_HTML_DIR}/detailed_design/cfe/
-	        COMMAND mkdir -p ${CFS_DOCS_HTML_DIR}/users_guide/cfe/
+        add_custom_target(${PARSED_ARGS_PREFIX}cfe-docs
+	        COMMAND mkdir -p ${CFS_DOCS_HTML_DIR}/cfe/detailed_design/
+	        COMMAND mkdir -p ${CFS_DOCS_HTML_DIR}/cfe/users_guide/
 	        COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/detail_doxy
 	        COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/user_doxy
 	        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/
@@ -303,8 +303,7 @@ function(psp_add_test)
     target_link_libraries(${AIRLINER_BUILD_PREFIX}${TEST_NAME} ${LIBS})
     target_link_libraries(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov ${LIBS} -fprofile-arcs gcov)
 
-    set_target_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME} PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast")
-    set_target_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast -fprofile-arcs -ftest-coverage")
+    set_target_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov PROPERTIES COMPILE_FLAGS "-fprofile-arcs -ftest-coverage")
 
     add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${TEST_NAME})
     add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME} ${AIRLINER_BUILD_PREFIX}${TEST_NAME})
@@ -350,7 +349,7 @@ endfunction(psp_add_test)
 function(psp_add_airliner_app)
     # Define the application name.
     set(PARSED_ARGS_APP_NAME ${ARGV0})
-    cmake_parse_arguments(PARSED_ARGS "" "DEFINITION" "CONFIG;CONFIG_SOURCES;INCLUDES;MSG_OVERRIDES" ${ARGN})
+    cmake_parse_arguments(PARSED_ARGS "" "DEFINITION" "CONFIG;CONFIG_SOURCES;INCLUDES;MSG_OVERRIDES;COMPILE_OPTIONS" ${ARGN})
 
     # Call the CMake file that actually defines the application.
     add_subdirectory(${PARSED_ARGS_DEFINITION} ${CMAKE_CURRENT_BINARY_DIR}/apps/${PARSED_ARGS_APP_NAME})
@@ -370,6 +369,7 @@ function(psp_add_airliner_app)
     get_property(APP_DEFINITION_DIR TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME} PROPERTY APP_DEFINITION_DIR)   
     get_property(DEFINITION_SOURCES_LIST TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME} PROPERTY APP_DEFINITION_SRC) 
     get_property(PROTOBUF_MSGS TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME} PROPERTY PROTOBUF_MSGS) 
+    get_property(DESIGN_COMPILE_OPTIONS TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME} PROPERTY DESIGN_COMPILE_OPTIONS) 
     
     string (REPLACE ";" " " CONFIG_SOURCES "${PARSED_ARGS_CONFIG_SOURCES}")
     string (REPLACE ";" " " DEFINITION_SOURCES "${DEFINITION_SOURCES_LIST}")
@@ -390,6 +390,7 @@ function(psp_add_airliner_app)
                 WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/target/config/apps/${PARSED_ARGS_APP_NAME}
             )
             add_dependencies(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-docs ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-user-docs)
+            add_dependencies(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-user-docs ${AIRLINER_BUILD_PREFIX}cfe-docs)
         endif(USER_DOCS_INPUT)
         if(DESIGN_DOCS_INPUT)
             if(NOT TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-docs)
@@ -403,8 +404,17 @@ function(psp_add_airliner_app)
                 WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/target/config/apps/${PARSED_ARGS_APP_NAME}
             )
             add_dependencies(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-docs ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-design-docs)
+            add_dependencies(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-design-docs ${AIRLINER_BUILD_PREFIX}cfe-docs)
         endif(DESIGN_DOCS_INPUT)
     endif(DOXYGEN_FOUND)
+    
+    if(NOT ${PARSED_ARGS_COMPILE_OPTIONS} STREQUAL "")
+        target_compile_options(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME} PRIVATE ${PARSED_ARGS_COMPILE_OPTIONS})
+    else()
+        if(NOT ${DESIGN_COMPILE_OPTIONS} STREQUAL "")
+            target_compile_options(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME} PRIVATE ${DESIGN_COMPILE_OPTIONS})
+        endif()
+    endif()
     
     if(NOT TARGET rsm)
         add_custom_target(rsm)
@@ -474,7 +484,7 @@ endfunction(psp_add_airliner_app)
 #)
 function(psp_add_airliner_app_def)
     set(PARSED_ARGS_TARGET ${ARGV0})
-    cmake_parse_arguments(PARSED_ARGS ""  "PREFIX;FILE" "COMMANDER_PLUGIN;SOURCES;LIBS;INCLUDES;PUBLIC_INCLUDES;USER_DOCS;DESIGN_DOCS;PROTOBUF_DEFS;PROTOBUF_MSGS_DIR;MSG_OVERRIDES;REFERENCE_CONFIG" ${ARGN})
+    cmake_parse_arguments(PARSED_ARGS ""  "PREFIX;FILE" "COMPILE_OPTIONS;COMMANDER_PLUGIN;SOURCES;LIBS;INCLUDES;PUBLIC_INCLUDES;USER_DOCS;DESIGN_DOCS;PROTOBUF_DEFS;PROTOBUF_MSGS_DIR;MSG_OVERRIDES;REFERENCE_CONFIG" ${ARGN})
     
     get_property(PUBLIC_APP_INCLUDES GLOBAL PROPERTY PUBLIC_APP_INCLUDES_PROPERTY)
     set(PUBLIC_APP_INCLUDES "${PUBLIC_APP_INCLUDES} ${PARSED_ARGS_PUBLIC_INCLUDES}")
@@ -518,6 +528,10 @@ function(psp_add_airliner_app_def)
     endif()
     
     set_target_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PROPERTIES APP_DEFINITION_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+    
+    if(NOT ${PARSED_ARGS_COMPILE_OPTIONS} STREQUAL "")
+        set_target_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PROPERTIES DESIGN_COMPILE_OPTIONS "${PARSED_ARGS_COMPILE_OPTIONS}")
+    endif()
        
     if(PARSED_ARGS_PROTOBUF_DEFS)
         set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE BOTH)
@@ -573,20 +587,36 @@ endfunction(psp_add_airliner_app_def)
 
 
 
+function(psp_set_airliner_app_unit_test_options)
+    set(PARSED_ARGS_TARGET ${ARGV0})
+    cmake_parse_arguments(PARSED_ARGS "" "COMPILE_OPTIONS" "" ${ARGN})
+    
+    if(PARSED_ARGS_COMPILE_OPTIONS)
+        target_compile_options(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PRIVATE ${PARSED_ARGS_COMPILE_OPTIONS})
+        target_compile_options(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PRIVATE ${PARSED_ARGS_COMPILE_OPTIONS})
+    endif()
+endfunction(psp_set_airliner_app_unit_test_options)
+
+
+
 function(psp_add_airliner_app_unit_test)
     set(PARSED_ARGS_TARGET ${ARGV0})
-    cmake_parse_arguments(PARSED_ARGS "UTASSERT;NO_MEMCHECK;NO_HELGRIND;NO_MASSIF;NANOPB" "FILE;VALGRIND_SUPPRESSION_FILE" "SOURCES;LIBS;INCLUDES;WRAPPERS;" ${ARGN})
+    cmake_parse_arguments(PARSED_ARGS "UTASSERT;NO_MEMCHECK;NO_HELGRIND;NO_MASSIF;NANOPB" "COMPILE_OPTIONS;FILE;VALGRIND_SUPPRESSION_FILE" "SOURCES;LIBS;INCLUDES;WRAPPERS;" ${ARGN})
     
     get_property(AIRLINER_BUILD_PREFIX GLOBAL PROPERTY AIRLINER_BUILD_PREFIX_PROPERTY)
     
     add_executable(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} EXCLUDE_FROM_ALL ${PARSED_ARGS_SOURCES})
     add_executable(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov EXCLUDE_FROM_ALL ${PARSED_ARGS_SOURCES})
     
+    if(PARSED_ARGS_COMPILE_OPTIONS)
+        target_compile_options(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PRIVATE ${PARSED_ARGS_COMPILE_OPTIONS})
+        target_compile_options(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PRIVATE ${PARSED_ARGS_COMPILE_OPTIONS})
+    endif()
+    
     target_link_libraries(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} ${LIBS})
     target_link_libraries(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov ${LIBS} -fprofile-arcs gcov)
     
-    set_target_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast")
-    set_target_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast -fprofile-arcs -ftest-coverage")
+    set_target_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PROPERTIES COMPILE_FLAGS "-fprofile-arcs -ftest-coverage")
     
     if(PARSED_ARGS_UTASSERT)
         set(UTASSERT_SRC
@@ -730,8 +760,7 @@ function(psp_add_airliner_cfe_unit_test)
 
     target_link_libraries(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov -fprofile-arcs gcov)
 
-    set_target_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME} PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast")
-    set_target_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast -fprofile-arcs -ftest-coverage")
+    set_target_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov PROPERTIES COMPILE_FLAGS "-fprofile-arcs -ftest-coverage")
 
     if(EXISTS ${PARSED_ARGS_VALGRIND_SUPPRESSION_FILE})
         set(MEMCHECK_COMMAND ${MEMCHECK_COMMAND} --suppressions=${PARSED_ARGS_VALGRIND_SUPPRESSION_FILE})

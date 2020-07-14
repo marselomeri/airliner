@@ -171,6 +171,12 @@ endfunction(add_airliner_app_unit_test_src)
 
 
 
+function(set_airliner_app_unit_test_options)
+    psp_set_airliner_app_unit_test_options(${ARGN})
+endfunction(set_airliner_app_unit_test_options)
+
+
+
 function(add_airliner_app_unit_test)
     set(PARSED_ARGS_TARGET ${ARGV0})
     cmake_parse_arguments(PARSED_ARGS "UTF;UTASSERT" "FILE;VALGRIND_SUPPRESSION_FILE" "SOURCES;LIBS;INCLUDES;WRAPPERS" ${ARGN})
