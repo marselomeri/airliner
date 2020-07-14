@@ -27,9 +27,11 @@
 4. Open the newly generated Vagrantfile in a text editor and uncomment/edit the following lines: 
 	
 	Line 15 of Vagrantfile:
-<pre><code>config.vm.box = "windhoverlabs/workshop" </code></pre>
+
+<pre><code>config.vm.box = "windhoverlabs/workshop"</code></pre>
 
 	Lines 52-58 of Vagrantfile:
+
 <pre><code>config.vm.provider "virtualbox" do |vb|
             # Display the VirtualBox GUI when booting the machine
             vb.gui = true
