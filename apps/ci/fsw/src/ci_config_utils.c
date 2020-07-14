@@ -83,7 +83,7 @@ int32 CI_InitTbls(void)
     /* Register Config table */
     iStatus = CFE_TBL_Register(&CI_AppData.ConfigTblHdl,
                                CI_CONFIG_TABLENAME,
-                               (sizeof(CI_ConfigTblEntry_t) * CI_CONFIG_TABLE_MAX_ENTRIES),
+                               sizeof(CI_ConfigTblEntry_t),
                                CFE_TBL_OPT_DEFAULT,
                                CI_ValidateConfigTbl);
     if (iStatus != CFE_SUCCESS)
@@ -97,7 +97,7 @@ int32 CI_InitTbls(void)
     /* Register Timeout dump table */
 	iStatus = CFE_TBL_Register(&CI_AppData.TimeoutTblHdl,
 							   CI_TIMEOUT_TABLENAME,
-							   (sizeof(CI_TimeoutTblEntry_t) * CI_CONFIG_TABLE_MAX_ENTRIES),
+							   sizeof(CI_TimeoutTblEntry_t),
 							   CFE_TBL_OPT_USR_DEF_ADDR,
 							   0);
 	if (iStatus != CFE_SUCCESS)
