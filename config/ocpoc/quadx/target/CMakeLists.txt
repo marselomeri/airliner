@@ -4,9 +4,8 @@ include(../set-vars.cmake)
 # cross toolchain or has target independent functions.
 
 initialize_airliner_build(
-    PSP ${TARGET_PSP}
-    OSAL ${TARGET_OSAL}
-    CORE_BINARY ${CMAKE_CURRENT_SOURCE_DIR}/airliner
+    PSP ${PSP}
+    OSAL ${OSAL}
     CORE_TOOLS ${CMAKE_CURRENT_SOURCE_DIR}/tools
     CONFIG
         ${CMAKE_CURRENT_SOURCE_DIR}/inc
