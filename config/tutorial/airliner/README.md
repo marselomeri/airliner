@@ -38,6 +38,10 @@ Lines 52-58 of Vagrantfile:
             vb.memory = 
 end</code></pre>
 
+When finished the editied Vagrantfile should appear similar to the image below:
+
+![1](resources/vagrantfile_setup.JPG "Edited Vagrantfile")
+
 5. Perform a `vagrant up` at destination of Vagrantfile
 
 	**NOTE:** This command must be run **ANY TIME** that you want to boot up the Virtual Machine
@@ -57,8 +61,16 @@ end</code></pre>
 8. <pre><code>$~/git$ git clone git@github.com:WindhoverLabs/airliner.git</code></pre>
 9. <pre><code>$~/git$ cd airliner/tools/commander/</code></pre>
 10. <pre><code>$~/git/airliner/tools/commander$ npm install</code></pre>
+
+The following npm warnings are expected:
+
+![2](resources/npm_install.png "NPM Warnings")
+
 11. To show all the options of targets available to make <pre><code>$~/git/airliner$ make</code></pre> 
 
+The following options are the targets currently available to make:
+
+![3](resources/make_list_of_builds.png "List of Targets")
 
 ***
 ## Airliner Target Insallation & Simulation for bebop2/sitl
@@ -75,6 +87,10 @@ end</code></pre>
 <pre><code>$~/git/airliner/build/bebop2/sitl/host$ ./start-gazebo</code></pre> 
 3. **Simulate using Jmavsim**: This option should always work 
 <pre><code>$~/git/airliner/build/bebop2/sitl/host$ ./start-jmavsim</code></pre> 
+
+Your jmavsim simulation should look as follows if working properly:
+
+![4](resources/jmavsim_start.png "Jmavsim Sucessful")
 
 
 ### Terminal 2: Ground System
