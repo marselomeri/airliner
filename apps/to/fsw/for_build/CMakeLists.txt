@@ -84,21 +84,19 @@ add_airliner_app_unit_test(to-ut
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/to_app_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/to_app_test.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/to_cmds_test.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/to_cmds_test.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/to_config_tbl_test.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/to_config_tbl_test.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/to_test_utils.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/to_test_utils.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/to_testrunner.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/to_custom_stubs.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/to_custom_stubs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/to_custom_hooks.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/to_custom_hooks.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ut_osapi_hooks.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ut_osapi_hooks.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ut_cfe_es_hooks_ex.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ut_cfe_es_hooks_ex.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ut_to_custom_hooks.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ut_to_custom_hooks.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ut_to_custom_stubs.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ut_to_custom_stubs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/to_table_names.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/to_app.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/to_app.h
@@ -122,11 +120,38 @@ add_airliner_app_unit_test(to-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
 
     VALGRIND_SUPPRESSION_FILE
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/valgrind.supp    
-    
-    MSG_OVERRIDES   ${CMAKE_CURRENT_SOURCE_DIR}/to_msg_overrides.json 
-
-    COMMANDER_PLUGIN
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/valgrind.supp  
 )
 
+
+add_airliner_app_unit_test(to-unreachable-code-ut
+    UTASSERT 
+    NO_HELGRIND
+    NO_MASSIF
+
+    SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/test_utilities.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/test_utilities.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/to_app_test_unreachable.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/to_test_utils.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/to_test_utils.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/to_testrunner_unreachable.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ut_osapi_hooks.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ut_osapi_hooks.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ut_cfe_es_hooks_ex.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ut_cfe_es_hooks_ex.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ut_to_custom_hooks.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ut_to_custom_hooks.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ut_to_custom_stubs.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ut_to_custom_stubs.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/to_table_names.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/to_config_utils.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/to_config_utils.h
+        
+    INCLUDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
+
+    VALGRIND_SUPPRESSION_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/valgrind.supp  
+)

@@ -4,8 +4,8 @@ include(../set-vars.cmake)
 # cross toolchain or has target independent functions.
 
 initialize_airliner_build(
-    PSP ${TARGET_PSP}
-    OSAL ${TARGET_OSAL}
+    PSP ${PSP}
+    OSAL ${OSAL}
     CORE_TOOLS ${CMAKE_CURRENT_SOURCE_DIR}/tools
     CONFIG
         ${PROJECT_SOURCE_DIR}/core/mission_inc/
@@ -166,6 +166,7 @@ add_airliner_app(
     to
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/to/fsw/for_build
     CONFIG_SOURCES
+        ${PROJECT_SOURCE_DIR}/apps/to/tables/to_backup_cfg.c
         ${PROJECT_SOURCE_DIR}/apps/to/fsw/mission_inc/to_mission_cfg.h
         ${PROJECT_SOURCE_DIR}/apps/to/fsw/mission_inc/to_perfids.h
         ${PROJECT_SOURCE_DIR}/apps/to/fsw/platform_inc/to_msgids.h

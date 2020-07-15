@@ -44,11 +44,6 @@ add_airliner_app(
 )
 
 add_airliner_app(
-    pblib
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/pblib/fsw/for_build
-)
-
-add_airliner_app(
     prmlib
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/prmlib/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/prm
@@ -211,6 +206,7 @@ add_airliner_app(
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/to/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/to
     CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/to/tables/to_backup_cfg.c
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/to/to_custom.c
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/to/to_custom_udp.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/to_platform_cfg.h

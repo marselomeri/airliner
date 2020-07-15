@@ -31,34 +31,58 @@
 *
 *****************************************************************************/
 
-#include "to_config_tbl_test.h"
-#include "to_test_utils.h"
+#ifndef TO_STUBS_H
+#define TO_STUBS_H
 
-#include "to_msg.h"
+#include "to_channel.h"
 
-#include "uttest.h"
-#include "ut_osapi_stubs.h"
-#include "ut_cfe_sb_stubs.h"
-#include "ut_cfe_es_stubs.h"
-#include "ut_cfe_es_hooks.h"
-#include "ut_cfe_evs_stubs.h"
-#include "ut_cfe_evs_hooks.h"
-#include "ut_cfe_time_stubs.h"
-#include "ut_cfe_psp_memutils_stubs.h"
-#include "ut_cfe_tbl_stubs.h"
-#include "ut_cfe_fs_stubs.h"
-#include "ut_cfe_time_stubs.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-
-void TO_Config_Tbl_Test_Case1(void)
+typedef enum
 {
+    UT_TO_CHANNEL_STATE_INDEX,
+    UT_TO_VERIFYCMDLENGTH_INDEX,
+    UT_TO_CHANNEL_LOCKBYINDEX_INDEX,
+    UT_TO_CHANNEL_UNLOCKBYINDEX_INDEX,
+    UT_TO_CHANNEL_LOCKBYREF_INDEX,
+    UT_TO_CHANNEL_UNLOCKBYREF_INDEX,
+    UT_TO_MESSAGEFLOW_GETOBJECT_INDEX,
+    UT_TO_CHANNEL_OPENCHANNEL_INDEX,
+    UT_TO_MAX_INDEX
+} Ut_TO_INDEX_t;
 
-}
 
-
-void TO_Config_Tbl_Test_AddTestCases(void)
+typedef struct
 {
-    UtTest_Add(TO_Config_Tbl_Test_Case1, TO_Test_Setup_EmptyConfig, TO_Test_TearDown, "TO_Config_Tbl_Test_Case1");
+    uint8    (*TO_Channel_State)(uint8 index);
+    osalbool (*TO_VerifyCmdLength)(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
+    void     (*TO_Channel_LockByIndex)(uint8 index);
+    void     (*TO_Channel_UnlockByIndex)(uint8 index);
+    void     (*TO_Channel_LockByRef)(TO_ChannelData_t *channel);
+    void     (*TO_Channel_UnlockByRef)(TO_ChannelData_t *channel);
+    TO_MessageFlow_t* (*TO_MessageFlow_GetObject)(TO_ChannelData_t* channel, CFE_SB_MsgId_t MsgID, uint32 *Index);
+    int32 (*TO_Channel_OpenChannel)(const uint32 index, const char *ChannelName,
+            const char *ConfigTableName, const char *ConfigTableFileName, TO_ChannelTbl_t *BackupTbl,
+            const char *DumpTableName, const uint32 CfCntSemMax, const char *CfCntSemName);
+} Ut_TO_HookTable_t;
+
+typedef struct
+{
+    int32   Value;
+    uint32  Count;
+    boolean ContinueReturnCodeAfterCountZero;
+} Ut_TO_ReturnCodeTable_t;
+
+void Ut_TO_Reset(void);
+void Ut_TO_SetFunctionHook(uint32 Index, void *FunPtr);
+void Ut_TO_SetReturnCode(uint32 Index, int32 RtnVal, uint32 CallCnt);
+void Ut_TO_ContinueReturnCodeAfterCountZero(uint32 Index);
+
+
+#ifdef __cplusplus
 }
+#endif
 
-
+#endif /* TO_STUBS_H */

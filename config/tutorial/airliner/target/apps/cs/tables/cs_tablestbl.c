@@ -10,8 +10,8 @@
 CS_Def_Tables_Table_Entry_t      CS_TablesTable[CS_MAX_NUM_TABLES_TABLE_ENTRIES] =
 {
     /*         State             Name   */
-	/*   0 */ { CS_STATE_ENABLED,   "TO.GRND_BIN_CFG"    },
-	/*   1 */ { CS_STATE_ENABLED,   "TO.GRND_PB_CFG"   },
+	/*   0 */ { CS_STATE_ENABLED,   "TO.UDP_CFG"    },
+	/*   1 */ { CS_STATE_EMPTY,   ""    },
     /*   2 */ { CS_STATE_EMPTY,   ""    },
     /*   3 */ { CS_STATE_EMPTY,   ""    },
     /*   4 */ { CS_STATE_EMPTY,   ""    },

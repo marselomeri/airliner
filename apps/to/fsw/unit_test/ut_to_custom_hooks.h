@@ -31,18 +31,20 @@
 *
 *****************************************************************************/
 
-#ifndef TO_CMDS_TEST_H
-#define TO_CMDS_TEST_H
+#include "cfe.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "to_channel.h"
 
-void TO_Cmds_Test_AddTestCases(void);
-
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif /* TO_CMDS_TEST_H */
+int32  Ut_TO_Custom_Init(void);
+int32  Ut_TO_Custom_InitEvent(int32 ind);
+int32  Ut_TO_OutputChannel_CustomBuildup(uint32 index);
+int32  Ut_TO_OutputChannel_CustomTeardown(uint32 index);
+void   Ut_TO_OutputChannel_CustomCleanupAll(void);
+void   Ut_TO_OutputChannel_ProcessNewCustomCmds(CFE_SB_Msg_t* MsgPtr);
+uint8  Ut_TO_OutputChannel_Status(uint32 index);
+uint32 Ut_TO_GetCustomVersion(void);
+void   Ut_TO_PrintCustomVersion(void);
+void   Ut_TO_ResetCustomChannelCounters(void);
+void   Ut_TO_UpdateCustomDataFromTable(uint16 ChannelID,
+                                  osalbool sendEvent,
+                                  osalbool abandonCurrentMsg);

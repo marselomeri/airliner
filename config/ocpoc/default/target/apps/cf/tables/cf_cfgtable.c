@@ -59,8 +59,8 @@ cf_config_table_t     CF_ConfigTable =
             CF_SPACE_TO_GND_PDU_MID,        /* Space To Gnd PDU MsgId */
             100,                            /* Pending Queue Depth */
             100,                            /* History Queue Depth */
-            "TOPBOutputChan0",              /* Playback Channel Name   */
-            "CFTOSemId",                    /* Handshake Semaphore Name   */
+            "OutputChan0",                  /* Playback Channel Name   */
+            "TO_CF_CH0_SEM",                /* Handshake Semaphore Name   */
         
             {   /* Polling Directory Array */
                 
@@ -192,8 +192,8 @@ cf_config_table_t     CF_ConfigTable =
             CF_SPACE_TO_GND_PDU_MID,        /* Space To Gnd PDU MsgId */
             100,                            /* Pending Queue Depth */
             100,                            /* History Queue Depth */
-            "TOPBOutputChan0",              /* Playback Channel Name   */
-            "CFTOSemId",                    /* Handshake Semaphore Name   */
+            "OutputChan1",                  /* Playback Channel Name   */
+            "TO_CF_CH1_SEM",                /* Handshake Semaphore Name   */
         
             {   /* Polling Directory Array */
                 

@@ -15,54 +15,54 @@ module.exports = class CfeCdrFlightAppsPlugin extends CdrFlightAppsPlugin {
             	shortDescription: 'Telemetry Output',
                 longDescription: 'Telemetry Output',
                 nodes: {
-          		    main: {
-          				type: CdrFlightAppsPlugin.ContentType.LAYOUT,
-          				shortDescription: 'Main',
-          				longDescription: 'Main AMC.',
-          				filePath: '/main_layout.lyt'
-          			},
-          			cdh: {
-          				type: CdrFlightAppsPlugin.ContentType.PANEL,
-          				shortDescription: 'TO Command Counters',
-          				longDescription: 'Telemetry Output Command and Data Handling',
-          				filePath: '/cdh.pug'
-          			},
-          			hk: {
-          				type: CdrFlightAppsPlugin.ContentType.PANEL,
-          				shortDescription: 'TO Housekeeping',
-          				longDescription: 'Telemetry Output Housekeeping.',
-          				filePath: '/hk.pug'
-          			},
-          			diag: {
-          				type: CdrFlightAppsPlugin.ContentType.PANEL,
-          				shortDescription: 'TO Diagnostic',
-          				longDescription: 'Telemetry Output Diagnostic.',
-          				filePath: '/diag.pug'
-          			},
-          			diag_msg_flow: {
-          				type: CdrFlightAppsPlugin.ContentType.PANEL,
-          				shortDescription: 'TO Diagnostic - Message Flows',
-          				longDescription: 'Telemetry Output Diagnostic - Message Flows.',
-          				filePath: '/diag_msg_flow.pug'
-          			},
-          			diag_pqueue: {
-          				type: CdrFlightAppsPlugin.ContentType.PANEL,
-          				shortDescription: 'TO Diagnostic - Priority Queues',
-          				longDescription: 'Telemetry Output Diagnostic - Priority Queues.',
-          				filePath: '/diag_pqueue.pug'
-          			},
-          			diag_oqueue: {
-          				type: CdrFlightAppsPlugin.ContentType.PANEL,
-          				shortDescription: 'TO Diagnostic - Output Queue',
-          				longDescription: 'Telemetry Output Diagnostic - Output Queue.',
-          				filePath: '/diag_oqueue.pug'
-          			},
-          			tlm_app: {
-          				type: CdrFlightAppsPlugin.ContentType.PANEL,
-          				shortDescription: 'Tlm Ctrl',
-          				longDescription: 'Telemetry Control',
-          				filePath: '/tlm_app.pug'
-          			}
+                    main: {
+                        type: CdrFlightAppsPlugin.ContentType.LAYOUT,
+                        shortDescription: 'Main',
+                        longDescription: 'Main AMC.',
+                        filePath: '/main_layout.lyt'
+                    },
+                    hk: {
+                        type: CdrFlightAppsPlugin.ContentType.PANEL,
+                        shortDescription: 'TO Housekeeping',
+                        longDescription: 'Telemetry Output Housekeeping.',
+                        filePath: '/hk.pug'
+                    },
+                    channel_hk: {
+                        type: CdrFlightAppsPlugin.ContentType.PANEL,
+                        shortDescription: 'TO Channel Housekeeping',
+                        longDescription: 'Telemetry Output Channel Housekeeping.',
+                        filePath: '/channel_hk.pug'
+                    },
+                    diag: {
+                        type: CdrFlightAppsPlugin.ContentType.PANEL,
+                        shortDescription: 'TO Diagnostic',
+                        longDescription: 'Telemetry Output Diagnostic.',
+                        filePath: '/diag.pug'
+                    },
+                    diag_msg_flow: {
+                        type: CdrFlightAppsPlugin.ContentType.PANEL,
+                        shortDescription: 'TO Diagnostic - Message Flows',
+                        longDescription: 'Telemetry Output Diagnostic - Message Flows.',
+                        filePath: '/diag_msg_flow.pug'
+                    },
+                    diag_pqueue: {
+                        type: CdrFlightAppsPlugin.ContentType.PANEL,
+                        shortDescription: 'TO Diagnostic - Priority Queues',
+                        longDescription: 'Telemetry Output Diagnostic - Priority Queues.',
+                        filePath: '/diag_pqueue.pug'
+                    },
+                    diag_oqueue: {
+                        type: CdrFlightAppsPlugin.ContentType.PANEL,
+                        shortDescription: 'TO Diagnostic - Output Queue',
+                        longDescription: 'Telemetry Output Diagnostic - Output Queue.',
+                        filePath: '/diag_oqueue.pug'
+                    },
+                    tlm_app: {
+                        type: CdrFlightAppsPlugin.ContentType.PANEL,
+                        shortDescription: 'Tlm Ctrl',
+                        longDescription: 'Telemetry Control',
+                        filePath: '/tlm_app.pug'
+                    }
                 }
             }
         };
