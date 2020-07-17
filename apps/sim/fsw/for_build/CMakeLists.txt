@@ -78,6 +78,9 @@ add_airliner_app_def(sim
 
 add_airliner_app_unit_test(sim-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+        
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/sim_app_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/sim_app_test.h
@@ -99,7 +102,7 @@ add_airliner_app_unit_test(sim-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/simlib_main.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/sim_custom_stubs.c
         ${PX4LIB_LIB_SOURCES}
-        
+
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/

@@ -29,6 +29,9 @@ add_airliner_app_def(qae
 
 add_airliner_app_unit_test(qae-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/qae_app_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/qae_app_test.h

@@ -13,6 +13,7 @@
 #define TO_SEND_TLM_MID                              (0x1903)
 #define TO_DATA_TYPE_MID                             (0x0904)
 #define TO_DIAG_TLM_MID                              (0x0911)
+#define TO_DIAG_MSG_FLOW_MID                         (0x0912)
 
 /* CI                                                      */
 /* Range: 0x900 - 0x90f                                    */

@@ -72,7 +72,7 @@ void Test_Vector4F_Length(void)
 
     /* Verify results */
     UtAssert_True(fabs(expectedLength - actualLength) <= FLT_EPSILON, "vector.Length() == expectedLength");
-    UtAssert_True(vector.Length() == expectedResult, "vector.Length() == expectedResult");
+    UtAssert_True(fabs(vector.Length() - expectedResult) <= FLT_EPSILON, "vector.Length() == expectedResult");
 }
 
 

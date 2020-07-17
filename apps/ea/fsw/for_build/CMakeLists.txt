@@ -60,6 +60,7 @@ add_airliner_app_def(ea
 
 add_airliner_app_unit_test(ea-ut
     UTASSERT 
+        
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ea_app_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ea_app_test.h
@@ -76,7 +77,7 @@ add_airliner_app_unit_test(ea-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ea_events.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ea_msg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ea_version.h
-        
+
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/

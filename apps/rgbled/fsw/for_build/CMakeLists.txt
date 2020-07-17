@@ -60,6 +60,8 @@ add_airliner_app_def(rgbled
 
 add_airliner_app_unit_test(rgbled-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/rgbled_app_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/rgbled_app_test.h

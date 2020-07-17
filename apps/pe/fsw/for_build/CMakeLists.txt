@@ -34,6 +34,9 @@ add_airliner_app_def(pe
 
 add_airliner_app_unit_test(pe-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/pe_app_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/pe_app_test.h
@@ -149,8 +152,6 @@ add_airliner_app_unit_test(pe-ut
         #${CMAKE_CURRENT_SOURCE_DIR}/../../../px4lib/fsw/src/math/BlockDelay.cpp
         #${CMAKE_CURRENT_SOURCE_DIR}/../../../px4lib/fsw/public_inc/math/BlockDelay.hpp
 
-
-        
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/

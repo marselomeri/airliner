@@ -2,13 +2,16 @@ set(APP_NAME to)
 
 add_airliner_app_table(
     ${APP_NAME}
-    NAME to_ground_dev
-    SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/to_ground_dev.c
+    NAME to_udp_cfg
+    SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/to_udp_cfg.c
     INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/src/
 )
 
 add_airliner_app_unit_test(to-custom-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/to_app_custom_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/to_app_custom_test.h

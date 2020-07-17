@@ -80,12 +80,28 @@ void Test_Vector10F_Length(void)
 {
 	math::Vector10F vector(1.5f, 2.5f, 3.5f, 4.5f, 5.5f, 6.5f,
                            7.5f, 8.5f, 9.5f, 10.5f);
-	float expectedLength = sqrtf((1.5f)*(1.5f) + (2.5f)*(2.5f) + (3.5f)*(3.5f) +
+
+	/* The static declaration below is to fix a unit test issue that shows itself
+	 * when you build the tests with maximum performance optimization.  Without
+	 * the static declaration, the compiler can sometimes optimize the code such
+	 * that the last calculated value, "actualLength", is not actually stored in
+	 * memory.  Since both variables are floats, the compile leaves the value in
+	 * the FPU registers so the "expectedLength - actualLength" computation is
+	 * performed without having to reload the registers.  When values are copied
+	 * back to RAM, only the 32-bit value is copied back to RAM.  When the value
+	 * is used directly from the FPU register without copying it back to RAM, its
+	 * actually using a 64-bit value.  With enough computations, this increased
+	 * precision can result in divergence greater than FLT_EPSILON.
+	 *
+	 * Technically, this is a more correct answer.  That is another conversation.
+	 * For now, we want to limit calculations to 32-bits only.
+	 */
+	static float expectedLength = sqrtf((1.5f)*(1.5f) + (2.5f)*(2.5f) + (3.5f)*(3.5f) +
                                  (4.5f)*(4.5f) + (5.5f)*(5.5f) + (6.5f)*(6.5f) +
                                  (7.5f)*(7.5f) + (8.5f)*(8.5f) + (9.5f)*(9.5f) +
                                  (10.5f)*(10.5f)
     );
-    float actualLength = vector.Length();
+    static float actualLength = vector.Length();
 
 	/* Verify results */
     UtAssert_True(fabs(expectedLength - actualLength) <= FLT_EPSILON, "vector.Length() == expectedLength");

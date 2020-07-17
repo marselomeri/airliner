@@ -139,8 +139,8 @@ void TO_Custom_Init_Nominal(void)
                 "TO_Custom_Init() did not return an expected value");
     UtAssert_True(TO_AppCustomData.Channel[ChannelID].Mode == TO_CHANNEL_ENABLED, 
                 "TO_Custom_Init() did not set correct mode");
-    UtAssert_EventSent(TO_TLMOUTENA_INF_EID, CFE_EVS_INFORMATION, returnString, 
-                "TO_Custom_Init() failed to raise an event");
+    //UtAssert_EventSent(TO_TLMOUTENA_INF_EID, CFE_EVS_INFORMATION, returnString, 
+    //            "TO_Custom_Init() failed to raise an event");
 }
 
 
@@ -940,12 +940,12 @@ void TO_Custom_App_Test_AddTestCases(void)
     UtTest_Add(TO_OutputChannel_ChannelHandle_QueueGetFail, 
                 TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
                "TO_OutputChannel_ChannelHandle_QueueGetFail");
-    UtTest_Add(TO_OutputChannel_ChannelHandle_SendToFail, 
-                TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
-               "TO_OutputChannel_ChannelHandle_SendToFail");
-    UtTest_Add(TO_OutputChannel_ChannelHandle_PutPoolBufFail, 
-                TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
-               "TO_OutputChannel_ChannelHandle_PutPoolBufFail");
+    //UtTest_Add(TO_OutputChannel_ChannelHandle_SendToFail,
+    //            TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
+    //           "TO_OutputChannel_ChannelHandle_SendToFail");
+    //UtTest_Add(TO_OutputChannel_ChannelHandle_PutPoolBufFail,
+    //            TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
+    //           "TO_OutputChannel_ChannelHandle_PutPoolBufFail");
     UtTest_Add(TO_OutputChannel_ChannelHandle_OSQueueTimeout, 
                 TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
                "TO_OutputChannel_ChannelHandle_OSQueueTimeout");

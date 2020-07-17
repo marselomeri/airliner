@@ -11,18 +11,20 @@ add_airliner_app_unit_test_src(${APP_NAME} SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/t
 
 add_airliner_app_unit_test(ci-custom-ut
     UTASSERT 
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/ci_testrunner.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/ci_custom_test.c
-	    ${CMAKE_CURRENT_SOURCE_DIR}/ci_custom.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/ci_custom.c
         ${PROJECT_SOURCE_DIR}/apps/ci/fsw/src/ci_app.c
         ${PROJECT_SOURCE_DIR}/apps/ci/fsw/src/ci_config_utils.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/ci_mock_os_calls.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/ci_test_utils.c
         ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_es_hooks.c
-        ${PROJECT_SOURCE_DIR}/apps/pblib/fsw/src/pb_lib.c
         
-	INCLUDES
+    INCLUDES
         ${PROJECT_SOURCE_DIR}/apps/ci/fsw/src/
         
     WRAPPERS

@@ -22,4 +22,4 @@ table.table.table-condensed
         div(data-cdr={tlm:[{name:'/TO/TO_ChannelDiagTlm_t/OQueue.HighwaterMark'}]}) ---
               
 footer.btn-group(role="group")      
-  button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/TO_SendDiagCmd_t'}}) Send Diagnostics
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/TO_SendDiagCmd_t', argument:[{name:'ChannelIdx', value: 0}]}}) Send Diagnostics

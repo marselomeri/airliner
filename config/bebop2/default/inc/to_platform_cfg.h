@@ -7,17 +7,97 @@ extern "C" {
 
 #include "cfe_platform_cfg.h"
 
-
-#define TO_CUSTOM_CHILD_TASK_FLAGS     (OS_ENABLE_CORE_0)
-#define TO_CUSTOM_TASK_STACK_SIZE      (131072)
-#define TO_UDP_CHANNEL_ADDRESS         "192.168.2.215"
-#define TO_UDP_CHANNEL_PORT            (5011)
-
 /*
-** to Platform Configuration Parameter Definitions
+** Platform Configuration Parameter Definitions
 */
 
-/** \brief Mission specific version number for TO application
+
+/** \tocfg Child task flags
+**
+**  \par Description:
+**       These are optional flags passed to the #CFE_ES_CreateChildTask
+**       function when creating the CFE child task.
+**
+*/
+#define TO_CUSTOM_CHILD_TASK_FLAGS     (OS_ENABLE_CORE_0)
+
+
+/** \tocfg Child task stack size
+**
+**  \par Description:
+**       Child task stack size passed to the #CFE_ES_CreateChildTask
+**       function when creating the CFE child task.  Stack size is in
+**       bytes.
+**
+*/
+#define TO_CUSTOM_TASK_STACK_SIZE      (131072)
+
+
+/** \tocfg Default telemetry destination IP address
+**
+**  \par Description:
+**       Default IP address to send the telemetry stream to.  This is default
+**       only and can be changed by command at runtime.
+**
+*/
+#define TO_UDP_CHANNEL_ADDRESS         "192.168.2.215"
+
+
+/** \tocfg Default telemetry destination UDP port
+**
+**  \par Description:
+**       Default UDP port to send the telemetry stream to.  This is default
+**       only and can be changed by command at runtime.
+**
+*/
+#define TO_UDP_CHANNEL_PORT            (5011)
+
+
+/** \tocfg Message Flow packet limit
+**
+**  \par Description:
+**       This is the maximum number of message flow entries that can fit in
+**       a message flow diagnostic message.
+**
+*/
+#define TO_MSG_FLOW_PKT_LIMIT          (200)
+
+
+/** \tocfg Maximum message length
+**
+**  \par Description:
+**       The maximum size that an output telemetry message can be.  This is in
+**       bytes.  If a message exceeds this size, it will be dropped by the
+**       classifier.
+**
+*/
+#define TO_MAX_MSG_LENGTH              (32767)
+
+/** \tocfg The UDP channel's CF throttling semaphore name
+**
+**  \par Limits:
+**       Two channels in CF must not have the same semaphore name. This must be unique
+**       compared to other channels' throttling semaphores.
+*/
+#define TO_UDP_CF_THROTTLE_SEM_NAME    "TO_CF_CH0_SEM"
+
+
+/** \tocfg The UDP channel Name
+*/
+#define TO_UDP_CHANNEL_NAME             "UDP"
+
+
+
+/** \tocfg The UDP channel's default and maximum value for the CF
+ *         throttling semaphore
+**
+**  \par Limits:
+**       Must not be larger than the TO_DATA_PIPE_DEPTH
+*/
+#define TO_UDP_CF_MAX_PDUS    (4)
+
+
+/** \tocfg Mission specific version number for TO application
 **  
 **  \par Description:
 **       An application version number consists of four parts:
@@ -32,21 +112,21 @@ extern "C" {
 */
 #define TO_MISSION_REV                (1)
 
-/** \brief Pipe depth for the Scheduler pipe 
+/** \tocfg Pipe depth for the Scheduler pipe
 **
 **  \par Limits:
 **       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
 */
 #define TO_SCH_PIPE_DEPTH             (2)
 
-/** \brief Pipe name for the Scheduler pipe 
+/** \tocfg Pipe name for the Scheduler pipe
 **
 **  \par Limits:
 **       Note, this name must fit in OS_MAX_API_NAME.
 */
 #define TO_SCH_PIPE_NAME              ("TO_SCH_PIPE")
 
-/** \brief The SB pend behavior type for the Scheduler pipe.
+/** \tocfg The SB pend behavior type for the Scheduler pipe.
 **
 **  \par Limits:
 **       One of: CFE_SB_POLL, CFE_SB_PEND_FOREVER, or the 
@@ -56,7 +136,7 @@ extern "C" {
 */
 #define TO_SCH_PIPE_PEND_TIME         (2000)
 
-/** \brief The number of WAKEUP messages to reserve on the Scheduler pipe.
+/** \tocfg The number of WAKEUP messages to reserve on the Scheduler pipe.
 **
 **  \par Limits:
 **       minimum of 1, max limited to CFE_SB_MAX_PIPE_DEPTH-1.  Note the
@@ -65,7 +145,7 @@ extern "C" {
 */
 #define TO_SCH_PIPE_WAKEUP_RESERVED   (1)
 
-/** \brief The number of SEND_HK messages to reserve on the Scheduler pipe.
+/** \tocfg The number of SEND_HK messages to reserve on the Scheduler pipe.
 **
 **  \par Limits:
 **       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.  Note the
@@ -74,34 +154,34 @@ extern "C" {
 */
 #define TO_SCH_PIPE_SEND_HK_RESERVED  (1)
 
-/** \brief Pipe depth for the command pipe
+/** \tocfg Pipe depth for the command pipe
 **
 **  \par Limits:
 **       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
 */
 #define TO_CMD_PIPE_DEPTH             (4)
 
-/** \brief Pipe name for the Scheduler pipe 
+/** \tocfg Pipe name for the Scheduler pipe
 **
 **  \par Limits:
 **       Note, this name must fit in OS_MAX_API_NAME.
 */
 #define TO_CMD_PIPE_NAME              ("TO_CMD_PIPE")
 
-/** \brief Pipe depth for the data pipe 
+/** \tocfg Pipe depth for the data pipe
 **
 **  \par Limits:
 **       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
 */
 #define TO_DATA_PIPE_DEPTH            (CFE_SB_MAX_PIPE_DEPTH)
 
-/** \brief The config table default filename
+/** \tocfg The config table default filename
 **
 **  \par Limits:
 **       The length of each string, including the NULL terminator cannot exceed
 **       the #OS_MAX_PATH_LEN value.
 */
-#define TO_GROUND_DEVUDP_CONFIG_TABLE_FILENAME    ("/cf/apps/to_ground_dev.tbl")
+#define TO_UDP_CONFIG_TABLE_FILENAME    ("/cf/apps/to_udp_cfg.tbl")
 
 
 #define TO_MAX_MEMPOOL_BLK_SIZES      (8)
@@ -127,22 +207,49 @@ extern "C" {
 #define TO_MAX_BLOCK_SIZE       (TO_MEM_BLOCK_SIZE_07 + TO_MEM_BLOCK_SIZE_07)
 
 /**
- * \brief Defines the table identification name used for table registration.
+ * \tocfg Defines the table identification name used for table registration
+ *        of the configuration table.
  */
-#define TO_GROUND_DEVUDP_CONFIG_TABLENAME        ("GRND_DEV_CFG")
-#define TO_GROUND_DEVUDP_DUMP_TABLENAME          ("GRND_DEV_DMP")
+#define TO_UDP_CONFIG_TABLENAME        "UDP_CFG"
 
-/** \brief The timeout value, in milliseconds, to wait for ES application startup sync.
+/**
+ * \tocfg Defines the table identification name used for table registration
+ *        of the dump table.
+ */
+#define TO_UDP_DUMP_TABLENAME          "UDP_DMP"
+
+/** \tocfg The timeout value, in milliseconds, to wait for ES application startup sync.
 **
 **  \par Limits:
 **       This parameter must be at least 1000 (ms).
 */
 #define TO_STARTUP_TIMEOUT_MSEC    (1000)
 
-/* TODO:  Add more platform configuration parameter definitions here, if necessary. */
+/** \tocfg Maximum number of messages to classify per processing frame.
+*/
 #define TO_MAX_MSGS_OUT_PER_FRAME (100)
-#define TO_MAX_CHANNELS	          (2)
+
+/** \tocfg Maximum number of messages to classify per processing frame.
+*/
+
+/** \tocfg Maximum number configurable channels.
+ *
+**  \par Description:  This is normally set to 1.
+*/
+#define TO_MAX_CHANNELS	          (1)
+
+/** \tocfg Channel output queue depth.
+ *
+**  \par Description:  This defines how many messages can be queued into the
+**       channel output queue by the scheduler.
+*/
 #define TO_OUTPUT_QUEUE_DEPTH     (20)
+
+/** \tocfg Development UDP channel task priority.
+ *
+**  \par Description:  This defines the priority of the development UDP
+**       child task.
+*/
 #define TO_UDP_CHANNEL_TASK_PRIORITY (119)
 
 /**
@@ -159,7 +266,7 @@ extern "C" {
 **       an overhead cost in the memory pool.  The value must be larger than what is
 **       needed.
 */
-#define TO_NUM_BYTES_IN_MEM_POOL        (TO_MAX_CHANNELS * TO_OUTPUT_QUEUE_DEPTH * TO_MAX_BLOCK_SIZE)
+#define TO_NUM_BYTES_IN_MEM_POOL        (200 * TO_MAX_BLOCK_SIZE)
 
 
 #ifdef __cplusplus

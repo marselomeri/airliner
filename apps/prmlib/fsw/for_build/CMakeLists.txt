@@ -95,6 +95,9 @@ add_airliner_app_unit_test(prmlib-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/prm_test_utils.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/prm_testrunner.c
 
+    NO_HELGRIND
+    NO_MASSIF
+
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
 		${CMAKE_CURRENT_SOURCE_DIR}/../public_inc/
@@ -102,6 +105,9 @@ add_airliner_app_unit_test(prmlib-ut
 
 #add_airliner_app_unit_test(prm-ut
 #    UTASSERT 
+#    NO_HELGRIND
+#    NO_MASSIF
+#        
 #    SOURCES
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/prm_app_test.c
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/prm_cds_tbl_test.c
@@ -112,7 +118,7 @@ add_airliner_app_unit_test(prmlib-ut
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../src/prm_app.c
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../src/prm_cds_utils.c
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../src/prm_config_utils.c
-#        
+#
 #    INCLUDES
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../src/
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/

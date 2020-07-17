@@ -62,6 +62,9 @@ add_airliner_app_def(mac
 
 add_airliner_app_unit_test(mac-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mac_app_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mac_app_test.hpp

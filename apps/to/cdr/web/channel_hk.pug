@@ -1,0 +1,58 @@
+table.table.table-condensed
+  tbody
+    tr
+      th Cmd Count
+      td
+        div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/usCmdCnt'}]}) ---
+    tr
+      th Error Count
+      td
+        div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/usCmdErrCnt'}]}) ---
+    tr
+      th Messages Ingested
+      td
+        div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/uiQueuedMsgCountChannel[0]'}]}) ---
+    tr
+      th Messages Dropped
+      td
+        div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/uiDropMsgCountChannel[0]'}]}) ---
+    tr
+      th Max Channel Memory
+      td
+        div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/ChannelMaxMem'}]}) ---
+    tr
+      th Memory In Use
+      td
+        div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/ChannelMemInfo[0].MemInUse'}]}) ---
+    tr
+      th Peak Memory In Use
+      td
+        div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/ChannelMemInfo[0].PeakMemInUse'}]}) ---
+    tr
+      th Messages Queued for Output
+      td
+        div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/QueuedInOutputChannel[0]'}]}) ---
+    tr
+      th Messages Sent
+      td
+        div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/uiSentMsgCountChannel[0]'}]}) ---
+    tr
+      th Bytes Sent
+      td
+        div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/uiBytesSentChannel[0]'}]}) ---
+    tr
+      th Send Failures
+      td
+        div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/uiFailedMsgCountChannel[0]'}]}) ---
+              
+footer.btn-group(role="group")          
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/Reset'}}) Reset   
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/TO_AddMessageFlowCmd_t', argument:[{name:'ChannelIdx', value: 0}]}}) Add Message Flow
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/TO_RemoveMessageFlowCmd_t', argument:[{name:'ChannelIdx', value: 0}]}}) Remove Message Flow  
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/TO_QueryMessageFlowCmd_t', argument:[{name:'ChannelIdx', value: 0}]}}) Query Message Flow   
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/TO_QueryPriorityQueueCmd_t', argument:[{name:'ChannelIdx', value: 0}]}}) Query Priority Queue   
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/TO_QueryOutputChannelCmd_t', argument:[{name:'ChannelIdx', value: 0}]}}) Query Output Channel  
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/TO_EnableChannelCmd_t', argument:[{name:'ChannelIdx', value: 0}]}}) Enable Channel  
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/TO_DisableChannelCmd_t', argument:[{name:'ChannelIdx', value: 0}]}}) Disable Channel 
+
+- });

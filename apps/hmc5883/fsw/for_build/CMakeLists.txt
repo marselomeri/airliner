@@ -61,6 +61,9 @@ add_airliner_app_def(hmc5883
 
 add_airliner_app_unit_test(hmc5883-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+        
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/hmc5883_app_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/hmc5883_app_test.h
@@ -80,7 +83,7 @@ add_airliner_app_unit_test(hmc5883-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/hmc5883_msg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/hmc5883_tbldefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/hmc5883_version.h
-        
+
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/

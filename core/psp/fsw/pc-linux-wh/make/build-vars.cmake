@@ -48,9 +48,9 @@ set(CMAKE_SYSTEM_NAME Linux)
 
 # which compilers to use for C and C++
 set(CMAKE_C_COMPILER gcc)
-set(CMAKE_C_FLAGS ${CMAKE_C_FLAGS} "-m32 -g -O0 -Wno-pointer-to-int-cast")
+set(CMAKE_C_FLAGS ${CMAKE_C_FLAGS} "-m32 -g -O3 -Wno-pointer-to-int-cast")
 set(CMAKE_CXX_COMPILER g++)
-set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-m32 -g -fstack-protector-all -O0 -std=c++11")
+set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-m32 -g -fstack-protector-all -O3 -std=c++11")
 
 set(INSTALL_DIR	      ${CMAKE_CURRENT_BINARY_DIR}/exe/cf/apps)
 set(CFE_INSTALL_DIR   ${CMAKE_CURRENT_BINARY_DIR}/exe)
@@ -66,6 +66,12 @@ set(HELGRIND_COMMAND ${helgrind_command} PARENT_SCOPE)
 set(MASSIF_COMMAND ${massif_command} PARENT_SCOPE)
 set(INSTALL_DIR	      ${INSTALL_DIR} PARENT_SCOPE)
 
+# "Explain" variables.
+set(EXPLAIN_OBJS_INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/explain-objs )
+set(EXPLAIN_DIR	${CMAKE_CURRENT_BINARY_DIR}/explain)
+set(EXPLAIN_DIR	${EXPLAIN_DIR} PARENT_SCOPE)
+set(EXPLAIN_DB	${EXPLAIN_DIR}/airliner-symbols.sqlite PARENT_SCOPE)
+
 set(COMMANDER_WORKSPACE_PLUGINS_DIR ${CMAKE_CURRENT_BINARY_DIR}/commander/commander_workspace/plugins PARENT_SCOPE)
 
 
@@ -80,11 +86,13 @@ set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} PARENT_SCOPE)
 
 set(PSP_UNIT_TEST_SRC_DIR ${CMAKE_CURRENT_LIST_DIR}/../unit_test)
 
-set(PSP_OSAL_UT_BSP_SRC ${PSP_UNIT_TEST_SRC_DIR}/bsp_start.c)
+set(PSP_WB_UT_BSP_SRC
+    ${PSP_UNIT_TEST_SRC_DIR}/bsp_start.c
+)
 
-set(PSP_OSAL_UTASSERT_BSP_SRC 
-    ${PSP_UNIT_TEST_SRC_DIR}/bsp_voltab.c
+set(PSP_BB_UT_BSP_SRC
     ${PSP_UNIT_TEST_SRC_DIR}/bsp_ut.c
+    ${PSP_UNIT_TEST_SRC_DIR}/bsp_voltab.c 
 )
 
 set(MEMCHECK_COMMAND ${MEMCHECK_COMMAND} PARENT_SCOPE)

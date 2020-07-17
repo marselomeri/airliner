@@ -14,10 +14,11 @@
                     "TO_EnableChannelCmd_t":      { "airliner_mid": "0x1900" },
                     "TO_DisableChannelCmd_t":     { "airliner_mid": "0x1900" },
                     "TO_HkTlm_t":                 { "airliner_mid": "0x0902" },
+                    "TO_MsgFlowListPkt_t":        { "airliner_mid": "0x0912" },
                     "TO_ChannelDiagTlm_t":        { "airliner_mid": "0x0911" }
                 },
                 "config": {
-                    "TO_MAX_CHANNELS":            2,
+                    "TO_MAX_CHANNELS":            1,
                     "TO_MAX_MESSAGE_FLOWS":     200,
                     "TO_MAX_PRIORITY_QUEUES":    20
                 }

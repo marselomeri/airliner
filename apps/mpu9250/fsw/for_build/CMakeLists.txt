@@ -61,6 +61,9 @@ add_airliner_app_def(mpu9250
 
 add_airliner_app_unit_test(mpu9250-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mpu9250_app_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mpu9250_app_test.h

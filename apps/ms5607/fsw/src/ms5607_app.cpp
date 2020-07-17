@@ -217,8 +217,6 @@ void MS5607::InitData()
             MS5607_DIAG_TLM_MID, sizeof(MS5607_DiagPacket_t), TRUE);
     /* Init custom data */
     MS5607_Custom_InitData();
-    /* Update params from the configuration table */
-    UpdateParamsFromTable();
 }
 
 
@@ -256,6 +254,9 @@ int32 MS5607::InitApp()
     {
         goto MS5607_InitApp_Exit_Tag;
     }
+
+    /* Update params from the configuration table */
+    UpdateParamsFromTable();
 
     /* Init data include copy params from config table */
     InitData();

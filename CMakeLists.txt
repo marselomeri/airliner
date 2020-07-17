@@ -41,6 +41,8 @@ set( CTEST_MEMORYCHECK_COMMAND_OPTIONS "--tool=memcheck --leak-check=full --show
 set( CTEST_VALGRIND_COMMAND_OPTIONS "--tool=memcheck --leak-check=full --show-reachable=yes --undef-value-errors=yes --track-origins=no --child-silent-after-fork=no --trace-children=no --xml=yes --xml-file=memcheck-%p.xml")
 enable_testing()
 
+set(ELF2CFETBL_BIN ${PROJECT_BINARY_DIR}/host/tools/elf2cfetbl)
+
 # Set paths from all 3 major core components:  CFE, OSAL, and PSP.
 include(core/cfe/set-paths.cmake)
 include(core/osal/set-paths.cmake)
@@ -49,10 +51,10 @@ include(core/psp/set-paths.cmake)
 # Include the file with all the build functions that we will call in the configuration directory.
 include(core/cfe/build-functions.cmake)
 
+if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/config/${BUILDNAME}/host)
+    add_subdirectory(config/${BUILDNAME}/host host)
+endif()
 # Now, start building with the configuration.
 if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/config/${BUILDNAME}/target)
     add_subdirectory(config/${BUILDNAME}/target target)
-endif()
-if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/config/${BUILDNAME}/host)
-    add_subdirectory(config/${BUILDNAME}/host host)
 endif()

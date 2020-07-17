@@ -131,6 +131,29 @@ function(add_airliner_app)
 endfunction(add_airliner_app)
 
 
+
+#build_airliner_cfe_host_tools(
+#    PSP pc-linux
+#    OSAL posix
+#    CONFIG
+#        ${CMAKE_CURRENT_SOURCE_DIR}/inc
+#        ${CMAKE_CURRENT_SOURCE_DIR}/../../shared/inc
+#)
+# Build all the host tools.  Currently, this is just the elf2cfetbl.
+function(build_airliner_cfe_host_tools)
+    cmake_parse_arguments(PARSED_ARGS "" "PSP;OSAL;" "CONFIG" ${ARGN})
+
+    include_directories(${PARSED_ARGS_CONFIG})
+    include_directories(${CFE_INC_DIRS})
+    include_directories(${OSAL_INC_DIRS})
+    include_directories(${PSP_INC_DIRS})
+    include_directories(${PARSED_ARGS_PSP}/inc)
+
+    add_subdirectory(${CFE_TOOLS}/elf2cfetbl ${ELF2CFETBL_BIN})
+
+endfunction(build_airliner_cfe_host_tools)
+
+
 #add_airliner_app_def(sch
 #    FILE SCH
 #    SOURCES
@@ -141,10 +164,6 @@ endfunction(add_airliner_app)
 #    INCLUDES
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../src/
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../public_inc/
-#   
-#    UNIT_TEST_SOURCES
-#
-#    UNIT_TEST_INCLUDES
 #)
 function(add_airliner_app_def)
     set(PARSED_ARGS_TARGET ${ARGV0})
@@ -182,7 +201,7 @@ endfunction(add_airliner_app_unit_test)
 
 function(add_airliner_cfe_unit_test)
     set(PARSED_ARGS_TARGET ${ARGV0})
-    cmake_parse_arguments(PARSED_ARGS "" "VALGRIND_SUPPRESSION_FILE" "SOURCES;INCLUDES" ${ARGN})
+    cmake_parse_arguments(PARSED_ARGS "NO_MEMCHECK;NO_HELGRIND;NO_MASSIF" "VALGRIND_SUPPRESSION_FILE" "SOURCES;INCLUDES" ${ARGN})
     
     psp_add_airliner_cfe_unit_test(${ARGN})
 endfunction(add_airliner_cfe_unit_test)

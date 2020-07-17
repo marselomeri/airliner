@@ -139,8 +139,8 @@ void TO_Custom_Init_Nominal(void)
                 "TO_Custom_Init() did not return an expected value");
     UtAssert_True(TO_AppCustomData.Channel[ChannelID].Mode == TO_CHANNEL_ENABLED, 
                 "TO_Custom_Init() did not set correct mode");
-    UtAssert_EventSent(TO_TLMOUTENA_INF_EID, CFE_EVS_INFORMATION, returnString, 
-                "TO_Custom_Init() failed to raise an event");
+    //UtAssert_EventSent(TO_TLMOUTENA_INF_EID, CFE_EVS_INFORMATION, returnString, 
+    //            "TO_Custom_Init() failed to raise an event");
 }
 
 

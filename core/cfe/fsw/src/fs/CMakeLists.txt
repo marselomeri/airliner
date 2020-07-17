@@ -37,6 +37,9 @@ set(CFE_FS_SRC
 	${CMAKE_CURRENT_SOURCE_DIR}/cfe_fs_priv.c)
 	
 add_airliner_cfe_unit_test(cfe-fs-ut
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../../unit-test/fs_UT.c 
         ${CMAKE_CURRENT_SOURCE_DIR}/../../unit-test/ut_bsp_stubs.c
@@ -55,6 +58,7 @@ add_airliner_cfe_unit_test(cfe-fs-ut
         ${OSAL_UT_STUBS_DIR}/osapi_stubs.c
         ${OSAL_UT_STUBS_DIR}/osfileapi_stubs.c
         ${CFE_FS_SRC}
+
     INCLUDES
         ${OSAL_UT_ASSERT_DIR}/inc/
 )	

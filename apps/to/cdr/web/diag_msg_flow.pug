@@ -45,11 +45,11 @@ table.table.table-condensed
     tr
       th Index
       td
-        div(data-cdr={tlm:[{name:'/TO/TO_ChannelDiagTlm_t/Index'}]}) ---
+        div(data-cdr={tlm:[{name:'/TO/TO_MsgFlowListPkt_t/ChannelIndex'}]}) ---
     tr
-      th Channel Name
-      td          
-        div(data-cdr={tlm:[{name:'/TO/TO_ChannelDiagTlm_t/ChannelName'}]}) ---
+      th Offset
+      td
+        div(data-cdr={tlm:[{name:'/TO/TO_MsgFlowListPkt_t/Offset'}]}) ---
     tr
       th Message Flow ID
       th Message ID
@@ -58,11 +58,11 @@ table.table.table-condensed
       th Dropped Message Count
       th Queued Message Count
           -  for (var FlowIndex=0; FlowIndex < config[0].TO_MAX_MESSAGE_FLOWS; FlowIndex++) {
-          -      var tlmMsgIDName = '/TO/TO_ChannelDiagTlm_t/MessageFlow[' + FlowIndex +'].MsgId';
-          -      var tlmMsgLimitObj = {tlm:[{name:'/TO/TO_ChannelDiagTlm_t/MessageFlow[' + FlowIndex +'].MsgLimit'}]}
-          -      var tlmPQueueIDObj = {tlm:[{name:'/TO/TO_ChannelDiagTlm_t/MessageFlow[' + FlowIndex +'].PQueueID'}]}
-          -      var tlmDroppedMsgCntObj = {tlm:[{name:'/TO/TO_ChannelDiagTlm_t/MessageFlow[' + FlowIndex +'].DroppedMsgCnt'}]}
-          -      var tlmQueuedMsgCntObj = {tlm:[{name:'/TO/TO_ChannelDiagTlm_t/MessageFlow[' + FlowIndex +'].QueuedMsgCnt'}]}
+          -      var tlmMsgIDName = '/TO/TO_MsgFlowListPkt_t/MessageFlow[' + FlowIndex +'].MsgId';
+          -      var tlmMsgLimitObj = {tlm:[{name:'/TO/TO_MsgFlowListPkt_t/MessageFlow[' + FlowIndex +'].MsgLimit'}]}
+          -      var tlmPQueueIDObj = {tlm:[{name:'/TO/TO_MsgFlowListPkt_t/MessageFlow[' + FlowIndex +'].PQueueID'}]}
+          -      var tlmDroppedMsgCntObj = {tlm:[{name:'/TO/TO_MsgFlowListPkt_t/MessageFlow[' + FlowIndex +'].DroppedMsgCnt'}]}
+          -      var tlmQueuedMsgCntObj = {tlm:[{name:'/TO/TO_MsgFlowListPkt_t/MessageFlow[' + FlowIndex +'].QueuedMsgCnt'}]}
 
     tr
       th
@@ -80,7 +80,7 @@ table.table.table-condensed
           -  }
               
 footer.btn-group(role="group")      
-  button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/TO_SendDiagCmd_t'}}) Send Diagnostics   
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/TO_SendDiagCmd_t', argument:[{name:'ChannelIdx', value: 0}]}}) Send Diagnostics   
       
 -     });  
 - });

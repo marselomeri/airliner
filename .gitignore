@@ -5,4 +5,3 @@ build/**
 *.*~
 *.pyc
 node_modules
-cfe/

@@ -64,6 +64,9 @@ add_airliner_app_def(hk
 
 add_airliner_app_unit_test(hk-ut
     UTASSERT 
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/hk_app_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/hk_app_test.h

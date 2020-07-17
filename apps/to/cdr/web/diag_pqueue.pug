@@ -76,7 +76,7 @@ table.table.table-condensed
           -  }
                         
 footer.btn-group(role="group")      
-  button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/TO_SendDiagCmd_t'}}) Send Diagnostics
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/TO_SendDiagCmd_t', argument:[{name:'ChannelIdx', value: 0}]}}) Send Diagnostics
 
 -     });  
 - });

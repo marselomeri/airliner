@@ -24,7 +24,7 @@ function(osal_set_blackbox_unit_test)
     	    ${OSAL_UT_ASSERT_DIR}/src/uttest.c
     	    ${OSAL_UT_ASSERT_DIR}/src/uttools.c
             ${PARSED_ARGS_OSAL_SOURCE}
-            ${PSP_OSAL_UTASSERT_BSP_SRC}
+            ${PSP_BB_UT_BSP_SRC}
             ${OSAL_BLACK_BOX_TEST_DIR}/${TEST_NAME}/${TEST_NAME}.c
 
         INCLUDES
@@ -57,11 +57,11 @@ endfunction(osal_set_blackbox_unit_tests)
 
 function(osal_add_whitebox_unit_test)
     set(TEST_NAME ${ARGV0})    
-    cmake_parse_arguments(PARSED_ARGS "" "VALGRIND_SUPPRESSION_FILE" "SOURCE;FILESYS;WRAPPERS" ${ARGN})
+    cmake_parse_arguments(PARSED_ARGS "" "VALGRIND_SUPPRESSION_FILE" "SOURCE;FILESYS;WRAPPERS;DEFINES" ${ARGN})
 
     psp_add_test(osal-wb-${TEST_NAME}
         SOURCES
-            ${PSP_OSAL_UT_BSP_SRC}
+            ${PSP_WB_UT_BSP_SRC}
             ${PARSED_ARGS_SOURCE}
 
         INCLUDES
@@ -75,5 +75,8 @@ function(osal_add_whitebox_unit_test)
 
         WRAPPERS
             ${PARSED_ARGS_WRAPPERS}
+            
+        DEFINES
+            ${PARSED_ARGS_DEFINES}
     )
 endfunction(osal_add_whitebox_unit_test)

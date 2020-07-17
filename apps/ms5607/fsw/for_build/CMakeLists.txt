@@ -60,6 +60,9 @@ add_airliner_app_def(ms5607
 
 add_airliner_app_unit_test(ms5607-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+        
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ms5607_app_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ms5607_app_test.h
@@ -78,7 +81,7 @@ add_airliner_app_unit_test(ms5607-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ms5607_events.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ms5607_msg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ms5607_version.h
-        
+
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/

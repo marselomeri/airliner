@@ -220,6 +220,8 @@ add_airliner_app_def(pblib
 add_airliner_app_unit_test(pblib-ut
     UTASSERT
     NANOPB
+    NO_HELGRIND
+    NO_MASSIF
 
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/pb_lib.c
@@ -230,7 +232,6 @@ add_airliner_app_unit_test(pblib-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/pbl_test_utils.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/pbl_test_utils.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/pbl_testrunner.c
-
 
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/

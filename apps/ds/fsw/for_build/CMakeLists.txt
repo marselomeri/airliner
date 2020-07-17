@@ -67,6 +67,9 @@ add_airliner_app_def(ds
 
 add_airliner_app_unit_test(ds-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+        
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ds_app_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ds_app_test.h
@@ -95,7 +98,7 @@ add_airliner_app_unit_test(ds-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ds_verify.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ds_version.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../cfs_lib/fsw/src/cfs_utils.c
-        
+
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/

@@ -1,6 +1,3 @@
--   var queryString = '$.Airliner.apps.TO.config';
--   global.COMMANDER.queryConfigDB(queryString, function (config) {
-
 table.table.table-condensed
   tbody
     tr
@@ -12,42 +9,19 @@ table.table.table-condensed
       td
         div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/usCmdErrCnt'}]}) ---
     tr
+      th Total Bytes Sent
+      td
+        div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/SentBytes'}]}) ---
+    tr
       th Total Messages Dropped
       td
         div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/usTotalMsgDropped'}]}) ---
     tr
-      th Memory Pool Handle
+      th Max Channel Memory
       td
-        div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/MemPoolHandle'}]}) ---
-    tr
-      th Memory In Use
-      td
-        div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/MemInUse'}]}) ---
-    tr
-      th Peak Mem In Use
-      td
-        div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/PeakMemInUse'}]}) ---
-    tr
-      th Maximum Memory
-      td
-        div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/MaxMem'}]}) ---
-          -  for (var ChannelIndex=0; ChannelIndex < config[0].TO_MAX_CHANNELS; ChannelIndex++) {
-          -      var tlmObj = {tlm:[{name:'/TO/TO_HkTlm_t/QueuedInOutputChannel[' + ChannelIndex +']'}]}
-    tr
-      th Queued In Output Channel #{ChannelIndex}
-      td
-        div(data-cdr= tlmObj) ---
-          -  }
+        div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/ChannelMaxMem'}]}) ---
               
 footer.btn-group(role="group")      
   button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/Noop'}}) No-Op    
   button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/Reset'}}) Reset   
-  button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/TO_AddMessageFlowCmd_t'}}) Add Message Flow
-  button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/TO_RemoveMessageFlowCmd_t'}}) Remove Message Flow  
-  button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/TO_QueryMessageFlowCmd_t'}}) Query Message Flow   
-  button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/TO_QueryPriorityQueueCmd_t'}}) Query Priority Queue   
-  button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/TO_QueryOutputChannelCmd_t'}}) Query Output Channel  
-  button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/TO_EnableChannelCmd_t'}}) Enable Channel  
-  button.btn.cdr-primary(data-cdr={cmd:{name:'/TO/TO_DisableChannelCmd_t'}}) Disable Channel 
 
-- });

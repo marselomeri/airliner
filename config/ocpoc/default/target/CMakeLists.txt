@@ -4,8 +4,8 @@ include(../set-vars.cmake)
 # cross toolchain or has target independent functions.
 
 initialize_airliner_build(
-    PSP ${TARGET_PSP}
-    OSAL ${TARGET_OSAL}
+    PSP ${PSP}
+    OSAL ${OSAL}
     CORE_TOOLS ${CMAKE_CURRENT_SOURCE_DIR}/tools
     CONFIG
         ${CMAKE_CURRENT_SOURCE_DIR}/inc
@@ -46,11 +46,6 @@ add_airliner_app(
     px4lib
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/px4lib/fsw/for_build
     MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/px4lib/px4_msg_overrides.json
-)
-
-add_airliner_app(
-    pblib
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/pblib/fsw/for_build
 )
 
 add_airliner_app(
@@ -206,6 +201,7 @@ add_airliner_app(
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/to/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/to
     CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/to/tables/to_backup_cfg.c
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/to/to_custom.c
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/to/to_custom_udp.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/to_platform_cfg.h
@@ -243,7 +239,7 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/vc_mission_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/vc_perfids.h
     MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/vc_msg_overrides.json
-    )
+)
 
 add_airliner_app(
     amc
@@ -470,15 +466,3 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/lgc_perfids.h
     MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/lgc/lgc_msg_overrides.json
 )
-
-add_airliner_app(
-    flow
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/flow/fsw/for_build
-    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/flow
-    CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/flow_platform_cfg.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/flow_msgids.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/flow_perfids.h
-        
-    )
-

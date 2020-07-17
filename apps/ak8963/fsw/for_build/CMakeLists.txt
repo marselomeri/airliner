@@ -60,6 +60,9 @@ add_airliner_app_def(ak8963
 
 add_airliner_app_unit_test(ak8963-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ak8963_app_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ak8963_app_test.h

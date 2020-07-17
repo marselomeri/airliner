@@ -60,11 +60,11 @@ add_airliner_app_def(px4lib
         ${PROJECT_SOURCE_DIR}/apps/px4lib/fsw/platform_inc
 )
 
-# set optimization for px4lib
-target_compile_options(px4lib PRIVATE -O3)
-
 add_airliner_app_unit_test(px4lib-vector1f-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector1F_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector1F_test.hpp
@@ -85,6 +85,9 @@ add_airliner_app_unit_test(px4lib-vector1f-ut
 
 add_airliner_app_unit_test(px4lib-vector2f-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector2F_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector2F_test.hpp
@@ -105,6 +108,9 @@ add_airliner_app_unit_test(px4lib-vector2f-ut
 
 add_airliner_app_unit_test(px4lib-vector3f-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector3F_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector3F_test.hpp
@@ -112,7 +118,6 @@ add_airliner_app_unit_test(px4lib-vector3f-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector3F_test_utils.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector3F_test_utils.hpp
         ${PX4LIB_SOURCES}
-
 
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
@@ -126,6 +131,9 @@ add_airliner_app_unit_test(px4lib-vector3f-ut
 
 add_airliner_app_unit_test(px4lib-vector4f-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector4F_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector4F_test.hpp
@@ -147,6 +155,9 @@ add_airliner_app_unit_test(px4lib-vector4f-ut
 
 add_airliner_app_unit_test(px4lib-vector6f-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector6F_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector6F_test.hpp
@@ -167,6 +178,9 @@ add_airliner_app_unit_test(px4lib-vector6f-ut
 
 add_airliner_app_unit_test(px4lib-vector10f-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector10F_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector10F_test.hpp
@@ -187,6 +201,9 @@ add_airliner_app_unit_test(px4lib-vector10f-ut
 
 add_airliner_app_unit_test(px4lib-quaternion-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Quaternion_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Quaternion_test.hpp
@@ -207,6 +224,9 @@ add_airliner_app_unit_test(px4lib-quaternion-ut
 
 add_airliner_app_unit_test(px4lib-matrix1f2-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix1F2_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix1F2_test.hpp
@@ -226,6 +246,9 @@ add_airliner_app_unit_test(px4lib-matrix1f2-ut
 
 add_airliner_app_unit_test(px4lib-matrix1f3-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix1F3_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix1F3_test.hpp
@@ -246,6 +269,9 @@ add_airliner_app_unit_test(px4lib-matrix1f3-ut
 
 add_airliner_app_unit_test(px4lib-matrix1f6-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix1F6_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix1F6_test.hpp
@@ -266,6 +292,9 @@ add_airliner_app_unit_test(px4lib-matrix1f6-ut
 
 add_airliner_app_unit_test(px4lib-matrix2f2-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix2F2_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix2F2_test.hpp
@@ -286,6 +315,9 @@ add_airliner_app_unit_test(px4lib-matrix2f2-ut
 
 add_airliner_app_unit_test(px4lib-matrix2f10-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix2F10_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix2F10_test.hpp
@@ -306,6 +338,9 @@ add_airliner_app_unit_test(px4lib-matrix2f10-ut
 
 add_airliner_app_unit_test(px4lib-matrix3f3-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix3F3_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix3F3_test.hpp
@@ -325,6 +360,9 @@ add_airliner_app_unit_test(px4lib-matrix3f3-ut
 
 add_airliner_app_unit_test(px4lib-matrix3f10-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix3F10_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix3F10_test.hpp
@@ -345,6 +383,9 @@ add_airliner_app_unit_test(px4lib-matrix3f10-ut
 
 add_airliner_app_unit_test(px4lib-matrix4f4-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix4F4_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix4F4_test.hpp
@@ -365,6 +406,9 @@ add_airliner_app_unit_test(px4lib-matrix4f4-ut
 
 add_airliner_app_unit_test(px4lib-matrix6f1-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix6F1_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix6F1_test.hpp
@@ -385,6 +429,9 @@ add_airliner_app_unit_test(px4lib-matrix6f1-ut
 
 add_airliner_app_unit_test(px4lib-matrix6f6-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix6F6_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix6F6_test.hpp
@@ -406,6 +453,9 @@ add_airliner_app_unit_test(px4lib-matrix6f6-ut
 
 add_airliner_app_unit_test(px4lib-matrix1f10-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix1F10_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix1F10_test.hpp
@@ -426,6 +476,9 @@ add_airliner_app_unit_test(px4lib-matrix1f10-ut
 
 add_airliner_app_unit_test(px4lib-matrix10f1-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix10F1_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix10F1_test.hpp
@@ -445,6 +498,9 @@ add_airliner_app_unit_test(px4lib-matrix10f1-ut
 
 add_airliner_app_unit_test(px4lib-matrix1f1-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix1F1_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix1F1_test.hpp
@@ -465,6 +521,9 @@ add_airliner_app_unit_test(px4lib-matrix1f1-ut
 
 add_airliner_app_unit_test(px4lib-matrix10f2-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix10F2_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix10F2_test.hpp
@@ -485,6 +544,9 @@ add_airliner_app_unit_test(px4lib-matrix10f2-ut
 
 add_airliner_app_unit_test(px4lib-matrix10f3-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix10F3_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix10F3_test.hpp
@@ -505,6 +567,9 @@ add_airliner_app_unit_test(px4lib-matrix10f3-ut
 
 add_airliner_app_unit_test(px4lib-matrix10f6-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix10F6_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix10F6_test.hpp
@@ -525,6 +590,9 @@ add_airliner_app_unit_test(px4lib-matrix10f6-ut
 
 add_airliner_app_unit_test(px4lib-matrix10f10-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix10F10_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix10F10_test.hpp
@@ -546,6 +614,9 @@ add_airliner_app_unit_test(px4lib-matrix10f10-ut
 
 add_airliner_app_unit_test(px4lib-matrix6f10-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix6F10_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix6F10_test.hpp

@@ -53,21 +53,6 @@
 *************************************************************************/
 #define TO_CUSTOM_CHANNEL_GET_TIMEOUT (500) /* msec */
 
-/************************************************************************
-** Local Structure Declarations
-*************************************************************************/
-
-/************************************************************************
-** External Global Variables
-*************************************************************************/
-
-/************************************************************************
-** Global Variables
-*************************************************************************/
-
-/************************************************************************
-** Local Variables
-*************************************************************************/
 
 /************************************************************************
 ** Local Function Definitions
@@ -79,6 +64,8 @@ TO_AppCustomData_t     TO_AppCustomData;
 
 TO_EnableChannelCmd_t  TO_EnableChannelCmd_S;
 TO_DisableChannelCmd_t TO_DisableChannelCmd_S;
+
+extern TO_ChannelTbl_t TO_BackupConfigTbl;
 
 
 uint8 TO_OutputChannel_Status(uint32 Index)
@@ -104,18 +91,23 @@ int32 TO_Custom_Init(void)
      * UDP development interface
      */
     TO_AppCustomData.Channel[0].Mode = TO_CHANNEL_ENABLED;
-    strncpy(TO_AppCustomData.Channel[0].IP, "192.168.2.215", INET_ADDRSTRLEN);
-    TO_AppCustomData.Channel[0].DstPort = 5011;
+    strncpy(TO_AppCustomData.Channel[0].IP, TO_UDP_CHANNEL_ADDRESS, INET_ADDRSTRLEN);
+    TO_AppCustomData.Channel[0].DstPort = TO_UDP_CHANNEL_PORT;
     TO_AppCustomData.Channel[0].Priority = TO_UDP_CHANNEL_TASK_PRIORITY;
     TO_AppCustomData.Channel[0].ListenerTask = TO_OutputChannel_UDPChannelTask;
     TO_AppCustomData.Channel[0].Socket = 0;
     TO_AppCustomData.Channel[0].ChildTaskID = 0;
 
     /* Ground dev interface is optional */
-    iStatus = TO_Channel_OpenChannel(0, "GRND-DEV",
-    		TO_GROUND_DEVUDP_CONFIG_TABLENAME,
-			TO_GROUND_DEVUDP_CONFIG_TABLE_FILENAME,
-			TO_GROUND_DEVUDP_DUMP_TABLENAME);
+    iStatus = TO_Channel_OpenChannel(
+                      0,
+                      TO_UDP_CHANNEL_NAME,
+                      TO_UDP_CONFIG_TABLENAME,
+                      TO_UDP_CONFIG_TABLE_FILENAME,
+                      &TO_BackupConfigTbl,
+                      TO_UDP_DUMP_TABLENAME, 
+                      1, 
+                      TO_UDP_CF_THROTTLE_SEM_NAME);
 
     for (i=0; i < TO_MAX_CHANNELS; i++)
     {
@@ -255,7 +247,7 @@ void TO_OutputChannel_ProcessNewCustomCmds(CFE_SB_Msg_t* MsgPtr)
                 if(inSize != sizeof(TO_EnableChannelCmd_t))
                 {
                     TO_AppData.HkTlm.usCmdErrCnt++;
-                    (void) CFE_EVS_SendEvent(TO_MSGLEN_ERR_EID, CFE_EVS_ERROR,
+                    (void) CFE_EVS_SendEvent(TO_MSG_LEN_ERR_EID, CFE_EVS_ERROR,
                                       "Invalid message length.  Received %u.  Expected %u.",
                                       (unsigned int)inSize, sizeof(TO_EnableChannelCmd_t));
                     break;
@@ -283,7 +275,7 @@ void TO_OutputChannel_ProcessNewCustomCmds(CFE_SB_Msg_t* MsgPtr)
                 if(inSize != sizeof(TO_DisableChannelCmd_t))
                 {
                     TO_AppData.HkTlm.usCmdErrCnt++;
-                    (void) CFE_EVS_SendEvent(TO_MSGLEN_ERR_EID, CFE_EVS_ERROR,
+                    (void) CFE_EVS_SendEvent(TO_MSG_LEN_ERR_EID, CFE_EVS_ERROR,
                                       "Invalid message length.  Received %u.  Expected %u.",
                                       (unsigned int)inSize, sizeof(TO_DisableChannelCmd_t));
                     break;
@@ -301,7 +293,7 @@ void TO_OutputChannel_ProcessNewCustomCmds(CFE_SB_Msg_t* MsgPtr)
 
             default:
                 TO_AppData.HkTlm.usCmdErrCnt++;
-                (void) CFE_EVS_SendEvent(TO_MSGID_ERR_EID, CFE_EVS_ERROR,
+                (void) CFE_EVS_SendEvent(TO_MSG_ID_ERR_EID, CFE_EVS_ERROR,
                                   "Recvd invalid cmdId (%u)", (unsigned int)uiCmdCode);
                 break;
         }
@@ -483,17 +475,17 @@ void TO_OutputChannel_ChannelHandler(uint32 ChannelIdx)
                 	TO_OutputChannel_Disable(ChannelIdx);
                 }
 
-                iStatus = CFE_ES_PutPoolBuf(TO_AppData.HkTlm.MemPoolHandle, (uint32 *)buffer);
+                iStatus = CFE_ES_PutPoolBuf(TO_AppData.ChannelData[ChannelIdx].MemPoolHandle, (uint32 *)buffer);
                 if(iStatus < 0)
                 {
-                    (void) CFE_EVS_SendEvent(TO_GET_POOL_ERR_EID, CFE_EVS_ERROR,
+                    (void) CFE_EVS_SendEvent(TO_PUT_POOL_ERR_EID, CFE_EVS_ERROR,
                                 "PutPoolBuf: error=0x%08lx",
                                     (unsigned long)iStatus);
                 }
                 else
                 {
                     OS_MutSemTake(TO_AppData.MutexID);
-                    TO_AppData.HkTlm.MemInUse -= iStatus;
+                    TO_AppData.ChannelData[ChannelIdx].MemInUse -= iStatus;
                     OS_MutSemGive(TO_AppData.MutexID);
 
                     TO_Channel_LockByIndex(ChannelIdx);
@@ -520,3 +512,15 @@ void TO_OutputChannel_ChannelHandler(uint32 ChannelIdx)
 }
 
 
+
+int32 TO_Custom_InitEvent(int32 *ind)
+{
+	return 0;
+}
+
+
+
+void TO_PrintCustomVersion(void)
+{
+
+}

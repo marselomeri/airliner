@@ -70,6 +70,9 @@ add_airliner_app_def(amc
 
 add_airliner_app_unit_test(amc-ut
     UTASSERT
+    NO_HELGRIND
+    NO_MASSIF
+
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/amc_app_test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/amc_app_test.h
