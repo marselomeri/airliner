@@ -6,11 +6,12 @@
 * User is familiar with navigating Linux Shells
 * User is comfortable using git and navigating GitHub
 * VirtualBox and Vagrant are installed
+* VirtualBox is capable of 3D Acceleration for Linux
 
 ***
-## Required Versions:
+## Stable Versions known to work with Airliner:
 ***
-* VirtualBox 5.1.38
+* VirtualBox 6.1.10 
 * Vagrant 2.2.9
 * Ubuntu 16.04
 * Java 11.0.2
@@ -18,13 +19,13 @@
 ***
 ## Assumptions for this README:
 ***
-* The repository name for airliner is airliner, denoted as <airliner\>
+* The repository name for Airliner is airliner, denoted as <airliner\>
 
 ***
 ## VirtualBox setup in Windows:
 ***
 
-1. Download [VirtualBox 5.1.38](https://www.virtualbox.org/wiki/Download_Old_Builds_5_1 "VirtualBox 5.1.38")
+1. Download [VirtualBox 6.1.10](https://www.virtualbox.org/wiki/Downloads "VirtualBox 6.1.10")
 2. Download [Vagrant 2.2.9](https://www.vagrantup.com/downloads "Vagrant 2.2.9") and follow [installation instructions](https://www.vagrantup.com/docs/installation)
 2. Within Windows, create a directory for your environment
 3. Within that directory perform a `vagrant init`
@@ -50,15 +51,13 @@ end
 ***
 ## Airliner Initial Install & Setup:
 ***
-1. Ensure the auto update feature is off in Ubuntu as this has been known to cause version conflicts with Airliner
+1. [Generate an SSH key](https://docs.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 
-2. [Generate an SSH key](https://docs.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
+2. [Add a new SSH key to your GitHub Account](https://docs.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account)
 
-3. [Add a new SSH key to your GitHub Account](https://docs.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account)
+3. Go to Windhover Lab's [Airliner repository](https://github.com/WindhoverLabs/airliner) and [clone the repository](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) using an SSH key
 
-4. Go to Windhover Lab's [Airliner repository](https://github.com/WindhoverLabs/airliner) and [clone the repository](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) using an SSH key
-
-5. Once the Airliner repository has been cloned, navigate to <airliner\>/tools/commander directory and preform an `npm install`  
+4. Once the Airliner repository has been cloned, navigate to <airliner\>/tools/commander directory and preform an `npm install`  
 ```shell
 $ /<airliner>/tools/commander$ npm install
 ```
@@ -68,7 +67,7 @@ The following npm warnings are expected:
 
 **NOTE:** The previous steps only need to be completed **once** 
 
-6. To show all the options of targets available to make, use command `make` within the <airliner\> directory
+5. To show all the options of targets available to make, use command `make` within the <airliner\> directory
 
 The following options are the targets currently available to make:
 ```shell
@@ -93,14 +92,25 @@ reference/default
 ```shell
 $ /<airliner>$ make bebop2/sitl
 ```
+
+When bebop2/sitl is made successfully, the output should appear as follows:
+
+![3.1](resources/make_build_bebop2.png "Successful make bebob2/sitl")
+
 2. Navigate into the bebop2/sitl directory and `make ground_tools`
 ```shell
 $ /<airliner>/build/bebop2/sitl$ make ground_tools
 ```
+
+When `make ground_tools` is run successfully, the output should appear as follows:
+
+![3.2](resources/make_ground_tools_bebop2.png "Successful make ground_tools")
+
 3. Open three terminals starting at the following location: 
 ```shell
 $ /<airliner>/build/bebop2/sitl$
 ``` 
+
 
 ### Terminal 1: Simulation
 
@@ -114,17 +124,26 @@ $ /<airliner>/build/bebop2/sitl/host$ ./start-gazebo
 $ /<airliner>/build/bebop2/sitl/host$ ./start-jmavsim
 ``` 
 
-Your jmavsim simulation should look as follows if working properly:
+When jmavsim is launced successfully, the simulation should appear as follows:
 
-![4](resources/jmavsim_start.PNG "Jmavsim Successful")
+![4.1](resources/jmavsim_start.PNG "Jmavsim Successful")
 
 
 ### Terminal 2: Ground System
-1. Make sure you are in teh specified location and `make start-commander`
+1. Make sure you are in the specified location and `make start-commander`
 ```shell
 $ /<airliner>/build/bebop2/sitl$ make start-commander
 ```
-2. Open a web browser within Virtual Box and go to [http://localhost:3000](http://localhost:3000 "localhost:3000") for the commander interface
+
+When `make start-commander` is run sucessfully, the output should appear as follows:
+
+![4.2](resources/make_start_commander_bebop2.png "Successful make start-commander")
+
+2. Open a web browser within Virtual Box and go to [http://localhost:3000](http://localhost:3000 "localhost:3000") for the commander interface 
+
+When the commander interface launced successfully, it should appear as follows:
+
+![4.3](resources/localhost_bebop2.png "Sucessful Ground System")
 
 
 ### Terminal 3: Flight Shell
@@ -133,3 +152,7 @@ $ /<airliner>/build/bebop2/sitl$ make start-commander
 ```shell
 $ /<airliner>/build/bebop2/sitl/target/exe$ ./airliner
 ```
+
+When launced successfully, the flight shell should appear as follows:
+
+![4.2](resources/airliner_bebop2.png "Successful make start-commander")
