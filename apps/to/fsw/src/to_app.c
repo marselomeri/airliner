@@ -117,29 +117,11 @@ int32 TO_InitEvent(void)
     TO_AppData.EventTbl[  ind].EventID = TO_MSG_LEN_ERR_EID;
     TO_AppData.EventTbl[ind++].Mask    = CFE_EVS_FIRST_4_STOP;
     
-    TO_AppData.EventTbl[  ind].EventID = TO_TLM_MSG_LEN_ERR_EID;
+    TO_AppData.EventTbl[  ind].EventID = TO_OUT_CH_MSG_TOO_BIG_EID;
     TO_AppData.EventTbl[ind++].Mask    = CFE_EVS_FIRST_4_STOP;
         
     TO_AppData.EventTbl[  ind].EventID = TO_SB_RECEIVE_ERR_EID;
-    TO_AppData.EventTbl[ind++].Mask    = CFE_EVS_FIRST_4_STOP;    
-
-    for (channelID = 0; channelID < TO_MAX_CHANNELS; channelID++)
-    {
-        TO_AppData.EventTbl[  ind].EventID = TO_MSG_ID_ERR_EID;
-        TO_AppData.EventTbl[ind++].Mask    = CFE_EVS_FIRST_4_STOP;
-
-        TO_AppData.EventTbl[  ind].EventID = TO_PUT_POOL_ERR_EID;
-        TO_AppData.EventTbl[ind++].Mask    = CFE_EVS_FIRST_4_STOP;
-
-        TO_AppData.EventTbl[  ind].EventID = TO_PIPE_READ_ERR_EID;
-        TO_AppData.EventTbl[ind++].Mask    = CFE_EVS_FIRST_4_STOP;
-
-        TO_AppData.EventTbl[  ind].EventID = TO_TLM_MSG_LEN_ERR_EID;
-        TO_AppData.EventTbl[ind++].Mask    = CFE_EVS_FIRST_4_STOP;
-
-        TO_AppData.EventTbl[  ind].EventID = TO_MF_MSG_ID_ERR_EID;
-        TO_AppData.EventTbl[ind++].Mask    = CFE_EVS_FIRST_ONE_STOP;
-    }
+    TO_AppData.EventTbl[ind++].Mask    = CFE_EVS_FIRST_4_STOP;
 
     customStatus = TO_Custom_InitEvent(&ind);
 

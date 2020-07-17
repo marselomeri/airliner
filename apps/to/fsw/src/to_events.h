@@ -79,18 +79,6 @@ typedef enum {
 */
     TO_INIT_APP_INF_EID      = 1,
 
-/** \brief TO Configuration Table Initialized.
-**  \event Config tables are initialized.
-**
-**  \par Type: INFORMATION
-**
-**  \par Cause:
-**
-**  This message is generated when a table is initialized.
-**
-*/
-    TO_INIT_CONFIG_INF_EID   = 2,
-
 /** \brief TO NOOP CMD INFO.
 **  \event Executed NOOP cmd (\%u), Version \%d.\%d.\%d.\%d
 **
@@ -102,7 +90,7 @@ typedef enum {
 **  received and processed a Noop command.  Also, the
 **  application version number is displayed.
 */
-    TO_CMD_NOOP_INF_EID      = 3,
+    TO_CMD_NOOP_INF_EID      = 2,
 
 /** \brief TO RESET CMD INFO.
 **  \event Executed RESET cmd (\%u)
@@ -115,20 +103,7 @@ typedef enum {
 **  received and processed a Reset command.
 **
 */
-    TO_CMD_RESET_INF_EID     = 4,
-
-/** \brief TO - 
-**  \event TO - 
-**
-**  \par Type:
-**
-**  \par Cause:
-**
-**  This event message is reserved.
-**  Reserved for common id - TO_SUBSCRIBE_INF_EID
-**
-*/
-    TO_RESERVED_ONE_EID      = 5,
+    TO_CMD_RESET_INF_EID     = 3,
 
 /** \brief TO Init App ERROR.
 **  \event Application failed to initialize.
@@ -141,20 +116,7 @@ typedef enum {
 **  had an error with initializing the app.
 **
 */
-    TO_INIT_APP_ERR_EID      = 6,
-
-/** \brief TO - 
-**  \event TO - 
-**
-**  \par Type:
-**
-**  \par Cause:
-**
-**  This event message is reserved.
-**  Reserved for common id - TO_INIT_CLEANUP_ERR_EID
-**
-*/
-    TO_RESERVED_TWO_EID      = 7,
+    TO_INIT_APP_ERR_EID      = 4,
 
 /** \brief TO Init CMD Pipe ERROR.
 **  \event Failed to create CMD pipe (0x%08X)
@@ -167,7 +129,7 @@ typedef enum {
 **  had an error initializing the command pipe.
 **
 */
-    TO_INIT_CMDPIPE_ERR_EID  = 8,
+    TO_INIT_CMDPIPE_ERR_EID  = 5,
 
 /** \brief TO Init configuration table ERROR.
 **  \event Failed to init config tables (0x%08X)
@@ -180,20 +142,7 @@ typedef enum {
 **  had an error initializing a configuration table.
 **
 */
-    TO_INIT_CONFIG_ERR_EID   = 9,
-
-/** \brief TO - 
-**  \event TO - 
-**
-**  \par Type:
-**
-**  \par Cause:
-**
-**  This event message is reserved.
-**  Reserved for common id - TO_INIT_DATA_ERR_EID
-**
-*/
-    TO_RESERVED_THREE_EID    = 10,
+    TO_INIT_CONFIG_ERR_EID   = 6,
 
 /** \brief TO Init data pipe ERROR.
 **  \event Failed to init config tables (0x%08X)
@@ -206,7 +155,7 @@ typedef enum {
 **  had an error initializing the data pipe
 **
 */
-    TO_INIT_DATAPIPE_ERR_EID = 11,
+    TO_INIT_DATAPIPE_ERR_EID = 7,
 
 /** \brief TO Init pipe ERROR.
 **  \event Failed to init pipes (0x%08X)
@@ -219,7 +168,7 @@ typedef enum {
 **  has at least 1 error initializing a pipe.
 **
 */
-    TO_INIT_PIPE_ERR_EID     = 12,
+    TO_INIT_PIPE_ERR_EID     = 8,
 
 /** \brief TO Init SCH pipe ERROR.
 **  \event Failed to create SCH pipe (0x%08X)
@@ -232,7 +181,7 @@ typedef enum {
 **  had an error initializing the scheduler pipe
 **
 */
-    TO_INIT_SCHPIPE_ERR_EID  = 13,
+    TO_INIT_SCHPIPE_ERR_EID  = 9,
 
 /** \brief TO Command Code Error.
 **  \event Recvd invalid cmdId (\%u)
@@ -243,6 +192,7 @@ typedef enum {
 **
 **  This event message is issued when the CFS TO Task has
 **  received a command with an invalid command code
+**
 **
 */
     TO_CC_ERR_EID            = 14,
@@ -367,19 +317,6 @@ typedef enum {
 */
     TO_UNSUBSCRIBE_ERR_EID   = 23,
 
-/** \brief TO Create child task failed.
-**  \event Child task creation failed: Failed to create \%s: 0x%08lX
-**
-**  \par Type: ERROR
-**
-**  \par Cause:
-**
-**  This event message is issued when TO has failed to
-**  create its child task.
-**
-*/
-    TO_CREATE_CHDTASK_ERR_EID = 24,
-
 /** \brief Message Dropped on Priority Queue.
 **  \event PQ full (PQ \%lu, channel \%u). Error code (\%ld) Dropped message 0x%04x
 **
@@ -412,21 +349,31 @@ typedef enum {
 */
     TO_CR_POOL_ERR_EID        = 26,
 
-    /* Deleted "TO_GET_POOL_ERR_EID  = 27" */
-
-/** \brief Listener failed to write.
-**  \event Listener passed NULL POINTER to TO_OutputChannel_Send().
-**  \event Not all bytes written to storage locations.
+/** \brief Memory pool error - failed deallocating the memory allocated.
+**  \event PutPoolBuf: channel=\%d error=\%i
 **
 **  \par Type: ERROR
 **
 **  \par Cause:
 **
-**  This event message is issued when TO has failed to
-**  write due to NULL pointer or not all bytes written.
+**   This event message is issued when TO has failed to deallocate the memory allocated
+**   because CFE_ES_PutPoolBuf returned an error.
 **
 */
-    TO_TLM_LISTEN_ERR_EID     = 28,
+    TO_PUT_POOL_ERR_EID = 60,
+
+/** \brief Listener failed to pop message.
+**  \event Listener failed to pop message from queue. (%i).
+**
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when TO fails to read a message
+**  from the output queue.
+**
+*/
+	TO_TLM_OUT_QUEUE_READ_ERR_EID     = 28,
 
 /** \brief Query a channel for a specified message flow.
 **  \event CHANNEL=\%d MID=0x%04x ML=\%u PQI=\%u N=\%u AB=\%u D=\%lu Q=\%lu SB=\%lu FLT=\%lu FLD=\%lu S=\%lu
@@ -553,7 +500,7 @@ typedef enum {
     TO_OUT_CH_INFO_ERR_EID = 35,    
 
 /** \brief Failed to send out telemetry message, message too large.
-**  \event Listener: message too big, MID=0x\%x, bytes=\%u
+**  \event Message too long (size = %lu > max = %d) for msgId = (0x%04X) on channel (%u)
 **
 **  \par Type: ERROR
 **
@@ -735,19 +682,6 @@ typedef enum {
 */
     TO_PQUEUE_TEARDOWN_ERR_EID = 46,
 
-/** \brief The Storage queue anomaly buffer value is not in valid range.
-**  \event TO custom setting anomaly queue index error (\%u) using default anomaly buffer (10) index 6
-**
-**  \par Type: ERROR
-**
-**  \par Cause:
-**
-**  This event message is issed when TO custom setting anomaly queue index is not in range.  It must be
-**  greater than TO_MIN_ANOMALY_QUEUE and less than TO_MAX_ANOMALY_QUEUE
-**
-*/
-    TO_DECIMATE_SET_QUEUE_BIT_ERR_EID = 47,
-
 /** \brief TO Table Validation failed - Configuration table pointer is NULL (not available).
 **  \event ERROR: Config table pointer is NULL, table validation ended"
 **
@@ -758,7 +692,7 @@ typedef enum {
 **  This event message is issed when table validation failed due config table pointer being NULL (not available).
 **
 */
-    TO_CONFIG_TABLE_NULL_PTR_EID = 48,
+    TO_CONFIG_TABLE_NULL_PTR_EID = 47,
 
 /** \brief TO Table Validation failed - Priority Queue State is invalid.
 **  \event ERROR: Priority Queue State is invalid (\%d), for Table ID (\%lu) at table index (\%d)
@@ -770,7 +704,7 @@ typedef enum {
 **  This event message is issed when table validation failed due Priority Queue State not valid.
 **
 */
-    TO_CONFIG_TABLE_PQUEUE_STATE_ERR_EID = 49,
+    TO_CONFIG_TABLE_PQUEUE_STATE_ERR_EID = 48,
 
 /** \brief TO Table Validation failed - Priority Queue Type is invalid.
 **  \event ERROR: Priority Queue Qtype is invalid (\%d) for Table ID (\%lu) at table index (\%d)
@@ -868,47 +802,8 @@ typedef enum {
 */
     TO_CONFIG_TABLE_NO_MSG_FLOW_INF_EID  = 57,
 
-/** \brief TO Table Validation failed - configuration table Message Flow Decimation Filter value is invalid.
-**  \event ERROR: Storage Filter value is invalid must be 0 value is (\%u) for Table ID (\%lu) at table index (\%d)
-**  \event ERROR: Ground or Onboard Filter value is invalid must at least 1, value is (\%d) for Table ID (\%lu) at table index (\%d)"
-**
-**  \par Type: ERROR
-**
-**  \par Cause:
-**
-**  These event messages are issed when table validation failed due to Message Flow Decimation Filter value being invalid.
-**  For Storage channel the filter value must be 0 and for the Ground and Onboard channels the filter value must be non-zero.
-**
-*/
-    TO_CONFIG_TABLE_MSG_FLOW_FILTER_ERR_EID = 58,
-
-/** \brief TO Table Validation failed - configuration table storage anomaly queue values are invalid for Ground and Onboard Channels.
-**  \event ERROR: Queue value is invalid must be 0 value is (\%u) for Table ID (\%lu) at table index (\%d)
-**
-**  \par Type: ERROR
-**
-**  \par Cause:
-**
-**  This event message is issed when table validation failed due to storage anomaly queue values being non-zero for Ground and Onboard Channels.
-**
-*/
-    TO_CONFIG_TABLE_QUEUE_ERR_EID = 59,
-
-/** \brief Memory pool error - failed deallocating the memory allocated.
-**  \event PutPoolBuf: channel=\%d error=\%i
-**
-**  \par Type: ERROR
-**
-**  \par Cause:
-**
-**   This event message is issued when TO has failed to deallocate the memory allocated 
-**   because CFE_ES_PutPoolBuf returned an error.
-**
-*/
-    TO_PUT_POOL_ERR_EID = 60,
-
-/** \brief Command to flush a TO channel failed due invalid channel identifier.
-**  \event ChannelID \%u out of range.
+/** \brief Channel index out of bounds
+**  \event ChannelID %u out of range in SB pipe dequeue all.
 **
 **  \par Type: ERROR
 **
@@ -919,208 +814,7 @@ typedef enum {
 **    - Channel index not valid (out of range)
 **
 */
-    TO_FLUSH_INVALID_CHIDX_ERR_EID = 61,
-
-/** \brief Command to flush a TO channel failed on output queue.
-**  \event ChannelID \%u flush failure on output queue.
-**
-**  \par Type: ERROR
-**
-**  \par Cause:
-**
-**  This event message is issued when TO flush command failed for following reasons.
-**
-**    - Output Queue teardown failure
-**
-*/
-    TO_FLUSH_OQ_ERR_EID = 62,
-
-/** \brief Command to flush a TO channel failed on priority queue wipe all.
-**  \event ChannelID \%u flush failure on priority queue.
-**
-**  \par Type: ERROR
-**
-**  \par Cause:
-**
-**  This event message is issued when TO flush command failed for following reasons.
-**
-**    - Priority queue wipe all failure
-**
-*/
-    TO_FLUSH_PQ_ERR_EID = 63,
-
-/** \brief Command to flush a TO channel failed due to a software bus dequeue failure.
-**  \event ChannelID \%u software bus dequeue failure.
-**
-**  \par Type: ERROR
-**
-**  \par Cause:
-**
-**  This event message is issued when TO flush command failed for following reasons.
-**
-**   - Software bus dequeue failure
-**
-*/
-    TO_FLUSH_DEQUEUE_ERR_EID = 64,
-
-/** \brief Command to flush a TO channel executed successfully.
-**  \event ChannelID \%u flush successful.
-**
-**  \par Type: INFORMATION
-**
-**  \par Cause:
-**
-**  This event message is issued when TO Channel flush command executed successfully.
-**
-*/
-    TO_FLUSH_SUCCESS_INF_EID = 65,
-
-/** \brief Command to modify a message flow's decimation values executed successfully.
-**  \event Executed Modify Decimation cmd (\%u)
-**
-**  \par Type: INFORMATION
-**
-**  \par Cause:
-**
-**  This event message is issued when TO Command to modify 
-**  message flow decimation scheme executed successfully.
-**
-*/
-    TO_CMD_MOD_DECIM_MSG_EID = 66,
-
-/** \brief Command to modify a message flow's decimation values has failed.
-**  \event Invalid channel (channel = \%d, but max = \%d).
-**  \event Channel not open.
-**  \event Message flow is not defined.
-**  \event Ground/Onboard Channel: Command inputs for storage location queues must be zero.
-**  \event Ground/Onboard Channel: Command input for Filter Value must be at least 1.
-**  \event Storage Channel: Command input for Filter Value must be 0.
-**  \event Storage: Command inputs for storage location queues are zero - Message flow not changed.
-**
-**  \par Type: ERROR
-**
-**  \par Cause:
-**
-**  These event messages are issued when TO Command Remove a message flow failed
-**  for one of the following reasons:
-**
-**    - Channel index not valid (out of range)
-**    - Channel not open
-**    - Message flow does not exist on the channel
-**    - Ground/Onboard channel command inputs for storage location queues are non-zero
-**    - Ground/Onboard channel command input for filter value is less than one
-**    - Storage channel command input for filter value is non-zero
-**    - Storage channel command inputs for storage location queues are zero
-**
-*/
-    TO_CMD_MOD_DECIM_MSG_ERR_EID = 67,
-
-/** \brief Command to change anomaly buffer location executed successfully.
-**  \event Updated Anomaly Queue to (\%u) from (\%u)
-**
-**  \par Type: INFORMATION
-**
-**  \par Cause:
-**
-**  This event message is issued when TO Command to change anomaly buffer location executed successfully.
-**
-*/
-    TO_CMD_UPDATE_ANOMALY_BUFFER_EID = 68,
-
-/** \brief Command to change anomaly buffer location failed due to invalid input not in range.
-**  \event Invalid anomaly queue must be a value from (4 to 15) (input = \%d).
-**
-**  \par Type: ERROR
-**
-**  \par Cause:
-**
-**  This event message is issued when TO Command to change anomaly buffer location for following reason.
-**
-**    - Anomaly buffer queue location (out of range)
-**
-*/
-    TO_CMD_UPDATE_ANOMALY_BUFFER_ERR_EID = 69,
-
-/** \brief Command to update throttling rate executed successfully.
-**  \event Throttling: Channel \%u Write Rate to (\%lu) bytes/second from (\%lu) bytes/second
-**
-**  \par Type: INFORMATION
-**
-**  \par Cause:
-**
-**  This event message is issued when TO Command to update throttling rate executed successfully.
-**
-*/
-    TO_CMD_UPDATE_CHANNEL_THROTTLING_EID = 70,
-
-/** \brief Command to update throttling rate failed due to rate not changed.
-**  \event Throttling: Channel \%u Write Rate to (\%lu) bytes/second from (\%lu) bytes/second"
-**
-**  \par Type: DEBUG
-**
-**  \par Cause:
-**
-**  This event message is issued when TO Command to update the throttling rate was not
-**  successful because the new rate was the same as the current rate.
-**
-*/
-    TO_CMD_UPDATE_CHANNEL_THROTTLING_DBG_EID = 71,
-    
-/** \brief Command to update throttling rate failed due to rate not changed.
-**  \event Invalid channel index (index = \%u, but max = \%d).
-**  \event Invalid Channel (input = \%u). Only Ground and Onboard channels are valid for this command
-**  \event Channel (\%u) not open.
-**  \event ConfigTblPtr is NULL, command rejected
-**
-**  \par Type: ERROR
-**
-**  \par Cause:
-**
-**  These event message are issued when TO Command to update the throttling rate failed for the following reasons:
-**
-**  - Channel index not valid
-**  - Channel input was the Storage channel
-**  - Channel not being open
-**  - Channel with a NULL table pointer
-**
-*/
-    TO_CMD_UPDATE_CHANNEL_THROTTLING_ERR_EID = 72,
-
-/** \brief Wipe priority queue memory pool error - failed to return message back to memory pool.
-**  \event Failed to return message back to memory pool on flush command. (\%ld)
-**
-**  \par Type: ERROR
-**
-**  \par Cause:
-**
-**  This event message is issued when there is a failure to return message back to memory pool on flush command.
-**
-*/
-    TO_WIPE_PQ_MEMPOOL_ERR_EID  = 73,
-
-/** \brief Failed to pop all messages from channel when attempting to wipe all channel priority queues.
-**  \event Failed to pop all messages from channel '\%s' priority queue '\%u'. (\%ld)
-**
-**  \par Type: ERROR
-**
-**  \par Cause:
-**
-**  This event message is issued when there is a failure to pop all messages from channel.
-**
-*/
-    TO_WIPE_PQ_NO_POP_ERR_EID = 74,
-
-/** \brief Channel closed error, failure to process telemetry.
-**  \event Failed to process telemetry from ChannelID \%u
-**
-**  \par Type: ERROR
-**
-**  \par Cause:
-**
-**  This event message is issued when the channel closed, can not process telemetry.
-**
-*/
-    TO_CHANNEL_CLOSED_ERR_EID = 75,
+	TO_DEQUEUE_INVALID_CHIDX_ERR_EID = 61,
 
 /** \brief Channel identifier value is out of range.
 **  \event ChannelID (\%u) invalid.
@@ -1133,18 +827,6 @@ typedef enum {
 **
 */
     TO_CHANNEL_OUT_OF_RANGE_ERR_EID = 76,
-
-/** \brief Channel is not enabled.
-**  \event ChannelID \%u not enabled.
-**
-**  \par Type: DEBUG
-**
-**  \par Cause:
-**
-**  This event message is issued when channel is not enabled
-**
-*/
-    TO_CHANNEL_NOT_ENABLED_EID = 77,
 
 /** \brief Channel teardown failed - TO channel cleanup failure.
 **  \event Message Flow Teardown failure \%ld on channel \%u.
@@ -1294,18 +976,6 @@ typedef enum {
 */
     TO_BACKUP_TABLE_INF_EID = 87,
     
-/** \brief TO Classifier failed to process a telemetry message - message too long - (per-channel event).
-**  \event Message too long (size = \%lu > max = \%d) for msgId = (0x%04X) on channel (\%u)
-**
-**  \par Type: ERROR
-**
-**  \par Cause:
-**
-**  This event message (per-channel event) is issued when the CFS TO Task attempts to process a telemetry
-**  message length that is larger than TO_MAX_MSG_LENGTH.
-**
-*/    
-    TO_TLM_MSG_LEN_ERR_EID  = 88,
 
 /** \brief Classifier failed to retrieve a message flow - Message ID in the table - (per-channel event).
 **  \event Classifier Recvd invalid msgId (0x%04X) or message flow was removed on channel (\%u)
@@ -1331,7 +1001,58 @@ typedef enum {
 **  built-in emergency backup configuration table.
 **
 */
-    TO_BACKUP_TABLE_ERR_EID = 90,       
+    TO_BACKUP_TABLE_ERR_EID = 90,
+
+/** \brief Channel enabled.
+**  \event Enabled channel %u to %s:%u.
+**
+**  \par Type: INFORMATION
+**
+**  \par Cause:
+**
+**  This event message is issued when a TO channel is enabled, or reenabled.
+**
+*/
+//	TO_TLMOUTENA_INF_EID = 91,
+
+/** \brief Channel failed to enable.
+**  \event Destination address for channel %u is null.
+**  \event ChannelID (%u) invalid.
+**
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when a TO channel fails to enable or reenable.
+**
+*/
+//	TO_TLMOUTENA_ERR_EID = 92,
+
+
+/** \brief Channel disabled.
+**  \event Disabled channel %u.
+**
+**  \par Type: INFORMATION
+**
+**  \par Cause:
+**
+**  This event message is issued when a TO channel is disabled.
+**
+*/
+//	TO_TLMOUTDIS_INF_EID = 93,
+
+
+/** \brief Channel failed to disable.
+**  \event UDP telemetry for channel %u is not enabled.
+**
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when a TO channel fails to disable.
+**
+*/
+//	TO_TLMOUTDIS_ERR_EID = 94,
 
 /** \brief This is a count of all the app events and should not be used. */
     TO_EVT_CNT

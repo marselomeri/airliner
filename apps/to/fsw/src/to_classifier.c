@@ -81,10 +81,10 @@ void TO_Classifier_Run(TO_ChannelData_t *channel)
             totalMsgLength = CFE_SB_GetTotalMsgLength(DataMsgPtr);
             if (totalMsgLength > TO_MAX_MSG_LENGTH)
             {
-                (void) CFE_EVS_SendEvent(TO_TLM_MSG_LEN_ERR_EID, CFE_EVS_ERROR,
+                (void) CFE_EVS_SendEvent(TO_OUT_CH_MSG_TOO_BIG_EID, CFE_EVS_ERROR,
                                          "Message too long (size = %lu > max = %d) for msgId = (0x%04X) on channel (%u)",
                                          totalMsgLength,
-                                         TO_MAX_MSG_LENGTH,
+										 TO_MAX_MSG_LENGTH,
                                          (unsigned short)DataMsgID,
                                          (unsigned short)channel->channelIdx);
                 (void) OS_MutSemTake(TO_AppData.MutexID);

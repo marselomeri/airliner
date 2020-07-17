@@ -48,8 +48,7 @@ extern TO_ChannelTbl_t TO_EmptyConfigTable;
 
 typedef enum {
     /* TODO:  Add Doxygen markup. */
-    TO_TLMOUTSOCKET_ERR_EID = TO_EVT_CNT,
-    TO_TLMOUTENA_INF_EID,
+    TO_TLMOUTENA_INF_EID = TO_EVT_CNT,
     TO_TLMOUTENA_ERR_EID,
     TO_TLMOUTSTOP_ERR_EID,
     TO_CUSTOM_EVT_CNT

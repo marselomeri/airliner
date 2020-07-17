@@ -192,7 +192,7 @@ TO_MessageFlow_t* TO_MessageFlow_GetObject(TO_ChannelData_t* channel, CFE_SB_Msg
 }
 
 
-int32 TO_Channel_OpenChannel(const uint32 index, const char *ChannelName,
+int32 TO_Channel_OpenChannel(uint32 index, const char *ChannelName,
         const char *ConfigTableName, const char *ConfigTableFileName, TO_ChannelTbl_t *BackupTbl,
         const char *DumpTableName, const uint32 CfCntSemMax, const char *CfCntSemName)
 {

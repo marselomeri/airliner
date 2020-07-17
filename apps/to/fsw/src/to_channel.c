@@ -123,7 +123,7 @@ int32 TO_Channel_Init(uint16 index);
 void TO_Channel_Cleanup(uint16 index);
 
 
-int32 TO_Channel_OpenChannel(const uint32 index, const char *ChannelName,
+int32 TO_Channel_OpenChannel(uint32 index, const char *ChannelName,
     const char *ConfigTableName, const char *ConfigTableFileName,
     TO_ChannelTbl_t *BackupTblPtr, const char *DumpTableName,
     const uint32 CfCntSemMax, const char *CfCntSemName)
@@ -571,7 +571,7 @@ osalbool TO_Channel_SBPipe_Dequeue_All(uint16 index)
 
     if (index >= TO_MAX_CHANNELS)
     {
-        (void) CFE_EVS_SendEvent(TO_FLUSH_INVALID_CHIDX_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(TO_DEQUEUE_INVALID_CHIDX_ERR_EID, CFE_EVS_ERROR,
                             "ChannelID %u out of range in SB pipe dequeue all.", (unsigned int)index);
         return FALSE;
     }

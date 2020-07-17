@@ -502,7 +502,7 @@ void TO_OutputChannel_ChannelHandle_QueueGetFail(void)
     
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
-    UtAssert_EventSent(TO_TLM_LISTEN_ERR_EID, CFE_EVS_ERROR, "", 
+    UtAssert_EventSent(TO_TLM_OUT_QUEUE_READ_ERR_EID, CFE_EVS_ERROR, "",
             "TO_OutputChannel_Send() failed to raise an event");
 }
 
@@ -566,7 +566,7 @@ void TO_OutputChannel_ChannelHandle_PutPoolBufFail(void)
     /* Verify results */
     /* Events sendto error and disable channel info message */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
-    UtAssert_EventSent(TO_GET_POOL_ERR_EID, CFE_EVS_ERROR, "", 
+    UtAssert_EventSent(TO_PUT_POOL_ERR_EID, CFE_EVS_ERROR, "",
             "TO_OutputChannel_Send() failed to raise an event");
 }
 
@@ -624,7 +624,7 @@ void TO_OutputChannel_ProcessNewCustomCmds_EnableInvalidMessageLength(void)
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
     UtAssert_True(TO_AppData.HkTlm.usCmdErrCnt == 1,"CmdErrCnt not incremented");
-    UtAssert_EventSent(TO_MSGLEN_ERR_EID, CFE_EVS_ERROR, "", 
+    UtAssert_EventSent(TO_MSG_LEN_ERR_EID, CFE_EVS_ERROR, "",
             "TO_OutputChannel_ProcessNewCustomCmds() failed to raise an event");
 }
 
@@ -651,7 +651,7 @@ void TO_OutputChannel_ProcessNewCustomCmds_DisableInvalidMessageLength(void)
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
     UtAssert_True(TO_AppData.HkTlm.usCmdErrCnt == 1,"CmdErrCnt not incremented");
-    UtAssert_EventSent(TO_MSGLEN_ERR_EID, CFE_EVS_ERROR, "", 
+    UtAssert_EventSent(TO_MSG_LEN_ERR_EID, CFE_EVS_ERROR, "",
             "TO_OutputChannel_ProcessNewCustomCmds() failed to raise an event");
 }
 
@@ -681,7 +681,7 @@ void TO_OutputChannel_ProcessNewCustomCmds_InvalidCommandCode(void)
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
     UtAssert_True(TO_AppData.HkTlm.usCmdErrCnt == 1,"CmdErrCnt not incremented");
-    UtAssert_EventSent(TO_MSGID_ERR_EID, CFE_EVS_ERROR, "", 
+    UtAssert_EventSent(TO_CC_ERR_EID, CFE_EVS_ERROR, "",
             "TO_OutputChannel_ProcessNewCustomCmds() failed to raise an event");
 }
 
@@ -737,7 +737,7 @@ void TO_OutputChannel_ProcessNewCustomCmds_DisableFail(void)
     /* Verify results */
     UtAssert_True(TO_AppData.HkTlm.usCmdErrCnt == 1,"CmdErrCnt not incremented");
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
-    UtAssert_EventSent(TO_TLMOUTENA_ERR_EID, CFE_EVS_ERROR, "", 
+    UtAssert_EventSent(TO_TLMOUTDIS_ERR_EID, CFE_EVS_ERROR, "",
             "TO_OutputChannel_Disable() failed to raise an event");
 }
 
@@ -763,7 +763,7 @@ void TO_OutputChannel_ProcessNewCustomCmds_EnableNominal(void)
     /* Verify results */
     UtAssert_True(TO_AppData.HkTlm.usCmdCnt == 1,"usCmdCnt not incremented");
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
-    UtAssert_EventSent(TO_CMD_INF_EID, CFE_EVS_INFORMATION, "", 
+    UtAssert_EventSent(TO_TLMOUTENA_INF_EID, CFE_EVS_INFORMATION, "",
             "TO_OutputChannel_Enable() failed to raise an event");
 }
 
@@ -798,7 +798,7 @@ void TO_OutputChannel_ProcessNewCustomCmds_DisableNominal(void)
     UtAssert_True(TO_AppCustomData.Channel[ChannelID].Mode == TO_CHANNEL_DISABLED,
             "TO_OutputChannel_Disable did not set correct mode");
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
-    UtAssert_EventSent(TO_CMD_INF_EID, CFE_EVS_INFORMATION, "", 
+    UtAssert_EventSent(TO_TLMOUTDIS_INF_EID, CFE_EVS_INFORMATION, "",
             "TO_OutputChannel_Disable() failed to raise an event");
 }
 
@@ -832,7 +832,7 @@ void TO_OutputChannel_CustomCleanupAll_Nominal(void)
     
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
-    UtAssert_EventSent(TO_CMD_INF_EID, CFE_EVS_INFORMATION, "", 
+    UtAssert_EventSent(TO_TLMOUTDIS_INF_EID, CFE_EVS_INFORMATION, "",
             "TO_OutputChannel_Disable() failed to raise an event");
 }
 
@@ -855,7 +855,7 @@ void TO_OutputChannel_Disable_Fail(void)
     
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
-    UtAssert_EventSent(TO_TLMOUTENA_ERR_EID, CFE_EVS_ERROR, "", 
+    UtAssert_EventSent(TO_TLMOUTDIS_ERR_EID, CFE_EVS_ERROR, "",
             "TO_OutputChannel_Disable() failed to raise an event");
     UtAssert_True(result == expected,
             "TO_OutputChannel_Disable() did not return the correct value");
@@ -879,7 +879,7 @@ void TO_OutputChannel_Disable_Nominal(void)
     
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
-    UtAssert_EventSent(TO_CMD_INF_EID, CFE_EVS_INFORMATION, "", 
+    UtAssert_EventSent(TO_TLMOUTDIS_INF_EID, CFE_EVS_INFORMATION, "",
             "TO_OutputChannel_Disable() failed to raise an event");
     UtAssert_True(result == expected,
             "TO_OutputChannel_Disable() did not return the correct value");

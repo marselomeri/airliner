@@ -71,7 +71,6 @@ extern "C" {
 **       Successful execution of this command may be verified with
 **       the following telemetry:
 **       - \b \c TO_CMDACPTCNT - command counter will increment
-**       - The #TO_CMD_INF_EID informational event message will be
 **         generated when the command is received
 **
 **  \par Error Conditions
@@ -103,7 +102,6 @@ extern "C" {
 **       the following telemetry:
 **       - \b \c TO_CMDACTPCNT       - command counter will be cleared
 **       - \b \c TO_CMDRJCTCNT       - command error counter will be cleared
-**       - The #TO_CMD_INF_EID debug event message will be
 **         generated when the command is executed
 **
 **  \par Error Conditions

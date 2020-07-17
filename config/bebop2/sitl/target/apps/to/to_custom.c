@@ -260,7 +260,7 @@ void TO_OutputChannel_ProcessNewCustomCmds(CFE_SB_Msg_t* MsgPtr)
                 }
 
                 TO_AppData.HkTlm.usCmdCnt++;
-                (void) CFE_EVS_SendEvent(TO_CMD_INF_EID, CFE_EVS_INFORMATION,
+                (void) CFE_EVS_SendEvent(TO_TLMOUTENA_INF_EID, CFE_EVS_INFORMATION,
                                   "Enabled channel %u to %s:%u.",
                                   cmd->ChannelID,
                                   cmd->DestinationAddress,
@@ -293,7 +293,7 @@ void TO_OutputChannel_ProcessNewCustomCmds(CFE_SB_Msg_t* MsgPtr)
 
             default:
                 TO_AppData.HkTlm.usCmdErrCnt++;
-                (void) CFE_EVS_SendEvent(TO_MSG_ID_ERR_EID, CFE_EVS_ERROR,
+                (void) CFE_EVS_SendEvent(TO_CC_ERR_EID, CFE_EVS_ERROR,
                                   "Recvd invalid cmdId (%u)", (unsigned int)uiCmdCode);
                 break;
         }
@@ -399,7 +399,7 @@ int32 TO_OutputChannel_Disable(uint32 ChannelID)
 
     if(TO_AppCustomData.Channel[ChannelID].Mode != TO_CHANNEL_ENABLED)
     {
-        CFE_EVS_SendEvent(TO_TLMOUTENA_ERR_EID, CFE_EVS_ERROR,
+        CFE_EVS_SendEvent(TO_TLMOUTDIS_ERR_EID, CFE_EVS_ERROR,
                         "UDP telemetry for channel %u is not enabled.", (unsigned int)i);
         returnCode = -1;
         goto end_of_function;
@@ -413,7 +413,7 @@ int32 TO_OutputChannel_Disable(uint32 ChannelID)
     close(TO_AppCustomData.Channel[ChannelID].Socket);
     TO_AppCustomData.Channel[ChannelID].Socket = 0;
 
-    CFE_EVS_SendEvent(TO_CMD_INF_EID, CFE_EVS_INFORMATION,
+    CFE_EVS_SendEvent(TO_TLMOUTDIS_INF_EID, CFE_EVS_INFORMATION,
                       "Disabled channel %u.",
                       (unsigned int)ChannelID);
 
@@ -501,7 +501,7 @@ void TO_OutputChannel_ChannelHandler(uint32 ChannelIdx)
             }
             else
             {
-                CFE_EVS_SendEvent(TO_TLM_LISTEN_ERR_EID, CFE_EVS_ERROR,
+                CFE_EVS_SendEvent(TO_TLM_OUT_QUEUE_READ_ERR_EID, CFE_EVS_ERROR,
                                 "Listener failed to pop message from queue. (%i).", (int)iStatus);
                 OS_MutSemTake(TO_AppData.MutexID);
                 TO_AppData.ChannelData[ChannelIdx].State = TO_CHANNEL_CLOSED;

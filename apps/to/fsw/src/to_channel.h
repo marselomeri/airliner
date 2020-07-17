@@ -281,7 +281,7 @@ struct TO_ChannelData_t
 **  CFE_SUCCESS if successful.  #TO_CHANNEL_OUT_OF_RANGE_ERR or OSAL error if unsuccessful.
 **
 *************************************************************************/
-int32 TO_Channel_OpenChannel(const uint32 index, const char *ChannelName,
+int32 TO_Channel_OpenChannel(uint32 index, const char *ChannelName,
         const char *ConfigTableName, const char *ConfigTableFileName,
         TO_ChannelTbl_t *BackupTblPtr, const char *DumpTableName,
         const uint32 CfCntSemMax, const char *CfCntSemName);

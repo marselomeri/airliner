@@ -104,7 +104,7 @@ int32 TO_OutputQueue_Teardown(TO_ChannelData_t *channel)
                      */
                     (void) CFE_EVS_SendEvent(TO_PUT_POOL_ERR_EID,
                                              CFE_EVS_ERROR,
-                                             "Failed to return message back to memory pool on output queue teardown, channel %d. (%d)",
+											 "PutPoolBuf: channel=%d, error=%i",
                                              (unsigned int)channel->channelIdx, 
                                              (int)putStatus);
                 } else {

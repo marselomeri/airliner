@@ -2178,7 +2178,7 @@ void Test_TO_OutputQueue_Teardown_QueueGet_PutPoolBuf_Fail(void)
     /* Execute the function being tested */
     iStatus = TO_OutputQueue_Teardown(channel);
     
-    sprintf(expectedEvent, "Failed to return message back to memory pool on output queue teardown, channel %d. (%ld)",
+    sprintf(expectedEvent, "PutPoolBuf: channel=%d, error=%i",
             channel->channelIdx,
             -1);       
 
@@ -4125,7 +4125,7 @@ void Test_TO_Channel_SBPipe_Dequeue_All(void)
     result = TO_Channel_SBPipe_Dequeue_All(ChannelID);
 
     /* Verify results */
-    UtAssert_EventSent(TO_FLUSH_INVALID_CHIDX_ERR_EID, CFE_EVS_ERROR, "",
+    UtAssert_EventSent(TO_DEQUEUE_INVALID_CHIDX_ERR_EID, CFE_EVS_ERROR, "",
                        "ChannelID out of range in SB pipe dequeue all.");
                            
     UtAssert_True (result == expected, "ChannelID out of range in SB pipe dequeue all.");    
@@ -4786,7 +4786,7 @@ void Test_TO_Classifier_MessageTooLong(void)
     TO_Classifier_Run(groundChannel);
 
     /* Verify results */
-    UtAssert_EventSent(TO_TLM_MSG_LEN_ERR_EID, CFE_EVS_ERROR,
+    UtAssert_EventSent(TO_OUT_CH_MSG_TOO_BIG_EID, CFE_EVS_ERROR,
                        expectedEvent, "Test_TO_Classifier Message Too Long - error event correct");
     UtAssert_True(TO_AppData.HkTlm.usTotalMsgDropped == expectedAppMsgsDropped,
             "Test_TO_Classifier Message Too Long - app dropped count correct");
