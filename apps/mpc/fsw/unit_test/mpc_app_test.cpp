@@ -752,6 +752,8 @@ void Test_MPC_AppMain_Nominal_LimitAltitude(void)
 {
     MPC oMPC;
 
+    oMPC.InitApp();
+
     /* PASS 1 - Landed and idle. */
     oMPC.m_RunAltControl = 0;
     oMPC.m_PositionSetpoint[2] = 0.005629;
