@@ -77,7 +77,7 @@ typedef enum {
 **  The second \c \b " %d " field contains the Application's Minor Version Number
 **  The third \c \b " %d " field contains the Application's Revision Number
 */
-    TO_INIT_APP_INF_EID      = 1,
+    TO_INIT_APP_INF_EID                = 1,
 
 /** \brief TO NOOP CMD INFO.
 **  \event Executed NOOP cmd (\%u), Version \%d.\%d.\%d.\%d
@@ -90,7 +90,7 @@ typedef enum {
 **  received and processed a Noop command.  Also, the
 **  application version number is displayed.
 */
-    TO_CMD_NOOP_INF_EID      = 2,
+    TO_CMD_NOOP_INF_EID                = 2,
 
 /** \brief TO RESET CMD INFO.
 **  \event Executed RESET cmd (\%u)
@@ -103,7 +103,7 @@ typedef enum {
 **  received and processed a Reset command.
 **
 */
-    TO_CMD_RESET_INF_EID     = 3,
+    TO_CMD_RESET_INF_EID               = 3,
 
 /** \brief TO Init App ERROR.
 **  \event Application failed to initialize.
@@ -116,7 +116,7 @@ typedef enum {
 **  had an error with initializing the app.
 **
 */
-    TO_INIT_APP_ERR_EID      = 4,
+    TO_INIT_APP_ERR_EID                = 4,
 
 /** \brief TO Init CMD Pipe ERROR.
 **  \event Failed to create CMD pipe (0x%08X)
@@ -129,7 +129,7 @@ typedef enum {
 **  had an error initializing the command pipe.
 **
 */
-    TO_INIT_CMDPIPE_ERR_EID  = 5,
+    TO_INIT_CMDPIPE_ERR_EID            = 5,
 
 /** \brief TO Init configuration table ERROR.
 **  \event Failed to init config tables (0x%08X)
@@ -142,7 +142,7 @@ typedef enum {
 **  had an error initializing a configuration table.
 **
 */
-    TO_INIT_CONFIG_ERR_EID   = 6,
+    TO_INIT_CONFIG_ERR_EID             = 6,
 
 /** \brief TO Init data pipe ERROR.
 **  \event Failed to init config tables (0x%08X)
@@ -155,7 +155,7 @@ typedef enum {
 **  had an error initializing the data pipe
 **
 */
-    TO_INIT_DATAPIPE_ERR_EID = 7,
+    TO_INIT_DATAPIPE_ERR_EID           = 7,
 
 /** \brief TO Init pipe ERROR.
 **  \event Failed to init pipes (0x%08X)
@@ -168,7 +168,7 @@ typedef enum {
 **  has at least 1 error initializing a pipe.
 **
 */
-    TO_INIT_PIPE_ERR_EID     = 8,
+    TO_INIT_PIPE_ERR_EID               = 8,
 
 /** \brief TO Init SCH pipe ERROR.
 **  \event Failed to create SCH pipe (0x%08X)
@@ -181,7 +181,7 @@ typedef enum {
 **  had an error initializing the scheduler pipe
 **
 */
-    TO_INIT_SCHPIPE_ERR_EID  = 9,
+    TO_INIT_SCHPIPE_ERR_EID            = 9,
 
 /** \brief TO Command Code Error.
 **  \event Recvd invalid cmdId (\%u)
@@ -195,7 +195,7 @@ typedef enum {
 **
 **
 */
-    TO_CC_ERR_EID            = 14,
+    TO_CC_ERR_EID                      = 10,
 
 /** \brief TO CONFIG TABLE Address Error.
 **  \event Failed to get Config table's address for channel \%u, (0x%08X)
@@ -208,7 +208,7 @@ typedef enum {
 **  had an error with getting the configuration table address.
 **
 */
-    TO_CONFIG_ADDR_ERR_EID   = 15,
+    TO_CONFIG_ADDR_ERR_EID             = 11,
 
 /** \brief TO CONFIG TABLE Manage Error.
 **  \event Failed to manage Config table for channel \%u, (0x%08X)
@@ -221,7 +221,7 @@ typedef enum {
 **  had an error with managing the configuration table.
 **
 */
-    TO_CONFIG_MANAGE_ERR_EID = 16,
+    TO_CONFIG_MANAGE_ERR_EID           = 12,
 
 /** \brief TO received invalid message ID.
 **  \event Recvd invalid $type msgId (0x%04x)
@@ -234,7 +234,7 @@ typedef enum {
 **  received an invalid message ID.
 **
 */
-    TO_MSG_ID_ERR_EID        = 17,
+    TO_MSG_ID_ERR_EID                  = 13,
 
 /** \brief TO received a message with a invalid length
 **  \event Rcvd invalid msgLen: msgId=0x%08X, cmdCode=\%d, msgLen=\%d, expectedLen=\%d"
@@ -247,7 +247,7 @@ typedef enum {
 **  received a message with a bad length.
 **
 */
-    TO_MSG_LEN_ERR_EID       = 18,
+    TO_MSG_LEN_ERR_EID                 = 14,
 
 /** \brief TO Software Bus Pipe ERROR.
 **  \event SB pipe read error (0x%08X)
@@ -260,7 +260,7 @@ typedef enum {
 **  had an error reading from a pipe.
 **
 */
-    TO_PIPE_READ_ERR_EID     = 19,
+    TO_PIPE_READ_ERR_EID               = 15,
 
 /** \brief TO Subscribe ERROR.
 **  \event CMD Pipe failed to subscribe to TO_CMD_MID. (0x%08X)
@@ -274,7 +274,7 @@ typedef enum {
 **  had an error subscribing to messages.
 **
 */
-    TO_SUBSCRIBE_ERR_EID     = 20,
+    TO_SUBSCRIBE_ERR_EID               = 16,
 
 /** \brief TO Configuration ERROR.
 **  \event Channel \%u config table handle failure! (0x%08X)
@@ -289,7 +289,7 @@ typedef enum {
 **  had an error with the configuration table.
 **
 */
-    TO_CONFIG_TABLE_ERR_EID  = 21,
+    TO_CONFIG_TABLE_ERR_EID            = 17,
 
 /** \brief TO received and processed a command.
 **  \event Enabled channel \%u to \%s:\%u.
@@ -302,7 +302,7 @@ typedef enum {
 **  received and processed a command.
 **
 */
-    TO_CMD_INF_EID           = 22,
+    TO_CMD_INF_EID                     = 18,
 
 /** \brief TO Unsubscribe ERROR.
 **  \event Message flow failed to unsubscribe from 0x%04x. (\%ld)
@@ -315,7 +315,7 @@ typedef enum {
 **  had an error subscribing to messages.
 **
 */
-    TO_UNSUBSCRIBE_ERR_EID   = 23,
+    TO_UNSUBSCRIBE_ERR_EID             = 19,
 
 /** \brief Message Dropped on Priority Queue.
 **  \event PQ full (PQ \%lu, channel \%u). Error code (\%ld) Dropped message 0x%04x
@@ -334,7 +334,7 @@ typedef enum {
 **    - OS_ERROR  are all handled by this else clause
 **
 */
-    TO_MSG_DROP_FROM_FLOW_DBG_EID = 25,
+    TO_MSG_DROP_FROM_FLOW_DBG_EID      = 20,
 
 /** \brief TO Create memory pool failed.
 **  \event Error creating memory pool (0x%08X)
@@ -347,7 +347,7 @@ typedef enum {
 **  create memory pool.
 **
 */
-    TO_CR_POOL_ERR_EID        = 26,
+    TO_CR_POOL_ERR_EID                 = 21,
 
 /** \brief Memory pool error - failed deallocating the memory allocated.
 **  \event PutPoolBuf: channel=\%d error=\%i
@@ -360,7 +360,7 @@ typedef enum {
 **   because CFE_ES_PutPoolBuf returned an error.
 **
 */
-    TO_PUT_POOL_ERR_EID = 60,
+    TO_PUT_POOL_ERR_EID                = 22,
 
 /** \brief Listener failed to pop message.
 **  \event Listener failed to pop message from queue. (%i).
@@ -373,7 +373,7 @@ typedef enum {
 **  from the output queue.
 **
 */
-	TO_TLM_OUT_QUEUE_READ_ERR_EID     = 28,
+	TO_TLM_OUT_QUEUE_READ_ERR_EID      = 23,
 
 /** \brief Query a channel for a specified message flow.
 **  \event CHANNEL=\%d MID=0x%04x ML=\%u PQI=\%u N=\%u AB=\%u D=\%lu Q=\%lu SB=\%lu FLT=\%lu FLD=\%lu S=\%lu
@@ -399,7 +399,7 @@ typedef enum {
 **    - Failed Message Count
 **    - Sent Message Count
 */
-    TO_MSG_FLOW_INFO_EID = 29,
+    TO_MSG_FLOW_INFO_EID               = 24,
 
 /** \brief Failed query on channel for a specified message flow.
 **  \event MsgID=0x%04x not found (channel = \%d)
@@ -416,7 +416,7 @@ typedef enum {
 **    - Channel not open
 **    - Channel index not valid (out of range)
 */
-    TO_MSG_FLOW_INFO_ERR_EID = 30,
+    TO_MSG_FLOW_INFO_ERR_EID           = 25,
 
 /** \brief Failed query on a channel for a specified message with NULL table pointer
 **  \event Channel missing valid table data (channel = \%d).
@@ -429,7 +429,7 @@ typedef enum {
 **
 **    - Channel missing valid table data.
 */
-    TO_MSG_FLOW_MISSING_TBL_ERR_EID = 31,
+    TO_MSG_FLOW_MISSING_TBL_ERR_EID    = 26,
 
 /** \brief Query a channel's priority queue.
 **  \event CHANNEL=\%d PQI=\%u S=\%u ML=\%u QT=\%u D=\%lu Q=\%lu CQ=\%u HWM=\%u
@@ -442,7 +442,7 @@ typedef enum {
 **  successfully.
 **
 */
-    TO_PQUEUE_INFO_EID = 32,
+    TO_PQUEUE_INFO_EID                 = 27,
 
 /** \brief Failed query on a channel's priority queue.
 **  \event PQueueIdx \%u exceeds the largest available priority queue index
@@ -460,7 +460,7 @@ typedef enum {
 **    - Channel index not valid (out of range)
 **
 */
-    TO_PQUEUE_INFO_ERR_EID = 33,    
+    TO_PQUEUE_INFO_ERR_EID             = 28,
 
 /** \brief Command to query an output queue.
 **  \event CHANNEL=\%d S=\%d ML=\%i SC=\%lu CQC=\%d HWM=\%d
@@ -481,7 +481,7 @@ typedef enum {
 **    - HighwaterMark
 **
 */
-    TO_OUT_CH_INFO_EID = 34,
+    TO_OUT_CH_INFO_EID                 = 29,
 
 /** \brief Command to query an output queue failed.
 **  \event Invalid channel index (index = \%d, max = \%d).
@@ -497,7 +497,7 @@ typedef enum {
 **    - Channel not open
 **
 */
-    TO_OUT_CH_INFO_ERR_EID = 35,    
+    TO_OUT_CH_INFO_ERR_EID             = 30,
 
 /** \brief Failed to send out telemetry message, message too large.
 **  \event Message too long (size = %lu > max = %d) for msgId = (0x%04X) on channel (%u)
@@ -509,7 +509,7 @@ typedef enum {
 **  This event message is issued when TO failed to send out telemetry message, message too large.
 **
 */
-    TO_OUT_CH_MSG_TOO_BIG_EID = 36,
+    TO_OUT_CH_MSG_TOO_BIG_EID          = 31,
 
 /** \brief Command to add a message flow executed successfully.
 **  \event Executed ADD_MESSAGE cmd (\%u)
@@ -521,7 +521,7 @@ typedef enum {
 **  This event message is issued when TO Command Add a message flow executed successfully.
 **
 */
-    TO_CMD_ADD_MSG_FLOW_EID = 37,
+    TO_CMD_ADD_MSG_FLOW_EID            = 32,
     
 /** \brief Command to add a message flow has failed.
 **  \event Invalid channel (channel = \%d, but max = \%d).
@@ -553,7 +553,7 @@ typedef enum {
 **    - Message flow failed to subscribe
 **    - No available slots to insert message flow > TO_MAX_MESSAGE_FLOWS
 */
-    TO_CMD_ADD_MSG_FLOW_ERR_EID = 38,    
+    TO_CMD_ADD_MSG_FLOW_ERR_EID        = 33,
 
 /** \brief Command to remove a message flow executed successfully.
 **  \event Executed remove message flow cmd (\%u)
@@ -565,7 +565,7 @@ typedef enum {
 **  This event message is issued when TO command remove a message flow executed successfully.
 **
 */
-    TO_CMD_REMOVE_MSG_FLOW_EID = 39,
+    TO_CMD_REMOVE_MSG_FLOW_EID         = 34,
 
 /** \brief Command to remove a message flow has failed.
 **  \event Invalid channel (channel = \%d, but max = \%d).
@@ -586,7 +586,7 @@ typedef enum {
 **    - Message flow failed to unsubscribe from channel
 **
 */
-    TO_CMD_REMOVE_MSG_FLOW_ERR_EID = 40,    
+    TO_CMD_REMOVE_MSG_FLOW_ERR_EID     = 35,
 
 /** \brief Command to send TO Diagnostics telemetry executed successfully.
 **  \event Successfully executed send diagnostics (\%u)
@@ -598,7 +598,7 @@ typedef enum {
 **  This event message is issued when TO command to Send TO Diagnostics telemetry executed successfully.
 **
 */
-    TO_CMD_SEND_DIAG_EID = 41,
+    TO_CMD_SEND_DIAG_EID               = 36,
 
 /** \brief Command to send TO Diagnostics telemetry failed - (per-channel event).
 **  \event Invalid channel index.
@@ -614,7 +614,7 @@ typedef enum {
 **    - Channel index not valid (out of range)
 **    - Channel not open
 */
-    TO_CMD_SEND_DIAG_ERR_EID = 42,
+    TO_CMD_SEND_DIAG_ERR_EID           = 37,
 
 /** \brief Command to send diagnostics action did not occur because table data was missing - (per-channel event) 
 **  \event Channel table is not available.
@@ -628,7 +628,7 @@ typedef enum {
 **
 **    - Channel table pointer is NULL.
 */
-    TO_CMD_SEND_MISSING_TBL_ERR_EID = 43,
+    TO_CMD_SEND_MISSING_TBL_ERR_EID    = 38,
 
 /** \brief Failed to create priority queue because table data was missing - (per-channel event).
 **  \event Failed to create priority queues on channel \%d, missing table.
@@ -642,7 +642,7 @@ typedef enum {
 **
 **    - Channel table pointer is NULL.
 */
-    TO_PQUEUE_MISSING_TBL_ERR_EID  = 44,
+    TO_PQUEUE_MISSING_TBL_ERR_EID      = 39,
 
 /** \brief A priority queue could not be created because call to OS_QueueCreate failed (per-channel event).
 **  \event Failed to create '\%s' priority queue #\%u on channel \%d. (\%i)
@@ -662,7 +662,7 @@ typedef enum {
 **
 **  A priority queue could not be created.  Not a critical error.
 */
-    TO_PQUEUE_CREATE_ERR_EID  = 45,
+    TO_PQUEUE_CREATE_ERR_EID           = 40,
 
 /** \brief A priority queue could not be torn down (per-channel event).
 **  \event Failed to return message back to memory pool on tbl load for channel \%d. (\%ld)
@@ -680,7 +680,7 @@ typedef enum {
 **  - Failed to delete priority queue for the channel - error returned from call to OS_QueueDelete
 ** 
 */
-    TO_PQUEUE_TEARDOWN_ERR_EID = 46,
+    TO_PQUEUE_TEARDOWN_ERR_EID         = 41,
 
 /** \brief TO Table Validation failed - Configuration table pointer is NULL (not available).
 **  \event ERROR: Config table pointer is NULL, table validation ended"
@@ -692,7 +692,7 @@ typedef enum {
 **  This event message is issed when table validation failed due config table pointer being NULL (not available).
 **
 */
-    TO_CONFIG_TABLE_NULL_PTR_EID = 47,
+    TO_CONFIG_TABLE_NULL_PTR_EID       = 42,
 
 /** \brief TO Table Validation failed - Priority Queue State is invalid.
 **  \event ERROR: Priority Queue State is invalid (\%d), for Table ID (\%lu) at table index (\%d)
@@ -704,7 +704,7 @@ typedef enum {
 **  This event message is issed when table validation failed due Priority Queue State not valid.
 **
 */
-    TO_CONFIG_TABLE_PQUEUE_STATE_ERR_EID = 48,
+    TO_CONFIG_TABLE_PQUEUE_STATE_ERR_EID = 43,
 
 /** \brief TO Table Validation failed - Priority Queue Type is invalid.
 **  \event ERROR: Priority Queue Qtype is invalid (\%d) for Table ID (\%lu) at table index (\%d)
@@ -716,7 +716,7 @@ typedef enum {
 **  This event message is issed when table validation failed due to Priority Queue Type not valid. Only one type - FIFO.
 **
 */
-    TO_CONFIG_TABLE_PQUEUE_QTYPE_ERR_EID = 50,
+    TO_CONFIG_TABLE_PQUEUE_QTYPE_ERR_EID = 44,
 
 /** \brief TO Table Validation failed - Priority Queue Message Limit is invalid.
 **  \event ERROR: Priority Queue MsgLimit invalid (\%d) for Table ID (\%lu) at table index (\%d)
@@ -728,7 +728,7 @@ typedef enum {
 **  Table validation failed due to Priority Queue Message Limit because invalid.
 **
 */
-    TO_CONFIG_TABLE_PQUEUE_MSG_LIMIT_ERR_EID = 51,
+    TO_CONFIG_TABLE_PQUEUE_MSG_LIMIT_ERR_EID = 45,
 
 /** \brief TO Table Validation failed - no Priority Queues defined in the table.
 **  \event ERROR: No Priority Queues or all queue states are unused in the config table with Table ID (\%lu)
@@ -740,7 +740,7 @@ typedef enum {
 **  This event message is issed when table validation failed due because no Priority Queues defined in the table.
 **
 */
-    TO_CONFIG_TABLE_NO_PQUEUES_ERR_EID = 52,
+    TO_CONFIG_TABLE_NO_PQUEUES_ERR_EID = 46,
 
 /** \brief TO Table Validation failed - secondary header is absent.
 **  \event ERROR: Secondary Header is absent for table index (\%d), MsgId (0x%04X) in Table ID (\%lu)
@@ -752,7 +752,7 @@ typedef enum {
 **  This event message is issed when table validation failed due to CCSDS secondary header error (absent)
 **
 */
-    TO_CONFIG_TABLE_SHDR_ABSENT_EID = 53,
+    TO_CONFIG_TABLE_SHDR_ABSENT_EID    = 47,
 
 /** \brief TO Table Validation failed - Invalid CCSDS version
 **  \event ERROR: Invalid CCSDS Version for table index (\%d), MsgId (0x%04X) in Table ID (\%lu)
@@ -764,7 +764,7 @@ typedef enum {
 **  This event message is issed when table validation failed due to CCSDS VERS error.
 **
 */
-    TO_CONFIG_TABLE_CCSDS_VER_INVALID_EID = 54,
+    TO_CONFIG_TABLE_CCSDS_VER_INVALID_EID = 48,
 
 /** \brief TO Table Validation failed - configuration table Message Flow Limit is invalid.
 **  \event ERROR: Message Flow MsgLimit invalid (\%u) in Table ID (\%lu) at table index (\%d) 
@@ -776,7 +776,7 @@ typedef enum {
 **  This event message is issed when table validation failed due to Message Flow Limit is out of range.
 **
 */
-    TO_CONFIG_TABLE_MSG_FLOW_MSG_LIMIT_ERR_EID = 55,
+    TO_CONFIG_TABLE_MSG_FLOW_MSG_LIMIT_ERR_EID = 49,
 
 /** \brief TO Table Validation failed - configuration table Message Flow Priority Queue ID is invalid.
 **  \event ERROR: Message Flow Priority Queue ID is invalid (\%d) for Table ID (\%lu) at table index (\%d)
@@ -788,7 +788,7 @@ typedef enum {
 **  This event message is issed when table validation failed due to Message Flow Priority Queue ID being invalid.
 **
 */
-    TO_CONFIG_TABLE_MSG_FLOW_PQ_ID_ERR_EID = 56,
+    TO_CONFIG_TABLE_MSG_FLOW_PQ_ID_ERR_EID = 50,
 
 /** \brief TO Table Validation failed - configuration table has no Message Flows defined.
 **  \event INFO: No Message Flow entries in the config table, Table Id (\%lu)
@@ -800,7 +800,7 @@ typedef enum {
 **  This event message is issed when table validation failed due to no Message Flows defined in table.
 **
 */
-    TO_CONFIG_TABLE_NO_MSG_FLOW_INF_EID  = 57,
+    TO_CONFIG_TABLE_NO_MSG_FLOW_INF_EID = 51,
 
 /** \brief Channel index out of bounds
 **  \event ChannelID %u out of range in SB pipe dequeue all.
@@ -814,7 +814,7 @@ typedef enum {
 **    - Channel index not valid (out of range)
 **
 */
-	TO_DEQUEUE_INVALID_CHIDX_ERR_EID = 61,
+	TO_DEQUEUE_INVALID_CHIDX_ERR_EID   = 52,
 
 /** \brief Channel identifier value is out of range.
 **  \event ChannelID (\%u) invalid.
@@ -826,7 +826,7 @@ typedef enum {
 **  This event message is issued when channel index is out of range.
 **
 */
-    TO_CHANNEL_OUT_OF_RANGE_ERR_EID = 76,
+    TO_CHANNEL_OUT_OF_RANGE_ERR_EID    = 53,
 
 /** \brief Channel teardown failed - TO channel cleanup failure.
 **  \event Message Flow Teardown failure \%ld on channel \%u.
@@ -844,7 +844,7 @@ typedef enum {
 **    - Output queue teardown fails
 **
 */
-    TO_CHANNEL_TEARDOWN_ERR_EID = 78,
+    TO_CHANNEL_TEARDOWN_ERR_EID        = 54,
 
 /** \brief Channel mutex lock failure - (per-channel event).' </tt
 **  \event Channel lock mutex failure (\%u).
@@ -857,7 +857,7 @@ typedef enum {
 **  returned by call to OS_MutSemTake.
 **
 */
-    TO_CHANNEL_LOCK_MUTEX_ERR_EID = 79,
+    TO_CHANNEL_LOCK_MUTEX_ERR_EID      = 55,
 
 /** \brief Channel mutex unlock failure - (per-channel event).
 **  \event Channel unlock mutex failure (\%u).
@@ -870,7 +870,7 @@ typedef enum {
 **  returned by call to OS_MutSemGive.
 **
 */
-    TO_CHANNEL_UNLOCK_MUTEX_ERR_EID = 80,
+    TO_CHANNEL_UNLOCK_MUTEX_ERR_EID    = 56,
     
 /** \brief Software Bus Read Error.
 **  \event Main loop error: SB receive: result = 0x%08X
@@ -883,7 +883,7 @@ typedef enum {
 **  receives an error reading from the Software Bus
 **
 */
-    TO_SB_RECEIVE_ERR_EID = 81,
+    TO_SB_RECEIVE_ERR_EID              = 57,
     
 /** \brief Process new configuration table error - (per-channel event).
 **  \event Process New Config Table Failed for channel \%u, (0x%08X)
@@ -896,7 +896,7 @@ typedef enum {
 **  had an error with processing the configuration table.
 **
 */
-    TO_CONFIG_PROCESS_CONFIG_TBL_ERR_EID = 82,
+    TO_CONFIG_PROCESS_CONFIG_TBL_ERR_EID = 58,
 
 /** \brief TO call to OS_QueuePut function failed when trying to queue message.
 **  \event OS_QueuePut failed: channel=\%d size=\%u error=\%i.
@@ -911,7 +911,7 @@ typedef enum {
 **  - OS_ERROR if the OS call to delete the queue fails 
 **
 */
-    TO_OSQUEUE_PUT_ERROR_EID = 83,
+    TO_OSQUEUE_PUT_ERROR_EID           = 59,
 
 /** \brief TO call to OS_QueueGet function failed when trying to dequeue message.
 **  \event Failed to pop all messages from channel '\%s' (channel id = \%d) output queue. (\%ld).
@@ -929,7 +929,7 @@ typedef enum {
 **  - OS_QUEUE_INVALID_SIZE if the size passed in may be too small for the message
 **
 */
-    TO_OSQUEUE_GET_ERROR_EID = 84,
+    TO_OSQUEUE_GET_ERROR_EID           = 60,
 
 /** \brief Custom Init Event failure - Custom EID filters not set.
 **  \event Custom Init Event - Event table index out of range. Custom EID filters not set.
@@ -949,7 +949,7 @@ typedef enum {
 **  - TO_CUSTOM_INITEVENT_TOO_MANY_FILTERS
 **
 */
-    TO_EVT_CUSTOM_FILTERS_ERR_EID = 85,
+    TO_EVT_CUSTOM_FILTERS_ERR_EID      = 61,
 
 /** \brief Init Data Error - Failed to Create TO AppData Mutex.
 **  \event Init Data: Failed to create TO_AppData mutex: 0x%08lX
@@ -961,7 +961,7 @@ typedef enum {
 **  This event message is issued when TO has failed to Create TO AppData Mutex
 **
 */
-    TO_CREATE_APPDATA_MUTEX_ERR_EID = 86,
+    TO_CREATE_APPDATA_MUTEX_ERR_EID    = 62,
 
 /** \brief Failed to load any of the TO configuration tables - loading a backup tables - (per-channel event).
 **  \event Loaded built-in emergency backup config table! - channel \%u
@@ -974,7 +974,7 @@ typedef enum {
 **  configuration table because cFE TBL was not able to provide a table.
 **
 */
-    TO_BACKUP_TABLE_INF_EID = 87,
+    TO_BACKUP_TABLE_INF_EID            = 63,
     
 
 /** \brief Classifier failed to retrieve a message flow - Message ID in the table - (per-channel event).
@@ -988,7 +988,7 @@ typedef enum {
 **  and the Message ID is not in the table.
 **
 */    
-    TO_MF_MSG_ID_ERR_EID = 89,
+    TO_MF_MSG_ID_ERR_EID               = 64,
 
 /** \brief Failed loading a TO backup configuration table - (per-channel event).
 **  \event Failed to load built-in emergency backup config table! - channel \%u
@@ -1001,58 +1001,7 @@ typedef enum {
 **  built-in emergency backup configuration table.
 **
 */
-    TO_BACKUP_TABLE_ERR_EID = 90,
-
-/** \brief Channel enabled.
-**  \event Enabled channel %u to %s:%u.
-**
-**  \par Type: INFORMATION
-**
-**  \par Cause:
-**
-**  This event message is issued when a TO channel is enabled, or reenabled.
-**
-*/
-//	TO_TLMOUTENA_INF_EID = 91,
-
-/** \brief Channel failed to enable.
-**  \event Destination address for channel %u is null.
-**  \event ChannelID (%u) invalid.
-**
-**  \par Type: ERROR
-**
-**  \par Cause:
-**
-**  This event message is issued when a TO channel fails to enable or reenable.
-**
-*/
-//	TO_TLMOUTENA_ERR_EID = 92,
-
-
-/** \brief Channel disabled.
-**  \event Disabled channel %u.
-**
-**  \par Type: INFORMATION
-**
-**  \par Cause:
-**
-**  This event message is issued when a TO channel is disabled.
-**
-*/
-//	TO_TLMOUTDIS_INF_EID = 93,
-
-
-/** \brief Channel failed to disable.
-**  \event UDP telemetry for channel %u is not enabled.
-**
-**  \par Type: ERROR
-**
-**  \par Cause:
-**
-**  This event message is issued when a TO channel fails to disable.
-**
-*/
-//	TO_TLMOUTDIS_ERR_EID = 94,
+    TO_BACKUP_TABLE_ERR_EID            = 65,
 
 /** \brief This is a count of all the app events and should not be used. */
     TO_EVT_CNT
