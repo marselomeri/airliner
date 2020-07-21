@@ -87,12 +87,17 @@ TODO Discuss the counter here.
 
 TODO Discuss the counter behavior here.
 
+[CI_Operation.md](docs/CI_Operation.md "Link to CI_Operations")
+
 
 ### CI Requirements
 
 The following are CI application requirements
+[CI_Requirements.md](docs/CI_Requirements.md "Link to TO Requirements")
 
 ### Deployment Guide
+
+[CI_Deployment_Guide.md](docs/CI_Deployment_Guide.md "Link to CI Deployment Guide")
 
 #### **Initial Integration**
 The first step in deploying the CI application is to do stuff.
@@ -106,8 +111,9 @@ Application Tailoring to the Platform
 In the ci_platform_cfg.h file, there are configuration parameters that control CI application behavior. This should be tailored to the specific platform needs. This behavior is built into the application during compilation.
 CFS Scheduler Support
 
-### **CFS Scheduler Support***
+#### **CFS Scheduler Support***
 TODO Discuss any commands that must be included in the CFS Scheduler Table and any related tailoring/configuration.
+
 
 ### CI Commands
 
@@ -115,32 +121,42 @@ The following is a list of commands that are processed by the CI Application:
 
 Global `CI_AUTH_CMD_CC`
     Authorize Command 
+
 Global `CI_DEAUTH_CMD_CC`
     Deauthorize Command 
+
 Global `CI_DEREG_CMD_CC`
     Deregister Command 
+
 Global `CI_NOOP_CC`
     Noop 
+
 Global `CI_REG_CMD_CC`
     Register Command 
+
 Global `CI_RESET_CC`
     Reset Counters 
+
 Global `CI_UPDT_CMD_CC`
     Update Command Registration 
 
+[CI_Commands.md](docs/CI_Commands.md "Link to CI Commands")
+
 ### CI Telemetry
 
-
+[CI_Telemetry.md](docs/CI_Telemtry.md "Link to CI Telemetry")
 
 ### CI Table Definitions
 
-
+[CI_Table_Definitions.md](docs/CI_Table_Definitions.md "Link to CI Table Definitions")
 
 ### CI Configuration Parameters
 
-
+[CI_Configuration_Parameters.md](docs/CI_Configuration_Parameters.md "Link to CI Configuration Parameters")
 
 ### CI Operational Constraints
+
+[CI_Operational_Constraints.md](docs/CI_Operational_Constraints.md "Link to CI Operational Constraints")
 
 #### **Application Termination**
 
@@ -156,6 +172,7 @@ will be used (see CI Application Frequently Asked Questions).
 
 ### CI Frequently asked questions
 
+[CI_FAQs.md](docs/CI_FAQs.md "Link to CI FAQs")
 **General**
 
 1. What is the basic flow of the application?
@@ -165,7 +182,7 @@ enters an infinite loop waiting for commands from the software bus.
 
 ### CI Event Message Reference
 
-
+[CI_Event_Message_Reference.md](docs/CI_Event_Message_Reference.md "Link to CI Event Message Reference")
 
 
 
