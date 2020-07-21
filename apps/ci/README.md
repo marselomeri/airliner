@@ -24,6 +24,7 @@
 The following table provides complete specification for the commands and telemetry associated with the CI Application (CI)software:
 
 |acronym| description						 |
+| ----- | ------------------------------------------------------ |
 |API	|Application Programming Interface			 |
 |CCSDS	|Consultative Committee for Space Data Systems		 |
 |C&DH	|Command and Data Handling				 |
@@ -170,7 +171,7 @@ When using the Critical Data Store (CDS), the results tables and housekeeping da
 application was shut down through cFE Executive Services and exited clean. If this is not the case, default values
 will be used (see CI Application Frequently Asked Questions).
 
-### CI Frequently asked questions
+### CI FAQs
 
 [CI_FAQs.md](docs/CI_FAQs.md "Link to CI FAQs")
 **General**
