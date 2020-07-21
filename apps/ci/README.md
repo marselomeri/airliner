@@ -1,4 +1,4 @@
-# Command Ingestion
+# Command Ingestion (CI) Introduction
 
 ***
 ## Table of Contents
