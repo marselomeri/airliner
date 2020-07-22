@@ -166,7 +166,6 @@ add_airliner_app(
     to
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/to/fsw/for_build
     CONFIG_SOURCES
-        ${PROJECT_SOURCE_DIR}/apps/to/tables/to_backup_cfg.c
         ${PROJECT_SOURCE_DIR}/apps/to/fsw/mission_inc/to_mission_cfg.h
         ${PROJECT_SOURCE_DIR}/apps/to/fsw/mission_inc/to_perfids.h
         ${PROJECT_SOURCE_DIR}/apps/to/fsw/platform_inc/to_msgids.h
