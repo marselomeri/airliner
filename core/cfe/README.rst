@@ -14,9 +14,3 @@ Core Flight Executive (CFE)
    docs/time/README.rst
 
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

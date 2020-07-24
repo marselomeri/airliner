@@ -14,10 +14,3 @@ OS Abstraction Layer (OSAL)
    src/os/vxworks6/README.rst
    src/os/xenomai-3/README.rst
 
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

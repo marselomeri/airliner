@@ -15,10 +15,3 @@ Platform Specific Package (PSP)
    fsw/pc-rtems/README.rst
    fsw/sp0-vxworks6.9/README.rst
 
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

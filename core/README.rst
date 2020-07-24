@@ -11,10 +11,3 @@ Core
    osal/README.rst
    psp/README.rst
 
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
