@@ -1,7 +1,7 @@
 Position Estimator
 ====================================
 
-The :term:`PE` Application application does some cool stuff.
+The :term:`PE` Application does some cool stuff.
 
 TODO: Insert paragraph providing application purpose and a high level description of application capabilites
 
