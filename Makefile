@@ -34,7 +34,8 @@
 SPHINX_OPTS      ?=
 SPHINX_BUILD     ?= sphinx-build
 SPHINX_SOURCEDIR = .
-SPHINX_BUILDDIR  = build
+SPHINX_BUILDDIR  = build/reference/default/docs
+SPHINX_FSW_BUILD = reference/default
  
 SHELL := /bin/bash
 
@@ -71,4 +72,9 @@ clean::
 
 
 docs: 
-	@$(SPHINX_BUILD) -M html "$(SOURCE_DIR)" "$(SPHINX_BUILDDIR)" $(SPHINX_OPTS) -c docs $(O)
+	@echo 'Updating submodules'
+	git submodule update --init --recursive
+	@echo 'Building $$SPHINX_FSW_BUILD.'
+	mkdir -p build/${SPHINX_FSW_BUILD}; \
+	(cd build/${SPHINX_FSW_BUILD}; cmake -DBUILDNAME:STRING=${SPHINX_FSW_BUILD} -G"Eclipse CDT4 - Unix Makefiles" -DCMAKE_ECLIPSE_GENERATE_SOURCE_PROJECT=TRUE CMAKE_BUILD_TYPE=Debug ../../..; $(MAKE) docs);
+	@$(SPHINX_BUILD) -M html "$(SOURCE_DIR)" "$(SPHINX_BUILDDIR)" $(SPHINX_OPTS) -c build/$(SPHINX_FSW_BUILD)/docs $(O)

@@ -10,32 +10,27 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
+import os
 import sys
 import sphinx_rtd_theme
-# sys.path.insert(0, os.path.abspath('.'))
+sys.path.insert(0, os.path.abspath('.'))
+from breathe_projects import breathe_projects
 
 
 # ~ import exhale_multiproject_monkeypatch
 
 # -- Project information -----------------------------------------------------
 
-project = 'airliner'
+project = 'Airliner'
 copyright = '2020, Windhover Labs'
 author = 'Mathew Benson'
 sys.path.append( "../ext/breathe/" )
+source_path = "@PROJECT_SOURCE_DIR@"
 
 # The full version, including alpha/beta/rc tags
 release = '1.0'
 
 extensions = ['sphinx.ext.imgmath', 'sphinx.ext.todo', 'breathe', "sphinx_rtd_theme"]
-#breathe_projects = { "amc_detailed_design": "../html/apps/amc/detailed_design/xml",
-#					"amc__users_guide": "../html/apps/amc/users_guide/xml",
-#					"bat__users_guide": "../html/apps/bat/users_guide/xml",
-#					"cf__users_guide": "../html/apps/cf/users_guide/xml",
-#					"sch__users_guide": "../html/apps/sch/detailed_design/xml",
-#					"lc__detailed_design": "../html/apps/lc/detailed_design/xml"
-#					}
 
 # -- General configuration ---------------------------------------------------
 
@@ -95,9 +90,8 @@ html_theme_options = {
     'logo_only': True,
     'style_nav_header_background': 'linear-gradient(180deg, #F36F31 20%, #EF402F 80%)'
      }
-html_logo = "img/WindhoverLabs-Logo-Secondary-White.png"
-html_favicon = "img/index.png"
-
+html_logo = "@PROJECT_SOURCE_DIR@/docs/img/WindhoverLabs-Logo-Secondary-White.png"
+html_favicon = "@PROJECT_SOURCE_DIR@/docs/img/index.png"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

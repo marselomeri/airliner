@@ -171,14 +171,14 @@ function(psp_initialize_airliner_build)
 	
 	    if(NOT {PARSED_ARGS_PREFIX}docs)        
 	        add_custom_target(${PARSED_ARGS_PREFIX}docs)
-            endif()
+        endif()
 	        
-	    set(CFS_DOCS_HTML_DIR ${CMAKE_BINARY_DIR}/docs/html)
-	    set(CFS_DOCS_LATEX_DIR ${CMAKE_BINARY_DIR}/docs/latex)      
+	    set(CFS_DOCS_HTML_DIR ${CMAKE_BINARY_DIR}/doxy/html)
+	    set(CFS_DOCS_LATEX_DIR ${CMAKE_BINARY_DIR}/doxy/latex)      
 	    configure_file(${CFE_DOCS_DIR}/user_doxy.in ${CMAKE_CURRENT_BINARY_DIR}/user_doxy @ONLY)
 	    configure_file(${CFE_DOCS_DIR}/detail_doxy.in ${CMAKE_CURRENT_BINARY_DIR}/detail_doxy @ONLY)
 	
-            add_custom_target(${PARSED_ARGS_PREFIX}cfe-docs
+        add_custom_target(${PARSED_ARGS_PREFIX}cfe-docs
 	        COMMAND mkdir -p ${CFS_DOCS_HTML_DIR}/cfe/detailed_design/
 	        COMMAND mkdir -p ${CFS_DOCS_HTML_DIR}/cfe/users_guide/
 	        COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/detail_doxy
@@ -314,6 +314,7 @@ function(psp_add_test)
 
     set_target_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov PROPERTIES COMPILE_FLAGS "-fprofile-arcs -ftest-coverage")
 
+
     # Add all the tests
     add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${TEST_NAME})
     add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov)
@@ -359,6 +360,9 @@ function(psp_add_airliner_app)
 
     # Call the CMake file that actually defines the application.
     add_subdirectory(${PARSED_ARGS_DEFINITION} ${CMAKE_CURRENT_BINARY_DIR}/apps/${PARSED_ARGS_APP_NAME})
+    
+    # Add this application to the master list, in case something else is interested in parsing it.
+    set_property(GLOBAL APPEND PROPERTY AIRLINER_APPS_PROPERTY ${PARSED_ARGS_APP_NAME})
 
     # Most applications also include a CMakeLists.txt file that will define the application tailoring or configuration,
     # but not all.  If a configuration is supplied, call it.

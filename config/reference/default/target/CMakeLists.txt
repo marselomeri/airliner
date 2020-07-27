@@ -359,3 +359,16 @@ add_airliner_app(
         ${PROJECT_SOURCE_DIR}/apps/lgc/fsw/platform_inc/lgc_msgids.h
         ${PROJECT_SOURCE_DIR}/apps/lgc/fsw/mission_inc/lgc_perfids.h
 )
+
+# Copy in the /docs directory for Sphinx documentation generation.
+#file(COPY ${PROJECT_SOURCE_DIR}/docs DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/../)
+configure_file(${PROJECT_SOURCE_DIR}/docs/conf.py.in ${CMAKE_CURRENT_BINARY_DIR}/../docs/conf.py)
+
+# Generate the breathe_projects.py file
+get_property(AIRLINER_APPS GLOBAL PROPERTY AIRLINER_APPS_PROPERTY)
+file(REMOVE ${CMAKE_CURRENT_BINARY_DIR}/../docs/breathe_projects.py)
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/../docs/breathe_projects.py "breathe_projects = {\n")
+foreach(APP_NAME ${AIRLINER_APPS})
+    file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/../docs/breathe_projects.py "    \"${APP_NAME}\": \"../doxy/html/apps/${APP_NAME}/detailed_design/xml\",\n")
+endforeach()
+file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/../docs/breathe_projects.py "}\n")
