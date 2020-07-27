@@ -3,11 +3,12 @@
 This is known to work with Python 3.5
 
 1. `virtualenv -p python3.5 venv`
-2. `pip install sphinx`
-3. `pip install sphinx-rtd-theme`
-4. `pip install breathe`
-5. `git clone git@github.com:WindhoverLabs/airliner.git source/airliner`
-6. `make html`
+2. `source venv/bin/activate`
+3. `pip install sphinx`
+4. `pip install sphinx-rtd-theme`
+5. `pip install breathe`
+6. `git clone git@github.com:WindhoverLabs/airliner.git source/airliner`
+7. `make html`
 
 To open up the documentation you can run this command ` xdg-open build/html/index.html `
 
