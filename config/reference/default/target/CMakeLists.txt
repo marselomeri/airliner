@@ -394,14 +394,14 @@ add_airliner_app(
         ${PROJECT_SOURCE_DIR}/apps/flow/fsw/mission_inc/flow_perfids.h
 )
 
-add_airliner_app(
-    mavlink
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/mavlink/fsw/for_build
-    CONFIG_SOURCES
-        ${PROJECT_SOURCE_DIR}/apps/mavlink/fsw/platform_inc/mavlink_platform_cfg.h
-        ${PROJECT_SOURCE_DIR}/apps/mavlink/fsw/platform_inc/mavlink_msgids.h
-        ${PROJECT_SOURCE_DIR}/apps/mavlink/fsw/mission_inc/mavlink_perfids.h
-)
+#add_airliner_app(
+#    mavlink
+#    DEFINITION ${PROJECT_SOURCE_DIR}/apps/mavlink/fsw/for_build
+#    CONFIG_SOURCES
+#        ${PROJECT_SOURCE_DIR}/apps/mavlink/fsw/platform_inc/mavlink_platform_cfg.h
+#        ${PROJECT_SOURCE_DIR}/apps/mavlink/fsw/platform_inc/mavlink_msgids.h
+#        ${PROJECT_SOURCE_DIR}/apps/mavlink/fsw/mission_inc/mavlink_perfids.h
+#)
 
 add_airliner_app(
     mpu6050

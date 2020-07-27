@@ -1,5 +1,5 @@
 # Doxyfile 1.5.4
-@INCLUDE_PATH=@CFS_MISSION@/apps/mavlink/docs/dox_src/mnem_maps
+@INCLUDE_PATH=@APP_DEFINITION_DIR@/../../docs/dox_src/mnem_maps
 @INCLUDE=cfs_mavlink_cmd_mnem_map
 @INCLUDE=cfs_mavlink_tlm_mnem_map
 #---------------------------------------------------------------------------
@@ -17,7 +17,7 @@ ABBREVIATE_BRIEF       =
 ALWAYS_DETAILED_SEC    = NO
 INLINE_INHERITED_MEMB  = NO
 FULL_PATH_NAMES        = YES
-STRIP_FROM_PATH        = @CFS_MISSION@
+STRIP_FROM_PATH        = @PROJECT_SOURCE_DIR@
 STRIP_FROM_INC_PATH    = 
 SHORT_NAMES            = NO
 JAVADOC_AUTOBRIEF      = NO
@@ -91,14 +91,11 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = @CFS_MISSION@/apps/mavlink/docs/dox_src/users_guide/cfs_mavlink.dox
-INPUT                 += @CFS_MISSION@/config/mission_inc/mavlink_mission_cfg.h
-INPUT                 += @CFS_MISSION@/config/mission_inc/mavlink_perfids.h
-INPUT                 += @CFS_MISSION@/config/mission_inc/mavlink_msgids.h
-INPUT                 += @CFS_MISSION@/config/@BUILD_CONFIG_NAME@/inc/mavlink_platform_cfg.h
-INPUT                 += @CFS_MISSION@/apps/mavlink/fsw/src/mavlink_events.h
-INPUT                 += @CFS_MISSION@/apps/mavlink/fsw/src/mavlink_msg.h 
-INPUT                 += @CFS_MISSION@/apps/mavlink/fsw/src/mavlink_tbldefs.h
+INPUT                  = @APP_DEFINITION_DIR@/../../docs/dox_src/users_guide/cfs_mavlink.dox
+INPUT                 += @APP_DEFINITION_DIR@/../src/mavlink_events.h
+INPUT                 += @APP_DEFINITION_DIR@/../src/mavlink_msg.h 
+INPUT                 += @APP_DEFINITION_DIR@/../src/mavlink_tbldefs.h
+INPUT                 += @CONFIG_SOURCES@
 
 #INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.c \
@@ -112,7 +109,7 @@ EXAMPLE_PATH           =
 EXAMPLE_PATTERNS       = *
 EXAMPLE_RECURSIVE      = NO
 IMAGE_PATH             = "./"
-IMAGE_PATH            += "@CFS_MISSION@/apps/mavlink/docs/dox_src/users_guide/"
+IMAGE_PATH            += "@APP_DEFINITION_DIR@/../../docs/dox_src/users_guide/"
 INPUT_FILTER           = 
 FILTER_PATTERNS        = 
 FILTER_SOURCE_FILES    = NO
