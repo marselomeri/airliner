@@ -1,3 +1,4 @@
-TODO
+Memory Manager
 ====================================
-TODO
+
+.. include:: ../../build/reference/default/doxy/html/apps/mm/detailed_design/index.rst

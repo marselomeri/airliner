@@ -1,3 +1,4 @@
-TODO
+AK8963
 ====================================
-TODO
+
+.. include:: ../../build/reference/default/doxy/html/apps/ak8963/detailed_design/index.rst

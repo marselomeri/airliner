@@ -1,3 +1,4 @@
-TODO
+Data Storage
 ====================================
-TODO
+
+.. include:: ../../build/reference/default/doxy/html/apps/ds/detailed_design/index.rst

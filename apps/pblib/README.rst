@@ -1,3 +1,4 @@
-TODO
+Protocol Buffer Library
 ====================================
-TODO
+
+.. include:: ../../build/reference/default/doxy/html/apps/pblib/detailed_design/index.rst

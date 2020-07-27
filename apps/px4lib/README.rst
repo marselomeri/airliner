@@ -1,3 +1,4 @@
-TODO
+PX4 Library
 ====================================
-TODO
+
+.. include:: ../../build/reference/default/doxy/html/apps/px4lib/detailed_design/index.rst

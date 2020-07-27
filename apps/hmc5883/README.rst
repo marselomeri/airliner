@@ -1,3 +1,4 @@
-TODO
+HMC5883
 ====================================
-TODO
+
+.. include:: ../../build/reference/default/doxy/html/apps/hmc5883/detailed_design/index.rst

@@ -1,3 +1,4 @@
-TODO
+Health Services
 ====================================
-TODO
+
+.. include:: ../../build/reference/default/doxy/html/apps/hs/detailed_design/index.rst

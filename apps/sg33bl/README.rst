@@ -1,3 +1,4 @@
-TODO
+SG33BL
 ====================================
-TODO
+
+.. include:: ../../build/reference/default/doxy/html/apps/sg33bl/detailed_design/index.rst

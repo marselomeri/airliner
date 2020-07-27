@@ -1,3 +1,4 @@
-TODO
+Landing Detector
 ====================================
-TODO
+
+.. include:: ../../build/reference/default/doxy/html/apps/ld/detailed_design/index.rst

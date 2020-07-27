@@ -178,13 +178,27 @@ function(psp_initialize_airliner_build)
 	    configure_file(${CFE_DOCS_DIR}/user_doxy.in ${CMAKE_CURRENT_BINARY_DIR}/user_doxy @ONLY)
 	    configure_file(${CFE_DOCS_DIR}/detail_doxy.in ${CMAKE_CURRENT_BINARY_DIR}/detail_doxy @ONLY)
 	
-        add_custom_target(${PARSED_ARGS_PREFIX}cfe-docs
-	        COMMAND mkdir -p ${CFS_DOCS_HTML_DIR}/cfe/detailed_design/
-	        COMMAND mkdir -p ${CFS_DOCS_HTML_DIR}/cfe/users_guide/
-	        COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/detail_doxy
-	        COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/user_doxy
-	        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/
-	    )
+	    if(PARSED_ARGS_REFERENCE)
+	        # If this is a reference build, only generated the detail_doxy, but
+	        # also convert it to Restructured Text for the Sphinx documentation
+            add_custom_target(${PARSED_ARGS_PREFIX}cfe-docs
+	            COMMAND mkdir -p ${CFS_DOCS_HTML_DIR}/cfe/detailed_design/
+	            COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/detail_doxy
+	            COMMAND echo Converting Doxy generated HTML to RTS for core binary
+	            COMMAND ${PROJECT_SOURCE_DIR}/docs/convertHtmlToRst.sh ${CFS_DOCS_HTML_DIR}/cfe/detailed_design || true
+	            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/
+	        )
+	    else()
+	        # This is a traditional build.  Generate both the detailed
+	        # design documentation and user guides.
+            add_custom_target(${PARSED_ARGS_PREFIX}cfe-docs
+	            COMMAND mkdir -p ${CFS_DOCS_HTML_DIR}/cfe/detailed_design/
+	            COMMAND mkdir -p ${CFS_DOCS_HTML_DIR}/cfe/users_guide/
+	            COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/detail_doxy
+	            COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/user_doxy
+	            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/
+	        )
+	    endif(PARSED_ARGS_REFERENCE)
 	    add_dependencies(${PARSED_ARGS_PREFIX}docs ${PARSED_ARGS_PREFIX}cfe-docs)
 	endif(DOXYGEN_FOUND) 
 	    
@@ -385,22 +399,27 @@ function(psp_add_airliner_app)
     string (REPLACE ";" " " DEFINITION_SOURCES "${DEFINITION_SOURCES_LIST}")
         
     ## Generate documentation
+    get_property(IS_REFERENCE_BUILD GLOBAL PROPERTY IS_REFERENCE_BUILD)
     find_package(Doxygen)
     if(DOXYGEN_FOUND) 
         if(USER_DOCS_INPUT)
-            if(NOT TARGET ${AIRLINER_BUILD_PREFIX}docs)
-                add_custom_target(${AIRLINER_BUILD_PREFIX}docs)
-            endif()
-            add_custom_target(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-docs)
-            add_dependencies(${AIRLINER_BUILD_PREFIX}docs ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-docs)
-            configure_file(${USER_DOCS_INPUT} ${CMAKE_CURRENT_BINARY_DIR}/target/config/apps/${PARSED_ARGS_APP_NAME}/user_doxy @ONLY)
-            add_custom_target(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-user-docs
-                COMMAND mkdir -p ${CFS_DOCS_HTML_DIR}/apps/${PARSED_ARGS_APP_NAME}/users_guide
-                COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/target/config/apps/${PARSED_ARGS_APP_NAME}/user_doxy
-                WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/target/config/apps/${PARSED_ARGS_APP_NAME}
-            )
-            add_dependencies(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-docs ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-user-docs)
-            add_dependencies(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-user-docs ${AIRLINER_BUILD_PREFIX}cfe-docs)
+            if(IS_REFERENCE_BUILD)
+	            # This is a reference.  Don't generate user guides
+            else()
+                if(NOT TARGET ${AIRLINER_BUILD_PREFIX}docs)
+                    add_custom_target(${AIRLINER_BUILD_PREFIX}docs)
+                endif()
+                add_custom_target(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-docs)
+                add_dependencies(${AIRLINER_BUILD_PREFIX}docs ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-docs)
+                configure_file(${USER_DOCS_INPUT} ${CMAKE_CURRENT_BINARY_DIR}/target/config/apps/${PARSED_ARGS_APP_NAME}/user_doxy @ONLY)
+                add_custom_target(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-user-docs
+                    COMMAND mkdir -p ${CFS_DOCS_HTML_DIR}/apps/${PARSED_ARGS_APP_NAME}/users_guide
+                    COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/target/config/apps/${PARSED_ARGS_APP_NAME}/user_doxy
+                    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/target/config/apps/${PARSED_ARGS_APP_NAME}
+                )
+                add_dependencies(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-docs ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-user-docs)
+                add_dependencies(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-user-docs ${AIRLINER_BUILD_PREFIX}cfe-docs)
+           endif()
         endif(USER_DOCS_INPUT)
         if(DESIGN_DOCS_INPUT)
             if(NOT TARGET ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-docs)
@@ -408,11 +427,24 @@ function(psp_add_airliner_app)
                 add_dependencies(${AIRLINER_BUILD_PREFIX}docs ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-docs)
             endif()
             configure_file(${DESIGN_DOCS_INPUT} ${CMAKE_CURRENT_BINARY_DIR}/target/config/apps/${PARSED_ARGS_APP_NAME}/detail_doxy @ONLY)
-            add_custom_target(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-design-docs
-                COMMAND mkdir -p ${CFS_DOCS_HTML_DIR}/apps/${PARSED_ARGS_APP_NAME}/detailed_design/
-                COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/target/config/apps/${PARSED_ARGS_APP_NAME}/detail_doxy
-                WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/target/config/apps/${PARSED_ARGS_APP_NAME}
-            )
+            
+            if(IS_REFERENCE_BUILD)
+	            # If this is a reference build, convert the HTML to 
+	            # Restructured Text for the Sphinx documentation.
+                add_custom_target(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-design-docs
+                    COMMAND mkdir -p ${CFS_DOCS_HTML_DIR}/apps/${PARSED_ARGS_APP_NAME}/detailed_design/
+                    COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/target/config/apps/${PARSED_ARGS_APP_NAME}/detail_doxy
+	                COMMAND echo Converting Doxy generated HTML to RTS for ${PARSED_ARGS_APP_NAME}
+	                COMMAND ${PROJECT_SOURCE_DIR}/docs/convertHtmlToRst.sh ${CFS_DOCS_HTML_DIR}/apps/${PARSED_ARGS_APP_NAME}/detailed_design/ || true
+                    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/target/config/apps/${PARSED_ARGS_APP_NAME}
+	            )
+	        else()
+                add_custom_target(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-design-docs
+                    COMMAND mkdir -p ${CFS_DOCS_HTML_DIR}/apps/${PARSED_ARGS_APP_NAME}/detailed_design/
+                    COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/target/config/apps/${PARSED_ARGS_APP_NAME}/detail_doxy
+                    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/target/config/apps/${PARSED_ARGS_APP_NAME}
+                )
+            endif()
             add_dependencies(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-docs ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-design-docs)
             add_dependencies(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-design-docs ${AIRLINER_BUILD_PREFIX}cfe-docs)
         endif(DESIGN_DOCS_INPUT)

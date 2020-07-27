@@ -1,3 +1,4 @@
-TODO
+PX4 Bridge
 ====================================
-TODO
+
+.. include:: ../../build/reference/default/doxy/html/apps/px4br/detailed_design/index.rst
