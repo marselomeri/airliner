@@ -81,7 +81,7 @@ function(initialize_airliner_build)
         BRIEF_DOCS "Application configuration source files."
         FULL_DOCS "Application configuration source files.")
             
-    set(CFS_DOCS_DIR ${CMAKE_BINARY_DIR}/docs)
+    set(CFS_DOCS_DIR ${CMAKE_BINARY_DIR}/doxy)
     set(CFS_DOCS_HTML_DIR ${CFS_DOCS_DIR}/html)
 
     set(CFE_PSP_DIR ${PARSED_ARGS_PSP})
