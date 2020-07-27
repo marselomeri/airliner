@@ -1,43 +1,44 @@
-    
-#ifndef CVT_PLATFORM_CFG_H
-#define CVT_PLATFORM_CFG_H
+#ifndef AK8963_PLATFORM_CFG_H
+#define AK8963_PLATFORM_CFG_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+#include "math.h"
+
 /*
-** cvt Platform Configuration Parameter Definitions
+** AK8963 Platform Configuration Parameter Definitions
 */
 
-/** \brief Mission specific version number for CVT application
+/** \brief Mission specific version number for AK8963 application
 **  
 **  \par Description:
 **       An application version number consists of four parts:
 **       major version number, minor version number, revision
 **       number and mission specific revision number. The mission
 **       specific revision number is defined here and the other
-**       parts are defined in "cvt_version.h".
+**       parts are defined in "amc_version.h".
 **
 **  \par Limits:
 **       Must be defined as a numeric value that is greater than
 **       or equal to zero.
 */
-#define CVT_MISSION_REV                (0)
+#define AK8963_MISSION_REV                (0)
 
 /** \brief Pipe depth for the Scheduler pipe 
 **
 **  \par Limits:
 **       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
 */
-#define CVT_SCH_PIPE_DEPTH             (2)
+#define AK8963_SCH_PIPE_DEPTH             (2)
 
 /** \brief Pipe name for the Scheduler pipe 
 **
 **  \par Limits:
 **       Note, this name must fit in OS_MAX_API_NAME.
 */
-#define CVT_SCH_PIPE_NAME              ("CVT_SCH_PIPE")
+#define AK8963_SCH_PIPE_NAME              ("AK8963_SCH_PIPE")
 
 /** \brief The SB pend behavior type for the Scheduler pipe.
 **
@@ -47,53 +48,67 @@ extern "C" {
 **       Note, using CFE_SB_PEND_FOREVER may cause an unresponsive
 **       application if no messages arrive on this pipe.
 */
-#define CVT_SCH_PIPE_PEND_TIME         (2000)
+#define AK8963_SCH_PIPE_PEND_TIME         (2000)
+
+/** \brief Pipe depth for the params pipe 
+**
+**  \par Limits:
+**       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
+*/
+#define AK8963_PARAM_PIPE_DEPTH            (4)
+
+/** \brief Pipe name for the params pipe 
+**
+**  \par Limits:
+**       Note, this name must fit in OS_MAX_API_NAME.
+*/
+#define AK8963_PARAM_PIPE_NAME             ("AK8963_PARAM_PIPE")
 
 /** \brief The number of WAKEUP messages to reserve on the Scheduler pipe.
 **
 **  \par Limits:
 **       minimum of 1, max limited to CFE_SB_MAX_PIPE_DEPTH-1.  Note the
-**       CVT_SCH_PIPE_WAKEUP_RESERVED and CVT_SCH_PIPE_SEND_HK_RESERVED
-**       must be less than CVT_SCH_PIPE_DEPTH.
+**       AK8963_WAKEUP_MID_MAX_MSG_COUNT and AK8963_SEND_HK_MID_MAX_MSG_COUNT
+**       must be less than AK8963_SCH_PIPE_DEPTH.
 */
-#define CVT_SCH_PIPE_WAKEUP_RESERVED   (1)
+#define AK8963_WAKEUP_MID_MAX_MSG_COUNT   (1)
 
 /** \brief The number of SEND_HK messages to reserve on the Scheduler pipe.
 **
 **  \par Limits:
 **       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.  Note the
-**       CVT_SCH_PIPE_WAKEUP_RESERVED and CVT_SCH_PIPE_SEND_HK_RESERVED
-**       must be less than CVT_SCH_PIPE_DEPTH.
+**       AK8963_WAKEUP_MID_MAX_MSG_COUNT and AK8963_SEND_HK_MID_MAX_MSG_COUNT
+**       must be less than AK8963_SCH_PIPE_DEPTH.
 */
-#define CVT_SCH_PIPE_SEND_HK_RESERVED  (1)
+#define AK8963_SEND_HK_MID_MAX_MSG_COUNT  (1)
 
 /** \brief Pipe depth for the command pipe
 **
 **  \par Limits:
 **       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
 */
-#define CVT_CMD_PIPE_DEPTH             (4)
+#define AK8963_CMD_PIPE_DEPTH             (4)
 
 /** \brief Pipe name for the Scheduler pipe 
 **
 **  \par Limits:
 **       Note, this name must fit in OS_MAX_API_NAME.
 */
-#define CVT_CMD_PIPE_NAME              ("CVT_CMD_PIPE")
+#define AK8963_CMD_PIPE_NAME              ("AK8963_CMD_PIPE")
 
 /** \brief Pipe depth for the data pipe 
 **
 **  \par Limits:
 **       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
 */
-#define CVT_DATA_PIPE_DEPTH            (4)
+#define AK8963_DATA_PIPE_DEPTH            (4)
 
 /** \brief Pipe name for the Scheduler pipe 
 **
 **  \par Limits:
 **       Note, this name must fit in OS_MAX_API_NAME.
 */
-#define CVT_DATA_PIPE_NAME             ("CVT_DATA_PIPE")
+#define AK8963_DATA_PIPE_NAME             ("AK8963_DATA_PIPE")
 
 /** \brief The config table default filename
 **
@@ -101,24 +116,21 @@ extern "C" {
 **       The length of each string, including the NULL terminator cannot exceed
 **       the #OS_MAX_PATH_LEN value.
 */
-#define CVT_CONFIG_TABLE_FILENAME      ("/cf/apps/cvt_config.tbl")
+#define AK8963_CONFIG_TABLE_FILENAME      ("/cf/apps/ak8963_config.tbl")
+
 /** \brief The timeout value, in milliseconds, to wait for ES application startup sync.
 **
 **  \par Limits:
 **       This parameter must be at least 1000 (ms).
 */
-#define CVT_STARTUP_TIMEOUT_MSEC    (1000)
-
-/* TODO:  Add Doxygen markup. */
-#define CVT_MAX_REGISTRATIONS       (100)
-#define CVT_DATA_STORE_SIZE         (10000000)
+#define AK8963_STARTUP_TIMEOUT_MSEC        (1000)
 
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* CVT_PLATFORM_CFG_H */
+#endif /* AK8963_PLATFORM_CFG_H */
 
 /************************/
 /*  End of File Comment */

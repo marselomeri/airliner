@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-#define ULR_MAIN_TASK_PERF_ID      0
+#define SONAR_MAIN_TASK_PERF_ID      0
 
 #ifdef __cplusplus
 }

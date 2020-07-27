@@ -42,6 +42,7 @@
 ** Includes
 *************************************************************************/
 #include "cfe.h"
+#include "cvt_platform_cfg.h"
 
 #ifdef __cplusplus
 extern "C" {

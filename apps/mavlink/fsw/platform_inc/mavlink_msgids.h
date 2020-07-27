@@ -6,12 +6,6 @@
 extern "C" {
 #endif
 
-/***** TODO:  These Message ID values are default and may need to be changed
-******        by the developer or mission integrator!
-******/
-
-#include "msg_ids.h"
-
 /**
 ** \brief MAVLINK application-specific command MID
 */

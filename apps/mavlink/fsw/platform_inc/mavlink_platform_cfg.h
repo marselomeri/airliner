@@ -1,4 +1,3 @@
-    
 #ifndef MAVLINK_PLATFORM_CFG_H
 #define MAVLINK_PLATFORM_CFG_H
 
@@ -7,7 +6,7 @@ extern "C" {
 #endif
 
 /*
-** mavlink Platform Configuration Parameter Definitions
+** ci Platform Configuration Parameter Definitions
 */
 
 /** \brief Mission specific version number for MAVLINK application
@@ -17,7 +16,7 @@ extern "C" {
 **       major version number, minor version number, revision
 **       number and mission specific revision number. The mission
 **       specific revision number is defined here and the other
-**       parts are defined in "mavlink_version.h".
+**       parts are defined in "ci_version.h".
 **
 **  \par Limits:
 **       Must be defined as a numeric value that is greater than
@@ -67,12 +66,19 @@ extern "C" {
 */
 #define MAVLINK_SCH_PIPE_SEND_HK_RESERVED  (1)
 
+/** \brief The number of PROCESS_TIMEOUT messages to reserve on the Scheduler pipe.
+**
+**  \par Limits:
+**       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
+*/
+#define MAVLINK_SCH_PIPE_PROC_TIMEOUT_RESERVED  (1)
+
 /** \brief Pipe depth for the command pipe
 **
 **  \par Limits:
 **       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
 */
-#define MAVLINK_CMD_PIPE_DEPTH             (4)
+#define MAVLINK_CMD_PIPE_DEPTH             (CFE_SB_MAX_PIPE_DEPTH)
 
 /** \brief Pipe name for the Scheduler pipe 
 **
@@ -101,16 +107,35 @@ extern "C" {
 **       The length of each string, including the NULL terminator cannot exceed
 **       the #OS_MAX_PATH_LEN value.
 */
-#define MAVLINK_CONFIG_TABLE_FILENAME      ("/cf/apps/mavlink_config.tbl")
+#define MAVLINK_ACTION_MAP_TABLE_FILENAME      ("/cf/apps/mavlink_action.tbl")
+
+/** \brief The timeout table default filename
+**
+**  \par Limits:
+**       The length of each string, including the NULL terminator cannot exceed
+**       the #OS_MAX_PATH_LEN value.
+*/
+#define MAVLINK_TIMEOUT_TABLE_FILENAME      ("/cf/apps/mavlink_timeout.tbl")
+
 /** \brief The timeout value, in milliseconds, to wait for ES application startup sync.
 **
 **  \par Limits:
 **       This parameter must be at least 1000 (ms).
 */
-#define MAVLINK_STARTUP_TIMEOUT_MSEC    (1000)
+#define MAVLINK_STARTUP_TIMEOUT_MSEC    (5000)
 
-/* TODO:  Add Doxygen markup. */
-#define MAVLINK_CUSTOM_DEV_PATH       "/tmp/ttyS0"
+
+/* TODO:  Add Doxy */
+#define MAVLINK_MSG_PARAM_NAME_LEN        (64)
+#define MAVLINK_SYSTEM_ID                 (1)
+#define MAVLINK_COMPONENT_ID              (1)
+#define MAVLINK_GCS_IP                    "10.10.0.13"
+#define MAVLINK_GCS_PORT                  (14550)
+#define MAVLINK_PASSTHRU_IP_SRC           "127.0.0.1"
+#define MAVLINK_PASSTHRU_INGEST_PORT      (14550)
+#define MAVLINK_ACTION_MAP_ENTRIES        (10)
+#define MAVLINK_HEARTBEAT_WAIT_CYCLES     (5)
+#define MAVLINK_LISTENER_TASK_FLAGS       (0)
 
 
 #ifdef __cplusplus

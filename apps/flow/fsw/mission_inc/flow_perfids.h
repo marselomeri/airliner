@@ -5,7 +5,8 @@
 extern "C" {
 #endif
 
-#define FLOW_MAIN_TASK_PERF_ID      0
+#define FLOW_MAIN_TASK_PERF_ID     (113)
+#define FLOW_COMPUTE_PERF_ID       (114)
 
 #ifdef __cplusplus
 }

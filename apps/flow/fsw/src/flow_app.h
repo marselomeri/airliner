@@ -60,8 +60,6 @@
 
 /** \brief The length of event filter array */
 #define FLOW_MAX_EVENT_FILTER 						(16)
-/** \brief The SB pend behavior type for the Scheduler pipe */
-#define FLOW_SCH_PIPE_PEND_TIME         			(CFE_SB_PEND_FOREVER)
 /** \brief Minimum time difference (in us) for integration between two gyroscope messages */
 #define FLOW_MIN_INT_TIME_DIFF         				(1000)
 /** \brief One second is 1000000 us */

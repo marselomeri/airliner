@@ -109,6 +109,11 @@ extern "C" {
 */
 #define SONAR_STARTUP_TIMEOUT_MSEC    (1000)
 
+/* TODO:  Add Doxy */
+#define SONAR_SENS_VARIANCE           (1.0f)
+#define SONAR_MIN_DISTANCE            (0.5f)
+#define SONAR_MAX_DISTANCE            (8.5f)
+
 
 #ifdef __cplusplus
 }

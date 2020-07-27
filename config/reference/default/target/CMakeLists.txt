@@ -45,6 +45,12 @@ add_airliner_app(
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/prmlib/fsw/for_build
 )
 
+# PBLIB is temporary removed from the reference build.
+#add_airliner_app(
+#    pblib
+#    DEFINITION ${PROJECT_SOURCE_DIR}/apps/pblib/fsw/for_build
+#)
+
 add_airliner_app(
     sim
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/sim/fsw/for_build
@@ -359,6 +365,106 @@ add_airliner_app(
         ${PROJECT_SOURCE_DIR}/apps/lgc/fsw/platform_inc/lgc_msgids.h
         ${PROJECT_SOURCE_DIR}/apps/lgc/fsw/mission_inc/lgc_perfids.h
 )
+
+add_airliner_app(
+    ak8963
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/ak8963/fsw/for_build
+    CONFIG_SOURCES
+        ${PROJECT_SOURCE_DIR}/apps/ak8963/fsw/mission_inc/ak8963_mission_cfg.h
+        ${PROJECT_SOURCE_DIR}/apps/ak8963/fsw/platform_inc/ak8963_platform_cfg.h
+        ${PROJECT_SOURCE_DIR}/apps/ak8963/fsw/platform_inc/ak8963_msgids.h
+        ${PROJECT_SOURCE_DIR}/apps/ak8963/fsw/mission_inc/ak8963_perfids.h
+)
+
+add_airliner_app(
+    cvt
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/cvt/fsw/for_build
+    CONFIG_SOURCES
+        ${PROJECT_SOURCE_DIR}/apps/cvt/fsw/platform_inc/cvt_platform_cfg.h
+        ${PROJECT_SOURCE_DIR}/apps/cvt/fsw/platform_inc/cvt_msgids.h
+        ${PROJECT_SOURCE_DIR}/apps/cvt/fsw/mission_inc/cvt_perfids.h
+)
+
+add_airliner_app(
+    flow
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/flow/fsw/for_build
+    CONFIG_SOURCES
+        ${PROJECT_SOURCE_DIR}/apps/flow/fsw/platform_inc/flow_platform_cfg.h
+        ${PROJECT_SOURCE_DIR}/apps/flow/fsw/platform_inc/flow_msgids.h
+        ${PROJECT_SOURCE_DIR}/apps/flow/fsw/mission_inc/flow_perfids.h
+)
+
+add_airliner_app(
+    mavlink
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/mavlink/fsw/for_build
+    CONFIG_SOURCES
+        ${PROJECT_SOURCE_DIR}/apps/mavlink/fsw/platform_inc/mavlink_platform_cfg.h
+        ${PROJECT_SOURCE_DIR}/apps/mavlink/fsw/platform_inc/mavlink_msgids.h
+        ${PROJECT_SOURCE_DIR}/apps/mavlink/fsw/mission_inc/mavlink_perfids.h
+)
+
+add_airliner_app(
+    mpu6050
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/mpu6050/fsw/for_build
+    CONFIG_SOURCES
+        ${PROJECT_SOURCE_DIR}/apps/mpu6050/fsw/mission_inc/mpu6050_mission_cfg.h
+        ${PROJECT_SOURCE_DIR}/apps/mpu6050/fsw/platform_inc/mpu6050_platform_cfg.h
+        ${PROJECT_SOURCE_DIR}/apps/mpu6050/fsw/platform_inc/mpu6050_msgids.h
+        ${PROJECT_SOURCE_DIR}/apps/mpu6050/fsw/mission_inc/mpu6050_perfids.h
+)
+
+add_airliner_app(
+    ms5607
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/ms5607/fsw/for_build
+    CONFIG_SOURCES
+        ${PROJECT_SOURCE_DIR}/apps/ms5607/fsw/mission_inc/ms5607_mission_cfg.h
+        ${PROJECT_SOURCE_DIR}/apps/ms5607/fsw/platform_inc/ms5607_platform_cfg.h
+        ${PROJECT_SOURCE_DIR}/apps/ms5607/fsw/platform_inc/ms5607_msgids.h
+        ${PROJECT_SOURCE_DIR}/apps/ms5607/fsw/mission_inc/ms5607_perfids.h
+)
+
+# PX4BR is not yet converted to the Windhover cmake build system.  Omit this
+# from the build, for now.
+#add_airliner_app(
+#    px4br
+#    DEFINITION ${PROJECT_SOURCE_DIR}/apps/px4br/fsw/for_build
+#    CONFIG_SOURCES
+#        ${PROJECT_SOURCE_DIR}/apps/px4br/fsw/platform_inc/px4br_platform_cfg.h
+#        ${PROJECT_SOURCE_DIR}/apps/px4br/fsw/platform_inc/px4br_msgids.h
+#        ${PROJECT_SOURCE_DIR}/apps/px4br/fsw/mission_inc/px4br_perfids.h
+#)
+
+# SBN is not yet converted to the Windhover cmake build system.  Omit this
+# from the build, for now.
+#add_airliner_app(
+#    sbn
+#    DEFINITION ${PROJECT_SOURCE_DIR}/apps/sbn/fsw/for_build
+#    CONFIG_SOURCES
+#        ${PROJECT_SOURCE_DIR}/apps/sbn/fsw/platform_inc/sbn_platform_cfg.h
+#        ${PROJECT_SOURCE_DIR}/apps/sbn/fsw/platform_inc/sbn_msgids.h
+#        ${PROJECT_SOURCE_DIR}/apps/sbn/fsw/mission_inc/sbn_perfids.h
+#)
+
+# SG33BL is not yet fully to the Windhover cmake build system.  Omit this
+# from the build, for now.
+#add_airliner_app(
+#    sg33bl
+#    DEFINITION ${PROJECT_SOURCE_DIR}/apps/sg33bl/fsw/for_build
+#    CONFIG_SOURCES
+#        ${PROJECT_SOURCE_DIR}/apps/sg33bl/fsw/platform_inc/sg33bl_platform_cfg.h
+#        ${PROJECT_SOURCE_DIR}/apps/sg33bl/fsw/platform_inc/sg33bl_msgids.h
+#        ${PROJECT_SOURCE_DIR}/apps/sg33bl/fsw/mission_inc/sg33bl_perfids.h
+#)
+
+add_airliner_app(
+    sonar
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/sonar/fsw/for_build
+    CONFIG_SOURCES
+        ${PROJECT_SOURCE_DIR}/apps/sonar/fsw/platform_inc/sonar_platform_cfg.h
+        ${PROJECT_SOURCE_DIR}/apps/sonar/fsw/platform_inc/sonar_msgids.h
+        ${PROJECT_SOURCE_DIR}/apps/sonar/fsw/mission_inc/sonar_perfids.h
+)
+
 
 # Copy in the /docs directory for Sphinx documentation generation.
 #file(COPY ${PROJECT_SOURCE_DIR}/docs DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/../)

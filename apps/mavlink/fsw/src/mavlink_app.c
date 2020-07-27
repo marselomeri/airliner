@@ -13,6 +13,7 @@
 #include "mavlink_version.h"
 #include "mavlink_app.h"
 #include "mavlink_msg.h"
+#include "prmlib_msgids.h"
 
 
 /************************************************************************

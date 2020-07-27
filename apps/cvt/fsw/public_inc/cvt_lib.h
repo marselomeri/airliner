@@ -3,8 +3,8 @@
 
 #include "cfe.h"
 
-#include "cvtlib_platform_cfg.h"
-#include "cvtlib_mission_cfg.h"
+#include "cvt_platform_cfg.h"
+#include "cvt_mission_cfg.h"
 
 typedef cpuaddr CVT_BufferPtr_t;
 typedef uint32 CVT_ContainerID_t;
