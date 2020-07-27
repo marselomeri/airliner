@@ -1,5 +1,4 @@
 .. toctree::
-   :maxdepth: 10
    :caption: Software
    :name: config-software
 

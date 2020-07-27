@@ -2,7 +2,7 @@ Applications
 ====================================
 
 .. toctree::
-   :maxdepth: 10
+   :caption: Applications
    :name: apps
 
    AsahiKASEI AK8963 (AK8963) <ak8963/README.rst>

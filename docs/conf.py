@@ -85,9 +85,10 @@ highlight_language = 'cpp'
 
 html_theme = "sphinx_rtd_theme"
 html_theme_options = {
-    'collapse_navigation': True,
-    'sticky_navigation': False,
-    'navigation_depth': 4,
+    'collapse_navigation': False,
+    'sticky_navigation': True,
+    'navigation_depth': -1,
+    'includehidden': True,
     'titles_only': True,
     'display_version': True,
     'prev_next_buttons_location': 'bottom',
