@@ -30,12 +30,16 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 #############################################################################
+
+SPHINX_OPTS      ?=
+SPHINX_BUILD     ?= sphinx-build
+SPHINX_SOURCEDIR = .
+SPHINX_BUILDDIR  = build
  
 SHELL := /bin/bash
 
 TARGET_PATHS := $(shell find config -maxdepth 2 -mindepth 2 -type d -path 'config/shared/*' -prune -o -exec expr {} : '[^/]*/\(.*\)' \; )
 TARGET_NAMES := $(shell echo ${TARGET_PATHS} )
-
 
 help::
 	@echo $(TARGET_PATHS)
@@ -44,6 +48,7 @@ help::
             echo $$name; \
         done
 	
+.PHONY: help Makefile docs
 
 $(TARGET_NAMES)::
 	@echo 'Updating submodules'
@@ -63,3 +68,7 @@ $(TARGET_NAMES)::
 
 clean::
 	rm -rf build
+
+
+docs: 
+	@$(SPHINX_BUILD) -M html "$(SOURCE_DIR)" "$(SPHINX_BUILDDIR)" $(SPHINX_OPTS) -c docs $(O)
