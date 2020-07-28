@@ -1,3 +1,0 @@
-# Command Ingestion (CI) Operation
-
-***

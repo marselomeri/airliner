@@ -1,14 +1,11 @@
 Actuator Motor Control
 ====================================
 
-.. toctree::
-   :maxdepth: 10
-   :name: core
 
-   Design 0 <http://www.windhoverlabs.com/airliner/doxy/apps/amc/index.html>
-   Design 1 <http://doxy/apps/amc/index.html>
-   Design 2 <http://../doxy/apps/amc/index.html>
-   Design 3 <http://../../doxy/apps/amc/index.html>
-   Design 4 <http://../../../doxy/apps/amc/index.html>
-   Design 5 <http://../../../../doxy/apps/amc/index.html>
-   Design 6 <http://../../../../../doxy/apps/amc/index.html>
+Detailed design documentation is available `here <../../doxy/apps/amc/index.html>`_.
+
+.. image:: ../../doxy/apps/amc/doxygen.png
+   :target: ../../doxy/apps/amc/index.html
+
+PWM state on is :amc:`PWM_LIMIT_STATE_ON` blah blah blah... things and stuff.
+
