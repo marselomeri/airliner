@@ -179,13 +179,10 @@ function(psp_initialize_airliner_build)
 	    configure_file(${CFE_DOCS_DIR}/detail_doxy.in ${CMAKE_CURRENT_BINARY_DIR}/detail_doxy @ONLY)
 	
 	    if(PARSED_ARGS_REFERENCE)
-	        # If this is a reference build, only generated the detail_doxy, but
-	        # also convert it to Restructured Text for the Sphinx documentation
+	        # If this is a reference build, only generated the detail_doxy.
             add_custom_target(${PARSED_ARGS_PREFIX}cfe-docs
 	            COMMAND mkdir -p ${CFS_DOCS_HTML_DIR}/cfe/detailed_design/
 	            COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/detail_doxy
-	            COMMAND echo Converting Doxy generated HTML to RTS for core binary
-	            COMMAND ${PROJECT_SOURCE_DIR}/docs/convertHtmlToRst.sh ${CFS_DOCS_HTML_DIR}/cfe/detailed_design || true
 	            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/
 	        )
 	    else()
@@ -429,13 +426,10 @@ function(psp_add_airliner_app)
             configure_file(${DESIGN_DOCS_INPUT} ${CMAKE_CURRENT_BINARY_DIR}/target/config/apps/${PARSED_ARGS_APP_NAME}/detail_doxy @ONLY)
             
             if(IS_REFERENCE_BUILD)
-	            # If this is a reference build, convert the HTML to 
-	            # Restructured Text for the Sphinx documentation.
+	            # If this is a reference build.
                 add_custom_target(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-design-docs
                     COMMAND mkdir -p ${CFS_DOCS_HTML_DIR}/apps/${PARSED_ARGS_APP_NAME}/detailed_design/
                     COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/target/config/apps/${PARSED_ARGS_APP_NAME}/detail_doxy
-	                COMMAND echo Converting Doxy generated HTML to RTS for ${PARSED_ARGS_APP_NAME}
-	                COMMAND ${PROJECT_SOURCE_DIR}/docs/convertHtmlToRst.sh ${CFS_DOCS_HTML_DIR}/apps/${PARSED_ARGS_APP_NAME}/detailed_design/ || true
                     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/target/config/apps/${PARSED_ARGS_APP_NAME}
 	            )
 	        else()
