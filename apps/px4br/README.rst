@@ -1,8 +1,7 @@
 PX4 Bridge
 ====================================
 
-
 Detailed design documentation is available `here <../../doxy/apps/px4br/index.html>`_.
 
-.. image:: ../../doxy/apps/px4br/doxygen.png
+.. image:: /docs/_static/doxygen.png
    :target: ../../doxy/apps/px4br/index.html

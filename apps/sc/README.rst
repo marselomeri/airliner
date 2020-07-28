@@ -1,8 +1,7 @@
 Stored Command
 ====================================
 
-
 Detailed design documentation is available `here <../../doxy/apps/sc/index.html>`_.
 
-.. image:: ../../doxy/apps/sc/doxygen.png
+.. image:: /docs/_static/doxygen.png
    :target: ../../doxy/apps/sc/index.html
