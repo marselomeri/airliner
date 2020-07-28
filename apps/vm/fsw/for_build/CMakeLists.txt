@@ -51,7 +51,6 @@ add_airliner_app_def(vm
         ${CMAKE_CURRENT_BINARY_DIR}/sm_src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../../tools/smc/lib/C++
 
-    USER_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/user_doxy.in
     DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in
 
     MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/vm_msg_overrides.json

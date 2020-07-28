@@ -47,7 +47,6 @@ add_airliner_app_def(px4lib
     PUBLIC_INCLUDES
         ${PX4LIB_PUBLIC_INCLUDE_DIR}/
 
-    USER_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/user_doxy.in
     DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in
 
     MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/px4_msg_overrides.json

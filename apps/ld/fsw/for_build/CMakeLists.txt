@@ -15,7 +15,6 @@ add_airliner_app_def(ld
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
 
-    USER_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/user_doxy.in
     DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in
 
     MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/ld_msg_overrides.json
