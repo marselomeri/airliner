@@ -5,52 +5,52 @@ Applications
    :caption: Applications
    :name: apps
 
-   AsahiKASEI AK8963 (AK8963) <../build/reference/default/doxy/html/apps/ak8963/detailed_design/index.rst>
+   AsahiKASEI AK8963 (AK8963) <ak8963/README.rst>
    Actuator Motor Control (AMC) <amc/README.rst>
-   Battery Monitor (BAT) <../build/reference/default/doxy/html/apps/bat/detailed_design/index.rst>
-   File Delivery (CF) <../build/reference/default/doxy/html/apps/cf/detailed_design/index.rst>
-   CFS Library (CFS_LIB) <../build/reference/default/doxy/html/apps/cfs_lib/detailed_design/index.rst>
-   Command Ingest (CI) <../build/reference/default/doxy/html/apps/ci/detailed_design/index.rst>
-   Checksum Services (CS) <../build/reference/default/doxy/html/apps/cs/detailed_design/index.rst>
-   Current Value Table (CVT) <../build/reference/default/doxy/html/apps/cvt/detailed_design/index.rst>
-   Data Storage (DS) <../build/reference/default/doxy/html/apps/ds/detailed_design/index.rst>
-   External Application (EA) <../build/reference/default/doxy/html/apps/ea/detailed_design/index.rst>
-   Optical Flow (FLOW) <../build/reference/default/doxy/html/apps/flow/detailed_design/index.rst>
-   File Manager (FM) <../build/reference/default/doxy/html/apps/fm/detailed_design/index.rst>
-   GPS (GPS) <../build/reference/default/doxy/html/apps/gps/detailed_design/index.rst>
-   Housekeeping (HK) <../build/reference/default/doxy/html/apps/hk/detailed_design/index.rst>
-   Honeywell HMC5883 (HMC5883) <../build/reference/default/doxy/html/apps/hmc5883/detailed_design/index.rst>
-   Housekeeping (HS) <../build/reference/default/doxy/html/apps/hs/detailed_design/index.rst>
-   Limit Checker (LC) <../build/reference/default/doxy/html/apps/lc/detailed_design/index.rst>
-   Landing Detector (LD) <../build/reference/default/doxy/html/apps/ld/detailed_design/index.rst>
-   Landing Gear Control (LGC) <../build/reference/default/doxy/html/apps/lgc/detailed_design/index.rst>
-   Multicopter Attitude Control (MAC) <../build/reference/default/doxy/html/apps/mac/detailed_design/index.rst>
-   Mavlink (MAVLINK) <../build/reference/default/doxy/html/apps/mavlink/detailed_design/index.rst>
-   Memory Dwell (MD) <../build/reference/default/doxy/html/apps/md/detailed_design/index.rst>
-   Memory Manager (MM) <../build/reference/default/doxy/html/apps/mm/detailed_design/index.rst>
-   Multicopter Position Control (MPC) <../build/reference/default/doxy/html/apps/mpc/detailed_design/index.rst>
-   Invensense MPU6050 (MPU6050) <../build/reference/default/doxy/html/apps/mpu6050/detailed_design/index.rst>
-   Invensense MPU9250 (MPU9250) <../build/reference/default/doxy/html/apps/mpu9250/detailed_design/index.rst>
-   TE Connectivity MEAS MS5607 (MS5607) <../build/reference/default/doxy/html/apps/ms5607/detailed_design/index.rst>
-   TE Connectivity MEAS MS5611 (MS5611) <../build/reference/default/doxy/html/apps/ms5611/detailed_design/index.rst>
-   Navigator (NAV) <../build/reference/default/doxy/html/apps/nav/detailed_design/index.rst>
-   Proto Buffer Library (PBLIB) <../build/reference/default/doxy/html/apps/pblib/detailed_design/index.rst>
-   Position Estimator (PE) <../build/reference/default/doxy/html/apps/pe/detailed_design/index.rst>
-   Parameter Library (PRMLIB) <../build/reference/default/doxy/html/apps/prmlib/detailed_design/index.rst>
-   PX4 Bridge (PX4BR) <../build/reference/default/doxy/html/apps/px4br/detailed_design/index.rst>
-   PX4 Library (PX4LIB) <../build/reference/default/doxy/html/apps/px4lib/detailed_design/index.rst>
-   Attitude Estimator (QAE) <../build/reference/default/doxy/html/apps/qae/detailed_design/index.rst>
-   Radio Control Input (RCIN) <../build/reference/default/doxy/html/apps/rcin/detailed_design/index.rst>
-   RGB LED Control (RGBLED) <../build/reference/default/doxy/html/apps/rgbled/detailed_design/index.rst>
-   Software Bus Network (SBN) <../build/reference/default/doxy/html/apps/sbn/detailed_design/index.rst>
-   Stored Command (SC) <../build/reference/default/doxy/html/apps/sc/detailed_design/index.rst>
-   Scheduler (SCH) <../build/reference/default/doxy/html/apps/sch/detailed_design/index.rst>
-   Sensor (SENS) <../build/reference/default/doxy/html/apps/sens/detailed_design/index.rst>
-   Hitec SG33BL Actuator (SG33BL) <../build/reference/default/doxy/html/apps/sg33bl/detailed_design/index.rst>
-   Simulation (SIM) <../build/reference/default/doxy/html/apps/sim/detailed_design/index.rst>
-   Sonar (SONAR) <../build/reference/default/doxy/html/apps/sonar/detailed_design/index.rst>
-   Telemetry Output (TO) <../build/reference/default/doxy/html/apps/to/detailed_design/index.rst>
-   uLanding Radar (ULR) <../build/reference/default/doxy/html/apps/ulr/detailed_design/index.rst>
-   Video Control (VC) <../build/reference/default/doxy/html/apps/vc/detailed_design/index.rst>
-   Vehicle Manager (VM) <../build/reference/default/doxy/html/apps/vm/detailed_design/index.rst>
+   Battery Monitor (BAT) <bat/README.rst>
+   File Delivery (CF) <cf/README.rst>
+   CFS Library (CFS_LIB) <cfs_lib/README.rst>
+   Command Ingest (CI) <ci/README.rst>
+   Checksum Services (CS) <cs/README.rst>
+   Current Value Table (CVT) <cvt/README.rst>
+   Data Storage (DS) <ds/README.rst>
+   External Application (EA) <ea/README.rst>
+   Optical Flow (FLOW) <flow/README.rst>
+   File Manager (FM) <fm/README.rst>
+   GPS (GPS) <gps/README.rst>
+   Housekeeping (HK) <hk/README.rst>
+   Honeywell HMC5883 (HMC5883) <hmc5883/README.rst>
+   Housekeeping (HS) <hs/README.rst>
+   Limit Checker (LC) <lc/README.rst>
+   Landing Detector (LD) <ld/README.rst>
+   Landing Gear Control (LGC) <lgc/README.rst>
+   Multicopter Attitude Control (MAC) <mac/README.rst>
+   Mavlink (MAVLINK) <mavlink/README.rst>
+   Memory Dwell (MD) <md/README.rst>
+   Memory Manager (MM) <mm/README.rst>
+   Multicopter Position Control (MPC) <mpc/README.rst>
+   Invensense MPU6050 (MPU6050) <mpu6050/README.rst>
+   Invensense MPU9250 (MPU9250) <mpu9250/README.rst>
+   TE Connectivity MEAS MS5607 (MS5607) <ms5607/README.rst>
+   TE Connectivity MEAS MS5611 (MS5611) <ms5611/README.rst>
+   Navigator (NAV) <nav/README.rst>
+   Proto Buffer Library (PBLIB) <pblib/README.rst>
+   Position Estimator (PE) <pe/README.rst>
+   Parameter Library (PRMLIB) <prmlib/README.rst>
+   PX4 Bridge (PX4BR) <px4br/README.rst>
+   PX4 Library (PX4LIB) <px4lib/README.rst>
+   Attitude Estimator (QAE) <qae/README.rst>
+   Radio Control Input (RCIN) <rcin/README.rst>
+   RGB LED Control (RGBLED) <rgbled/README.rst>
+   Software Bus Network (SBN) <sbn/README.rst>
+   Stored Command (SC) <sc/README.rst>
+   Scheduler (SCH) <sch/README.rst>
+   Sensor (SENS) <sens/README.rst>
+   Hitec SG33BL Actuator (SG33BL) <sg33bl/README.rst>
+   Simulation (SIM) <sim/README.rst>
+   Sonar (SONAR) <sonar/README.rst>
+   Telemetry Output (TO) <to/README.rst>
+   uLanding Radar (ULR) <ulr/README.rst>
+   Video Control (VC) <vc/README.rst>
+   Vehicle Manager (VM) <vm/README.rst>
 
