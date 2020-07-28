@@ -46,7 +46,6 @@ add_airliner_app_def(hmc5883
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
 
-    USER_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/user_doxy.in
     DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in
     
     MSG_OVERRIDES   ${CMAKE_CURRENT_SOURCE_DIR}/hmc5883_msg_overrides.json 

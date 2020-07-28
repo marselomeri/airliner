@@ -45,7 +45,6 @@ add_airliner_app_def(simlib
     PUBLIC_INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../public_inc/
 
-    USER_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/lib_user_doxy.in
     DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/lib_detail_doxy.in
     
     REFERENCE_CONFIG
@@ -68,7 +67,6 @@ add_airliner_app_def(sim
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${PROJECT_SOURCE_DIR}/mavlink/include/mavlink/v1.0/common/
 
-    USER_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/user_doxy.in
     DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in
     
     REFERENCE_CONFIG

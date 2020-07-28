@@ -91,15 +91,15 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = @APP_DEFINITION_DIR@/../../docs/dox_src/users_guide/cfs_sim.dox
+INPUT                  = @APP_DEFINITION_DIR@/../../docs/dox_src/detailed_design/cfs_sim.dox
 INPUT                 += @APP_DEFINITION_DIR@/../src/sim_events.h
 INPUT                 += @APP_DEFINITION_DIR@/../src/sim_msg.h 
 INPUT                 += @APP_DEFINITION_DIR@/../src/sim_tbldefs.h
 INPUT                 += @CONFIG_SOURCES@
 
 #INPUT_ENCODING         = UTF-8
-FILE_PATTERNS          = *.c \
-                         *.h
+#FILE_PATTERNS          = *.c \
+#                         *.h
 RECURSIVE              = YES
 EXCLUDE                = 
 EXCLUDE_SYMLINKS       = NO
@@ -109,7 +109,7 @@ EXAMPLE_PATH           =
 EXAMPLE_PATTERNS       = *
 EXAMPLE_RECURSIVE      = NO
 IMAGE_PATH             = "./"
-IMAGE_PATH            += "@APP_DEFINITION_DIR@/../../docs/dox_src/users_guide/"
+IMAGE_PATH            += "@APP_DEFINITION_DIR@/../../docs/dox_src/detailed_design/"
 INPUT_FILTER           = 
 FILTER_PATTERNS        = 
 FILTER_SOURCE_FILES    = NO
@@ -220,7 +220,7 @@ SKIP_FUNCTION_MACROS   = YES
 #---------------------------------------------------------------------------
 # Configuration::additions related to external references   
 #---------------------------------------------------------------------------
-TAGFILES               = @CFS_DOCS_HTML_DIR@/cfe/detailed_design/cfe.tag=../../../cfe/detailed_design/
+TAGFILES               = @CFS_DOCS_HTML_DIR@/cfe/cfe.tag=../../cfe/
 GENERATE_TAGFILE       = @CFS_DOCS_HTML_DIR@/apps/sim/users_guide/sim.tag
 ALLEXTERNALS           = NO
 EXTERNAL_GROUPS        = YES

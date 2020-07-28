@@ -61,10 +61,6 @@ function(initialize_airliner_build)
     
     set(UNIT_TEST_WRAPPER ${PARSED_ARGS_UNIT_TEST_WRAPPER})
     
-    define_property(TARGET PROPERTY USER_DOCS_INPUT
-        BRIEF_DOCS "Doxygen input file for user documentation."
-        FULL_DOCS "Doxygen input file for user documentation.")
-    
     define_property(TARGET PROPERTY DESIGN_DOCS_INPUT
         BRIEF_DOCS "Doxygen input file for user documentation."
         FULL_DOCS "Doxygen input file for design documentation.")
@@ -81,8 +77,8 @@ function(initialize_airliner_build)
         BRIEF_DOCS "Application configuration source files."
         FULL_DOCS "Application configuration source files.")
             
-    set(CFS_DOCS_DIR ${CMAKE_BINARY_DIR}/doxy)
-    set(CFS_DOCS_HTML_DIR ${CFS_DOCS_DIR}/html)
+    set(CFS_DOCS_DIR ${CMAKE_BINARY_DIR}/docs)
+    set(CFS_DOCS_HTML_DIR ${CFS_DOCS_DIR}/html/doxy)
 
     set(CFE_PSP_DIR ${PARSED_ARGS_PSP})
     set(CFE_OSAL_DIR ${PARSED_ARGS_OSAL})
@@ -167,7 +163,7 @@ endfunction(build_airliner_cfe_host_tools)
 #)
 function(add_airliner_app_def)
     set(PARSED_ARGS_TARGET ${ARGV0})
-    cmake_parse_arguments(PARSED_ARGS "" "FILE;PREFIX" "SOURCES;LIBS;INCLUDES;PUBLIC_INCLUDES;USER_DOCS;DESIGN_DOCS" ${ARGN})
+    cmake_parse_arguments(PARSED_ARGS "" "FILE;PREFIX" "SOURCES;LIBS;INCLUDES;PUBLIC_INCLUDES;DESIGN_DOCS" ${ARGN})
 
     psp_add_airliner_app_def(${ARGN})
 endfunction(add_airliner_app_def)
