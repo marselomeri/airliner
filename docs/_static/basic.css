@@ -319,15 +319,16 @@ img.align-default, .figure.align-default {
 
 /* -- sidebars -------------------------------------------------------------- */
 
-div.sidebar {
+div.sidebar:hover {
     margin: 0 0 0.5em 1em;
     border: 1px solid #ddb;
     padding: 7px;
     background-color: #ffe;
-    width: 40%;
+    width: auto;
     float: right;
     clear: right;
     overflow-x: auto;
+    overflow-y: scroll;
 }
 
 p.sidebar-title {
