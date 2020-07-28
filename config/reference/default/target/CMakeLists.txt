@@ -466,8 +466,7 @@ add_airliner_app(
 )
 
 
-# Copy in the /docs directory for Sphinx documentation generation.
-#file(COPY ${PROJECT_SOURCE_DIR}/docs DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/../)
+
 configure_file(${PROJECT_SOURCE_DIR}/docs/conf.py.in ${CMAKE_CURRENT_BINARY_DIR}/../docs/conf.py)
 
 # Generate the breathe_projects.py file
