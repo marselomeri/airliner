@@ -66,15 +66,27 @@ $(TARGET_NAMES)::
 	mkdir -p build/$$TARGET_PATH; \
 	(cd build/$$TARGET_PATH; cmake -DBUILDNAME:STRING=$$TARGET_PATH -G"Eclipse CDT4 - Unix Makefiles" -DCMAKE_ECLIPSE_GENERATE_SOURCE_PROJECT=TRUE CMAKE_BUILD_TYPE=Debug ../../..; $(MAKE) --no-print-directory);
 	
+	
+docs-doxygen: 
+	@echo 'Updating submodules'
+	git submodule update --init --recursive
+	mkdir -p build/${SPHINX_FSW_BUILD}; \
+	(cd build/${SPHINX_FSW_BUILD}; cmake -DBUILDNAME:STRING=${SPHINX_FSW_BUILD} -G"Eclipse CDT4 - Unix Makefiles" -DCMAKE_ECLIPSE_GENERATE_SOURCE_PROJECT=TRUE CMAKE_BUILD_TYPE=Debug ../../..; make docs);
 
-clean::
-	rm -rf build
 
-
-docs: 
+docs-sphinx: 
 	@echo 'Updating submodules'
 	git submodule update --init --recursive
 	@echo 'Building $$SPHINX_FSW_BUILD.'
 	mkdir -p build/${SPHINX_FSW_BUILD}; \
-	(cd build/${SPHINX_FSW_BUILD}; cmake -DBUILDNAME:STRING=${SPHINX_FSW_BUILD} -G"Eclipse CDT4 - Unix Makefiles" -DCMAKE_ECLIPSE_GENERATE_SOURCE_PROJECT=TRUE CMAKE_BUILD_TYPE=Debug ../../..; $(MAKE) docs);
+	(cd build/${SPHINX_FSW_BUILD}; cmake -DBUILDNAME:STRING=${SPHINX_FSW_BUILD} -G"Eclipse CDT4 - Unix Makefiles" -DCMAKE_ECLIPSE_GENERATE_SOURCE_PROJECT=TRUE CMAKE_BUILD_TYPE=Debug ../../..);
 	@$(SPHINX_BUILD) -M html "$(SOURCE_DIR)" "$(SPHINX_BUILDDIR)" $(SPHINX_OPTS) -c build/$(SPHINX_FSW_BUILD)/docs $(O)
+	@echo 'Completed'
+
+
+docs: docs-doxygen docs-sphinx
+	@echo 'Completed'
+	
+
+clean::
+	rm -rf build
