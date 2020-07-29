@@ -1,5 +1,4 @@
 .. toctree::
-   :maxdepth: 2
    :caption: Introduction
    :name: introduction
 
@@ -9,5 +8,6 @@
    DevTools.rst
    QuickStart.rst
    ../faq.rst
+   ../glossary.rst
 
 

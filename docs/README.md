@@ -7,8 +7,9 @@ This is known to work with Python 3.5
 3. `pip install sphinx`
 4. `pip install sphinx-rtd-theme`
 5. `pip install breathe`
-6. `git clone git@github.com:WindhoverLabs/airliner.git source/airliner`
-7. `make html`
+6. `pip install sphinxcontrib-doxylink`
+6. `pip install graphviz`
+7. From the repository base directory `make docs`
 
 To open up the documentation you can run this command ` xdg-open build/html/index.html `
 
