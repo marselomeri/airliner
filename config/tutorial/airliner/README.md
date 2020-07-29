@@ -1,29 +1,26 @@
 # Airliner Setup in Linux
-***
+
+
 ## Assumptions for the use of Airliner:
-***
 * User can navigate Windows Command Prompt
 * User is familiar with navigating Linux Shells
 * User is comfortable using git and navigating GitHub
 * VirtualBox and Vagrant are installed
 * VirtualBox is capable of 3D Acceleration for Linux
 
-***
+
 ## Stable Versions known to work with Airliner:
-***
 * VirtualBox 6.1.10 
 * Vagrant 2.2.9
 * Ubuntu 16.04
 * Java 11.0.2
+* node 9.X
 
-***
 ## Assumptions for this README:
-***
 * The repository name for Airliner is airliner, denoted as <airliner\>
 
-***
+
 ## VirtualBox setup in Windows:
-***
 
 1. Download [VirtualBox 6.1.10](https://www.virtualbox.org/wiki/Downloads "VirtualBox 6.1.10")
 2. Download [Vagrant 2.2.9](https://www.vagrantup.com/downloads "Vagrant 2.2.9") and follow [installation instructions](https://www.vagrantup.com/docs/installation)
@@ -48,17 +45,32 @@ end
 
 **NOTE:** This command must be run **ANY TIME** that you want to boot up the Virtual Machine
 
-***
 ## Airliner Initial Install & Setup:
-***
 1. [Generate an SSH key](https://docs.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 
 2. [Add a new SSH key to your GitHub Account](https://docs.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account)
 
 3. Go to Windhover Lab's [Airliner repository](https://github.com/WindhoverLabs/airliner) and [clone the repository](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) using an SSH key
 
-4. Once the Airliner repository has been cloned, navigate to <airliner\>/tools/commander directory and preform an `npm install`  
-```shell
+4. Get node version managment
+```
+$ npm install -g n
+```
+
+5. Get node 9
+```
+$ n 9
+```
+Yes, the command for node version management  is just `n`.
+
+6. Make sure you have the correct version of node. if you run `node --version`, you shold get a similar output to this:
+```
+v9.11.2
+```
+ The important part is to have version **9.x**. If you have older versions of node, airliner will not build correctly.
+ 
+7. Once the Airliner repository has been cloned, navigate to <airliner\>/tools/commander directory and preform an `npm install` 
+```
 $ /<airliner>/tools/commander$ npm install
 ```
 The following npm warnings are expected:
@@ -67,7 +79,7 @@ The following npm warnings are expected:
 
 **NOTE:** The previous steps only need to be completed **once** 
 
-5. To show all the options of targets available to make, use command `make` within the <airliner\> directory
+8. To show all the options of targets available to make, use command `make` within the <airliner\> directory
 
 The following options are the targets currently available to make:
 ```shell
@@ -85,9 +97,8 @@ typhoon_h480/sitl
 reference/default
 ``` 
 
-***
+
 ## Airliner Target Installation & Simulation for bebop2/sitl
-***
 1. Within the <airliner\> directory, make the target bebop2/sitl
 ```shell
 $ /<airliner>$ make bebop2/sitl
