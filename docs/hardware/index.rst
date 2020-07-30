@@ -1,6 +1,7 @@
+Hardware
+========
+
 .. toctree::
-   :maxdepth: 2
-   :caption: Hardware
    :name: hardware
 
    PCLinux.rst

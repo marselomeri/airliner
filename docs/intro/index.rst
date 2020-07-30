@@ -1,5 +1,7 @@
+Introduction
+============
+
 .. toctree::
-   :caption: Introduction
    :name: introduction
 
    Overview.rst

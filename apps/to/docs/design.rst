@@ -29,8 +29,8 @@ Design
     }
   
 
-Detailed design documentation can be found `here <../../doxy/apps/to/index.html>`_.
+Detailed design documentation can be found `here <../../../doxy/apps/to/index.html>`_.
 
 .. image:: /docs/_static/doxygen.png
-   :target: ../../../doxy/apps/sonar/index.html
+   :target: ../../../doxy/apps/to/index.html
    

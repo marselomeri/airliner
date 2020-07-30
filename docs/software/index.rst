@@ -1,5 +1,7 @@
+Software
+========
+
 .. toctree::
-   :caption: Software
    :name: config-software
 
    Overview.rst
