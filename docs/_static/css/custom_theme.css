@@ -1,5 +1,9 @@
 @import 'theme.css';       /* for the Read the Docs theme */
 
-body {
-   
+
+.wy-nav-content {
+    /*max-width: 100% !important;*/
+    max-width: 1200px;
+    min-width: 800px;
+    background: #ffffff;
 }

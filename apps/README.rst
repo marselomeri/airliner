@@ -2,7 +2,6 @@ Applications
 ====================================
 
 .. toctree::
-   :maxdepth: 1
    :caption: Applications
    :name: apps
 

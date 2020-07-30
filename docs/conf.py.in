@@ -102,5 +102,6 @@ html_css_files = [
     'basic.css',
     'css/badge_only.css',
     'css/theme.css',
+    'css/custom_theme.css'
 ]
 
