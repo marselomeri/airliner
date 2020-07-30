@@ -1,41 +1,35 @@
-Airliner documentation
-======================
-
 
 .. toctree::
    :caption: Introduction
-   :name: main-introduction
 
-   docs/intro/index.rst
+   docs/intro/Overview.rst
+   README.rst
+   docs/intro/DesignOverview.rst
+   docs/intro/DevTools.rst
+   docs/intro/QuickStart.rst
+   docs/faq.rst
+   docs/glossary.rst
 
 
 .. toctree::
    :caption: Tutorials
-   :name: main-tutorials
 
-   docs/tutorials/index.rst
+   docs/tutorials/SetupDevEnvironment.rst
+   docs/tutorials/BuildFlightSoftware.rst
 
 
 .. toctree::
    :caption: Hardware
-   :name: main-hardware
-   :glob:
-
-   docs/hardware/index.rst
+   
+   docs/hardware/PCLinux.rst
+   docs/hardware/SupportedPlatforms.rst
+   config/docs/index.rst
 
 
 .. toctree::
    :caption: Software
-   :name: main-software
-   :glob:
-
-   docs/software/index.rst
-
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   
+   docs/software/Overview.rst
+   apps/px4lib/docs/MessageAPI.rst
+   core/README.rst
+   apps/README.rst
