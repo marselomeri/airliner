@@ -26,6 +26,6 @@ and/or command.
    Design <docs/design>
    Activities <docs/activities>
    Configuration <docs/configuration>
-   ConOps <docs/conops>
+   Concept of Operations <docs/conops>
    FAQ <docs/faq>
 
