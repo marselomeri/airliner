@@ -101,7 +101,6 @@ html_static_path = ['@PROJECT_SOURCE_DIR@/docs/_static']
 html_css_files = [
     'basic.css',
     'css/badge_only.css',
-
     'css/custom_theme.css'
 ]
 
