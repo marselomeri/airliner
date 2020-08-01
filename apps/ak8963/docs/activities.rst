@@ -1,7 +1,6 @@
 Activities
 ==========
 
-
 TODO
     
     

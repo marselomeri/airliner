@@ -1,9 +1,9 @@
 AK8963
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-  This document provides a complete specification for the commands and telemetry associated
-  with the AK8963 Application (AK8963) software. 
-TODO
+The `AsahiKASEI AK8963 <https://www.digikey.com/short/z59ppp` is a 3-axis electronic compass (magnetometer).  
+This magnetometer is used on the Parrot Bebop2 quadcopter.
+
 Detailed design documentation is available `here <../../doxy/apps/ak8963/index.html>`_.
 
 .. image:: /docs/_static/doxygen.png
