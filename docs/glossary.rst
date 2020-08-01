@@ -14,11 +14,24 @@ Glossary
     
   PX4BR
     TODO: Add definition of the PX4 Bridge (PX4BR)
-
+    
+  PX4LIB
+    TODO: Add definition of the PX4 Library (PX4LIB)
+    
+  QAE
+    TODO: Add definition of Q Attitude Estimator (QAE)
+    
+  RCIN
+    TODO: Add definition of Radio Control Input (RCIN)
+    
+  RGBLED
+    TODO: Add definition for RGB LED Control (RGBLED)
+    
   CCSDS
-    Consultative Committee for Space Data Systems (CCSDS) develops and documents communications and data systems standards for spaceflight. `https://public.ccsds.org`_ 
+    Consultative Committee for Space Data Systems (CCSDS) develops and documents communications and data systems standards for spaceflight. `<https://public.ccsds.org>`_ 
+    
   Ashai KASEI (AK8963)
-   The Ashai KASEI (AK8963) flight software application uses a 3-axis electronic compass to navigate. The app utilizes GPS to determine where the drone is at.
+    The Ashai KASEI (AK8963) flight software application uses a 3-axis electronic compass to navigate. The app utilizes GPS to determine where the drone is at.
     
   dump table
     CFE Dump Tables are created at run time, not build time.  They do not contain configuration.  They 

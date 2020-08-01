@@ -9,7 +9,7 @@ TODO: List potential failure modes.
 
 TODO: Add common troubleshooting procedures.
    
-Detailed operation documentation can be found `here <../../../doxy/apps/prmlib/cfspeopr.html>`_.
+Detailed operation documentation can be found `here <../../../doxy/apps/rgbled/cfsrgbledopr.html>`_.
 
 .. image:: /docs/_static/doxygen.png
-   :target: ../../../doxy/apps/prmlib/index.html
+   :target: ../../../doxy/apps/rgbled/index.html

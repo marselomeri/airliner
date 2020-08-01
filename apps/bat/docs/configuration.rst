@@ -9,17 +9,15 @@ Mission Specific
 +----------------------------+-------------------------------------+
 | File                       | Parameter                           |
 +============================+=====================================+
-| :amc:`amc_mission_cfg.h`   | :amc:`AMC_SB_TIMEOUT`               |
+| :bat:`bat_mission_cfg.h`   | :bat:`BAT_SB_TIMEOUT`               |
 +----------------------------+-------------------------------------+
-| :amc:`amc_perfids.h`       | :amc:`AMC_MAIN_TASK_PERF_ID`        |
+| :bat:`bat_perfids.h`       | :bat:`BAT_PERFIDS_H`                |
 +                            +-------------------------------------+
-|                            | :amc:`AMC_SEND_PERF_ID`             |
-+                            +-------------------------------------+
-|                            | :AMC:`AMC_RECEIVE_PERF_ID`          |
+|                            | :bat:`BAT_MAIN_TASK_PERF_ID`        |
 +----------------------------+-------------------------------------+
 
 .. note::
-   The performance IDs defined in the :amc:`amc_perfids.h` file must have values
+   The performance IDs defined in the :bat:`bat_perfids.h` file must have values
    that are unique system wide.  Most applications also have performance IDs.
    No two performance IDs may have the same value.
    
@@ -30,51 +28,47 @@ Platform Specific
 +-----------------------------+---------------------------------------------+
 | File                        | Parameter                                   |
 +=============================+=============================================+
-| :AMC:`AMC_msgids.h`         | :AMC:`AMC_CMD_MID`                          |
+| :bat:`BAT_msgids.h`         | :bat:`BAT_MSGIDS_H`                         |
 +                             +---------------------------------------------+
-|                             | :AMC:`AMC_SEND_HK_MID`                      |
+|                             | :bat:`BAT_HK_TLM_MID`                       |
 +                             +---------------------------------------------+
-|                             | :AMC:`AMC_UPDATE_MOTORS_MID`                |
+|                             | :bat:`BAT_SEND_HK_MID`                      |
 +                             +---------------------------------------------+
-|                             | :AMC:`AMC_OUT_DATA_MID`                     |
+|                             | :bat:`BAT_WAKEUP_MID`                       |
 +                             +---------------------------------------------+
-|                             | :AMC:`AMC_HK_TLM_MID`                       |
+|                             | :bat:`BAT_CMD_MID`                          |
 +-----------------------------+---------------------------------------------+
-| :AMC:`AMC_platform_cfg.h`   | :AMC:`AMC_MISSION_REV`                      |
+| :bat:`BAT_platform_cfg.h`   | :bat:`BAT_PLATFORM_CFG_H`                   |
 +                             +---------------------------------------------+
-|                             | :AMC:`AMC_SCH_PIPE_DEPTH`                   |
+|                             | :bat:`BAT_LISTENER_TASK_FLAGS`              |
 +                             +---------------------------------------------+
-|                             | :AMC:`AMC_SCH_PIPE_NAME`                    |
+|                             | :bat:`BAT_MISSION_REV`                      |
 +                             +---------------------------------------------+
-|                             | :AMC:`AMC_SCH_PIPE_PEND_TIME`               |
+|                             | :bat:`BAT_SCH_PIPE_DEPTH`                   |
 +                             +---------------------------------------------+
-|                             | :AMC:`AMC_SCH_PIPE_WAKEUP_RESERVED`         |
+|                             | :bat:`BAT_SCH_PIPE_NAME`                    |
 +                             +---------------------------------------------+
-|                             | :AMC:`AMC_SCH_PIPE_SEND_HK_RESERVED`        |
+|                             | :bat:`BAT_SCH_PIPE_PEND_TIME`               |
 +                             +---------------------------------------------+
-|                             | :AMC:`AMC_CMD_PIPE_DEPTH`                   |
+|                             | :bat:`BAT_WAKEUP_MID_MAX_MSG_COUNT`         |
 +                             +---------------------------------------------+
-|                             | :AMC:`AMC_CMD_PIPE_NAME`                    |
+|                             | :bat:`BAT_SEND_HK_MID_MAX_MSG_COUNT`        |
 +                             +---------------------------------------------+
-|                             | :AMC:`AMC_PARAM_PIPE_DEPTH`                 |
+|                             | :bat:`BAT_CMD_PIPE_DEPTH`                   |
 +                             +---------------------------------------------+
-|                             | :AMC:`AMC_PARAM_PIPE_NAME`                  |
+|                             | :bat:`BAT_CMD_PIPE_NAME`                    |
 +                             +---------------------------------------------+
-|                             | :AMC:`AMC_PWM_CONFIG_TABLE_FILENAME`        |
+|                             | :bat:`BAT_CONFIG_TABLE_FILENAME`            |
 +                             +---------------------------------------------+
-|                             | :AMC:`AMC_MIXER_CONFIG_TABLE_FILENAME`      |
+|                             | :bat:`BAT_STARTUP_TIMEOUT_MSEC`             |
 +                             +---------------------------------------------+
-|                             | :AMC:`AMC_STARTUP_TIMEOUT_MSEC`             |
-+                             +---------------------------------------------+
-|                             | :AMC:`AMC_MAX_MOTOR_OUTPUTS`                |
-+                             +---------------------------------------------+
-|                             | :AMC:`AMC_MAX_PARAMS`                       |
+|                             | :bat:`BAT_LISTENER_TASK_STACK_SIZE`         |
 +-----------------------------+---------------------------------------------+
 
 Table(s)
 ^^^^^^^^^^^^^^^^
 
-
+TODO
 
 
 
