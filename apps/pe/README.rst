@@ -1,6 +1,10 @@
 Position Estimator
 ====================================
 
+The :term:`PE` Application application does some cool stuff.
+
+TODO: Insert paragraph providing application purpose and a high level description of application capabilites
+
 .. toctree::
    :caption: Contents
    :name: pe_contents

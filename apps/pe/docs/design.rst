@@ -1,7 +1,7 @@
 Design
 ================
 
-TODO: Add relevent PE Diagrams
+TODO: Add relevent PE Diagrams.
 
 Detailed design documentation can be found `here <../../../doxy/apps/pe/cfspeovr.html>`_.
 

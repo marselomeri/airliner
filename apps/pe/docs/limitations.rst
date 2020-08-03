@@ -1,7 +1,7 @@
 Limitations and Known Issues
 ============================
 
-TODO: Add PE limitations and issues
+TODO: Add PE limitations and issues.
 
 Detailed Limitation and Known Issues documentation can be found `here <../../../doxy/apps/pe/cfspecons.html>`_.
 

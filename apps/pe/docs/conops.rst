@@ -1,7 +1,7 @@
 Concept of Operations
 =====================
 
-TODO: Add Commander screenshots, with a legend for each telemetry item and command button.
+TODO: Add Commander screenshots.
 
 TODO: Add activation procedure.
 

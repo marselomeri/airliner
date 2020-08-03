@@ -1,7 +1,7 @@
 FAQ
 ================
  
-TODO: Add PE FAQ
+TODO: Add PE FAQ.
 
 Detailed FAQ documentation can be found `here <../../../doxy/apps/pe/cfspefaqs.html>`_.
 

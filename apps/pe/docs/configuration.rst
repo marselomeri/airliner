@@ -4,6 +4,8 @@ Configuration
 Mission Specific
 ^^^^^^^^^^^^^^^^
 
+TODO: Add Doxygen documentation for pe_mission_cfg.h
+
 +-------------------------+--------------------------------+
 | File                    | Parameter                      |
 +=========================+================================+
@@ -17,15 +19,15 @@ Mission Specific
 +                         +--------------------------------+
 |                         | :pe:`PE_SENSOR_GPS_PERF_ID`    |
 +                         +--------------------------------+
-|                         | :pe:`PE_SENSOR_BARO_PERF_ID `  |
+|                         | :pe:`PE_SENSOR_BARO_PERF_ID`   |
 +                         +--------------------------------+
 |                         | :pe:`PE_SENSOR_LAND_PERF_ID`   |
 +                         +--------------------------------+
-|                         | :pe:`PE_SENSOR_MAT_PERF_ID `   |
+|                         | :pe:`PE_INVERSE_MAT_PERF_ID`   |
 +                         +--------------------------------+
 |                         | :pe:`PE_SENSOR_FLOW_PERF_ID`   |
 +                         +--------------------------------+
-|                         | :pe:`PE_SENSOR_DIST_PERF_ID `  |
+|                         | :pe:`PE_SENSOR_DIST_PERF_ID`   |
 +-------------------------+--------------------------------+
 
 .. note::
@@ -108,47 +110,85 @@ TODO: Describe the "custom" layer code.
 Table(s)
 ^^^^^^^^
 
-Tables are created at build time, though they can be changed at run time. Each 
-output channel can, and usually does, have its own unique configuration table.
-TO actually has 3 tables per channel.  The first two tables define the same 
-configurable parameters, but one of these is the backup table that is compiled
-directly into the application binary and only loaded if the nominal table fails
-to load from the file system.  Both the nominal and the backup tables have the 
-same structure.  Both are instantiations of the :to:`TO_ChannelTbl_t` 
-structure.  The third table is a :term:`dump table` that contains performance 
-metrics, not configuration.  This table is defined by the 
-:to:`TO_ChannelDumpTbl_t` structure.
+TODO: Add Table explanation
+
+TODO: Add Doxygen documentation for pe_config.tbl
 
 +-------------------------------+------------------------------------+------------------------------------------+
 | Table Name                    | Default file name                  | Parameter                                |
 +===============================+====================================+==========================================+
-| :to:`TO_UDP_CONFIG_TABLENAME` | :to:`TO_UDP_CONFIG_TABLE_FILENAME` | :to:`TO_ChannelTbl_t::TableID`           |
+| :pe:`CONFIG_TBL`              | :pe:`pe_config.tbl`                | :pe:`PE_ConfigTbl_t::VXY_PUB_THRESH`     |
 +                               |                                    +------------------------------------------+
-|                               |                                    | :to:`TO_ChannelTbl_t::MessageFlow`       |
+|                               |                                    | :pe:`PE_ConfigTbl_t::Z_PUB_THRESH`       |
 +                               |                                    +------------------------------------------+
-|                               |                                    | :to:`TO_ChannelTbl_t::PriorityQueue`     |
-+-------------------------------+------------------------------------+------------------------------------------+
-| :to:`TO_UDP_DUMP_TABLENAME`   | N/A                                | :to:`TO_ChannelDumpTbl_t::TableID`       |
+|                               |                                    | :pe:`PE_ConfigTbl_t::ACCEL_XY_STDDEV`    |
 +                               |                                    +------------------------------------------+
-|                               |                                    | :to:`TO_ChannelDumpTbl_t::MessageFlow`   |
+|                               |                                    | :pe:`PE_ConfigTbl_t::ACCEL_Z_STDDEV`     |
 +                               |                                    +------------------------------------------+
-|                               |                                    | :to:`TO_ChannelDumpTbl_t::PriorityQueue` |
+|                               |                                    | :pe:`PE_ConfigTbl_t::BARO_FUSE`          |
 +                               |                                    +------------------------------------------+
-|                               |                                    | :to:`TO_ChannelDumpTbl_t::OutputQueue`   |
+|                               |                                    | :pe:`PE_ConfigTbl_t::BARO_STDDEV`        |
++                               |                                    +------------------------------------------+
+|                               |                                    | :pe:`PE_ConfigTbl_t::GPS_FUSE`           |
++                               |                                    +------------------------------------------+
+|                               |                                    | :pe:`PE_ConfigTbl_t::GPS_DELAY`          |
++                               |                                    +------------------------------------------+
+|                               |                                    | :pe:`PE_ConfigTbl_t::GPS_XY_STDDEV`      |
++                               |                                    +------------------------------------------+
+|                               |                                    | :pe:`PE_ConfigTbl_t::GPS_Z_STDDEV`       |
++                               |                                    +------------------------------------------+
+|                               |                                    | :pe:`PE_ConfigTbl_t::GPS_VXY_STDDEV`     |
++                               |                                    +------------------------------------------+
+|                               |                                    | :pe:`PE_ConfigTbl_t::GPS_VZ_STDDEV`      |
++                               |                                    +------------------------------------------+
+|                               |                                    | :pe:`PE_ConfigTbl_t::GPS_EPH_MAX`        |
++                               |                                    +------------------------------------------+
+|                               |                                    | :pe:`PE_ConfigTbl_t::GPS_EPV_MAX`        |
++                               |                                    +------------------------------------------+
+|                               |                                    | :pe:`PE_ConfigTbl_t::LAND_FUSE`          |
++                               |                                    +------------------------------------------+
+|                               |                                    | :pe:`PE_ConfigTbl_t::LAND_Z_STDDEV`      |
++                               |                                    +------------------------------------------+
+|                               |                                    | :pe:`PE_ConfigTbl_t::LAND_VXY_STDDEV`    |
++                               |                                    +------------------------------------------+
+|                               |                                    | :pe:`PE_ConfigTbl_t::PN_P_NOISE_DENSITY` |
++                               |                                    +------------------------------------------+
+|                               |                                    | :pe:`PE_ConfigTbl_t::PN_V_NOISE_DENSITY` |
++                               |                                    +------------------------------------------+
+|                               |                                    | :pe:`PE_ConfigTbl_t::PN_B_NOISE_DENSITY` |
++                               |                                    +------------------------------------------+
+|                               |                                    | :pe:`PE_ConfigTbl_t::PN_T_NOISE_DENSITY` |
++                               |                                    +------------------------------------------+
+|                               |                                    | :pe:`PE_ConfigTbl_t::T_MAX_GRADE`        |
++                               |                                    +------------------------------------------+
+|                               |                                    | :pe:`PE_ConfigTbl_t::FAKE_ORIGIN`        |
++                               |                                    +------------------------------------------+
+|                               |                                    | :pe:`PE_ConfigTbl_t::INIT_ORIGIN_LAT`    |
++                               |                                    +------------------------------------------+
+|                               |                                    | :pe:`PE_ConfigTbl_t::INIT_ORIGIN_LON`    |
++                               |                                    +------------------------------------------+
+|                               |                                    | :pe:`PE_ConfigTbl_t::DIST_FUSE`          |
++                               |                                    +------------------------------------------+
+|                               |                                    | :pe:`PE_ConfigTbl_t::DIST_STDDEV`        |
++                               |                                    +------------------------------------------+
+|                               |                                    | :pe:`PE_ConfigTbl_t::DIST_OFF_Z`         |
++                               |                                    +------------------------------------------+
+|                               |                                    | :pe:`PE_ConfigTbl_t::FLOW_FUSE`          |
++                               |                                    +------------------------------------------+
+|                               |                                    | :pe:`PE_ConfigTbl_t::FLOW_SCALE`         |
++                               |                                    +------------------------------------------+
+|                               |                                    | :pe:`PE_ConfigTbl_t::FLOW_R`             |
++                               |                                    +------------------------------------------+
+|                               |                                    | :pe:`PE_ConfigTbl_t::FLOW_RR`            |
++                               |                                    +------------------------------------------+
+|                               |                                    | :pe:`PE_ConfigTbl_t::FLOW_QUALITY_MIN`   |
++                               |                                    +------------------------------------------+
+|                               |                                    | :pe:`PE_ConfigTbl_t::FLOW_MIN_AGL`       |
 +-------------------------------+------------------------------------+------------------------------------------+
 
-.. note::
-   When configuring the backup table, consider the fact that, when this table is in affect, the system
-   is already in a failure or partially degraded state.  Both the nominal and backup tables might be 
-   identical, but it may be more appropriate for the backup table to have a reduced telemetry 
-   definition to reduce the system load.  Be very careful on selecting what telemetry is in the backup 
-   table.  Specifically, you may want to ensure that the backup table has enough telemetry defined in 
-   the downlink to facilitate troubleshooting and recovering from the failure that caused the
-   failover to the backup configuration in the first place.  Lastly, understand that while the nominal
-   configuration table can also be changed before or during flight, the backup table cannot be changed
-   without recompiling the TO binary.
-   
-Below are example tables.
+TODO: Add Doxygen documentation for pe_config.c
+
+Below is an example table.
 
 .. literalinclude:: ../fsw/tables/pe_config.c
   :language: C
@@ -158,19 +198,10 @@ Below are example tables.
 System Integration
 ^^^^^^^^^^^^^^^^^^
 
-TODO: Describe the channelization configuration with the CF application.
-
-TODO: Describe adding tables to Checksum Services.
-
-TODO: Describe adding application to Health Services.
-
-TODO: Describe possible integration with Limit Checker.
+TODO: Describe System Integration instructions specific to PE.
 
 
 Run Time Configuration
 ^^^^^^^^^^^^^^^^^^^^^^
 
-This application supports loading and reloading of table configuration at run time.  Message flows can
-be added and removed at run time. 
-
-TODO: Add references.
+TODO: Describe Run Time Configuration for PE.
