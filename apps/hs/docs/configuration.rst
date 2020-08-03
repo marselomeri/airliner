@@ -7,21 +7,13 @@ Mission Specific
 +-------------------------+--------------------------------+
 | File                    | Parameter                      |
 +=========================+================================+
-| :to:`to_mission_cfg.h`  | :to:`TO_MAX_MESSAGE_FLOWS`     |
-|                         +--------------------------------+
-|                         | :to:`TO_MAX_PRIORITY_QUEUES`   |
+| :hs:`hs_perfids.h`      | :hs:`HS_IDLETASK_PERF_ID`      |
 +                         +--------------------------------+
-|                         | :to:`TO_MAX_QUEUE_SIZE_LIMIT`  |
-+                         +--------------------------------+
-|                         | :to:`TO_MAX_PQ_MSG_SIZE_LIMIT` |
-+-------------------------+--------------------------------+
-| :to:`to_perfids.h`      | :to:`TO_MAIN_TASK_PERF_ID`     |
-+                         +--------------------------------+
-|                         | :to:`TO_SOCKET_SEND_PERF_ID`   |
+|                         | :hs:`HS_APPMAIN_PERF_ID`       |
 +-------------------------+--------------------------------+
 
 .. note::
-   The performance IDs defined in the :to:`to_perfids.h` file must have values
+   The performance IDs defined in the :hs:`hs_perfids.h` file must have values
    that are unique system wide.  Most applications also have performance IDs.
    No two performance IDs may have the same value.
    
@@ -32,93 +24,93 @@ Platform Specific
 +-------------------------+-------------------------------------+
 | File                    | Parameter                           |
 +=========================+=====================================+
-| :to:`to_msgids.h`       | :to:`TO_CMD_MID`                    |
+| :hs:`hs_msgids.h`       | :hs:`HS_CMD_MID`                    |
 |                         +-------------------------------------+
-|                         | :to:`TO_SEND_HK_MID`                |
+|                         | :hs:`HS_SEND_HK_MID`                |
 +                         +-------------------------------------+
-|                         | :to:`TO_SEND_TLM_MID`               |
+|                         | :hs:`HS_WAKEUP_MID`                 |
 +                         +-------------------------------------+
-|                         | :to:`TO_HK_TLM_MID`                 |
-+                         +-------------------------------------+
-|                         | :to:`TO_DATA_TYPE_MID`              |
-+                         +-------------------------------------+
-|                         | :to:`TO_DIAG_TLM_MID`               |
-+                         +-------------------------------------+
-|                         | :to:`TO_DIAG_MSG_FLOW_MID`          |
+|                         | :hs:`HS_HK_TLM_MID`                 |
 +-------------------------+-------------------------------------+
-| :to:`to_platform_cfg.h` | :to:`TO_CUSTOM_CHILD_TASK_FLAGS`    |
+| :hs:`hs_platform_cfg.h` | :hs:`HS_IDLE_TASK_PRIORITY`         |
 +                         +-------------------------------------+
-|                         | :to:`TO_CUSTOM_TASK_STACK_SIZE`     |
+|                         | :hs:`HS_MAX_EXEC_CNT_SLOTS`         |
 +                         +-------------------------------------+
-|                         | :to:`TO_UDP_CHANNEL_ADDRESS`        |
+|                         | :hs:`HS_MAX_MSG_ACT_TYPES`          |
 +                         +-------------------------------------+
-|                         | :to:`TO_UDP_CHANNEL_PORT`           |
+|                         | :hs:`HS_MAX_MSG_ACT_SIZE`           |
 +                         +-------------------------------------+
-|                         | :to:`TO_MSG_FLOW_PKT_LIMIT`         |
+|                         | :hs:`HS_MAX_MONITORED_APPS`         |
 +                         +-------------------------------------+
-|                         | :to:`TO_MAX_MSG_LENGTH`             |
+|                         | :hs:`HS_MAX_MONITORED_EVENTS`       |
 +                         +-------------------------------------+
-|                         | :to:`TO_UDP_CF_THROTTLE_SEM_NAME`   |
+|                         | :hs:`HS_WATCHDOG_TIMEOUT_VALUE`     |
 +                         +-------------------------------------+
-|                         | :to:`TO_UDP_CF_MAX_PDUS`            |
+|                         | :hs:`HS_POST_PROCESSING_DELAY`      |
 +                         +-------------------------------------+
-|                         | :to:`TO_MISSION_REV`                |
+|                         | :hs:`HS_WAKEUP_TIMEOUT`             |
 +                         +-------------------------------------+
-|                         | :to:`TO_SCH_PIPE_DEPTH`             |
+|                         | :hs:`HS_CPU_ALIVE_STRING`           |
 +                         +-------------------------------------+
-|                         | :to:`TO_SCH_PIPE_NAME`              |
+|                         | :hs:`HS_CPU_ALIVE_PERIOD`           |
 +                         +-------------------------------------+
-|                         | :to:`TO_SCH_PIPE_PEND_TIME`         |
+|                         | :hs:`HS_MAX_RESTART_ACTIONS`        |
 +                         +-------------------------------------+
-|                         | :to:`TO_SCH_PIPE_WAKEUP_RESERVED`   |
+|                         | :hs:`HS_CMD_PIPE_DEPTH`             |
 +                         +-------------------------------------+
-|                         | :to:`TO_SCH_PIPE_SEND_HK_RESERVED`  |
+|                         | :hs:`HS_WAKEUP_PIPE_DEPTH`          |
 +                         +-------------------------------------+
-|                         | :to:`TO_CMD_PIPE_DEPTH`             |
+|                         | :hs:`HS_RESET_TASK_DELAY`           |
 +                         +-------------------------------------+
-|                         | :to:`TO_CMD_PIPE_NAME`              |
+|                         | :hs:`HS_STARTUP_SYNC_TIMEOUT`       |
 +                         +-------------------------------------+
-|                         | :to:`TO_DATA_PIPE_DEPTH`            |
+|                         | :hs:`HS_APPMON_DEFAULT_STATE`       |
 +                         +-------------------------------------+
-|                         | :to:`TO_UDP_CONFIG_TABLE_FILENAME`  |
+|                         | :hs:`HS_EVENTMON_DEFAULT_STATE`     |
 +                         +-------------------------------------+
-|                         | :to:`TO_MAX_MEMPOOL_BLK_SIZES`      |
+|                         | :hs:`HS_ALIVENESS_DEFAULT_STATE`    |
 +                         +-------------------------------------+
-|                         | :to:`TO_MEM_BLOCK_SIZE_01`          |
+|                         | :hs:`HS_CPUHOG_DEFAULT_STATE`       |
 +                         +-------------------------------------+
-|                         | :to:`TO_MEM_BLOCK_SIZE_02`          |
+|                         | :hs:`HS_AMT_FILENAME`               |
 +                         +-------------------------------------+
-|                         | :to:`TO_MEM_BLOCK_SIZE_03`          |
+|                         | :hs:`HS_EMT_FILENAME`               |
 +                         +-------------------------------------+
-|                         | :to:`TO_MEM_BLOCK_SIZE_04`          |
+|                         | :hs:`HS_XCT_FILENAME`               |
 +                         +-------------------------------------+
-|                         | :to:`TO_MEM_BLOCK_SIZE_05`          |
+|                         | :hs:`HS_MAT_FILENAME`               |
 +                         +-------------------------------------+
-|                         | :to:`TO_MEM_BLOCK_SIZE_06`          |
+|                         | :hs:`HS_UTIL_CALLS_PER_MARK`        |
 +                         +-------------------------------------+
-|                         | :to:`TO_MEM_BLOCK_SIZE_07`          |
+|                         | :hs:`HS_UTIL_CYCLES_PER_INTERVAL`   |
 +                         +-------------------------------------+
-|                         | :to:`TO_MAX_BLOCK_SIZE`             |
+|                         | :hs:`HS_UTIL_PER_INTERVAL_TOTAL`    |
 +                         +-------------------------------------+
-|                         | :to:`TO_UDP_CONFIG_TABLENAME`       |
+|                         | :hs:`HS_UTIL_PER_INTERVAL_HOGGING`  |
 +                         +-------------------------------------+
-|                         | :to:`TO_UDP_DUMP_TABLENAME`         |
+|                         | :hs:`HS_UTIL_CONV_MULT1`            |
 +                         +-------------------------------------+
-|                         | :to:`TO_STARTUP_TIMEOUT_MSEC`       |
+|                         | :hs:`HS_UTIL_CONV_DIV`              |
 +                         +-------------------------------------+
-|                         | :to:`TO_MAX_MSGS_OUT_PER_FRAME`     |
+|                         | :hs:`HS_UTIL_CONV_MULT2`            |
 +                         +-------------------------------------+
-|                         | :to:`TO_MAX_CHANNELS`               |
+|                         | :hs:`HS_UTIL_HOGGING_TIMEOUT`       |
 +                         +-------------------------------------+
-|                         | :to:`TO_OUTPUT_QUEUE_DEPTH`         |
+|                         | :hs:`HS_UTIL_PEAK_NUM_INTERVAL`     |
 +                         +-------------------------------------+
-|                         | :to:`TO_UDP_CHANNEL_TASK_PRIORITY`  |
+|                         | :hs:`HS_UTIL_AVERAGE_NUM_INTERVAL`  |
 +                         +-------------------------------------+
-|                         | :to:`TO_NUM_BYTES_IN_MEM_POOL`      |
+|                         | :hs:`HS_UTIL_TIME_DIAG_ARRAY_POWER` |
++                         +-------------------------------------+
+|                         | :hs:`HS_UTIL_TIME_DIAG_ARRAY_LENGTH`|
++                         +-------------------------------------+
+|                         | :hs:`HS_UTIL_TIME_DIAG_ARRAY_MASK`  |
++                         +-------------------------------------+
+|                         | :hs:`HS_MISSION_REV`                |
 +-------------------------+-------------------------------------+
 
 .. note::
-   The message IDs defined in the :to:`to_msgids.h` file must have values
+   The message IDs defined in the :hs:`hs_msgids.h` file must have values
    that are unique system wide.  Most applications also have message IDs.
    No two message IDs may have the same value.
    
@@ -127,6 +119,8 @@ TODO: Describe the "custom" layer code.
 
 Table(s)
 ^^^^^^^^
+TODO: Tailor this section to be more HS specific.
+
 
 Tables are created at build time, though they can be changed at run time. Each 
 output channel can, and usually does, have its own unique configuration table.
@@ -142,19 +136,33 @@ metrics, not configuration.  This table is defined by the
 +-------------------------------+------------------------------------+------------------------------------------+
 | Table Name                    | Default file name                  | Parameter                                |
 +===============================+====================================+==========================================+
-| :to:`TO_UDP_CONFIG_TABLENAME` | :to:`TO_UDP_CONFIG_TABLE_FILENAME` | :to:`TO_ChannelTbl_t::TableID`           |
+| :hs:`AppMon_Tbl`              | :hs:'hs_amt.tbl'                   | :hs:`HS_AMTEntry_t::AppName`             |
 +                               |                                    +------------------------------------------+
-|                               |                                    | :to:`TO_ChannelTbl_t::MessageFlow`       |
+|                               |                                    | :hs:`HS_AMTEntry_t::NullTerm`            |
 +                               |                                    +------------------------------------------+
-|                               |                                    | :to:`TO_ChannelTbl_t::PriorityQueue`     |
+|                               |                                    | :hs:`HS_AMTEntry_t::CycleCount`          |
++                               |                                    +------------------------------------------+
+|                               |                                    | :hs:`HS_AMTEntry_t::ActionType`          |
 +-------------------------------+------------------------------------+------------------------------------------+
-| :to:`TO_UDP_DUMP_TABLENAME`   | N/A                                | :to:`TO_ChannelDumpTbl_t::TableID`       |
+| :hs:`EventMon_Tbl`            | :hs:'hs_emt.tbl'                   | :hs:`HS_EMTEntry_t::AppName`             |
 +                               |                                    +------------------------------------------+
-|                               |                                    | :to:`TO_ChannelDumpTbl_t::MessageFlow`   |
+|                               |                                    | :hs:`HS_EMTEntry_t::NullTerm`            |
 +                               |                                    +------------------------------------------+
-|                               |                                    | :to:`TO_ChannelDumpTbl_t::PriorityQueue` |
+|                               |                                    | :hs:`HS_EMTEntry_t::EventID`             |
 +                               |                                    +------------------------------------------+
-|                               |                                    | :to:`TO_ChannelDumpTbl_t::OutputQueue`   |
+|                               |                                    | :hs:`HS_EMTEntry_t::ActionType`          |
++-------------------------------+------------------------------------+------------------------------------------+
+| :hs:`MsgActs_Tbl`             | :hs:'hs_mat.tbl'                   | :hs:`HS_MATEntry_t::EnableState`         |
++                               |                                    +------------------------------------------+
+|                               |                                    | hs:`HS_MATEntry_t::Cooldown`             |
++                               |                                    +------------------------------------------+
+|                               |                                    | hs:`HS_MATEntry_t::Message`              |
++-------------------------------+------------------------------------+------------------------------------------+
+| :hs:`ExeCount_Tbl`            | :hs:`hs_xct.tbl`                   | :hs:`HS_XCTEntry_t::ResourceName`        |
++                               |                                    +------------------------------------------+
+|                               |                                    | :hs:`HS_XCTEntry_t::NullTerm`            |
++                               |                                    +------------------------------------------+
+|                               |                                    | :hs:`HS_XCTEntry_t::ResourceType`        |
 +-------------------------------+------------------------------------+------------------------------------------+
 
 .. note::
