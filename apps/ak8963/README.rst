@@ -1,5 +1,5 @@
 AK8963
-====================================
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
   This document provides a complete specification for the commands and telemetry associated
   with the AK8963 Application (AK8963) software.  The document is intended primarily 
