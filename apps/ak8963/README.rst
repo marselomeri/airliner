@@ -2,12 +2,8 @@ AK8963
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
   This document provides a complete specification for the commands and telemetry associated
-  with the AK8963 Application (AK8963) software.  The document is intended primarily 
-  for users of the software (operations personal, test engineers, and maintenance personnel).  
-  The last section of the document, the deployment guide section, is intended for mission 
-  developers when deploying and configuring this application software for a mission 
-  flight software build environment
-
+  with the AK8963 Application (AK8963) software. 
+TODO
 Detailed design documentation is available `here <../../doxy/apps/ak8963/index.html>`_.
 
 .. image:: /docs/_static/doxygen.png
