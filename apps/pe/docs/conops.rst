@@ -14,4 +14,4 @@ TODO: Add common troubleshooting procedures.
 Detailed operation documentation can be found `here <../../../doxy/apps/pe/cfspeopr.html>`_.
 
 .. image:: /docs/_static/doxygen.png
-   :target: ../../../doxy/apps/to/index.html
+   :target: ../../../doxy/apps/pe/index.html
