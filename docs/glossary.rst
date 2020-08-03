@@ -12,6 +12,9 @@ Glossary
   PRMLIB
     TODO: Add definition of the Parameter Library (PRMLIB)
     
+  PX4BR
+    TODO: Add definition of the PX4 Bridge (PX4BR)
+
   CCSDS
     Consultative Committee for Space Data Systems (CCSDS) develops and documents communications and data systems standards for spaceflight. `https://public.ccsds.org`_ 
   Ashai KASEI (AK8963)
