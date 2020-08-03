@@ -9,6 +9,9 @@ Glossary
   PE
     The Position Estimator (PE) flight software application sends position data from the remote vehicle to the ground.
     
+  PRMLIB
+    TODO: Add definition of the Parameter Library (PRMLIB)
+    
   CCSDS
     Consultative Committee for Space Data Systems (CCSDS) develops and documents communications and data systems standards for spaceflight. `https://public.ccsds.org`_ 
   Ashai KASEI (AK8963)
