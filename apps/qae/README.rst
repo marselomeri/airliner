@@ -3,7 +3,7 @@ Attitude Estimator
 
 The :term:`QAE` Application does some cool stuff.
 
-TODO: Insert paragraph providing library purpose and a high level description of library capabilites
+TODO: Insert paragraph providing application purpose and a high level description of application capabilites
 
 .. toctree::
    :caption: Contents
