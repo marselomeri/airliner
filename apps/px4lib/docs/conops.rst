@@ -9,7 +9,7 @@ TODO: List potential failure modes.
 
 TODO: Add common troubleshooting procedures.
    
-Detailed operation documentation can be found `here <../../../doxy/apps/px4lib/cfspeopr.html>`_.
+Detailed operation documentation can be found `here <../../../doxy/apps/px4lib/cfspx4libopr.html>`_.
 
 .. image:: /docs/_static/doxygen.png
    :target: ../../../doxy/apps/px4lib/index.html
