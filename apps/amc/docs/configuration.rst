@@ -19,7 +19,7 @@ Mission Specific
 +----------------------------+-------------------------------------+
 
 .. note::
-   The performance IDs defined in the :to:`to_perfids.h` file must have values
+   The performance IDs defined in the :amc:`amc_perfids.h` file must have values
    that are unique system wide.  Most applications also have performance IDs.
    No two performance IDs may have the same value.
    
@@ -32,7 +32,7 @@ Platform Specific
 +=============================+=============================================+
 | :AMC:`AMC_msgids.h`         | :AMC:`AMC_CMD_MID`                          |
 +                             +---------------------------------------------+
-|                             | :AMC:`AMC_SEND_HK_MID'                      |
+|                             | :AMC:`AMC_SEND_HK_MID`                      |
 +                             +---------------------------------------------+
 |                             | :AMC:`AMC_UPDATE_MOTORS_MID`                |
 +                             +---------------------------------------------+
@@ -74,15 +74,6 @@ Platform Specific
 Table(s)
 ^^^^^^^^^^^^^^^^
 
-+-----------------------+------------------------------+------------------------------------------+
-|Table Name             |Default Name                  |                                          |
-+=======================+==============================+==========================================+
-| :AMC: `CONFIG_TBL`    | :AMC: `AMC_config.tbl`       | :AMC: `AMC_ConfigTbl_t::PwmDisarmed`     |
-|                       |                              +------------------------------------------+
-|                       |                              | :AMC: `AMC_ConfigTbl_t::PwmMin`          |
-|                       |                              +------------------------------------------+
-|                       |                              | :AMC: `AMC_ConfigTbl_t::PwmMax`          |
-+-----------------------+------------------------------+------------------------------------------+
 
 
 
