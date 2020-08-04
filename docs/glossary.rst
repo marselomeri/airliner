@@ -21,6 +21,9 @@ Glossary
   QAE
     TODO: Add definition of Q Attitude Estimator (QAE)
     
+  RCIN
+    TODO: Add definition of Radio Control Input (RCIN)
+    
   CCSDS
     Consultative Committee for Space Data Systems (CCSDS) develops and documents communications and data systems standards for spaceflight. `<https://public.ccsds.org>`_ 
     
