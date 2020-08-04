@@ -24,6 +24,9 @@ Glossary
   RCIN
     TODO: Add definition of Radio Control Input (RCIN)
     
+  RGBLED
+    TODO: Add definition for RGB LED Control (RGBLED)
+    
   CCSDS
     Consultative Committee for Space Data Systems (CCSDS) develops and documents communications and data systems standards for spaceflight. `<https://public.ccsds.org>`_ 
     
