@@ -1,6 +1,10 @@
 PX4 Library
 ====================================
 
+The :term:`PX4LIB` Application Library does some cool stuff.
+
+TODO: Insert paragraph providing library purpose and a high level description of library capabilites
+
 .. toctree::
    :caption: Contents
    :name: px4lib_contents
