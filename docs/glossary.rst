@@ -18,6 +18,9 @@ Glossary
   PX4LIB
     TODO: Add definition of the PX4 Library (PX4LIB)
     
+  QAE
+    TODO: Add definition of Q Attitude Estimator (QAE)
+    
   CCSDS
     Consultative Committee for Space Data Systems (CCSDS) develops and documents communications and data systems standards for spaceflight. `<https://public.ccsds.org>`_ 
     
