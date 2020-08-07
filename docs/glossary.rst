@@ -30,6 +30,9 @@ Glossary
   SBN
     TODO: Add definition of Software Bus Network (SBN)
     
+  SC
+    TODO: Add definition of Sored Command (SC)
+    
   CCSDS
     Consultative Committee for Space Data Systems (CCSDS) develops and documents communications and data systems standards for spaceflight. `<https://public.ccsds.org>`_ 
     
