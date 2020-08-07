@@ -176,18 +176,22 @@ same structure.
 Below are example tables.
 
 .. literalinclude:: ../fsw/tables/hs_amt.c
+  :encoding: iso-ir-199
   :language: C
   :caption: HS AppMon Table
 
 .. literalinclude:: ../fsw/tables/hs_emt.c
+  :encoding: iso-ir-199
   :language: C
   :caption: HS EventMon
 
 .. literalinclude:: ../fsw/tables/hs_mat.c
+  :encoding: iso-ir-199
   :language: C
   :caption: HS MsgActs Table
 
 .. literalinclude:: ../fsw/tables/hs_xct.c
+  :encoding: iso-ir-199
   :language: C
   :caption: HS ExeCount Table
 
