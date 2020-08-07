@@ -128,10 +128,7 @@ TO actually has 3 tables per channel.  The first two tables define the same
 configurable parameters, but one of these is the backup table that is compiled
 directly into the application binary and only loaded if the nominal table fails
 to load from the file system.  Both the nominal and the backup tables have the 
-same structure.  Both are instantiations of the :to:`TO_ChannelTbl_t` 
-structure.  The third table is a :term:`dump table` that contains performance 
-metrics, not configuration.  This table is defined by the 
-:to:`TO_ChannelDumpTbl_t` structure.
+same structure.
 
 +-------------------------------+------------------------------------+------------------------------------------+
 | Table Name                    | Default file name                  | Parameter                                |
@@ -174,17 +171,25 @@ metrics, not configuration.  This table is defined by the
    the downlink to facilitate troubleshooting and recovering from the failure that caused the
    failover to the backup configuration in the first place.  Lastly, understand that while the nominal
    configuration table can also be changed before or during flight, the backup table cannot be changed
-   without recompiling the TO binary.
+   without recompiling the HS binary.
    
 Below are example tables.
 
-.. literalinclude:: ../fsw/tables/to_udp_cfg.c
+.. literalinclude:: ../fsw/tables/hs_amt.c
   :language: C
-  :caption: Nominal Configuration Table
+  :caption: HS AppMon Table
 
-.. literalinclude:: ../fsw/tables/to_backup_cfg.c
+.. literalinclude:: ../fsw/tables/hs_emt.c
   :language: C
-  :caption: Backup Configuration Table
+  :caption: HS EventMon
+
+.. literalinclude:: ../fsw/tables/hs_mat.c
+  :language: C
+  :caption: HS MsgActs Table
+
+.. literalinclude:: ../fsw/tables/hs_xct.c
+  :language: C
+  :caption: HS ExeCount Table
 
 
 System Integration
