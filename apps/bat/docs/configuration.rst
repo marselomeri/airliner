@@ -71,55 +71,55 @@ Table(s)
 +-------------------------------+------------------------------------+--------------------------------------------+
 | Table Name                    | Default file name                  | Parameter                                  |
 +===============================+====================================+============================================+
-| :bat:`CONFIG_TBL`             | :bat:`bat_config.tbl`              | :BAT:`BAT_ConfigTbl_t::VXY_PUB_THRESH`     |
+| :bat:`CONFIG_TBL`             | :bat:`BAT_config.tbl`              | :bat:`BAT_ConfigTbl_t::VXY_PUB_THRESH`     |
 +                               |                                    +--------------------------------------------+
 |                               |                                    | :bat:`BAT_ConfigTbl_t::Z_PUB_THRESH`       |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | :BAT:`BAT_ConfigTbl_t::ACCEL_XY_STDDEV`    |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::ACCEL_XY_STDDEV`    |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | :BAT:`BAT_ConfigTbl_t::ACCEL_Z_STDDEV`     |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::ACCEL_Z_STDDEV`     |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | :BAT:`BAT_ConfigTbl_t::BARO_FUSE`          |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::BARO_FUSE`          |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | :BAT:`BAT_ConfigTbl_t::BARO_STDDEV`        |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::BARO_STDDEV`        |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | :BAT:`BAT_ConfigTbl_t::GPS_FUSE`           |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::GPS_FUSE`           |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | :BAT:`BAT_ConfigTbl_t::GPS_DELAY`          |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::GPS_DELAY`          |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | :BAT:`BAT_ConfigTbl_t::GPS_XY_STDDEV`      |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::GPS_XY_STDDEV`      |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | :BAT:`BAT_ConfigTbl_t::GPS_Z_STDDEV`       |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::GPS_Z_STDDEV`       |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | :BAT:`BAT_ConfigTbl_t::GPS_VXY_STDDEV`     |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::GPS_VXY_STDDEV`     |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | :BAT:`BAT_ConfigTbl_t::GPS_VZ_STDDEV`      |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::GPS_VZ_STDDEV`      |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | :BAT:`BAT_ConfigTbl_t::GPS_EPH_MAX`        |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::GPS_EPH_MAX`        |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | :BAT:`BAT_ConfigTbl_t::GPS_EPV_MAX`        |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::GPS_EPV_MAX`        |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | :BAT:`BAT_ConfigTbl_t::LAND_FUSE`          |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::LAND_FUSE`          |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | :BAT:`BAT_ConfigTbl_t::LAND_Z_STDDEV`      |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::LAND_Z_STDDEV`      |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | :BAT:`BAT_ConfigTbl_t::LAND_VXY_STDDEV`    |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::LAND_VXY_STDDEV`    |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | :BAT:`BAT_ConfigTbl_t::PN_P_NOISE_DENSITY` |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::PN_P_NOISE_DENSITY` |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | :BAT:`BAT_ConfigTbl_t::PN_V_NOISE_DENSITY` |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::PN_V_NOISE_DENSITY` |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | BAT:`BAT_ConfigTbl_t::PN_B_NOISE_DENSITY`  |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::PN_B_NOISE_DENSITY` |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | :BAT:`BAT_ConfigTbl_t::PN_T_NOISE_DENSITY` |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::PN_T_NOISE_DENSITY` |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | :BAT:`BAT_ConfigTbl_t::T_MAX_GRADE`        |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::T_MAX_GRADE`        |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | :BAT:`BAT_ConfigTbl_t::FAKE_ORIGIN`        |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::FAKE_ORIGIN`        |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | :BAT:`BAT_ConfigTbl_t::INIT_ORIGIN_LAT`    |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::INIT_ORIGIN_LAT`    |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | :BAT:`BAT_ConfigTbl_t::INIT_ORIGIN_LON`    |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::INIT_ORIGIN_LON`    |
 +                               |                                    +--------------------------------------------+
 |                               |                                    | :BAT:`BAT_ConfigTbl_t::DIST_FUSE`          |
 +                               |                                    +--------------------------------------------+
