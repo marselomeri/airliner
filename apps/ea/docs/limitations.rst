@@ -1,5 +1,5 @@
 Limitations and Known Issues
 ============================
 
-TODO
+TODO Add EA limitations and known Issues
 

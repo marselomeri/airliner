@@ -11,9 +11,7 @@ Mission Specific
 +============================+=====================================+
 | :cs:`cd_mission_cfg.h`     | :cs:`CS_DEFAULT_ALGORITHM`          |
 +----------------------------+-------------------------------------+
-| :cs:`cd_perfids.h`         | :cs:`_cs_perfids_`                  |
-+                            +-------------------------------------+
-|                            | :cs:`CS_APPMAIN_PERF_ID`            |
+| :cs:`cd_perfids.h`         | :cs:`CS_APPMAIN_PERF_ID`            |
 +----------------------------+-------------------------------------+
 
 .. note::
@@ -86,7 +84,7 @@ Platform Specific
 Table(s)
 ^^^^^^^^^^^^^^^^
 
-TODO REVEIW TABLE
+TODO REVIEW TABLE
 
 +-------------------------------+------------------------------------+--------------------------------------------+
 | Table Name                    | Default file name                  | Parameter                                  |

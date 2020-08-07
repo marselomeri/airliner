@@ -3,7 +3,7 @@ Data Storage
 
 .. toctree::
    :caption: Contents
-   :name: bat_contents
+   :name: ds_contents
 
    Issues and Limitations <docs/limitations>
    Design <docs/design>

@@ -1,5 +1,5 @@
 Limitations and Known Issues
 ============================
 
-TODO
+TODO Add BAT limitations and known Issues
 

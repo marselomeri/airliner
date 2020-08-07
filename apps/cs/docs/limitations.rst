@@ -1,5 +1,5 @@
 Limitations and Known Issues
 ============================
 
-TODO
+TODO add CS limitations and known Issues
 
