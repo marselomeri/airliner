@@ -18,7 +18,7 @@ TODO: Insert paragraph providing application purpose and a high level descriptio
 
 Detailed design documentation should be available `here <../../doxy/apps/sbn/index.html>`_ but currently is not.
 
-TODO: Creeate SBN documentation in Doxygen
+TODO: Create SBN documentation in Doxygen
 
 .. image:: /docs/_static/doxygen.png
    :target: ../../doxy/apps/sbn/index.html
