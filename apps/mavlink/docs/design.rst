@@ -2,7 +2,7 @@ Design
 ================
 
 TODO: 
-Detailed design documentation can be found `here <../../../doxy/apps/mac/index.html>`_.
+Detailed design documentation can be found `here <../../../doxy/apps/mavlink/index.html>`_.
 
 .. graphviz::
    :caption: MAC Context Diagram
@@ -43,7 +43,7 @@ Detailed design documentation can be found `here <../../../doxy/apps/mac/index.h
     }
 
 .. image:: /docs/_static/doxygen.png
-   :target: ../../../doxy/apps/mac/index.html
+   :target: ../../../doxy/apps/mavlink/index.html
 
 
     
