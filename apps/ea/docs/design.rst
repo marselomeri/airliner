@@ -6,9 +6,9 @@ TODO Add relevent EA Diagrams.
 				CFS EA Context
 
 .. graphviz::
-   :caption: TO Context Diagram
+   :caption: EA Context Diagram
    
-   digraph TO_Context_Diagram {
+   digraph EA_Context_Diagram {
          
       SCH -> app [label="HK Requests PERFMON WAKEUP"];
       app -> HK [label="HK Packets"];
