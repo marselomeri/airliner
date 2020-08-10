@@ -5,7 +5,10 @@ Glossary
   
   TO
     The Telemetry Output (TO) flight software application sends telemetry from the remote vehicle to the ground.
-    
+
+  NAV
+    The Navigator Application (NAV) is responsible for safely navigating or moving the vehicle from one location to another.  
+  
   PE
     The Position Estimator (PE) flight software application sends position data from the remote vehicle to the ground.
     
