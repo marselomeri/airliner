@@ -42,6 +42,9 @@ Glossary
   SG33BL
     TODO: Add definition of Hitec SG33BL Actuator (SG33BL)
     
+  SIM
+    TODO: Add definition of Simulation (SIM)
+    
   CCSDS
     Consultative Committee for Space Data Systems (CCSDS) develops and documents communications and data systems standards for spaceflight. `<https://public.ccsds.org>`_ 
     
