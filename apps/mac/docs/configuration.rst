@@ -3,18 +3,19 @@ Configuration
 
 Mission Specific
 ^^^^^^^^^^^^^^^^
+TODO: The following do not exist in doxy.
 
 +-------------------------+--------------------------------+
 | File                    | Parameter                      |
 +=========================+================================+
-| :lgc:`lgc_mission_cfg.h`| :lgc:`LGC_SB_TIMEOUT`          |
+| :mac:`mac_mission_cfg.h`| :mac:`MAC_SB_TIMEOUT`          |
 +-------------------------+--------------------------------+
-| :lgc:`lgc_perfids.h`    | :lgc:`LGC_MAIN_TASK_PERF_ID`   |
+| :mac:`mac_perfids.h`    | :mac:`MAC_MAIN_TASK_PERF_ID`   |
 +-------------------------+--------------------------------+
 
 
 .. note::
-   The performance IDs defined in the :lgc:`lgc_perfids.h` file must have values
+   The performance IDs defined in the :mac:`mac_perfids.h` file must have values
    that are unique system wide.  Most applications also have performance IDs.
    No two performance IDs may have the same value.
    
@@ -22,44 +23,46 @@ Mission Specific
 Platform Specific
 ^^^^^^^^^^^^^^^^^
 
-+-------------------------+-------------------------------------+
-| File                    | Parameter                           |
-+=========================+=====================================+
-| :lgc:`lgc_msgids.h`       | :lgc:`LGC_HK_TLM_MID`             |
-|                         +-------------------------------------+
-|                         | :lgc:`LGC_SEND_HK_MID`              |
-+                         +-------------------------------------+
-|                         | :lgc:`LGC_WAKEUP_MID`               |
-+                         +-------------------------------------+
-|                         | :lgc:`LGC_CMD_MID`                  |
-+-------------------------+-------------------------------------+
-| :lgc:`lgc_platform_cfg.h` | :lgc:`LGC_MISSION_REV`            |
-+                         +-------------------------------------+
-|                         | :lgc:`LGC_SCH_PIPE_DEPTH`           |
-+                         +-------------------------------------+
-|                         | :lgc:`LGC_SCH_PIPE_NAME`            |
-+                         +-------------------------------------+
-|                         | :lgc:`LGC_SCH_PIPE_PEND_TIME`       |
-+                         +-------------------------------------+
-|                         | :lgc:`LGC_WAKEUP_MID_MAX_MSG_COUNT` |
-+                         +-------------------------------------+
-|                         | :lgc:`LGC_SEND_HK_MID_MAX_MSG_COUNT`|
-+                         +-------------------------------------+
-|                         | :lgc:`LGC_CMD_PIPE_DEPTH`           |
-+                         +-------------------------------------+
-|                         | :lgc:`LGC_CMD_PIPE_NAME`            |
-+                         +-------------------------------------+
-|                         | :lgc:`LGC_DATA_PIPE_DEPTH`          |
-+                         +-------------------------------------+
-|                         | :lgc:`LGC_DATA_PIPE_NAME`           |
-+                         +-------------------------------------+
-|                         | :lgc:`LGC_CONFIG_TABLE_FILENAME`    |
-+                         +-------------------------------------+
-|                         | :lgc:`LGC_STARTUP_TIMEOUT_MSEC`     |
-+-------------------------+-------------------------------------+
++---------------------------+-------------------------------------+
+| File                      | Parameter                           |
++===========================+=====================================+
+| :mac:`mac_msgids.h`       | :mac:`MAC_CMD_MID`                  |
+|                           +-------------------------------------+
+|                           | :mac:`MAC_SEND_HK_MID`              |
++                           +-------------------------------------+
+|                           | :mac:`MAC_RUN_CONTROLLER_MID`       |
++                           +-------------------------------------+
+|                           | :mac:`MAC_OUT_DATA_MID`             |
++                           +-------------------------------------+
+|                           | :mac:`MAC_HK_TLM_MID`               |
++---------------------------+-------------------------------------+
+| :mac:`mac_platform_cfg.h` | :mac:`MAC_MISSION_REV`              |
++                           +-------------------------------------+
+|                           | :mac:`MAC_SCH_PIPE_DEPTH`           |
++                           +-------------------------------------+
+|                           | :mac:`MAC_SCH_PIPE_NAME`            |
++                           +-------------------------------------+
+|                           | :mac:`MAC_SCH_PIPE_PEND_TIME`       |
++                           +-------------------------------------+
+|                           | :mac:`MAC_SCH_PIPE_WAKEUP_RESERVED` |
++                           +-------------------------------------+
+|                           | :mac:`MAC_SCH_PIPE_SEND_HK_RESERVED`|
++                           +-------------------------------------+
+|                           | :mac:`MAC_CMD_PIPE_DEPTH`           |
++                           +-------------------------------------+
+|                           | :mac:`MAC_CMD_PIPE_NAME`            |
++                           +-------------------------------------+
+|                           | :mac:`MAC_PARAM_TABLE_FILENAME`     |
++                           +-------------------------------------+
+|                           | :mac:`MAC_STARTUP_TIMEOUT_MSEC`     |
++                           +-------------------------------------+
+|                           | :mac:`MAC_CUSTOM_DEV_PATH`          |
++                           +-------------------------------------+
+|                           | :mac:`MAC_MAX_MOTOR_OUTPUTS`        |
++---------------------------+-------------------------------------+
 
 .. note::
-   The message IDs defined in the :lgc:`lgc_msgids.h` file must have values
+   The message IDs defined in the :mac:`mac_msgids.h` file must have values
    that are unique system wide.  Most applications also have message IDs.
    No two message IDs may have the same value.
    
@@ -68,7 +71,7 @@ TODO: Describe the "custom" layer code.
 
 Table(s)
 ^^^^^^^^
-TODO: Tailor this section to be more LGC specific. Needs Doxyfication.
+TODO: Tailor this section to be more MAC specific. Needs Doxyfication.
 
 
 Tables are created at build time, though they can be changed at run time. Each 
@@ -77,17 +80,13 @@ TO actually has 3 tables per channel.  The first two tables define the same
 configurable parameters, but one of these is the backup table that is compiled
 directly into the application binary and only loaded if the nominal table fails
 to load from the file system.  Both the nominal and the backup tables have the 
-same structure.  Both are instantiations of the :lgc:`LGC_ChannelTbl_t` 
-structure.  The third table is a :term:`dump table` that contains performance 
-metrics, not configuration.  This table is defined by the 
-:lgc:`LGC_ChannelDumpTbl_t` structure.
+same structure.  
 
-
-
+TODO: The following do not exist in Doxy.
 +-------------------------------+------------------------------------+-------------------------------------+
 | Table Name                    | Default file name                  | Parameter                           |
 +===============================+====================================+=====================================+
-| :ld:`LGC_CONFIG_TABLENAME`    | :ld:'LGC_CONFIG_TABLENAME'         | :ld:`LGC_ConfigTbl_t:PwmDisarmed:`  |
+| :mac:`MAC_CONFIG_TABLENAME`   | :mac:'MAC_PARAM_TABLE_FILENAME'    | :mac:`MAC_ParamTbl_t:MC_ROLL_P:`    |
 +-------------------------------+------------------------------------+-------------------------------------+
 
 .. note::
@@ -103,9 +102,9 @@ metrics, not configuration.  This table is defined by the
    
 Below are example tables.
 
-.. literalinclude:: ../fsw/tables/lgc_config.c
+.. literalinclude:: ../fsw/tables/mac_config.c
   :language: C
-  :caption: LGC default config table
+  :caption: MAC default config table
 
 
 
