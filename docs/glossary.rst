@@ -48,6 +48,9 @@ Glossary
   SONAR
     TODO: Add definition of Sonar (SONAR)
     
+  ULR
+    TODO: Add definition of uLanding Radar (ULR)
+    
   CCSDS
     Consultative Committee for Space Data Systems (CCSDS) develops and documents communications and data systems standards for spaceflight. `<https://public.ccsds.org>`_ 
     
