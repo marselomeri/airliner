@@ -36,6 +36,9 @@ Glossary
   SCH
     TODO: Add definition of Scheduler (SCH)
     
+  SENS
+    TODO: Add definition of Sensor (SENS)
+    
   CCSDS
     Consultative Committee for Space Data Systems (CCSDS) develops and documents communications and data systems standards for spaceflight. `<https://public.ccsds.org>`_ 
     
