@@ -9,7 +9,7 @@ TODO: Add Doxygen documentation for pe_mission_cfg.h
 +-------------------------+--------------------------------+
 | File                    | Parameter                      |
 +=========================+================================+
-| :sch:`pe_perfids.h`     | :sch:`SCH_APPMAIN_PERF_ID`     |
+| :sch:`sch_perfids.h`    | :sch:`SCH_APPMAIN_PERF_ID`     |
 +-------------------------+--------------------------------+
 
 .. note::
@@ -48,118 +48,88 @@ Platform Specific
 +                          +-------------------------------------+
 |                          | :sch:`SCH_MDT_MAX_MSG_ID`           |
 +                          +-------------------------------------+
-|                          | :pe:`PE_CMD_PIPE_DEPTH`             |
+|                          | :sch:`SCH_MAX_MSG_WORDS`            |
 +                          +-------------------------------------+
-|                          | :pe:`PE_CMD_PIPE_NAME`              |
+|                          | :sch:`SCH_MAX_LAG_COUNT`            |
 +                          +-------------------------------------+
-|                          | :pe:`PE_CONFIG_TABLE_FILENAME`      |
+|                          | :sch:`SCH_MAX_SLOTS_PER_WAKEUP`     |
 +                          +-------------------------------------+
-|                          | :pe:`PE_STARTUP_TIMEOUT_MSEC`       |
+|                          | :sch:`SCH_MICROS_PER_MAJOR_FRAME`   |
++                          +-------------------------------------+
+|                          | :sch:`SCH_SYNC_SLOT_DRIFT_WINDOW`   |
++                          +-------------------------------------+
+|                          | :sch:`SCH_STARTUP_SYNC_TIMEOUT`     |
++                          +-------------------------------------+
+|                          | :sch:`SCH_STARTUP_PERIOD`           |
++                          +-------------------------------------+
+|                          | :sch:`SCH_MAX_NOISY_MAJORF`         |
++                          +-------------------------------------+
+|                          | :sch:`SCH_LIB_PRESENCE`             |
++                          +-------------------------------------+
+|                          | :sch:`SCH_LIB_DIS_CTR`              |
++                          +-------------------------------------+
+|                          | :sch:`SCH_SCHEDULE_FILENAME`        |
++                          +-------------------------------------+
+|                          | :sch:`SCH_MESSAGE_FILENAME`         |
++                          +-------------------------------------+
+|                          | :sch:`SCH_MISSION_REV`              |
++                          +-------------------------------------+
+|                          | :sch:`SCH_AD_CHILD_TASK_PRIORITY`   |
++                          +-------------------------------------+
+|                          | :sch:`SCH_DEADLINES_PER_SLOT`       |
++                          +-------------------------------------+
+|                          | :sch:`SCH_AD_CHILD_TASK_FLAGS`      |
 +--------------------------+-------------------------------------+
 
 .. note::
-   The message IDs defined in the :pe:`pe_msgids.h` file must have values
+   The message IDs defined in the :sch:`sch_msgids.h` file must have values
    that are unique system wide.  Most applications also have message IDs.
    No two message IDs may have the same value.
-   
-TODO: Describe the "custom" layer code.
-
 
 Table(s)
 ^^^^^^^^
 
 TODO: Add Table explanation
 
-TODO: Add Doxygen documentation for pe_config.tbl
+TODO: Review these SCH tables andd add Doxygen doumentation 
 
-+-------------------------------+------------------------------------+------------------------------------------+
-| Table Name                    | Default file name                  | Parameter                                |
-+===============================+====================================+==========================================+
-| :pe:`CONFIG_TBL`              | :pe:`pe_config.tbl`                | :pe:`PE_ConfigTbl_t::VXY_PUB_THRESH`     |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::Z_PUB_THRESH`       |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::ACCEL_XY_STDDEV`    |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::ACCEL_Z_STDDEV`     |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::BARO_FUSE`          |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::BARO_STDDEV`        |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::GPS_FUSE`           |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::GPS_DELAY`          |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::GPS_XY_STDDEV`      |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::GPS_Z_STDDEV`       |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::GPS_VXY_STDDEV`     |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::GPS_VZ_STDDEV`      |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::GPS_EPH_MAX`        |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::GPS_EPV_MAX`        |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::LAND_FUSE`          |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::LAND_Z_STDDEV`      |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::LAND_VXY_STDDEV`    |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::PN_P_NOISE_DENSITY` |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::PN_V_NOISE_DENSITY` |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::PN_B_NOISE_DENSITY` |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::PN_T_NOISE_DENSITY` |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::T_MAX_GRADE`        |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::FAKE_ORIGIN`        |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::INIT_ORIGIN_LAT`    |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::INIT_ORIGIN_LON`    |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::DIST_FUSE`          |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::DIST_STDDEV`        |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::DIST_OFF_Z`         |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::FLOW_FUSE`          |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::FLOW_SCALE`         |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::FLOW_R`             |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::FLOW_RR`            |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::FLOW_QUALITY_MIN`   |
-+                               |                                    +------------------------------------------+
-|                               |                                    | :pe:`PE_ConfigTbl_t::FLOW_MIN_AGL`       |
-+-------------------------------+------------------------------------+------------------------------------------+
-
-TODO: Add Doxygen documentation for pe_config.c
++-------------------------------+------------------------------------+-------------------------------------------------------------+
+| Table Name                    | Default file name                  | Parameter                                                   |
++===============================+====================================+=============================================================+
+| :sch:`MSG_DEFS`               | :sch:`sch_def_msgtbl.tbl`          | :sch:`SCH_MessageEntry_t::MessageBuffer[SCH_MAX_MSG_WORDS]` |
++-------------------------------+------------------------------------+-------------------------------------------------------------+
+| :sch:`SCHED_DEF`              | :sch:`sch_def_schtbl.tbl`          | :sch:`SCH_ScheduleEntry_t::EnableState`                     |
++                               |                                    +-------------------------------------------------------------+
+|                               |                                    | :sch:`SCH_ScheduleEntry_t::Type`                            |
++                               |                                    +-------------------------------------------------------------+
+|                               |                                    | :sch:`SCH_ScheduleEntry_t::Frequency`                       |  
++                               |                                    +-------------------------------------------------------------+
+|                               |                                    | :sch:`SCH_ScheduleEntry_t::Remainder`                       |
++                               |                                    +-------------------------------------------------------------+
+|                               |                                    | :sch:`SCH_ScheduleEntry_t::MessageIndex`                    |
++                               |                                    +-------------------------------------------------------------+
+|                               |                                    | :sch:`SCH_ScheduleEntry_t::GroupData`                       |
++                               |                                    +-------------------------------------------------------------+
+|                               |                                    | :sch:`SCH_ScheduleEntry_t::Deadline`                        |
++-------------------------------+------------------------------------+-------------------------------------------------------------+
 
 Below is an example table.
 
-.. literalinclude:: ../fsw/tables/pe_config.c
+.. literalinclude:: ../fsw/tables/sch_def_msgtbl.c
   :language: C
-  :caption: Nominal Configuration Table
+  :caption: Nominal Message Table
 
+.. literalinclude:: ../fsw/tables/sch_def_schtbl.c
+  :language: C
+  :caption: Nominal Schedule Table
 
 System Integration
 ^^^^^^^^^^^^^^^^^^
 
-TODO: Describe System Integration instructions specific to PE.
+TODO: Describe System Integration instructions specific to SCH.
 
 
 Run Time Configuration
 ^^^^^^^^^^^^^^^^^^^^^^
 
-TODO: Describe Run Time Configuration for PE.
+TODO: Describe Run Time Configuration for SCH.
