@@ -1,5 +1,8 @@
 Multicopter Attitude Control
 ====================================
+
+The :term:`MAC` Application does some cool stuff.
+
 .. toctree::
    :caption: Contents
    :name: mac_contents

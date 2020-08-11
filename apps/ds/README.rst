@@ -1,6 +1,8 @@
 Data Storage
 ====================================
 
+The :term:`DS` Application does some cool stuff.
+
 .. toctree::
    :caption: Contents
    :name: ds_contents

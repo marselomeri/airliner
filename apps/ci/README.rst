@@ -1,5 +1,6 @@
 Command Ingest
 ====================================
+The :term:`CI` Application does some cool stuff.
 
 Detailed design documentation is available `here <../../doxy/apps/ci/index.html>`_.
 

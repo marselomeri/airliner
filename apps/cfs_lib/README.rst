@@ -1,7 +1,7 @@
 CFS Library
 ====================================
 
-The :term:`CFSLIB` Application Library does some cool stuff.
+The :term:`CFS_LIB` Application Library does some cool stuff.
 
 TODO: Insert paragraph providing application purpose and a high level description of application capabilites
 

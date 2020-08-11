@@ -1,6 +1,8 @@
 MPU6050
 ====================================
 
+The :term:`MPU6050` Application does some cool stuff.
+
 
 .. toctree::
    :caption: Contents

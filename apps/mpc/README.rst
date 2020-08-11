@@ -1,6 +1,8 @@
 Multicopter Position Control
 ====================================
 
+The :term:`MPC` Application does some cool stuff.
+
 .. toctree::
    :caption: Contents
    :name: mpc_contents

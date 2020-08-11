@@ -1,6 +1,8 @@
 External Application
 ====================================
 
+The :term:`EA` Application does some cool stuff.
+
 .. toctree::
    :caption: Contents
    :name: ea_contents

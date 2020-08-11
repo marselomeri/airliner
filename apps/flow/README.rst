@@ -1,9 +1,11 @@
 Optical Flow
 ====================================
 
+The :term:`FLOW` Application does some cool stuff.
+
 .. toctree::
    :caption: Contents
-   :name: ea_contents
+   :name: flow_contents
 
    Issues and Limitations <docs/limitations>
    Design <docs/design>

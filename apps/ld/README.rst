@@ -1,6 +1,8 @@
 Landing Detector
 ====================================
 
+The :term:`ld` application detects if the vehicle is landed, free falling, had ground contact or flying.
+
 .. toctree::
    :caption: Contents
    :name: ld_contents

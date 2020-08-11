@@ -1,5 +1,8 @@
 Mavlink
 ====================================
+
+The :term:`MAV` Application does some cool stuff.
+
 .. toctree::
    :caption: Contents
    :name: mavlink_contents

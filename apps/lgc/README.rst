@@ -1,5 +1,8 @@
 Landing Gear Control
 ====================================
+
+The :term:`LGC` Application does some cool stuff.
+
 .. toctree::
    :caption: Contents
    :name: lgc_contents
