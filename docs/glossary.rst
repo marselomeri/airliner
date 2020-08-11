@@ -11,6 +11,9 @@ Glossary
 
   BAT
     TODO: Add definition of the Battery Monitor (BAT) Application
+  
+  CF
+    TODO: Add definition of the File Delivery (CF) Application
 
   CFSLIB
     TODO: Add definition of the CFS Library (CFSLIB) Application
