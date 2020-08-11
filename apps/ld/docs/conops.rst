@@ -11,3 +11,7 @@ TODO: List potential failure modes.
 
 TODO: Add common troubleshooting procedures.
    
+Detailed design documentation is available `here <../../doxy/apps/ld/cfsldopr.html>`_.
+
+.. image:: /docs/_static/doxygen.png
+   :target: ../../doxy/apps/ld/index.html

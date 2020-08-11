@@ -29,3 +29,8 @@ Processor Resets caused by HS are limited to a maximum of <TBD, Configuration pa
 
 There should be sufficient time to restart an app before it’s flagged as missing
 The application monitoring can be disabled while maintenance is being done on a critical app
+
+Detailed design documentation is available `here <../../doxy/apps/hs/cfshsfaqs.html>`_.
+
+.. image:: /docs/_static/doxygen.png
+   :target: ../../doxy/apps/hs/index.html
