@@ -6,6 +6,8 @@ TODO
 Mission Specific
 ^^^^^^^^^^^^^^^^
 
+TODO: Add Doxygen documentation for amc_mission_cfg.h
+
 +----------------------------+-------------------------------------+
 | File                       | Parameter                           |
 +============================+=====================================+
@@ -30,7 +32,7 @@ Platform Specific
 +-----------------------------+---------------------------------------------+
 | File                        | Parameter                                   |
 +=============================+=============================================+
-| :AMC:`AMC_msgids.h`         | :AMC:`AMC_CMD_MID`                          |
+| :AMC:`amc_msgids.h`         | :AMC:`AMC_CMD_MID`                          |
 +                             +---------------------------------------------+
 |                             | :AMC:`AMC_SEND_HK_MID`                      |
 +                             +---------------------------------------------+
@@ -40,7 +42,7 @@ Platform Specific
 +                             +---------------------------------------------+
 |                             | :AMC:`AMC_HK_TLM_MID`                       |
 +-----------------------------+---------------------------------------------+
-| :AMC:`AMC_platform_cfg.h`   | :AMC:`AMC_MISSION_REV`                      |
+| :AMC:`amc_platform_cfg.h`   | :AMC:`AMC_MISSION_REV`                      |
 +                             +---------------------------------------------+
 |                             | :AMC:`AMC_SCH_PIPE_DEPTH`                   |
 +                             +---------------------------------------------+
@@ -71,33 +73,14 @@ Platform Specific
 |                             | :AMC:`AMC_MAX_PARAMS`                       |
 +-----------------------------+---------------------------------------------+
 
-Table(s)
-^^^^^^^^^^^^^^^^
-TODO
+
+System Integration
+^^^^^^^^^^^^^^^^^^
+
+TODO: Describe System Integration instructions specific to AMC.
 
 
+Run Time Configuration
+^^^^^^^^^^^^^^^^^^^^^^
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+TODO: Describe Run Time Configuration for AMC.
