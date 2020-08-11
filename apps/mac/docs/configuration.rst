@@ -83,6 +83,7 @@ to load from the file system.  Both the nominal and the backup tables have the
 same structure.  
 
 TODO: The following do not exist in Doxy.
+
 +-------------------------------+------------------------------------+-------------------------------------+
 | Table Name                    | Default file name                  | Parameter                           |
 +===============================+====================================+=====================================+
