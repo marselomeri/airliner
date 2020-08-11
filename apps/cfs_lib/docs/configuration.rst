@@ -1,69 +1,15 @@
 Configuration
 =============
 
-TODO TABLES
+TODO: Public Specific documentation
 
-Mission Specific
-^^^^^^^^^^^^^^^^
+System Integration
+^^^^^^^^^^^^^^^^^^
 
-+----------------------------+-------------------------------------+
-| File                       | Parameter                           |
-+============================+=====================================+
-| :cfs:`bat_mission_cfg.h`   |                                     |
-+----------------------------+-------------------------------------+
-| :cfs:`cfs_perfids.h`       |                                     |
-+                            +-------------------------------------+
-|                            |                                     |
-+----------------------------+-------------------------------------+
-
-.. note::
-   The performance IDs defined in the :cfs:`cfs_perfids.h` file must have values
-   that are unique system wide.  Most applications also have performance IDs.
-   No two performance IDs may have the same value.
-   
-
-Platform Specific
-^^^^^^^^^^^^^^^^^
-
-+-----------------------------+---------------------------------------------+
-| File                        | Parameter                                   |
-+=============================+=============================================+
-| :CFS:`CFS_msgids.h`         |                   `                         |
-+-----------------------------+---------------------------------------------+
-| :CFS:`CFS_platform_cfg.h`   |                                             |
-+-----------------------------+---------------------------------------------+
-
-Table(s)
-^^^^^^^^^^^^^^^^
-
-+-------------------------------+------------------------------------+--------------------------------------------+
-| Table Name                    | Default file name                  | Parameter                                  |
-+===============================+====================================+============================================+
-| :cfs:`CONFIG_TBL`             | :CFS:`CFS_config.tbl`              |                                            |
-+-------------------------------+------------------------------------+--------------------------------------------+
+TODO: Describe System Integration instructions specific to CFSLIB.
 
 
+Run Time Configuration
+^^^^^^^^^^^^^^^^^^^^^^
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+TODO: Describe Run Time Configuration for CFSLIB.

@@ -1,6 +1,10 @@
 CFS Library
 ====================================
 
+The :term:`CFSLIB` Application Library does some cool stuff.
+
+TODO: Insert paragraph providing application purpose and a high level description of application capabilites
+
 .. toctree::
    :caption: Contents
    :name: CFS_contents
