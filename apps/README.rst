@@ -19,7 +19,7 @@ Applications
    GPS (GPS) <gps/README.rst>
    Housekeeping (HK) <hk/README.rst>
    Honeywell HMC5883 (HMC5883) <hmc5883/README.rst>
-   Housekeeping (HS) <hs/README.rst>
+   Health Services (HS) <hs/README.rst>
    Limit Checker (LC) <lc/README.rst>
    Landing Detector (LD) <ld/README.rst>
    Landing Gear Control (LGC) <lgc/README.rst>
