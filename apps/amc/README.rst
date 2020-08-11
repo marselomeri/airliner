@@ -2,8 +2,9 @@ Actuator Motor Control
 ====================================
 
 The :term:`AMC` Application does some cool stuff.
-
 PWM state on is :amc:`PWM_LIMIT_STATE_ON` blah blah blah... things and stuff.
+
+TODO: Insert paragraph providing application purpose and a high level description of application capabilites.
 
 .. toctree::
    :caption: Contents

@@ -6,14 +6,14 @@ TODO
 Mission Specific
 ^^^^^^^^^^^^^^^^
 
+TODO: Add Doxygen documentation for bat_mission_cfg.h
+
 +----------------------------+-------------------------------------+
 | File                       | Parameter                           |
 +============================+=====================================+
 | :bat:`bat_mission_cfg.h`   | :bat:`BAT_SB_TIMEOUT`               |
 +----------------------------+-------------------------------------+
-| :bat:`bat_perfids.h`       | :bat:`BAT_PERFIDS_H`                |
-+                            +-------------------------------------+
-|                            | :bat:`BAT_MAIN_TASK_PERF_ID`        |
+| :bat:`bat_perfids.h`       | :bat:`BAT_MAIN_TASK_PERF_ID`        |
 +----------------------------+-------------------------------------+
 
 .. note::
@@ -28,9 +28,7 @@ Platform Specific
 +-----------------------------+---------------------------------------------+
 | File                        | Parameter                                   |
 +=============================+=============================================+
-| :bat:`BAT_msgids.h`         | :bat:`BAT_MSGIDS_H`                         |
-+                             +---------------------------------------------+
-|                             | :bat:`BAT_HK_TLM_MID`                       |
+| :bat:`bat_msgids.h`         | :bat:`BAT_HK_TLM_MID`                       |
 +                             +---------------------------------------------+
 |                             | :bat:`BAT_SEND_HK_MID`                      |
 +                             +---------------------------------------------+
@@ -38,9 +36,7 @@ Platform Specific
 +                             +---------------------------------------------+
 |                             | :bat:`BAT_CMD_MID`                          |
 +-----------------------------+---------------------------------------------+
-| :bat:`BAT_platform_cfg.h`   | :bat:`BAT_PLATFORM_CFG_H`                   |
-+                             +---------------------------------------------+
-|                             | :bat:`BAT_LISTENER_TASK_FLAGS`              |
+| :bat:`bat_platform_cfg.h`   | :bat:`BAT_LISTENER_TASK_FLAGS`              |
 +                             +---------------------------------------------+
 |                             | :bat:`BAT_MISSION_REV`                      |
 +                             +---------------------------------------------+
@@ -71,97 +67,45 @@ Table(s)
 +-------------------------------+------------------------------------+--------------------------------------------+
 | Table Name                    | Default file name                  | Parameter                                  |
 +===============================+====================================+============================================+
-| :bat:`CONFIG_TBL`             | :bat:`BAT_config.tbl`              | :bat:`BAT_ConfigTbl_t::VXY_PUB_THRESH`     |
+| :bat:`BAT_CONFIG_TABLENAME`   | :bat:`BAT_CONFIG_TABLE_FILENAME`   | :bat:`BAT_ConfigTbl_t::VEmpty`             |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | :bat:`BAT_ConfigTbl_t::Z_PUB_THRESH`       |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::VFull`              |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | :bat:`BAT_ConfigTbl_t::ACCEL_XY_STDDEV`    |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::NumCells`           |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | :bat:`BAT_ConfigTbl_t::ACCEL_Z_STDDEV`     |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::Capacity`           |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | :bat:`BAT_ConfigTbl_t::BARO_FUSE`          |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::VLoadDrop`          |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | :bat:`BAT_ConfigTbl_t::BARO_STDDEV`        |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::RInternal`          |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | :bat:`BAT_ConfigTbl_t::GPS_FUSE`           |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::LowThreshold`       |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | :bat:`BAT_ConfigTbl_t::GPS_DELAY`          |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::CriticalThreshold`  |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | :bat:`BAT_ConfigTbl_t::GPS_XY_STDDEV`      |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::EmergencyThreshold` |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | :bat:`BAT_ConfigTbl_t::GPS_Z_STDDEV`       |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::VoltageScale`       |
 +                               |                                    +--------------------------------------------+
-|                               |                                    | :bat:`BAT_ConfigTbl_t::GPS_VXY_STDDEV`     |
-+                               |                                    +--------------------------------------------+
-|                               |                                    | :bat:`BAT_ConfigTbl_t::GPS_VZ_STDDEV`      |
-+                               |                                    +--------------------------------------------+
-|                               |                                    | :bat:`BAT_ConfigTbl_t::GPS_EPH_MAX`        |
-+                               |                                    +--------------------------------------------+
-|                               |                                    | :bat:`BAT_ConfigTbl_t::GPS_EPV_MAX`        |
-+                               |                                    +--------------------------------------------+
-|                               |                                    | :bat:`BAT_ConfigTbl_t::LAND_FUSE`          |
-+                               |                                    +--------------------------------------------+
-|                               |                                    | :bat:`BAT_ConfigTbl_t::LAND_Z_STDDEV`      |
-+                               |                                    +--------------------------------------------+
-|                               |                                    | :bat:`BAT_ConfigTbl_t::LAND_VXY_STDDEV`    |
-+                               |                                    +--------------------------------------------+
-|                               |                                    | :bat:`BAT_ConfigTbl_t::PN_P_NOISE_DENSITY` |
-+                               |                                    +--------------------------------------------+
-|                               |                                    | :bat:`BAT_ConfigTbl_t::PN_V_NOISE_DENSITY` |
-+                               |                                    +--------------------------------------------+
-|                               |                                    | :bat:`BAT_ConfigTbl_t::PN_B_NOISE_DENSITY` |
-+                               |                                    +--------------------------------------------+
-|                               |                                    | :bat:`BAT_ConfigTbl_t::PN_T_NOISE_DENSITY` |
-+                               |                                    +--------------------------------------------+
-|                               |                                    | :bat:`BAT_ConfigTbl_t::T_MAX_GRADE`        |
-+                               |                                    +--------------------------------------------+
-|                               |                                    | :bat:`BAT_ConfigTbl_t::FAKE_ORIGIN`        |
-+                               |                                    +--------------------------------------------+
-|                               |                                    | :bat:`BAT_ConfigTbl_t::INIT_ORIGIN_LAT`    |
-+                               |                                    +--------------------------------------------+
-|                               |                                    | :bat:`BAT_ConfigTbl_t::INIT_ORIGIN_LON`    |
-+                               |                                    +--------------------------------------------+
-|                               |                                    | :BAT:`BAT_ConfigTbl_t::DIST_FUSE`          |
-+                               |                                    +--------------------------------------------+
-|                               |                                    | :BAT:`BAT_ConfigTbl_t::DIST_STDDEV`        |
-+                               |                                    +--------------------------------------------+
-|                               |                                    | :BAT:`BAT_ConfigTbl_t::DIST_OFF_Z`         |
-+                               |                                    +--------------------------------------------+
-|                               |                                    | :BAT:`BAT_ConfigTbl_t::FLOW_FUSE`          |
-+                               |                                    +--------------------------------------------+
-|                               |                                    | :BAT:`BAT_ConfigTbl_t::FLOW_SCALE`         |
-+                               |                                    +--------------------------------------------+
-|                               |                                    | :BAT:`BAT_ConfigTbl_t::FLOW_R`             |
-+                               |                                    +--------------------------------------------+
-|                               |                                    | :BAT:`BAT_ConfigTbl_t::FLOW_RR`            |
-+                               |                                    +--------------------------------------------+
-|                               |                                    | :BAT:`BAT_ConfigTbl_t::FLOW_QUALITY_MIN`   |
-+                               |                                    +--------------------------------------------+
-|                               |                                    | :BAT:`BAT_ConfigTbl_t::FLOW_MIN_AGL`       |
+|                               |                                    | :bat:`BAT_ConfigTbl_t::CurrentScale`       |
 +-------------------------------+------------------------------------+--------------------------------------------+
 
+TODO: Add Doxygen documentation for bat_config.c
+
+Below is an example table.
+
+.. literalinclude:: ../fsw/tables/bat_config.c
+  :language: C
+  :caption: Nominal Configuration Table
 
 
+System Integration
+^^^^^^^^^^^^^^^^^^
+
+TODO: Describe System Integration instructions specific to BAT.
 
 
+Run Time Configuration
+^^^^^^^^^^^^^^^^^^^^^^
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+TODO: Describe Run Time Configuration for BAT.

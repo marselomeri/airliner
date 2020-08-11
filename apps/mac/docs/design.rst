@@ -42,6 +42,7 @@ Detailed design documentation can be found `here <../../../doxy/apps/mac/index.h
       FILE [style=filled, fillcolor="#fbe6ff", shape=rect, width=1, height=1]
     }
 
+
 .. image:: /docs/_static/doxygen.png
    :target: ../../../doxy/apps/mac/index.html
 
