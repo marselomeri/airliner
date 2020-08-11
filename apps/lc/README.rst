@@ -1,28 +1,6 @@
 Health Services
 ====================================
 
-  The Health and Safety application (HS) is a core Flight System (cFS) 
-  application that is a plug in to the Core Flight Executive (cFE) component 
-  of the cFS.  
-  
-  The cFS is a platform and project independent reusable software framework and
-  set of reusable applications developed by NASA Goddard Space Flight Center.  
-  This framework is used as the basis for the flight software for satellite data 
-  systems and instruments, but can be used on other embedded systems.  More 
-  information on the cFS can be found at http://cfs.gsfc.nasa.gov
-  
-  The HS application provides functionality for Application Monitoring, 
-  Event Monitoring, Hardware Watchdog Servicing, Execution Counter Reporting
-  (optional), and CPU Aliveness Indication (via UART). 
-
-  The HS application is written in C and depends on the cFS Operating System 
-  Abstraction Layer (OSAL) and cFE components.  To build and run the HS
-  application, follow the cFS Deployment Guide instructions contained in 
-  cFE-6.4.1-OSS-release/docs.
-
-Detailed design documentation is available `here <../../doxy/apps/lc/index.html>`_.
-
-
 .. toctree::
    :caption: Contents
    :name: lc_contents
@@ -33,3 +11,15 @@ Detailed design documentation is available `here <../../doxy/apps/lc/index.html>
    Configuration <docs/configuration>
    Concept of Operations <docs/conops>
    FAQ <docs/faq>
+
+
+The CFS Limit Checker (LC) application monitors telemetry data points in the flight system and compares the values against predefined threshold limits. When a threshold condition is encountered, an event message is issued and a Relative Time Sequence (RTS) command script may be initiated to respond to the threshold violation.
+
+LC is a table driven application. Monitoring and response configuration data is stored in definition tables that can be updated by the ground operators, while statistics on threshold violations are stored in dump-only results tables and summarized in housekeeping data.
+
+When processing beyond the standard comparison operators is needed, LC supports the use of custom evaluation functions that can be modified by a software patch or application update.
+
+Detailed design documentation is available `here <../../doxy/apps/lc/index.html>`_.
+
+.. image:: /docs/_static/doxygen.png
+   :target: ../../doxy/apps/lc/index.html

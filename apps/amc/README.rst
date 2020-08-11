@@ -1,11 +1,9 @@
 Actuator Motor Control
 ====================================
 
+The :term:`AMC` Application does some cool stuff.
 
-Detailed design documentation is available `here <../../doxy/apps/amc/index.html>`_.
-
-.. image:: /docs/_static/doxygen.png
-   :target: ../../doxy/apps/amc/index.html
+PWM state on is :amc:`PWM_LIMIT_STATE_ON` blah blah blah... things and stuff.
 
 .. toctree::
    :caption: Contents
@@ -18,6 +16,7 @@ Detailed design documentation is available `here <../../doxy/apps/amc/index.html
    Concept of Operations <docs/conops>
    FAQ <docs/faq>
 
+Detailed design documentation is available `here <../../doxy/apps/amc/index.html>`_.
 
-PWM state on is :amc:`PWM_LIMIT_STATE_ON` blah blah blah... things and stuff.
-
+.. image:: /docs/_static/doxygen.png
+   :target: ../../doxy/apps/amc/index.html
