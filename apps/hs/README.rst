@@ -20,9 +20,6 @@ Health Services
   application, follow the cFS Deployment Guide instructions contained in 
   cFE-6.4.1-OSS-release/docs.
 
-Detailed design documentation is available `here <../../doxy/apps/hs/index.html>`_.
-
-
 .. toctree::
    :caption: Contents
    :name: hs_contents
@@ -33,3 +30,9 @@ Detailed design documentation is available `here <../../doxy/apps/hs/index.html>
    Configuration <docs/configuration>
    Concept of Operations <docs/conops>
    FAQ <docs/faq>
+
+Detailed design documentation is available `here <../../doxy/apps/hs/index.html>`_.
+
+
+.. image:: /docs/_static/doxygen.png
+   :target: ../../doxy/apps/hs/index.html
