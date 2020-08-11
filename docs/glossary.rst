@@ -6,6 +6,9 @@ Glossary
   TO
     The Telemetry Output (TO) flight software application sends telemetry from the remote vehicle to the ground.
 
+  MPU9250
+    TODO: Add definition of the Invensense MPU9250 (MPU9250)
+    
   NAV
     The Navigator Application (NAV) is responsible for safely navigating or moving the vehicle from one location to another.  
   
