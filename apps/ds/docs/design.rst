@@ -4,9 +4,9 @@ Design
 TODO Add relevent DS Diagrams.
 
 .. graphviz::
-   :caption: MAC Context Diagram
+   :caption: DS Context Diagram
    
-   digraph MAC_Context_Diagram {
+   digraph DS_Context_Diagram {
          
       
       CI  -> DS [label="Ground\nCommands"];
