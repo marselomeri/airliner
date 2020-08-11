@@ -70,3 +70,8 @@ For each memory address to be sampled, define a dwell entry beginning with the f
 (Q) Does MD accept tables with non-null entries past a terminator entry?
 
 Yes, a non-null entry is accepted past a terminator entry as long as that entry itself is valid. To be valid, the entry must have valid values for dwell address, and field length. 
+
+Detailed FAQ documentation is available `here <../../doxy/apps/md/cfsmdopr.html>`_.
+
+.. image:: /docs/_static/doxygen.png
+   :target: ../../doxy/apps/md/index.html
