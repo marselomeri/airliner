@@ -11,3 +11,9 @@ TODO: List potential failure modes.
 
 TODO: Add common troubleshooting procedures.
    
+TODO: Operations do not exist in Doxy
+
+Detailed design documentation is available `here <../../doxy/apps/mm/cfsmmintro.html>`_.
+
+.. image:: /docs/_static/doxygen.png
+   :target: ../../doxy/apps/mm/index.html
