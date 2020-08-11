@@ -4,9 +4,9 @@ Design
 TODO Add relevent CVT Diagrams.
 
 .. graphviz::
-   :caption: MAC Context Diagram
+   :caption: CVT Context Diagram
    
-   digraph MAC_Context_Diagram {
+   digraph CVT_Context_Diagram {
          
       
       CI  -> DS [label="Ground\nCommands"];
