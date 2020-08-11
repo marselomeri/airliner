@@ -1,6 +1,8 @@
 MS5607
 ====================================
 
+The :term:`MS5607` Application does some cool stuff.
+
 .. toctree::
    :caption: Contents
    :name: ms5607_contents

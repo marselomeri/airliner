@@ -1,9 +1,11 @@
 MS5611
 ====================================
 
+The :term:`MS5611` Application does some cool stuff.
+
 .. toctree::
    :caption: Contents
-   :name: bat_contents
+   :name: ms5611_contents
 
    Issues and Limitations <docs/limitations>
    Design <docs/design>

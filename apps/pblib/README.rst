@@ -1,6 +1,8 @@
 Protocol Buffer Library
 ====================================
 
+The :term:`PBLIB` Application does some cool stuff.
+
 
 .. image:: /docs/_static/doxygen.png
    :target: ../../doxy/apps/amc/index.html

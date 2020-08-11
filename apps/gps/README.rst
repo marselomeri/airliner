@@ -1,6 +1,8 @@
 GPS
 ====================================
 
+The :term:`GPS` Application does some cool stuff.
+
 .. toctree::
    :caption: Contents
    :name: fm_contents

@@ -1,6 +1,8 @@
 HMC5883
 ====================================
 
+The :term:`HMC8553` Application does some cool stuff.
+
 .. toctree::
    :caption: Contents
    :name: fm_contents

@@ -1,6 +1,8 @@
 Current Value Table
 ====================================
 
+The :term:`CVT` Application does some cool stuff.
+
 
 .. toctree::
    :caption: Contents
