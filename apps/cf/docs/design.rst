@@ -25,7 +25,7 @@ Design
       HK [style=filled, fillcolor="#f5ffc7", shape=circle, width=2, label="HK,DS"]
       CI [style=filled, fillcolor="#f5ffc7", shape=circle, width=2, label="CI"]
       TO [style=filled, fillcolor="#fbe6ff", shape=circle, width=2, label="TO"]
-      OSAL [style=filled, fillcolor="dee1ff", shape=rect, width=2, label="OSAL"]
+      OSAL [style=filled, fillcolor="#dee1ff", shape=rect, width=2, label="OSAL"]
       FS [style=filled, fillcolor="#dee1f", shape=folder, width=2, label="File system"]
       
     }
