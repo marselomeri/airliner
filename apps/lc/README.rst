@@ -1,7 +1,7 @@
 Health Services
 ====================================
 
-The :term:`lc` The CFS Limit Checker (LC) application monitors telemetry data points in the flight system and compares the values against predefined threshold limits. When a threshold condition is encountered, an event message is issued and a Relative Time Sequence (RTS) command script may be initiated to respond to the threshold violation.
+The :term:`lc` CFS Limit Checker application monitors telemetry data points in the flight system and compares the values against predefined threshold limits. When a threshold condition is encountered, an event message is issued and a Relative Time Sequence (RTS) command script may be initiated to respond to the threshold violation.
 
 LC is a table driven application. Monitoring and response configuration data is stored in definition tables that can be updated by the ground operators, while statistics on threshold violations are stored in dump-only results tables and summarized in housekeeping data.
 
