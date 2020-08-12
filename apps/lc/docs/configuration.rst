@@ -98,7 +98,7 @@ TODO: Are parameters required for LC_WRTTransition_t, LC_WRTEntry_t, and LC_ARTE
 +-------------------------------+------------------------------------+------------------------------------------+
 | Table Name                    | Default file name                  | Parameter                                |
 +===============================+====================================+==========================================+
-| :lc:`LC_ADT_TABLENAME`        | :lc:'lc_def_adt.tbl'               | :lc:`LC_ADTEntry_t::DefaultState`        |
+| :lc:`LC_ADT_TABLENAME`        | :lc:`lc_def_adt.tbl`               | :lc:`LC_ADTEntry_t::DefaultState`        |
 +                               |                                    +------------------------------------------+
 |                               |                                    | :lc:`LC_ADTEntry_t::MaxPassiveEvents`    |
 +                               |                                    +------------------------------------------+
@@ -118,7 +118,7 @@ TODO: Are parameters required for LC_WRTTransition_t, LC_WRTEntry_t, and LC_ARTE
 +                               |                                    +------------------------------------------+
 |                               |                                    | :lc:`LC_ADTEntry_t::EventText`           |
 +-------------------------------+------------------------------------+------------------------------------------+
-| :lc:`LC_WDT_TABLENAME`        | :lc:'lc_def_wdt.tbl'               | :lc:`LC_WDTEntry_t::DataType`            |
+| :lc:`LC_WDT_TABLENAME`        | :lc:`lc_def_wdt.tbl`               | :lc:`LC_WDTEntry_t::DataType`            |
 +                               |                                    +------------------------------------------+
 |                               |                                    | :lc:`LC_WDTEntry_t::OperatorID`          |
 +                               |                                    +------------------------------------------+

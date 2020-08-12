@@ -84,11 +84,87 @@ same structure.
 
 TODO: The following do not exist in Doxy.
 
-+-------------------------------+------------------------------------+-------------------------------------+
-| Table Name                    | Default file name                  | Parameter                           |
-+===============================+====================================+=====================================+
-| :mac:`MAC_CONFIG_TABLENAME`   | :mac:`MAC_PARAM_TABLE_FILENAME`    | :mac:`MAC_ParamTbl_t::MC_ROLL_P`    |
-+-------------------------------+------------------------------------+-------------------------------------+
++-------------------------------+------------------------------------+----------------------------------------+
+| Table Name                    | Default file name                  | Parameter                              |
++===============================+====================================+========================================+
+| :mac:`MAC_PARAM_TABLENAME`    | :mac:`MAC_PARAM_TABLE_FILENAME`    | :mac:`MAC_ParamTbl_t::MC_ROLL_P`       |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_ROLLRATE_P`   |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_ROLLRATE_I`   |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_RR_INT_LIM`   |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_ROLLRATE_D`   |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_ROLLRATE_FF`  |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_PITCH_P`      |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_PITCHRATE_P`  |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_PITCHRATE_I`  |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_PR_INT_LIM`   |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_PITCHRATE_D`  |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_PITCHRATE_FF` |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_TPA_BREAK_P`  |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_TPA_BREAK_I`  |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_TPA_BREAK_D`  |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_TPA_RATE_P`   |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_ROLLRATE_D`   |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_TPA_RATE_I`   |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_TPA_RATE_D`   |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_YAW_P`        |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_YAWRATE_P`    |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_YAWRATE_I`    |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_YAWRATE_D`    |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_YAWRATE_FF`   |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_ROLLRATE_MAX` |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_PITCHRATE_MAX`|
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_YAWRATE_MAX`  |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_YAWRAUTO_MAX` |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_ACRO_R_MAX`   |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_ACRO_P_MAX`   |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_ACRO_Y_MAX`   |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_RATT_TH`      |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_ROLL_TC`      |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_PITCH_TC`     |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::MC_BAT_SCALE_EN` |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::SENS_BOARD_ROT`  |
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::SENS_BOARD_X_OFF`|
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::SENS_BOARD_Y_OFF`|
++                               |                                    +----------------------------------------+
+|                               |                                    | :mac:`MAC_ParamTbl_t::SENS_BOARD_Z_OFF`|
++-------------------------------+------------------------------------+----------------------------------------+
 
 .. note::
    When configuring the backup table, consider the fact that, when this table is in affect, the system

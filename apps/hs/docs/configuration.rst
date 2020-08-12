@@ -133,7 +133,7 @@ same structure.
 +-------------------------------+------------------------------------+------------------------------------------+
 | Table Name                    | Default file name                  | Parameter                                |
 +===============================+====================================+==========================================+
-| :hs:`HS_CONFIG_TABLENAME`     | :hs:`hs_amt.c`                     | :hs:`HS_AMTEntry_t::AppName`             |
+| :hs:`HS_AMT_TABLENAME`        | :hs:`HS_AMT_FILENAME`              | :hs:`HS_AMTEntry_t::AppName`             |
 +                               |                                    +------------------------------------------+
 |                               |                                    | :hs:`HS_AMTEntry_t::NullTerm`            |
 +                               |                                    +------------------------------------------+
@@ -141,7 +141,7 @@ same structure.
 +                               |                                    +------------------------------------------+
 |                               |                                    | :hs:`HS_AMTEntry_t::ActionType`          |
 +-------------------------------+------------------------------------+------------------------------------------+
-| :hs:`HS_CONFIG_TABLENAME`     | :hs:`hs_emt.c`                     | :hs:`HS_EMTEntry_t::AppName`             |
+| :hs:`HS_EMT_TABLENAME`        | :hs:`HS_EMT_FILENAME`              | :hs:`HS_EMTEntry_t::AppName`             |
 +                               |                                    +------------------------------------------+
 |                               |                                    | :hs:`HS_EMTEntry_t::NullTerm`            |
 +                               |                                    +------------------------------------------+
@@ -149,13 +149,13 @@ same structure.
 +                               |                                    +------------------------------------------+
 |                               |                                    | :hs:`HS_EMTEntry_t::ActionType`          |
 +-------------------------------+------------------------------------+------------------------------------------+
-| :hs:`HS_CONFIG_TABLENAME      | :hs:`hs_mat.c`                     | :hs:`HS_MATEntry_t::EnableState`         |
+| :hs:`HS_MAT_TABLENAME`        | :hs:`HS_MAT_FILENAME`              | :hs:`HS_MATEntry_t::EnableState`         |
 +                               |                                    +------------------------------------------+
-|                               |                                    | hs:`HS_MATEntry_t::Cooldown`             |
+|                               |                                    | :hs:`HS_MATEntry_t::Cooldown`            |
 +                               |                                    +------------------------------------------+
-|                               |                                    | hs:`HS_MATEntry_t::Message`              |
+|                               |                                    | :hs:`HS_MATEntry_t::Message`             |
 +-------------------------------+------------------------------------+------------------------------------------+
-| :hs:`HS_CONFIG_TABLENAME`     | :hs:`hs_xct.c`                     | :hs:`HS_XCTEntry_t::ResourceName`        |
+| :hs:`HS_XCT_TABLENAME`        | :hs:`HS_XCT_FILENAME`              | :hs:`HS_XCTEntry_t::ResourceName`        |
 +                               |                                    +------------------------------------------+
 |                               |                                    | :hs:`HS_XCTEntry_t::NullTerm`            |
 +                               |                                    +------------------------------------------+

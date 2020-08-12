@@ -74,7 +74,7 @@ TODO: Add Doxygen documentation for nav_config.tbl
 +-------------------------------+------------------------------------+--------------------------------------------+
 | Table Name                    | Default file name                  | Parameter                                  |
 +===============================+====================================+============================================+
-| :nav:`CONFIG_TBL`             | :nav:`nav_config.tbl`              | :nav:`NAV_ConfigTbl_t::NAV_ACC_RAD`        |
+| :nav:`NAV_CONFIG_TABLENAME`   | :nav:`NAV_CONFIG_TABLE_FILENAME`   | :nav:`NAV_ConfigTbl_t::NAV_ACC_RAD`        |
 +                               |                                    +--------------------------------------------+
 |                               |                                    | :nav:`NAV_ConfigTbl_t::NAV_ALT_RAD`        |
 +                               |                                    +--------------------------------------------+

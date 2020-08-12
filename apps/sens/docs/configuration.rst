@@ -78,15 +78,15 @@ TODO: Add Doxygen documentation for sens_config.tbl
 +-------------------------------+------------------------------------+-----------------------------------------------------------+
 | Table Name                    | Default file name                  | Parameter                                                 |
 +===============================+====================================+===========================================================+
-| :sens:`SENS_CONFIG_TABLENAME` | :pe:`SENS_CONFIG_TABLE_FILENAME`   | :sens:`SENS_ConfigTbl_t::Min[PX4_RC_INPUT_MAX_CHANNELS]`  |
+| :sens:`SENS_CONFIG_TABLENAME` | :pe:`SENS_CONFIG_TABLE_FILENAME`   | :sens:`SENS_ConfigTbl_t::Min`                             |
 +                               |                                    +-----------------------------------------------------------+
-|                               |                                    | :sens:`SENS_ConfigTbl_t::Trim[PX4_RC_INPUT_MAX_CHANNELS]` |
+|                               |                                    | :sens:`SENS_ConfigTbl_t::Trim`                            |
 +                               |                                    +-----------------------------------------------------------+
-|                               |                                    | :sens:`SENS_ConfigTbl_t::Max[PX4_RC_INPUT_MAX_CHANNELS]`  |
+|                               |                                    | :sens:`SENS_ConfigTbl_t::Max`                             |
 +                               |                                    +-----------------------------------------------------------+
-|                               |                                    | :sens:`SENS_ConfigTbl_t::Rev[PX4_RC_INPUT_MAX_CHANNELS]`  |
+|                               |                                    | :sens:`SENS_ConfigTbl_t::Rev`                             |
 +                               |                                    +-----------------------------------------------------------+
-|                               |                                    | :sens:`SENS_ConfigTbl_t::DZ[PX4_RC_INPUT_MAX_CHANNELS]`   |
+|                               |                                    | :sens:`SENS_ConfigTbl_t::DZ`                              |
 +                               |                                    +-----------------------------------------------------------+
 |                               |                                    | :sens:`SENS_ConfigTbl_t::MapRoll`                         |
 +                               |                                    +-----------------------------------------------------------+

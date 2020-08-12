@@ -91,19 +91,19 @@ Platform Specific
 
 Table(s)
 ^^^^^^^^^^^^^^^^
-TODO: Review Tables
+TODO: Review Tables 
 
 +-------------------------------+------------------------------------+---------------------------------------------------+
 | Table Name                    | Default file name                  | Parameter                                         |
 +===============================+====================================+===================================================+
-| :ci:`CI_CONFIG_TABLENAME`     | :ci:`CI_CONFIG_FILENAME`           | :ci:`CI_ConfigTblEntry_t::TableID`                |
+| :ci:`CI_CONFIG_TABLENAME`     | :ci:`CI_CONFIG_TABLE_FILENAME`     | :ci:`CI_ConfigTblEntry_t::TableID`                |
 |                               |                                    +---------------------------------------------------+
 |                               |                                    | :ci:`CI_ConfigTblEntry_t::cmds`                   |
 +-------------------------------+------------------------------------+---------------------------------------------------+
-| :ci:`CI_TIMEOUT_TABLENAME`    | :ci:`CI_TIMEOUT_FILENAME`          | :ci:`CI_TimeoutTblEntry_t::TableID`               |
+| :ci:`CI_TIMEOUT_TABLENAME`    | :ci:`CI_TIMEOUT_TABLE_FILENAME`    | :ci:`CI_TimeoutTblEntry_t::TableID`               |
 |                               |                                    +---------------------------------------------------+
 |                               |                                    | :ci:`CI_TimeoutTblEntry_t::time`                  |
 +-------------------------------+------------------------------------+---------------------------------------------------+
-| :ci:`CI_CDS_TABLENAME`        | :ci:`CI_CDS_FILENAME`              | :ci:`CI_CdsTbl_t::iParam`                         |
+| :ci:`CI_CDS_TABLENAME`        | :ci:`CI_CDS_TABLE_FILENAME`        | :ci:`CI_CdsTbl_t::iParam`                         |
 +-------------------------------+------------------------------------+---------------------------------------------------+
 
