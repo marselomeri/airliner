@@ -4,7 +4,7 @@ Configuration
 Mission Specific
 ^^^^^^^^^^^^^^^^
 
-TODO: Add Doxygen documentation for pe_mission_cfg.h
+TODO: Create Doxygen documentation for sg33bl_mission_cfg.h and sg33bl_perfids.h
 
 +---------------------------------+-----------------------------------+
 | File                            | Parameter                         |
@@ -22,6 +22,8 @@ TODO: Add Doxygen documentation for pe_mission_cfg.h
 
 Platform Specific
 ^^^^^^^^^^^^^^^^^
+
+TODO: Create Doxygen documentation for sg33bl_msgids.h and sg33bl_platform_cfg.h
 
 +---------------------------------+-------------------------------------------+
 | File                            | Parameter                                 |
@@ -78,11 +80,11 @@ TODO: Add Table explanation
 
 TODO: Add Doxygen documentation for sg33bl_config.tbl
 
-+-------------------------------+------------------------------------+------------------------------------------+
-| Table Name                    | Default file name                  | Parameter                                |
-+===============================+====================================+==========================================+
-| :sg33bl:`CONFIG_TBL`          | :sg33bl:`sg33bl_config.tbl`        | :sg33bl:`SG33BL_ConfigTbl_t::`           |
-+-------------------------------+------------------------------------+------------------------------------------+
++----------------------------------+----------------------------------------+------------------------------------------+
+| Table Name                       | Default file name                      | Parameter                                |
++==================================+========================================+==========================================+
+| :sg33bl:`SG33BL_CONFIG_TABLENAME`| :sg33bl:`SG33BL_CONFIG_TABLE_FILENAME` | :sg33bl:`SG33BL_ConfigTbl_t::`           |
++----------------------------------+----------------------------------------+------------------------------------------+
 
 TODO: Add Doxygen documentation for sg33bl_config.c
 
