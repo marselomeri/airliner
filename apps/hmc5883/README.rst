@@ -5,7 +5,8 @@ The :term:`HMC5883` Application does some cool stuff.
 
 .. toctree::
    :caption: Contents
-   :name: HMC5883_contents
+   :name: hmc5883_contents
+
    Issues and Limitations <docs/limitations>
    Design <docs/design>
    Activities <docs/activities>
