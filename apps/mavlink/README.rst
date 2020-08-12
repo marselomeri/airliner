@@ -1,7 +1,7 @@
 Mavlink
 ====================================
 
-The :term:`MAV` Application does some cool stuff.
+The :term:`MAVLINK` Application does some cool stuff.
 
 .. toctree::
    :caption: Contents

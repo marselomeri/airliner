@@ -1,12 +1,11 @@
 HMC5883
 ====================================
 
-The :term:`HMC8553` Application does some cool stuff.
+The :term:`HMC5883` Application does some cool stuff.
 
 .. toctree::
    :caption: Contents
-   :name: fm_contents
-
+   :name: HMC5883_contents
    Issues and Limitations <docs/limitations>
    Design <docs/design>
    Activities <docs/activities>

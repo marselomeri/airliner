@@ -1,8 +1,7 @@
 Vehicle Manager
 ====================================
 
-.. image:: /docs/_static/doxygen.png
-   :target: ../../doxy/apps/amc/index.html
+The :term:`VM` application enables safe vehicle commanding, additionally detects failure and executes contingent action.
 
 .. toctree::
    :caption: Contents
