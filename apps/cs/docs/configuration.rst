@@ -9,9 +9,9 @@ Mission Specific
 +----------------------------+-------------------------------------+
 | File                       | Parameter                           |
 +============================+=====================================+
-| :cs:`cd_mission_cfg.h`     | :cs:`CS_DEFAULT_ALGORITHM`          |
+| :cs:`cs_mission_cfg.h`     | :cs:`CS_DEFAULT_ALGORITHM`          |
 +----------------------------+-------------------------------------+
-| :cs:`cd_perfids.h`         | :cs:`CS_APPMAIN_PERF_ID`            |
+| :cs:`cs_perfids.h`         | :cs:`CS_APPMAIN_PERF_ID`            |
 +----------------------------+-------------------------------------+
 
 .. note::
@@ -26,7 +26,7 @@ Platform Specific
 +-----------------------------+----------------------------------------------------+
 | File                        | Parameter                                          |
 +=============================+====================================================+
-| :CS:`CS_msgids.h`           | :cs:`CS_CMD_MID`                                   |
+| :cs:`cs_msgids.h`           | :cs:`CS_CMD_MID`                                   |
 +                             +----------------------------------------------------+
 |                             | :cs:`CS_SEND_HK_MID`                               |
 +                             +----------------------------------------------------+
@@ -34,7 +34,7 @@ Platform Specific
 +                             +----------------------------------------------------+
 |                             | :cs:`CS_HK_TLM_MID`                                |
 +-----------------------------+----------------------------------------------------+
-| :CS:`CS_platform_cfg.h`     | :cs:`CS_CHILD_TASK_FLAGS`                          |
+| :cs:`cs_platform_cfg.h`     | :cs:`CS_CHILD_TASK_FLAGS`                          |
 +                             +----------------------------------------------------+
 |                             | :cs:`CS_DEF_EEPROM_TABLE_FILENAME`                 |
 +                             +----------------------------------------------------+
@@ -62,21 +62,21 @@ Platform Specific
 +                             +----------------------------------------------------+
 |                             | :cs:`CS_STARTUP_TIMEOUT`                           |
 +                             +----------------------------------------------------+
-|                             | :cs:`CS_OSCS_CHECKSUM_STATE CS_STATE_ENABLED`      |
+|                             | :cs:`CS_OSCS_CHECKSUM_STATE`                       |
 +                             +----------------------------------------------------+
-|                             | :cs;`CS_CFECORE_CHECKSUM_STATE CS_STATE_ENABLED`   |
+|                             | :cs:`CS_CFECORE_CHECKSUM_STATE`                    |
 +                             +----------------------------------------------------+
-|                             | :cs:`CS_EEPROM_TBL_POWERON_STATE CS_STATE_ENABLED` |
+|                             | :cs:`CS_EEPROM_TBL_POWERON_STATE`                  |
 +                             +----------------------------------------------------+
-|                             | :cs:`CS_MEMORY_TBL_POWERON_STATE CS_STATE_ENABLED` |
+|                             | :cs:`CS_MEMORY_TBL_POWERON_STATE`                  |
 +                             +----------------------------------------------------+
-|                             | :cs:`CS_APPS_TBL_POWERON_STATE   CS_STATE_ENABLED` |
+|                             | :cs:`CS_APPS_TBL_POWERON_STATE`                    |
 +                             +----------------------------------------------------+
-|                             | :cs:`CS_TABLES_TBL_POWERON_STATE CS_STATE_ENABLED` |
+|                             | :cs:`CS_TABLES_TBL_POWERON_STATE`                  |
 +                             +----------------------------------------------------+
-|                             | :cs:`_PRESERVE_STATES_ON_PROCESSOR_RESET TRUE`     |
+|                             | :cs:`CS_PRESERVE_STATES_ON_PROCESSOR_RESET`        |
 +                             +----------------------------------------------------+
-|                             | :cs:`CS_CDS_NAME  "CS_CDS"`                        |
+|                             | :cs:`CS_CDS_NAME`                                  |
 +                             +----------------------------------------------------+
 |                             | :cs:`CS_MISSION_REV`                               |
 +-----------------------------+----------------------------------------------------+
@@ -86,46 +86,62 @@ Table(s)
 
 TODO REVIEW TABLE
 
-+-------------------------------+------------------------------------+--------------------------------------------+
-| Table Name                    | Default file name                  | Parameter                                  |
-+===============================+====================================+============================================+
-| :cs:`CONFIG_TBL`              | :cs:`cs_config.tbl`                | :cs:`CS_ConfigTbl_t::State`                |
-+                               |                                    +--------------------------------------------+
-|                               |                                    | :cs:`CS_ConfigTbl_t::Filler16`             |
-+                               |                                    +--------------------------------------------+
-|                               |                                    | :cs:`CS_ConfigTbl_t::StartAddress`         |
-+                               |                                    +--------------------------------------------+
-|                               |                                    | :CS:`CS_ConfigTbl_t::NumBytesToChecksum`   |
-+                               |                                    +--------------------------------------------+
-|                               |                                    | :cs:`CS_ConfigTbl_t::ComputedYet`          |
-+                               |                                    +--------------------------------------------+
-|                               |                                    | :cs:`CS_ConfigTbl_t::StartAddress`         |
-+                               |                                    +--------------------------------------------+
-|                               |                                    | :cs:`CS_ConfigTbl_t::NumBytesToChecksum`   |
-+-------------------------------+------------------------------------+--------------------------------------------+
++-------------------------------+------------------------------------+-------------------------------------------------------------+
+| Table Name                    | Default file name                  | Parameter                                                   |
++===============================+====================================+=============================================================+
+| :cs:`CS_DEF_APP_TABLE_NAME`   | :cs:`CS_DEF_APP_TABLE_FILENAME`    | :cs:`CS_Def_App_Table_Entry_t::State`                       |
++                               |                                    +-------------------------------------------------------------+
+|                               |                                    | :cs:`CS_Def_App_Table_Entry_t::Name`                        |
++-------------------------------+------------------------------------+-------------------------------------------------------------+
+| :cs:`CS_DEF_TABLES_TABLE_NAME`| :cs:`CS_DEF_TABLES_TABLE_FILENAME` | :cs:`CS_Def_Tables_Table_Entry_t::State`                    |
++                               |                                    +-------------------------------------------------------------+
+|                               |                                    | :cs:`CS_Def_Tables_Table_Entry_t::Name`                     |
++-------------------------------+------------------------------------+-------------------------------------------------------------+
+| :cs:`CS_DEF_MEMORY_TABLE_NAME`| :cs:`CS_DEF_MEMORY_TABLE_FILENAME` | :cs:`CS_Def_EepromMemory_Table_Entry_t::State`              |
++                               |                                    +-------------------------------------------------------------+
+|                               |                                    | :cs:`CS_Def_EepromMemory_Table_Entry_t::Filler16`           |
++                               |                                    +-------------------------------------------------------------+
+|                               |                                    | :cs:`CS_Def_EepromMemory_Table_Entry_t::StartAddress`       |
++                               |                                    +-------------------------------------------------------------+
+|                               |                                    | :cs:`CS_Def_EepromMemory_Table_Entry_t::NumBytesToChecksum` |
++-------------------------------+------------------------------------+-------------------------------------------------------------+
+| :cs:`CS_DEF_EEPROM_TABLE_NAME`| :cs:`CS_DEF_EEPROM_TABLE_FILENAME` | :cs:`CS_Def_EepromMemory_Table_Entry_t::State`              |
++                               |                                    +-------------------------------------------------------------+
+|                               |                                    | :cs:`CS_Def_EepromMemory_Table_Entry_t::Filler16`           |
++                               |                                    +-------------------------------------------------------------+
+|                               |                                    | :cs:`CS_Def_EepromMemory_Table_Entry_t::StartAddress`       |
++                               |                                    +-------------------------------------------------------------+
+|                               |                                    | :cs:`CS_Def_EepromMemory_Table_Entry_t::NumBytesToChecksum` |
++-------------------------------+------------------------------------+-------------------------------------------------------------+
 
 
+.. literalinclude:: ../fsw/tables/cs_apptbl.c
+  :language: C
+  :caption: Application Definition Table
 
 
+.. literalinclude:: ../fsw/tables/cs_tablestbl.c
+  :language: C
+  :caption: Table Definition Table
 
 
+.. literalinclude:: ../fsw/tables/cs_memorytbl.c
+  :language: C
+  :caption: Memory Definition Table
 
 
+.. literalinclude:: ../fsw/tables/cs_eepromtbl.c
+  :language: C
+  :caption: EEPROM Definition Table
 
 
+System Integration
+^^^^^^^^^^^^^^^^^^
+
+TODO: Describe System Integration instructions specific to CS.
 
 
+Run Time Configuration
+^^^^^^^^^^^^^^^^^^^^^^
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+TODO: Describe Run Time Configuration for CS.
