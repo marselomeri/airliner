@@ -93,7 +93,7 @@ TODO: Add Doxygen documentation for pe_config.tbl
 +-------------------------------+------------------------------------+------------------------------------------+
 | Table Name                    | Default file name                  | Parameter                                |
 +===============================+====================================+==========================================+
-| :sim:`CONFIG_TBL`             | :sim:`sim_config.tbl`              | :sim:`SIM_ConfigTbl_t::temp`             |
+| :sim:`SIM_CONFIG_TABLENAME`   | :sim:`SIM_CONFIG_TABLE_FILENAME`   | :sim:`SIM_ConfigTbl_t::temp`             |
 +-------------------------------+------------------------------------+------------------------------------------+
 
 TODO: Add Doxygen documentation for sim_config.c
@@ -102,7 +102,7 @@ Below is an example table.
 
 .. literalinclude:: ../fsw/tables/sim_config.c
   :language: C
-  :caption: Nominal Configuration Table
+  :caption: Application Configuration Table
 
 
 System Integration

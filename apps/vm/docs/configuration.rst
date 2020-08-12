@@ -63,6 +63,11 @@ Platform Specific
 |                             | :vm:`VM_MINIMUM_VALID_BATTERY_VOLTAGE`      |
 +-----------------------------+---------------------------------------------+
 
+.. note::
+   The message IDs defined in the :vm:`vm_msgids.h` file must have values
+   that are unique system wide.  Most applications also have message IDs.
+   No two message IDs may have the same value.
+
 Table(s)
 ^^^^^^^^^^^^^^^^
 
@@ -91,29 +96,21 @@ Table(s)
 +-------------------------------+------------------------------------+--------------------------------------------+
 
 
+Below is an example table.
+
+.. literalinclude:: ../fsw/tables/vm_config.c
+  :language: C
+  :caption: Application Configuration Table
 
 
+System Integration
+^^^^^^^^^^^^^^^^^^
+
+TODO: Describe System Integration instructions specific to VM.
 
 
+Run Time Configuration
+^^^^^^^^^^^^^^^^^^^^^^
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+TODO: Describe Run Time Configuration for VM.
 

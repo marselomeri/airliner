@@ -69,8 +69,6 @@ Platform Specific
    The message IDs defined in the :rgbled:`rgbled_msgids.h` file must have values
    that are unique system wide.  Most applications also have message IDs.
    No two message IDs may have the same value.
-   
-TODO: Describe the "custom" layer code.
 
 
 System Integration

@@ -4,7 +4,7 @@ Configuration
 Mission Specific
 ^^^^^^^^^^^^^^^^
 
-TODO: Add Doxygen documentation for pe_mission_cfg.h
+TODO: Add Doxygen documentation for sch_mission_cfg.h
 
 +-------------------------+--------------------------------+
 | File                    | Parameter                      |
@@ -91,14 +91,14 @@ Table(s)
 
 TODO: Add Table explanation
 
-TODO: Review these SCH tables andd add Doxygen doumentation 
+TODO: Review these SCH tables and add Doxygen doumentation 
 
 +-------------------------------+------------------------------------+-------------------------------------------------------------+
 | Table Name                    | Default file name                  | Parameter                                                   |
 +===============================+====================================+=============================================================+
-| :sch:`MSG_DEFS`               | :sch:`sch_def_msgtbl.tbl`          | :sch:`SCH_MessageEntry_t::MessageBuffer[SCH_MAX_MSG_WORDS]` |
+| :sch:`SCH_MESSAGE_TABLENAME`  | :sch:`SCH_MESSAGE_FILENAME`        | :sch:`SCH_MessageEntry_t::MessageBuffer`                    |
 +-------------------------------+------------------------------------+-------------------------------------------------------------+
-| :sch:`SCHED_DEF`              | :sch:`sch_def_schtbl.tbl`          | :sch:`SCH_ScheduleEntry_t::EnableState`                     |
+| :sch:`SCH_SCHEDULE_TABLENAME` | :sch:`SCH_SCHEDULE_FILENAME`       | :sch:`SCH_ScheduleEntry_t::EnableState`                     |
 +                               |                                    +-------------------------------------------------------------+
 |                               |                                    | :sch:`SCH_ScheduleEntry_t::Type`                            |
 +                               |                                    +-------------------------------------------------------------+
@@ -117,11 +117,11 @@ Below is an example table.
 
 .. literalinclude:: ../fsw/tables/sch_def_msgtbl.c
   :language: C
-  :caption: Nominal Message Table
+  :caption: Application Message Table
 
 .. literalinclude:: ../fsw/tables/sch_def_schtbl.c
   :language: C
-  :caption: Nominal Schedule Table
+  :caption: Application Schedule Table
 
 System Integration
 ^^^^^^^^^^^^^^^^^^

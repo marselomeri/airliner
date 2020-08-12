@@ -65,8 +65,6 @@ Platform Specific
    The message IDs defined in the :qae:`qae_msgids.h` file must have values
    that are unique system wide.  Most applications also have message IDs.
    No two message IDs may have the same value.
-   
-TODO: Describe the "custom" layer code.
 
 
 Table(s)
@@ -79,7 +77,7 @@ TODO: Add Doxygen documentation for qae_config.tbl
 +-------------------------------+------------------------------------+------------------------------------------+
 | Table Name                    | Default file name                  | Parameter                                |
 +===============================+====================================+==========================================+
-| :qae:`CONFIG_TBL`             | :qae:`qae_config.tbl`              | :qae:`QAE_ConfigTbl_t::ATT_W_ACC`        |
+| :qae:`QAE_CONFIG_TABLENAME`   | :qae:`QAE_CONFIG_TABLE_FILENAME`   | :qae:`QAE_ConfigTbl_t::ATT_W_ACC`        |
 +                               |                                    +------------------------------------------+
 |                               |                                    | :qae:`QAE_ConfigTbl_t::ATT_W_MAG`        |
 +                               |                                    +------------------------------------------+

@@ -49,15 +49,15 @@ TODO: Add Doxygen documentation for sens_platform_cfg.h
 +                             +---------------------------------------+
 |                             | :sens:`SENS_SEND_HK_MID_MAX_MSG_COUNT`|
 +                             +---------------------------------------+
-|                             | :pe:`SENS_CMD_PIPE_DEPTH`             |
+|                             | :sens:`SENS_CMD_PIPE_DEPTH`           |
 +                             +---------------------------------------+
-|                             | :pe:`SENS_CMD_PIPE_NAME`              |
+|                             | :sens:`SENS_CMD_PIPE_NAME`            |
 +                             +---------------------------------------+
-|                             | :pe:`SENS_DATA_PIPE_DEPTH`            |
+|                             | :sens:`SENS_DATA_PIPE_DEPTH`          |
 +                             +---------------------------------------+
-|                             | :pe:`SENS_DATA_PIPE_NAME`             |
+|                             | :sens:`SENS_DATA_PIPE_NAME`           |
 +                             +---------------------------------------+
-|                             | :pe:`SENS_CONFIG_TABLE_FILENAME`      |
+|                             | :sens:`SENS_CONFIG_TABLE_FILENAME`    |
 +                             +---------------------------------------+
 |                             | :sens:`SENS_STARTUP_TIMEOUT_MSEC`     |
 +-----------------------------+---------------------------------------+
@@ -78,7 +78,7 @@ TODO: Add Doxygen documentation for sens_config.tbl
 +-------------------------------+------------------------------------+-----------------------------------------------------------+
 | Table Name                    | Default file name                  | Parameter                                                 |
 +===============================+====================================+===========================================================+
-| :sens:`CONFIG_TBL`            | :pe:`sens_config.tbl`              | :sens:`SENS_ConfigTbl_t::Min[PX4_RC_INPUT_MAX_CHANNELS]`  |
+| :sens:`SENS_CONFIG_TABLENAME` | :pe:`SENS_CONFIG_TABLE_FILENAME`   | :sens:`SENS_ConfigTbl_t::Min[PX4_RC_INPUT_MAX_CHANNELS]`  |
 +                               |                                    +-----------------------------------------------------------+
 |                               |                                    | :sens:`SENS_ConfigTbl_t::Trim[PX4_RC_INPUT_MAX_CHANNELS]` |
 +                               |                                    +-----------------------------------------------------------+
@@ -138,7 +138,7 @@ TODO: Add Doxygen documentation for sens_config.tbl
 +                               |                                    +-----------------------------------------------------------+
 |                               |                                    | :sens:`SENS_ConfigTbl_t::MapAux5`                         |
 +                               |                                    +-----------------------------------------------------------+
-|                               |                                    | :sens:`SENS_ConfigTbl_t::MapParam[PX4_RC_PARAM_MAP_NCHAN]`|
+|                               |                                    | :sens:`SENS_ConfigTbl_t::MapParam`                        |
 +                               |                                    +-----------------------------------------------------------+
 |                               |                                    | :sens:`SENS_ConfigTbl_t::MapFlightMode`                   |
 +                               |                                    +-----------------------------------------------------------+
@@ -187,7 +187,7 @@ Below is an example table.
 
 .. literalinclude:: ../fsw/tables/sens_config.c
   :language: C
-  :caption: Nominal Configuration Table
+  :caption: Application Configuration Table
 
 
 System Integration

@@ -117,7 +117,7 @@ TODO: Add Doxygen documentation for pe_config.tbl
 +-------------------------------+------------------------------------+------------------------------------------+
 | Table Name                    | Default file name                  | Parameter                                |
 +===============================+====================================+==========================================+
-| :pe:`CONFIG_TBL`              | :pe:`pe_config.tbl`                | :pe:`PE_ConfigTbl_t::VXY_PUB_THRESH`     |
+| :pe:`PE_CONFIG_TABLENAME`     | :pe:`PE_CONFIG_TABLE_FILENAME`     | :pe:`PE_ConfigTbl_t::VXY_PUB_THRESH`     |
 +                               |                                    +------------------------------------------+
 |                               |                                    | :pe:`PE_ConfigTbl_t::Z_PUB_THRESH`       |
 +                               |                                    +------------------------------------------+
