@@ -61,6 +61,11 @@ Platform Specific
 |                             | :bat:`BAT_LISTENER_TASK_STACK_SIZE`         |
 +-----------------------------+---------------------------------------------+
 
+.. note::
+   The message IDs defined in the :bat:`bat_msgids.h` file must have values
+   that are unique system wide.  Most applications also have message IDs.
+   No two message IDs may have the same value.
+
 Table(s)
 ^^^^^^^^^^^^^^^^
 

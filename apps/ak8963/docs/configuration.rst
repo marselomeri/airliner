@@ -67,6 +67,12 @@ Platform Specific
 |                                 | :AK8963:`AK8963_MAG_UNIT`                   |
 +---------------------------------+---------------------------------------------+
 
+.. note::
+   The message IDs defined in the :ak8963:`ak8963_msgids.h` file must have values
+   that are unique system wide.  Most applications also have message IDs.
+   No two message IDs may have the same value.
+
+
 Table
 ^^^^^
 

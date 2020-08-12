@@ -6,12 +6,14 @@ TODO
 Mission Specific
 ^^^^^^^^^^^^^^^^
 
+TODO: Add Doxygen documentation for ea_msgids.h
+
 +----------------------------+-------------------------------------+
 | File                       | Parameter                           |
 +============================+=====================================+
 | :ea:`ea_mission_cfg.h`     | :ea:`EA_SB_TIMEOUT`                 |
 +----------------------------+-------------------------------------+
-| :ea:`EA_msgids.h`          | :ea:`EA_CMD_MID`                    |
+| :ea:`ea_msgids.h`          | :ea:`EA_CMD_MID`                    |
 +                            +-------------------------------------+
 |                            | :ea:`EA_SEND_HK_MID`                |
 +                            +-------------------------------------+
@@ -23,7 +25,7 @@ Mission Specific
 +                            +-------------------------------------+
 |                            | :ea:`EA_OUT_DATA_MID`               |
 +----------------------------+-------------------------------------+
-| :ea:`ea_perfids.h`         | :bat:`EA_MAIN_TASK_PERF_ID`         |
+| :ea:`ea_perfids.h`         | :ea:`EA_MAIN_TASK_PERF_ID`          |
 +----------------------------+-------------------------------------+
 
 .. note::
@@ -35,12 +37,14 @@ Mission Specific
 Platform Specific
 ^^^^^^^^^^^^^^^^^
 
+TODO: Add Doxygen documentation for ea_msgids.h
+
 +-----------------------------+---------------------------------------------+
 | File                        | Parameter                                   |
 +=============================+=============================================+
 | :ea:`ea_msgids.h`           |                                             |
 +-----------------------------+---------------------------------------------+
-| :ea:`EA_platform_cfg.h`     | :ea:`EA_CHILD_TASK_FLAGS`                   |
+| :ea:`ea_platform_cfg.h`     | :ea:`EA_CHILD_TASK_FLAGS`                   |
 +                             +---------------------------------------------+
 |                             | :ea:`EA_MISSION_REV`                        |
 +                             +---------------------------------------------+
@@ -50,7 +54,7 @@ Platform Specific
 +                             +---------------------------------------------+
 |                             | :ea:`EA_SCH_PIPE_PEND_TIME`                 |
 +                             +---------------------------------------------+
-|                             | :ea:`EA_SCH_PIPE_WAKEUP_RESERVE`            |
+|                             | :ea:`EA_SCH_PIPE_WAKEUP_RESERVED`           |
 +                             +---------------------------------------------+
 |                             | :ea:`EA_SCH_PIPE_SEND_HK_RESERVED`          |
 +                             +---------------------------------------------+
@@ -77,6 +81,12 @@ Platform Specific
 |                             | :ea:`EA_MAX_PATH_LEN`                       |
 +-----------------------------+---------------------------------------------+
 
+.. note::
+   The message IDs defined in the :ea:`ea_msgids.h` file must have values
+   that are unique system wide.  Most applications also have message IDs.
+   No two message IDs may have the same value.
+
+
 Table(s)
 ^^^^^^^^^^^^^^^^
 
@@ -85,31 +95,21 @@ TODO REVIEW TABLE
 +-------------------------------+------------------------------------+--------------------------------------------+
 | Table Name                    | Default file name                  | Parameter                                  |
 +===============================+====================================+============================================+
-| :ea:`CONFIG_TBL`              | :ea:`EA_config.tbl`               |                                            |
+| :ea:`EA_CONFIG_TABLE_NAME`    | :ea:`EA_CONFIG_TABLE_FILENAME`     | :ea:`EA_ConfigTblEntry_t::`                |
 +-------------------------------+------------------------------------+--------------------------------------------+
 
+.. literalinclude:: ../fsw/tables/ea_config.c
+  :language: C
+  :caption: Nominal Configuration Table
+
+System Integration
+^^^^^^^^^^^^^^^^^^
+
+TODO: Describe System Integration instructions specific to EA.
 
 
+Run Time Configuration
+^^^^^^^^^^^^^^^^^^^^^^
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+TODO: Describe Run Time Configuration for EA.
 

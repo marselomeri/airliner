@@ -81,6 +81,11 @@ Platform Specific
 |                             | :cs:`CS_MISSION_REV`                               |
 +-----------------------------+----------------------------------------------------+
 
+.. note::
+   The message IDs defined in the :cs:`cs_msgids.h` file must have values
+   that are unique system wide.  Most applications also have message IDs.
+   No two message IDs may have the same value.
+
 Table(s)
 ^^^^^^^^^^^^^^^^
 

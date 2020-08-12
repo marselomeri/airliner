@@ -9,8 +9,6 @@ Mission Specific
 +----------------------------+-------------------------------------+
 | File                       | Parameter                           |
 +============================+=====================================+
-| :ds:`ds_mission_cfg.h`     |                                     |
-+----------------------------+-------------------------------------+
 | :ds:`ds_perfids.h`         | :ds:`DS_APPMAIN_PERF_ID`            |
 +----------------------------+-------------------------------------+
 
@@ -26,7 +24,7 @@ Platform Specific
 +-----------------------------+---------------------------------------------+
 | File                        | Parameter                                   |
 +=============================+=============================================+
-| :ds:`DS_msgids.h`           | :ds:`DS_CMD_MID`                            |
+| :ds:`ds_msgids.h`           | :ds:`DS_CMD_MID`                            |
 +                             +---------------------------------------------+
 |                             | :ds:`DS_SEND_HK_MID`                        |
 +                             +---------------------------------------------+
@@ -34,7 +32,7 @@ Platform Specific
 +                             +---------------------------------------------+
 |                             | :ds:`DS_DIAG_TLM_MID`                       |
 +-----------------------------+---------------------------------------------+
-| :ds:`DS_platform_cfg.h`     | :ds:`DS_DESTINATION_TBL_NAME`               |
+| :ds:`ds_platform_cfg.h`     | :ds:`DS_DESTINATION_TBL_NAME`               |
 +                             +---------------------------------------------+
 |                             | :ds:`DS_DEF_DEST_FILENAME`                  |
 +                             +---------------------------------------------+
@@ -91,18 +89,38 @@ Platform Specific
 |                             | :ds:`DS_PER_PACKET_PIPE_LIMIT`              |
 +-----------------------------+---------------------------------------------+
 
+.. note::
+   The message IDs defined in the :ds:`ds_msgids.h` file must have values
+   that are unique system wide.  Most applications also have message IDs.
+   No two message IDs may have the same value.
+
+
 Table(s)
 ^^^^^^^^^^^^^^^^
 
 TODO
 
 
+.. literalinclude:: ../fsw/tables/ds_file_tbl.c
+  :language: C
+  :caption: Nominal File Table
 
 
+.. literalinclude:: ../fsw/tables/ds_filter_tbl.c
+  :language: C
+  :caption: Nominal Filter Table
 
 
+System Integration
+^^^^^^^^^^^^^^^^^^
+
+TODO: Describe System Integration instructions specific to DS.
 
 
+Run Time Configuration
+^^^^^^^^^^^^^^^^^^^^^^
+
+TODO: Describe Run Time Configuration for DS.
 
 
 

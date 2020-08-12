@@ -83,6 +83,12 @@ Platform Specific
 |                             | :ci:`CI_TIME_TBL_MUTEX_NAME`                |
 +-----------------------------+---------------------------------------------+
 
+.. note::
+   The message IDs defined in the :ci:`ci_msgids.h` file must have values
+   that are unique system wide.  Most applications also have message IDs.
+   No two message IDs may have the same value.
+
+
 Table(s)
 ^^^^^^^^^^^^^^^^
 TODO: Review Tables

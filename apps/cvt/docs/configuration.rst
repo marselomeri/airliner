@@ -69,6 +69,11 @@ Platform Specific
 |                             | :cvt:`CVT_DATA_STORE_SIZE`                  |
 +-----------------------------+---------------------------------------------+
 
+.. note::
+   The message IDs defined in the :cvt:`cvt_msgids.h` file must have values
+   that are unique system wide.  Most applications also have message IDs.
+   No two message IDs may have the same value.
+
 Table(s)
 ^^^^^^^^^^^^^^^^
 

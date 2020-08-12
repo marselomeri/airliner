@@ -6,6 +6,8 @@ TODO
 Mission Specific
 ^^^^^^^^^^^^^^^^
 
+TODO: Add Doxygen documentation for gps_mission_cfg.h
+
 +----------------------------+-------------------------------------+
 | File                       | Parameter                           |
 +============================+=====================================+
@@ -26,7 +28,7 @@ Platform Specific
 +-----------------------------+---------------------------------------------+
 | File                        | Parameter                                   |
 +=============================+=============================================+
-| :gps:`GPS_msgids.h`         | :gps:`GPS_CMD_MID`                          |
+| :gps:`gps_msgids.h`         | :gps:`GPS_CMD_MID`                          |
 +                             +---------------------------------------------+
 |                             | :gps:`GPS_SEND_HK_MID`                      |
 +                             +---------------------------------------------+
@@ -34,7 +36,7 @@ Platform Specific
 +                             +---------------------------------------------+
 |                             | :gps:`GPS_HK_TLM_MID`                       |
 +-----------------------------+---------------------------------------------+
-| :gps:`GPS_platform_cfg.h`   | :gps:`GPS_MISSION_REV`                      |
+| :gps:`gps_platform_cfg.h`   | :gps:`GPS_MISSION_REV`                      |
 +                             +---------------------------------------------+
 |                             | :gps:`GPS_SCH_PIPE_DEPTH`                   |
 +                             +---------------------------------------------+
@@ -59,37 +61,35 @@ Platform Specific
 |                             | :gps:`GPS_STARTUP_TIMEOUT_MSEC`             |
 +-----------------------------+---------------------------------------------+
 
+.. note::
+   The message IDs defined in the :gps:`gps_msgids.h` file must have values
+   that are unique system wide.  Most applications also have message IDs.
+   No two message IDs may have the same value.
+
+
 Table(s)
 ^^^^^^^^^^^^^^^^
 
 +-------------------------------+------------------------------------+--------------------------------------------+
 | Table Name                    | Default file name                  | Parameter                                  |
 +===============================+====================================+============================================+
-| :gps:`CONFIG_TBL`             | :gps:`gps_config.tbl`              | :gps:`GPS_ConfigTbl_t::temp`               |
+| :gps:`GPS_CONFIG_TABLENAME`   | :gps:`GPS_CONFIG_TABLE_FILENAME`   | :gps:`GPS_ConfigTbl_t::temp`               |
 +-------------------------------+------------------------------------+--------------------------------------------+
 
+Below is an example table.
+
+.. literalinclude:: ../fsw/tables/gps_config.c
+  :language: C
+  :caption: Nominal Configuration Table
 
 
+System Integration
+^^^^^^^^^^^^^^^^^^
+
+TODO: Describe System Integration instructions specific to GPS.
 
 
+Run Time Configuration
+^^^^^^^^^^^^^^^^^^^^^^
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+TODO: Describe Run Time Configuration for GPS.

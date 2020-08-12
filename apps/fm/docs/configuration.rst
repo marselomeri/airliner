@@ -1,7 +1,7 @@
 Configuration
 =============
 
-TODO cfg
+TODO
 
 Mission Specific
 ^^^^^^^^^^^^^^^^
@@ -9,8 +9,6 @@ Mission Specific
 +----------------------------+-------------------------------------+
 | File                       | Parameter                           |
 +============================+=====================================+
-| :fm:`fm_mission_cfg.h`     |                                     |
-+----------------------------+-------------------------------------+
 | :fm:`fm_perfids.h`         | :fm:`FM_APPMAIN_PERF_ID`            |
 +                            +-------------------------------------+
 |                            | :fm:`FM_CHILD_TASK_PERF_ID`         |
@@ -36,13 +34,13 @@ Platform Specific
 +                             +---------------------------------------------+
 |                             | :fm:`FM_FILE_INFO_TLM_MID`                  |
 +                             +---------------------------------------------+
-|                             | :flow:`FM_DIR_LIST_TLM_MID`                 |
+|                             | :fm:`FM_DIR_LIST_TLM_MID`                   |
 +                             +---------------------------------------------+
-|                             | :flow:`FM_OPEN_FILES_TLM_MID`               |
+|                             | :fm:`FM_OPEN_FILES_TLM_MID`                 |
 +                             +---------------------------------------------+
 |                             | :fm:`FM_FREE_SPACE_TLM_MID`                 |
 +-----------------------------+---------------------------------------------+
-| :fm:`FM_platform_cfg.h`     | :fm:`FM_CHILD_TASK_FLAGS`                   |
+| :fm:`fm_platform_cfg.h`     | :fm:`FM_CHILD_TASK_FLAGS`                   |
 +                             +---------------------------------------------+
 |                             | :fm:`FM_APP_NAME`                           |
 +                             +---------------------------------------------+
@@ -65,8 +63,6 @@ Platform Specific
 |                             | :fm:`FM_CHILD_FILE_LOOP_COUNT`              |
 +                             +---------------------------------------------+
 |                             | :fm:`FM_CHILD_FILE_SLEEP_MS`                |
-+                             +---------------------------------------------+
-|                             | :fm:`FM_CHILD_STAT_SLEEP`                   |
 +                             +---------------------------------------------+
 |                             | :fm:`FM_CHILD_STAT_SLEEP_FILECOUNT`         |
 +                             +---------------------------------------------+
@@ -93,6 +89,11 @@ Platform Specific
 |                             | :fm:`FM_TABLE_VALIDATION_ERR`               |
 +-----------------------------+---------------------------------------------+
 
+.. note::
+   The message IDs defined in the :fm:`fm_msgids.h` file must have values
+   that are unique system wide.  Most applications also have message IDs.
+   No two message IDs may have the same value.
+
 Table(s)
 ^^^^^^^^^^^^^^^^
 
@@ -101,31 +102,24 @@ TODO REVIEW TABLE
 +-------------------------------+------------------------------------+--------------------------------------------+
 | Table Name                    | Default file name                  | Parameter                                  |
 +===============================+====================================+============================================+
-| :fm:`CONFIG_TBL`              | :fm:`FM_config.tbl`                |                                            |
+| :fm:`FM_TABLE_NAME`           | :fm:`FM_TABLE_FILENAME`            | :fm:`CFE_TBL_FileDef_t::`                  |
 +-------------------------------+------------------------------------+--------------------------------------------+
 
 
+Below is an example table.
+
+.. literalinclude:: ../fsw/tables/fm_freespace.c
+  :language: C
+  :caption: Application Free Space Table
 
 
+System Integration
+^^^^^^^^^^^^^^^^^^
+
+TODO: Describe System Integration instructions specific to FM.
 
 
+Run Time Configuration
+^^^^^^^^^^^^^^^^^^^^^^
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+TODO: Describe Run Time Configuration for FM.

@@ -57,6 +57,12 @@ Platform Specific
 |                             | :hk:`HK_MISSION_REV`                        |
 +-----------------------------+---------------------------------------------+
 
+.. note::
+   The message IDs defined in the :hk:`hk_msgids.h` file must have values
+   that are unique system wide.  Most applications also have message IDs.
+   No two message IDs may have the same value.
+
+
 Table(s)
 ^^^^^^^^^^^^^^^^
 
@@ -76,7 +82,23 @@ TODO REVIEW TABLE
 |                               |                                    | :hk:`hk_copy_table_entry_t::NumBytes`      |
 +-------------------------------+------------------------------------+--------------------------------------------+
 
+Below is an example table.
 
+.. literalinclude:: ../fsw/tables/hk_cpy_tbl.c
+  :language: C
+  :caption: Application Copy Table
+
+
+System Integration
+^^^^^^^^^^^^^^^^^^
+
+TODO: Describe System Integration instructions specific to HK.
+
+
+Run Time Configuration
+^^^^^^^^^^^^^^^^^^^^^^
+
+TODO: Describe Run Time Configuration for HK.
 
 
 
