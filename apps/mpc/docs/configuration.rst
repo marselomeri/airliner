@@ -56,7 +56,7 @@ Platform Specific
 +                           +----------------------------------------+
 |                           | :mpc:`MPC_STARTUP_TIMEOUT_MSEC`        |
 +                           +----------------------------------------+
-|                           | :mpc:`DIRECTION_CHANGE_TRIGGER_TIME_US'|
+|                           | :mpc:`DIRECTION_CHANGE_TRIGGER_TIME_US`|
 +---------------------------+----------------------------------------+
 
 .. note::
@@ -75,7 +75,7 @@ TODO: Confiirm that no tables exit for this entry.
 +-------------------------------+------------------------------------+------------------------------------------+
 | Table Name                    | Default file name                  | Parameter                                |
 +===============================+====================================+==========================================+
-| :mpc:`MPC_CONFIG_TABLENAME`   | :mpc:'mpc_config.c'                | :mpc:`MPC_ConfigTbl_t::THR_MIN`          |
+| :mpc:`MPC_CONFIG_TABLENAME`   | :mpc:`MPC_CONFIG_TABLE_FILENAME`   | :mpc:`MPC_ConfigTbl_t::THR_MIN`          |
 +                               |                                    +------------------------------------------+
 |                               |                                    | :mpc:`MPC_ConfigTbl_t::THR_HOVER`        |
 +                               |                                    +------------------------------------------+
