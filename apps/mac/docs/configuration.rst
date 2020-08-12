@@ -87,7 +87,7 @@ TODO: The following do not exist in Doxy.
 +-------------------------------+------------------------------------+-------------------------------------+
 | Table Name                    | Default file name                  | Parameter                           |
 +===============================+====================================+=====================================+
-| :mac:`MAC_CONFIG_TABLENAME`   | :mac:'MAC_PARAM_TABLE_FILENAME'    | :mac:`MAC_ParamTbl_t:MC_ROLL_P:`    |
+| :mac:`MAC_CONFIG_TABLENAME`   | :mac:`MAC_PARAM_TABLE_FILENAME`    | :mac:`MAC_ParamTbl_t::MC_ROLL_P`    |
 +-------------------------------+------------------------------------+-------------------------------------+
 
 .. note::

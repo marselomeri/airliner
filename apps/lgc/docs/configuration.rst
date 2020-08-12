@@ -84,11 +84,11 @@ metrics, not configuration.  This table is defined by the
 
 
 
-+-------------------------------+------------------------------------+-------------------------------------+
-| Table Name                    | Default file name                  | Parameter                           |
-+===============================+====================================+=====================================+
-| :ld:`LGC_CONFIG_TABLENAME`    | :ld:'LGC_CONFIG_TABLENAME'         | :ld:`LGC_ConfigTbl_t:PwmDisarmed:`  |
-+-------------------------------+------------------------------------+-------------------------------------+
++-------------------------------+------------------------------------+--------------------------------------+
+| Table Name                    | Default file name                  | Parameter                            |
++===============================+====================================+======================================+
+| :lgc:`LGC_CONFIG_TABLENAME`   | :lgc:`LGC_CONFIG_TABLENAME`        | :lgc:`LGC_ConfigTbl_t::PwmDisarmed`  |
++-------------------------------+------------------------------------+--------------------------------------+
 
 .. note::
    When configuring the backup table, consider the fact that, when this table is in affect, the system

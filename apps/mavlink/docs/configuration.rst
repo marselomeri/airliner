@@ -108,17 +108,17 @@ same structure.
 
 TODO: This is a nested table
 
-+---------------------------------------+-----------------------------+-----------------------------------------------------------+
-| Table Name                            | Default file name           | Parameter                                                 |
-+=======================================+=============================+===========================================================+
-| :mavlink:`MAVLINK_CDS_TABLENAME`      | :mavlink:'mavlink_CdsTbl'   | :mavlink:`MAVLINK_CdsTbl_t:iParam:`                       |
-+                                       |                             +-----------------------------------------------------------+
-|                                       |                             | :mavlink:`MAVLINK_ActionMapTbl_t::MAVLINK_ActionMapData_t`|
-+                                       |                             +-----------------------------------------------------------+
-|                                       |                             | :mavlink:`MAVLINK_ActionMapData_t::MAVLINK_MsgAction_t`   |
-+                                       |                             +-----------------------------------------------------------+
-|                                       |                             | :mavlink:`MAVLINK_MsgAction_t::ACTION_HANDLE`             |
-+---------------------------------------+-----------------------------+-----------------------------------------------------------+
++---------------------------------------+----------------------------------------------+-----------------------------------------------------------+
+| Table Name                            | Default file name                            | Parameter                                                 |
++=======================================+==============================================+===========================================================+
+| :mavlink:`MAVLINK_CDS_TABLENAME`      | :mavlink:`MAVLINK_ACTION_MAP_TABLE_FILENAME` | :mavlink:`MAVLINK_CdsTbl_t::iParam:`                      |
++                                       |                                              +-----------------------------------------------------------+
+|                                       |                                              | :mavlink:`MAVLINK_ActionMapTbl_t::MAVLINK_ActionMapData_t`|
++                                       |                                              +-----------------------------------------------------------+
+|                                       |                                              | :mavlink:`MAVLINK_ActionMapData_t::MAVLINK_MsgAction_t`   |
++                                       |                                              +-----------------------------------------------------------+
+|                                       |                                              | :mavlink:`MAVLINK_MsgAction_t::ACTION_HANDLE`             |
++---------------------------------------+----------------------------------------------+-----------------------------------------------------------+
 
 .. note::
    When configuring the backup table, consider the fact that, when this table is in affect, the system
