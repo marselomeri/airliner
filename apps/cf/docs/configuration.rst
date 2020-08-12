@@ -151,7 +151,7 @@ TODO REVIEW TABLE
 +-------------------------------+------------------------------------+------------------------------------------------------------------------+
 | Table Name                    | Default file name                  | Parameter                                                              |
 +===============================+====================================+========================================================================+
-| :cf:`CF_CONFIG_TABLE_NAME`    | :cf:`CF_CONFIG_TABLE_FILENAME`     | :cf:`cf_config_table_t::TableIdString[OS_MAX_API_NAME]`                |
+| :cf:`CF_CONFIG_TABLE_NAME`    | :cf:`CF_CONFIG_TABLE_FILENAME`     | :cf:`cf_config_table_t::TableIdString`                                 |
 +                               |                                    +------------------------------------------------------------------------+
 |                               |                                    | :cf:`cf_config_table_t::TableVersion`                                  |
 +                               |                                    +------------------------------------------------------------------------+
@@ -167,25 +167,25 @@ TODO REVIEW TABLE
 +                               |                                    +------------------------------------------------------------------------+
 |                               |                                    | :cf:`cf_config_table_t::Reserved2`                                     |
 +                               |                                    +------------------------------------------------------------------------+
-|                               |                                    | :cf:`cf_config_table_t::AckTimeout[CF_MAX_CFG_VALUE_CHARS]`            |
+|                               |                                    | :cf:`cf_config_table_t::AckTimeout`                                    |
 +                               |                                    +------------------------------------------------------------------------+
-|                               |                                    | :cf:`cf_config_table_t::AckLimit[CF_MAX_CFG_VALUE_CHARS]`              |
+|                               |                                    | :cf:`cf_config_table_t::AckLimit`                                      |
 +                               |                                    +------------------------------------------------------------------------+
-|                               |                                    | :cf:`cf_config_table_t::NakTimeout[CF_MAX_CFG_VALUE_CHARS]`            |
+|                               |                                    | :cf:`cf_config_table_t::NakTimeout`                                    |
 +                               |                                    +------------------------------------------------------------------------+
-|                               |                                    | :cf:`cf_config_table_t::NakLimit[CF_MAX_CFG_VALUE_CHARS]`              |
+|                               |                                    | :cf:`cf_config_table_t::NakLimit`                                      |
 +                               |                                    +------------------------------------------------------------------------+
-|                               |                                    | :cf:`cf_config_table_t::InactivityTimeout[CF_MAX_CFG_VALUE_CHARS]`     |
+|                               |                                    | :cf:`cf_config_table_t::InactivityTimeout`                             |
 +                               |                                    +------------------------------------------------------------------------+
-|                               |                                    | :cf:`cf_config_table_t::OutgoingFileChunkSize[CF_MAX_CFG_VALUE_CHARS]` |
+|                               |                                    | :cf:`cf_config_table_t::OutgoingFileChunkSize`                         |
 +                               |                                    +------------------------------------------------------------------------+
-|                               |                                    | :cf:`cf_config_table_t::SaveIncompleteFiles[CF_MAX_CFG_VALUE_CHARS]`   |
+|                               |                                    | :cf:`cf_config_table_t::SaveIncompleteFiles`                           |
 +                               |                                    +------------------------------------------------------------------------+
-|                               |                                    | :cf:`cf_config_table_t::FlightEntityId[CF_MAX_CFG_VALUE_CHARS]`        |
+|                               |                                    | :cf:`cf_config_table_t::FlightEntityId`                                |
 +                               |                                    +------------------------------------------------------------------------+
-|                               |                                    | :cf:`cf_config_table_t::InCh[CF_NUM_INPUT_CHANNELS]`                   |
+|                               |                                    | :cf:`cf_config_table_t::InCh`                                          |
 +                               |                                    +------------------------------------------------------------------------+
-|                               |                                    | :cf:`cf_config_table_t::OuCh[CF_MAX_PLAYBACK_CHANNELS]`                | 
+|                               |                                    | :cf:`cf_config_table_t::OuCh`                                          | 
 +-------------------------------+------------------------------------+------------------------------------------------------------------------+
 
 .. literalinclude:: ../fsw/tables/cf_cfgtable.c
