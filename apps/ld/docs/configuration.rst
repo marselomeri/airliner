@@ -45,7 +45,7 @@ Platform Specific
 +                         +-------------------------------------+
 |                         | :ld:`LD_WAKEUP_MID_MAX_MSG_COUNT`   |
 +                         +-------------------------------------+
-|                         | :ld:`LD_SEND_HK_MID_MAX_MSG_COUNTl` |
+|                         | :ld:`LD_SEND_HK_MID_MAX_MSG_COUNT`  |
 +                         +-------------------------------------+
 |                         | :ld:`LD_CMD_PIPE_DEPTH`             |
 +                         +-------------------------------------+
