@@ -107,3 +107,14 @@ TODO: Review Tables
 | :ci:`CI_CDS_TABLENAME`        | :ci:`CI_CDS_TABLE_FILENAME`        | :ci:`CI_CdsTbl_t::iParam`                         |
 +-------------------------------+------------------------------------+---------------------------------------------------+
 
+
+System Integration
+^^^^^^^^^^^^^^^^^^
+
+TODO: Describe System Integration instructions specific to CI.
+
+
+Run Time Configuration
+^^^^^^^^^^^^^^^^^^^^^^
+
+TODO: Describe Run Time Configuration for CI.
