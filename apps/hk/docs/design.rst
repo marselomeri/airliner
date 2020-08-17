@@ -13,7 +13,7 @@ TODO Add relevent HK Diagrams.
       TBL -> CT [dir="both"];
       TBL -> RT [dir="both"];
       CI  -> HK [label="Ground\nCommands"];
-      SA -> HK [label="Housekeeping\nData"]
+      SA -> HK [label=" Housekeeping\nData"]
       SCH -> HK [label="Send HK Data\nSend Ouput Message X"];
       HK -> SB [label="Subscribe to HK Msgs\nCombined Output Msgs"];
       
