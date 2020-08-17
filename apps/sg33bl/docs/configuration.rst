@@ -83,7 +83,7 @@ TODO: Add Doxygen documentation for sg33bl_config.tbl
 +----------------------------------+----------------------------------------+------------------------------------------+
 | Table Name                       | Default file name                      | Parameter                                |
 +==================================+========================================+==========================================+
-| :sg33bl:`SG33BL_CONFIG_TABLENAME`| :sg33bl:`SG33BL_CONFIG_TABLE_FILENAME` | :sg33bl:`SG33BL_ConfigTbl_t::`           |
+| :sg33bl:`SG33BL_CONFIG_TABLENAME`| :sg33bl:`SG33BL_CONFIG_TABLE_FILENAME` | :sg33bl:`SG33BL_ConfigTbl_t::temp`       |
 +----------------------------------+----------------------------------------+------------------------------------------+
 
 TODO: Add Doxygen documentation for sg33bl_config.c

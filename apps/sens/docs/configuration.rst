@@ -78,7 +78,7 @@ TODO: Add Doxygen documentation for sens_config.tbl
 +-------------------------------+------------------------------------+-----------------------------------------------------------+
 | Table Name                    | Default file name                  | Parameter                                                 |
 +===============================+====================================+===========================================================+
-| :sens:`SENS_CONFIG_TABLENAME` | :pe:`SENS_CONFIG_TABLE_FILENAME`   | :sens:`SENS_ConfigTbl_t::Min`                             |
+| :sens:`SENS_CONFIG_TABLENAME` | :sens:`SENS_CONFIG_TABLE_FILENAME` | :sens:`SENS_ConfigTbl_t::Min`                             |
 +                               |                                    +-----------------------------------------------------------+
 |                               |                                    | :sens:`SENS_ConfigTbl_t::Trim`                            |
 +                               |                                    +-----------------------------------------------------------+

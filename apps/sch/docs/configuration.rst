@@ -96,7 +96,7 @@ TODO: Review these SCH tables and add Doxygen doumentation
 +-------------------------------+------------------------------------+-------------------------------------------------------------+
 | Table Name                    | Default file name                  | Parameter                                                   |
 +===============================+====================================+=============================================================+
-| :sch:`SCH_MESSAGE_TABLENAME`  | :sch:`SCH_MESSAGE_FILENAME`        | :sch:`SCH_MessageEntry_t::MessageBuffer`                    |
+| :sch:`SCH_DefaultMessageTable`| :sch:`SCH_MESSAGE_FILENAME`        | :sch:`SCH_MessageEntry_t::MessageBuffer`                    |
 +-------------------------------+------------------------------------+-------------------------------------------------------------+
 | :sch:`SCH_SCHEDULE_TABLENAME` | :sch:`SCH_SCHEDULE_FILENAME`       | :sch:`SCH_ScheduleEntry_t::EnableState`                     |
 +                               |                                    +-------------------------------------------------------------+
