@@ -78,6 +78,19 @@ Platform Specific
    that are unique system wide.  Most applications also have message IDs.
    No two message IDs may have the same value.
 
+Tables
+^^^^^^
+
++--------------------------------+------------------------------------+------------------------------------------------+
+| Table Name                     | Default file name                  | Parameter                                      |
++================================+====================================+================================================+
+| :amc:`AMC_PWM_CONFIG_TABLENAME`| :amc:`AMC_CONFIG_TABLE_FILENAME`   | :amc:`AMC_PwmConfigTbl_t::PwmDisarmed`         |
++                                |                                    +------------------------------------------------+
+|                                |                                    | :amc:`AMC_PwmConfigTbl_t::PwmMin`              |
++                                |                                    +------------------------------------------------+
+|                                |                                    | :amc:`AMC_PwmConfigTbl_t::PwmMax`              |
++--------------------------------+------------------------------------+------------------------------------------------+
+
 
 System Integration
 ^^^^^^^^^^^^^^^^^^
