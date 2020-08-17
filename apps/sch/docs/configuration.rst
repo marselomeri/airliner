@@ -91,17 +91,14 @@ Table(s)
 
 TODO: Add Table explanation
 
-TODO: Review these SCH tables and add Doxygen doumentation 
-
-<<<<<<< HEAD
-:sch:`SCH_DEFAULTtMESSAGETABETable_TABLENAME`
+TODO: Review SCH Table Names 
 
 +----------------------------------------+------------------------------------+-------------------------------------------------------------+
 | Table Name                             | Default file name                  | Parameter                                                   |
 +========================================+====================================+=============================================================+
-| :sch:`SCH_MESSAGEENTRY_TABLENAME`      | :sch:`SCH_MESSAGE_FILENAME`        | :sch:`SCH_MessageEntry_t::MessageBuffer`                    |
+| :sch:`SCH_MESSAGE_TABLENAME`           | :sch:`SCH_MESSAGE_FILENAME`        | :sch:`SCH_MessageEntry_t::MessageBuffer`                    |
 +----------------------------------------+------------------------------------+-------------------------------------------------------------+
-| :sch:`SCH_SCHDUELEENTRY_TABLENAME`     | :sch:`SCH_SCHEDULE_FILENAME`       | :sch:`SCH_ScheduleEntry_t::EnableState`                     |
+| :sch:`SCH_SCHEDULE_TABLENAME`          | :sch:`SCH_SCHEDULE_FILENAME`       | :sch:`SCH_ScheduleEntry_t::EnableState`                     |
 +                                        |                                    +-------------------------------------------------------------+
 |                                        |                                    | :sch:`SCH_ScheduleEntry_t::Type`                            |
 +                                        |                                    +-------------------------------------------------------------+
@@ -115,27 +112,7 @@ TODO: Review these SCH tables and add Doxygen doumentation
 +                                        |                                    +-------------------------------------------------------------+
 |                                        |                                    | :sch:`SCH_ScheduleEntry_t::Deadline`                        |
 +----------------------------------------+------------------------------------+-------------------------------------------------------------+
-=======
-+-------------------------------+------------------------------------+-------------------------------------------------------------+
-| Table Name                    | Default file name                  | Parameter                                                   |
-+===============================+====================================+=============================================================+
-| :sch:`SCH_DefaultMessageTable`| :sch:`SCH_MESSAGE_FILENAME`        | :sch:`SCH_MessageEntry_t::MessageBuffer`                    |
-+-------------------------------+------------------------------------+-------------------------------------------------------------+
-| :sch:`SCH_SCHEDULE_TABLENAME` | :sch:`SCH_SCHEDULE_FILENAME`       | :sch:`SCH_ScheduleEntry_t::EnableState`                     |
-+                               |                                    +-------------------------------------------------------------+
-|                               |                                    | :sch:`SCH_ScheduleEntry_t::Type`                            |
-+                               |                                    +-------------------------------------------------------------+
-|                               |                                    | :sch:`SCH_ScheduleEntry_t::Frequency`                       |  
-+                               |                                    +-------------------------------------------------------------+
-|                               |                                    | :sch:`SCH_ScheduleEntry_t::Remainder`                       |
-+                               |                                    +-------------------------------------------------------------+
-|                               |                                    | :sch:`SCH_ScheduleEntry_t::MessageIndex`                    |
-+                               |                                    +-------------------------------------------------------------+
-|                               |                                    | :sch:`SCH_ScheduleEntry_t::GroupData`                       |
-+                               |                                    +-------------------------------------------------------------+
-|                               |                                    | :sch:`SCH_ScheduleEntry_t::Deadline`                        |
-+-------------------------------+------------------------------------+-------------------------------------------------------------+
->>>>>>> 61db93a3063b4be4c219ab524c3181ae4dfc62c3
+
 
 Below is an example table.
 
