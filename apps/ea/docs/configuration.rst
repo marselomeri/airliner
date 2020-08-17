@@ -90,8 +90,7 @@ TODO: Add Doxygen documentation for ea_msgids.h
 Table(s)
 ^^^^^^^^^^^^^^^^
 
-TODO REVIEW TABLE
-TODO Missing ea_tbldefs.h
+TODO Review table. Missing ea_tbldefs.h from Doxygen.
 
 +-------------------------------+------------------------------------+--------------------------------------------+
 | Table Name                    | Default file name                  | Parameter                                  |
