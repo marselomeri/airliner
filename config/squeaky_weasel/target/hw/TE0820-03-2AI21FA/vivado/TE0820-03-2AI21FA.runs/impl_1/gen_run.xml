@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="impl_1" LaunchPart="xczu2cg-sfvc784-1-i" LaunchTime="1597813196">
+<GenRun Id="impl_1" LaunchPart="xczu2cg-sfvc784-1-i" LaunchTime="1597827224">
   <File Type="WBT-USG" Name="usage_statistics_webtalk.html"/>
   <File Type="BITSTR-SYSDEF" Name="zusys_wrapper.sysdef"/>
   <File Type="BITSTR-LTX" Name="debug_nets.ltx"/>
@@ -96,26 +96,25 @@
       <Option Name="TopAutoSet" Val="TRUE"/>
     </Config>
   </FileSet>
-  <FileSet Name="constrs_in" Type="Constrs" RelSrcDir="$PSRCDIR/constrs_1">
-    <Filter Type="Constrs"/>
-    <File Path="$PPRDIR/../constraints/_i_io.xdc">
+  <FileSet Name="constrs_in" Type="Constrs" RelSrcDir="$PSRCDIR/te0701_fmc">
+    <File Path="$PSRCDIR/te0701_fmc/_i_io.xdc">
       <FileInfo>
         <Attr Name="UsedIn" Val="implementation"/>
       </FileInfo>
     </File>
-    <File Path="$PPRDIR/../constraints/_i_bitgen.xdc">
+    <File Path="$PSRCDIR/te0701_fmc/_i_bitgen.xdc">
       <FileInfo>
         <Attr Name="UsedIn" Val="implementation"/>
       </FileInfo>
     </File>
-    <File Path="$PPRDIR/../constraints/vivado_target.xdc">
+    <File Path="$PSRCDIR/te0701_fmc/vivado_target.xdc">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
       </FileInfo>
     </File>
     <Config>
-      <Option Name="TargetConstrsFile" Val="$PPRDIR/../constraints/vivado_target.xdc"/>
+      <Option Name="TargetConstrsFile" Val="$PSRCDIR/te0701_fmc/vivado_target.xdc"/>
       <Option Name="ConstrsType" Val="XDC"/>
     </Config>
   </FileSet>
@@ -137,8 +136,9 @@
     <Step Id="post_route_phys_opt_design"/>
     <Step Id="write_bitstream"/>
   </Strategy>
+  <BlockFileSet Type="BlockSrcs" Name="zusys_clk_wiz_0_0"/>
   <BlockFileSet Type="BlockSrcs" Name="zusys_vio_0_0"/>
-  <BlockFileSet Type="BlockSrcs" Name="zusys_util_ds_buf_0_0"/>
   <BlockFileSet Type="BlockSrcs" Name="zusys_zynq_ultra_ps_e_0_0"/>
   <BlockFileSet Type="BlockSrcs" Name="zusys_labtools_fmeter_0_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="zusys_util_ds_buf_0_0"/>
 </GenRun>

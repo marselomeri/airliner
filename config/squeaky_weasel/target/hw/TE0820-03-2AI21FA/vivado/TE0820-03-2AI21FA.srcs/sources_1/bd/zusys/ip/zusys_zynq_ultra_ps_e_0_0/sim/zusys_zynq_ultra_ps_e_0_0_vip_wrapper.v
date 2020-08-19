@@ -98,6 +98,38 @@ maxigp2_rvalid,
 maxigp2_rready, 
 maxigp2_awqos, 
 maxigp2_arqos, 
+emio_i2c1_scl_i, 
+emio_i2c1_scl_o, 
+emio_i2c1_scl_t, 
+emio_i2c1_sda_i, 
+emio_i2c1_sda_o, 
+emio_i2c1_sda_t, 
+emio_uart1_txd, 
+emio_uart1_rxd, 
+emio_spi0_sclk_i, 
+emio_spi0_sclk_o, 
+emio_spi0_sclk_t, 
+emio_spi0_m_i, 
+emio_spi0_m_o, 
+emio_spi0_mo_t, 
+emio_spi0_s_i, 
+emio_spi0_s_o, 
+emio_spi0_so_t, 
+emio_spi0_ss_i_n, 
+emio_spi0_ss_o_n, 
+emio_spi0_ss_n_t, 
+emio_spi1_sclk_i, 
+emio_spi1_sclk_o, 
+emio_spi1_sclk_t, 
+emio_spi1_m_i, 
+emio_spi1_m_o, 
+emio_spi1_mo_t, 
+emio_spi1_s_i, 
+emio_spi1_s_o, 
+emio_spi1_so_t, 
+emio_spi1_ss_i_n, 
+emio_spi1_ss_o_n, 
+emio_spi1_ss_n_t, 
 pl_resetn0, 
 pl_clk0 
 );
@@ -141,6 +173,38 @@ input maxigp2_rvalid;
 output maxigp2_rready;
 output [3 : 0] maxigp2_awqos;
 output [3 : 0] maxigp2_arqos;
+input emio_i2c1_scl_i;
+output emio_i2c1_scl_o;
+output emio_i2c1_scl_t;
+input emio_i2c1_sda_i;
+output emio_i2c1_sda_o;
+output emio_i2c1_sda_t;
+output emio_uart1_txd;
+input emio_uart1_rxd;
+input emio_spi0_sclk_i;
+output emio_spi0_sclk_o;
+output emio_spi0_sclk_t;
+input emio_spi0_m_i;
+output emio_spi0_m_o;
+output emio_spi0_mo_t;
+input emio_spi0_s_i;
+output emio_spi0_s_o;
+output emio_spi0_so_t;
+input emio_spi0_ss_i_n;
+output emio_spi0_ss_o_n;
+output emio_spi0_ss_n_t;
+input emio_spi1_sclk_i;
+output emio_spi1_sclk_o;
+output emio_spi1_sclk_t;
+input emio_spi1_m_i;
+output emio_spi1_m_o;
+output emio_spi1_mo_t;
+input emio_spi1_s_i;
+output emio_spi1_s_o;
+output emio_spi1_so_t;
+input emio_spi1_ss_i_n;
+output emio_spi1_ss_o_n;
+output emio_spi1_ss_n_t;
 output pl_resetn0;
 output pl_clk0;
 wire pl_clk_t[3:0] ;

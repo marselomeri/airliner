@@ -95,6 +95,38 @@ ENTITY zusys_zynq_ultra_ps_e_0_0 IS
     maxigp2_rready : OUT STD_LOGIC;
     maxigp2_awqos : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
     maxigp2_arqos : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+    emio_i2c1_scl_i : IN STD_LOGIC;
+    emio_i2c1_scl_o : OUT STD_LOGIC;
+    emio_i2c1_scl_t : OUT STD_LOGIC;
+    emio_i2c1_sda_i : IN STD_LOGIC;
+    emio_i2c1_sda_o : OUT STD_LOGIC;
+    emio_i2c1_sda_t : OUT STD_LOGIC;
+    emio_uart1_txd : OUT STD_LOGIC;
+    emio_uart1_rxd : IN STD_LOGIC;
+    emio_spi0_sclk_i : IN STD_LOGIC;
+    emio_spi0_sclk_o : OUT STD_LOGIC;
+    emio_spi0_sclk_t : OUT STD_LOGIC;
+    emio_spi0_m_i : IN STD_LOGIC;
+    emio_spi0_m_o : OUT STD_LOGIC;
+    emio_spi0_mo_t : OUT STD_LOGIC;
+    emio_spi0_s_i : IN STD_LOGIC;
+    emio_spi0_s_o : OUT STD_LOGIC;
+    emio_spi0_so_t : OUT STD_LOGIC;
+    emio_spi0_ss_i_n : IN STD_LOGIC;
+    emio_spi0_ss_o_n : OUT STD_LOGIC;
+    emio_spi0_ss_n_t : OUT STD_LOGIC;
+    emio_spi1_sclk_i : IN STD_LOGIC;
+    emio_spi1_sclk_o : OUT STD_LOGIC;
+    emio_spi1_sclk_t : OUT STD_LOGIC;
+    emio_spi1_m_i : IN STD_LOGIC;
+    emio_spi1_m_o : OUT STD_LOGIC;
+    emio_spi1_mo_t : OUT STD_LOGIC;
+    emio_spi1_s_i : IN STD_LOGIC;
+    emio_spi1_s_o : OUT STD_LOGIC;
+    emio_spi1_so_t : OUT STD_LOGIC;
+    emio_spi1_ss_i_n : IN STD_LOGIC;
+    emio_spi1_ss_o_n : OUT STD_LOGIC;
+    emio_spi1_ss_n_t : OUT STD_LOGIC;
     pl_resetn0 : OUT STD_LOGIC;
     pl_clk0 : OUT STD_LOGIC
   );
@@ -1647,6 +1679,38 @@ ARCHITECTURE zusys_zynq_ultra_ps_e_0_0_arch OF zusys_zynq_ultra_ps_e_0_0 IS
   ATTRIBUTE X_INTERFACE_INFO OF pl_clk0: SIGNAL IS "xilinx.com:signal:clock:1.0 PL_CLK0 CLK";
   ATTRIBUTE X_INTERFACE_PARAMETER OF pl_resetn0: SIGNAL IS "XIL_INTERFACENAME PL_RESETN0, POLARITY ACTIVE_LOW, INSERT_VIP 0";
   ATTRIBUTE X_INTERFACE_INFO OF pl_resetn0: SIGNAL IS "xilinx.com:signal:reset:1.0 PL_RESETN0 RST";
+  ATTRIBUTE X_INTERFACE_INFO OF emio_spi1_ss_n_t: SIGNAL IS "xilinx.com:interface:spi:1.0 SPI_1 SS_T";
+  ATTRIBUTE X_INTERFACE_INFO OF emio_spi1_ss_o_n: SIGNAL IS "xilinx.com:interface:spi:1.0 SPI_1 SS_O";
+  ATTRIBUTE X_INTERFACE_INFO OF emio_spi1_ss_i_n: SIGNAL IS "xilinx.com:interface:spi:1.0 SPI_1 SS_I";
+  ATTRIBUTE X_INTERFACE_INFO OF emio_spi1_so_t: SIGNAL IS "xilinx.com:interface:spi:1.0 SPI_1 IO1_T";
+  ATTRIBUTE X_INTERFACE_INFO OF emio_spi1_s_o: SIGNAL IS "xilinx.com:interface:spi:1.0 SPI_1 IO1_O";
+  ATTRIBUTE X_INTERFACE_INFO OF emio_spi1_s_i: SIGNAL IS "xilinx.com:interface:spi:1.0 SPI_1 IO0_I";
+  ATTRIBUTE X_INTERFACE_INFO OF emio_spi1_mo_t: SIGNAL IS "xilinx.com:interface:spi:1.0 SPI_1 IO0_T";
+  ATTRIBUTE X_INTERFACE_INFO OF emio_spi1_m_o: SIGNAL IS "xilinx.com:interface:spi:1.0 SPI_1 IO0_O";
+  ATTRIBUTE X_INTERFACE_INFO OF emio_spi1_m_i: SIGNAL IS "xilinx.com:interface:spi:1.0 SPI_1 IO1_I";
+  ATTRIBUTE X_INTERFACE_INFO OF emio_spi1_sclk_t: SIGNAL IS "xilinx.com:interface:spi:1.0 SPI_1 SCK_T";
+  ATTRIBUTE X_INTERFACE_INFO OF emio_spi1_sclk_o: SIGNAL IS "xilinx.com:interface:spi:1.0 SPI_1 SCK_O";
+  ATTRIBUTE X_INTERFACE_INFO OF emio_spi1_sclk_i: SIGNAL IS "xilinx.com:interface:spi:1.0 SPI_1 SCK_I";
+  ATTRIBUTE X_INTERFACE_INFO OF emio_spi0_ss_n_t: SIGNAL IS "xilinx.com:interface:spi:1.0 SPI_0 SS_T";
+  ATTRIBUTE X_INTERFACE_INFO OF emio_spi0_ss_o_n: SIGNAL IS "xilinx.com:interface:spi:1.0 SPI_0 SS_O";
+  ATTRIBUTE X_INTERFACE_INFO OF emio_spi0_ss_i_n: SIGNAL IS "xilinx.com:interface:spi:1.0 SPI_0 SS_I";
+  ATTRIBUTE X_INTERFACE_INFO OF emio_spi0_so_t: SIGNAL IS "xilinx.com:interface:spi:1.0 SPI_0 IO1_T";
+  ATTRIBUTE X_INTERFACE_INFO OF emio_spi0_s_o: SIGNAL IS "xilinx.com:interface:spi:1.0 SPI_0 IO1_O";
+  ATTRIBUTE X_INTERFACE_INFO OF emio_spi0_s_i: SIGNAL IS "xilinx.com:interface:spi:1.0 SPI_0 IO0_I";
+  ATTRIBUTE X_INTERFACE_INFO OF emio_spi0_mo_t: SIGNAL IS "xilinx.com:interface:spi:1.0 SPI_0 IO0_T";
+  ATTRIBUTE X_INTERFACE_INFO OF emio_spi0_m_o: SIGNAL IS "xilinx.com:interface:spi:1.0 SPI_0 IO0_O";
+  ATTRIBUTE X_INTERFACE_INFO OF emio_spi0_m_i: SIGNAL IS "xilinx.com:interface:spi:1.0 SPI_0 IO1_I";
+  ATTRIBUTE X_INTERFACE_INFO OF emio_spi0_sclk_t: SIGNAL IS "xilinx.com:interface:spi:1.0 SPI_0 SCK_T";
+  ATTRIBUTE X_INTERFACE_INFO OF emio_spi0_sclk_o: SIGNAL IS "xilinx.com:interface:spi:1.0 SPI_0 SCK_O";
+  ATTRIBUTE X_INTERFACE_INFO OF emio_spi0_sclk_i: SIGNAL IS "xilinx.com:interface:spi:1.0 SPI_0 SCK_I";
+  ATTRIBUTE X_INTERFACE_INFO OF emio_uart1_rxd: SIGNAL IS "xilinx.com:interface:uart:1.0 UART_1 RxD";
+  ATTRIBUTE X_INTERFACE_INFO OF emio_uart1_txd: SIGNAL IS "xilinx.com:interface:uart:1.0 UART_1 TxD";
+  ATTRIBUTE X_INTERFACE_INFO OF emio_i2c1_sda_t: SIGNAL IS "xilinx.com:interface:iic:1.0 IIC_1 SDA_T";
+  ATTRIBUTE X_INTERFACE_INFO OF emio_i2c1_sda_o: SIGNAL IS "xilinx.com:interface:iic:1.0 IIC_1 SDA_O";
+  ATTRIBUTE X_INTERFACE_INFO OF emio_i2c1_sda_i: SIGNAL IS "xilinx.com:interface:iic:1.0 IIC_1 SDA_I";
+  ATTRIBUTE X_INTERFACE_INFO OF emio_i2c1_scl_t: SIGNAL IS "xilinx.com:interface:iic:1.0 IIC_1 SCL_T";
+  ATTRIBUTE X_INTERFACE_INFO OF emio_i2c1_scl_o: SIGNAL IS "xilinx.com:interface:iic:1.0 IIC_1 SCL_O";
+  ATTRIBUTE X_INTERFACE_INFO OF emio_i2c1_scl_i: SIGNAL IS "xilinx.com:interface:iic:1.0 IIC_1 SCL_I";
   ATTRIBUTE X_INTERFACE_INFO OF maxigp2_arqos: SIGNAL IS "xilinx.com:interface:aximm:1.0 M_AXI_HPM0_LPD ARQOS";
   ATTRIBUTE X_INTERFACE_INFO OF maxigp2_awqos: SIGNAL IS "xilinx.com:interface:aximm:1.0 M_AXI_HPM0_LPD AWQOS";
   ATTRIBUTE X_INTERFACE_INFO OF maxigp2_rready: SIGNAL IS "xilinx.com:interface:aximm:1.0 M_AXI_HPM0_LPD RREADY";
@@ -2182,14 +2246,19 @@ BEGIN
       emio_gpio_i => STD_LOGIC_VECTOR(TO_UNSIGNED(0, 1)),
       emio_i2c0_scl_i => '0',
       emio_i2c0_sda_i => '0',
-      emio_i2c1_scl_i => '0',
-      emio_i2c1_sda_i => '0',
+      emio_i2c1_scl_i => emio_i2c1_scl_i,
+      emio_i2c1_scl_o => emio_i2c1_scl_o,
+      emio_i2c1_scl_t => emio_i2c1_scl_t,
+      emio_i2c1_sda_i => emio_i2c1_sda_i,
+      emio_i2c1_sda_o => emio_i2c1_sda_o,
+      emio_i2c1_sda_t => emio_i2c1_sda_t,
       emio_uart0_rxd => '0',
       emio_uart0_ctsn => '0',
       emio_uart0_dsrn => '0',
       emio_uart0_dcdn => '0',
       emio_uart0_rin => '0',
-      emio_uart1_rxd => '0',
+      emio_uart1_txd => emio_uart1_txd,
+      emio_uart1_rxd => emio_uart1_rxd,
       emio_uart1_ctsn => '0',
       emio_uart1_dsrn => '0',
       emio_uart1_dcdn => '0',
@@ -2204,14 +2273,30 @@ BEGIN
       emio_sdio1_datain => STD_LOGIC_VECTOR(TO_UNSIGNED(0, 4)),
       emio_sdio1_cd_n => '0',
       emio_sdio1_wp => '1',
-      emio_spi0_sclk_i => '0',
-      emio_spi0_m_i => '0',
-      emio_spi0_s_i => '0',
-      emio_spi0_ss_i_n => '1',
-      emio_spi1_sclk_i => '0',
-      emio_spi1_m_i => '0',
-      emio_spi1_s_i => '0',
-      emio_spi1_ss_i_n => '1',
+      emio_spi0_sclk_i => emio_spi0_sclk_i,
+      emio_spi0_sclk_o => emio_spi0_sclk_o,
+      emio_spi0_sclk_t => emio_spi0_sclk_t,
+      emio_spi0_m_i => emio_spi0_m_i,
+      emio_spi0_m_o => emio_spi0_m_o,
+      emio_spi0_mo_t => emio_spi0_mo_t,
+      emio_spi0_s_i => emio_spi0_s_i,
+      emio_spi0_s_o => emio_spi0_s_o,
+      emio_spi0_so_t => emio_spi0_so_t,
+      emio_spi0_ss_i_n => emio_spi0_ss_i_n,
+      emio_spi0_ss_o_n => emio_spi0_ss_o_n,
+      emio_spi0_ss_n_t => emio_spi0_ss_n_t,
+      emio_spi1_sclk_i => emio_spi1_sclk_i,
+      emio_spi1_sclk_o => emio_spi1_sclk_o,
+      emio_spi1_sclk_t => emio_spi1_sclk_t,
+      emio_spi1_m_i => emio_spi1_m_i,
+      emio_spi1_m_o => emio_spi1_m_o,
+      emio_spi1_mo_t => emio_spi1_mo_t,
+      emio_spi1_s_i => emio_spi1_s_i,
+      emio_spi1_s_o => emio_spi1_s_o,
+      emio_spi1_so_t => emio_spi1_so_t,
+      emio_spi1_ss_i_n => emio_spi1_ss_i_n,
+      emio_spi1_ss_o_n => emio_spi1_ss_o_n,
+      emio_spi1_ss_n_t => emio_spi1_ss_n_t,
       pl_ps_trace_clk => '0',
       emio_ttc0_clk_i => STD_LOGIC_VECTOR(TO_UNSIGNED(0, 3)),
       emio_ttc1_clk_i => STD_LOGIC_VECTOR(TO_UNSIGNED(0, 3)),

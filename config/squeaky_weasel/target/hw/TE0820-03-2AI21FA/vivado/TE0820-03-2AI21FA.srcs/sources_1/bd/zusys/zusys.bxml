@@ -2,10 +2,10 @@
 <Root MajorVersion="0" MinorVersion="39">
   <CompositeFile CompositeFileTopName="zusys" CanBeSetAsTop="false" CanDisplayChildGraph="true">
     <Description>Composite Fileset</Description>
-    <Generation Name="SYNTHESIS" State="GENERATED" Timestamp="1597812329"/>
-    <Generation Name="IMPLEMENTATION" State="GENERATED" Timestamp="1597812329"/>
-    <Generation Name="SIMULATION" State="GENERATED" Timestamp="1597812329"/>
-    <Generation Name="HW_HANDOFF" State="GENERATED" Timestamp="1597812329"/>
+    <Generation Name="SYNTHESIS" State="GENERATED" Timestamp="1597827215"/>
+    <Generation Name="IMPLEMENTATION" State="GENERATED" Timestamp="1597827215"/>
+    <Generation Name="SIMULATION" State="GENERATED" Timestamp="1597827215"/>
+    <Generation Name="HW_HANDOFF" State="GENERATED" Timestamp="1597827215"/>
     <FileCollection Name="SOURCES" Type="SOURCES">
       <File Name="ip/zusys_labtools_fmeter_0_0/zusys_labtools_fmeter_0_0.xci" Type="IP">
         <Instance HierarchyPath="labtools_fmeter_0"/>
@@ -55,6 +55,22 @@
       <File Name="sim/zusys.vhd" Type="VHDL">
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="false" IsStatusTracked="false"/>
         <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SIMULATION"/>
+      </File>
+      <File Name="ip/zusys_system_ila_0_0/zusys_system_ila_0_0.xci" Type="IP">
+        <Instance HierarchyPath="system_ila_0"/>
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SYNTHESIS"/>
+        <UsedIn Val="IMPLEMENTATION"/>
+        <UsedIn Val="SIMULATION"/>
+      </File>
+      <File Name="ip/zusys_clk_wiz_0_0/zusys_clk_wiz_0_0.xci" Type="IP">
+        <Instance HierarchyPath="clk_wiz_0"/>
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SYNTHESIS"/>
+        <UsedIn Val="IMPLEMENTATION"/>
         <UsedIn Val="SIMULATION"/>
       </File>
       <File Name="zusys_ooc.xdc" Type="XDC">
