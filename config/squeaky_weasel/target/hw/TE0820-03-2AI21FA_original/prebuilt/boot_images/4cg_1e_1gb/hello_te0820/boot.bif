@@ -1,7 +1,0 @@
-//arch = zynqmp; split = false; format = BIN
-the_ROM_image:
-{
-  [bootloader, destination_cpu=a53-0]../../../software/4cg_1e_1gb/fsbl.elf
-  [destination_device = pl]../../../hardware/4cg_1e_1gb/test_board_4cg_1e_1gb.bit
-  [destination_cpu =a53-0]../../../software/4cg_1e_1gb/hello_te0820.elf
-}
