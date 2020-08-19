@@ -1,0 +1,47 @@
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2708876 Wed Nov  6 21:40:23 MST 2019
+| Date         : Mon Jan 13 15:56:06 2020
+| Host         : PC02615 running 64-bit major release  (build 9200)
+| Command      : report_ip_status
+------------------------------------------------------------------------------------
+
+IP Status Summary
+
+1. Project IP Status
+--------------------
+Your project uses 5 IP. Some of these IP may have undergone changes in this release of the software. Please review the recommended actions.
+
+More information on the Xilinx versioning policy is available at www.xilinx.com.
+
+Project IP Instances
++---------------------------+------------+---------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+| Instance Name             | Status     | Recommendation      | Change    | IP Name            | IP      | New Version   | New        | Original Part        |
+|                           |            |                     | Log       |                    | Version |               | License    |                      |
++---------------------------+------------+---------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+| zusys_labtools_fmeter_0_0 | Up-to-date | No changes required | Change    | Labtools Frequency | 1.0     | 1.0 (Rev. 21) | Included   | xczu4cg-sfvc784-1-e  |
+|                           |            |                     | Log not   | Counter v1.0       | (Rev.   |               |            |                      |
+|                           |            |                     | available |                    | 21)     |               |            |                      |
++---------------------------+------------+---------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+| zusys_util_ds_buf_0_0     | Up-to-date | No changes required |  *(1)     | Utility Buffer     | 2.1     | 2.1 (Rev. 21) | Included   | xczu4cg-sfvc784-1-e  |
+|                           |            |                     |           |                    | (Rev.   |               |            |                      |
+|                           |            |                     |           |                    | 21)     |               |            |                      |
++---------------------------+------------+---------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+| zusys_vio_0_0             | Up-to-date | No changes required |  *(2)     | VIO (Virtual       | 3.0     | 3.0 (Rev. 19) | Included   | xczu4cg-sfvc784-1-e  |
+|                           |            |                     |           | Input/Output)      | (Rev.   |               |            |                      |
+|                           |            |                     |           |                    | 19)     |               |            |                      |
++---------------------------+------------+---------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+| zusys_xlconcat_0_0        | Up-to-date | No changes required |  *(3)     | Concat             | 2.1     | 2.1 (Rev. 3)  | Included   | xczu4cg-sfvc784-1-e  |
+|                           |            |                     |           |                    | (Rev.   |               |            |                      |
+|                           |            |                     |           |                    | 3)      |               |            |                      |
++---------------------------+------------+---------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+| zusys_zynq_ultra_ps_e_0_0 | Up-to-date | No changes required |  *(4)     | Zynq UltraScale+   | 3.3     | 3.3 (Rev. 1)  | Included   | xczu4cg-sfvc784-1-e  |
+|                           |            |                     |           | MPSoC              | (Rev.   |               |            |                      |
+|                           |            |                     |           |                    | 1)      |               |            |                      |
++---------------------------+------------+---------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+*(1) c:/Xilinx/Vivado/2019.2/data/rsb/iprepos/util_ds_buf_v2_1/doc/util_ds_buf_v2_1_changelog.txt
+*(2) c:/Xilinx/Vivado/2019.2/data/ip/xilinx/vio_v3_0/doc/vio_v3_0_changelog.txt
+*(3) c:/Xilinx/Vivado/2019.2/data/ip/xilinx/xlconcat_v2_1/doc/xlconcat_v2_1_changelog.txt
+*(4) c:/Xilinx/Vivado/2019.2/data/ip/xilinx/zynq_ultra_ps_e_v3_3/doc/zynq_ultra_ps_e_v3_3_changelog.txt
+
+

@@ -1,0 +1,7 @@
+//arch = zynqmp; split = false; format = BIN
+the_ROM_image:
+{
+  [bootloader, destination_cpu=a53-0]../../../software/3eg_1e_2gb/fsbl.elf
+  [destination_device = pl]../../../hardware/3eg_1e_2gb/test_board_3eg_1e_2gb.bit
+  [destination_cpu =a53-0]../../../software/3eg_1e_2gb/hello_te0820.elf
+}

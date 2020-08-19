@@ -1,0 +1,9 @@
+//arch = zynqmp; split = false; format = BIN
+the_ROM_image:
+{
+  [bootloader, destination_cpu=a53-0]../../../software/2cg_1e_2gb/fsbl.elf
+  [pmufw_image]../../../software/2cg_1e_2gb/pmufw.elf
+  [destination_device = pl]../../../hardware/2cg_1e_2gb/test_board_2cg_1e_2gb.bit
+  [destination_cpu =a53-0, exception_level =el-3, trustzone]../../../os/petalinux/2GB/bl31.elf
+  [destination_cpu =a53-0, exception_level =el-2]../../../os/petalinux/2GB/u-boot.elf
+}
