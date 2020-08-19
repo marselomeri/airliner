@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2019.2 (64-bit)
+# SW Build 2708876 on Wed Nov  6 21:39:14 MST 2019
+# IP Build 2700528 on Thu Nov  7 00:09:20 MST 2019
+# Start of session at: Wed Aug 19 00:02:45 2020
+# Process ID: 28150
+# Current directory: /home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.runs/zusys_vio_0_0_synth_1
+# Command line: vivado -log zusys_vio_0_0.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source zusys_vio_0_0.tcl
+# Log file: /home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.runs/zusys_vio_0_0_synth_1/zusys_vio_0_0.vds
+# Journal file: /home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.runs/zusys_vio_0_0_synth_1/vivado.jou
+#-----------------------------------------------------------
+source zusys_vio_0_0.tcl -notrace
