@@ -1,0 +1,48 @@
+04:09:32 TRACE : Loaded library librdi_repo_manager.so
+04:09:32 INFO  : Launching XSCT server: xsct -n  -interactive /home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/temp_xsdb_launch_script.tcl
+04:09:38 INFO  : XSCT server has started successfully.
+04:09:38 INFO  : plnx-install-location is set to ''
+04:09:39 INFO  : Successfully done setting XSCT server connection channel  
+04:09:39 INFO  : Successfully done query RDI_DATADIR 
+04:09:39 INFO  : Successfully done setting workspace for the tool. 
+04:09:40 INFO  : Registering command handlers for Vitis TCF services
+14:21:47 INFO  : Launching XSCT server: xsct -n  -interactive /home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/temp_xsdb_launch_script.tcl
+14:21:52 INFO  : XSCT server has started successfully.
+14:21:53 INFO  : plnx-install-location is set to ''
+14:21:53 INFO  : Successfully done setting XSCT server connection channel  
+14:21:53 INFO  : Successfully done query RDI_DATADIR 
+14:21:53 INFO  : Successfully done setting workspace for the tool. 
+14:21:55 INFO  : Registering command handlers for Vitis TCF services
+15:17:24 INFO  : Launching XSCT server: xsct -n  -interactive /home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/temp_xsdb_launch_script.tcl
+15:17:29 INFO  : XSCT server has started successfully.
+15:17:30 INFO  : plnx-install-location is set to ''
+15:17:30 INFO  : Successfully done query RDI_DATADIR 
+15:17:30 INFO  : Successfully done setting XSCT server connection channel  
+15:17:30 INFO  : Successfully done setting workspace for the tool. 
+15:17:31 INFO  : Registering command handlers for Vitis TCF services
+15:23:30 INFO  : Successfully done sdx_reload_mss "/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/SW_system/zynqmp_fsbl/zynqmp_fsbl_bsp/system.mss"
+15:23:31 INFO  : Successfully done sdx_reload_mss "/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/SW_system/zynqmp_pmufw/zynqmp_pmufw_bsp/system.mss"
+15:32:55 INFO  : Checking for BSP changes to sync application flags for project 'SW_A53'...
+15:35:31 INFO  : Successfully done sdx_reload_mss "/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zynqmp_fsbl/zynqmp_fsbl_bsp/system.mss"
+15:35:32 INFO  : Successfully done sdx_reload_mss "/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zynqmp_pmufw/zynqmp_pmufw_bsp/system.mss"
+15:35:33 INFO  : Successfully done sdx_reload_mss "/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/psu_cortexa53_0/standalone_domain/bsp/system.mss"
+15:38:08 INFO  : Successfully done sdx_reload_mss "/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/psu_cortexr5_0/r5_0/bsp/system.mss"
+15:38:34 INFO  : Successfully done sdx_reload_mss "/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/psu_cortexr5_1/r5_1/bsp/system.mss"
+18:38:47 INFO  : Launching XSCT server: xsct -n  -interactive /home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/temp_xsdb_launch_script.tcl
+18:38:50 INFO  : XSCT server has started successfully.
+18:38:50 INFO  : Successfully done setting XSCT server connection channel  
+18:38:50 INFO  : plnx-install-location is set to ''
+18:38:54 INFO  : Registering command handlers for Vitis TCF services
+18:39:13 INFO  : Successfully done query RDI_DATADIR 
+18:39:13 INFO  : Successfully done setting workspace for the tool. 
+18:39:14 INFO  : Successfully done sdx_reload_mss "/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zynqmp_fsbl/zynqmp_fsbl_bsp/system.mss"
+18:39:15 INFO  : Successfully done sdx_reload_mss "/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zynqmp_pmufw/zynqmp_pmufw_bsp/system.mss"
+18:39:15 INFO  : Successfully done sdx_reload_mss "/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/psu_cortexa53_0/standalone_domain/bsp/system.mss"
+18:39:16 INFO  : Successfully done sdx_reload_mss "/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/psu_cortexr5_0/r5_0/bsp/system.mss"
+18:39:17 INFO  : Successfully done sdx_reload_mss "/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/psu_cortexr5_1/r5_1/bsp/system.mss"
+18:43:35 INFO  : Successfully done sdx_reload_mss "/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zynqmp_fsbl/zynqmp_fsbl_bsp/system.mss"
+18:43:35 INFO  : No changes in MSS file content so sources will not be generated.
+18:44:35 INFO  : Successfully done sdx_reload_mss "/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zynqmp_fsbl/zynqmp_fsbl_bsp/system.mss"
+18:44:35 INFO  : No changes in MSS file content so sources will not be generated.
+18:47:41 INFO  : Removed '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper' from custom platform repositories.
+18:51:12 INFO  : Checking for BSP changes to sync application flags for project 'FSBL'...

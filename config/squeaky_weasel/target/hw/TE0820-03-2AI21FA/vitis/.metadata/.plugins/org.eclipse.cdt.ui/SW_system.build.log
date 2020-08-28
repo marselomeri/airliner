@@ -1,0 +1,21 @@
+15:24:40 **** Build of project SW_system ****
+buildplatform.sh 45083 SW_system  
+XSDB Server Channel: tcfchan#1
+Failed to generate the platform.
+Reason: Error: Boot directory is not specified for domain: linux_domain
+    invoked from within
+"::tcf::eval -progress {apply {{msg} {puts $msg}}} {tcf_send_command tcfchan#0 xsdb eval s es {{platform active SW_system; platform generate }}}"
+    (procedure "::tcf::send_command" line 4)
+    invoked from within
+"tcf send_command $::xsdb::curchan xsdb eval s es [list "platform active $PLATFORM_NAME; platform generate $target"]"
+    invoked from within
+"if { $iswindows == 1 } {    
+
+    set XSDB_PORT [lindex $argv 0]
+    set PLATFORM_NAME [lindex $argv 1]
+    set arglen [llength $argv]
+    set lastind..."
+    (file "/opt/Xilinx/Vitis/2019.2/scripts/vitis/util/buildplatform.tcl" line 11)
+
+15:24:45 Build Finished (took 5s.401ms)
+
