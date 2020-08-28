@@ -13,3 +13,6 @@
 [submodule "rtems/rtems-source-builder"]
 	path = rtems/rtems-source-builder
 	url = https://github.com/WindhoverLabs/rtems-source-builder.git
+[submodule "config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/device-tree"]
+	path = config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/device-tree
+	url = https://github.com/Xilinx/device-tree-xlnx
