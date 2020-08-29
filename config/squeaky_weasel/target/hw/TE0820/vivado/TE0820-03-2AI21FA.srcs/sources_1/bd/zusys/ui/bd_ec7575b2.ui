@@ -1,7 +1,7 @@
 {
    "ActiveEmotionalView":"Default View",
    "Default View_ScaleFactor":"0.765898",
-   "Default View_TopLeft":"492,0",
+   "Default View_TopLeft":"492,72",
    "ExpandedHierarchyInLayout":"",
    "PinnedBlocks":"",
    "PinnedPorts":"",
@@ -20,22 +20,20 @@ preplace inst vio_0 -pg 1 -lvl 4 -x 1290 -y 340 -defaultsOSRD
 preplace inst xlconcat_0 -pg 1 -lvl 2 -x 560 -y 340 -defaultsOSRD
 preplace inst zynq_ultra_ps_e_0 -pg 1 -lvl 4 -x 1290 -y 120 -defaultsOSRD
 preplace inst system_ila_0 -pg 1 -lvl 5 -x 1770 -y 470 -defaultsOSRD
-preplace inst clk_wiz_0 -pg 1 -lvl 4 -x 1290 -y 540 -defaultsOSRD
 preplace netloc VIO_x0_firmware 1 0 4 NJ 260 NJ 260 670J 400 940J
 preplace netloc fm_SI5338_CLK0_D 1 3 1 N 320
 preplace netloc labtools_fmeter_0_update 1 3 1 N 340
 preplace netloc util_ds_buf_0_IBUF_OUT 1 1 1 NJ 340
-preplace netloc x1_phy_led 1 0 4 NJ 400 NJ 400 660J 410 960J
+preplace netloc x1_phy_led 1 0 4 NJ 400 NJ 400 660J 410 950J
 preplace netloc xlconcat_0_dout 1 2 1 NJ 340
-preplace netloc zynq_ultra_ps_e_0_pl_clk1 1 2 3 680 260 950 240 1580
-preplace netloc clk_wiz_0_clk_out1 1 4 1 1600 510n
+preplace netloc zynq_ultra_ps_e_0_pl_clk1 1 2 3 680 260 940 240 1600
 preplace netloc CLK_IN_D_1 1 0 1 NJ 340
-preplace netloc zynq_ultra_ps_e_0_UART_1 1 4 2 1610J 100 N
-preplace netloc zynq_ultra_ps_e_0_SPI_1 1 4 2 1590J 140 N
-preplace netloc zynq_ultra_ps_e_0_SPI_0 1 4 2 1600J 120 N
-preplace netloc zynq_ultra_ps_e_0_IIC_1 1 4 2 1620J 80 N
+preplace netloc zynq_ultra_ps_e_0_UART_1 1 4 2 1630J 100 N
+preplace netloc zynq_ultra_ps_e_0_SPI_1 1 4 2 1610J 140 N
+preplace netloc zynq_ultra_ps_e_0_SPI_0 1 4 2 1620J 120 N
+preplace netloc zynq_ultra_ps_e_0_IIC_1 1 4 2 1640J 80 N
 levelinfo -pg 1 -10 320 560 810 1290 1770 1890
-pagesize -pg 1 -db -bbox -sgen -160 -160 2000 1500
+pagesize -pg 1 -db -bbox -sgen -180 -160 2010 1500
 "
 }
 {

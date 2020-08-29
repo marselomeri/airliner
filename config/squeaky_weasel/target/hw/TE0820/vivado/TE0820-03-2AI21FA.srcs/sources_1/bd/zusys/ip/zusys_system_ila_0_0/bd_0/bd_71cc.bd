@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0x36FA9F247387C15F",
+      "boundary_crc": "0x36FA9F240867D4EE",
       "design_src": "SBD",
       "device": "xczu2cg-sfvc784-1-i",
       "name": "bd_71cc",
@@ -173,11 +173,11 @@
         "direction": "I",
         "parameters": {
           "CLK_DOMAIN": {
-            "value": "zusys_clk_wiz_0_0_clk_out1",
+            "value": "zusys_zynq_ultra_ps_e_0_0_pl_clk0",
             "value_src": "default_prop"
           },
           "FREQ_HZ": {
-            "value": "20000000",
+            "value": "99999985",
             "value_src": "default_prop"
           },
           "INSERT_VIP": {
@@ -185,7 +185,7 @@
             "value_src": "default"
           },
           "PHASE": {
-            "value": "0.0",
+            "value": "0.000",
             "value_src": "default_prop"
           }
         }
@@ -311,7 +311,7 @@
             "value": "0"
           },
           "C_ILA_CLK_FREQ": {
-            "value": "20000000"
+            "value": "99999985"
           },
           "C_INPUT_PIPE_STAGES": {
             "value": "0"

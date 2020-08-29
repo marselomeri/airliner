@@ -49,6 +49,7 @@ end bd_71cc_wrapper;
 architecture STRUCTURE of bd_71cc_wrapper is
   component bd_71cc is
   port (
+    clk : in STD_LOGIC;
     SLOT_0_IIC_scl_i : in STD_LOGIC;
     SLOT_0_IIC_scl_o : in STD_LOGIC;
     SLOT_0_IIC_scl_t : in STD_LOGIC;
@@ -80,8 +81,7 @@ architecture STRUCTURE of bd_71cc_wrapper is
     SLOT_3_SPI_io1_t : in STD_LOGIC;
     SLOT_3_SPI_ss_i : in STD_LOGIC;
     SLOT_3_SPI_ss_o : in STD_LOGIC;
-    SLOT_3_SPI_ss_t : in STD_LOGIC;
-    clk : in STD_LOGIC
+    SLOT_3_SPI_ss_t : in STD_LOGIC
   );
   end component bd_71cc;
 begin

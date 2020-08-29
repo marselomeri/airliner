@@ -2,33 +2,33 @@
 # Vivado v2019.2 (64-bit)
 # SW Build 2708876 on Wed Nov  6 21:39:14 MST 2019
 # IP Build 2700528 on Thu Nov  7 00:09:20 MST 2019
-# Start of session at: Sat Aug 29 13:38:20 2020
-# Process ID: 16867
-# Current directory: /home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.runs/zusys_system_ila_0_0_synth_1
+# Start of session at: Sat Aug 29 15:45:07 2020
+# Process ID: 11194
+# Current directory: /home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/zusys_system_ila_0_0_synth_1
 # Command line: vivado -log zusys_system_ila_0_0.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source zusys_system_ila_0_0.tcl
-# Log file: /home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.runs/zusys_system_ila_0_0_synth_1/zusys_system_ila_0_0.vds
-# Journal file: /home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.runs/zusys_system_ila_0_0_synth_1/vivado.jou
+# Log file: /home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/zusys_system_ila_0_0_synth_1/zusys_system_ila_0_0.vds
+# Journal file: /home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/zusys_system_ila_0_0_synth_1/vivado.jou
 #-----------------------------------------------------------
 source zusys_system_ila_0_0.tcl -notrace
 INFO: [IP_Flow 19-234] Refreshing IP repositories
 INFO: [IP_Flow 19-1700] Loaded user IP repository '/home/vagrant/Downloads/TE0820/TE0820-03-2AI21FA/ip_lib'.
 INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/Xilinx/Vivado/2019.2/data/ip'.
-update_ip_catalog: Time (s): cpu = 00:00:03 ; elapsed = 00:00:06 . Memory (MB): peak = 1556.160 ; gain = 35.688 ; free physical = 3869 ; free virtual = 10869
+update_ip_catalog: Time (s): cpu = 00:00:03 ; elapsed = 00:00:06 . Memory (MB): peak = 1555.191 ; gain = 34.688 ; free physical = 3707 ; free virtual = 8328
 Command: synth_design -top zusys_system_ila_0_0 -part xczu2cg-sfvc784-1-i -mode out_of_context
 Starting synth_design
 Attempting to get a license for feature 'Synthesis' and/or device 'xczu2cg'
 INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xczu2cg'
 INFO: [Device 21-403] Loading part xczu2cg-sfvc784-1-i
 INFO: Launching helper process for spawning children vivado processes
-INFO: Helper process launched with PID 17023 
+INFO: Helper process launched with PID 11302 
 ---------------------------------------------------------------------------------
-Starting RTL Elaboration : Time (s): cpu = 00:00:14 ; elapsed = 00:00:29 . Memory (MB): peak = 2411.445 ; gain = 0.000 ; free physical = 2917 ; free virtual = 9917
+Starting RTL Elaboration : Time (s): cpu = 00:00:14 ; elapsed = 00:00:29 . Memory (MB): peak = 2411.516 ; gain = 0.000 ; free physical = 2750 ; free virtual = 7372
 ---------------------------------------------------------------------------------
-INFO: [Synth 8-638] synthesizing module 'zusys_system_ila_0_0' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/synth/zusys_system_ila_0_0.vhd:94]
-INFO: [Synth 8-3491] module 'bd_71cc' declared at '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/bd_0/synth/bd_71cc.vhd:11' bound to instance 'U0' of component 'bd_71cc' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/synth/zusys_system_ila_0_0.vhd:336]
-INFO: [Synth 8-638] synthesizing module 'bd_71cc' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/bd_0/synth/bd_71cc.vhd:53]
-INFO: [Synth 8-3491] module 'bd_71cc_ila_lib_0' declared at '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/bd_0/ip/ip_0/synth/bd_71cc_ila_lib_0.vhd:53' bound to instance 'ila_lib' of component 'bd_71cc_ila_lib_0' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/bd_0/synth/bd_71cc.vhd:194]
-INFO: [Synth 8-638] synthesizing module 'bd_71cc_ila_lib_0' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/bd_0/ip/ip_0/synth/bd_71cc_ila_lib_0.vhd:93]
+INFO: [Synth 8-638] synthesizing module 'zusys_system_ila_0_0' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/synth/zusys_system_ila_0_0.vhd:94]
+INFO: [Synth 8-3491] module 'bd_71cc' declared at '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/bd_0/synth/bd_71cc.vhd:11' bound to instance 'U0' of component 'bd_71cc' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/synth/zusys_system_ila_0_0.vhd:336]
+INFO: [Synth 8-638] synthesizing module 'bd_71cc' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/bd_0/synth/bd_71cc.vhd:53]
+INFO: [Synth 8-3491] module 'bd_71cc_ila_lib_0' declared at '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/bd_0/ip/ip_0/synth/bd_71cc_ila_lib_0.vhd:53' bound to instance 'ila_lib' of component 'bd_71cc_ila_lib_0' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/bd_0/synth/bd_71cc.vhd:194]
+INFO: [Synth 8-638] synthesizing module 'bd_71cc_ila_lib_0' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/bd_0/ip/ip_0/synth/bd_71cc_ila_lib_0.vhd:93]
 	Parameter C_XLNX_HW_PROBE_INFO bound to: DEFAULT - type: string 
 	Parameter C_XDEVICEFAMILY bound to: virtexu - type: string 
 	Parameter C_CORE_TYPE bound to: 1 - type: integer 
@@ -58,7 +58,7 @@ INFO: [Synth 8-638] synthesizing module 'bd_71cc_ila_lib_0' [/home/vagrant/git/a
 	Parameter C_INPUT_PIPE_STAGES bound to: 0 - type: integer 
 	Parameter C_EN_TIME_TAG bound to: 0 - type: integer 
 	Parameter C_TIME_TAG_WIDTH bound to: 32 - type: integer 
-	Parameter C_ILA_CLK_FREQ bound to: 20000000 - type: integer 
+	Parameter C_ILA_CLK_FREQ bound to: 99999985 - type: integer 
 	Parameter C_PROBE0_WIDTH bound to: 1 - type: integer 
 	Parameter C_PROBE1_WIDTH bound to: 1 - type: integer 
 	Parameter C_PROBE2_WIDTH bound to: 1 - type: integer 
@@ -3131,7 +3131,7 @@ INFO: [Synth 8-638] synthesizing module 'bd_71cc_ila_lib_0' [/home/vagrant/git/a
 	Parameter C_PROBE1021_TYPE bound to: 1 - type: integer 
 	Parameter C_PROBE1022_TYPE bound to: 1 - type: integer 
 	Parameter C_PROBE1023_TYPE bound to: 1 - type: integer 
-INFO: [Synth 8-3491] module 'ila_v6_2_10_ila' declared at '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ipshared/8f82/hdl/ila_v6_2_syn_rfs.v:5641' bound to instance 'U0' of component 'ila_v6_2_10_ila' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/bd_0/ip/ip_0/synth/bd_71cc_ila_lib_0.vhd:4278]
+INFO: [Synth 8-3491] module 'ila_v6_2_10_ila' declared at '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ipshared/8f82/hdl/ila_v6_2_syn_rfs.v:5641' bound to instance 'U0' of component 'ila_v6_2_10_ila' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/bd_0/ip/ip_0/synth/bd_71cc_ila_lib_0.vhd:4278]
 INFO: [Synth 8-6157] synthesizing module 'CFGLUT5' [/opt/Xilinx/Vivado/2019.2/scripts/rt/data/unisim_comp.v:1516]
 INFO: [Synth 8-6155] done synthesizing module 'CFGLUT5' (8#1) [/opt/Xilinx/Vivado/2019.2/scripts/rt/data/unisim_comp.v:1516]
 INFO: [Synth 8-6157] synthesizing module 'CARRY4' [/opt/Xilinx/Vivado/2019.2/scripts/rt/data/unisim_comp.v:1479]
@@ -3144,11 +3144,11 @@ INFO: [Synth 8-6157] synthesizing module 'SRLC16E' [/opt/Xilinx/Vivado/2019.2/sc
 INFO: [Synth 8-6155] done synthesizing module 'SRLC16E' (23#1) [/opt/Xilinx/Vivado/2019.2/scripts/rt/data/unisim_comp.v:78054]
 INFO: [Synth 8-6157] synthesizing module 'FDRE' [/opt/Xilinx/Vivado/2019.2/scripts/rt/data/unisim_comp.v:13708]
 INFO: [Synth 8-6155] done synthesizing module 'FDRE' (28#1) [/opt/Xilinx/Vivado/2019.2/scripts/rt/data/unisim_comp.v:13708]
-WARNING: [Synth 8-3848] Net sl_iport0 in module/entity bd_71cc_ila_lib_0 does not have driver. [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/bd_0/ip/ip_0/synth/bd_71cc_ila_lib_0.vhd:4275]
-INFO: [Synth 8-256] done synthesizing module 'bd_71cc_ila_lib_0' (46#1) [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/bd_0/ip/ip_0/synth/bd_71cc_ila_lib_0.vhd:93]
-INFO: [Synth 8-6071] Mark debug on the nets applies keep_hierarchy on instance 'ila_lib'. This will prevent further optimization [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/bd_0/synth/bd_71cc.vhd:194]
-INFO: [Synth 8-256] done synthesizing module 'bd_71cc' (47#1) [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/bd_0/synth/bd_71cc.vhd:53]
-INFO: [Synth 8-256] done synthesizing module 'zusys_system_ila_0_0' (48#1) [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/synth/zusys_system_ila_0_0.vhd:94]
+WARNING: [Synth 8-3848] Net sl_iport0 in module/entity bd_71cc_ila_lib_0 does not have driver. [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/bd_0/ip/ip_0/synth/bd_71cc_ila_lib_0.vhd:4275]
+INFO: [Synth 8-256] done synthesizing module 'bd_71cc_ila_lib_0' (46#1) [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/bd_0/ip/ip_0/synth/bd_71cc_ila_lib_0.vhd:93]
+INFO: [Synth 8-6071] Mark debug on the nets applies keep_hierarchy on instance 'ila_lib'. This will prevent further optimization [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/bd_0/synth/bd_71cc.vhd:194]
+INFO: [Synth 8-256] done synthesizing module 'bd_71cc' (47#1) [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/bd_0/synth/bd_71cc.vhd:53]
+INFO: [Synth 8-256] done synthesizing module 'zusys_system_ila_0_0' (48#1) [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/synth/zusys_system_ila_0_0.vhd:94]
 WARNING: [Synth 8-3331] design blk_mem_gen_v8_4_4_blk_mem_output_block has unconnected port CLKB
 WARNING: [Synth 8-3331] design blk_mem_gen_v8_4_4_blk_mem_output_block has unconnected port DOUTA_I[32]
 WARNING: [Synth 8-3331] design blk_mem_gen_v8_4_4_blk_mem_output_block has unconnected port DOUTA_I[31]
@@ -3251,7 +3251,7 @@ WARNING: [Synth 8-3331] design blk_mem_gen_v8_4_4_blk_mem_gen_prim_wrapper has u
 WARNING: [Synth 8-3331] design blk_mem_gen_v8_4_4_blk_mem_gen_prim_wrapper has unconnected port DINB[24]
 INFO: [Common 17-14] Message 'Synth 8-3331' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
 ---------------------------------------------------------------------------------
-Finished RTL Elaboration : Time (s): cpu = 00:01:55 ; elapsed = 00:02:24 . Memory (MB): peak = 2780.230 ; gain = 368.785 ; free physical = 2893 ; free virtual = 9895
+Finished RTL Elaboration : Time (s): cpu = 00:01:55 ; elapsed = 00:02:23 . Memory (MB): peak = 2781.301 ; gain = 369.785 ; free physical = 2729 ; free virtual = 7352
 ---------------------------------------------------------------------------------
 
 Report Check Netlist: 
@@ -3264,40 +3264,40 @@ Report Check Netlist:
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:01:57 ; elapsed = 00:02:25 . Memory (MB): peak = 2780.230 ; gain = 368.785 ; free physical = 2908 ; free virtual = 9910
+Finished Handling Custom Attributes : Time (s): cpu = 00:01:56 ; elapsed = 00:02:24 . Memory (MB): peak = 2781.301 ; gain = 369.785 ; free physical = 2744 ; free virtual = 7368
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 1 : Time (s): cpu = 00:01:57 ; elapsed = 00:02:25 . Memory (MB): peak = 2780.230 ; gain = 368.785 ; free physical = 2908 ; free virtual = 9910
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:01:56 ; elapsed = 00:02:24 . Memory (MB): peak = 2781.301 ; gain = 369.785 ; free physical = 2744 ; free virtual = 7368
 ---------------------------------------------------------------------------------
-Netlist sorting complete. Time (s): cpu = 00:00:00.28 ; elapsed = 00:00:00.28 . Memory (MB): peak = 2780.230 ; gain = 0.000 ; free physical = 2881 ; free virtual = 9883
+Netlist sorting complete. Time (s): cpu = 00:00:00.28 ; elapsed = 00:00:00.28 . Memory (MB): peak = 2781.301 ; gain = 0.000 ; free physical = 2717 ; free virtual = 7341
 INFO: [Netlist 29-17] Analyzing 282 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-570] Preparing netlist for logic optimization
 
 Processing XDC Constraints
 Initializing timing engine
-Parsing XDC File [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/zusys_system_ila_0_0_ooc.xdc] for cell 'U0'
-create_clock: Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 2802.176 ; gain = 0.000 ; free physical = 2789 ; free virtual = 9792
-Finished Parsing XDC File [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/zusys_system_ila_0_0_ooc.xdc] for cell 'U0'
-Parsing XDC File [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/bd_0/ip/ip_0/ila_v6_2/constraints/ila.xdc] for cell 'U0/ila_lib/U0'
-Finished Parsing XDC File [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/bd_0/ip/ip_0/ila_v6_2/constraints/ila.xdc] for cell 'U0/ila_lib/U0'
-Parsing XDC File [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.runs/zusys_system_ila_0_0_synth_1/dont_touch.xdc]
-Finished Parsing XDC File [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.runs/zusys_system_ila_0_0_synth_1/dont_touch.xdc]
-INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.runs/zusys_system_ila_0_0_synth_1/dont_touch.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/zusys_system_ila_0_0_propImpl.xdc].
+Parsing XDC File [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/zusys_system_ila_0_0_ooc.xdc] for cell 'U0'
+create_clock: Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 2806.215 ; gain = 0.000 ; free physical = 2626 ; free virtual = 7249
+Finished Parsing XDC File [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/zusys_system_ila_0_0_ooc.xdc] for cell 'U0'
+Parsing XDC File [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/bd_0/ip/ip_0/ila_v6_2/constraints/ila.xdc] for cell 'U0/ila_lib/U0'
+Finished Parsing XDC File [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/bd_0/ip/ip_0/ila_v6_2/constraints/ila.xdc] for cell 'U0/ila_lib/U0'
+Parsing XDC File [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/zusys_system_ila_0_0_synth_1/dont_touch.xdc]
+Finished Parsing XDC File [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/zusys_system_ila_0_0_synth_1/dont_touch.xdc]
+INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/zusys_system_ila_0_0_synth_1/dont_touch.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/zusys_system_ila_0_0_propImpl.xdc].
 Resolution: To avoid this warning, move constraints listed in [.Xil/zusys_system_ila_0_0_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
 WARNING: [Constraints 18-5210] No constraints selected for write.
 Resolution: This message can indicate that there are no constraints for the design, or it can indicate that the used_in flags are set such that the constraints are ignored. This later case is used when running synth_design to not write synthesis constraints to the resulting checkpoint. Instead, project constraints are read when the synthesized design is opened.
 Completed Processing XDC Constraints
 
-Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00 . Memory (MB): peak = 2802.176 ; gain = 0.000 ; free physical = 2787 ; free virtual = 9789
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2806.215 ; gain = 0.000 ; free physical = 2623 ; free virtual = 7247
 INFO: [Project 1-111] Unisim Transformation Summary:
   A total of 204 instances were transformed.
   CFGLUT5 => CFGLUT5 (SRL16E, SRLC32E): 168 instances
   CFGLUT5 => SRLC32E: 36 instances
 
-Constraint Validation Runtime : Time (s): cpu = 00:00:00.18 ; elapsed = 00:00:00.19 . Memory (MB): peak = 2802.176 ; gain = 0.000 ; free physical = 2786 ; free virtual = 9789
+Constraint Validation Runtime : Time (s): cpu = 00:00:00.18 ; elapsed = 00:00:00.16 . Memory (MB): peak = 2806.215 ; gain = 0.000 ; free physical = 2623 ; free virtual = 7247
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:02:22 ; elapsed = 00:02:55 . Memory (MB): peak = 2802.176 ; gain = 390.730 ; free physical = 2880 ; free virtual = 9882
+Finished Constraint Validation : Time (s): cpu = 00:02:21 ; elapsed = 00:02:54 . Memory (MB): peak = 2806.215 ; gain = 394.699 ; free physical = 2715 ; free virtual = 7339
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
@@ -3305,16 +3305,16 @@ Start Loading Part and Timing Information
 Loading part: xczu2cg-sfvc784-1-i
 INFO: [Synth 8-6742] Reading net delay rules and data
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:02:22 ; elapsed = 00:02:55 . Memory (MB): peak = 2802.176 ; gain = 390.730 ; free physical = 2880 ; free virtual = 9882
+Finished Loading Part and Timing Information : Time (s): cpu = 00:02:21 ; elapsed = 00:02:54 . Memory (MB): peak = 2806.215 ; gain = 394.699 ; free physical = 2715 ; free virtual = 7339
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Applying 'set_property' XDC Constraints
 ---------------------------------------------------------------------------------
-Applied set_property DONT_TOUCH = true for U0/ila_lib/U0. (constraint file  /home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.runs/zusys_system_ila_0_0_synth_1/dont_touch.xdc, line 14).
+Applied set_property DONT_TOUCH = true for U0/ila_lib/U0. (constraint file  /home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/zusys_system_ila_0_0_synth_1/dont_touch.xdc, line 14).
 Applied set_property DONT_TOUCH = true for U0. (constraint file  auto generated constraint, line ).
 Applied set_property DONT_TOUCH = true for U0/ila_lib. (constraint file  auto generated constraint, line ).
 ---------------------------------------------------------------------------------
-Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:02:22 ; elapsed = 00:02:55 . Memory (MB): peak = 2802.176 ; gain = 390.730 ; free physical = 2883 ; free virtual = 9885
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:02:21 ; elapsed = 00:02:54 . Memory (MB): peak = 2806.215 ; gain = 394.699 ; free physical = 2718 ; free virtual = 7342
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-802] inferred FSM for state register 'current_state_reg' in module 'xsdbs_v1_0_2_reg_p2s__parameterized32'
 INFO: [Synth 8-802] inferred FSM for state register 'current_state_reg' in module 'xsdbs_v1_0_2_reg_p2s'
@@ -3691,7 +3691,7 @@ INFO: [Synth 8-3898] No Re-encoding of one hot register 'current_state_reg' in m
 ---------------------------------------------------------------------------------------------------
 INFO: [Synth 8-3898] No Re-encoding of one hot register 'current_state_reg' in module 'xsdbs_v1_0_2_reg_p2s__parameterized31'
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:02:26 ; elapsed = 00:03:00 . Memory (MB): peak = 2802.176 ; gain = 390.730 ; free physical = 2863 ; free virtual = 9868
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:02:25 ; elapsed = 00:02:58 . Memory (MB): peak = 2806.215 ; gain = 394.699 ; free physical = 2700 ; free virtual = 7326
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -3730,11 +3730,12 @@ Detailed RTL Component Info :
 	                1 Bit    Registers := 317   
 +---Muxes : 
 	   2 Input     32 Bit        Muxes := 1     
-	   2 Input     16 Bit        Muxes := 42    
-	   4 Input     16 Bit        Muxes := 2     
+	   2 Input     16 Bit        Muxes := 43    
+	   4 Input     16 Bit        Muxes := 1     
 	   3 Input     16 Bit        Muxes := 2     
 	   8 Input     16 Bit        Muxes := 1     
 	   2 Input     15 Bit        Muxes := 34    
+	   3 Input     13 Bit        Muxes := 1     
 	   8 Input     10 Bit        Muxes := 1     
 	   3 Input      7 Bit        Muxes := 1     
 	   8 Input      7 Bit        Muxes := 1     
@@ -4470,10 +4471,11 @@ Detailed RTL Component Info :
 	                6 Bit    Registers := 1     
 	                1 Bit    Registers := 31    
 +---Muxes : 
-	   2 Input     16 Bit        Muxes := 7     
-	   4 Input     16 Bit        Muxes := 2     
+	   2 Input     16 Bit        Muxes := 8     
+	   4 Input     16 Bit        Muxes := 1     
 	   3 Input     16 Bit        Muxes := 1     
 	   8 Input     16 Bit        Muxes := 1     
+	   3 Input     13 Bit        Muxes := 1     
 	   2 Input      6 Bit        Muxes := 4     
 	   2 Input      5 Bit        Muxes := 2     
 	  10 Input      3 Bit        Muxes := 1     
@@ -4656,7 +4658,7 @@ INFO: [Synth 8-3333] propagating constant 0 across sequential element (U0/ila_li
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (U0/ila_lib/U0/\ila_core_inst/u_ila_regs /\shift_reg0_reg[1023] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (U0/ila_lib/U0/\ila_core_inst/u_trig/shift_cap_strg_qual_reg )
 INFO: [Synth 8-3886] merging instance 'U0/ila_lib/U0/ila_core_inst/u_trig/CAP_QUAL_STRG_reg' (FD) to 'U0/ila_lib/U0/ila_core_inst/u_trig/shift_cap_strg_qual_reg'
-INFO: [Synth 8-3886] merging instance 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/slaveRegDo_ff8_reg[0]' (FDRE) to 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/slaveRegDo_ff8_reg[4]'
+INFO: [Synth 8-3886] merging instance 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/slaveRegDo_ff8_reg[0]' (FDSE) to 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/slaveRegDo_ff8_reg[4]'
 INFO: [Synth 8-3333] propagating constant 1 across sequential element (U0/ila_lib/U0/\ila_core_inst/u_ila_regs /\slaveRegDo_ff7_reg[0] )
 INFO: [Synth 8-3886] merging instance 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/reg_88f/I_EN_STAT_EQ1.U_STAT/xsdb_reg_reg[0]' (FDE) to 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/reg_88f/I_EN_STAT_EQ1.U_STAT/xsdb_reg_reg[1]'
 INFO: [Synth 8-3886] merging instance 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/reg_892/I_EN_STAT_EQ1.U_STAT/xsdb_reg_reg[0]' (FDE) to 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/reg_88f/I_EN_STAT_EQ1.U_STAT/xsdb_reg_reg[1]'
@@ -4706,7 +4708,7 @@ INFO: [Synth 8-3886] merging instance 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/re
 INFO: [Synth 8-3886] merging instance 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/reg_2/I_EN_STAT_EQ1.U_STAT/xsdb_reg_reg[0]' (FDE) to 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/reg_88f/I_EN_STAT_EQ1.U_STAT/xsdb_reg_reg[1]'
 INFO: [Synth 8-3886] merging instance 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/reg_1/I_EN_STAT_EQ1.U_STAT/xsdb_reg_reg[0]' (FDE) to 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/reg_88f/I_EN_STAT_EQ1.U_STAT/xsdb_reg_reg[1]'
 INFO: [Synth 8-3886] merging instance 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/reg_0/I_EN_STAT_EQ1.U_STAT/xsdb_reg_reg[0]' (FDE) to 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/reg_88f/I_EN_STAT_EQ1.U_STAT/xsdb_reg_reg[1]'
-INFO: [Synth 8-3886] merging instance 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/slaveRegDo_ff8_reg[1]' (FDRE) to 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/slaveRegDo_ff8_reg[2]'
+INFO: [Synth 8-3886] merging instance 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/slaveRegDo_ff8_reg[1]' (FDRE) to 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/slaveRegDo_ff8_reg[3]'
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (U0/ila_lib/U0/\ila_core_inst/u_ila_regs /\slaveRegDo_ff7_reg[1] )
 INFO: [Synth 8-3886] merging instance 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/reg_88f/I_EN_STAT_EQ1.U_STAT/xsdb_reg_reg[1]' (FDE) to 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/reg_88f/I_EN_STAT_EQ1.U_STAT/xsdb_reg_reg[2]'
 INFO: [Synth 8-3886] merging instance 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/reg_892/I_EN_STAT_EQ1.U_STAT/xsdb_reg_reg[1]' (FDE) to 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/reg_88f/I_EN_STAT_EQ1.U_STAT/xsdb_reg_reg[2]'
@@ -4756,24 +4758,24 @@ INFO: [Synth 8-3886] merging instance 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/re
 INFO: [Synth 8-3886] merging instance 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/reg_2/I_EN_STAT_EQ1.U_STAT/xsdb_reg_reg[1]' (FDE) to 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/reg_88f/I_EN_STAT_EQ1.U_STAT/xsdb_reg_reg[2]'
 INFO: [Synth 8-3886] merging instance 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/reg_1/I_EN_STAT_EQ1.U_STAT/xsdb_reg_reg[1]' (FDE) to 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/reg_88f/I_EN_STAT_EQ1.U_STAT/xsdb_reg_reg[2]'
 INFO: [Synth 8-3886] merging instance 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/reg_0/I_EN_STAT_EQ1.U_STAT/xsdb_reg_reg[1]' (FDE) to 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/reg_88f/I_EN_STAT_EQ1.U_STAT/xsdb_reg_reg[2]'
-INFO: [Synth 8-3886] merging instance 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/slaveRegDo_ff8_reg[2]' (FDRE) to 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/slaveRegDo_ff8_reg[3]'
+INFO: [Synth 8-3886] merging instance 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/slaveRegDo_ff8_reg[2]' (FDRE) to 'U0/ila_lib/U0/ila_core_inst/u_ila_regs/slaveRegDo_ff8_reg[10]'
 INFO: [Common 17-14] Message 'Synth 8-3886' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (U0/ila_lib/U0/\ila_core_inst/u_ila_regs /\slaveRegDo_ff7_reg[2] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (U0/ila_lib/U0/\ila_core_inst/u_ila_regs /\slaveRegDo_ff7_reg[3] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (U0/ila_lib/U0/\ila_core_inst/u_ila_regs /\slaveRegDo_ff7_reg[4] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (U0/ila_lib/U0/\ila_core_inst/u_ila_regs /\slaveRegDo_ff7_reg[5] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (U0/ila_lib/U0/\ila_core_inst/u_ila_regs /\slaveRegDo_ff7_reg[6] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (U0/ila_lib/U0/\ila_core_inst/u_ila_regs /\slaveRegDo_ff8_reg[7] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (U0/ila_lib/U0/\ila_core_inst/u_ila_regs /\slaveRegDo_ff7_reg[7] )
-INFO: [Synth 8-3333] propagating constant 1 across sequential element (U0/ila_lib/U0/\ila_core_inst/u_ila_regs /\slaveRegDo_ff8_reg[8] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (U0/ila_lib/U0/\ila_core_inst/u_ila_regs /\slaveRegDo_ff7_reg[8] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (U0/ila_lib/U0/\ila_core_inst/u_ila_regs /\slaveRegDo_ff7_reg[9] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (U0/ila_lib/U0/\ila_core_inst/u_ila_regs /\slaveRegDo_ff7_reg[10] )
 INFO: [Synth 8-3333] propagating constant 1 across sequential element (U0/ila_lib/U0/\ila_core_inst/u_ila_regs /\reg_1/I_EN_STAT_EQ1.U_STAT/xsdb_reg_reg[10] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (U0/ila_lib/U0/\ila_core_inst/u_ila_regs /\slaveRegDo_ff7_reg[11] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (U0/ila_lib/U0/\ila_core_inst/u_ila_regs /\slaveRegDo_ff8_reg[12] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (U0/ila_lib/U0/\ila_core_inst/u_ila_regs /\slaveRegDo_ff7_reg[12] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (U0/ila_lib/U0/\ila_core_inst/u_ila_regs /\slaveRegDo_ff7_reg[13] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (U0/ila_lib/U0/\ila_core_inst/u_ila_regs /\slaveRegDo_ff7_reg[14] )
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (U0/ila_lib/U0/\ila_core_inst/u_ila_regs /\slaveRegDo_ff8_reg[15] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (U0/ila_lib/U0/\ila_core_inst/u_ila_regs /\slaveRegDo_ff7_reg[15] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (U0/ila_lib/U0/\ila_core_inst/u_ila_regs /\reg_0/I_EN_STAT_EQ1.U_STAT/xsdb_reg_reg[15] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (U0/ila_lib/U0/\ila_core_inst/u_ila_regs /\slaveRegDo_mux_6_reg[0] )
@@ -4805,7 +4807,7 @@ INFO: [Synth 8-3333] propagating constant 0 across sequential element (U0/ila_li
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (U0/ila_lib/U0/\ila_core_inst/u_ila_regs /\slaveRegDo_mux_1_reg[14] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (U0/ila_lib/U0/\ila_core_inst/u_ila_regs /\slaveRegDo_mux_1_reg[15] )
 ---------------------------------------------------------------------------------
-Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:02:42 ; elapsed = 00:03:17 . Memory (MB): peak = 2802.176 ; gain = 390.730 ; free physical = 2828 ; free virtual = 9848
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:02:41 ; elapsed = 00:03:16 . Memory (MB): peak = 2806.215 ; gain = 394.699 ; free physical = 2664 ; free virtual = 7305
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -4817,13 +4819,13 @@ Report RTL Partitions:
 Start Applying XDC Timing Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Applying XDC Timing Constraints : Time (s): cpu = 00:03:15 ; elapsed = 00:04:16 . Memory (MB): peak = 3136.723 ; gain = 725.277 ; free physical = 2202 ; free virtual = 9223
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:03:14 ; elapsed = 00:04:13 . Memory (MB): peak = 3134.793 ; gain = 723.277 ; free physical = 2038 ; free virtual = 6679
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Timing Optimization
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:03:16 ; elapsed = 00:04:16 . Memory (MB): peak = 3150.746 ; gain = 739.301 ; free physical = 2198 ; free virtual = 9219
+Finished Timing Optimization : Time (s): cpu = 00:03:15 ; elapsed = 00:04:14 . Memory (MB): peak = 3147.809 ; gain = 736.293 ; free physical = 2034 ; free virtual = 6675
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -4835,7 +4837,7 @@ Report RTL Partitions:
 Start Technology Mapping
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:03:18 ; elapsed = 00:04:19 . Memory (MB): peak = 3174.762 ; gain = 763.316 ; free physical = 2193 ; free virtual = 9213
+Finished Technology Mapping : Time (s): cpu = 00:03:17 ; elapsed = 00:04:17 . Memory (MB): peak = 3173.824 ; gain = 762.309 ; free physical = 2027 ; free virtual = 6669
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -4897,13 +4899,13 @@ INFO: [Synth 8-3295] tying undriven pin U0:sl_iport0[2] to constant 0
 INFO: [Synth 8-3295] tying undriven pin U0:sl_iport0[1] to constant 0
 INFO: [Synth 8-3295] tying undriven pin U0:sl_iport0[0] to constant 0
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:03:26 ; elapsed = 00:04:26 . Memory (MB): peak = 3180.699 ; gain = 769.254 ; free physical = 2193 ; free virtual = 9213
+Finished IO Insertion : Time (s): cpu = 00:03:24 ; elapsed = 00:04:24 . Memory (MB): peak = 3179.762 ; gain = 768.246 ; free physical = 2027 ; free virtual = 6668
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:03:26 ; elapsed = 00:04:26 . Memory (MB): peak = 3180.699 ; gain = 769.254 ; free physical = 2193 ; free virtual = 9213
+Finished Renaming Generated Instances : Time (s): cpu = 00:03:24 ; elapsed = 00:04:24 . Memory (MB): peak = 3179.762 ; gain = 768.246 ; free physical = 2027 ; free virtual = 6668
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -4922,25 +4924,25 @@ Report Check Netlist:
 Start Rebuilding User Hierarchy
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Rebuilding User Hierarchy : Time (s): cpu = 00:03:26 ; elapsed = 00:04:27 . Memory (MB): peak = 3180.699 ; gain = 769.254 ; free physical = 2195 ; free virtual = 9215
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:03:25 ; elapsed = 00:04:24 . Memory (MB): peak = 3179.762 ; gain = 768.246 ; free physical = 2027 ; free virtual = 6668
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Ports
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Ports : Time (s): cpu = 00:03:26 ; elapsed = 00:04:27 . Memory (MB): peak = 3180.699 ; gain = 769.254 ; free physical = 2195 ; free virtual = 9215
+Finished Renaming Generated Ports : Time (s): cpu = 00:03:25 ; elapsed = 00:04:24 . Memory (MB): peak = 3179.762 ; gain = 768.246 ; free physical = 2027 ; free virtual = 6668
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:03:27 ; elapsed = 00:04:27 . Memory (MB): peak = 3180.699 ; gain = 769.254 ; free physical = 2195 ; free virtual = 9215
+Finished Handling Custom Attributes : Time (s): cpu = 00:03:25 ; elapsed = 00:04:25 . Memory (MB): peak = 3179.762 ; gain = 768.246 ; free physical = 2026 ; free virtual = 6667
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Nets
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Nets : Time (s): cpu = 00:03:27 ; elapsed = 00:04:27 . Memory (MB): peak = 3180.699 ; gain = 769.254 ; free physical = 2195 ; free virtual = 9215
+Finished Renaming Generated Nets : Time (s): cpu = 00:03:25 ; elapsed = 00:04:25 . Memory (MB): peak = 3179.762 ; gain = 768.246 ; free physical = 2026 ; free virtual = 6667
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start ROM, RAM, DSP and Shift Register Reporting
@@ -4978,10 +4980,10 @@ Report Cell Usage:
 |3     |LUT1     |    61|
 |4     |LUT2     |    78|
 |5     |LUT3     |   146|
-|6     |LUT4     |   349|
+|6     |LUT4     |   348|
 |7     |LUT5     |   137|
-|8     |LUT6     |   981|
-|9     |MUXF7    |    94|
+|8     |LUT6     |   979|
+|9     |MUXF7    |    93|
 |10    |RAMB36E2 |     1|
 |11    |SRL16E   |    36|
 |12    |SRLC16E  |     2|
@@ -4994,11 +4996,11 @@ Report Instance Areas:
 +------+----------------------------------------------------------------------------+-------------------------------------------------+------+
 |      |Instance                                                                    |Module                                           |Cells |
 +------+----------------------------------------------------------------------------+-------------------------------------------------+------+
-|1     |top                                                                         |                                                 |  4808|
-|2     |  U0                                                                        |bd_71cc                                          |  4808|
-|3     |    ila_lib                                                                 |bd_71cc_ila_lib_0                                |  4808|
-|4     |      U0                                                                    |ila_v6_2_10_ila                                  |  4808|
-|5     |        ila_core_inst                                                       |ila_v6_2_10_ila_core                             |  4801|
+|1     |top                                                                         |                                                 |  4804|
+|2     |  U0                                                                        |bd_71cc                                          |  4804|
+|3     |    ila_lib                                                                 |bd_71cc_ila_lib_0                                |  4804|
+|4     |      U0                                                                    |ila_v6_2_10_ila                                  |  4804|
+|5     |        ila_core_inst                                                       |ila_v6_2_10_ila_core                             |  4797|
 |6     |          ila_trace_memory_inst                                             |ila_v6_2_10_ila_trace_memory                     |     1|
 |7     |            \SUBCORE_RAM_BLK_MEM_1.trace_block_memory                       |blk_mem_gen_v8_4_4                               |     1|
 |8     |              inst_blk_mem_gen                                              |blk_mem_gen_v8_4_4_synth                         |     1|
@@ -5035,7 +5037,7 @@ Report Instance Areas:
 |39    |                    DUT                                                     |ltlib_v1_0_0_all_typeA__parameterized1           |    12|
 |40    |                      \I_WHOLE_SLICE.G_SLICE_IDX[0].U_ALL_SRL_SLICE         |ltlib_v1_0_0_all_typeA_slice__parameterized1     |     5|
 |41    |                      \I_WHOLE_SLICE.G_SLICE_IDX[1].U_ALL_SRL_SLICE         |ltlib_v1_0_0_all_typeA_slice__parameterized2     |     5|
-|42    |          u_ila_regs                                                        |ila_v6_2_10_ila_register                         |  3816|
+|42    |          u_ila_regs                                                        |ila_v6_2_10_ila_register                         |  3812|
 |43    |            U_XSDB_SLAVE                                                    |xsdbs_v1_0_2_xsdbs                               |   302|
 |44    |            reg_890                                                         |xsdbs_v1_0_2_reg__parameterized106               |    16|
 |45    |              \I_EN_STAT_EQ1.U_STAT                                         |xsdbs_v1_0_2_reg_stat_147                        |    16|
@@ -5074,16 +5076,16 @@ Report Instance Areas:
 |78    |            \TC_SRL[0].tc_srl_reg                                           |xsdbs_v1_0_2_reg_p2s__parameterized31            |    75|
 |79    |            reg_15                                                          |xsdbs_v1_0_2_reg__parameterized88                |    18|
 |80    |              \I_EN_CTL_EQ1.U_CTL                                           |xsdbs_v1_0_2_reg_ctl_146                         |    18|
-|81    |            reg_16                                                          |xsdbs_v1_0_2_reg__parameterized89                |    18|
-|82    |              \I_EN_CTL_EQ1.U_CTL                                           |xsdbs_v1_0_2_reg_ctl_145                         |    18|
+|81    |            reg_16                                                          |xsdbs_v1_0_2_reg__parameterized89                |    17|
+|82    |              \I_EN_CTL_EQ1.U_CTL                                           |xsdbs_v1_0_2_reg_ctl_145                         |    17|
 |83    |            reg_17                                                          |xsdbs_v1_0_2_reg__parameterized90                |    30|
 |84    |              \I_EN_CTL_EQ1.U_CTL                                           |xsdbs_v1_0_2_reg_ctl_144                         |    30|
-|85    |            reg_18                                                          |xsdbs_v1_0_2_reg__parameterized91                |    26|
-|86    |              \I_EN_CTL_EQ1.U_CTL                                           |xsdbs_v1_0_2_reg_ctl_143                         |    26|
+|85    |            reg_18                                                          |xsdbs_v1_0_2_reg__parameterized91                |    27|
+|86    |              \I_EN_CTL_EQ1.U_CTL                                           |xsdbs_v1_0_2_reg_ctl_143                         |    27|
 |87    |            reg_19                                                          |xsdbs_v1_0_2_reg__parameterized92                |    17|
 |88    |              \I_EN_CTL_EQ1.U_CTL                                           |xsdbs_v1_0_2_reg_ctl_142                         |    17|
-|89    |            reg_1a                                                          |xsdbs_v1_0_2_reg__parameterized93                |    20|
-|90    |              \I_EN_CTL_EQ1.U_CTL                                           |xsdbs_v1_0_2_reg_ctl__parameterized1_141         |    20|
+|89    |            reg_1a                                                          |xsdbs_v1_0_2_reg__parameterized93                |    19|
+|90    |              \I_EN_CTL_EQ1.U_CTL                                           |xsdbs_v1_0_2_reg_ctl__parameterized1_141         |    19|
 |91    |            reg_6                                                           |xsdbs_v1_0_2_reg__parameterized73                |    30|
 |92    |              \I_EN_CTL_EQ1.U_CTL                                           |xsdbs_v1_0_2_reg_ctl_140                         |    30|
 |93    |            reg_7                                                           |xsdbs_v1_0_2_reg__parameterized74                |    26|
@@ -5260,18 +5262,18 @@ Report Instance Areas:
 |264   |          xsdb_memory_read_inst                                             |ltlib_v1_0_0_generic_memrd                       |   105|
 +------+----------------------------------------------------------------------------+-------------------------------------------------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:03:27 ; elapsed = 00:04:27 . Memory (MB): peak = 3180.699 ; gain = 769.254 ; free physical = 2194 ; free virtual = 9215
+Finished Writing Synthesis Report : Time (s): cpu = 00:03:25 ; elapsed = 00:04:25 . Memory (MB): peak = 3179.762 ; gain = 768.246 ; free physical = 2026 ; free virtual = 6667
 ---------------------------------------------------------------------------------
 Synthesis finished with 0 errors, 0 critical warnings and 1141 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:03:08 ; elapsed = 00:04:05 . Memory (MB): peak = 3180.699 ; gain = 747.309 ; free physical = 2231 ; free virtual = 9251
-Synthesis Optimization Complete : Time (s): cpu = 00:03:27 ; elapsed = 00:04:27 . Memory (MB): peak = 3180.707 ; gain = 769.254 ; free physical = 2231 ; free virtual = 9251
+Synthesis Optimization Runtime : Time (s): cpu = 00:03:07 ; elapsed = 00:04:03 . Memory (MB): peak = 3179.762 ; gain = 743.332 ; free physical = 2067 ; free virtual = 6708
+Synthesis Optimization Complete : Time (s): cpu = 00:03:25 ; elapsed = 00:04:25 . Memory (MB): peak = 3179.770 ; gain = 768.246 ; free physical = 2067 ; free virtual = 6708
 INFO: [Project 1-571] Translating synthesized netlist
-Netlist sorting complete. Time (s): cpu = 00:00:00.13 ; elapsed = 00:00:00.13 . Memory (MB): peak = 3180.707 ; gain = 0.000 ; free physical = 2296 ; free virtual = 9316
-INFO: [Netlist 29-17] Analyzing 376 Unisim elements for replacement
+Netlist sorting complete. Time (s): cpu = 00:00:00.13 ; elapsed = 00:00:00.12 . Memory (MB): peak = 3179.770 ; gain = 0.000 ; free physical = 2132 ; free virtual = 6774
+INFO: [Netlist 29-17] Analyzing 375 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-570] Preparing netlist for logic optimization
 INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3198.543 ; gain = 0.000 ; free physical = 2241 ; free virtual = 9262
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3196.605 ; gain = 0.000 ; free physical = 2078 ; free virtual = 6719
 INFO: [Project 1-111] Unisim Transformation Summary:
   A total of 245 instances were transformed.
   (CARRY4) => CARRY8: 41 instances
@@ -5281,17 +5283,17 @@ INFO: [Project 1-111] Unisim Transformation Summary:
 INFO: [Common 17-83] Releasing license: Synthesis
 329 Infos, 102 Warnings, 0 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:03:45 ; elapsed = 00:04:55 . Memory (MB): peak = 3198.543 ; gain = 1621.438 ; free physical = 2378 ; free virtual = 9399
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3198.543 ; gain = 0.000 ; free physical = 2378 ; free virtual = 9399
+synth_design: Time (s): cpu = 00:03:44 ; elapsed = 00:04:53 . Memory (MB): peak = 3196.605 ; gain = 1613.461 ; free physical = 2211 ; free virtual = 6853
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3196.605 ; gain = 0.000 ; free physical = 2211 ; free virtual = 6853
 WARNING: [Constraints 18-5210] No constraints selected for write.
 Resolution: This message can indicate that there are no constraints for the design, or it can indicate that the used_in flags are set such that the constraints are ignored. This later case is used when running synth_design to not write synthesis constraints to the resulting checkpoint. Instead, project constraints are read when the synthesized design is opened.
-INFO: [Common 17-1381] The checkpoint '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.runs/zusys_system_ila_0_0_synth_1/zusys_system_ila_0_0.dcp' has been generated.
+INFO: [Common 17-1381] The checkpoint '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/zusys_system_ila_0_0_synth_1/zusys_system_ila_0_0.dcp' has been generated.
 WARNING: [Common 17-576] 'use_project_ipc' is deprecated. This option is deprecated and no longer used.
-INFO: [Coretcl 2-1648] Added synthesis output to IP cache for IP zusys_system_ila_0_0, cache-ID = 0e0f99caf987c1cc
+INFO: [Coretcl 2-1648] Added synthesis output to IP cache for IP zusys_system_ila_0_0, cache-ID = 7543f642f6bcd907
 INFO: [Coretcl 2-1174] Renamed 263 cell refs.
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3222.555 ; gain = 0.000 ; free physical = 2372 ; free virtual = 9402
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3220.617 ; gain = 0.000 ; free physical = 2205 ; free virtual = 6856
 WARNING: [Constraints 18-5210] No constraints selected for write.
 Resolution: This message can indicate that there are no constraints for the design, or it can indicate that the used_in flags are set such that the constraints are ignored. This later case is used when running synth_design to not write synthesis constraints to the resulting checkpoint. Instead, project constraints are read when the synthesized design is opened.
-INFO: [Common 17-1381] The checkpoint '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.runs/zusys_system_ila_0_0_synth_1/zusys_system_ila_0_0.dcp' has been generated.
+INFO: [Common 17-1381] The checkpoint '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/zusys_system_ila_0_0_synth_1/zusys_system_ila_0_0.dcp' has been generated.
 INFO: [runtcl-4] Executing : report_utilization -file zusys_system_ila_0_0_utilization_synth.rpt -pb zusys_system_ila_0_0_utilization_synth.pb
-INFO: [Common 17-206] Exiting Vivado at Sat Aug 29 13:43:43 2020...
+INFO: [Common 17-206] Exiting Vivado at Sat Aug 29 15:50:27 2020...

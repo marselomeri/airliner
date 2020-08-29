@@ -1,10 +1,10 @@
 // Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
-// Date        : Sat Aug 29 13:43:42 2020
+// Date        : Sat Aug 29 15:50:25 2020
 // Host        : vagrant running 64-bit Ubuntu 16.04.6 LTS
 // Command     : write_verilog -force -mode funcsim
-//               /home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/zusys_system_ila_0_0_sim_netlist.v
+//               /home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_system_ila_0_0/zusys_system_ila_0_0_sim_netlist.v
 // Design      : zusys_system_ila_0_0
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -48,7 +48,7 @@ module zusys_system_ila_0_0
     SLOT_3_SPI_io1_i,
     SLOT_3_SPI_io1_o,
     SLOT_3_SPI_io1_t);
-  (* x_interface_info = "xilinx.com:signal:clock:1.0 CLK.clk CLK" *) (* x_interface_parameter = "XIL_INTERFACENAME CLK.clk, FREQ_HZ 20000000, PHASE 0.0, CLK_DOMAIN zusys_clk_wiz_0_0_clk_out1, INSERT_VIP 0" *) input clk;
+  (* x_interface_info = "xilinx.com:signal:clock:1.0 CLK.clk CLK" *) (* x_interface_parameter = "XIL_INTERFACENAME CLK.clk, FREQ_HZ 99999985, PHASE 0.000, CLK_DOMAIN zusys_zynq_ultra_ps_e_0_0_pl_clk0, INSERT_VIP 0" *) input clk;
   (* x_interface_info = "xilinx.com:interface:iic:1.0 SLOT_0_IIC SCL_I" *) input SLOT_0_IIC_scl_i;
   (* x_interface_info = "xilinx.com:interface:iic:1.0 SLOT_0_IIC SCL_O" *) input SLOT_0_IIC_scl_o;
   (* x_interface_info = "xilinx.com:interface:iic:1.0 SLOT_0_IIC SCL_T" *) input SLOT_0_IIC_scl_t;
@@ -220,7 +220,7 @@ module zusys_system_ila_0_0_bd_71cc
   (* x_interface_info = "xilinx.com:interface:spi:1.0 SLOT_3_SPI SS_I" *) input SLOT_3_SPI_ss_i;
   (* x_interface_info = "xilinx.com:interface:spi:1.0 SLOT_3_SPI SS_O" *) input SLOT_3_SPI_ss_o;
   (* x_interface_info = "xilinx.com:interface:spi:1.0 SLOT_3_SPI SS_T" *) input SLOT_3_SPI_ss_t;
-  (* x_interface_info = "xilinx.com:signal:clock:1.0 CLK.CLK CLK" *) (* x_interface_parameter = "XIL_INTERFACENAME CLK.CLK, CLK_DOMAIN zusys_clk_wiz_0_0_clk_out1, FREQ_HZ 20000000, INSERT_VIP 0, PHASE 0.0" *) input clk;
+  (* x_interface_info = "xilinx.com:signal:clock:1.0 CLK.CLK CLK" *) (* x_interface_parameter = "XIL_INTERFACENAME CLK.CLK, CLK_DOMAIN zusys_zynq_ultra_ps_e_0_0_pl_clk0, FREQ_HZ 99999985, INSERT_VIP 0, PHASE 0.000" *) input clk;
 
   (* MARK_DEBUG *) wire SLOT_0_IIC_scl_i_1;
   (* MARK_DEBUG *) wire SLOT_0_IIC_scl_o_1;
@@ -455,7 +455,7 @@ module zusys_system_ila_0_0_bd_71cc_ila_lib_0
   (* C_EN_DDR_ILA = "0" *) 
   (* C_EN_STRG_QUAL = "0" *) 
   (* C_EN_TIME_TAG = "0" *) 
-  (* C_ILA_CLK_FREQ = "20000000" *) 
+  (* C_ILA_CLK_FREQ = "99999985" *) 
   (* C_INPUT_PIPE_STAGES = "0" *) 
   (* C_MAJOR_VERSION = "2019" *) 
   (* C_MINOR_VERSION = "2" *) 
@@ -11264,7 +11264,7 @@ endmodule
 (* C_CORE_MAJOR_VER = "6" *) (* C_CORE_MINOR_VER = "2" *) (* C_CORE_TYPE = "1" *) 
 (* C_CSE_DRV_VER = "2" *) (* C_DATA_DEPTH = "1024" *) (* C_DDR_CLK_GEN = "1" *) 
 (* C_DIVCLK_DIVIDE = "3" *) (* C_ENABLE_ILA_AXI_MON = "0" *) (* C_EN_DDR_ILA = "0" *) 
-(* C_EN_STRG_QUAL = "0" *) (* C_EN_TIME_TAG = "0" *) (* C_ILA_CLK_FREQ = "20000000" *) 
+(* C_EN_STRG_QUAL = "0" *) (* C_EN_TIME_TAG = "0" *) (* C_ILA_CLK_FREQ = "99999985" *) 
 (* C_INPUT_PIPE_STAGES = "0" *) (* C_MAJOR_VERSION = "2019" *) (* C_MINOR_VERSION = "2" *) 
 (* C_MU_TYPE = "0" *) (* C_NEXT_SLAVE = "0" *) (* C_NUM_MONITOR_SLOTS = "1" *) 
 (* C_NUM_OF_PROBES = "32" *) (* C_PIPE_IFACE = "1" *) (* C_PROBE0_MU_CNT = "1" *) 
@@ -18734,7 +18734,6 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_core
   wire \shifted_data_in_reg_n_0_[8][7] ;
   wire \shifted_data_in_reg_n_0_[8][8] ;
   wire \shifted_data_in_reg_n_0_[8][9] ;
-  wire [13:13]slaveRegDo_ff8;
   wire \slaveRegDo_mux_0[15]_i_1_n_0 ;
   wire tc_config_cs_serial_input;
   wire tc_config_cs_serial_output;
@@ -18757,6 +18756,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_core
   (* DONT_TOUCH *) (* RTL_KEEP = "yes" *) (* async_reg = "true" *) wire use_probe_debug_circuit;
   wire use_probe_debug_circuit_1;
   (* DONT_TOUCH *) (* RTL_KEEP = "yes" *) (* async_reg = "true" *) wire use_probe_debug_circuit_2;
+  wire xsdb_rden_ff8;
   wire \xsdb_reg[15]_i_2__0__0_n_0 ;
   wire \xsdb_reg[15]_i_2__1__0_n_0 ;
   wire \xsdb_reg[15]_i_2__2__0_n_0 ;
@@ -18813,7 +18813,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_core
   LUT2 #(
     .INIT(4'h6)) 
     count_tt_i_1
-       (.I0(slaveRegDo_ff8),
+       (.I0(xsdb_rden_ff8),
         .I1(count_tt),
         .O(count_tt_i_1_n_0));
   LUT6 #(
@@ -18856,7 +18856,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_core
         .I4(s_daddr[1]),
         .I5(s_daddr[0]),
         .O(\current_state[1]_i_2__2_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair158" *) 
+  (* SOFT_HLUTNM = "soft_lutpair157" *) 
   LUT5 #(
     .INIT(32'hFFFFFBFF)) 
     \current_state[1]_i_2__3 
@@ -18866,7 +18866,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_core
         .I3(s_daddr[3]),
         .I4(\current_state[3]_i_5__0_n_0 ),
         .O(\current_state[1]_i_2__3_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair158" *) 
+  (* SOFT_HLUTNM = "soft_lutpair157" *) 
   LUT5 #(
     .INIT(32'hFFFFFEFF)) 
     \current_state[1]_i_2__4 
@@ -18876,7 +18876,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_core
         .I3(s_daddr[3]),
         .I4(\current_state[3]_i_5__0_n_0 ),
         .O(\current_state[1]_i_2__4_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair159" *) 
+  (* SOFT_HLUTNM = "soft_lutpair158" *) 
   LUT5 #(
     .INIT(32'hFFFFFEFF)) 
     \current_state[1]_i_2__5 
@@ -18886,7 +18886,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_core
         .I3(s_daddr[2]),
         .I4(\current_state[3]_i_5__0_n_0 ),
         .O(\current_state[1]_i_2__5_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair159" *) 
+  (* SOFT_HLUTNM = "soft_lutpair158" *) 
   LUT5 #(
     .INIT(32'hFFFFEFFF)) 
     \current_state[1]_i_2__6 
@@ -18896,7 +18896,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_core
         .I3(s_daddr[3]),
         .I4(\current_state[3]_i_5__0_n_0 ),
         .O(\current_state[1]_i_2__6_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair160" *) 
+  (* SOFT_HLUTNM = "soft_lutpair159" *) 
   LUT5 #(
     .INIT(32'hFFFFFFFB)) 
     \current_state[1]_i_2__7 
@@ -18906,7 +18906,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_core
         .I3(s_daddr[3]),
         .I4(\current_state[3]_i_5__0_n_0 ),
         .O(\current_state[1]_i_2__7_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair161" *) 
+  (* SOFT_HLUTNM = "soft_lutpair160" *) 
   LUT5 #(
     .INIT(32'hFFFFFBFF)) 
     \current_state[1]_i_2__8 
@@ -18916,7 +18916,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_core
         .I3(s_daddr[2]),
         .I4(\current_state[3]_i_5__0_n_0 ),
         .O(\current_state[1]_i_2__8_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair161" *) 
+  (* SOFT_HLUTNM = "soft_lutpair160" *) 
   LUT5 #(
     .INIT(32'hFFFFBFFF)) 
     \current_state[1]_i_2__9 
@@ -18926,7 +18926,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_core
         .I3(s_daddr[3]),
         .I4(\current_state[3]_i_5__0_n_0 ),
         .O(\current_state[1]_i_2__9_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair160" *) 
+  (* SOFT_HLUTNM = "soft_lutpair159" *) 
   LUT5 #(
     .INIT(32'hFFFFFFFE)) 
     \current_state[1]_i_3 
@@ -18936,7 +18936,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_core
         .I3(s_daddr[3]),
         .I4(\current_state[3]_i_5__0_n_0 ),
         .O(\current_state[1]_i_3_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair163" *) 
+  (* SOFT_HLUTNM = "soft_lutpair162" *) 
   LUT4 #(
     .INIT(16'hFFFE)) 
     \current_state[3]_i_5__0 
@@ -18945,14 +18945,14 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_core
         .I2(s_daddr[8]),
         .I3(s_daddr[9]),
         .O(\current_state[3]_i_5__0_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair162" *) 
+  (* SOFT_HLUTNM = "soft_lutpair161" *) 
   LUT2 #(
     .INIT(4'hE)) 
     \current_state[3]_i_5__0__0 
        (.I0(s_daddr[0]),
         .I1(s_daddr[1]),
         .O(\current_state[3]_i_5__0__0_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair164" *) 
+  (* SOFT_HLUTNM = "soft_lutpair163" *) 
   LUT2 #(
     .INIT(4'h7)) 
     \current_state[3]_i_7 
@@ -19904,7 +19904,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_core
         .D(\shifted_data_in_reg[7][9]_srl8_n_0 ),
         .Q(\shifted_data_in_reg_n_0_[8][9] ),
         .R(1'b0));
-  (* SOFT_HLUTNM = "soft_lutpair163" *) 
+  (* SOFT_HLUTNM = "soft_lutpair162" *) 
   LUT2 #(
     .INIT(4'hE)) 
     \slaveRegDo_mux_0[15]_i_1 
@@ -19950,7 +19950,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_core
        (.D(count_tt),
         .DOUT_O(\u_cap_addrgen/u_cap_sample_counter/scnt_cmp_temp1 ),
         .DUMMY_I(DUMMY_I),
-        .E(slaveRegDo_ff8),
+        .E(xsdb_rden_ff8),
         .\G_1PIPE_IFACE.s_daddr_r_reg[10] (u_ila_regs_n_76),
         .SL_IPORT_I(SL_IPORT_I),
         .SL_OPORT_O(SL_OPORT_O),
@@ -20101,14 +20101,14 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_core
         .I4(s_daddr[8]),
         .I5(s_daddr[7]),
         .O(\xsdb_reg[15]_i_2__1__0_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair164" *) 
+  (* SOFT_HLUTNM = "soft_lutpair163" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \xsdb_reg[15]_i_2__2__0 
        (.I0(s_daddr[2]),
         .I1(s_daddr[1]),
         .O(\xsdb_reg[15]_i_2__2__0_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair162" *) 
+  (* SOFT_HLUTNM = "soft_lutpair161" *) 
   LUT4 #(
     .INIT(16'h0100)) 
     \xsdb_reg[15]_i_2__4 
@@ -20452,7 +20452,6 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
   wire drdy_ff9;
   wire drdy_ff9_i_2_n_0;
   wire drdy_ff9_i_3_n_0;
-  wire drdy_ff9_i_4_n_0;
   wire drdy_ffa;
   wire drdy_mux_ff;
   wire drdy_mux_ff1;
@@ -20475,7 +20474,6 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
   wire [6:0]p_0_in;
   wire [6:0]p_0_in__0;
   wire [8:0]p_0_in__2;
-  wire p_1_in0;
   wire [0:0]\parallel_dout_reg[15] ;
   wire [0:0]\parallel_dout_reg[15]_0 ;
   wire read_data_en;
@@ -20486,9 +20484,8 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
   wire regAck_temp_reg;
   wire regDrdy_i_1_n_0;
   wire regDrdy_i_2_n_0;
+  wire regDrdy_i_3_n_0;
   wire regDrdy_i_4_n_0;
-  wire regDrdy_i_5_n_0;
-  wire regDrdy_reg_i_3_n_0;
   wire regDrdy_reg_n_0;
   wire reg_15_n_0;
   wire reg_15_n_1;
@@ -20529,6 +20526,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
   wire reg_17_n_9;
   wire reg_18_n_0;
   wire reg_18_n_1;
+  wire reg_18_n_11;
   wire reg_18_n_12;
   wire reg_18_n_13;
   wire reg_18_n_14;
@@ -20611,6 +20609,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
   wire reg_83_n_14;
   wire reg_83_n_15;
   wire reg_83_n_16;
+  wire reg_83_n_17;
   wire reg_83_n_2;
   wire reg_83_n_3;
   wire reg_83_n_4;
@@ -20675,21 +20674,21 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
   wire reg_srl_fff_n_8;
   wire reg_srl_fff_n_9;
   wire reg_stream_ffd_n_0;
-  wire reg_stream_ffd_n_1;
-  wire reg_stream_ffd_n_10;
-  wire reg_stream_ffd_n_11;
-  wire reg_stream_ffd_n_12;
-  wire reg_stream_ffd_n_13;
-  wire reg_stream_ffd_n_14;
-  wire reg_stream_ffd_n_15;
-  wire reg_stream_ffd_n_2;
-  wire reg_stream_ffd_n_3;
-  wire reg_stream_ffd_n_4;
-  wire reg_stream_ffd_n_5;
-  wire reg_stream_ffd_n_6;
-  wire reg_stream_ffd_n_7;
-  wire reg_stream_ffd_n_8;
-  wire reg_stream_ffd_n_9;
+  wire reg_stream_ffd_n_17;
+  wire reg_stream_ffd_n_18;
+  wire reg_stream_ffd_n_19;
+  wire reg_stream_ffd_n_20;
+  wire reg_stream_ffd_n_21;
+  wire reg_stream_ffd_n_22;
+  wire reg_stream_ffd_n_23;
+  wire reg_stream_ffd_n_24;
+  wire reg_stream_ffd_n_25;
+  wire reg_stream_ffd_n_26;
+  wire reg_stream_ffd_n_27;
+  wire reg_stream_ffd_n_28;
+  wire reg_stream_ffd_n_29;
+  wire reg_stream_ffd_n_30;
+  wire reg_stream_ffd_n_31;
   wire reg_stream_ffe_n_0;
   wire reg_stream_ffe_n_1;
   wire reg_stream_ffe_n_10;
@@ -20729,17 +20728,18 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
   wire \shift_reg1[31]_i_2_n_0 ;
   wire \shift_reg1_reg_n_0_[15] ;
   wire \shift_reg1_reg_n_0_[31] ;
-  wire [12:0]slaveRegDo_18;
+  wire [9:0]slaveRegDo_18;
   wire [10:0]slaveRegDo_6;
   wire [15:0]slaveRegDo_80;
   wire [10:5]slaveRegDo_81;
   wire [15:0]slaveRegDo_82;
   wire [15:0]slaveRegDo_84;
   wire [15:0]slaveRegDo_890;
-  wire \slaveRegDo_ff8[13]_i_3_n_0 ;
-  wire \slaveRegDo_ff8[13]_i_4_n_0 ;
-  wire \slaveRegDo_ff8_reg_n_0_[13] ;
-  wire \slaveRegDo_ff8_reg_n_0_[5] ;
+  wire \slaveRegDo_ff8[15]_i_2_n_0 ;
+  wire \slaveRegDo_ff8[15]_i_3_n_0 ;
+  wire \slaveRegDo_ff8[15]_i_4_n_0 ;
+  wire \slaveRegDo_ff8_reg_n_0_[10] ;
+  wire \slaveRegDo_ff8_reg_n_0_[15] ;
   wire [15:15]slaveRegDo_ff9;
   wire [15:15]slaveRegDo_ffa;
   wire [15:0]\slaveRegDo_muConfig[4096]_1 ;
@@ -20821,8 +20821,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
   wire \slaveRegDo_mux_1[4]_i_3_n_0 ;
   wire [15:0]slaveRegDo_mux_2;
   wire \slaveRegDo_mux_2[15]_i_1_n_0 ;
-  wire \slaveRegDo_mux_2[1]_i_2_n_0 ;
-  wire \slaveRegDo_mux_2[1]_i_4_n_0 ;
+  wire \slaveRegDo_mux_2[1]_i_3_n_0 ;
   wire \slaveRegDo_mux_2[2]_i_1_n_0 ;
   wire \slaveRegDo_mux_2[3]_i_2_n_0 ;
   wire \slaveRegDo_mux_2[3]_i_4_n_0 ;
@@ -21609,14 +21608,14 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
     \clk_lost_cnt[0]_i_1 
        (.I0(\clk_lost_cnt_reg_n_0_[0] ),
         .O(p_0_in__2[0]));
-  (* SOFT_HLUTNM = "soft_lutpair143" *) 
+  (* SOFT_HLUTNM = "soft_lutpair142" *) 
   LUT2 #(
     .INIT(4'h6)) 
     \clk_lost_cnt[1]_i_1 
        (.I0(\clk_lost_cnt_reg_n_0_[0] ),
         .I1(\clk_lost_cnt_reg_n_0_[1] ),
         .O(p_0_in__2[1]));
-  (* SOFT_HLUTNM = "soft_lutpair143" *) 
+  (* SOFT_HLUTNM = "soft_lutpair142" *) 
   LUT3 #(
     .INIT(8'h6A)) 
     \clk_lost_cnt[2]_i_1 
@@ -21624,7 +21623,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .I1(\clk_lost_cnt_reg_n_0_[1] ),
         .I2(\clk_lost_cnt_reg_n_0_[0] ),
         .O(p_0_in__2[2]));
-  (* SOFT_HLUTNM = "soft_lutpair132" *) 
+  (* SOFT_HLUTNM = "soft_lutpair130" *) 
   LUT4 #(
     .INIT(16'h6AAA)) 
     \clk_lost_cnt[3]_i_1 
@@ -21633,7 +21632,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .I2(\clk_lost_cnt_reg_n_0_[1] ),
         .I3(\clk_lost_cnt_reg_n_0_[2] ),
         .O(p_0_in__2[3]));
-  (* SOFT_HLUTNM = "soft_lutpair132" *) 
+  (* SOFT_HLUTNM = "soft_lutpair130" *) 
   LUT5 #(
     .INIT(32'h6AAAAAAA)) 
     \clk_lost_cnt[4]_i_1 
@@ -21659,7 +21658,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
        (.I0(\clk_lost_cnt_reg_n_0_[6] ),
         .I1(\clk_lost_cnt[8]_i_4_n_0 ),
         .O(p_0_in__2[6]));
-  (* SOFT_HLUTNM = "soft_lutpair142" *) 
+  (* SOFT_HLUTNM = "soft_lutpair141" *) 
   LUT3 #(
     .INIT(8'h6A)) 
     \clk_lost_cnt[7]_i_1 
@@ -21679,7 +21678,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
     \clk_lost_cnt[8]_i_2 
        (.I0(clk_lost_cnt_reg),
         .O(sel));
-  (* SOFT_HLUTNM = "soft_lutpair142" *) 
+  (* SOFT_HLUTNM = "soft_lutpair141" *) 
   LUT3 #(
     .INIT(8'h80)) 
     \clk_lost_cnt[8]_i_3 
@@ -21765,20 +21764,20 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .D(clk_lost_i_1_n_0),
         .Q(clk_lost),
         .R(1'b0));
-  (* SOFT_HLUTNM = "soft_lutpair147" *) 
+  (* SOFT_HLUTNM = "soft_lutpair146" *) 
   LUT1 #(
     .INIT(2'h1)) 
     \count0[0]_i_1 
        (.I0(count0_reg[0]),
         .O(p_0_in[0]));
-  (* SOFT_HLUTNM = "soft_lutpair147" *) 
+  (* SOFT_HLUTNM = "soft_lutpair146" *) 
   LUT2 #(
     .INIT(4'h6)) 
     \count0[1]_i_1 
        (.I0(count0_reg[0]),
         .I1(count0_reg[1]),
         .O(p_0_in[1]));
-  (* SOFT_HLUTNM = "soft_lutpair134" *) 
+  (* SOFT_HLUTNM = "soft_lutpair138" *) 
   LUT3 #(
     .INIT(8'h6A)) 
     \count0[2]_i_1 
@@ -21786,7 +21785,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .I1(count0_reg[1]),
         .I2(count0_reg[0]),
         .O(p_0_in[2]));
-  (* SOFT_HLUTNM = "soft_lutpair126" *) 
+  (* SOFT_HLUTNM = "soft_lutpair124" *) 
   LUT4 #(
     .INIT(16'h6AAA)) 
     \count0[3]_i_1 
@@ -21795,7 +21794,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .I2(count0_reg[0]),
         .I3(count0_reg[1]),
         .O(p_0_in[3]));
-  (* SOFT_HLUTNM = "soft_lutpair126" *) 
+  (* SOFT_HLUTNM = "soft_lutpair124" *) 
   LUT5 #(
     .INIT(32'h6AAAAAAA)) 
     \count0[4]_i_1 
@@ -21873,20 +21872,20 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .D(p_0_in[6]),
         .Q(count0_reg[6]),
         .R(count00));
-  (* SOFT_HLUTNM = "soft_lutpair146" *) 
+  (* SOFT_HLUTNM = "soft_lutpair145" *) 
   LUT1 #(
     .INIT(2'h1)) 
     \count1[0]_i_1 
        (.I0(count1_reg[0]),
         .O(p_0_in__0[0]));
-  (* SOFT_HLUTNM = "soft_lutpair146" *) 
+  (* SOFT_HLUTNM = "soft_lutpair145" *) 
   LUT2 #(
     .INIT(4'h6)) 
     \count1[1]_i_1 
        (.I0(count1_reg[0]),
         .I1(count1_reg[1]),
         .O(p_0_in__0[1]));
-  (* SOFT_HLUTNM = "soft_lutpair135" *) 
+  (* SOFT_HLUTNM = "soft_lutpair134" *) 
   LUT3 #(
     .INIT(8'h6A)) 
     \count1[2]_i_1 
@@ -21894,7 +21893,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .I1(count1_reg[1]),
         .I2(count1_reg[0]),
         .O(p_0_in__0[2]));
-  (* SOFT_HLUTNM = "soft_lutpair131" *) 
+  (* SOFT_HLUTNM = "soft_lutpair128" *) 
   LUT4 #(
     .INIT(16'h6AAA)) 
     \count1[3]_i_1 
@@ -21903,7 +21902,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .I2(count1_reg[1]),
         .I3(count1_reg[2]),
         .O(p_0_in__0[3]));
-  (* SOFT_HLUTNM = "soft_lutpair131" *) 
+  (* SOFT_HLUTNM = "soft_lutpair128" *) 
   LUT5 #(
     .INIT(32'h6AAAAAAA)) 
     \count1[4]_i_1 
@@ -21987,7 +21986,6 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .D(count_tt_reg_0),
         .Q(D),
         .S(s_rst));
-  (* SOFT_HLUTNM = "soft_lutpair133" *) 
   LUT4 #(
     .INIT(16'h0008)) 
     \current_state[4]_i_3 
@@ -22004,14 +22002,14 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .I2(\drdyCount[5]_i_2_n_0 ),
         .I3(\drdyCount[5]_i_4_n_0 ),
         .O(\drdyCount[0]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair141" *) 
+  (* SOFT_HLUTNM = "soft_lutpair140" *) 
   LUT2 #(
     .INIT(4'h6)) 
     \drdyCount[1]_i_1 
        (.I0(drdyCount[1]),
         .I1(drdyCount[0]),
         .O(\drdyCount[1]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair141" *) 
+  (* SOFT_HLUTNM = "soft_lutpair140" *) 
   LUT3 #(
     .INIT(8'h6A)) 
     \drdyCount[2]_i_1 
@@ -22019,7 +22017,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .I1(drdyCount[0]),
         .I2(drdyCount[1]),
         .O(\drdyCount[2]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair137" *) 
+  (* SOFT_HLUTNM = "soft_lutpair136" *) 
   LUT4 #(
     .INIT(16'h6AAA)) 
     \drdyCount[3]_i_1 
@@ -22044,7 +22042,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
        (.I0(s_daddr_o[12]),
         .I1(s_daddr_o[1]),
         .I2(s_daddr_o[0]),
-        .I3(\slaveRegDo_ff8[13]_i_3_n_0 ),
+        .I3(\slaveRegDo_ff8[15]_i_3_n_0 ),
         .I4(s_daddr_o[3]),
         .I5(s_daddr_o[2]),
         .O(\drdyCount[4]_i_2_n_0 ));
@@ -22064,7 +22062,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .I4(drdyCount[2]),
         .I5(\drdyCount[5]_i_5_n_0 ),
         .O(\drdyCount[5]_i_2_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair144" *) 
+  (* SOFT_HLUTNM = "soft_lutpair143" *) 
   LUT3 #(
     .INIT(8'h78)) 
     \drdyCount[5]_i_3 
@@ -22082,14 +22080,14 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .I4(drdyCount[1]),
         .I5(drdyCount[4]),
         .O(\drdyCount[5]_i_4_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair144" *) 
+  (* SOFT_HLUTNM = "soft_lutpair143" *) 
   LUT2 #(
     .INIT(4'hE)) 
     \drdyCount[5]_i_5 
        (.I0(drdyCount[4]),
         .I1(drdyCount[5]),
         .O(\drdyCount[5]_i_5_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair137" *) 
+  (* SOFT_HLUTNM = "soft_lutpair136" *) 
   LUT4 #(
     .INIT(16'h8000)) 
     \drdyCount[5]_i_6 
@@ -22149,7 +22147,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
   LUT6 #(
     .INIT(64'h0000000000800000)) 
     drdy_ff7_i_1
-       (.I0(\slaveRegDo_ff8[13]_i_3_n_0 ),
+       (.I0(\slaveRegDo_ff8[15]_i_3_n_0 ),
         .I1(reg_7_n_0),
         .I2(s_den_o),
         .I3(s_dwe_o),
@@ -22182,27 +22180,20 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
     drdy_ff9_i_2
        (.I0(s_daddr_o[9]),
         .I1(s_daddr_o[11]),
-        .I2(drdy_ff9_i_3_n_0),
+        .I2(\slaveRegDo_ff8[15]_i_4_n_0 ),
         .I3(s_dwe_o),
         .I4(s_den_o),
-        .I5(drdy_ff9_i_4_n_0),
+        .I5(drdy_ff9_i_3_n_0),
         .O(drdy_ff9_i_2_n_0));
-  (* SOFT_HLUTNM = "soft_lutpair140" *) 
-  LUT2 #(
-    .INIT(4'h2)) 
-    drdy_ff9_i_3
-       (.I0(s_daddr_o[3]),
-        .I1(s_daddr_o[2]),
-        .O(drdy_ff9_i_3_n_0));
-  (* SOFT_HLUTNM = "soft_lutpair136" *) 
+  (* SOFT_HLUTNM = "soft_lutpair133" *) 
   LUT4 #(
     .INIT(16'h7FFF)) 
-    drdy_ff9_i_4
+    drdy_ff9_i_3
        (.I0(s_daddr_o[5]),
         .I1(s_daddr_o[4]),
         .I2(s_daddr_o[7]),
         .I3(s_daddr_o[6]),
-        .O(drdy_ff9_i_4_n_0));
+        .O(drdy_ff9_i_3_n_0));
   FDRE drdy_ff9_reg
        (.C(s_dclk_o),
         .CE(1'b1),
@@ -22325,56 +22316,51 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .Q(regAck_temp_reg),
         .R(1'b0));
   LUT6 #(
-    .INIT(64'hBABABA8ABA8ABA8A)) 
+    .INIT(64'hFFFFF8FF0000F800)) 
     regDrdy_i_1
-       (.I0(drdy_mux_ff1),
-        .I1(s_daddr_o[12]),
-        .I2(\slaveRegDo_ff8[13]_i_3_n_0 ),
-        .I3(regDrdy_i_2_n_0),
-        .I4(s_daddr_o[3]),
-        .I5(regDrdy_reg_i_3_n_0),
+       (.I0(\slaveRegDo_ff8[15]_i_4_n_0 ),
+        .I1(regDrdy_i_2_n_0),
+        .I2(regDrdy_i_3_n_0),
+        .I3(\slaveRegDo_ff8[15]_i_3_n_0 ),
+        .I4(s_daddr_o[12]),
+        .I5(drdy_mux_ff1),
         .O(regDrdy_i_1_n_0));
   LUT6 #(
-    .INIT(64'h00000000EAAA2AAA)) 
-    regDrdy_i_2
-       (.I0(drdy_mux_ff1),
-        .I1(s_daddr_o[2]),
-        .I2(s_daddr_o[0]),
-        .I3(s_daddr_o[1]),
-        .I4(drdy_ff7),
-        .I5(s_daddr_o[3]),
-        .O(regDrdy_i_2_n_0));
-  LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    regDrdy_i_4
+    regDrdy_i_2
        (.I0(adv_rb_drdy4),
         .I1(drdy_ffa),
         .I2(s_daddr_o[1]),
         .I3(drdy_ff9),
         .I4(s_daddr_o[0]),
         .I5(drdy_ff8),
-        .O(regDrdy_i_4_n_0));
+        .O(regDrdy_i_2_n_0));
+  LUT6 #(
+    .INIT(64'hFF000000B8B8B8B8)) 
+    regDrdy_i_3
+       (.I0(drdy_ff7),
+        .I1(\slaveRegDo_mux_0[4]_i_6_n_0 ),
+        .I2(drdy_mux_ff1),
+        .I3(regDrdy_i_4_n_0),
+        .I4(s_daddr_o[2]),
+        .I5(s_daddr_o[3]),
+        .O(regDrdy_i_3_n_0));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    regDrdy_i_5
+    regDrdy_i_4
        (.I0(drdy_mux_ff1),
         .I1(\regAck_reg_n_0_[1] ),
         .I2(s_daddr_o[1]),
         .I3(regAck_reg),
         .I4(s_daddr_o[0]),
         .I5(adv_drdy),
-        .O(regDrdy_i_5_n_0));
+        .O(regDrdy_i_4_n_0));
   FDRE regDrdy_reg
        (.C(s_dclk_o),
         .CE(1'b1),
         .D(regDrdy_i_1_n_0),
         .Q(regDrdy_reg_n_0),
         .R(1'b0));
-  MUXF7 regDrdy_reg_i_3
-       (.I0(regDrdy_i_4_n_0),
-        .I1(regDrdy_i_5_n_0),
-        .O(regDrdy_reg_i_3_n_0),
-        .S(s_daddr_o[2]));
   zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized88 reg_15
        (.E(s_den_o),
         .\G_1PIPE_IFACE.s_daddr_r_reg[0] (reg_15_n_0),
@@ -22404,17 +22390,12 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .s_daddr_o(s_daddr_o[4:1]),
         .s_dclk_o(s_dclk_o),
         .s_di_o(s_di),
-        .slaveRegDo_18(slaveRegDo_18[12]),
-        .\slaveRegDo_mux_0_reg[12] (reg_15_n_4),
-        .\slaveRegDo_mux_0_reg[12]_0 (\slaveRegDo_mux_0[4]_i_8_n_0 ),
-        .\slaveRegDo_mux_0_reg[12]_1 (reg_17_n_12),
-        .\slaveRegDo_mux_0_reg[12]_2 (\slaveRegDo_mux_0[4]_i_7_n_0 ),
         .\xsdb_reg_reg[10] (reg_16_n_5),
         .\xsdb_reg_reg[11] (reg_16_n_4),
-        .\xsdb_reg_reg[12] (reg_16_n_0),
-        .\xsdb_reg_reg[13] (reg_16_n_3),
-        .\xsdb_reg_reg[14] (reg_16_n_2),
-        .\xsdb_reg_reg[15] (reg_16_n_1),
+        .\xsdb_reg_reg[12] (reg_16_n_3),
+        .\xsdb_reg_reg[13] (reg_16_n_2),
+        .\xsdb_reg_reg[14] (reg_16_n_1),
+        .\xsdb_reg_reg[15] (reg_16_n_0),
         .\xsdb_reg_reg[15]_0 (reg_1a_n_0));
   zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized90 reg_17
        (.\G_1PIPE_IFACE.s_daddr_r_reg[6] (reg_17_n_0),
@@ -22431,19 +22412,19 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .\slaveRegDo_mux_0[1]_i_3 (reg_15_n_15),
         .\slaveRegDo_mux_0[3]_i_3 (reg_15_n_13),
         .\slaveRegDo_mux_0[4]_i_5 (reg_15_n_12),
-        .\slaveRegDo_mux_0_reg[6] (reg_81_n_9),
+        .\slaveRegDo_mux_0_reg[6] (reg_81_n_10),
         .\slaveRegDo_mux_0_reg[6]_0 (reg_9_n_5),
         .\slaveRegDo_mux_0_reg[6]_1 (reg_15_n_10),
-        .\slaveRegDo_mux_0_reg[7] (reg_81_n_10),
+        .\slaveRegDo_mux_0_reg[7] (reg_81_n_11),
         .\slaveRegDo_mux_0_reg[7]_0 (reg_9_n_6),
         .\slaveRegDo_mux_0_reg[7]_1 (reg_15_n_9),
-        .\slaveRegDo_mux_0_reg[8] (reg_81_n_11),
+        .\slaveRegDo_mux_0_reg[8] (reg_81_n_12),
         .\slaveRegDo_mux_0_reg[8]_0 (reg_9_n_7),
         .\slaveRegDo_mux_0_reg[8]_1 (reg_15_n_8),
         .\slaveRegDo_mux_0_reg[9] (\slaveRegDo_mux_0[15]_i_6_n_0 ),
         .\slaveRegDo_mux_0_reg[9]_0 (\slaveRegDo_mux_0[15]_i_5_n_0 ),
         .\slaveRegDo_mux_0_reg[9]_1 (\slaveRegDo_mux_0[4]_i_4_n_0 ),
-        .\slaveRegDo_mux_0_reg[9]_2 (reg_81_n_12),
+        .\slaveRegDo_mux_0_reg[9]_2 (reg_81_n_13),
         .\slaveRegDo_mux_0_reg[9]_3 (reg_9_n_8),
         .\slaveRegDo_mux_0_reg[9]_4 (\slaveRegDo_mux_0[4]_i_7_n_0 ),
         .\slaveRegDo_mux_0_reg[9]_5 (\slaveRegDo_mux_0[4]_i_8_n_0 ),
@@ -22463,7 +22444,6 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .\xsdb_reg_reg[5] (reg_17_n_15));
   zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized91 reg_18
        (.\G_1PIPE_IFACE.s_daddr_r_reg[5] (reg_18_n_16),
-        .\G_1PIPE_IFACE.s_daddr_r_reg[6] (reg_18_n_0),
         .read_reset_addr(read_reset_addr[5]),
         .s_daddr_o(s_daddr_o[8:3]),
         .s_dclk_o(s_dclk_o),
@@ -22479,28 +22459,33 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .\slaveRegDo_mux_0_reg[11] (reg_17_n_13),
         .\slaveRegDo_mux_0_reg[11]_0 (reg_16_n_4),
         .\slaveRegDo_mux_0_reg[11]_1 (reg_15_n_5),
+        .\slaveRegDo_mux_0_reg[12] (reg_17_n_12),
+        .\slaveRegDo_mux_0_reg[12]_0 (reg_16_n_3),
+        .\slaveRegDo_mux_0_reg[12]_1 (reg_15_n_4),
         .\slaveRegDo_mux_0_reg[13] (reg_17_n_11),
-        .\slaveRegDo_mux_0_reg[13]_0 (reg_16_n_3),
+        .\slaveRegDo_mux_0_reg[13]_0 (reg_16_n_2),
         .\slaveRegDo_mux_0_reg[13]_1 (reg_15_n_3),
-        .\slaveRegDo_mux_0_reg[14] (\slaveRegDo_mux_0[4]_i_7_n_0 ),
-        .\slaveRegDo_mux_0_reg[14]_0 (\slaveRegDo_mux_0[4]_i_8_n_0 ),
-        .\slaveRegDo_mux_0_reg[14]_1 (reg_17_n_10),
-        .\slaveRegDo_mux_0_reg[14]_2 (reg_16_n_2),
-        .\slaveRegDo_mux_0_reg[14]_3 (reg_15_n_2),
-        .\slaveRegDo_mux_0_reg[15] (reg_17_n_9),
-        .\slaveRegDo_mux_0_reg[15]_0 (reg_16_n_1),
-        .\slaveRegDo_mux_0_reg[15]_1 (reg_15_n_1),
+        .\slaveRegDo_mux_0_reg[14] (reg_17_n_10),
+        .\slaveRegDo_mux_0_reg[14]_0 (reg_16_n_1),
+        .\slaveRegDo_mux_0_reg[14]_1 (reg_15_n_2),
+        .\slaveRegDo_mux_0_reg[15] (\slaveRegDo_mux_0[4]_i_7_n_0 ),
+        .\slaveRegDo_mux_0_reg[15]_0 (\slaveRegDo_mux_0[4]_i_8_n_0 ),
+        .\slaveRegDo_mux_0_reg[15]_1 (reg_17_n_9),
+        .\slaveRegDo_mux_0_reg[15]_2 (reg_16_n_0),
+        .\slaveRegDo_mux_0_reg[15]_3 (reg_15_n_1),
         .\slaveRegDo_mux_0_reg[5] (reg_80_n_0),
         .\slaveRegDo_mux_0_reg[5]_0 (reg_6_n_0),
         .\slaveRegDo_mux_0_reg[5]_1 (reg_17_n_15),
         .\slaveRegDo_mux_0_reg[5]_2 (reg_15_n_11),
         .\xsdb_reg_reg[0] (\xsdb_reg_reg[0]_0 ),
         .\xsdb_reg_reg[10] (reg_18_n_1),
-        .\xsdb_reg_reg[11] (reg_18_n_14),
-        .\xsdb_reg_reg[12] ({slaveRegDo_18[12],slaveRegDo_18[9:6],slaveRegDo_18[4:0]}),
-        .\xsdb_reg_reg[13] (reg_18_n_12),
-        .\xsdb_reg_reg[14] (reg_18_n_15),
-        .\xsdb_reg_reg[15] (reg_18_n_13));
+        .\xsdb_reg_reg[11] (reg_18_n_11),
+        .\xsdb_reg_reg[12] (reg_18_n_12),
+        .\xsdb_reg_reg[13] (reg_18_n_13),
+        .\xsdb_reg_reg[14] (reg_18_n_14),
+        .\xsdb_reg_reg[15] (reg_18_n_15),
+        .\xsdb_reg_reg[5] (reg_18_n_0),
+        .\xsdb_reg_reg[9] ({slaveRegDo_18[9:6],slaveRegDo_18[4:0]}));
   zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized92 reg_19
        (.s_daddr_o(s_daddr_o[4:1]),
         .s_dclk_o(s_dclk_o),
@@ -22525,12 +22510,13 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
   zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized93 reg_1a
        (.\G_1PIPE_IFACE.s_daddr_r_reg[8] (reg_1a_n_1),
         .\G_1PIPE_IFACE.s_dwe_r_reg (reg_1a_n_0),
-        .s_daddr_o(s_daddr_o),
+        .s_daddr_o(s_daddr_o[8:0]),
         .s_dclk_o(s_dclk_o),
         .s_den_o(s_den_o),
         .s_di_o(s_di),
         .s_dwe_o(s_dwe_o),
         .\xsdb_reg_reg[0] (reg_1a_n_17),
+        .\xsdb_reg_reg[0]_0 (reg_83_n_1),
         .\xsdb_reg_reg[10] (reg_1a_n_7),
         .\xsdb_reg_reg[11] (reg_1a_n_6),
         .\xsdb_reg_reg[12] (reg_1a_n_5),
@@ -22551,25 +22537,25 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .s_dclk_o(s_dclk_o),
         .s_di_o(s_di),
         .\slaveRegDo_mux_0[5]_i_4 (reg_7_n_12),
-        .\slaveRegDo_mux_0_reg[11] (reg_81_n_0),
-        .\slaveRegDo_mux_0_reg[11]_0 (reg_18_n_14),
+        .\slaveRegDo_mux_0_reg[11] (reg_81_n_14),
+        .\slaveRegDo_mux_0_reg[11]_0 (reg_18_n_11),
         .\slaveRegDo_mux_0_reg[11]_1 (reg_7_n_10),
-        .\slaveRegDo_mux_0_reg[12] (reg_81_n_13),
-        .\slaveRegDo_mux_0_reg[12]_0 (reg_16_n_0),
+        .\slaveRegDo_mux_0_reg[12] (reg_81_n_0),
+        .\slaveRegDo_mux_0_reg[12]_0 (reg_18_n_12),
         .\slaveRegDo_mux_0_reg[12]_1 (reg_7_n_9),
-        .\slaveRegDo_mux_0_reg[13] (reg_81_n_14),
-        .\slaveRegDo_mux_0_reg[13]_0 (reg_18_n_12),
+        .\slaveRegDo_mux_0_reg[13] (reg_81_n_3),
+        .\slaveRegDo_mux_0_reg[13]_0 (reg_18_n_13),
         .\slaveRegDo_mux_0_reg[13]_1 (reg_7_n_8),
         .\slaveRegDo_mux_0_reg[14] (reg_81_n_15),
-        .\slaveRegDo_mux_0_reg[14]_0 (reg_18_n_15),
+        .\slaveRegDo_mux_0_reg[14]_0 (reg_18_n_14),
         .\slaveRegDo_mux_0_reg[14]_1 (reg_7_n_7),
         .\slaveRegDo_mux_0_reg[15] (\slaveRegDo_mux_0[15]_i_5_n_0 ),
         .\slaveRegDo_mux_0_reg[15]_0 (\slaveRegDo_mux_0[4]_i_7_n_0 ),
         .\slaveRegDo_mux_0_reg[15]_1 (\slaveRegDo_mux_0[15]_i_6_n_0 ),
         .\slaveRegDo_mux_0_reg[15]_2 (\slaveRegDo_mux_0[4]_i_8_n_0 ),
         .\slaveRegDo_mux_0_reg[15]_3 (\slaveRegDo_mux_0[4]_i_4_n_0 ),
-        .\slaveRegDo_mux_0_reg[15]_4 (reg_81_n_3),
-        .\slaveRegDo_mux_0_reg[15]_5 (reg_18_n_13),
+        .\slaveRegDo_mux_0_reg[15]_4 (reg_81_n_4),
+        .\slaveRegDo_mux_0_reg[15]_5 (reg_18_n_15),
         .\slaveRegDo_mux_0_reg[15]_6 (reg_7_n_6),
         .\xsdb_reg_reg[0] (\xsdb_reg_reg[0]_1 ),
         .\xsdb_reg_reg[10] ({slaveRegDo_6[10:6],slaveRegDo_6[4:0]}),
@@ -22639,10 +22625,10 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .s_di_o(s_di),
         .slaveRegDo_81({slaveRegDo_81[10],slaveRegDo_81[5]}),
         .\slaveRegDo_mux_0_reg[10] (\slaveRegDo_mux_0[15]_i_6_n_0 ),
-        .\slaveRegDo_mux_0_reg[10]_0 (reg_85_n_7),
+        .\slaveRegDo_mux_0_reg[10]_0 (reg_85_n_8),
         .\slaveRegDo_mux_0_reg[10]_i_3 (reg_19_n_5),
         .\slaveRegDo_mux_0_reg[10]_i_3_0 (reg_1a_n_7),
-        .\slaveRegDo_mux_0_reg[5] (reg_85_n_6),
+        .\slaveRegDo_mux_0_reg[5] (reg_85_n_7),
         .\slaveRegDo_mux_0_reg[5]_i_3 (\slaveRegDo_mux_0[4]_i_7_n_0 ),
         .\slaveRegDo_mux_0_reg[5]_i_3_0 (reg_19_n_10),
         .\slaveRegDo_mux_0_reg[5]_i_3_1 (\slaveRegDo_mux_0[4]_i_8_n_0 ),
@@ -22653,7 +22639,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
   zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized95 reg_81
        (.\G_1PIPE_IFACE.s_daddr_r_reg[6] (reg_81_n_0),
         .\G_1PIPE_IFACE.s_daddr_r_reg[6]_0 (reg_81_n_3),
-        .\G_1PIPE_IFACE.s_daddr_r_reg[6]_1 (reg_81_n_9),
+        .\G_1PIPE_IFACE.s_daddr_r_reg[6]_1 (reg_81_n_4),
         .\G_1PIPE_IFACE.s_daddr_r_reg[6]_2 (reg_81_n_10),
         .\G_1PIPE_IFACE.s_daddr_r_reg[6]_3 (reg_81_n_11),
         .\G_1PIPE_IFACE.s_daddr_r_reg[6]_4 (reg_81_n_12),
@@ -22672,15 +22658,15 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .\slaveRegDo_mux_0[3]_i_3_0 (reg_19_n_12),
         .\slaveRegDo_mux_0[4]_i_5 (reg_1a_n_13),
         .\slaveRegDo_mux_0[4]_i_5_0 (reg_19_n_11),
-        .\slaveRegDo_mux_0_reg[11] (reg_85_n_8),
-        .\slaveRegDo_mux_0_reg[11]_i_3 (\slaveRegDo_mux_0[4]_i_7_n_0 ),
-        .\slaveRegDo_mux_0_reg[11]_i_3_0 (reg_1a_n_6),
-        .\slaveRegDo_mux_0_reg[11]_i_3_1 (\slaveRegDo_mux_0[4]_i_8_n_0 ),
-        .\slaveRegDo_mux_0_reg[11]_i_3_2 (reg_19_n_4),
-        .\slaveRegDo_mux_0_reg[12] (reg_85_n_9),
-        .\slaveRegDo_mux_0_reg[12]_i_3 (reg_1a_n_5),
-        .\slaveRegDo_mux_0_reg[12]_i_3_0 (reg_19_n_3),
-        .\slaveRegDo_mux_0_reg[13] (reg_85_n_10),
+        .\slaveRegDo_mux_0_reg[11] (reg_85_n_9),
+        .\slaveRegDo_mux_0_reg[11]_i_3 (reg_1a_n_6),
+        .\slaveRegDo_mux_0_reg[11]_i_3_0 (reg_19_n_4),
+        .\slaveRegDo_mux_0_reg[12] (reg_85_n_10),
+        .\slaveRegDo_mux_0_reg[12]_i_3 (\slaveRegDo_mux_0[4]_i_7_n_0 ),
+        .\slaveRegDo_mux_0_reg[12]_i_3_0 (reg_1a_n_5),
+        .\slaveRegDo_mux_0_reg[12]_i_3_1 (\slaveRegDo_mux_0[4]_i_8_n_0 ),
+        .\slaveRegDo_mux_0_reg[12]_i_3_2 (reg_19_n_3),
+        .\slaveRegDo_mux_0_reg[13] (reg_85_n_6),
         .\slaveRegDo_mux_0_reg[13]_i_3 (reg_1a_n_4),
         .\slaveRegDo_mux_0_reg[13]_i_3_0 (reg_19_n_2),
         .\slaveRegDo_mux_0_reg[14] (\slaveRegDo_mux_0[15]_i_6_n_0 ),
@@ -22703,14 +22689,14 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .\slaveRegDo_mux_0_reg[9] (reg_84_n_15),
         .\slaveRegDo_mux_0_reg[9]_i_3 (reg_1a_n_8),
         .\slaveRegDo_mux_0_reg[9]_i_3_0 (reg_19_n_6),
-        .\xsdb_reg_reg[0] (reg_81_n_4),
+        .\xsdb_reg_reg[0] (reg_81_n_5),
         .\xsdb_reg_reg[0]_0 (\xsdb_reg_reg[0]_1 ),
         .\xsdb_reg_reg[0]_1 (\xsdb_reg_reg[0]_2 ),
         .\xsdb_reg_reg[10] ({slaveRegDo_81[10],slaveRegDo_81[5]}),
-        .\xsdb_reg_reg[1] (reg_81_n_5),
-        .\xsdb_reg_reg[2] (reg_81_n_6),
-        .\xsdb_reg_reg[3] (reg_81_n_7),
-        .\xsdb_reg_reg[4] (reg_81_n_8));
+        .\xsdb_reg_reg[1] (reg_81_n_6),
+        .\xsdb_reg_reg[2] (reg_81_n_7),
+        .\xsdb_reg_reg[3] (reg_81_n_8),
+        .\xsdb_reg_reg[4] (reg_81_n_9));
   zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized96 reg_82
        (.s_daddr_o(s_daddr_o[2:0]),
         .s_dclk_o(s_dclk_o),
@@ -22719,28 +22705,29 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .\xsdb_reg_reg[0] (\xsdb_reg_reg[0]_1 ),
         .\xsdb_reg_reg[0]_0 (\xsdb_reg_reg[0]_2 ));
   zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized97 reg_83
-       (.\G_1PIPE_IFACE.s_daddr_r_reg[12] (reg_83_n_0),
+       (.\G_1PIPE_IFACE.s_daddr_r_reg[11] (reg_83_n_1),
+        .\G_1PIPE_IFACE.s_daddr_r_reg[6] (reg_83_n_0),
         .s_daddr_o(s_daddr_o),
         .s_dclk_o(s_dclk_o),
         .s_den_o(s_den_o),
         .s_di_o(s_di),
         .s_dwe_o(s_dwe_o),
-        .\xsdb_reg_reg[0] (reg_83_n_16),
-        .\xsdb_reg_reg[10] (reg_83_n_6),
-        .\xsdb_reg_reg[11] (reg_83_n_5),
-        .\xsdb_reg_reg[12] (reg_83_n_4),
-        .\xsdb_reg_reg[13] (reg_83_n_3),
-        .\xsdb_reg_reg[14] (reg_83_n_2),
-        .\xsdb_reg_reg[15] (reg_83_n_1),
-        .\xsdb_reg_reg[1] (reg_83_n_15),
-        .\xsdb_reg_reg[2] (reg_83_n_14),
-        .\xsdb_reg_reg[3] (reg_83_n_13),
-        .\xsdb_reg_reg[4] (reg_83_n_12),
-        .\xsdb_reg_reg[5] (reg_83_n_11),
-        .\xsdb_reg_reg[6] (reg_83_n_10),
-        .\xsdb_reg_reg[7] (reg_83_n_9),
-        .\xsdb_reg_reg[8] (reg_83_n_8),
-        .\xsdb_reg_reg[9] (reg_83_n_7));
+        .\xsdb_reg_reg[0] (reg_83_n_17),
+        .\xsdb_reg_reg[10] (reg_83_n_7),
+        .\xsdb_reg_reg[11] (reg_83_n_6),
+        .\xsdb_reg_reg[12] (reg_83_n_5),
+        .\xsdb_reg_reg[13] (reg_83_n_4),
+        .\xsdb_reg_reg[14] (reg_83_n_3),
+        .\xsdb_reg_reg[15] (reg_83_n_2),
+        .\xsdb_reg_reg[1] (reg_83_n_16),
+        .\xsdb_reg_reg[2] (reg_83_n_15),
+        .\xsdb_reg_reg[3] (reg_83_n_14),
+        .\xsdb_reg_reg[4] (reg_83_n_13),
+        .\xsdb_reg_reg[5] (reg_83_n_12),
+        .\xsdb_reg_reg[6] (reg_83_n_11),
+        .\xsdb_reg_reg[7] (reg_83_n_10),
+        .\xsdb_reg_reg[8] (reg_83_n_9),
+        .\xsdb_reg_reg[9] (reg_83_n_8));
   zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized98 reg_84
        (.s_daddr_o(s_daddr_o[2:0]),
         .s_dclk_o(s_dclk_o),
@@ -22749,13 +22736,13 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .\slaveRegDo_mux_0_reg[6]_i_3 (reg_85_n_16),
         .\slaveRegDo_mux_0_reg[6]_i_3_0 (\slaveRegDo_mux_0[4]_i_7_n_0 ),
         .\slaveRegDo_mux_0_reg[6]_i_3_1 (\slaveRegDo_mux_0[4]_i_8_n_0 ),
-        .\slaveRegDo_mux_0_reg[6]_i_3_2 (reg_83_n_10),
+        .\slaveRegDo_mux_0_reg[6]_i_3_2 (reg_83_n_11),
         .\slaveRegDo_mux_0_reg[7]_i_3 (reg_85_n_15),
-        .\slaveRegDo_mux_0_reg[7]_i_3_0 (reg_83_n_9),
+        .\slaveRegDo_mux_0_reg[7]_i_3_0 (reg_83_n_10),
         .\slaveRegDo_mux_0_reg[8]_i_3 (reg_85_n_14),
-        .\slaveRegDo_mux_0_reg[8]_i_3_0 (reg_83_n_8),
+        .\slaveRegDo_mux_0_reg[8]_i_3_0 (reg_83_n_9),
         .\slaveRegDo_mux_0_reg[9]_i_3 (reg_85_n_13),
-        .\slaveRegDo_mux_0_reg[9]_i_3_0 (reg_83_n_7),
+        .\slaveRegDo_mux_0_reg[9]_i_3_0 (reg_83_n_8),
         .\xsdb_reg_reg[0] (\xsdb_reg_reg[0]_1 ),
         .\xsdb_reg_reg[0]_0 (\xsdb_reg_reg[0]_2 ),
         .\xsdb_reg_reg[15] ({slaveRegDo_84[15:10],slaveRegDo_84[5:0]}),
@@ -22771,47 +22758,47 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .s_di_o(s_di),
         .s_dwe_o(s_dwe_o),
         .slaveRegDo_82({slaveRegDo_82[15:10],slaveRegDo_82[5:0]}),
-        .\slaveRegDo_mux_0[0]_i_3 (\slaveRegDo_mux_0[4]_i_7_n_0 ),
-        .\slaveRegDo_mux_0[0]_i_3_0 (reg_83_n_16),
-        .\slaveRegDo_mux_0[0]_i_3_1 (\slaveRegDo_mux_0[4]_i_8_n_0 ),
-        .\slaveRegDo_mux_0[1]_i_3 (reg_83_n_15),
-        .\slaveRegDo_mux_0[2]_i_5 (reg_83_n_14),
-        .\slaveRegDo_mux_0[3]_i_3 (reg_83_n_13),
-        .\slaveRegDo_mux_0[4]_i_5 (reg_83_n_12),
-        .\slaveRegDo_mux_0_reg[0] (reg_81_n_4),
+        .\slaveRegDo_mux_0[0]_i_3 (reg_83_n_17),
+        .\slaveRegDo_mux_0[1]_i_3 (reg_83_n_16),
+        .\slaveRegDo_mux_0[2]_i_5 (reg_83_n_15),
+        .\slaveRegDo_mux_0[3]_i_3 (reg_83_n_14),
+        .\slaveRegDo_mux_0[4]_i_5 (reg_83_n_13),
+        .\slaveRegDo_mux_0_reg[0] (reg_81_n_5),
         .\slaveRegDo_mux_0_reg[0]_0 (reg_17_n_4),
-        .\slaveRegDo_mux_0_reg[10]_i_3 (reg_83_n_6),
-        .\slaveRegDo_mux_0_reg[11]_i_3 (reg_83_n_5),
-        .\slaveRegDo_mux_0_reg[12]_i_3 (reg_83_n_4),
-        .\slaveRegDo_mux_0_reg[13]_i_3 (reg_83_n_3),
-        .\slaveRegDo_mux_0_reg[14]_i_3 (reg_83_n_2),
+        .\slaveRegDo_mux_0_reg[10]_i_3 (reg_83_n_7),
+        .\slaveRegDo_mux_0_reg[11]_i_3 (reg_83_n_6),
+        .\slaveRegDo_mux_0_reg[12]_i_3 (reg_83_n_5),
+        .\slaveRegDo_mux_0_reg[13]_i_3 (\slaveRegDo_mux_0[4]_i_7_n_0 ),
+        .\slaveRegDo_mux_0_reg[13]_i_3_0 (reg_83_n_4),
+        .\slaveRegDo_mux_0_reg[13]_i_3_1 (\slaveRegDo_mux_0[4]_i_8_n_0 ),
+        .\slaveRegDo_mux_0_reg[14]_i_3 (reg_83_n_3),
         .\slaveRegDo_mux_0_reg[15]_i_4 ({slaveRegDo_84[15:10],slaveRegDo_84[5:0]}),
-        .\slaveRegDo_mux_0_reg[15]_i_4_0 (reg_83_n_1),
-        .\slaveRegDo_mux_0_reg[1] (reg_81_n_5),
+        .\slaveRegDo_mux_0_reg[15]_i_4_0 (reg_83_n_2),
+        .\slaveRegDo_mux_0_reg[1] (reg_81_n_6),
         .\slaveRegDo_mux_0_reg[1]_0 (reg_17_n_5),
-        .\slaveRegDo_mux_0_reg[2] (reg_81_n_6),
+        .\slaveRegDo_mux_0_reg[2] (reg_81_n_7),
         .\slaveRegDo_mux_0_reg[2]_0 (reg_17_n_6),
-        .\slaveRegDo_mux_0_reg[3] (reg_81_n_7),
+        .\slaveRegDo_mux_0_reg[3] (reg_81_n_8),
         .\slaveRegDo_mux_0_reg[3]_0 (reg_17_n_7),
         .\slaveRegDo_mux_0_reg[4] (\slaveRegDo_mux_0[15]_i_5_n_0 ),
         .\slaveRegDo_mux_0_reg[4]_0 (\slaveRegDo_mux_0[15]_i_6_n_0 ),
-        .\slaveRegDo_mux_0_reg[4]_1 (reg_81_n_8),
+        .\slaveRegDo_mux_0_reg[4]_1 (reg_81_n_9),
         .\slaveRegDo_mux_0_reg[4]_2 (reg_17_n_8),
-        .\slaveRegDo_mux_0_reg[5]_i_3 (reg_83_n_11),
+        .\slaveRegDo_mux_0_reg[5]_i_3 (reg_83_n_12),
         .\xsdb_reg_reg[0] (reg_85_n_1),
         .\xsdb_reg_reg[0]_0 (reg_83_n_0),
         .\xsdb_reg_reg[0]_1 (\xsdb_reg_reg[0]_3 ),
-        .\xsdb_reg_reg[10] (reg_85_n_7),
-        .\xsdb_reg_reg[11] (reg_85_n_8),
-        .\xsdb_reg_reg[12] (reg_85_n_9),
-        .\xsdb_reg_reg[13] (reg_85_n_10),
+        .\xsdb_reg_reg[10] (reg_85_n_8),
+        .\xsdb_reg_reg[11] (reg_85_n_9),
+        .\xsdb_reg_reg[12] (reg_85_n_10),
+        .\xsdb_reg_reg[13] (reg_85_n_6),
         .\xsdb_reg_reg[14] (reg_85_n_11),
         .\xsdb_reg_reg[15] (reg_85_n_12),
         .\xsdb_reg_reg[1] (reg_85_n_2),
         .\xsdb_reg_reg[2] (reg_85_n_3),
         .\xsdb_reg_reg[3] (reg_85_n_4),
         .\xsdb_reg_reg[4] (reg_85_n_5),
-        .\xsdb_reg_reg[5] (reg_85_n_6),
+        .\xsdb_reg_reg[5] (reg_85_n_7),
         .\xsdb_reg_reg[6] (reg_85_n_16),
         .\xsdb_reg_reg[7] (reg_85_n_15),
         .\xsdb_reg_reg[8] (reg_85_n_14),
@@ -22829,14 +22816,14 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .\slaveRegDo_mux_2_reg[3]_2 (\slaveRegDo_mux_2[15]_i_1_n_0 ));
   zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized103 reg_88d
        (.D({reg_88d_n_0,reg_88d_n_1}),
-        .s_daddr_o(s_daddr_o[4:0]),
+        .s_daddr_o(s_daddr_o[3:0]),
         .s_dclk_o(s_dclk_o),
         .s_den_o(s_den_o),
         .s_do_o(slaveRegDo_890[1:0]),
         .\slaveRegDo_mux_2_reg[1] (\slaveRegDo_mux_0[4]_i_2_n_0 ),
         .\slaveRegDo_mux_2_reg[1]_0 ({\slaveRegDo_mux_1[1]_i_1_n_0 ,\slaveRegDo_mux_1[0]_i_1_n_0 }),
-        .\slaveRegDo_mux_2_reg[1]_1 (\slaveRegDo_mux_2[1]_i_2_n_0 ),
-        .\slaveRegDo_mux_2_reg[1]_2 (\slaveRegDo_mux_2[1]_i_4_n_0 ),
+        .\slaveRegDo_mux_2_reg[1]_1 (\slaveRegDo_mux_2[1]_i_3_n_0 ),
+        .\slaveRegDo_mux_2_reg[1]_2 (\slaveRegDo_mux_2[15]_i_1_n_0 ),
         .\xsdb_reg_reg[1] (\xsdb_reg_reg[1] ));
   (* C_ADDR_W = "13" *) 
   (* C_CTLRST_VAL = "47'b00000000000000000000000000000000000000000000000" *) 
@@ -22891,53 +22878,53 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .\xsdb_reg_reg[9]_0 (\xsdb_reg_reg[9] ));
   zusys_system_ila_0_0_xsdbs_v1_0_2_reg_p2s__parameterized32 reg_srl_fff
        (.E(shift_en_reg),
-        .Q({\slaveRegDo_ff8_reg_n_0_[13] ,\slaveRegDo_ff8_reg_n_0_[5] }),
+        .Q({\slaveRegDo_ff8_reg_n_0_[15] ,\slaveRegDo_ff8_reg_n_0_[10] }),
         .capture_ctrl_config_serial_output(capture_ctrl_config_serial_output),
         .\current_state[3]_i_3_0 (\current_state[3]_i_3 ),
         .\current_state[3]_i_3_1 (\xsdb_reg[15]_i_5__0_n_0 ),
         .\parallel_dout_reg[15]_0 (\parallel_dout_reg[15] ),
-        .\parallel_dout_reg[5]_0 (reg_srl_fff_n_7),
         .s_daddr_o({s_daddr_o[12:8],s_daddr_o[5:0]}),
         .s_dclk_o(s_dclk_o),
         .s_den_o(s_den_o),
         .s_di_o(s_di[14:0]),
         .s_dwe_o(s_dwe_o),
         .\shadow_reg[15]_0 (\TC_SRL[0].tc_srl_reg_n_0 ),
-        .\slaveRegDo_ff8_reg[13] (reg_srl_fff_n_9),
-        .\slaveRegDo_ff8_reg[13]_0 (reg_srl_fff_n_10),
-        .\slaveRegDo_ff8_reg[13]_1 (reg_srl_fff_n_11),
-        .\slaveRegDo_ff8_reg[5] (reg_srl_fff_n_1),
-        .\slaveRegDo_ff8_reg[5]_0 (reg_srl_fff_n_6),
+        .\slaveRegDo_ff8_reg[10] (reg_srl_fff_n_11),
+        .\slaveRegDo_ff8_reg[10]_0 (reg_srl_fff_n_12),
+        .\slaveRegDo_ff8_reg[10]_1 (reg_srl_fff_n_13),
+        .\slaveRegDo_ff8_reg[15] (reg_srl_fff_n_14),
+        .\slaveRegDo_ff8_reg[15]_0 (reg_srl_fff_n_15),
+        .\slaveRegDo_ff8_reg[15]_1 (reg_srl_fff_n_16),
         .slaveRegDo_ff9(slaveRegDo_ff9),
-        .\slaveRegDo_ff9_reg[15] (reg_srl_fff_n_2),
-        .\slaveRegDo_ff9_reg[15]_0 (reg_srl_fff_n_3),
-        .\slaveRegDo_ff9_reg[15]_1 (reg_srl_fff_n_4),
-        .\slaveRegDo_ff9_reg[15]_2 (reg_srl_fff_n_5),
-        .\slaveRegDo_ff9_reg[15]_3 (reg_srl_fff_n_8),
-        .\slaveRegDo_ff9_reg[15]_4 (reg_srl_fff_n_12),
-        .\slaveRegDo_ff9_reg[15]_5 (reg_srl_fff_n_13),
-        .\slaveRegDo_ff9_reg[15]_6 (reg_srl_fff_n_14),
-        .\slaveRegDo_ff9_reg[15]_7 (reg_srl_fff_n_15),
-        .\slaveRegDo_ff9_reg[15]_8 (reg_srl_fff_n_16),
-        .\slaveRegDo_mux_3_reg[0] (\slaveRegDo_mux_3[15]_i_7_n_0 ),
-        .\slaveRegDo_mux_3_reg[0]_0 (\slaveRegDo_mux_3[15]_i_6_n_0 ));
+        .\slaveRegDo_ff9_reg[15] (reg_srl_fff_n_1),
+        .\slaveRegDo_ff9_reg[15]_0 (reg_srl_fff_n_2),
+        .\slaveRegDo_ff9_reg[15]_1 (reg_srl_fff_n_3),
+        .\slaveRegDo_ff9_reg[15]_2 (reg_srl_fff_n_4),
+        .\slaveRegDo_ff9_reg[15]_3 (reg_srl_fff_n_5),
+        .\slaveRegDo_ff9_reg[15]_4 (reg_srl_fff_n_6),
+        .\slaveRegDo_ff9_reg[15]_5 (reg_srl_fff_n_7),
+        .\slaveRegDo_ff9_reg[15]_6 (reg_srl_fff_n_8),
+        .\slaveRegDo_ff9_reg[15]_7 (reg_srl_fff_n_9),
+        .\slaveRegDo_ff9_reg[15]_8 (reg_srl_fff_n_10),
+        .\slaveRegDo_mux_3_reg[2] (\slaveRegDo_mux_3[15]_i_6_n_0 ),
+        .\slaveRegDo_mux_3_reg[2]_0 (\slaveRegDo_mux_3[15]_i_7_n_0 ));
   zusys_system_ila_0_0_xsdbs_v1_0_2_reg_stream reg_stream_ffd
        (.\G_1PIPE_IFACE.s_daddr_r_reg[0] (reg_stream_ffd_n_0),
-        .\G_1PIPE_IFACE.s_daddr_r_reg[0]_0 (reg_stream_ffd_n_1),
-        .\G_1PIPE_IFACE.s_daddr_r_reg[0]_1 (reg_stream_ffd_n_2),
-        .\G_1PIPE_IFACE.s_daddr_r_reg[0]_10 (reg_stream_ffd_n_11),
-        .\G_1PIPE_IFACE.s_daddr_r_reg[0]_11 (reg_stream_ffd_n_12),
-        .\G_1PIPE_IFACE.s_daddr_r_reg[0]_12 (reg_stream_ffd_n_13),
-        .\G_1PIPE_IFACE.s_daddr_r_reg[0]_13 (reg_stream_ffd_n_14),
-        .\G_1PIPE_IFACE.s_daddr_r_reg[0]_14 (reg_stream_ffd_n_15),
-        .\G_1PIPE_IFACE.s_daddr_r_reg[0]_2 (reg_stream_ffd_n_3),
-        .\G_1PIPE_IFACE.s_daddr_r_reg[0]_3 (reg_stream_ffd_n_4),
-        .\G_1PIPE_IFACE.s_daddr_r_reg[0]_4 (reg_stream_ffd_n_5),
-        .\G_1PIPE_IFACE.s_daddr_r_reg[0]_5 (reg_stream_ffd_n_6),
-        .\G_1PIPE_IFACE.s_daddr_r_reg[0]_6 (reg_stream_ffd_n_7),
-        .\G_1PIPE_IFACE.s_daddr_r_reg[0]_7 (reg_stream_ffd_n_8),
-        .\G_1PIPE_IFACE.s_daddr_r_reg[0]_8 (reg_stream_ffd_n_9),
-        .\G_1PIPE_IFACE.s_daddr_r_reg[0]_9 (reg_stream_ffd_n_10),
+        .\G_1PIPE_IFACE.s_daddr_r_reg[0]_0 (reg_stream_ffd_n_17),
+        .\G_1PIPE_IFACE.s_daddr_r_reg[0]_1 (reg_stream_ffd_n_18),
+        .\G_1PIPE_IFACE.s_daddr_r_reg[0]_10 (reg_stream_ffd_n_27),
+        .\G_1PIPE_IFACE.s_daddr_r_reg[0]_11 (reg_stream_ffd_n_28),
+        .\G_1PIPE_IFACE.s_daddr_r_reg[0]_12 (reg_stream_ffd_n_29),
+        .\G_1PIPE_IFACE.s_daddr_r_reg[0]_13 (reg_stream_ffd_n_30),
+        .\G_1PIPE_IFACE.s_daddr_r_reg[0]_14 (reg_stream_ffd_n_31),
+        .\G_1PIPE_IFACE.s_daddr_r_reg[0]_2 (reg_stream_ffd_n_19),
+        .\G_1PIPE_IFACE.s_daddr_r_reg[0]_3 (reg_stream_ffd_n_20),
+        .\G_1PIPE_IFACE.s_daddr_r_reg[0]_4 (reg_stream_ffd_n_21),
+        .\G_1PIPE_IFACE.s_daddr_r_reg[0]_5 (reg_stream_ffd_n_22),
+        .\G_1PIPE_IFACE.s_daddr_r_reg[0]_6 (reg_stream_ffd_n_23),
+        .\G_1PIPE_IFACE.s_daddr_r_reg[0]_7 (reg_stream_ffd_n_24),
+        .\G_1PIPE_IFACE.s_daddr_r_reg[0]_8 (reg_stream_ffd_n_25),
+        .\G_1PIPE_IFACE.s_daddr_r_reg[0]_9 (reg_stream_ffd_n_26),
         .Q({reg_stream_ffe_n_0,reg_stream_ffe_n_1,reg_stream_ffe_n_2,reg_stream_ffe_n_3,reg_stream_ffe_n_4,reg_stream_ffe_n_5,reg_stream_ffe_n_6,reg_stream_ffe_n_7,reg_stream_ffe_n_8,reg_stream_ffe_n_9,reg_stream_ffe_n_10,reg_stream_ffe_n_11,reg_stream_ffe_n_12,reg_stream_ffe_n_13,reg_stream_ffe_n_14,reg_stream_ffe_n_15}),
         .s_daddr_o(s_daddr_o[1:0]),
         .s_dclk_o(s_dclk_o),
@@ -22945,23 +22932,23 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .s_dwe_o(s_dwe_o),
         .slaveRegDo_ffa(slaveRegDo_ffa),
         .\slaveRegDo_mux_3_reg[0] (reg_srl_fff_n_1),
-        .\slaveRegDo_mux_3_reg[10] (reg_srl_fff_n_9),
-        .\slaveRegDo_mux_3_reg[11] (reg_srl_fff_n_10),
-        .\slaveRegDo_mux_3_reg[12] (\slaveRegDo_mux_3[15]_i_3_n_0 ),
-        .\slaveRegDo_mux_3_reg[12]_0 (reg_srl_fff_n_5),
-        .\slaveRegDo_mux_3_reg[13] (reg_srl_fff_n_11),
+        .\slaveRegDo_mux_3_reg[10] (reg_srl_fff_n_13),
+        .\slaveRegDo_mux_3_reg[11] (reg_srl_fff_n_5),
+        .\slaveRegDo_mux_3_reg[12] (reg_srl_fff_n_6),
+        .\slaveRegDo_mux_3_reg[13] (reg_srl_fff_n_14),
         .\slaveRegDo_mux_3_reg[14] (reg_srl_fff_n_15),
-        .\slaveRegDo_mux_3_reg[15] (reg_srl_fff_n_16),
+        .\slaveRegDo_mux_3_reg[15] (\slaveRegDo_mux_3[15]_i_3_n_0 ),
         .\slaveRegDo_mux_3_reg[15]_0 (\slaveRegDo_mux_3[15]_i_6_n_0 ),
         .\slaveRegDo_mux_3_reg[15]_1 (\slaveRegDo_mux_3[15]_i_7_n_0 ),
-        .\slaveRegDo_mux_3_reg[1] (reg_srl_fff_n_12),
-        .\slaveRegDo_mux_3_reg[2] (reg_srl_fff_n_13),
-        .\slaveRegDo_mux_3_reg[3] (reg_srl_fff_n_14),
-        .\slaveRegDo_mux_3_reg[4] (reg_srl_fff_n_6),
-        .\slaveRegDo_mux_3_reg[5] (reg_srl_fff_n_7),
-        .\slaveRegDo_mux_3_reg[6] (reg_srl_fff_n_2),
-        .\slaveRegDo_mux_3_reg[7] (reg_srl_fff_n_3),
-        .\slaveRegDo_mux_3_reg[8] (reg_srl_fff_n_8),
+        .\slaveRegDo_mux_3_reg[15]_2 (reg_srl_fff_n_16),
+        .\slaveRegDo_mux_3_reg[1] (reg_srl_fff_n_2),
+        .\slaveRegDo_mux_3_reg[2] (reg_srl_fff_n_11),
+        .\slaveRegDo_mux_3_reg[3] (reg_srl_fff_n_3),
+        .\slaveRegDo_mux_3_reg[4] (reg_srl_fff_n_7),
+        .\slaveRegDo_mux_3_reg[5] (reg_srl_fff_n_8),
+        .\slaveRegDo_mux_3_reg[6] (reg_srl_fff_n_9),
+        .\slaveRegDo_mux_3_reg[7] (reg_srl_fff_n_10),
+        .\slaveRegDo_mux_3_reg[8] (reg_srl_fff_n_12),
         .\slaveRegDo_mux_3_reg[9] (reg_srl_fff_n_4),
         .\xsdb_reg_reg[0] (\xsdb_reg[15]_i_2__3_n_0 ),
         .\xsdb_reg_reg[0]_0 (\xsdb_reg[15]_i_3__3_n_0 ),
@@ -23009,7 +22996,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .I3(count0_reg[5]),
         .I4(count0_reg[4]),
         .O(shift_reg00));
-  (* SOFT_HLUTNM = "soft_lutpair134" *) 
+  (* SOFT_HLUTNM = "soft_lutpair138" *) 
   LUT4 #(
     .INIT(16'hFFFE)) 
     \shift_reg0[31]_i_2 
@@ -23039,7 +23026,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .I3(count1_reg[4]),
         .I4(count1_reg[6]),
         .O(shift_reg10));
-  (* SOFT_HLUTNM = "soft_lutpair135" *) 
+  (* SOFT_HLUTNM = "soft_lutpair134" *) 
   LUT4 #(
     .INIT(16'hFFFE)) 
     \shift_reg1[31]_i_2 
@@ -23062,46 +23049,46 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .S(shift_reg10));
   LUT6 #(
     .INIT(64'h0000000000080000)) 
-    \slaveRegDo_ff8[13]_i_1 
-       (.I0(\slaveRegDo_ff8[13]_i_3_n_0 ),
-        .I1(s_daddr_o[3]),
-        .I2(s_daddr_o[2]),
-        .I3(\slaveRegDo_ff8[13]_i_4_n_0 ),
+    \slaveRegDo_ff8[15]_i_1 
+       (.I0(\slaveRegDo_ff8[15]_i_3_n_0 ),
+        .I1(\slaveRegDo_ff8[15]_i_4_n_0 ),
+        .I2(s_daddr_o[0]),
+        .I3(s_daddr_o[1]),
         .I4(s_den_o),
         .I5(s_dwe_o),
         .O(E));
   LUT1 #(
     .INIT(2'h1)) 
-    \slaveRegDo_ff8[13]_i_2 
+    \slaveRegDo_ff8[15]_i_2 
        (.I0(D),
-        .O(p_1_in0));
+        .O(\slaveRegDo_ff8[15]_i_2_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair125" *) 
   LUT3 #(
     .INIT(8'h08)) 
-    \slaveRegDo_ff8[13]_i_3 
+    \slaveRegDo_ff8[15]_i_3 
        (.I0(s_daddr_o[11]),
         .I1(s_daddr_o[10]),
         .I2(\slaveRegDo_mux_3[15]_i_1_n_0 ),
-        .O(\slaveRegDo_ff8[13]_i_3_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair133" *) 
+        .O(\slaveRegDo_ff8[15]_i_3_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair139" *) 
   LUT2 #(
-    .INIT(4'hE)) 
-    \slaveRegDo_ff8[13]_i_4 
-       (.I0(s_daddr_o[1]),
-        .I1(s_daddr_o[0]),
-        .O(\slaveRegDo_ff8[13]_i_4_n_0 ));
-  FDSE \slaveRegDo_ff8_reg[13] 
-       (.C(s_dclk_o),
-        .CE(E),
-        .D(p_1_in0),
-        .Q(\slaveRegDo_ff8_reg_n_0_[13] ),
-        .S(s_rst));
-  FDRE \slaveRegDo_ff8_reg[5] 
+    .INIT(4'h2)) 
+    \slaveRegDo_ff8[15]_i_4 
+       (.I0(s_daddr_o[3]),
+        .I1(s_daddr_o[2]),
+        .O(\slaveRegDo_ff8[15]_i_4_n_0 ));
+  FDRE \slaveRegDo_ff8_reg[10] 
        (.C(s_dclk_o),
         .CE(E),
         .D(D),
-        .Q(\slaveRegDo_ff8_reg_n_0_[5] ),
+        .Q(\slaveRegDo_ff8_reg_n_0_[10] ),
         .R(s_rst));
+  FDSE \slaveRegDo_ff8_reg[15] 
+       (.C(s_dclk_o),
+        .CE(E),
+        .D(\slaveRegDo_ff8[15]_i_2_n_0 ),
+        .Q(\slaveRegDo_ff8_reg_n_0_[15] ),
+        .S(s_rst));
   FDRE \slaveRegDo_ff9_reg[15] 
        (.C(s_dclk_o),
         .CE(1'b1),
@@ -23423,7 +23410,6 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .I3(slaveRegDo_mux_0[9]),
         .I4(s_daddr_o[10]),
         .O(\slaveRegDo_mux[9]_i_2_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair129" *) 
   LUT2 #(
     .INIT(4'h1)) 
     \slaveRegDo_mux_0[0]_i_4 
@@ -23468,16 +23454,16 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .I2(\slaveRegDo_mux_0[15]_i_11_n_0 ),
         .O(\slaveRegDo_mux_0[15]_i_6_n_0 ));
   LUT6 #(
-    .INIT(64'h000000000A0A0514)) 
+    .INIT(64'h0505000000000514)) 
     \slaveRegDo_mux_0[2]_i_2 
-       (.I0(s_daddr_o[3]),
+       (.I0(s_daddr_o[0]),
         .I1(s_daddr_o[5]),
         .I2(s_daddr_o[6]),
         .I3(s_daddr_o[4]),
-        .I4(reg_7_n_0),
-        .I5(s_daddr_o[0]),
+        .I4(s_daddr_o[3]),
+        .I5(reg_7_n_0),
         .O(\slaveRegDo_mux_0[2]_i_2_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair145" *) 
+  (* SOFT_HLUTNM = "soft_lutpair144" *) 
   LUT2 #(
     .INIT(4'h1)) 
     \slaveRegDo_mux_0[2]_i_3 
@@ -23485,13 +23471,13 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .I1(\slaveRegDo_mux_1[1]_i_3_n_0 ),
         .O(\slaveRegDo_mux_0[2]_i_3_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFEFFFCFFF3F3F3)) 
+    .INIT(64'hFFFFFEFCFFFFF333)) 
     \slaveRegDo_mux_0[4]_i_10 
        (.I0(s_daddr_o[1]),
         .I1(s_daddr_o[4]),
-        .I2(reg_18_n_16),
-        .I3(s_daddr_o[3]),
-        .I4(s_daddr_o[2]),
+        .I2(s_daddr_o[3]),
+        .I3(s_daddr_o[2]),
+        .I4(reg_18_n_16),
         .I5(s_daddr_o[7]),
         .O(\slaveRegDo_mux_0[4]_i_10_n_0 ));
   LUT6 #(
@@ -23514,7 +23500,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .I4(s_daddr_o[3]),
         .I5(s_daddr_o[4]),
         .O(\slaveRegDo_mux_0[4]_i_15_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair136" *) 
+  (* SOFT_HLUTNM = "soft_lutpair133" *) 
   LUT4 #(
     .INIT(16'hFFFE)) 
     \slaveRegDo_mux_0[4]_i_16 
@@ -23523,7 +23509,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .I2(s_daddr_o[3]),
         .I3(s_daddr_o[4]),
         .O(\slaveRegDo_mux_0[4]_i_16_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair127" *) 
+  (* SOFT_HLUTNM = "soft_lutpair129" *) 
   LUT3 #(
     .INIT(8'h76)) 
     \slaveRegDo_mux_0[4]_i_17 
@@ -23531,7 +23517,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .I1(s_daddr_o[2]),
         .I2(s_daddr_o[7]),
         .O(\slaveRegDo_mux_0[4]_i_17_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair127" *) 
+  (* SOFT_HLUTNM = "soft_lutpair129" *) 
   LUT5 #(
     .INIT(32'h02FEFFFF)) 
     \slaveRegDo_mux_0[4]_i_18 
@@ -23541,7 +23527,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .I3(s_daddr_o[7]),
         .I4(s_daddr_o[2]),
         .O(\slaveRegDo_mux_0[4]_i_18_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair138" *) 
+  (* SOFT_HLUTNM = "soft_lutpair135" *) 
   LUT3 #(
     .INIT(8'h80)) 
     \slaveRegDo_mux_0[4]_i_19 
@@ -23559,7 +23545,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .I4(s_daddr_o[9]),
         .I5(s_daddr_o[8]),
         .O(\slaveRegDo_mux_0[4]_i_2_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair124" *) 
+  (* SOFT_HLUTNM = "soft_lutpair126" *) 
   LUT5 #(
     .INIT(32'hFFFFFFF4)) 
     \slaveRegDo_mux_0[4]_i_20 
@@ -23579,6 +23565,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .I4(s_daddr_o[4]),
         .I5(\slaveRegDo_mux_0[4]_i_10_n_0 ),
         .O(\slaveRegDo_mux_0[4]_i_4_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair132" *) 
   LUT3 #(
     .INIT(8'h80)) 
     \slaveRegDo_mux_0[4]_i_6 
@@ -23700,13 +23687,13 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .D(reg_17_n_3),
         .Q(slaveRegDo_mux_0[9]),
         .R(\slaveRegDo_mux_0_reg[5]_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair145" *) 
+  (* SOFT_HLUTNM = "soft_lutpair144" *) 
   LUT3 #(
-    .INIT(8'h1D)) 
+    .INIT(8'h35)) 
     \slaveRegDo_mux_1[0]_i_1 
        (.I0(\slaveRegDo_mux_1[1]_i_3_n_0 ),
-        .I1(\slaveRegDo_mux_1[0]_i_2_n_0 ),
-        .I2(\slaveRegDo_mux_1[1]_i_2_n_0 ),
+        .I1(\slaveRegDo_mux_1[1]_i_2_n_0 ),
+        .I2(\slaveRegDo_mux_1[0]_i_2_n_0 ),
         .O(\slaveRegDo_mux_1[0]_i_1_n_0 ));
   LUT6 #(
     .INIT(64'h0000000055555446)) 
@@ -23764,7 +23751,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .I4(s_daddr_o[2]),
         .I5(s_daddr_o[1]),
         .O(\slaveRegDo_mux_1[1]_i_5_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair138" *) 
+  (* SOFT_HLUTNM = "soft_lutpair135" *) 
   LUT4 #(
     .INIT(16'h0508)) 
     \slaveRegDo_mux_1[1]_i_6 
@@ -23773,14 +23760,14 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .I2(s_daddr_o[4]),
         .I3(s_daddr_o[3]),
         .O(\slaveRegDo_mux_1[1]_i_6_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair130" *) 
+  (* SOFT_HLUTNM = "soft_lutpair127" *) 
   LUT2 #(
     .INIT(4'h6)) 
     \slaveRegDo_mux_1[2]_i_1 
        (.I0(\slaveRegDo_mux_0[2]_i_2_n_0 ),
         .I1(\slaveRegDo_mux_0[2]_i_3_n_0 ),
         .O(\slaveRegDo_mux_1[2]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair139" *) 
+  (* SOFT_HLUTNM = "soft_lutpair137" *) 
   LUT3 #(
     .INIT(8'hB4)) 
     \slaveRegDo_mux_1[3]_i_1 
@@ -23788,7 +23775,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .I1(\slaveRegDo_mux_0[2]_i_3_n_0 ),
         .I2(\slaveRegDo_mux_1[4]_i_3_n_0 ),
         .O(\slaveRegDo_mux_1[3]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair139" *) 
+  (* SOFT_HLUTNM = "soft_lutpair137" *) 
   LUT4 #(
     .INIT(16'hAA9A)) 
     \slaveRegDo_mux_1[4]_i_1 
@@ -23857,27 +23844,14 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .I4(s_daddr_o[0]),
         .I5(\slaveRegDo_mux_2[3]_i_2_n_0 ),
         .O(\slaveRegDo_mux_2[15]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair128" *) 
-  LUT5 #(
-    .INIT(32'hFFFFFEFF)) 
-    \slaveRegDo_mux_2[1]_i_2 
-       (.I0(s_daddr_o[0]),
-        .I1(s_daddr_o[1]),
-        .I2(s_daddr_o[2]),
-        .I3(s_daddr_o[4]),
-        .I4(s_daddr_o[3]),
-        .O(\slaveRegDo_mux_2[1]_i_2_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair129" *) 
-  LUT5 #(
-    .INIT(32'h00000004)) 
-    \slaveRegDo_mux_2[1]_i_4 
-       (.I0(s_daddr_o[9]),
-        .I1(s_daddr_o[7]),
-        .I2(s_daddr_o[8]),
-        .I3(s_daddr_o[6]),
-        .I4(s_daddr_o[5]),
-        .O(\slaveRegDo_mux_2[1]_i_4_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair130" *) 
+  (* SOFT_HLUTNM = "soft_lutpair131" *) 
+  LUT2 #(
+    .INIT(4'hE)) 
+    \slaveRegDo_mux_2[1]_i_3 
+       (.I0(s_daddr_o[4]),
+        .I1(\slaveRegDo_mux_2[3]_i_2_n_0 ),
+        .O(\slaveRegDo_mux_2[1]_i_3_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair127" *) 
   LUT5 #(
     .INIT(32'h06FF0606)) 
     \slaveRegDo_mux_2[2]_i_1 
@@ -23888,24 +23862,24 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .I4(slaveRegDo_890[2]),
         .O(\slaveRegDo_mux_2[2]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFFBFFFFFFFF)) 
+    .INIT(64'hFFFFFDFFFFFFFFFF)) 
     \slaveRegDo_mux_2[3]_i_2 
-       (.I0(s_daddr_o[9]),
-        .I1(s_daddr_o[7]),
+       (.I0(\slaveRegDo_mux_2[3]_i_4_n_0 ),
+        .I1(s_daddr_o[9]),
         .I2(s_daddr_o[8]),
-        .I3(reg_18_n_16),
-        .I4(\slaveRegDo_mux_2[3]_i_4_n_0 ),
+        .I3(s_daddr_o[7]),
+        .I4(reg_18_n_16),
         .I5(\slaveRegDo_mux_0[4]_i_2_n_0 ),
         .O(\slaveRegDo_mux_2[3]_i_2_n_0 ));
   LUT6 #(
-    .INIT(64'h0000000000400000)) 
+    .INIT(64'hFFFFFFFBFFFFFFFF)) 
     \slaveRegDo_mux_2[3]_i_4 
        (.I0(s_daddr_o[4]),
         .I1(s_daddr_o[7]),
-        .I2(\slaveRegDo_mux_0[0]_i_4_n_0 ),
-        .I3(reg_18_n_16),
-        .I4(s_daddr_o[3]),
-        .I5(s_daddr_o[2]),
+        .I2(s_daddr_o[5]),
+        .I3(s_daddr_o[6]),
+        .I4(s_daddr_o[2]),
+        .I5(s_daddr_o[3]),
         .O(\slaveRegDo_mux_2[3]_i_4_n_0 ));
   LUT4 #(
     .INIT(16'h4F44)) 
@@ -24029,7 +24003,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .I2(s_daddr_o[2]),
         .I3(s_daddr_o[1]),
         .O(\slaveRegDo_mux_3[15]_i_3_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair128" *) 
+  (* SOFT_HLUTNM = "soft_lutpair132" *) 
   LUT4 #(
     .INIT(16'h0C84)) 
     \slaveRegDo_mux_3[15]_i_6 
@@ -24038,7 +24012,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .I2(s_daddr_o[1]),
         .I3(s_daddr_o[0]),
         .O(\slaveRegDo_mux_3[15]_i_6_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair140" *) 
+  (* SOFT_HLUTNM = "soft_lutpair139" *) 
   LUT3 #(
     .INIT(8'h82)) 
     \slaveRegDo_mux_3[15]_i_7 
@@ -24049,97 +24023,97 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
   FDRE \slaveRegDo_mux_3_reg[0] 
        (.C(s_dclk_o),
         .CE(1'b1),
-        .D(reg_stream_ffd_n_11),
+        .D(reg_stream_ffd_n_0),
         .Q(slaveRegDo_mux_3[0]),
         .R(\slaveRegDo_mux_3[15]_i_1_n_0 ));
   FDRE \slaveRegDo_mux_3_reg[10] 
        (.C(s_dclk_o),
         .CE(1'b1),
-        .D(reg_stream_ffd_n_4),
+        .D(reg_stream_ffd_n_26),
         .Q(slaveRegDo_mux_3[10]),
         .R(\slaveRegDo_mux_3[15]_i_1_n_0 ));
   FDRE \slaveRegDo_mux_3_reg[11] 
        (.C(s_dclk_o),
         .CE(1'b1),
-        .D(reg_stream_ffd_n_3),
+        .D(reg_stream_ffd_n_27),
         .Q(slaveRegDo_mux_3[11]),
         .R(\slaveRegDo_mux_3[15]_i_1_n_0 ));
   FDRE \slaveRegDo_mux_3_reg[12] 
        (.C(s_dclk_o),
         .CE(1'b1),
-        .D(reg_stream_ffd_n_15),
+        .D(reg_stream_ffd_n_28),
         .Q(slaveRegDo_mux_3[12]),
         .R(\slaveRegDo_mux_3[15]_i_1_n_0 ));
   FDRE \slaveRegDo_mux_3_reg[13] 
        (.C(s_dclk_o),
         .CE(1'b1),
-        .D(reg_stream_ffd_n_2),
+        .D(reg_stream_ffd_n_29),
         .Q(slaveRegDo_mux_3[13]),
         .R(\slaveRegDo_mux_3[15]_i_1_n_0 ));
   FDRE \slaveRegDo_mux_3_reg[14] 
        (.C(s_dclk_o),
         .CE(1'b1),
-        .D(reg_stream_ffd_n_1),
+        .D(reg_stream_ffd_n_30),
         .Q(slaveRegDo_mux_3[14]),
         .R(\slaveRegDo_mux_3[15]_i_1_n_0 ));
   FDRE \slaveRegDo_mux_3_reg[15] 
        (.C(s_dclk_o),
         .CE(1'b1),
-        .D(reg_stream_ffd_n_0),
+        .D(reg_stream_ffd_n_31),
         .Q(slaveRegDo_mux_3[15]),
         .R(\slaveRegDo_mux_3[15]_i_1_n_0 ));
   FDRE \slaveRegDo_mux_3_reg[1] 
        (.C(s_dclk_o),
         .CE(1'b1),
-        .D(reg_stream_ffd_n_10),
+        .D(reg_stream_ffd_n_17),
         .Q(slaveRegDo_mux_3[1]),
         .R(\slaveRegDo_mux_3[15]_i_1_n_0 ));
   FDRE \slaveRegDo_mux_3_reg[2] 
        (.C(s_dclk_o),
         .CE(1'b1),
-        .D(reg_stream_ffd_n_9),
+        .D(reg_stream_ffd_n_18),
         .Q(slaveRegDo_mux_3[2]),
         .R(\slaveRegDo_mux_3[15]_i_1_n_0 ));
   FDRE \slaveRegDo_mux_3_reg[3] 
        (.C(s_dclk_o),
         .CE(1'b1),
-        .D(reg_stream_ffd_n_8),
+        .D(reg_stream_ffd_n_19),
         .Q(slaveRegDo_mux_3[3]),
         .R(\slaveRegDo_mux_3[15]_i_1_n_0 ));
   FDRE \slaveRegDo_mux_3_reg[4] 
        (.C(s_dclk_o),
         .CE(1'b1),
-        .D(reg_stream_ffd_n_7),
+        .D(reg_stream_ffd_n_20),
         .Q(slaveRegDo_mux_3[4]),
         .R(\slaveRegDo_mux_3[15]_i_1_n_0 ));
   FDRE \slaveRegDo_mux_3_reg[5] 
        (.C(s_dclk_o),
         .CE(1'b1),
-        .D(reg_stream_ffd_n_6),
+        .D(reg_stream_ffd_n_21),
         .Q(slaveRegDo_mux_3[5]),
         .R(\slaveRegDo_mux_3[15]_i_1_n_0 ));
   FDRE \slaveRegDo_mux_3_reg[6] 
        (.C(s_dclk_o),
         .CE(1'b1),
-        .D(reg_stream_ffd_n_12),
+        .D(reg_stream_ffd_n_22),
         .Q(slaveRegDo_mux_3[6]),
         .R(\slaveRegDo_mux_3[15]_i_1_n_0 ));
   FDRE \slaveRegDo_mux_3_reg[7] 
        (.C(s_dclk_o),
         .CE(1'b1),
-        .D(reg_stream_ffd_n_13),
+        .D(reg_stream_ffd_n_23),
         .Q(slaveRegDo_mux_3[7]),
         .R(\slaveRegDo_mux_3[15]_i_1_n_0 ));
   FDRE \slaveRegDo_mux_3_reg[8] 
        (.C(s_dclk_o),
         .CE(1'b1),
-        .D(reg_stream_ffd_n_5),
+        .D(reg_stream_ffd_n_24),
         .Q(slaveRegDo_mux_3[8]),
         .R(\slaveRegDo_mux_3[15]_i_1_n_0 ));
   FDRE \slaveRegDo_mux_3_reg[9] 
        (.C(s_dclk_o),
         .CE(1'b1),
-        .D(reg_stream_ffd_n_14),
+        .D(reg_stream_ffd_n_25),
         .Q(slaveRegDo_mux_3[9]),
         .R(\slaveRegDo_mux_3[15]_i_1_n_0 ));
   FDRE \slaveRegDo_mux_4_reg[0] 
@@ -24430,6 +24404,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .D(slaveRegDo_mux[9]),
         .Q(\slaveRegDo_mux_reg_n_0_[9] ),
         .R(1'b0));
+  (* SOFT_HLUTNM = "soft_lutpair131" *) 
   LUT4 #(
     .INIT(16'h0080)) 
     \xsdb_reg[15]_i_2__3 
@@ -24458,7 +24433,7 @@ module zusys_system_ila_0_0_ila_v6_2_10_ila_register
         .I4(s_den_o),
         .I5(s_daddr_o[2]),
         .O(\xsdb_reg[15]_i_4__0_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair124" *) 
+  (* SOFT_HLUTNM = "soft_lutpair126" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \xsdb_reg[15]_i_5__0 
@@ -37485,7 +37460,7 @@ module zusys_system_ila_0_0_ltlib_v1_0_0_generic_memrd
        (.I0(p_0_in),
         .I1(read_en_temp),
         .O(D));
-  (* SOFT_HLUTNM = "soft_lutpair153" *) 
+  (* SOFT_HLUTNM = "soft_lutpair152" *) 
   LUT3 #(
     .INIT(8'h01)) 
     \curr_read_block[0]_i_1 
@@ -37499,7 +37474,7 @@ module zusys_system_ila_0_0_ltlib_v1_0_0_generic_memrd
        (.I0(next_state[0]),
         .I1(\current_state[6]_i_2_n_0 ),
         .O(curr_read_block_0));
-  (* SOFT_HLUTNM = "soft_lutpair154" *) 
+  (* SOFT_HLUTNM = "soft_lutpair153" *) 
   LUT3 #(
     .INIT(8'h02)) 
     \curr_read_block[1]_i_2 
@@ -37529,7 +37504,7 @@ module zusys_system_ila_0_0_ltlib_v1_0_0_generic_memrd
         .I4(\current_state[0]_i_3_n_0 ),
         .I5(current_state[2]),
         .O(next_state[0]));
-  (* SOFT_HLUTNM = "soft_lutpair152" *) 
+  (* SOFT_HLUTNM = "soft_lutpair151" *) 
   LUT4 #(
     .INIT(16'hFEE8)) 
     \current_state[0]_i_2 
@@ -37538,7 +37513,7 @@ module zusys_system_ila_0_0_ltlib_v1_0_0_generic_memrd
         .I2(current_state[5]),
         .I3(current_state[6]),
         .O(\current_state[0]_i_2_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair152" *) 
+  (* SOFT_HLUTNM = "soft_lutpair151" *) 
   LUT4 #(
     .INIT(16'hFFFE)) 
     \current_state[0]_i_3 
@@ -37557,7 +37532,7 @@ module zusys_system_ila_0_0_ltlib_v1_0_0_generic_memrd
         .I4(current_state[6]),
         .I5(read_data_en),
         .O(next_state[1]));
-  (* SOFT_HLUTNM = "soft_lutpair155" *) 
+  (* SOFT_HLUTNM = "soft_lutpair154" *) 
   LUT3 #(
     .INIT(8'h01)) 
     \current_state[1]_i_2 
@@ -37565,7 +37540,7 @@ module zusys_system_ila_0_0_ltlib_v1_0_0_generic_memrd
         .I1(current_state[4]),
         .I2(current_state[5]),
         .O(\current_state[1]_i_2_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair148" *) 
+  (* SOFT_HLUTNM = "soft_lutpair147" *) 
   LUT5 #(
     .INIT(32'h00200028)) 
     \current_state[2]_i_1__33 
@@ -37575,7 +37550,7 @@ module zusys_system_ila_0_0_ltlib_v1_0_0_generic_memrd
         .I3(current_state[5]),
         .I4(\current_state_reg[3]_0 ),
         .O(next_state[2]));
-  (* SOFT_HLUTNM = "soft_lutpair148" *) 
+  (* SOFT_HLUTNM = "soft_lutpair147" *) 
   LUT5 #(
     .INIT(32'h02200200)) 
     \current_state[3]_i_1__33 
@@ -37585,7 +37560,7 @@ module zusys_system_ila_0_0_ltlib_v1_0_0_generic_memrd
         .I3(current_state[5]),
         .I4(\current_state_reg[3]_0 ),
         .O(next_state[3]));
-  (* SOFT_HLUTNM = "soft_lutpair155" *) 
+  (* SOFT_HLUTNM = "soft_lutpair154" *) 
   LUT4 #(
     .INIT(16'h0001)) 
     \current_state[3]_i_2__33 
@@ -37594,7 +37569,7 @@ module zusys_system_ila_0_0_ltlib_v1_0_0_generic_memrd
         .I2(current_state[0]),
         .I3(current_state[6]),
         .O(\current_state[3]_i_2__33_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair150" *) 
+  (* SOFT_HLUTNM = "soft_lutpair149" *) 
   LUT5 #(
     .INIT(32'h000002A0)) 
     \current_state[4]_i_1 
@@ -37612,21 +37587,21 @@ module zusys_system_ila_0_0_ltlib_v1_0_0_generic_memrd
         .I2(current_state[0]),
         .I3(current_state[1]),
         .O(\current_state[4]_i_2_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair156" *) 
+  (* SOFT_HLUTNM = "soft_lutpair155" *) 
   LUT2 #(
     .INIT(4'h1)) 
     \current_state[5]_i_1 
        (.I0(curr_read_block[1]),
         .I1(\current_state[6]_i_2_n_0 ),
         .O(next_state[5]));
-  (* SOFT_HLUTNM = "soft_lutpair157" *) 
+  (* SOFT_HLUTNM = "soft_lutpair156" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \current_state[6]_i_1 
        (.I0(curr_read_block[1]),
         .I1(\current_state[6]_i_2_n_0 ),
         .O(next_state[6]));
-  (* SOFT_HLUTNM = "soft_lutpair150" *) 
+  (* SOFT_HLUTNM = "soft_lutpair149" *) 
   LUT5 #(
     .INIT(32'hFFDFFFFF)) 
     \current_state[6]_i_2 
@@ -37996,7 +37971,7 @@ module zusys_system_ila_0_0_ltlib_v1_0_0_generic_memrd
         .D(\multiple_read_latency.read_enable_out_reg[2]_srl3_n_0 ),
         .Q(p_0_in),
         .R(1'b0));
-  (* SOFT_HLUTNM = "soft_lutpair151" *) 
+  (* SOFT_HLUTNM = "soft_lutpair150" *) 
   LUT3 #(
     .INIT(8'h8B)) 
     \read_addr[0]_i_1 
@@ -38004,7 +37979,7 @@ module zusys_system_ila_0_0_ltlib_v1_0_0_generic_memrd
         .I1(next_state[0]),
         .I2(Q[0]),
         .O(\read_addr[0]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair151" *) 
+  (* SOFT_HLUTNM = "soft_lutpair150" *) 
   LUT4 #(
     .INIT(16'h8BB8)) 
     \read_addr[1]_i_1 
@@ -38040,7 +38015,7 @@ module zusys_system_ila_0_0_ltlib_v1_0_0_generic_memrd
         .I2(\read_addr[4]_i_2_n_0 ),
         .I3(Q[4]),
         .O(\read_addr[4]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair149" *) 
+  (* SOFT_HLUTNM = "soft_lutpair148" *) 
   LUT4 #(
     .INIT(16'h7FFF)) 
     \read_addr[4]_i_2 
@@ -38076,7 +38051,7 @@ module zusys_system_ila_0_0_ltlib_v1_0_0_generic_memrd
         .I4(\read_addr[7]_i_2_n_0 ),
         .I5(Q[6]),
         .O(\read_addr[7]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair149" *) 
+  (* SOFT_HLUTNM = "soft_lutpair148" *) 
   LUT5 #(
     .INIT(32'h80000000)) 
     \read_addr[7]_i_2 
@@ -38247,7 +38222,7 @@ module zusys_system_ila_0_0_ltlib_v1_0_0_generic_memrd
         .I2(curr_read_block[0]),
         .I3(input_data[15]),
         .O(\input_data_reg[31]_0 [15]));
-  (* SOFT_HLUTNM = "soft_lutpair157" *) 
+  (* SOFT_HLUTNM = "soft_lutpair156" *) 
   LUT4 #(
     .INIT(16'h2320)) 
     \xsdb_reg[1]_i_1 
@@ -38296,7 +38271,7 @@ module zusys_system_ila_0_0_ltlib_v1_0_0_generic_memrd
         .I2(curr_read_block[0]),
         .I3(input_data[6]),
         .O(\input_data_reg[31]_0 [6]));
-  (* SOFT_HLUTNM = "soft_lutpair153" *) 
+  (* SOFT_HLUTNM = "soft_lutpair152" *) 
   LUT4 #(
     .INIT(16'h2320)) 
     \xsdb_reg[7]_i_1 
@@ -38305,7 +38280,7 @@ module zusys_system_ila_0_0_ltlib_v1_0_0_generic_memrd
         .I2(curr_read_block[0]),
         .I3(input_data[7]),
         .O(\input_data_reg[31]_0 [7]));
-  (* SOFT_HLUTNM = "soft_lutpair156" *) 
+  (* SOFT_HLUTNM = "soft_lutpair155" *) 
   LUT4 #(
     .INIT(16'h2320)) 
     \xsdb_reg[8]_i_1 
@@ -38314,7 +38289,7 @@ module zusys_system_ila_0_0_ltlib_v1_0_0_generic_memrd
         .I2(curr_read_block[0]),
         .I3(input_data[8]),
         .O(\input_data_reg[31]_0 [8]));
-  (* SOFT_HLUTNM = "soft_lutpair154" *) 
+  (* SOFT_HLUTNM = "soft_lutpair153" *) 
   LUT4 #(
     .INIT(16'h2320)) 
     \xsdb_reg[9]_i_1 
@@ -40323,8 +40298,8 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized103
    (D,
     \slaveRegDo_mux_2_reg[1] ,
     \slaveRegDo_mux_2_reg[1]_0 ,
-    s_do_o,
     \slaveRegDo_mux_2_reg[1]_1 ,
+    s_do_o,
     \slaveRegDo_mux_2_reg[1]_2 ,
     s_daddr_o,
     s_den_o,
@@ -40333,16 +40308,16 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized103
   output [1:0]D;
   input \slaveRegDo_mux_2_reg[1] ;
   input [1:0]\slaveRegDo_mux_2_reg[1]_0 ;
-  input [1:0]s_do_o;
   input \slaveRegDo_mux_2_reg[1]_1 ;
+  input [1:0]s_do_o;
   input \slaveRegDo_mux_2_reg[1]_2 ;
-  input [4:0]s_daddr_o;
+  input [3:0]s_daddr_o;
   input s_den_o;
   input [1:0]\xsdb_reg_reg[1] ;
   input s_dclk_o;
 
   wire [1:0]D;
-  wire [4:0]s_daddr_o;
+  wire [3:0]s_daddr_o;
   wire s_dclk_o;
   wire s_den_o;
   wire [1:0]s_do_o;
@@ -41012,36 +40987,26 @@ endmodule
 
 (* ORIG_REF_NAME = "xsdbs_v1_0_2_reg" *) 
 module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized89
-   (\xsdb_reg_reg[12] ,
-    \xsdb_reg_reg[15] ,
+   (\xsdb_reg_reg[15] ,
     \xsdb_reg_reg[14] ,
     \xsdb_reg_reg[13] ,
+    \xsdb_reg_reg[12] ,
     \xsdb_reg_reg[11] ,
     \xsdb_reg_reg[10] ,
     read_reset_addr,
     \xsdb_reg_reg[15]_0 ,
     s_daddr_o,
-    \slaveRegDo_mux_0_reg[12] ,
-    slaveRegDo_18,
-    \slaveRegDo_mux_0_reg[12]_0 ,
-    \slaveRegDo_mux_0_reg[12]_1 ,
-    \slaveRegDo_mux_0_reg[12]_2 ,
     s_di_o,
     s_dclk_o);
-  output \xsdb_reg_reg[12] ;
   output \xsdb_reg_reg[15] ;
   output \xsdb_reg_reg[14] ;
   output \xsdb_reg_reg[13] ;
+  output \xsdb_reg_reg[12] ;
   output \xsdb_reg_reg[11] ;
   output \xsdb_reg_reg[10] ;
   output [9:0]read_reset_addr;
   input \xsdb_reg_reg[15]_0 ;
   input [3:0]s_daddr_o;
-  input \slaveRegDo_mux_0_reg[12] ;
-  input [0:0]slaveRegDo_18;
-  input \slaveRegDo_mux_0_reg[12]_0 ;
-  input \slaveRegDo_mux_0_reg[12]_1 ;
-  input \slaveRegDo_mux_0_reg[12]_2 ;
   input [15:0]s_di_o;
   input s_dclk_o;
 
@@ -41049,11 +41014,6 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized89
   wire [3:0]s_daddr_o;
   wire s_dclk_o;
   wire [15:0]s_di_o;
-  wire [0:0]slaveRegDo_18;
-  wire \slaveRegDo_mux_0_reg[12] ;
-  wire \slaveRegDo_mux_0_reg[12]_0 ;
-  wire \slaveRegDo_mux_0_reg[12]_1 ;
-  wire \slaveRegDo_mux_0_reg[12]_2 ;
   wire \xsdb_reg_reg[10] ;
   wire \xsdb_reg_reg[11] ;
   wire \xsdb_reg_reg[12] ;
@@ -41067,11 +41027,6 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized89
         .s_daddr_o(s_daddr_o),
         .s_dclk_o(s_dclk_o),
         .s_di_o(s_di_o),
-        .slaveRegDo_18(slaveRegDo_18),
-        .\slaveRegDo_mux_0_reg[12] (\slaveRegDo_mux_0_reg[12] ),
-        .\slaveRegDo_mux_0_reg[12]_0 (\slaveRegDo_mux_0_reg[12]_0 ),
-        .\slaveRegDo_mux_0_reg[12]_1 (\slaveRegDo_mux_0_reg[12]_1 ),
-        .\slaveRegDo_mux_0_reg[12]_2 (\slaveRegDo_mux_0_reg[12]_2 ),
         .\xsdb_reg_reg[10]_0 (\xsdb_reg_reg[10] ),
         .\xsdb_reg_reg[11]_0 (\xsdb_reg_reg[11] ),
         .\xsdb_reg_reg[12]_0 (\xsdb_reg_reg[12] ),
@@ -41266,13 +41221,14 @@ endmodule
 
 (* ORIG_REF_NAME = "xsdbs_v1_0_2_reg" *) 
 module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized91
-   (\G_1PIPE_IFACE.s_daddr_r_reg[6] ,
+   (\xsdb_reg_reg[5] ,
     \xsdb_reg_reg[10] ,
+    \xsdb_reg_reg[9] ,
+    \xsdb_reg_reg[11] ,
     \xsdb_reg_reg[12] ,
     \xsdb_reg_reg[13] ,
-    \xsdb_reg_reg[15] ,
-    \xsdb_reg_reg[11] ,
     \xsdb_reg_reg[14] ,
+    \xsdb_reg_reg[15] ,
     \G_1PIPE_IFACE.s_daddr_r_reg[5] ,
     \slaveRegDo_mux_0_reg[10] ,
     \slaveRegDo_mux_0_reg[10]_0 ,
@@ -41281,37 +41237,41 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized91
     \slaveRegDo_mux_0_reg[5]_0 ,
     \slaveRegDo_mux_0_reg[10]_2 ,
     \slaveRegDo_mux_0_reg[10]_3 ,
-    \slaveRegDo_mux_0_reg[5]_1 ,
-    \slaveRegDo_mux_0_reg[14] ,
-    read_reset_addr,
-    \slaveRegDo_mux_0_reg[14]_0 ,
-    \slaveRegDo_mux_0_reg[5]_2 ,
-    \slaveRegDo_mux_0_reg[13] ,
-    \slaveRegDo_mux_0_reg[13]_0 ,
-    \slaveRegDo_mux_0_reg[13]_1 ,
-    \slaveRegDo_mux_0_reg[15] ,
-    \slaveRegDo_mux_0_reg[15]_0 ,
-    \slaveRegDo_mux_0_reg[15]_1 ,
     \slaveRegDo_mux_0_reg[10]_4 ,
+    \slaveRegDo_mux_0_reg[15] ,
     \slaveRegDo_mux_0_reg[10]_5 ,
+    \slaveRegDo_mux_0_reg[15]_0 ,
     \slaveRegDo_mux_0_reg[10]_6 ,
     \slaveRegDo_mux_0_reg[11] ,
     \slaveRegDo_mux_0_reg[11]_0 ,
     \slaveRegDo_mux_0_reg[11]_1 ,
+    \slaveRegDo_mux_0_reg[12] ,
+    \slaveRegDo_mux_0_reg[12]_0 ,
+    \slaveRegDo_mux_0_reg[12]_1 ,
+    \slaveRegDo_mux_0_reg[13] ,
+    \slaveRegDo_mux_0_reg[13]_0 ,
+    \slaveRegDo_mux_0_reg[13]_1 ,
+    \slaveRegDo_mux_0_reg[14] ,
+    \slaveRegDo_mux_0_reg[14]_0 ,
     \slaveRegDo_mux_0_reg[14]_1 ,
-    \slaveRegDo_mux_0_reg[14]_2 ,
-    \slaveRegDo_mux_0_reg[14]_3 ,
+    \slaveRegDo_mux_0_reg[5]_1 ,
+    read_reset_addr,
+    \slaveRegDo_mux_0_reg[5]_2 ,
+    \slaveRegDo_mux_0_reg[15]_1 ,
+    \slaveRegDo_mux_0_reg[15]_2 ,
+    \slaveRegDo_mux_0_reg[15]_3 ,
     s_daddr_o,
     s_di_o,
     s_dclk_o,
     \xsdb_reg_reg[0] );
-  output \G_1PIPE_IFACE.s_daddr_r_reg[6] ;
+  output \xsdb_reg_reg[5] ;
   output \xsdb_reg_reg[10] ;
-  output [9:0]\xsdb_reg_reg[12] ;
-  output \xsdb_reg_reg[13] ;
-  output \xsdb_reg_reg[15] ;
+  output [8:0]\xsdb_reg_reg[9] ;
   output \xsdb_reg_reg[11] ;
+  output \xsdb_reg_reg[12] ;
+  output \xsdb_reg_reg[13] ;
   output \xsdb_reg_reg[14] ;
+  output \xsdb_reg_reg[15] ;
   output \G_1PIPE_IFACE.s_daddr_r_reg[5] ;
   input \slaveRegDo_mux_0_reg[10] ;
   input \slaveRegDo_mux_0_reg[10]_0 ;
@@ -41320,33 +41280,35 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized91
   input \slaveRegDo_mux_0_reg[5]_0 ;
   input \slaveRegDo_mux_0_reg[10]_2 ;
   input \slaveRegDo_mux_0_reg[10]_3 ;
-  input \slaveRegDo_mux_0_reg[5]_1 ;
-  input \slaveRegDo_mux_0_reg[14] ;
-  input [0:0]read_reset_addr;
-  input \slaveRegDo_mux_0_reg[14]_0 ;
-  input \slaveRegDo_mux_0_reg[5]_2 ;
-  input \slaveRegDo_mux_0_reg[13] ;
-  input \slaveRegDo_mux_0_reg[13]_0 ;
-  input \slaveRegDo_mux_0_reg[13]_1 ;
-  input \slaveRegDo_mux_0_reg[15] ;
-  input \slaveRegDo_mux_0_reg[15]_0 ;
-  input \slaveRegDo_mux_0_reg[15]_1 ;
   input \slaveRegDo_mux_0_reg[10]_4 ;
+  input \slaveRegDo_mux_0_reg[15] ;
   input \slaveRegDo_mux_0_reg[10]_5 ;
+  input \slaveRegDo_mux_0_reg[15]_0 ;
   input \slaveRegDo_mux_0_reg[10]_6 ;
   input \slaveRegDo_mux_0_reg[11] ;
   input \slaveRegDo_mux_0_reg[11]_0 ;
   input \slaveRegDo_mux_0_reg[11]_1 ;
+  input \slaveRegDo_mux_0_reg[12] ;
+  input \slaveRegDo_mux_0_reg[12]_0 ;
+  input \slaveRegDo_mux_0_reg[12]_1 ;
+  input \slaveRegDo_mux_0_reg[13] ;
+  input \slaveRegDo_mux_0_reg[13]_0 ;
+  input \slaveRegDo_mux_0_reg[13]_1 ;
+  input \slaveRegDo_mux_0_reg[14] ;
+  input \slaveRegDo_mux_0_reg[14]_0 ;
   input \slaveRegDo_mux_0_reg[14]_1 ;
-  input \slaveRegDo_mux_0_reg[14]_2 ;
-  input \slaveRegDo_mux_0_reg[14]_3 ;
+  input \slaveRegDo_mux_0_reg[5]_1 ;
+  input [0:0]read_reset_addr;
+  input \slaveRegDo_mux_0_reg[5]_2 ;
+  input \slaveRegDo_mux_0_reg[15]_1 ;
+  input \slaveRegDo_mux_0_reg[15]_2 ;
+  input \slaveRegDo_mux_0_reg[15]_3 ;
   input [5:0]s_daddr_o;
   input [15:0]s_di_o;
   input s_dclk_o;
   input \xsdb_reg_reg[0] ;
 
   wire \G_1PIPE_IFACE.s_daddr_r_reg[5] ;
-  wire \G_1PIPE_IFACE.s_daddr_r_reg[6] ;
   wire [0:0]read_reset_addr;
   wire [5:0]s_daddr_o;
   wire s_dclk_o;
@@ -41362,17 +41324,20 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized91
   wire \slaveRegDo_mux_0_reg[11] ;
   wire \slaveRegDo_mux_0_reg[11]_0 ;
   wire \slaveRegDo_mux_0_reg[11]_1 ;
+  wire \slaveRegDo_mux_0_reg[12] ;
+  wire \slaveRegDo_mux_0_reg[12]_0 ;
+  wire \slaveRegDo_mux_0_reg[12]_1 ;
   wire \slaveRegDo_mux_0_reg[13] ;
   wire \slaveRegDo_mux_0_reg[13]_0 ;
   wire \slaveRegDo_mux_0_reg[13]_1 ;
   wire \slaveRegDo_mux_0_reg[14] ;
   wire \slaveRegDo_mux_0_reg[14]_0 ;
   wire \slaveRegDo_mux_0_reg[14]_1 ;
-  wire \slaveRegDo_mux_0_reg[14]_2 ;
-  wire \slaveRegDo_mux_0_reg[14]_3 ;
   wire \slaveRegDo_mux_0_reg[15] ;
   wire \slaveRegDo_mux_0_reg[15]_0 ;
   wire \slaveRegDo_mux_0_reg[15]_1 ;
+  wire \slaveRegDo_mux_0_reg[15]_2 ;
+  wire \slaveRegDo_mux_0_reg[15]_3 ;
   wire \slaveRegDo_mux_0_reg[5] ;
   wire \slaveRegDo_mux_0_reg[5]_0 ;
   wire \slaveRegDo_mux_0_reg[5]_1 ;
@@ -41380,14 +41345,15 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized91
   wire \xsdb_reg_reg[0] ;
   wire \xsdb_reg_reg[10] ;
   wire \xsdb_reg_reg[11] ;
-  wire [9:0]\xsdb_reg_reg[12] ;
+  wire \xsdb_reg_reg[12] ;
   wire \xsdb_reg_reg[13] ;
   wire \xsdb_reg_reg[14] ;
   wire \xsdb_reg_reg[15] ;
+  wire \xsdb_reg_reg[5] ;
+  wire [8:0]\xsdb_reg_reg[9] ;
 
   zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_143 \I_EN_CTL_EQ1.U_CTL 
        (.\G_1PIPE_IFACE.s_daddr_r_reg[5] (\G_1PIPE_IFACE.s_daddr_r_reg[5] ),
-        .\G_1PIPE_IFACE.s_daddr_r_reg[6] (\G_1PIPE_IFACE.s_daddr_r_reg[6] ),
         .read_reset_addr(read_reset_addr),
         .s_daddr_o(s_daddr_o),
         .s_dclk_o(s_dclk_o),
@@ -41403,17 +41369,20 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized91
         .\slaveRegDo_mux_0_reg[11] (\slaveRegDo_mux_0_reg[11] ),
         .\slaveRegDo_mux_0_reg[11]_0 (\slaveRegDo_mux_0_reg[11]_0 ),
         .\slaveRegDo_mux_0_reg[11]_1 (\slaveRegDo_mux_0_reg[11]_1 ),
+        .\slaveRegDo_mux_0_reg[12] (\slaveRegDo_mux_0_reg[12] ),
+        .\slaveRegDo_mux_0_reg[12]_0 (\slaveRegDo_mux_0_reg[12]_0 ),
+        .\slaveRegDo_mux_0_reg[12]_1 (\slaveRegDo_mux_0_reg[12]_1 ),
         .\slaveRegDo_mux_0_reg[13] (\slaveRegDo_mux_0_reg[13] ),
         .\slaveRegDo_mux_0_reg[13]_0 (\slaveRegDo_mux_0_reg[13]_0 ),
         .\slaveRegDo_mux_0_reg[13]_1 (\slaveRegDo_mux_0_reg[13]_1 ),
         .\slaveRegDo_mux_0_reg[14] (\slaveRegDo_mux_0_reg[14] ),
         .\slaveRegDo_mux_0_reg[14]_0 (\slaveRegDo_mux_0_reg[14]_0 ),
         .\slaveRegDo_mux_0_reg[14]_1 (\slaveRegDo_mux_0_reg[14]_1 ),
-        .\slaveRegDo_mux_0_reg[14]_2 (\slaveRegDo_mux_0_reg[14]_2 ),
-        .\slaveRegDo_mux_0_reg[14]_3 (\slaveRegDo_mux_0_reg[14]_3 ),
         .\slaveRegDo_mux_0_reg[15] (\slaveRegDo_mux_0_reg[15] ),
         .\slaveRegDo_mux_0_reg[15]_0 (\slaveRegDo_mux_0_reg[15]_0 ),
         .\slaveRegDo_mux_0_reg[15]_1 (\slaveRegDo_mux_0_reg[15]_1 ),
+        .\slaveRegDo_mux_0_reg[15]_2 (\slaveRegDo_mux_0_reg[15]_2 ),
+        .\slaveRegDo_mux_0_reg[15]_3 (\slaveRegDo_mux_0_reg[15]_3 ),
         .\slaveRegDo_mux_0_reg[5] (\slaveRegDo_mux_0_reg[5] ),
         .\slaveRegDo_mux_0_reg[5]_0 (\slaveRegDo_mux_0_reg[5]_0 ),
         .\slaveRegDo_mux_0_reg[5]_1 (\slaveRegDo_mux_0_reg[5]_1 ),
@@ -41424,7 +41393,9 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized91
         .\xsdb_reg_reg[12]_0 (\xsdb_reg_reg[12] ),
         .\xsdb_reg_reg[13]_0 (\xsdb_reg_reg[13] ),
         .\xsdb_reg_reg[14]_0 (\xsdb_reg_reg[14] ),
-        .\xsdb_reg_reg[15]_0 (\xsdb_reg_reg[15] ));
+        .\xsdb_reg_reg[15]_0 (\xsdb_reg_reg[15] ),
+        .\xsdb_reg_reg[5]_0 (\xsdb_reg_reg[5] ),
+        .\xsdb_reg_reg[9]_0 (\xsdb_reg_reg[9] ));
 endmodule
 
 (* ORIG_REF_NAME = "xsdbs_v1_0_2_reg" *) 
@@ -41536,6 +41507,7 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized93
     s_daddr_o,
     s_dwe_o,
     s_den_o,
+    \xsdb_reg_reg[0]_0 ,
     s_di_o,
     s_dclk_o);
   output \G_1PIPE_IFACE.s_dwe_r_reg ;
@@ -41555,20 +41527,22 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized93
   output \xsdb_reg_reg[3] ;
   output [1:0]\xsdb_reg_reg[2] ;
   output \xsdb_reg_reg[0] ;
-  input [12:0]s_daddr_o;
+  input [8:0]s_daddr_o;
   input s_dwe_o;
   input s_den_o;
+  input \xsdb_reg_reg[0]_0 ;
   input [15:0]s_di_o;
   input s_dclk_o;
 
   wire \G_1PIPE_IFACE.s_daddr_r_reg[8] ;
   wire \G_1PIPE_IFACE.s_dwe_r_reg ;
-  wire [12:0]s_daddr_o;
+  wire [8:0]s_daddr_o;
   wire s_dclk_o;
   wire s_den_o;
   wire [15:0]s_di_o;
   wire s_dwe_o;
   wire \xsdb_reg_reg[0] ;
+  wire \xsdb_reg_reg[0]_0 ;
   wire \xsdb_reg_reg[10] ;
   wire \xsdb_reg_reg[11] ;
   wire \xsdb_reg_reg[12] ;
@@ -41593,6 +41567,7 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized93
         .s_di_o(s_di_o),
         .s_dwe_o(s_dwe_o),
         .\xsdb_reg_reg[0]_0 (\xsdb_reg_reg[0] ),
+        .\xsdb_reg_reg[0]_1 (\xsdb_reg_reg[0]_0 ),
         .\xsdb_reg_reg[10]_0 (\xsdb_reg_reg[10] ),
         .\xsdb_reg_reg[11]_0 (\xsdb_reg_reg[11] ),
         .\xsdb_reg_reg[12]_0 (\xsdb_reg_reg[12] ),
@@ -41693,12 +41668,12 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized95
    (\G_1PIPE_IFACE.s_daddr_r_reg[6] ,
     \xsdb_reg_reg[10] ,
     \G_1PIPE_IFACE.s_daddr_r_reg[6]_0 ,
+    \G_1PIPE_IFACE.s_daddr_r_reg[6]_1 ,
     \xsdb_reg_reg[0] ,
     \xsdb_reg_reg[1] ,
     \xsdb_reg_reg[2] ,
     \xsdb_reg_reg[3] ,
     \xsdb_reg_reg[4] ,
-    \G_1PIPE_IFACE.s_daddr_r_reg[6]_1 ,
     \G_1PIPE_IFACE.s_daddr_r_reg[6]_2 ,
     \G_1PIPE_IFACE.s_daddr_r_reg[6]_3 ,
     \G_1PIPE_IFACE.s_daddr_r_reg[6]_4 ,
@@ -41706,12 +41681,15 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized95
     \G_1PIPE_IFACE.s_daddr_r_reg[6]_6 ,
     \G_1PIPE_IFACE.s_daddr_r_reg[6]_7 ,
     \slaveRegDo_mux_0_reg[14] ,
-    \slaveRegDo_mux_0_reg[11] ,
+    \slaveRegDo_mux_0_reg[12] ,
     \slaveRegDo_mux_0_reg[15]_i_4 ,
-    \slaveRegDo_mux_0_reg[11]_i_3 ,
-    \slaveRegDo_mux_0_reg[11]_i_3_0 ,
-    \slaveRegDo_mux_0_reg[11]_i_3_1 ,
-    \slaveRegDo_mux_0_reg[11]_i_3_2 ,
+    \slaveRegDo_mux_0_reg[12]_i_3 ,
+    \slaveRegDo_mux_0_reg[12]_i_3_0 ,
+    \slaveRegDo_mux_0_reg[12]_i_3_1 ,
+    \slaveRegDo_mux_0_reg[12]_i_3_2 ,
+    \slaveRegDo_mux_0_reg[13] ,
+    \slaveRegDo_mux_0_reg[13]_i_3 ,
+    \slaveRegDo_mux_0_reg[13]_i_3_0 ,
     \slaveRegDo_mux_0_reg[15] ,
     \slaveRegDo_mux_0_reg[15]_i_4_0 ,
     \slaveRegDo_mux_0_reg[15]_i_4_1 ,
@@ -41736,12 +41714,9 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized95
     \slaveRegDo_mux_0_reg[9] ,
     \slaveRegDo_mux_0_reg[9]_i_3 ,
     \slaveRegDo_mux_0_reg[9]_i_3_0 ,
-    \slaveRegDo_mux_0_reg[12] ,
-    \slaveRegDo_mux_0_reg[12]_i_3 ,
-    \slaveRegDo_mux_0_reg[12]_i_3_0 ,
-    \slaveRegDo_mux_0_reg[13] ,
-    \slaveRegDo_mux_0_reg[13]_i_3 ,
-    \slaveRegDo_mux_0_reg[13]_i_3_0 ,
+    \slaveRegDo_mux_0_reg[11] ,
+    \slaveRegDo_mux_0_reg[11]_i_3 ,
+    \slaveRegDo_mux_0_reg[11]_i_3_0 ,
     \slaveRegDo_mux_0_reg[14]_0 ,
     \slaveRegDo_mux_0_reg[14]_i_3 ,
     \slaveRegDo_mux_0_reg[14]_i_3_0 ,
@@ -41753,12 +41728,12 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized95
   output \G_1PIPE_IFACE.s_daddr_r_reg[6] ;
   output [1:0]\xsdb_reg_reg[10] ;
   output \G_1PIPE_IFACE.s_daddr_r_reg[6]_0 ;
+  output \G_1PIPE_IFACE.s_daddr_r_reg[6]_1 ;
   output \xsdb_reg_reg[0] ;
   output \xsdb_reg_reg[1] ;
   output \xsdb_reg_reg[2] ;
   output \xsdb_reg_reg[3] ;
   output \xsdb_reg_reg[4] ;
-  output \G_1PIPE_IFACE.s_daddr_r_reg[6]_1 ;
   output \G_1PIPE_IFACE.s_daddr_r_reg[6]_2 ;
   output \G_1PIPE_IFACE.s_daddr_r_reg[6]_3 ;
   output \G_1PIPE_IFACE.s_daddr_r_reg[6]_4 ;
@@ -41766,12 +41741,15 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized95
   output \G_1PIPE_IFACE.s_daddr_r_reg[6]_6 ;
   output \G_1PIPE_IFACE.s_daddr_r_reg[6]_7 ;
   input \slaveRegDo_mux_0_reg[14] ;
-  input \slaveRegDo_mux_0_reg[11] ;
+  input \slaveRegDo_mux_0_reg[12] ;
   input [13:0]\slaveRegDo_mux_0_reg[15]_i_4 ;
-  input \slaveRegDo_mux_0_reg[11]_i_3 ;
-  input \slaveRegDo_mux_0_reg[11]_i_3_0 ;
-  input \slaveRegDo_mux_0_reg[11]_i_3_1 ;
-  input \slaveRegDo_mux_0_reg[11]_i_3_2 ;
+  input \slaveRegDo_mux_0_reg[12]_i_3 ;
+  input \slaveRegDo_mux_0_reg[12]_i_3_0 ;
+  input \slaveRegDo_mux_0_reg[12]_i_3_1 ;
+  input \slaveRegDo_mux_0_reg[12]_i_3_2 ;
+  input \slaveRegDo_mux_0_reg[13] ;
+  input \slaveRegDo_mux_0_reg[13]_i_3 ;
+  input \slaveRegDo_mux_0_reg[13]_i_3_0 ;
   input \slaveRegDo_mux_0_reg[15] ;
   input \slaveRegDo_mux_0_reg[15]_i_4_0 ;
   input \slaveRegDo_mux_0_reg[15]_i_4_1 ;
@@ -41796,12 +41774,9 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized95
   input \slaveRegDo_mux_0_reg[9] ;
   input \slaveRegDo_mux_0_reg[9]_i_3 ;
   input \slaveRegDo_mux_0_reg[9]_i_3_0 ;
-  input \slaveRegDo_mux_0_reg[12] ;
-  input \slaveRegDo_mux_0_reg[12]_i_3 ;
-  input \slaveRegDo_mux_0_reg[12]_i_3_0 ;
-  input \slaveRegDo_mux_0_reg[13] ;
-  input \slaveRegDo_mux_0_reg[13]_i_3 ;
-  input \slaveRegDo_mux_0_reg[13]_i_3_0 ;
+  input \slaveRegDo_mux_0_reg[11] ;
+  input \slaveRegDo_mux_0_reg[11]_i_3 ;
+  input \slaveRegDo_mux_0_reg[11]_i_3_0 ;
   input \slaveRegDo_mux_0_reg[14]_0 ;
   input \slaveRegDo_mux_0_reg[14]_i_3 ;
   input \slaveRegDo_mux_0_reg[14]_i_3_0 ;
@@ -41835,11 +41810,11 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized95
   wire \slaveRegDo_mux_0_reg[11] ;
   wire \slaveRegDo_mux_0_reg[11]_i_3 ;
   wire \slaveRegDo_mux_0_reg[11]_i_3_0 ;
-  wire \slaveRegDo_mux_0_reg[11]_i_3_1 ;
-  wire \slaveRegDo_mux_0_reg[11]_i_3_2 ;
   wire \slaveRegDo_mux_0_reg[12] ;
   wire \slaveRegDo_mux_0_reg[12]_i_3 ;
   wire \slaveRegDo_mux_0_reg[12]_i_3_0 ;
+  wire \slaveRegDo_mux_0_reg[12]_i_3_1 ;
+  wire \slaveRegDo_mux_0_reg[12]_i_3_2 ;
   wire \slaveRegDo_mux_0_reg[13] ;
   wire \slaveRegDo_mux_0_reg[13]_i_3 ;
   wire \slaveRegDo_mux_0_reg[13]_i_3_0 ;
@@ -41897,11 +41872,11 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized95
         .\slaveRegDo_mux_0_reg[11] (\slaveRegDo_mux_0_reg[11] ),
         .\slaveRegDo_mux_0_reg[11]_i_3_0 (\slaveRegDo_mux_0_reg[11]_i_3 ),
         .\slaveRegDo_mux_0_reg[11]_i_3_1 (\slaveRegDo_mux_0_reg[11]_i_3_0 ),
-        .\slaveRegDo_mux_0_reg[11]_i_3_2 (\slaveRegDo_mux_0_reg[11]_i_3_1 ),
-        .\slaveRegDo_mux_0_reg[11]_i_3_3 (\slaveRegDo_mux_0_reg[11]_i_3_2 ),
         .\slaveRegDo_mux_0_reg[12] (\slaveRegDo_mux_0_reg[12] ),
         .\slaveRegDo_mux_0_reg[12]_i_3_0 (\slaveRegDo_mux_0_reg[12]_i_3 ),
         .\slaveRegDo_mux_0_reg[12]_i_3_1 (\slaveRegDo_mux_0_reg[12]_i_3_0 ),
+        .\slaveRegDo_mux_0_reg[12]_i_3_2 (\slaveRegDo_mux_0_reg[12]_i_3_1 ),
+        .\slaveRegDo_mux_0_reg[12]_i_3_3 (\slaveRegDo_mux_0_reg[12]_i_3_2 ),
         .\slaveRegDo_mux_0_reg[13] (\slaveRegDo_mux_0_reg[13] ),
         .\slaveRegDo_mux_0_reg[13]_i_3_0 (\slaveRegDo_mux_0_reg[13]_i_3 ),
         .\slaveRegDo_mux_0_reg[13]_i_3_1 (\slaveRegDo_mux_0_reg[13]_i_3_0 ),
@@ -41968,7 +41943,8 @@ endmodule
 
 (* ORIG_REF_NAME = "xsdbs_v1_0_2_reg" *) 
 module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized97
-   (\G_1PIPE_IFACE.s_daddr_r_reg[12] ,
+   (\G_1PIPE_IFACE.s_daddr_r_reg[6] ,
+    \G_1PIPE_IFACE.s_daddr_r_reg[11] ,
     \xsdb_reg_reg[15] ,
     \xsdb_reg_reg[14] ,
     \xsdb_reg_reg[13] ,
@@ -41990,7 +41966,8 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized97
     s_den_o,
     s_di_o,
     s_dclk_o);
-  output \G_1PIPE_IFACE.s_daddr_r_reg[12] ;
+  output \G_1PIPE_IFACE.s_daddr_r_reg[6] ;
+  output \G_1PIPE_IFACE.s_daddr_r_reg[11] ;
   output \xsdb_reg_reg[15] ;
   output \xsdb_reg_reg[14] ;
   output \xsdb_reg_reg[13] ;
@@ -42013,7 +41990,8 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized97
   input [15:0]s_di_o;
   input s_dclk_o;
 
-  wire \G_1PIPE_IFACE.s_daddr_r_reg[12] ;
+  wire \G_1PIPE_IFACE.s_daddr_r_reg[11] ;
+  wire \G_1PIPE_IFACE.s_daddr_r_reg[6] ;
   wire [12:0]s_daddr_o;
   wire s_dclk_o;
   wire s_den_o;
@@ -42037,7 +42015,8 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized97
   wire \xsdb_reg_reg[9] ;
 
   zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_136 \I_EN_CTL_EQ1.U_CTL 
-       (.\G_1PIPE_IFACE.s_daddr_r_reg[12] (\G_1PIPE_IFACE.s_daddr_r_reg[12] ),
+       (.\G_1PIPE_IFACE.s_daddr_r_reg[11] (\G_1PIPE_IFACE.s_daddr_r_reg[11] ),
+        .\G_1PIPE_IFACE.s_daddr_r_reg[6] (\G_1PIPE_IFACE.s_daddr_r_reg[6] ),
         .s_daddr_o(s_daddr_o),
         .s_dclk_o(s_dclk_o),
         .s_den_o(s_den_o),
@@ -42160,11 +42139,11 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized99
     \xsdb_reg_reg[2] ,
     \xsdb_reg_reg[3] ,
     \xsdb_reg_reg[4] ,
+    \xsdb_reg_reg[13] ,
     \xsdb_reg_reg[5] ,
     \xsdb_reg_reg[10] ,
     \xsdb_reg_reg[11] ,
     \xsdb_reg_reg[12] ,
-    \xsdb_reg_reg[13] ,
     \xsdb_reg_reg[14] ,
     \xsdb_reg_reg[15] ,
     \xsdb_reg_reg[9] ,
@@ -42189,10 +42168,11 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized99
     \slaveRegDo_mux_0_reg[4]_1 ,
     \slaveRegDo_mux_0_reg[4]_2 ,
     \slaveRegDo_mux_0_reg[15]_i_4 ,
-    \slaveRegDo_mux_0[0]_i_3 ,
-    \slaveRegDo_mux_0[0]_i_3_0 ,
-    \slaveRegDo_mux_0[0]_i_3_1 ,
+    \slaveRegDo_mux_0_reg[13]_i_3 ,
+    \slaveRegDo_mux_0_reg[13]_i_3_0 ,
+    \slaveRegDo_mux_0_reg[13]_i_3_1 ,
     slaveRegDo_82,
+    \slaveRegDo_mux_0[0]_i_3 ,
     \slaveRegDo_mux_0[1]_i_3 ,
     \slaveRegDo_mux_0[2]_i_5 ,
     \slaveRegDo_mux_0[3]_i_3 ,
@@ -42201,7 +42181,6 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized99
     \slaveRegDo_mux_0_reg[10]_i_3 ,
     \slaveRegDo_mux_0_reg[11]_i_3 ,
     \slaveRegDo_mux_0_reg[12]_i_3 ,
-    \slaveRegDo_mux_0_reg[13]_i_3 ,
     \slaveRegDo_mux_0_reg[14]_i_3 ,
     \slaveRegDo_mux_0_reg[15]_i_4_0 ,
     s_di_o,
@@ -42212,11 +42191,11 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized99
   output \xsdb_reg_reg[2] ;
   output \xsdb_reg_reg[3] ;
   output \xsdb_reg_reg[4] ;
+  output \xsdb_reg_reg[13] ;
   output \xsdb_reg_reg[5] ;
   output \xsdb_reg_reg[10] ;
   output \xsdb_reg_reg[11] ;
   output \xsdb_reg_reg[12] ;
-  output \xsdb_reg_reg[13] ;
   output \xsdb_reg_reg[14] ;
   output \xsdb_reg_reg[15] ;
   output \xsdb_reg_reg[9] ;
@@ -42241,10 +42220,11 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized99
   input \slaveRegDo_mux_0_reg[4]_1 ;
   input \slaveRegDo_mux_0_reg[4]_2 ;
   input [11:0]\slaveRegDo_mux_0_reg[15]_i_4 ;
-  input \slaveRegDo_mux_0[0]_i_3 ;
-  input \slaveRegDo_mux_0[0]_i_3_0 ;
-  input \slaveRegDo_mux_0[0]_i_3_1 ;
+  input \slaveRegDo_mux_0_reg[13]_i_3 ;
+  input \slaveRegDo_mux_0_reg[13]_i_3_0 ;
+  input \slaveRegDo_mux_0_reg[13]_i_3_1 ;
   input [11:0]slaveRegDo_82;
+  input \slaveRegDo_mux_0[0]_i_3 ;
   input \slaveRegDo_mux_0[1]_i_3 ;
   input \slaveRegDo_mux_0[2]_i_5 ;
   input \slaveRegDo_mux_0[3]_i_3 ;
@@ -42253,7 +42233,6 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized99
   input \slaveRegDo_mux_0_reg[10]_i_3 ;
   input \slaveRegDo_mux_0_reg[11]_i_3 ;
   input \slaveRegDo_mux_0_reg[12]_i_3 ;
-  input \slaveRegDo_mux_0_reg[13]_i_3 ;
   input \slaveRegDo_mux_0_reg[14]_i_3 ;
   input \slaveRegDo_mux_0_reg[15]_i_4_0 ;
   input [15:0]s_di_o;
@@ -42267,8 +42246,6 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized99
   wire s_dwe_o;
   wire [11:0]slaveRegDo_82;
   wire \slaveRegDo_mux_0[0]_i_3 ;
-  wire \slaveRegDo_mux_0[0]_i_3_0 ;
-  wire \slaveRegDo_mux_0[0]_i_3_1 ;
   wire \slaveRegDo_mux_0[1]_i_3 ;
   wire \slaveRegDo_mux_0[2]_i_5 ;
   wire \slaveRegDo_mux_0[3]_i_3 ;
@@ -42279,6 +42256,8 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized99
   wire \slaveRegDo_mux_0_reg[11]_i_3 ;
   wire \slaveRegDo_mux_0_reg[12]_i_3 ;
   wire \slaveRegDo_mux_0_reg[13]_i_3 ;
+  wire \slaveRegDo_mux_0_reg[13]_i_3_0 ;
+  wire \slaveRegDo_mux_0_reg[13]_i_3_1 ;
   wire \slaveRegDo_mux_0_reg[14]_i_3 ;
   wire [11:0]\slaveRegDo_mux_0_reg[15]_i_4 ;
   wire \slaveRegDo_mux_0_reg[15]_i_4_0 ;
@@ -42321,8 +42300,6 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized99
         .s_dwe_o(s_dwe_o),
         .slaveRegDo_82(slaveRegDo_82),
         .\slaveRegDo_mux_0[0]_i_3_0 (\slaveRegDo_mux_0[0]_i_3 ),
-        .\slaveRegDo_mux_0[0]_i_3_1 (\slaveRegDo_mux_0[0]_i_3_0 ),
-        .\slaveRegDo_mux_0[0]_i_3_2 (\slaveRegDo_mux_0[0]_i_3_1 ),
         .\slaveRegDo_mux_0[1]_i_3_0 (\slaveRegDo_mux_0[1]_i_3 ),
         .\slaveRegDo_mux_0[2]_i_5_0 (\slaveRegDo_mux_0[2]_i_5 ),
         .\slaveRegDo_mux_0[3]_i_3_0 (\slaveRegDo_mux_0[3]_i_3 ),
@@ -42333,6 +42310,8 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg__parameterized99
         .\slaveRegDo_mux_0_reg[11]_i_3 (\slaveRegDo_mux_0_reg[11]_i_3 ),
         .\slaveRegDo_mux_0_reg[12]_i_3 (\slaveRegDo_mux_0_reg[12]_i_3 ),
         .\slaveRegDo_mux_0_reg[13]_i_3 (\slaveRegDo_mux_0_reg[13]_i_3 ),
+        .\slaveRegDo_mux_0_reg[13]_i_3_0 (\slaveRegDo_mux_0_reg[13]_i_3_0 ),
+        .\slaveRegDo_mux_0_reg[13]_i_3_1 (\slaveRegDo_mux_0_reg[13]_i_3_1 ),
         .\slaveRegDo_mux_0_reg[14]_i_3 (\slaveRegDo_mux_0_reg[14]_i_3 ),
         .\slaveRegDo_mux_0_reg[15]_i_4 (\slaveRegDo_mux_0_reg[15]_i_4 ),
         .\slaveRegDo_mux_0_reg[15]_i_4_0 (\slaveRegDo_mux_0_reg[15]_i_4_0 ),
@@ -42370,6 +42349,7 @@ endmodule
 (* ORIG_REF_NAME = "xsdbs_v1_0_2_reg_ctl" *) 
 module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl
    (\G_1PIPE_IFACE.s_daddr_r_reg[0] ,
+    \xsdb_reg_reg[15]_0 ,
     \G_1PIPE_IFACE.s_daddr_r_reg[0]_0 ,
     \G_1PIPE_IFACE.s_daddr_r_reg[0]_1 ,
     \G_1PIPE_IFACE.s_daddr_r_reg[0]_2 ,
@@ -42385,35 +42365,35 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl
     \G_1PIPE_IFACE.s_daddr_r_reg[0]_12 ,
     \G_1PIPE_IFACE.s_daddr_r_reg[0]_13 ,
     \G_1PIPE_IFACE.s_daddr_r_reg[0]_14 ,
-    \xsdb_reg_reg[15]_0 ,
-    \slaveRegDo_mux_3_reg[12] ,
-    \slaveRegDo_mux_3_reg[15] ,
-    \slaveRegDo_mux_3_reg[14] ,
-    \slaveRegDo_mux_3_reg[13] ,
-    \slaveRegDo_mux_3_reg[11] ,
-    \slaveRegDo_mux_3_reg[10] ,
-    \slaveRegDo_mux_3_reg[8] ,
-    \slaveRegDo_mux_3_reg[5] ,
-    \slaveRegDo_mux_3_reg[4] ,
-    \slaveRegDo_mux_3_reg[3] ,
-    \slaveRegDo_mux_3_reg[2] ,
-    \slaveRegDo_mux_3_reg[1] ,
-    \slaveRegDo_mux_3_reg[0] ,
-    \slaveRegDo_mux_3_reg[6] ,
-    \slaveRegDo_mux_3_reg[7] ,
-    \slaveRegDo_mux_3_reg[9] ,
-    \slaveRegDo_mux_3_reg[12]_0 ,
     \xsdb_reg_reg[0]_0 ,
     s_dwe_o,
     s_daddr_o,
     \xsdb_reg_reg[0]_1 ,
+    \slaveRegDo_mux_3_reg[15] ,
+    \slaveRegDo_mux_3_reg[0] ,
     Q,
     \slaveRegDo_mux_3_reg[15]_0 ,
     slaveRegDo_ffa,
     \slaveRegDo_mux_3_reg[15]_1 ,
+    \slaveRegDo_mux_3_reg[1] ,
+    \slaveRegDo_mux_3_reg[2] ,
+    \slaveRegDo_mux_3_reg[3] ,
+    \slaveRegDo_mux_3_reg[4] ,
+    \slaveRegDo_mux_3_reg[5] ,
+    \slaveRegDo_mux_3_reg[6] ,
+    \slaveRegDo_mux_3_reg[7] ,
+    \slaveRegDo_mux_3_reg[8] ,
+    \slaveRegDo_mux_3_reg[9] ,
+    \slaveRegDo_mux_3_reg[10] ,
+    \slaveRegDo_mux_3_reg[11] ,
+    \slaveRegDo_mux_3_reg[12] ,
+    \slaveRegDo_mux_3_reg[13] ,
+    \slaveRegDo_mux_3_reg[14] ,
+    \slaveRegDo_mux_3_reg[15]_2 ,
     s_di_o,
     s_dclk_o);
   output \G_1PIPE_IFACE.s_daddr_r_reg[0] ;
+  output [15:0]\xsdb_reg_reg[15]_0 ;
   output \G_1PIPE_IFACE.s_daddr_r_reg[0]_0 ;
   output \G_1PIPE_IFACE.s_daddr_r_reg[0]_1 ;
   output \G_1PIPE_IFACE.s_daddr_r_reg[0]_2 ;
@@ -42429,32 +42409,31 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl
   output \G_1PIPE_IFACE.s_daddr_r_reg[0]_12 ;
   output \G_1PIPE_IFACE.s_daddr_r_reg[0]_13 ;
   output \G_1PIPE_IFACE.s_daddr_r_reg[0]_14 ;
-  output [15:0]\xsdb_reg_reg[15]_0 ;
-  input \slaveRegDo_mux_3_reg[12] ;
-  input \slaveRegDo_mux_3_reg[15] ;
-  input \slaveRegDo_mux_3_reg[14] ;
-  input \slaveRegDo_mux_3_reg[13] ;
-  input \slaveRegDo_mux_3_reg[11] ;
-  input \slaveRegDo_mux_3_reg[10] ;
-  input \slaveRegDo_mux_3_reg[8] ;
-  input \slaveRegDo_mux_3_reg[5] ;
-  input \slaveRegDo_mux_3_reg[4] ;
-  input \slaveRegDo_mux_3_reg[3] ;
-  input \slaveRegDo_mux_3_reg[2] ;
-  input \slaveRegDo_mux_3_reg[1] ;
-  input \slaveRegDo_mux_3_reg[0] ;
-  input \slaveRegDo_mux_3_reg[6] ;
-  input \slaveRegDo_mux_3_reg[7] ;
-  input \slaveRegDo_mux_3_reg[9] ;
-  input \slaveRegDo_mux_3_reg[12]_0 ;
   input \xsdb_reg_reg[0]_0 ;
   input s_dwe_o;
   input [1:0]s_daddr_o;
   input \xsdb_reg_reg[0]_1 ;
+  input \slaveRegDo_mux_3_reg[15] ;
+  input \slaveRegDo_mux_3_reg[0] ;
   input [15:0]Q;
   input \slaveRegDo_mux_3_reg[15]_0 ;
   input [0:0]slaveRegDo_ffa;
   input \slaveRegDo_mux_3_reg[15]_1 ;
+  input \slaveRegDo_mux_3_reg[1] ;
+  input \slaveRegDo_mux_3_reg[2] ;
+  input \slaveRegDo_mux_3_reg[3] ;
+  input \slaveRegDo_mux_3_reg[4] ;
+  input \slaveRegDo_mux_3_reg[5] ;
+  input \slaveRegDo_mux_3_reg[6] ;
+  input \slaveRegDo_mux_3_reg[7] ;
+  input \slaveRegDo_mux_3_reg[8] ;
+  input \slaveRegDo_mux_3_reg[9] ;
+  input \slaveRegDo_mux_3_reg[10] ;
+  input \slaveRegDo_mux_3_reg[11] ;
+  input \slaveRegDo_mux_3_reg[12] ;
+  input \slaveRegDo_mux_3_reg[13] ;
+  input \slaveRegDo_mux_3_reg[14] ;
+  input \slaveRegDo_mux_3_reg[15]_2 ;
   input [15:0]s_di_o;
   input s_dclk_o;
 
@@ -42500,12 +42479,12 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl
   wire \slaveRegDo_mux_3_reg[10] ;
   wire \slaveRegDo_mux_3_reg[11] ;
   wire \slaveRegDo_mux_3_reg[12] ;
-  wire \slaveRegDo_mux_3_reg[12]_0 ;
   wire \slaveRegDo_mux_3_reg[13] ;
   wire \slaveRegDo_mux_3_reg[14] ;
   wire \slaveRegDo_mux_3_reg[15] ;
   wire \slaveRegDo_mux_3_reg[15]_0 ;
   wire \slaveRegDo_mux_3_reg[15]_1 ;
+  wire \slaveRegDo_mux_3_reg[15]_2 ;
   wire \slaveRegDo_mux_3_reg[1] ;
   wire \slaveRegDo_mux_3_reg[2] ;
   wire \slaveRegDo_mux_3_reg[3] ;
@@ -42667,83 +42646,83 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl
   MUXF7 \slaveRegDo_mux_3_reg[0]_i_1 
        (.I0(\slaveRegDo_mux_3[0]_i_2_n_0 ),
         .I1(\slaveRegDo_mux_3_reg[0] ),
-        .O(\G_1PIPE_IFACE.s_daddr_r_reg[0]_10 ),
-        .S(\slaveRegDo_mux_3_reg[12] ));
+        .O(\G_1PIPE_IFACE.s_daddr_r_reg[0] ),
+        .S(\slaveRegDo_mux_3_reg[15] ));
   MUXF7 \slaveRegDo_mux_3_reg[10]_i_1 
        (.I0(\slaveRegDo_mux_3[10]_i_2_n_0 ),
         .I1(\slaveRegDo_mux_3_reg[10] ),
-        .O(\G_1PIPE_IFACE.s_daddr_r_reg[0]_3 ),
-        .S(\slaveRegDo_mux_3_reg[12] ));
+        .O(\G_1PIPE_IFACE.s_daddr_r_reg[0]_9 ),
+        .S(\slaveRegDo_mux_3_reg[15] ));
   MUXF7 \slaveRegDo_mux_3_reg[11]_i_1 
        (.I0(\slaveRegDo_mux_3[11]_i_2_n_0 ),
         .I1(\slaveRegDo_mux_3_reg[11] ),
-        .O(\G_1PIPE_IFACE.s_daddr_r_reg[0]_2 ),
-        .S(\slaveRegDo_mux_3_reg[12] ));
+        .O(\G_1PIPE_IFACE.s_daddr_r_reg[0]_10 ),
+        .S(\slaveRegDo_mux_3_reg[15] ));
   MUXF7 \slaveRegDo_mux_3_reg[12]_i_1 
        (.I0(\slaveRegDo_mux_3[12]_i_2_n_0 ),
-        .I1(\slaveRegDo_mux_3_reg[12]_0 ),
-        .O(\G_1PIPE_IFACE.s_daddr_r_reg[0]_14 ),
-        .S(\slaveRegDo_mux_3_reg[12] ));
+        .I1(\slaveRegDo_mux_3_reg[12] ),
+        .O(\G_1PIPE_IFACE.s_daddr_r_reg[0]_11 ),
+        .S(\slaveRegDo_mux_3_reg[15] ));
   MUXF7 \slaveRegDo_mux_3_reg[13]_i_1 
        (.I0(\slaveRegDo_mux_3[13]_i_2_n_0 ),
         .I1(\slaveRegDo_mux_3_reg[13] ),
-        .O(\G_1PIPE_IFACE.s_daddr_r_reg[0]_1 ),
-        .S(\slaveRegDo_mux_3_reg[12] ));
+        .O(\G_1PIPE_IFACE.s_daddr_r_reg[0]_12 ),
+        .S(\slaveRegDo_mux_3_reg[15] ));
   MUXF7 \slaveRegDo_mux_3_reg[14]_i_1 
        (.I0(\slaveRegDo_mux_3[14]_i_2_n_0 ),
         .I1(\slaveRegDo_mux_3_reg[14] ),
-        .O(\G_1PIPE_IFACE.s_daddr_r_reg[0]_0 ),
-        .S(\slaveRegDo_mux_3_reg[12] ));
+        .O(\G_1PIPE_IFACE.s_daddr_r_reg[0]_13 ),
+        .S(\slaveRegDo_mux_3_reg[15] ));
   MUXF7 \slaveRegDo_mux_3_reg[15]_i_2 
        (.I0(\slaveRegDo_mux_3[15]_i_4_n_0 ),
-        .I1(\slaveRegDo_mux_3_reg[15] ),
-        .O(\G_1PIPE_IFACE.s_daddr_r_reg[0] ),
-        .S(\slaveRegDo_mux_3_reg[12] ));
+        .I1(\slaveRegDo_mux_3_reg[15]_2 ),
+        .O(\G_1PIPE_IFACE.s_daddr_r_reg[0]_14 ),
+        .S(\slaveRegDo_mux_3_reg[15] ));
   MUXF7 \slaveRegDo_mux_3_reg[1]_i_1 
        (.I0(\slaveRegDo_mux_3[1]_i_2_n_0 ),
         .I1(\slaveRegDo_mux_3_reg[1] ),
-        .O(\G_1PIPE_IFACE.s_daddr_r_reg[0]_9 ),
-        .S(\slaveRegDo_mux_3_reg[12] ));
+        .O(\G_1PIPE_IFACE.s_daddr_r_reg[0]_0 ),
+        .S(\slaveRegDo_mux_3_reg[15] ));
   MUXF7 \slaveRegDo_mux_3_reg[2]_i_1 
        (.I0(\slaveRegDo_mux_3[2]_i_2_n_0 ),
         .I1(\slaveRegDo_mux_3_reg[2] ),
-        .O(\G_1PIPE_IFACE.s_daddr_r_reg[0]_8 ),
-        .S(\slaveRegDo_mux_3_reg[12] ));
+        .O(\G_1PIPE_IFACE.s_daddr_r_reg[0]_1 ),
+        .S(\slaveRegDo_mux_3_reg[15] ));
   MUXF7 \slaveRegDo_mux_3_reg[3]_i_1 
        (.I0(\slaveRegDo_mux_3[3]_i_2_n_0 ),
         .I1(\slaveRegDo_mux_3_reg[3] ),
-        .O(\G_1PIPE_IFACE.s_daddr_r_reg[0]_7 ),
-        .S(\slaveRegDo_mux_3_reg[12] ));
+        .O(\G_1PIPE_IFACE.s_daddr_r_reg[0]_2 ),
+        .S(\slaveRegDo_mux_3_reg[15] ));
   MUXF7 \slaveRegDo_mux_3_reg[4]_i_1 
        (.I0(\slaveRegDo_mux_3[4]_i_2_n_0 ),
         .I1(\slaveRegDo_mux_3_reg[4] ),
-        .O(\G_1PIPE_IFACE.s_daddr_r_reg[0]_6 ),
-        .S(\slaveRegDo_mux_3_reg[12] ));
+        .O(\G_1PIPE_IFACE.s_daddr_r_reg[0]_3 ),
+        .S(\slaveRegDo_mux_3_reg[15] ));
   MUXF7 \slaveRegDo_mux_3_reg[5]_i_1 
        (.I0(\slaveRegDo_mux_3[5]_i_2_n_0 ),
         .I1(\slaveRegDo_mux_3_reg[5] ),
-        .O(\G_1PIPE_IFACE.s_daddr_r_reg[0]_5 ),
-        .S(\slaveRegDo_mux_3_reg[12] ));
+        .O(\G_1PIPE_IFACE.s_daddr_r_reg[0]_4 ),
+        .S(\slaveRegDo_mux_3_reg[15] ));
   MUXF7 \slaveRegDo_mux_3_reg[6]_i_1 
        (.I0(\slaveRegDo_mux_3[6]_i_2_n_0 ),
         .I1(\slaveRegDo_mux_3_reg[6] ),
-        .O(\G_1PIPE_IFACE.s_daddr_r_reg[0]_11 ),
-        .S(\slaveRegDo_mux_3_reg[12] ));
+        .O(\G_1PIPE_IFACE.s_daddr_r_reg[0]_5 ),
+        .S(\slaveRegDo_mux_3_reg[15] ));
   MUXF7 \slaveRegDo_mux_3_reg[7]_i_1 
        (.I0(\slaveRegDo_mux_3[7]_i_2_n_0 ),
         .I1(\slaveRegDo_mux_3_reg[7] ),
-        .O(\G_1PIPE_IFACE.s_daddr_r_reg[0]_12 ),
-        .S(\slaveRegDo_mux_3_reg[12] ));
+        .O(\G_1PIPE_IFACE.s_daddr_r_reg[0]_6 ),
+        .S(\slaveRegDo_mux_3_reg[15] ));
   MUXF7 \slaveRegDo_mux_3_reg[8]_i_1 
        (.I0(\slaveRegDo_mux_3[8]_i_2_n_0 ),
         .I1(\slaveRegDo_mux_3_reg[8] ),
-        .O(\G_1PIPE_IFACE.s_daddr_r_reg[0]_4 ),
-        .S(\slaveRegDo_mux_3_reg[12] ));
+        .O(\G_1PIPE_IFACE.s_daddr_r_reg[0]_7 ),
+        .S(\slaveRegDo_mux_3_reg[15] ));
   MUXF7 \slaveRegDo_mux_3_reg[9]_i_1 
        (.I0(\slaveRegDo_mux_3[9]_i_2_n_0 ),
         .I1(\slaveRegDo_mux_3_reg[9] ),
-        .O(\G_1PIPE_IFACE.s_daddr_r_reg[0]_13 ),
-        .S(\slaveRegDo_mux_3_reg[12] ));
+        .O(\G_1PIPE_IFACE.s_daddr_r_reg[0]_8 ),
+        .S(\slaveRegDo_mux_3_reg[15] ));
   LUT5 #(
     .INIT(32'h00000800)) 
     \xsdb_reg[15]_i_1__11 
@@ -42891,11 +42870,11 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_134
     \xsdb_reg_reg[2]_0 ,
     \xsdb_reg_reg[3]_0 ,
     \xsdb_reg_reg[4]_0 ,
+    \xsdb_reg_reg[13]_0 ,
     \xsdb_reg_reg[5]_0 ,
     \xsdb_reg_reg[10]_0 ,
     \xsdb_reg_reg[11]_0 ,
     \xsdb_reg_reg[12]_0 ,
-    \xsdb_reg_reg[13]_0 ,
     \xsdb_reg_reg[14]_0 ,
     \xsdb_reg_reg[15]_0 ,
     \xsdb_reg_reg[9]_0 ,
@@ -42920,10 +42899,11 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_134
     \slaveRegDo_mux_0_reg[4]_1 ,
     \slaveRegDo_mux_0_reg[4]_2 ,
     \slaveRegDo_mux_0_reg[15]_i_4 ,
-    \slaveRegDo_mux_0[0]_i_3_0 ,
-    \slaveRegDo_mux_0[0]_i_3_1 ,
-    \slaveRegDo_mux_0[0]_i_3_2 ,
+    \slaveRegDo_mux_0_reg[13]_i_3 ,
+    \slaveRegDo_mux_0_reg[13]_i_3_0 ,
+    \slaveRegDo_mux_0_reg[13]_i_3_1 ,
     slaveRegDo_82,
+    \slaveRegDo_mux_0[0]_i_3_0 ,
     \slaveRegDo_mux_0[1]_i_3_0 ,
     \slaveRegDo_mux_0[2]_i_5_0 ,
     \slaveRegDo_mux_0[3]_i_3_0 ,
@@ -42932,7 +42912,6 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_134
     \slaveRegDo_mux_0_reg[10]_i_3 ,
     \slaveRegDo_mux_0_reg[11]_i_3 ,
     \slaveRegDo_mux_0_reg[12]_i_3 ,
-    \slaveRegDo_mux_0_reg[13]_i_3 ,
     \slaveRegDo_mux_0_reg[14]_i_3 ,
     \slaveRegDo_mux_0_reg[15]_i_4_0 ,
     s_di_o,
@@ -42943,11 +42922,11 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_134
   output \xsdb_reg_reg[2]_0 ;
   output \xsdb_reg_reg[3]_0 ;
   output \xsdb_reg_reg[4]_0 ;
+  output \xsdb_reg_reg[13]_0 ;
   output \xsdb_reg_reg[5]_0 ;
   output \xsdb_reg_reg[10]_0 ;
   output \xsdb_reg_reg[11]_0 ;
   output \xsdb_reg_reg[12]_0 ;
-  output \xsdb_reg_reg[13]_0 ;
   output \xsdb_reg_reg[14]_0 ;
   output \xsdb_reg_reg[15]_0 ;
   output \xsdb_reg_reg[9]_0 ;
@@ -42972,10 +42951,11 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_134
   input \slaveRegDo_mux_0_reg[4]_1 ;
   input \slaveRegDo_mux_0_reg[4]_2 ;
   input [11:0]\slaveRegDo_mux_0_reg[15]_i_4 ;
-  input \slaveRegDo_mux_0[0]_i_3_0 ;
-  input \slaveRegDo_mux_0[0]_i_3_1 ;
-  input \slaveRegDo_mux_0[0]_i_3_2 ;
+  input \slaveRegDo_mux_0_reg[13]_i_3 ;
+  input \slaveRegDo_mux_0_reg[13]_i_3_0 ;
+  input \slaveRegDo_mux_0_reg[13]_i_3_1 ;
   input [11:0]slaveRegDo_82;
+  input \slaveRegDo_mux_0[0]_i_3_0 ;
   input \slaveRegDo_mux_0[1]_i_3_0 ;
   input \slaveRegDo_mux_0[2]_i_5_0 ;
   input \slaveRegDo_mux_0[3]_i_3_0 ;
@@ -42984,7 +42964,6 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_134
   input \slaveRegDo_mux_0_reg[10]_i_3 ;
   input \slaveRegDo_mux_0_reg[11]_i_3 ;
   input \slaveRegDo_mux_0_reg[12]_i_3 ;
-  input \slaveRegDo_mux_0_reg[13]_i_3 ;
   input \slaveRegDo_mux_0_reg[14]_i_3 ;
   input \slaveRegDo_mux_0_reg[15]_i_4_0 ;
   input [15:0]s_di_o;
@@ -42998,8 +42977,6 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_134
   wire s_dwe_o;
   wire [11:0]slaveRegDo_82;
   wire \slaveRegDo_mux_0[0]_i_3_0 ;
-  wire \slaveRegDo_mux_0[0]_i_3_1 ;
-  wire \slaveRegDo_mux_0[0]_i_3_2 ;
   wire \slaveRegDo_mux_0[0]_i_6_n_0 ;
   wire \slaveRegDo_mux_0[1]_i_3_0 ;
   wire \slaveRegDo_mux_0[1]_i_5_n_0 ;
@@ -43015,6 +42992,8 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_134
   wire \slaveRegDo_mux_0_reg[11]_i_3 ;
   wire \slaveRegDo_mux_0_reg[12]_i_3 ;
   wire \slaveRegDo_mux_0_reg[13]_i_3 ;
+  wire \slaveRegDo_mux_0_reg[13]_i_3_0 ;
+  wire \slaveRegDo_mux_0_reg[13]_i_3_1 ;
   wire \slaveRegDo_mux_0_reg[14]_i_3 ;
   wire [11:0]\slaveRegDo_mux_0_reg[15]_i_4 ;
   wire \slaveRegDo_mux_0_reg[15]_i_4_0 ;
@@ -43075,9 +43054,9 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_134
     \slaveRegDo_mux_0[0]_i_6 
        (.I0(\xsdb_reg_reg_n_0_[0] ),
         .I1(\slaveRegDo_mux_0_reg[15]_i_4 [0]),
-        .I2(\slaveRegDo_mux_0[0]_i_3_0 ),
-        .I3(\slaveRegDo_mux_0[0]_i_3_1 ),
-        .I4(\slaveRegDo_mux_0[0]_i_3_2 ),
+        .I2(\slaveRegDo_mux_0_reg[13]_i_3 ),
+        .I3(\slaveRegDo_mux_0[0]_i_3_0 ),
+        .I4(\slaveRegDo_mux_0_reg[13]_i_3_1 ),
         .I5(slaveRegDo_82[0]),
         .O(\slaveRegDo_mux_0[0]_i_6_n_0 ));
   LUT6 #(
@@ -43085,9 +43064,9 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_134
     \slaveRegDo_mux_0[10]_i_6 
        (.I0(\xsdb_reg_reg_n_0_[10] ),
         .I1(\slaveRegDo_mux_0_reg[15]_i_4 [6]),
-        .I2(\slaveRegDo_mux_0[0]_i_3_0 ),
+        .I2(\slaveRegDo_mux_0_reg[13]_i_3 ),
         .I3(\slaveRegDo_mux_0_reg[10]_i_3 ),
-        .I4(\slaveRegDo_mux_0[0]_i_3_2 ),
+        .I4(\slaveRegDo_mux_0_reg[13]_i_3_1 ),
         .I5(slaveRegDo_82[6]),
         .O(\xsdb_reg_reg[10]_0 ));
   LUT6 #(
@@ -43095,9 +43074,9 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_134
     \slaveRegDo_mux_0[11]_i_6 
        (.I0(\xsdb_reg_reg_n_0_[11] ),
         .I1(\slaveRegDo_mux_0_reg[15]_i_4 [7]),
-        .I2(\slaveRegDo_mux_0[0]_i_3_0 ),
+        .I2(\slaveRegDo_mux_0_reg[13]_i_3 ),
         .I3(\slaveRegDo_mux_0_reg[11]_i_3 ),
-        .I4(\slaveRegDo_mux_0[0]_i_3_2 ),
+        .I4(\slaveRegDo_mux_0_reg[13]_i_3_1 ),
         .I5(slaveRegDo_82[7]),
         .O(\xsdb_reg_reg[11]_0 ));
   LUT6 #(
@@ -43105,9 +43084,9 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_134
     \slaveRegDo_mux_0[12]_i_6 
        (.I0(\xsdb_reg_reg_n_0_[12] ),
         .I1(\slaveRegDo_mux_0_reg[15]_i_4 [8]),
-        .I2(\slaveRegDo_mux_0[0]_i_3_0 ),
+        .I2(\slaveRegDo_mux_0_reg[13]_i_3 ),
         .I3(\slaveRegDo_mux_0_reg[12]_i_3 ),
-        .I4(\slaveRegDo_mux_0[0]_i_3_2 ),
+        .I4(\slaveRegDo_mux_0_reg[13]_i_3_1 ),
         .I5(slaveRegDo_82[8]),
         .O(\xsdb_reg_reg[12]_0 ));
   LUT6 #(
@@ -43115,9 +43094,9 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_134
     \slaveRegDo_mux_0[13]_i_6 
        (.I0(\xsdb_reg_reg_n_0_[13] ),
         .I1(\slaveRegDo_mux_0_reg[15]_i_4 [9]),
-        .I2(\slaveRegDo_mux_0[0]_i_3_0 ),
-        .I3(\slaveRegDo_mux_0_reg[13]_i_3 ),
-        .I4(\slaveRegDo_mux_0[0]_i_3_2 ),
+        .I2(\slaveRegDo_mux_0_reg[13]_i_3 ),
+        .I3(\slaveRegDo_mux_0_reg[13]_i_3_0 ),
+        .I4(\slaveRegDo_mux_0_reg[13]_i_3_1 ),
         .I5(slaveRegDo_82[9]),
         .O(\xsdb_reg_reg[13]_0 ));
   LUT6 #(
@@ -43125,9 +43104,9 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_134
     \slaveRegDo_mux_0[14]_i_6 
        (.I0(\xsdb_reg_reg_n_0_[14] ),
         .I1(\slaveRegDo_mux_0_reg[15]_i_4 [10]),
-        .I2(\slaveRegDo_mux_0[0]_i_3_0 ),
+        .I2(\slaveRegDo_mux_0_reg[13]_i_3 ),
         .I3(\slaveRegDo_mux_0_reg[14]_i_3 ),
-        .I4(\slaveRegDo_mux_0[0]_i_3_2 ),
+        .I4(\slaveRegDo_mux_0_reg[13]_i_3_1 ),
         .I5(slaveRegDo_82[10]),
         .O(\xsdb_reg_reg[14]_0 ));
   LUT6 #(
@@ -43135,9 +43114,9 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_134
     \slaveRegDo_mux_0[15]_i_9 
        (.I0(\xsdb_reg_reg_n_0_[15] ),
         .I1(\slaveRegDo_mux_0_reg[15]_i_4 [11]),
-        .I2(\slaveRegDo_mux_0[0]_i_3_0 ),
+        .I2(\slaveRegDo_mux_0_reg[13]_i_3 ),
         .I3(\slaveRegDo_mux_0_reg[15]_i_4_0 ),
-        .I4(\slaveRegDo_mux_0[0]_i_3_2 ),
+        .I4(\slaveRegDo_mux_0_reg[13]_i_3_1 ),
         .I5(slaveRegDo_82[11]),
         .O(\xsdb_reg_reg[15]_0 ));
   LUT5 #(
@@ -43154,9 +43133,9 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_134
     \slaveRegDo_mux_0[1]_i_5 
        (.I0(\xsdb_reg_reg_n_0_[1] ),
         .I1(\slaveRegDo_mux_0_reg[15]_i_4 [1]),
-        .I2(\slaveRegDo_mux_0[0]_i_3_0 ),
+        .I2(\slaveRegDo_mux_0_reg[13]_i_3 ),
         .I3(\slaveRegDo_mux_0[1]_i_3_0 ),
-        .I4(\slaveRegDo_mux_0[0]_i_3_2 ),
+        .I4(\slaveRegDo_mux_0_reg[13]_i_3_1 ),
         .I5(slaveRegDo_82[1]),
         .O(\slaveRegDo_mux_0[1]_i_5_n_0 ));
   LUT5 #(
@@ -43173,9 +43152,9 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_134
     \slaveRegDo_mux_0[2]_i_7 
        (.I0(\xsdb_reg_reg_n_0_[2] ),
         .I1(\slaveRegDo_mux_0_reg[15]_i_4 [2]),
-        .I2(\slaveRegDo_mux_0[0]_i_3_0 ),
+        .I2(\slaveRegDo_mux_0_reg[13]_i_3 ),
         .I3(\slaveRegDo_mux_0[2]_i_5_0 ),
-        .I4(\slaveRegDo_mux_0[0]_i_3_2 ),
+        .I4(\slaveRegDo_mux_0_reg[13]_i_3_1 ),
         .I5(slaveRegDo_82[2]),
         .O(\slaveRegDo_mux_0[2]_i_7_n_0 ));
   LUT5 #(
@@ -43192,9 +43171,9 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_134
     \slaveRegDo_mux_0[3]_i_5 
        (.I0(\xsdb_reg_reg_n_0_[3] ),
         .I1(\slaveRegDo_mux_0_reg[15]_i_4 [3]),
-        .I2(\slaveRegDo_mux_0[0]_i_3_0 ),
+        .I2(\slaveRegDo_mux_0_reg[13]_i_3 ),
         .I3(\slaveRegDo_mux_0[3]_i_3_0 ),
-        .I4(\slaveRegDo_mux_0[0]_i_3_2 ),
+        .I4(\slaveRegDo_mux_0_reg[13]_i_3_1 ),
         .I5(slaveRegDo_82[3]),
         .O(\slaveRegDo_mux_0[3]_i_5_n_0 ));
   LUT6 #(
@@ -43202,9 +43181,9 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_134
     \slaveRegDo_mux_0[4]_i_11 
        (.I0(\xsdb_reg_reg_n_0_[4] ),
         .I1(\slaveRegDo_mux_0_reg[15]_i_4 [4]),
-        .I2(\slaveRegDo_mux_0[0]_i_3_0 ),
+        .I2(\slaveRegDo_mux_0_reg[13]_i_3 ),
         .I3(\slaveRegDo_mux_0[4]_i_5_0 ),
-        .I4(\slaveRegDo_mux_0[0]_i_3_2 ),
+        .I4(\slaveRegDo_mux_0_reg[13]_i_3_1 ),
         .I5(slaveRegDo_82[4]),
         .O(\slaveRegDo_mux_0[4]_i_11_n_0 ));
   LUT5 #(
@@ -43221,9 +43200,9 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_134
     \slaveRegDo_mux_0[5]_i_6 
        (.I0(\xsdb_reg_reg_n_0_[5] ),
         .I1(\slaveRegDo_mux_0_reg[15]_i_4 [5]),
-        .I2(\slaveRegDo_mux_0[0]_i_3_0 ),
+        .I2(\slaveRegDo_mux_0_reg[13]_i_3 ),
         .I3(\slaveRegDo_mux_0_reg[5]_i_3 ),
-        .I4(\slaveRegDo_mux_0[0]_i_3_2 ),
+        .I4(\slaveRegDo_mux_0_reg[13]_i_3_1 ),
         .I5(slaveRegDo_82[5]),
         .O(\xsdb_reg_reg[5]_0 ));
   LUT6 #(
@@ -43622,7 +43601,8 @@ endmodule
 
 (* ORIG_REF_NAME = "xsdbs_v1_0_2_reg_ctl" *) 
 module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_136
-   (\G_1PIPE_IFACE.s_daddr_r_reg[12] ,
+   (\G_1PIPE_IFACE.s_daddr_r_reg[6] ,
+    \G_1PIPE_IFACE.s_daddr_r_reg[11] ,
     \xsdb_reg_reg[15]_0 ,
     \xsdb_reg_reg[14]_0 ,
     \xsdb_reg_reg[13]_0 ,
@@ -43644,7 +43624,8 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_136
     s_den_o,
     s_di_o,
     s_dclk_o);
-  output \G_1PIPE_IFACE.s_daddr_r_reg[12] ;
+  output \G_1PIPE_IFACE.s_daddr_r_reg[6] ;
+  output \G_1PIPE_IFACE.s_daddr_r_reg[11] ;
   output \xsdb_reg_reg[15]_0 ;
   output \xsdb_reg_reg[14]_0 ;
   output \xsdb_reg_reg[13]_0 ;
@@ -43667,7 +43648,8 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_136
   input [15:0]s_di_o;
   input s_dclk_o;
 
-  wire \G_1PIPE_IFACE.s_daddr_r_reg[12] ;
+  wire \G_1PIPE_IFACE.s_daddr_r_reg[11] ;
+  wire \G_1PIPE_IFACE.s_daddr_r_reg[6] ;
   wire [12:0]s_daddr_o;
   wire s_dclk_o;
   wire s_den_o;
@@ -43675,7 +43657,6 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_136
   wire s_dwe_o;
   wire \xsdb_reg[15]_i_1__7_n_0 ;
   wire \xsdb_reg[15]_i_3__0_n_0 ;
-  wire \xsdb_reg[15]_i_4__1_n_0 ;
   wire \xsdb_reg_reg[0]_0 ;
   wire \xsdb_reg_reg[10]_0 ;
   wire \xsdb_reg_reg[11]_0 ;
@@ -43696,20 +43677,20 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_136
   LUT4 #(
     .INIT(16'h0008)) 
     \xsdb_reg[15]_i_1__7 
-       (.I0(\G_1PIPE_IFACE.s_daddr_r_reg[12] ),
+       (.I0(\G_1PIPE_IFACE.s_daddr_r_reg[6] ),
         .I1(s_daddr_o[1]),
         .I2(s_daddr_o[2]),
         .I3(\xsdb_reg[15]_i_3__0_n_0 ),
         .O(\xsdb_reg[15]_i_1__7_n_0 ));
   LUT5 #(
-    .INIT(32'h00000001)) 
-    \xsdb_reg[15]_i_2__1 
-       (.I0(s_daddr_o[12]),
-        .I1(s_daddr_o[9]),
-        .I2(s_daddr_o[10]),
-        .I3(s_daddr_o[11]),
-        .I4(\xsdb_reg[15]_i_4__1_n_0 ),
-        .O(\G_1PIPE_IFACE.s_daddr_r_reg[12] ));
+    .INIT(32'h00000200)) 
+    \xsdb_reg[15]_i_2__2 
+       (.I0(\G_1PIPE_IFACE.s_daddr_r_reg[11] ),
+        .I1(s_daddr_o[6]),
+        .I2(s_daddr_o[5]),
+        .I3(s_daddr_o[7]),
+        .I4(s_daddr_o[8]),
+        .O(\G_1PIPE_IFACE.s_daddr_r_reg[6] ));
   LUT5 #(
     .INIT(32'hEFFFFFFF)) 
     \xsdb_reg[15]_i_3__0 
@@ -43720,13 +43701,13 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_136
         .I4(s_den_o),
         .O(\xsdb_reg[15]_i_3__0_n_0 ));
   LUT4 #(
-    .INIT(16'hFEFF)) 
-    \xsdb_reg[15]_i_4__1 
-       (.I0(s_daddr_o[5]),
-        .I1(s_daddr_o[6]),
-        .I2(s_daddr_o[8]),
-        .I3(s_daddr_o[7]),
-        .O(\xsdb_reg[15]_i_4__1_n_0 ));
+    .INIT(16'h0001)) 
+    \xsdb_reg[15]_i_5 
+       (.I0(s_daddr_o[11]),
+        .I1(s_daddr_o[10]),
+        .I2(s_daddr_o[9]),
+        .I3(s_daddr_o[12]),
+        .O(\G_1PIPE_IFACE.s_daddr_r_reg[11] ));
   FDRE #(
     .INIT(1'b0)) 
     \xsdb_reg_reg[0] 
@@ -43861,12 +43842,12 @@ endmodule
 module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_137
    (\G_1PIPE_IFACE.s_daddr_r_reg[6] ,
     \G_1PIPE_IFACE.s_daddr_r_reg[6]_0 ,
+    \G_1PIPE_IFACE.s_daddr_r_reg[6]_1 ,
     \xsdb_reg_reg[0]_0 ,
     \xsdb_reg_reg[1]_0 ,
     \xsdb_reg_reg[2]_0 ,
     \xsdb_reg_reg[3]_0 ,
     \xsdb_reg_reg[4]_0 ,
-    \G_1PIPE_IFACE.s_daddr_r_reg[6]_1 ,
     \G_1PIPE_IFACE.s_daddr_r_reg[6]_2 ,
     \G_1PIPE_IFACE.s_daddr_r_reg[6]_3 ,
     \G_1PIPE_IFACE.s_daddr_r_reg[6]_4 ,
@@ -43875,12 +43856,15 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_137
     \G_1PIPE_IFACE.s_daddr_r_reg[6]_7 ,
     \xsdb_reg_reg[10]_0 ,
     \slaveRegDo_mux_0_reg[14] ,
-    \slaveRegDo_mux_0_reg[11] ,
+    \slaveRegDo_mux_0_reg[12] ,
     \slaveRegDo_mux_0_reg[15]_i_4_0 ,
-    \slaveRegDo_mux_0_reg[11]_i_3_0 ,
-    \slaveRegDo_mux_0_reg[11]_i_3_1 ,
-    \slaveRegDo_mux_0_reg[11]_i_3_2 ,
-    \slaveRegDo_mux_0_reg[11]_i_3_3 ,
+    \slaveRegDo_mux_0_reg[12]_i_3_0 ,
+    \slaveRegDo_mux_0_reg[12]_i_3_1 ,
+    \slaveRegDo_mux_0_reg[12]_i_3_2 ,
+    \slaveRegDo_mux_0_reg[12]_i_3_3 ,
+    \slaveRegDo_mux_0_reg[13] ,
+    \slaveRegDo_mux_0_reg[13]_i_3_0 ,
+    \slaveRegDo_mux_0_reg[13]_i_3_1 ,
     \slaveRegDo_mux_0_reg[15] ,
     \slaveRegDo_mux_0_reg[15]_i_4_1 ,
     \slaveRegDo_mux_0_reg[15]_i_4_2 ,
@@ -43905,12 +43889,9 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_137
     \slaveRegDo_mux_0_reg[9] ,
     \slaveRegDo_mux_0_reg[9]_i_3_0 ,
     \slaveRegDo_mux_0_reg[9]_i_3_1 ,
-    \slaveRegDo_mux_0_reg[12] ,
-    \slaveRegDo_mux_0_reg[12]_i_3_0 ,
-    \slaveRegDo_mux_0_reg[12]_i_3_1 ,
-    \slaveRegDo_mux_0_reg[13] ,
-    \slaveRegDo_mux_0_reg[13]_i_3_0 ,
-    \slaveRegDo_mux_0_reg[13]_i_3_1 ,
+    \slaveRegDo_mux_0_reg[11] ,
+    \slaveRegDo_mux_0_reg[11]_i_3_0 ,
+    \slaveRegDo_mux_0_reg[11]_i_3_1 ,
     \slaveRegDo_mux_0_reg[14]_0 ,
     \slaveRegDo_mux_0_reg[14]_i_3_0 ,
     \slaveRegDo_mux_0_reg[14]_i_3_1 ,
@@ -43921,12 +43902,12 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_137
     \xsdb_reg_reg[0]_2 );
   output \G_1PIPE_IFACE.s_daddr_r_reg[6] ;
   output \G_1PIPE_IFACE.s_daddr_r_reg[6]_0 ;
+  output \G_1PIPE_IFACE.s_daddr_r_reg[6]_1 ;
   output \xsdb_reg_reg[0]_0 ;
   output \xsdb_reg_reg[1]_0 ;
   output \xsdb_reg_reg[2]_0 ;
   output \xsdb_reg_reg[3]_0 ;
   output \xsdb_reg_reg[4]_0 ;
-  output \G_1PIPE_IFACE.s_daddr_r_reg[6]_1 ;
   output \G_1PIPE_IFACE.s_daddr_r_reg[6]_2 ;
   output \G_1PIPE_IFACE.s_daddr_r_reg[6]_3 ;
   output \G_1PIPE_IFACE.s_daddr_r_reg[6]_4 ;
@@ -43935,12 +43916,15 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_137
   output \G_1PIPE_IFACE.s_daddr_r_reg[6]_7 ;
   output [1:0]\xsdb_reg_reg[10]_0 ;
   input \slaveRegDo_mux_0_reg[14] ;
-  input \slaveRegDo_mux_0_reg[11] ;
+  input \slaveRegDo_mux_0_reg[12] ;
   input [13:0]\slaveRegDo_mux_0_reg[15]_i_4_0 ;
-  input \slaveRegDo_mux_0_reg[11]_i_3_0 ;
-  input \slaveRegDo_mux_0_reg[11]_i_3_1 ;
-  input \slaveRegDo_mux_0_reg[11]_i_3_2 ;
-  input \slaveRegDo_mux_0_reg[11]_i_3_3 ;
+  input \slaveRegDo_mux_0_reg[12]_i_3_0 ;
+  input \slaveRegDo_mux_0_reg[12]_i_3_1 ;
+  input \slaveRegDo_mux_0_reg[12]_i_3_2 ;
+  input \slaveRegDo_mux_0_reg[12]_i_3_3 ;
+  input \slaveRegDo_mux_0_reg[13] ;
+  input \slaveRegDo_mux_0_reg[13]_i_3_0 ;
+  input \slaveRegDo_mux_0_reg[13]_i_3_1 ;
   input \slaveRegDo_mux_0_reg[15] ;
   input \slaveRegDo_mux_0_reg[15]_i_4_1 ;
   input \slaveRegDo_mux_0_reg[15]_i_4_2 ;
@@ -43965,12 +43949,9 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_137
   input \slaveRegDo_mux_0_reg[9] ;
   input \slaveRegDo_mux_0_reg[9]_i_3_0 ;
   input \slaveRegDo_mux_0_reg[9]_i_3_1 ;
-  input \slaveRegDo_mux_0_reg[12] ;
-  input \slaveRegDo_mux_0_reg[12]_i_3_0 ;
-  input \slaveRegDo_mux_0_reg[12]_i_3_1 ;
-  input \slaveRegDo_mux_0_reg[13] ;
-  input \slaveRegDo_mux_0_reg[13]_i_3_0 ;
-  input \slaveRegDo_mux_0_reg[13]_i_3_1 ;
+  input \slaveRegDo_mux_0_reg[11] ;
+  input \slaveRegDo_mux_0_reg[11]_i_3_0 ;
+  input \slaveRegDo_mux_0_reg[11]_i_3_1 ;
   input \slaveRegDo_mux_0_reg[14]_0 ;
   input \slaveRegDo_mux_0_reg[14]_i_3_0 ;
   input \slaveRegDo_mux_0_reg[14]_i_3_1 ;
@@ -44014,11 +43995,11 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_137
   wire \slaveRegDo_mux_0_reg[11] ;
   wire \slaveRegDo_mux_0_reg[11]_i_3_0 ;
   wire \slaveRegDo_mux_0_reg[11]_i_3_1 ;
-  wire \slaveRegDo_mux_0_reg[11]_i_3_2 ;
-  wire \slaveRegDo_mux_0_reg[11]_i_3_3 ;
   wire \slaveRegDo_mux_0_reg[12] ;
   wire \slaveRegDo_mux_0_reg[12]_i_3_0 ;
   wire \slaveRegDo_mux_0_reg[12]_i_3_1 ;
+  wire \slaveRegDo_mux_0_reg[12]_i_3_2 ;
+  wire \slaveRegDo_mux_0_reg[12]_i_3_3 ;
   wire \slaveRegDo_mux_0_reg[13] ;
   wire \slaveRegDo_mux_0_reg[13]_i_3_0 ;
   wire \slaveRegDo_mux_0_reg[13]_i_3_1 ;
@@ -44057,9 +44038,9 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_137
     \slaveRegDo_mux_0[0]_i_7 
        (.I0(slaveRegDo_81[0]),
         .I1(\slaveRegDo_mux_0_reg[15]_i_4_0 [0]),
-        .I2(\slaveRegDo_mux_0_reg[11]_i_3_0 ),
+        .I2(\slaveRegDo_mux_0_reg[12]_i_3_0 ),
         .I3(\slaveRegDo_mux_0[0]_i_3 ),
-        .I4(\slaveRegDo_mux_0_reg[11]_i_3_2 ),
+        .I4(\slaveRegDo_mux_0_reg[12]_i_3_2 ),
         .I5(\slaveRegDo_mux_0[0]_i_3_0 ),
         .O(\xsdb_reg_reg[0]_0 ));
   LUT6 #(
@@ -44067,29 +44048,29 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_137
     \slaveRegDo_mux_0[11]_i_5 
        (.I0(slaveRegDo_81[11]),
         .I1(\slaveRegDo_mux_0_reg[15]_i_4_0 [9]),
-        .I2(\slaveRegDo_mux_0_reg[11]_i_3_0 ),
-        .I3(\slaveRegDo_mux_0_reg[11]_i_3_1 ),
-        .I4(\slaveRegDo_mux_0_reg[11]_i_3_2 ),
-        .I5(\slaveRegDo_mux_0_reg[11]_i_3_3 ),
+        .I2(\slaveRegDo_mux_0_reg[12]_i_3_0 ),
+        .I3(\slaveRegDo_mux_0_reg[11]_i_3_0 ),
+        .I4(\slaveRegDo_mux_0_reg[12]_i_3_2 ),
+        .I5(\slaveRegDo_mux_0_reg[11]_i_3_1 ),
         .O(\slaveRegDo_mux_0[11]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
     \slaveRegDo_mux_0[12]_i_5 
        (.I0(slaveRegDo_81[12]),
         .I1(\slaveRegDo_mux_0_reg[15]_i_4_0 [10]),
-        .I2(\slaveRegDo_mux_0_reg[11]_i_3_0 ),
-        .I3(\slaveRegDo_mux_0_reg[12]_i_3_0 ),
-        .I4(\slaveRegDo_mux_0_reg[11]_i_3_2 ),
-        .I5(\slaveRegDo_mux_0_reg[12]_i_3_1 ),
+        .I2(\slaveRegDo_mux_0_reg[12]_i_3_0 ),
+        .I3(\slaveRegDo_mux_0_reg[12]_i_3_1 ),
+        .I4(\slaveRegDo_mux_0_reg[12]_i_3_2 ),
+        .I5(\slaveRegDo_mux_0_reg[12]_i_3_3 ),
         .O(\slaveRegDo_mux_0[12]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
     \slaveRegDo_mux_0[13]_i_5 
        (.I0(slaveRegDo_81[13]),
         .I1(\slaveRegDo_mux_0_reg[15]_i_4_0 [11]),
-        .I2(\slaveRegDo_mux_0_reg[11]_i_3_0 ),
+        .I2(\slaveRegDo_mux_0_reg[12]_i_3_0 ),
         .I3(\slaveRegDo_mux_0_reg[13]_i_3_0 ),
-        .I4(\slaveRegDo_mux_0_reg[11]_i_3_2 ),
+        .I4(\slaveRegDo_mux_0_reg[12]_i_3_2 ),
         .I5(\slaveRegDo_mux_0_reg[13]_i_3_1 ),
         .O(\slaveRegDo_mux_0[13]_i_5_n_0 ));
   LUT6 #(
@@ -44097,9 +44078,9 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_137
     \slaveRegDo_mux_0[14]_i_5 
        (.I0(slaveRegDo_81[14]),
         .I1(\slaveRegDo_mux_0_reg[15]_i_4_0 [12]),
-        .I2(\slaveRegDo_mux_0_reg[11]_i_3_0 ),
+        .I2(\slaveRegDo_mux_0_reg[12]_i_3_0 ),
         .I3(\slaveRegDo_mux_0_reg[14]_i_3_0 ),
-        .I4(\slaveRegDo_mux_0_reg[11]_i_3_2 ),
+        .I4(\slaveRegDo_mux_0_reg[12]_i_3_2 ),
         .I5(\slaveRegDo_mux_0_reg[14]_i_3_1 ),
         .O(\slaveRegDo_mux_0[14]_i_5_n_0 ));
   LUT6 #(
@@ -44107,9 +44088,9 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_137
     \slaveRegDo_mux_0[15]_i_8 
        (.I0(slaveRegDo_81[15]),
         .I1(\slaveRegDo_mux_0_reg[15]_i_4_0 [13]),
-        .I2(\slaveRegDo_mux_0_reg[11]_i_3_0 ),
+        .I2(\slaveRegDo_mux_0_reg[12]_i_3_0 ),
         .I3(\slaveRegDo_mux_0_reg[15]_i_4_1 ),
-        .I4(\slaveRegDo_mux_0_reg[11]_i_3_2 ),
+        .I4(\slaveRegDo_mux_0_reg[12]_i_3_2 ),
         .I5(\slaveRegDo_mux_0_reg[15]_i_4_2 ),
         .O(\slaveRegDo_mux_0[15]_i_8_n_0 ));
   LUT6 #(
@@ -44117,9 +44098,9 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_137
     \slaveRegDo_mux_0[1]_i_6 
        (.I0(slaveRegDo_81[1]),
         .I1(\slaveRegDo_mux_0_reg[15]_i_4_0 [1]),
-        .I2(\slaveRegDo_mux_0_reg[11]_i_3_0 ),
+        .I2(\slaveRegDo_mux_0_reg[12]_i_3_0 ),
         .I3(\slaveRegDo_mux_0[2]_i_5 [0]),
-        .I4(\slaveRegDo_mux_0_reg[11]_i_3_2 ),
+        .I4(\slaveRegDo_mux_0_reg[12]_i_3_2 ),
         .I5(\slaveRegDo_mux_0[1]_i_3 ),
         .O(\xsdb_reg_reg[1]_0 ));
   LUT6 #(
@@ -44127,9 +44108,9 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_137
     \slaveRegDo_mux_0[2]_i_8 
        (.I0(slaveRegDo_81[2]),
         .I1(\slaveRegDo_mux_0_reg[15]_i_4_0 [2]),
-        .I2(\slaveRegDo_mux_0_reg[11]_i_3_0 ),
+        .I2(\slaveRegDo_mux_0_reg[12]_i_3_0 ),
         .I3(\slaveRegDo_mux_0[2]_i_5 [1]),
-        .I4(\slaveRegDo_mux_0_reg[11]_i_3_2 ),
+        .I4(\slaveRegDo_mux_0_reg[12]_i_3_2 ),
         .I5(\slaveRegDo_mux_0[2]_i_5_0 ),
         .O(\xsdb_reg_reg[2]_0 ));
   LUT6 #(
@@ -44137,9 +44118,9 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_137
     \slaveRegDo_mux_0[3]_i_6 
        (.I0(slaveRegDo_81[3]),
         .I1(\slaveRegDo_mux_0_reg[15]_i_4_0 [3]),
-        .I2(\slaveRegDo_mux_0_reg[11]_i_3_0 ),
+        .I2(\slaveRegDo_mux_0_reg[12]_i_3_0 ),
         .I3(\slaveRegDo_mux_0[3]_i_3 ),
-        .I4(\slaveRegDo_mux_0_reg[11]_i_3_2 ),
+        .I4(\slaveRegDo_mux_0_reg[12]_i_3_2 ),
         .I5(\slaveRegDo_mux_0[3]_i_3_0 ),
         .O(\xsdb_reg_reg[3]_0 ));
   LUT6 #(
@@ -44147,9 +44128,9 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_137
     \slaveRegDo_mux_0[4]_i_12 
        (.I0(slaveRegDo_81[4]),
         .I1(\slaveRegDo_mux_0_reg[15]_i_4_0 [4]),
-        .I2(\slaveRegDo_mux_0_reg[11]_i_3_0 ),
+        .I2(\slaveRegDo_mux_0_reg[12]_i_3_0 ),
         .I3(\slaveRegDo_mux_0[4]_i_5 ),
-        .I4(\slaveRegDo_mux_0_reg[11]_i_3_2 ),
+        .I4(\slaveRegDo_mux_0_reg[12]_i_3_2 ),
         .I5(\slaveRegDo_mux_0[4]_i_5_0 ),
         .O(\xsdb_reg_reg[4]_0 ));
   LUT6 #(
@@ -44157,9 +44138,9 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_137
     \slaveRegDo_mux_0[6]_i_5 
        (.I0(slaveRegDo_81[6]),
         .I1(\slaveRegDo_mux_0_reg[15]_i_4_0 [5]),
-        .I2(\slaveRegDo_mux_0_reg[11]_i_3_0 ),
+        .I2(\slaveRegDo_mux_0_reg[12]_i_3_0 ),
         .I3(\slaveRegDo_mux_0_reg[6]_i_3_0 ),
-        .I4(\slaveRegDo_mux_0_reg[11]_i_3_2 ),
+        .I4(\slaveRegDo_mux_0_reg[12]_i_3_2 ),
         .I5(\slaveRegDo_mux_0_reg[6]_i_3_1 ),
         .O(\slaveRegDo_mux_0[6]_i_5_n_0 ));
   LUT6 #(
@@ -44167,9 +44148,9 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_137
     \slaveRegDo_mux_0[7]_i_5 
        (.I0(slaveRegDo_81[7]),
         .I1(\slaveRegDo_mux_0_reg[15]_i_4_0 [6]),
-        .I2(\slaveRegDo_mux_0_reg[11]_i_3_0 ),
+        .I2(\slaveRegDo_mux_0_reg[12]_i_3_0 ),
         .I3(\slaveRegDo_mux_0_reg[7]_i_3_0 ),
-        .I4(\slaveRegDo_mux_0_reg[11]_i_3_2 ),
+        .I4(\slaveRegDo_mux_0_reg[12]_i_3_2 ),
         .I5(\slaveRegDo_mux_0_reg[7]_i_3_1 ),
         .O(\slaveRegDo_mux_0[7]_i_5_n_0 ));
   LUT6 #(
@@ -44177,9 +44158,9 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_137
     \slaveRegDo_mux_0[8]_i_5 
        (.I0(slaveRegDo_81[8]),
         .I1(\slaveRegDo_mux_0_reg[15]_i_4_0 [7]),
-        .I2(\slaveRegDo_mux_0_reg[11]_i_3_0 ),
+        .I2(\slaveRegDo_mux_0_reg[12]_i_3_0 ),
         .I3(\slaveRegDo_mux_0_reg[8]_i_3_0 ),
-        .I4(\slaveRegDo_mux_0_reg[11]_i_3_2 ),
+        .I4(\slaveRegDo_mux_0_reg[12]_i_3_2 ),
         .I5(\slaveRegDo_mux_0_reg[8]_i_3_1 ),
         .O(\slaveRegDo_mux_0[8]_i_5_n_0 ));
   LUT6 #(
@@ -44187,25 +44168,25 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_137
     \slaveRegDo_mux_0[9]_i_5 
        (.I0(slaveRegDo_81[9]),
         .I1(\slaveRegDo_mux_0_reg[15]_i_4_0 [8]),
-        .I2(\slaveRegDo_mux_0_reg[11]_i_3_0 ),
+        .I2(\slaveRegDo_mux_0_reg[12]_i_3_0 ),
         .I3(\slaveRegDo_mux_0_reg[9]_i_3_0 ),
-        .I4(\slaveRegDo_mux_0_reg[11]_i_3_2 ),
+        .I4(\slaveRegDo_mux_0_reg[12]_i_3_2 ),
         .I5(\slaveRegDo_mux_0_reg[9]_i_3_1 ),
         .O(\slaveRegDo_mux_0[9]_i_5_n_0 ));
   MUXF7 \slaveRegDo_mux_0_reg[11]_i_3 
        (.I0(\slaveRegDo_mux_0[11]_i_5_n_0 ),
         .I1(\slaveRegDo_mux_0_reg[11] ),
-        .O(\G_1PIPE_IFACE.s_daddr_r_reg[6] ),
+        .O(\G_1PIPE_IFACE.s_daddr_r_reg[6]_6 ),
         .S(\slaveRegDo_mux_0_reg[14] ));
   MUXF7 \slaveRegDo_mux_0_reg[12]_i_3 
        (.I0(\slaveRegDo_mux_0[12]_i_5_n_0 ),
         .I1(\slaveRegDo_mux_0_reg[12] ),
-        .O(\G_1PIPE_IFACE.s_daddr_r_reg[6]_5 ),
+        .O(\G_1PIPE_IFACE.s_daddr_r_reg[6] ),
         .S(\slaveRegDo_mux_0_reg[14] ));
   MUXF7 \slaveRegDo_mux_0_reg[13]_i_3 
        (.I0(\slaveRegDo_mux_0[13]_i_5_n_0 ),
         .I1(\slaveRegDo_mux_0_reg[13] ),
-        .O(\G_1PIPE_IFACE.s_daddr_r_reg[6]_6 ),
+        .O(\G_1PIPE_IFACE.s_daddr_r_reg[6]_0 ),
         .S(\slaveRegDo_mux_0_reg[14] ));
   MUXF7 \slaveRegDo_mux_0_reg[14]_i_3 
        (.I0(\slaveRegDo_mux_0[14]_i_5_n_0 ),
@@ -44215,27 +44196,27 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_137
   MUXF7 \slaveRegDo_mux_0_reg[15]_i_4 
        (.I0(\slaveRegDo_mux_0[15]_i_8_n_0 ),
         .I1(\slaveRegDo_mux_0_reg[15] ),
-        .O(\G_1PIPE_IFACE.s_daddr_r_reg[6]_0 ),
+        .O(\G_1PIPE_IFACE.s_daddr_r_reg[6]_1 ),
         .S(\slaveRegDo_mux_0_reg[14] ));
   MUXF7 \slaveRegDo_mux_0_reg[6]_i_3 
        (.I0(\slaveRegDo_mux_0[6]_i_5_n_0 ),
         .I1(\slaveRegDo_mux_0_reg[6] ),
-        .O(\G_1PIPE_IFACE.s_daddr_r_reg[6]_1 ),
+        .O(\G_1PIPE_IFACE.s_daddr_r_reg[6]_2 ),
         .S(\slaveRegDo_mux_0_reg[14] ));
   MUXF7 \slaveRegDo_mux_0_reg[7]_i_3 
        (.I0(\slaveRegDo_mux_0[7]_i_5_n_0 ),
         .I1(\slaveRegDo_mux_0_reg[7] ),
-        .O(\G_1PIPE_IFACE.s_daddr_r_reg[6]_2 ),
+        .O(\G_1PIPE_IFACE.s_daddr_r_reg[6]_3 ),
         .S(\slaveRegDo_mux_0_reg[14] ));
   MUXF7 \slaveRegDo_mux_0_reg[8]_i_3 
        (.I0(\slaveRegDo_mux_0[8]_i_5_n_0 ),
         .I1(\slaveRegDo_mux_0_reg[8] ),
-        .O(\G_1PIPE_IFACE.s_daddr_r_reg[6]_3 ),
+        .O(\G_1PIPE_IFACE.s_daddr_r_reg[6]_4 ),
         .S(\slaveRegDo_mux_0_reg[14] ));
   MUXF7 \slaveRegDo_mux_0_reg[9]_i_3 
        (.I0(\slaveRegDo_mux_0[9]_i_5_n_0 ),
         .I1(\slaveRegDo_mux_0_reg[9] ),
-        .O(\G_1PIPE_IFACE.s_daddr_r_reg[6]_4 ),
+        .O(\G_1PIPE_IFACE.s_daddr_r_reg[6]_5 ),
         .S(\slaveRegDo_mux_0_reg[14] ));
   LUT5 #(
     .INIT(32'h02000000)) 
@@ -44812,13 +44793,13 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_142
   wire \xsdb_reg_reg[9]_0 ;
 
   LUT5 #(
-    .INIT(32'h00000080)) 
+    .INIT(32'h00200000)) 
     \xsdb_reg[15]_i_1__8 
        (.I0(\xsdb_reg_reg[0]_1 ),
-        .I1(s_daddr_o[3]),
-        .I2(s_daddr_o[2]),
-        .I3(s_daddr_o[1]),
-        .I4(s_daddr_o[0]),
+        .I1(s_daddr_o[1]),
+        .I2(s_daddr_o[3]),
+        .I3(s_daddr_o[0]),
+        .I4(s_daddr_o[2]),
         .O(\xsdb_reg[15]_i_1__8_n_0 ));
   FDRE #(
     .INIT(1'b0)) 
@@ -44952,14 +44933,15 @@ endmodule
 
 (* ORIG_REF_NAME = "xsdbs_v1_0_2_reg_ctl" *) 
 module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_143
-   (\G_1PIPE_IFACE.s_daddr_r_reg[6] ,
+   (\xsdb_reg_reg[5]_0 ,
     \xsdb_reg_reg[10]_0 ,
-    \xsdb_reg_reg[13]_0 ,
-    \xsdb_reg_reg[15]_0 ,
     \xsdb_reg_reg[11]_0 ,
-    \xsdb_reg_reg[14]_0 ,
-    \G_1PIPE_IFACE.s_daddr_r_reg[5] ,
     \xsdb_reg_reg[12]_0 ,
+    \xsdb_reg_reg[13]_0 ,
+    \xsdb_reg_reg[14]_0 ,
+    \xsdb_reg_reg[15]_0 ,
+    \G_1PIPE_IFACE.s_daddr_r_reg[5] ,
+    \xsdb_reg_reg[9]_0 ,
     \slaveRegDo_mux_0_reg[10] ,
     \slaveRegDo_mux_0_reg[10]_0 ,
     \slaveRegDo_mux_0_reg[5] ,
@@ -44967,38 +44949,42 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_143
     \slaveRegDo_mux_0_reg[5]_0 ,
     \slaveRegDo_mux_0_reg[10]_2 ,
     \slaveRegDo_mux_0_reg[10]_3 ,
-    \slaveRegDo_mux_0_reg[5]_1 ,
-    \slaveRegDo_mux_0_reg[14] ,
-    read_reset_addr,
-    \slaveRegDo_mux_0_reg[14]_0 ,
-    \slaveRegDo_mux_0_reg[5]_2 ,
-    \slaveRegDo_mux_0_reg[13] ,
-    \slaveRegDo_mux_0_reg[13]_0 ,
-    \slaveRegDo_mux_0_reg[13]_1 ,
-    \slaveRegDo_mux_0_reg[15] ,
-    \slaveRegDo_mux_0_reg[15]_0 ,
-    \slaveRegDo_mux_0_reg[15]_1 ,
     \slaveRegDo_mux_0_reg[10]_4 ,
+    \slaveRegDo_mux_0_reg[15] ,
     \slaveRegDo_mux_0_reg[10]_5 ,
+    \slaveRegDo_mux_0_reg[15]_0 ,
     \slaveRegDo_mux_0_reg[10]_6 ,
     \slaveRegDo_mux_0_reg[11] ,
     \slaveRegDo_mux_0_reg[11]_0 ,
     \slaveRegDo_mux_0_reg[11]_1 ,
+    \slaveRegDo_mux_0_reg[12] ,
+    \slaveRegDo_mux_0_reg[12]_0 ,
+    \slaveRegDo_mux_0_reg[12]_1 ,
+    \slaveRegDo_mux_0_reg[13] ,
+    \slaveRegDo_mux_0_reg[13]_0 ,
+    \slaveRegDo_mux_0_reg[13]_1 ,
+    \slaveRegDo_mux_0_reg[14] ,
+    \slaveRegDo_mux_0_reg[14]_0 ,
     \slaveRegDo_mux_0_reg[14]_1 ,
-    \slaveRegDo_mux_0_reg[14]_2 ,
-    \slaveRegDo_mux_0_reg[14]_3 ,
+    \slaveRegDo_mux_0_reg[5]_1 ,
+    read_reset_addr,
+    \slaveRegDo_mux_0_reg[5]_2 ,
+    \slaveRegDo_mux_0_reg[15]_1 ,
+    \slaveRegDo_mux_0_reg[15]_2 ,
+    \slaveRegDo_mux_0_reg[15]_3 ,
     s_daddr_o,
     s_di_o,
     s_dclk_o,
     \xsdb_reg_reg[0]_0 );
-  output \G_1PIPE_IFACE.s_daddr_r_reg[6] ;
+  output \xsdb_reg_reg[5]_0 ;
   output \xsdb_reg_reg[10]_0 ;
-  output \xsdb_reg_reg[13]_0 ;
-  output \xsdb_reg_reg[15]_0 ;
   output \xsdb_reg_reg[11]_0 ;
+  output \xsdb_reg_reg[12]_0 ;
+  output \xsdb_reg_reg[13]_0 ;
   output \xsdb_reg_reg[14]_0 ;
+  output \xsdb_reg_reg[15]_0 ;
   output \G_1PIPE_IFACE.s_daddr_r_reg[5] ;
-  output [9:0]\xsdb_reg_reg[12]_0 ;
+  output [8:0]\xsdb_reg_reg[9]_0 ;
   input \slaveRegDo_mux_0_reg[10] ;
   input \slaveRegDo_mux_0_reg[10]_0 ;
   input \slaveRegDo_mux_0_reg[5] ;
@@ -45006,33 +44992,35 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_143
   input \slaveRegDo_mux_0_reg[5]_0 ;
   input \slaveRegDo_mux_0_reg[10]_2 ;
   input \slaveRegDo_mux_0_reg[10]_3 ;
-  input \slaveRegDo_mux_0_reg[5]_1 ;
-  input \slaveRegDo_mux_0_reg[14] ;
-  input [0:0]read_reset_addr;
-  input \slaveRegDo_mux_0_reg[14]_0 ;
-  input \slaveRegDo_mux_0_reg[5]_2 ;
-  input \slaveRegDo_mux_0_reg[13] ;
-  input \slaveRegDo_mux_0_reg[13]_0 ;
-  input \slaveRegDo_mux_0_reg[13]_1 ;
-  input \slaveRegDo_mux_0_reg[15] ;
-  input \slaveRegDo_mux_0_reg[15]_0 ;
-  input \slaveRegDo_mux_0_reg[15]_1 ;
   input \slaveRegDo_mux_0_reg[10]_4 ;
+  input \slaveRegDo_mux_0_reg[15] ;
   input \slaveRegDo_mux_0_reg[10]_5 ;
+  input \slaveRegDo_mux_0_reg[15]_0 ;
   input \slaveRegDo_mux_0_reg[10]_6 ;
   input \slaveRegDo_mux_0_reg[11] ;
   input \slaveRegDo_mux_0_reg[11]_0 ;
   input \slaveRegDo_mux_0_reg[11]_1 ;
+  input \slaveRegDo_mux_0_reg[12] ;
+  input \slaveRegDo_mux_0_reg[12]_0 ;
+  input \slaveRegDo_mux_0_reg[12]_1 ;
+  input \slaveRegDo_mux_0_reg[13] ;
+  input \slaveRegDo_mux_0_reg[13]_0 ;
+  input \slaveRegDo_mux_0_reg[13]_1 ;
+  input \slaveRegDo_mux_0_reg[14] ;
+  input \slaveRegDo_mux_0_reg[14]_0 ;
   input \slaveRegDo_mux_0_reg[14]_1 ;
-  input \slaveRegDo_mux_0_reg[14]_2 ;
-  input \slaveRegDo_mux_0_reg[14]_3 ;
+  input \slaveRegDo_mux_0_reg[5]_1 ;
+  input [0:0]read_reset_addr;
+  input \slaveRegDo_mux_0_reg[5]_2 ;
+  input \slaveRegDo_mux_0_reg[15]_1 ;
+  input \slaveRegDo_mux_0_reg[15]_2 ;
+  input \slaveRegDo_mux_0_reg[15]_3 ;
   input [5:0]s_daddr_o;
   input [15:0]s_di_o;
   input s_dclk_o;
   input \xsdb_reg_reg[0]_0 ;
 
   wire \G_1PIPE_IFACE.s_daddr_r_reg[5] ;
-  wire \G_1PIPE_IFACE.s_daddr_r_reg[6] ;
   wire [0:0]read_reset_addr;
   wire [5:0]s_daddr_o;
   wire s_dclk_o;
@@ -45051,17 +45039,20 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_143
   wire \slaveRegDo_mux_0_reg[11] ;
   wire \slaveRegDo_mux_0_reg[11]_0 ;
   wire \slaveRegDo_mux_0_reg[11]_1 ;
+  wire \slaveRegDo_mux_0_reg[12] ;
+  wire \slaveRegDo_mux_0_reg[12]_0 ;
+  wire \slaveRegDo_mux_0_reg[12]_1 ;
   wire \slaveRegDo_mux_0_reg[13] ;
   wire \slaveRegDo_mux_0_reg[13]_0 ;
   wire \slaveRegDo_mux_0_reg[13]_1 ;
   wire \slaveRegDo_mux_0_reg[14] ;
   wire \slaveRegDo_mux_0_reg[14]_0 ;
   wire \slaveRegDo_mux_0_reg[14]_1 ;
-  wire \slaveRegDo_mux_0_reg[14]_2 ;
-  wire \slaveRegDo_mux_0_reg[14]_3 ;
   wire \slaveRegDo_mux_0_reg[15] ;
   wire \slaveRegDo_mux_0_reg[15]_0 ;
   wire \slaveRegDo_mux_0_reg[15]_1 ;
+  wire \slaveRegDo_mux_0_reg[15]_2 ;
+  wire \slaveRegDo_mux_0_reg[15]_3 ;
   wire \slaveRegDo_mux_0_reg[5] ;
   wire \slaveRegDo_mux_0_reg[5]_0 ;
   wire \slaveRegDo_mux_0_reg[5]_1 ;
@@ -45070,10 +45061,12 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_143
   wire \xsdb_reg_reg[0]_0 ;
   wire \xsdb_reg_reg[10]_0 ;
   wire \xsdb_reg_reg[11]_0 ;
-  wire [9:0]\xsdb_reg_reg[12]_0 ;
+  wire \xsdb_reg_reg[12]_0 ;
   wire \xsdb_reg_reg[13]_0 ;
   wire \xsdb_reg_reg[14]_0 ;
   wire \xsdb_reg_reg[15]_0 ;
+  wire \xsdb_reg_reg[5]_0 ;
+  wire [8:0]\xsdb_reg_reg[9]_0 ;
 
   LUT6 #(
     .INIT(64'h000008F80F0F08F8)) 
@@ -45090,9 +45083,9 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_143
     \slaveRegDo_mux_0[10]_i_2 
        (.I0(slaveRegDo_18[10]),
         .I1(\slaveRegDo_mux_0_reg[10]_4 ),
-        .I2(\slaveRegDo_mux_0_reg[14] ),
+        .I2(\slaveRegDo_mux_0_reg[15] ),
         .I3(\slaveRegDo_mux_0_reg[10]_5 ),
-        .I4(\slaveRegDo_mux_0_reg[14]_0 ),
+        .I4(\slaveRegDo_mux_0_reg[15]_0 ),
         .I5(\slaveRegDo_mux_0_reg[10]_6 ),
         .O(\slaveRegDo_mux_0[10]_i_2_n_0 ));
   LUT6 #(
@@ -45100,59 +45093,69 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_143
     \slaveRegDo_mux_0[11]_i_4 
        (.I0(slaveRegDo_18[11]),
         .I1(\slaveRegDo_mux_0_reg[11] ),
-        .I2(\slaveRegDo_mux_0_reg[14] ),
+        .I2(\slaveRegDo_mux_0_reg[15] ),
         .I3(\slaveRegDo_mux_0_reg[11]_0 ),
-        .I4(\slaveRegDo_mux_0_reg[14]_0 ),
+        .I4(\slaveRegDo_mux_0_reg[15]_0 ),
         .I5(\slaveRegDo_mux_0_reg[11]_1 ),
         .O(\xsdb_reg_reg[11]_0 ));
+  LUT6 #(
+    .INIT(64'h505F3030505F3F3F)) 
+    \slaveRegDo_mux_0[12]_i_4 
+       (.I0(slaveRegDo_18[12]),
+        .I1(\slaveRegDo_mux_0_reg[12] ),
+        .I2(\slaveRegDo_mux_0_reg[15] ),
+        .I3(\slaveRegDo_mux_0_reg[12]_0 ),
+        .I4(\slaveRegDo_mux_0_reg[15]_0 ),
+        .I5(\slaveRegDo_mux_0_reg[12]_1 ),
+        .O(\xsdb_reg_reg[12]_0 ));
   LUT6 #(
     .INIT(64'h553355330F000FFF)) 
     \slaveRegDo_mux_0[13]_i_4 
        (.I0(slaveRegDo_18[13]),
         .I1(\slaveRegDo_mux_0_reg[13] ),
         .I2(\slaveRegDo_mux_0_reg[13]_0 ),
-        .I3(\slaveRegDo_mux_0_reg[14]_0 ),
+        .I3(\slaveRegDo_mux_0_reg[15]_0 ),
         .I4(\slaveRegDo_mux_0_reg[13]_1 ),
-        .I5(\slaveRegDo_mux_0_reg[14] ),
+        .I5(\slaveRegDo_mux_0_reg[15] ),
         .O(\xsdb_reg_reg[13]_0 ));
   LUT6 #(
-    .INIT(64'h505F3030505F3F3F)) 
+    .INIT(64'h553355330F000FFF)) 
     \slaveRegDo_mux_0[14]_i_4 
        (.I0(slaveRegDo_18[14]),
-        .I1(\slaveRegDo_mux_0_reg[14]_1 ),
-        .I2(\slaveRegDo_mux_0_reg[14] ),
-        .I3(\slaveRegDo_mux_0_reg[14]_2 ),
-        .I4(\slaveRegDo_mux_0_reg[14]_0 ),
-        .I5(\slaveRegDo_mux_0_reg[14]_3 ),
+        .I1(\slaveRegDo_mux_0_reg[14] ),
+        .I2(\slaveRegDo_mux_0_reg[14]_0 ),
+        .I3(\slaveRegDo_mux_0_reg[15]_0 ),
+        .I4(\slaveRegDo_mux_0_reg[14]_1 ),
+        .I5(\slaveRegDo_mux_0_reg[15] ),
         .O(\xsdb_reg_reg[14]_0 ));
   LUT6 #(
     .INIT(64'h505F3030505F3F3F)) 
     \slaveRegDo_mux_0[15]_i_7 
        (.I0(slaveRegDo_18[15]),
-        .I1(\slaveRegDo_mux_0_reg[15] ),
-        .I2(\slaveRegDo_mux_0_reg[14] ),
-        .I3(\slaveRegDo_mux_0_reg[15]_0 ),
-        .I4(\slaveRegDo_mux_0_reg[14]_0 ),
-        .I5(\slaveRegDo_mux_0_reg[15]_1 ),
+        .I1(\slaveRegDo_mux_0_reg[15]_1 ),
+        .I2(\slaveRegDo_mux_0_reg[15] ),
+        .I3(\slaveRegDo_mux_0_reg[15]_2 ),
+        .I4(\slaveRegDo_mux_0_reg[15]_0 ),
+        .I5(\slaveRegDo_mux_0_reg[15]_3 ),
         .O(\xsdb_reg_reg[15]_0 ));
   LUT6 #(
-    .INIT(64'h000002F2FFFF02F2)) 
+    .INIT(64'h000008F8FFFF08F8)) 
     \slaveRegDo_mux_0[5]_i_1 
-       (.I0(\slaveRegDo_mux_0_reg[10] ),
-        .I1(\slaveRegDo_mux_0[5]_i_2_n_0 ),
+       (.I0(\slaveRegDo_mux_0[5]_i_2_n_0 ),
+        .I1(\slaveRegDo_mux_0_reg[10] ),
         .I2(\slaveRegDo_mux_0_reg[10]_0 ),
         .I3(\slaveRegDo_mux_0_reg[5] ),
         .I4(\slaveRegDo_mux_0_reg[10]_1 ),
         .I5(\slaveRegDo_mux_0_reg[5]_0 ),
-        .O(\G_1PIPE_IFACE.s_daddr_r_reg[6] ));
+        .O(\xsdb_reg_reg[5]_0 ));
   LUT6 #(
-    .INIT(64'h505F3030505F3F3F)) 
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
     \slaveRegDo_mux_0[5]_i_2 
        (.I0(slaveRegDo_18[5]),
         .I1(\slaveRegDo_mux_0_reg[5]_1 ),
-        .I2(\slaveRegDo_mux_0_reg[14] ),
+        .I2(\slaveRegDo_mux_0_reg[15] ),
         .I3(read_reset_addr),
-        .I4(\slaveRegDo_mux_0_reg[14]_0 ),
+        .I4(\slaveRegDo_mux_0_reg[15]_0 ),
         .I5(\slaveRegDo_mux_0_reg[5]_2 ),
         .O(\slaveRegDo_mux_0[5]_i_2_n_0 ));
   LUT6 #(
@@ -45177,7 +45180,7 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_143
        (.C(s_dclk_o),
         .CE(\xsdb_reg[15]_i_1__0_n_0 ),
         .D(s_di_o[0]),
-        .Q(\xsdb_reg_reg[12]_0 [0]),
+        .Q(\xsdb_reg_reg[9]_0 [0]),
         .R(1'b0));
   FDRE #(
     .INIT(1'b0)) 
@@ -45201,7 +45204,7 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_143
        (.C(s_dclk_o),
         .CE(\xsdb_reg[15]_i_1__0_n_0 ),
         .D(s_di_o[12]),
-        .Q(\xsdb_reg_reg[12]_0 [9]),
+        .Q(slaveRegDo_18[12]),
         .R(1'b0));
   FDRE #(
     .INIT(1'b0)) 
@@ -45233,7 +45236,7 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_143
        (.C(s_dclk_o),
         .CE(\xsdb_reg[15]_i_1__0_n_0 ),
         .D(s_di_o[1]),
-        .Q(\xsdb_reg_reg[12]_0 [1]),
+        .Q(\xsdb_reg_reg[9]_0 [1]),
         .R(1'b0));
   FDRE #(
     .INIT(1'b0)) 
@@ -45241,7 +45244,7 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_143
        (.C(s_dclk_o),
         .CE(\xsdb_reg[15]_i_1__0_n_0 ),
         .D(s_di_o[2]),
-        .Q(\xsdb_reg_reg[12]_0 [2]),
+        .Q(\xsdb_reg_reg[9]_0 [2]),
         .R(1'b0));
   FDRE #(
     .INIT(1'b0)) 
@@ -45249,7 +45252,7 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_143
        (.C(s_dclk_o),
         .CE(\xsdb_reg[15]_i_1__0_n_0 ),
         .D(s_di_o[3]),
-        .Q(\xsdb_reg_reg[12]_0 [3]),
+        .Q(\xsdb_reg_reg[9]_0 [3]),
         .R(1'b0));
   FDRE #(
     .INIT(1'b0)) 
@@ -45257,7 +45260,7 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_143
        (.C(s_dclk_o),
         .CE(\xsdb_reg[15]_i_1__0_n_0 ),
         .D(s_di_o[4]),
-        .Q(\xsdb_reg_reg[12]_0 [4]),
+        .Q(\xsdb_reg_reg[9]_0 [4]),
         .R(1'b0));
   FDRE #(
     .INIT(1'b0)) 
@@ -45273,7 +45276,7 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_143
        (.C(s_dclk_o),
         .CE(\xsdb_reg[15]_i_1__0_n_0 ),
         .D(s_di_o[6]),
-        .Q(\xsdb_reg_reg[12]_0 [5]),
+        .Q(\xsdb_reg_reg[9]_0 [5]),
         .R(1'b0));
   FDRE #(
     .INIT(1'b0)) 
@@ -45281,7 +45284,7 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_143
        (.C(s_dclk_o),
         .CE(\xsdb_reg[15]_i_1__0_n_0 ),
         .D(s_di_o[7]),
-        .Q(\xsdb_reg_reg[12]_0 [6]),
+        .Q(\xsdb_reg_reg[9]_0 [6]),
         .R(1'b0));
   FDRE #(
     .INIT(1'b0)) 
@@ -45289,7 +45292,7 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_143
        (.C(s_dclk_o),
         .CE(\xsdb_reg[15]_i_1__0_n_0 ),
         .D(s_di_o[8]),
-        .Q(\xsdb_reg_reg[12]_0 [7]),
+        .Q(\xsdb_reg_reg[9]_0 [7]),
         .R(1'b0));
   FDRE #(
     .INIT(1'b0)) 
@@ -45297,7 +45300,7 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_143
        (.C(s_dclk_o),
         .CE(\xsdb_reg[15]_i_1__0_n_0 ),
         .D(s_di_o[9]),
-        .Q(\xsdb_reg_reg[12]_0 [8]),
+        .Q(\xsdb_reg_reg[9]_0 [8]),
         .R(1'b0));
 endmodule
 
@@ -45722,36 +45725,26 @@ endmodule
 
 (* ORIG_REF_NAME = "xsdbs_v1_0_2_reg_ctl" *) 
 module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_145
-   (\xsdb_reg_reg[12]_0 ,
-    \xsdb_reg_reg[15]_0 ,
+   (\xsdb_reg_reg[15]_0 ,
     \xsdb_reg_reg[14]_0 ,
     \xsdb_reg_reg[13]_0 ,
+    \xsdb_reg_reg[12]_0 ,
     \xsdb_reg_reg[11]_0 ,
     \xsdb_reg_reg[10]_0 ,
     read_reset_addr,
     \xsdb_reg_reg[15]_1 ,
     s_daddr_o,
-    \slaveRegDo_mux_0_reg[12] ,
-    slaveRegDo_18,
-    \slaveRegDo_mux_0_reg[12]_0 ,
-    \slaveRegDo_mux_0_reg[12]_1 ,
-    \slaveRegDo_mux_0_reg[12]_2 ,
     s_di_o,
     s_dclk_o);
-  output \xsdb_reg_reg[12]_0 ;
   output \xsdb_reg_reg[15]_0 ;
   output \xsdb_reg_reg[14]_0 ;
   output \xsdb_reg_reg[13]_0 ;
+  output \xsdb_reg_reg[12]_0 ;
   output \xsdb_reg_reg[11]_0 ;
   output \xsdb_reg_reg[10]_0 ;
   output [9:0]read_reset_addr;
   input \xsdb_reg_reg[15]_1 ;
   input [3:0]s_daddr_o;
-  input \slaveRegDo_mux_0_reg[12] ;
-  input [0:0]slaveRegDo_18;
-  input \slaveRegDo_mux_0_reg[12]_0 ;
-  input \slaveRegDo_mux_0_reg[12]_1 ;
-  input \slaveRegDo_mux_0_reg[12]_2 ;
   input [15:0]s_di_o;
   input s_dclk_o;
 
@@ -45759,11 +45752,6 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_145
   wire [3:0]s_daddr_o;
   wire s_dclk_o;
   wire [15:0]s_di_o;
-  wire [0:0]slaveRegDo_18;
-  wire \slaveRegDo_mux_0_reg[12] ;
-  wire \slaveRegDo_mux_0_reg[12]_0 ;
-  wire \slaveRegDo_mux_0_reg[12]_1 ;
-  wire \slaveRegDo_mux_0_reg[12]_2 ;
   wire \xsdb_reg[15]_i_1__14_n_0 ;
   wire \xsdb_reg_reg[10]_0 ;
   wire \xsdb_reg_reg[11]_0 ;
@@ -45772,18 +45760,7 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_145
   wire \xsdb_reg_reg[14]_0 ;
   wire \xsdb_reg_reg[15]_0 ;
   wire \xsdb_reg_reg[15]_1 ;
-  wire \xsdb_reg_reg_n_0_[12] ;
 
-  LUT6 #(
-    .INIT(64'h0F000FFF55335533)) 
-    \slaveRegDo_mux_0[12]_i_4 
-       (.I0(\xsdb_reg_reg_n_0_[12] ),
-        .I1(\slaveRegDo_mux_0_reg[12] ),
-        .I2(slaveRegDo_18),
-        .I3(\slaveRegDo_mux_0_reg[12]_0 ),
-        .I4(\slaveRegDo_mux_0_reg[12]_1 ),
-        .I5(\slaveRegDo_mux_0_reg[12]_2 ),
-        .O(\xsdb_reg_reg[12]_0 ));
   LUT5 #(
     .INIT(32'h20000000)) 
     \xsdb_reg[15]_i_1__14 
@@ -45823,7 +45800,7 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl_145
        (.C(s_dclk_o),
         .CE(\xsdb_reg[15]_i_1__14_n_0 ),
         .D(s_di_o[12]),
-        .Q(\xsdb_reg_reg_n_0_[12] ),
+        .Q(\xsdb_reg_reg[12]_0 ),
         .R(1'b0));
   FDRE #(
     .INIT(1'b0)) 
@@ -46878,6 +46855,7 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl__parameterized1_141
     s_daddr_o,
     s_dwe_o,
     s_den_o,
+    \xsdb_reg_reg[0]_1 ,
     s_di_o,
     s_dclk_o);
   output \G_1PIPE_IFACE.s_dwe_r_reg ;
@@ -46897,22 +46875,23 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl__parameterized1_141
   output \xsdb_reg_reg[3]_0 ;
   output [1:0]\xsdb_reg_reg[2]_0 ;
   output \xsdb_reg_reg[0]_0 ;
-  input [12:0]s_daddr_o;
+  input [8:0]s_daddr_o;
   input s_dwe_o;
   input s_den_o;
+  input \xsdb_reg_reg[0]_1 ;
   input [15:0]s_di_o;
   input s_dclk_o;
 
   wire \G_1PIPE_IFACE.s_daddr_r_reg[8] ;
   wire \G_1PIPE_IFACE.s_dwe_r_reg ;
-  wire [12:0]s_daddr_o;
+  wire [8:0]s_daddr_o;
   wire s_dclk_o;
   wire s_den_o;
   wire [15:0]s_di_o;
   wire s_dwe_o;
   wire \xsdb_reg[15]_i_1__10_n_0 ;
-  wire \xsdb_reg[15]_i_5_n_0 ;
   wire \xsdb_reg_reg[0]_0 ;
+  wire \xsdb_reg_reg[0]_1 ;
   wire \xsdb_reg_reg[10]_0 ;
   wire \xsdb_reg_reg[11]_0 ;
   wire \xsdb_reg_reg[12]_0 ;
@@ -46947,21 +46926,13 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_ctl__parameterized1_141
         .O(\G_1PIPE_IFACE.s_dwe_r_reg ));
   LUT5 #(
     .INIT(32'h00000002)) 
-    \xsdb_reg[15]_i_2__2 
-       (.I0(\xsdb_reg[15]_i_5_n_0 ),
+    \xsdb_reg[15]_i_2__1 
+       (.I0(\xsdb_reg_reg[0]_1 ),
         .I1(s_daddr_o[8]),
-        .I2(s_daddr_o[6]),
+        .I2(s_daddr_o[7]),
         .I3(s_daddr_o[5]),
-        .I4(s_daddr_o[7]),
+        .I4(s_daddr_o[6]),
         .O(\G_1PIPE_IFACE.s_daddr_r_reg[8] ));
-  LUT4 #(
-    .INIT(16'h0001)) 
-    \xsdb_reg[15]_i_5 
-       (.I0(s_daddr_o[11]),
-        .I1(s_daddr_o[10]),
-        .I2(s_daddr_o[9]),
-        .I3(s_daddr_o[12]),
-        .O(\xsdb_reg[15]_i_5_n_0 ));
   FDRE #(
     .INIT(1'b1)) 
     \xsdb_reg_reg[0] 
@@ -67005,30 +66976,30 @@ endmodule
 (* ORIG_REF_NAME = "xsdbs_v1_0_2_reg_p2s" *) 
 module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_p2s__parameterized32
    (E,
-    \slaveRegDo_ff8_reg[5] ,
     \slaveRegDo_ff9_reg[15] ,
     \slaveRegDo_ff9_reg[15]_0 ,
     \slaveRegDo_ff9_reg[15]_1 ,
     \slaveRegDo_ff9_reg[15]_2 ,
-    \slaveRegDo_ff8_reg[5]_0 ,
-    \parallel_dout_reg[5]_0 ,
     \slaveRegDo_ff9_reg[15]_3 ,
-    \slaveRegDo_ff8_reg[13] ,
-    \slaveRegDo_ff8_reg[13]_0 ,
-    \slaveRegDo_ff8_reg[13]_1 ,
     \slaveRegDo_ff9_reg[15]_4 ,
     \slaveRegDo_ff9_reg[15]_5 ,
     \slaveRegDo_ff9_reg[15]_6 ,
     \slaveRegDo_ff9_reg[15]_7 ,
     \slaveRegDo_ff9_reg[15]_8 ,
+    \slaveRegDo_ff8_reg[10] ,
+    \slaveRegDo_ff8_reg[10]_0 ,
+    \slaveRegDo_ff8_reg[10]_1 ,
+    \slaveRegDo_ff8_reg[15] ,
+    \slaveRegDo_ff8_reg[15]_0 ,
+    \slaveRegDo_ff8_reg[15]_1 ,
     capture_ctrl_config_serial_output,
     s_dclk_o,
     \shadow_reg[15]_0 ,
-    Q,
     slaveRegDo_ff9,
-    \slaveRegDo_mux_3_reg[0] ,
-    \slaveRegDo_mux_3_reg[0]_0 ,
     s_daddr_o,
+    Q,
+    \slaveRegDo_mux_3_reg[2] ,
+    \slaveRegDo_mux_3_reg[2]_0 ,
     \parallel_dout_reg[15]_0 ,
     s_di_o,
     s_dwe_o,
@@ -67036,30 +67007,30 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_p2s__parameterized32
     \current_state[3]_i_3_0 ,
     \current_state[3]_i_3_1 );
   output [0:0]E;
-  output \slaveRegDo_ff8_reg[5] ;
   output \slaveRegDo_ff9_reg[15] ;
   output \slaveRegDo_ff9_reg[15]_0 ;
   output \slaveRegDo_ff9_reg[15]_1 ;
   output \slaveRegDo_ff9_reg[15]_2 ;
-  output \slaveRegDo_ff8_reg[5]_0 ;
-  output \parallel_dout_reg[5]_0 ;
   output \slaveRegDo_ff9_reg[15]_3 ;
-  output \slaveRegDo_ff8_reg[13] ;
-  output \slaveRegDo_ff8_reg[13]_0 ;
-  output \slaveRegDo_ff8_reg[13]_1 ;
   output \slaveRegDo_ff9_reg[15]_4 ;
   output \slaveRegDo_ff9_reg[15]_5 ;
   output \slaveRegDo_ff9_reg[15]_6 ;
   output \slaveRegDo_ff9_reg[15]_7 ;
   output \slaveRegDo_ff9_reg[15]_8 ;
+  output \slaveRegDo_ff8_reg[10] ;
+  output \slaveRegDo_ff8_reg[10]_0 ;
+  output \slaveRegDo_ff8_reg[10]_1 ;
+  output \slaveRegDo_ff8_reg[15] ;
+  output \slaveRegDo_ff8_reg[15]_0 ;
+  output \slaveRegDo_ff8_reg[15]_1 ;
   output capture_ctrl_config_serial_output;
   input s_dclk_o;
   input \shadow_reg[15]_0 ;
-  input [1:0]Q;
   input [0:0]slaveRegDo_ff9;
-  input \slaveRegDo_mux_3_reg[0] ;
-  input \slaveRegDo_mux_3_reg[0]_0 ;
   input [10:0]s_daddr_o;
+  input [1:0]Q;
+  input \slaveRegDo_mux_3_reg[2] ;
+  input \slaveRegDo_mux_3_reg[2]_0 ;
   input [0:0]\parallel_dout_reg[15]_0 ;
   input [14:0]s_di_o;
   input s_dwe_o;
@@ -67085,7 +67056,6 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_p2s__parameterized32
   wire [3:0]next_state;
   wire [3:0]p_0_in;
   wire [0:0]\parallel_dout_reg[15]_0 ;
-  wire \parallel_dout_reg[5]_0 ;
   wire [10:0]s_daddr_o;
   wire s_dclk_o;
   wire s_den_o;
@@ -67112,11 +67082,12 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_p2s__parameterized32
   wire \shadow_reg_n_0_[8] ;
   wire \shadow_reg_n_0_[9] ;
   wire shift_en_i_1_n_0;
-  wire \slaveRegDo_ff8_reg[13] ;
-  wire \slaveRegDo_ff8_reg[13]_0 ;
-  wire \slaveRegDo_ff8_reg[13]_1 ;
-  wire \slaveRegDo_ff8_reg[5] ;
-  wire \slaveRegDo_ff8_reg[5]_0 ;
+  wire \slaveRegDo_ff8_reg[10] ;
+  wire \slaveRegDo_ff8_reg[10]_0 ;
+  wire \slaveRegDo_ff8_reg[10]_1 ;
+  wire \slaveRegDo_ff8_reg[15] ;
+  wire \slaveRegDo_ff8_reg[15]_0 ;
+  wire \slaveRegDo_ff8_reg[15]_1 ;
   wire [0:0]slaveRegDo_ff9;
   wire \slaveRegDo_ff9_reg[15] ;
   wire \slaveRegDo_ff9_reg[15]_0 ;
@@ -67129,8 +67100,8 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_p2s__parameterized32
   wire \slaveRegDo_ff9_reg[15]_7 ;
   wire \slaveRegDo_ff9_reg[15]_8 ;
   wire [15:0]slaveRegDo_fff;
-  wire \slaveRegDo_mux_3_reg[0] ;
-  wire \slaveRegDo_mux_3_reg[0]_0 ;
+  wire \slaveRegDo_mux_3_reg[2] ;
+  wire \slaveRegDo_mux_3_reg[2]_0 ;
 
   LUT3 #(
     .INIT(8'hB8)) 
@@ -67725,72 +67696,72 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_p2s__parameterized32
         .D(shift_en_i_1_n_0),
         .Q(E),
         .R(1'b0));
-  LUT5 #(
-    .INIT(32'hACACFF0F)) 
+  LUT6 #(
+    .INIT(64'hFBFF38FFEFFFEFFF)) 
     \slaveRegDo_mux_3[0]_i_3 
-       (.I0(Q[0]),
-        .I1(slaveRegDo_ff9),
-        .I2(\slaveRegDo_mux_3_reg[0] ),
-        .I3(slaveRegDo_fff[0]),
-        .I4(\slaveRegDo_mux_3_reg[0]_0 ),
-        .O(\slaveRegDo_ff8_reg[5] ));
+       (.I0(slaveRegDo_ff9),
+        .I1(s_daddr_o[2]),
+        .I2(s_daddr_o[0]),
+        .I3(s_daddr_o[3]),
+        .I4(slaveRegDo_fff[0]),
+        .I5(s_daddr_o[1]),
+        .O(\slaveRegDo_ff9_reg[15] ));
   LUT5 #(
     .INIT(32'hAFC0A0C0)) 
     \slaveRegDo_mux_3[10]_i_3 
-       (.I0(Q[1]),
+       (.I0(Q[0]),
         .I1(slaveRegDo_ff9),
-        .I2(\slaveRegDo_mux_3_reg[0]_0 ),
-        .I3(\slaveRegDo_mux_3_reg[0] ),
+        .I2(\slaveRegDo_mux_3_reg[2] ),
+        .I3(\slaveRegDo_mux_3_reg[2]_0 ),
         .I4(slaveRegDo_fff[10]),
-        .O(\slaveRegDo_ff8_reg[13] ));
-  LUT5 #(
-    .INIT(32'hAFC0A0C0)) 
-    \slaveRegDo_mux_3[11]_i_3 
-       (.I0(Q[1]),
-        .I1(slaveRegDo_ff9),
-        .I2(\slaveRegDo_mux_3_reg[0]_0 ),
-        .I3(\slaveRegDo_mux_3_reg[0] ),
-        .I4(slaveRegDo_fff[11]),
-        .O(\slaveRegDo_ff8_reg[13]_0 ));
+        .O(\slaveRegDo_ff8_reg[10]_1 ));
   LUT6 #(
-    .INIT(64'hC020B00000208000)) 
+    .INIT(64'hC28C000002800000)) 
+    \slaveRegDo_mux_3[11]_i_3 
+       (.I0(slaveRegDo_ff9),
+        .I1(s_daddr_o[1]),
+        .I2(s_daddr_o[2]),
+        .I3(s_daddr_o[0]),
+        .I4(s_daddr_o[3]),
+        .I5(slaveRegDo_fff[11]),
+        .O(\slaveRegDo_ff9_reg[15]_3 ));
+  LUT6 #(
+    .INIT(64'hC28C000002800000)) 
     \slaveRegDo_mux_3[12]_i_3 
        (.I0(slaveRegDo_ff9),
-        .I1(s_daddr_o[2]),
-        .I2(s_daddr_o[3]),
-        .I3(s_daddr_o[1]),
-        .I4(s_daddr_o[0]),
+        .I1(s_daddr_o[1]),
+        .I2(s_daddr_o[2]),
+        .I3(s_daddr_o[0]),
+        .I4(s_daddr_o[3]),
         .I5(slaveRegDo_fff[12]),
-        .O(\slaveRegDo_ff9_reg[15]_2 ));
+        .O(\slaveRegDo_ff9_reg[15]_4 ));
   LUT5 #(
     .INIT(32'hAFC0A0C0)) 
     \slaveRegDo_mux_3[13]_i_3 
        (.I0(Q[1]),
         .I1(slaveRegDo_ff9),
-        .I2(\slaveRegDo_mux_3_reg[0]_0 ),
-        .I3(\slaveRegDo_mux_3_reg[0] ),
+        .I2(\slaveRegDo_mux_3_reg[2] ),
+        .I3(\slaveRegDo_mux_3_reg[2]_0 ),
         .I4(slaveRegDo_fff[13]),
-        .O(\slaveRegDo_ff8_reg[13]_1 ));
-  LUT6 #(
-    .INIT(64'hC28C000002800000)) 
+        .O(\slaveRegDo_ff8_reg[15] ));
+  LUT5 #(
+    .INIT(32'hAFC0A0C0)) 
     \slaveRegDo_mux_3[14]_i_3 
-       (.I0(slaveRegDo_ff9),
-        .I1(s_daddr_o[1]),
-        .I2(s_daddr_o[2]),
-        .I3(s_daddr_o[0]),
-        .I4(s_daddr_o[3]),
-        .I5(slaveRegDo_fff[14]),
-        .O(\slaveRegDo_ff9_reg[15]_7 ));
-  LUT6 #(
-    .INIT(64'hC28C000002800000)) 
+       (.I0(Q[1]),
+        .I1(slaveRegDo_ff9),
+        .I2(\slaveRegDo_mux_3_reg[2] ),
+        .I3(\slaveRegDo_mux_3_reg[2]_0 ),
+        .I4(slaveRegDo_fff[14]),
+        .O(\slaveRegDo_ff8_reg[15]_0 ));
+  LUT5 #(
+    .INIT(32'hAFC0A0C0)) 
     \slaveRegDo_mux_3[15]_i_5 
-       (.I0(slaveRegDo_ff9),
-        .I1(s_daddr_o[1]),
-        .I2(s_daddr_o[2]),
-        .I3(s_daddr_o[0]),
-        .I4(s_daddr_o[3]),
-        .I5(slaveRegDo_fff[15]),
-        .O(\slaveRegDo_ff9_reg[15]_8 ));
+       (.I0(Q[1]),
+        .I1(slaveRegDo_ff9),
+        .I2(\slaveRegDo_mux_3_reg[2] ),
+        .I3(\slaveRegDo_mux_3_reg[2]_0 ),
+        .I4(slaveRegDo_fff[15]),
+        .O(\slaveRegDo_ff8_reg[15]_1 ));
   LUT6 #(
     .INIT(64'hC28C000002800000)) 
     \slaveRegDo_mux_3[1]_i_3 
@@ -67800,17 +67771,16 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_p2s__parameterized32
         .I3(s_daddr_o[0]),
         .I4(s_daddr_o[3]),
         .I5(slaveRegDo_fff[1]),
-        .O(\slaveRegDo_ff9_reg[15]_4 ));
-  LUT6 #(
-    .INIT(64'hC28C000002800000)) 
+        .O(\slaveRegDo_ff9_reg[15]_0 ));
+  LUT5 #(
+    .INIT(32'hAFC0A0C0)) 
     \slaveRegDo_mux_3[2]_i_3 
-       (.I0(slaveRegDo_ff9),
-        .I1(s_daddr_o[1]),
-        .I2(s_daddr_o[2]),
-        .I3(s_daddr_o[0]),
-        .I4(s_daddr_o[3]),
-        .I5(slaveRegDo_fff[2]),
-        .O(\slaveRegDo_ff9_reg[15]_5 ));
+       (.I0(Q[0]),
+        .I1(slaveRegDo_ff9),
+        .I2(\slaveRegDo_mux_3_reg[2] ),
+        .I3(\slaveRegDo_mux_3_reg[2]_0 ),
+        .I4(slaveRegDo_fff[2]),
+        .O(\slaveRegDo_ff8_reg[10] ));
   LUT6 #(
     .INIT(64'hC28C000002800000)) 
     \slaveRegDo_mux_3[3]_i_3 
@@ -67820,65 +67790,66 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_p2s__parameterized32
         .I3(s_daddr_o[0]),
         .I4(s_daddr_o[3]),
         .I5(slaveRegDo_fff[3]),
-        .O(\slaveRegDo_ff9_reg[15]_6 ));
-  LUT5 #(
-    .INIT(32'hAFC0A0C0)) 
-    \slaveRegDo_mux_3[4]_i_3 
-       (.I0(Q[0]),
-        .I1(slaveRegDo_ff9),
-        .I2(\slaveRegDo_mux_3_reg[0]_0 ),
-        .I3(\slaveRegDo_mux_3_reg[0] ),
-        .I4(slaveRegDo_fff[4]),
-        .O(\slaveRegDo_ff8_reg[5]_0 ));
-  LUT5 #(
-    .INIT(32'hF388C088)) 
-    \slaveRegDo_mux_3[5]_i_3 
-       (.I0(slaveRegDo_fff[5]),
-        .I1(\slaveRegDo_mux_3_reg[0] ),
-        .I2(Q[0]),
-        .I3(\slaveRegDo_mux_3_reg[0]_0 ),
-        .I4(slaveRegDo_ff9),
-        .O(\parallel_dout_reg[5]_0 ));
+        .O(\slaveRegDo_ff9_reg[15]_1 ));
   LUT6 #(
-    .INIT(64'hC020B00000208000)) 
+    .INIT(64'hF08020F030802030)) 
+    \slaveRegDo_mux_3[4]_i_3 
+       (.I0(slaveRegDo_ff9),
+        .I1(s_daddr_o[1]),
+        .I2(s_daddr_o[3]),
+        .I3(s_daddr_o[0]),
+        .I4(s_daddr_o[2]),
+        .I5(slaveRegDo_fff[4]),
+        .O(\slaveRegDo_ff9_reg[15]_5 ));
+  LUT6 #(
+    .INIT(64'hF08020F030802030)) 
+    \slaveRegDo_mux_3[5]_i_3 
+       (.I0(slaveRegDo_ff9),
+        .I1(s_daddr_o[1]),
+        .I2(s_daddr_o[3]),
+        .I3(s_daddr_o[0]),
+        .I4(s_daddr_o[2]),
+        .I5(slaveRegDo_fff[5]),
+        .O(\slaveRegDo_ff9_reg[15]_6 ));
+  LUT6 #(
+    .INIT(64'hF08020F030802030)) 
     \slaveRegDo_mux_3[6]_i_3 
        (.I0(slaveRegDo_ff9),
-        .I1(s_daddr_o[2]),
+        .I1(s_daddr_o[1]),
         .I2(s_daddr_o[3]),
-        .I3(s_daddr_o[1]),
-        .I4(s_daddr_o[0]),
+        .I3(s_daddr_o[0]),
+        .I4(s_daddr_o[2]),
         .I5(slaveRegDo_fff[6]),
-        .O(\slaveRegDo_ff9_reg[15] ));
+        .O(\slaveRegDo_ff9_reg[15]_7 ));
   LUT6 #(
-    .INIT(64'hC020B00000208000)) 
+    .INIT(64'hF08020F030802030)) 
     \slaveRegDo_mux_3[7]_i_3 
        (.I0(slaveRegDo_ff9),
-        .I1(s_daddr_o[2]),
+        .I1(s_daddr_o[1]),
         .I2(s_daddr_o[3]),
-        .I3(s_daddr_o[1]),
-        .I4(s_daddr_o[0]),
+        .I3(s_daddr_o[0]),
+        .I4(s_daddr_o[2]),
         .I5(slaveRegDo_fff[7]),
-        .O(\slaveRegDo_ff9_reg[15]_0 ));
-  LUT6 #(
-    .INIT(64'hF28F000032830000)) 
+        .O(\slaveRegDo_ff9_reg[15]_8 ));
+  LUT5 #(
+    .INIT(32'hAFC0A0C0)) 
     \slaveRegDo_mux_3[8]_i_3 
+       (.I0(Q[0]),
+        .I1(slaveRegDo_ff9),
+        .I2(\slaveRegDo_mux_3_reg[2] ),
+        .I3(\slaveRegDo_mux_3_reg[2]_0 ),
+        .I4(slaveRegDo_fff[8]),
+        .O(\slaveRegDo_ff8_reg[10]_0 ));
+  LUT6 #(
+    .INIT(64'hC28C000002800000)) 
+    \slaveRegDo_mux_3[9]_i_3 
        (.I0(slaveRegDo_ff9),
         .I1(s_daddr_o[1]),
         .I2(s_daddr_o[2]),
         .I3(s_daddr_o[0]),
         .I4(s_daddr_o[3]),
-        .I5(slaveRegDo_fff[8]),
-        .O(\slaveRegDo_ff9_reg[15]_3 ));
-  LUT6 #(
-    .INIT(64'hC020B00000208000)) 
-    \slaveRegDo_mux_3[9]_i_3 
-       (.I0(slaveRegDo_ff9),
-        .I1(s_daddr_o[2]),
-        .I2(s_daddr_o[3]),
-        .I3(s_daddr_o[1]),
-        .I4(s_daddr_o[0]),
         .I5(slaveRegDo_fff[9]),
-        .O(\slaveRegDo_ff9_reg[15]_1 ));
+        .O(\slaveRegDo_ff9_reg[15]_2 ));
 endmodule
 
 (* ORIG_REF_NAME = "xsdbs_v1_0_2_reg_p2s" *) 
@@ -72431,8 +72402,8 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_stat_132
    (D,
     \slaveRegDo_mux_2_reg[1] ,
     \slaveRegDo_mux_2_reg[1]_0 ,
-    s_do_o,
     \slaveRegDo_mux_2_reg[1]_1 ,
+    s_do_o,
     \slaveRegDo_mux_2_reg[1]_2 ,
     s_daddr_o,
     s_den_o,
@@ -72441,21 +72412,21 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_stat_132
   output [1:0]D;
   input \slaveRegDo_mux_2_reg[1] ;
   input [1:0]\slaveRegDo_mux_2_reg[1]_0 ;
-  input [1:0]s_do_o;
   input \slaveRegDo_mux_2_reg[1]_1 ;
+  input [1:0]s_do_o;
   input \slaveRegDo_mux_2_reg[1]_2 ;
-  input [4:0]s_daddr_o;
+  input [3:0]s_daddr_o;
   input s_den_o;
   input [1:0]\xsdb_reg_reg[1]_0 ;
   input s_dclk_o;
 
   wire [1:0]D;
-  wire [4:0]s_daddr_o;
+  wire [3:0]s_daddr_o;
   wire s_dclk_o;
   wire s_den_o;
   wire [1:0]s_do_o;
   wire \slaveRegDo_mux_2[0]_i_2_n_0 ;
-  wire \slaveRegDo_mux_2[1]_i_3_n_0 ;
+  wire \slaveRegDo_mux_2[1]_i_2_n_0 ;
   wire \slaveRegDo_mux_2_reg[1] ;
   wire [1:0]\slaveRegDo_mux_2_reg[1]_0 ;
   wire \slaveRegDo_mux_2_reg[1]_1 ;
@@ -72465,45 +72436,43 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_stat_132
   wire \xsdb_reg_reg_n_0_[1] ;
 
   LUT6 #(
-    .INIT(64'hFFFF44F444444444)) 
+    .INIT(64'h444F444FFFFF444F)) 
     \slaveRegDo_mux_2[0]_i_1 
        (.I0(\slaveRegDo_mux_2_reg[1] ),
         .I1(\slaveRegDo_mux_2_reg[1]_0 [0]),
-        .I2(s_do_o[0]),
-        .I3(\slaveRegDo_mux_2_reg[1]_1 ),
-        .I4(\slaveRegDo_mux_2[0]_i_2_n_0 ),
+        .I2(\slaveRegDo_mux_2_reg[1]_1 ),
+        .I3(\slaveRegDo_mux_2[0]_i_2_n_0 ),
+        .I4(s_do_o[0]),
         .I5(\slaveRegDo_mux_2_reg[1]_2 ),
         .O(D[0]));
-  LUT6 #(
-    .INIT(64'h0400000000000000)) 
+  LUT5 #(
+    .INIT(32'hBFFFFFFF)) 
     \slaveRegDo_mux_2[0]_i_2 
        (.I0(s_daddr_o[1]),
         .I1(s_daddr_o[3]),
-        .I2(s_daddr_o[4]),
-        .I3(\xsdb_reg_reg_n_0_[0] ),
-        .I4(s_daddr_o[2]),
-        .I5(s_daddr_o[0]),
+        .I2(s_daddr_o[2]),
+        .I3(s_daddr_o[0]),
+        .I4(\xsdb_reg_reg_n_0_[0] ),
         .O(\slaveRegDo_mux_2[0]_i_2_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFF44F444444444)) 
+    .INIT(64'h44F444F4FFFF44F4)) 
     \slaveRegDo_mux_2[1]_i_1 
        (.I0(\slaveRegDo_mux_2_reg[1] ),
         .I1(\slaveRegDo_mux_2_reg[1]_0 [1]),
-        .I2(s_do_o[1]),
+        .I2(\slaveRegDo_mux_2[1]_i_2_n_0 ),
         .I3(\slaveRegDo_mux_2_reg[1]_1 ),
-        .I4(\slaveRegDo_mux_2[1]_i_3_n_0 ),
+        .I4(s_do_o[1]),
         .I5(\slaveRegDo_mux_2_reg[1]_2 ),
         .O(D[1]));
-  LUT6 #(
-    .INIT(64'h0400000000000000)) 
-    \slaveRegDo_mux_2[1]_i_3 
-       (.I0(s_daddr_o[1]),
-        .I1(s_daddr_o[3]),
-        .I2(s_daddr_o[4]),
-        .I3(\xsdb_reg_reg_n_0_[1] ),
-        .I4(s_daddr_o[2]),
-        .I5(s_daddr_o[0]),
-        .O(\slaveRegDo_mux_2[1]_i_3_n_0 ));
+  LUT5 #(
+    .INIT(32'h20000000)) 
+    \slaveRegDo_mux_2[1]_i_2 
+       (.I0(\xsdb_reg_reg_n_0_[1] ),
+        .I1(s_daddr_o[1]),
+        .I2(s_daddr_o[3]),
+        .I3(s_daddr_o[2]),
+        .I4(s_daddr_o[0]),
+        .O(\slaveRegDo_mux_2[1]_i_2_n_0 ));
   FDRE \xsdb_reg_reg[0] 
        (.C(s_dclk_o),
         .CE(s_den_o),
@@ -72833,6 +72802,7 @@ endmodule
 (* ORIG_REF_NAME = "xsdbs_v1_0_2_reg_stream" *) 
 module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_stream
    (\G_1PIPE_IFACE.s_daddr_r_reg[0] ,
+    \xsdb_reg_reg[15] ,
     \G_1PIPE_IFACE.s_daddr_r_reg[0]_0 ,
     \G_1PIPE_IFACE.s_daddr_r_reg[0]_1 ,
     \G_1PIPE_IFACE.s_daddr_r_reg[0]_2 ,
@@ -72848,35 +72818,35 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_stream
     \G_1PIPE_IFACE.s_daddr_r_reg[0]_12 ,
     \G_1PIPE_IFACE.s_daddr_r_reg[0]_13 ,
     \G_1PIPE_IFACE.s_daddr_r_reg[0]_14 ,
-    \xsdb_reg_reg[15] ,
-    \slaveRegDo_mux_3_reg[12] ,
-    \slaveRegDo_mux_3_reg[15] ,
-    \slaveRegDo_mux_3_reg[14] ,
-    \slaveRegDo_mux_3_reg[13] ,
-    \slaveRegDo_mux_3_reg[11] ,
-    \slaveRegDo_mux_3_reg[10] ,
-    \slaveRegDo_mux_3_reg[8] ,
-    \slaveRegDo_mux_3_reg[5] ,
-    \slaveRegDo_mux_3_reg[4] ,
-    \slaveRegDo_mux_3_reg[3] ,
-    \slaveRegDo_mux_3_reg[2] ,
-    \slaveRegDo_mux_3_reg[1] ,
-    \slaveRegDo_mux_3_reg[0] ,
-    \slaveRegDo_mux_3_reg[6] ,
-    \slaveRegDo_mux_3_reg[7] ,
-    \slaveRegDo_mux_3_reg[9] ,
-    \slaveRegDo_mux_3_reg[12]_0 ,
     \xsdb_reg_reg[0] ,
     s_dwe_o,
     s_daddr_o,
     \xsdb_reg_reg[0]_0 ,
+    \slaveRegDo_mux_3_reg[15] ,
+    \slaveRegDo_mux_3_reg[0] ,
     Q,
     \slaveRegDo_mux_3_reg[15]_0 ,
     slaveRegDo_ffa,
     \slaveRegDo_mux_3_reg[15]_1 ,
+    \slaveRegDo_mux_3_reg[1] ,
+    \slaveRegDo_mux_3_reg[2] ,
+    \slaveRegDo_mux_3_reg[3] ,
+    \slaveRegDo_mux_3_reg[4] ,
+    \slaveRegDo_mux_3_reg[5] ,
+    \slaveRegDo_mux_3_reg[6] ,
+    \slaveRegDo_mux_3_reg[7] ,
+    \slaveRegDo_mux_3_reg[8] ,
+    \slaveRegDo_mux_3_reg[9] ,
+    \slaveRegDo_mux_3_reg[10] ,
+    \slaveRegDo_mux_3_reg[11] ,
+    \slaveRegDo_mux_3_reg[12] ,
+    \slaveRegDo_mux_3_reg[13] ,
+    \slaveRegDo_mux_3_reg[14] ,
+    \slaveRegDo_mux_3_reg[15]_2 ,
     s_di_o,
     s_dclk_o);
   output \G_1PIPE_IFACE.s_daddr_r_reg[0] ;
+  output [15:0]\xsdb_reg_reg[15] ;
   output \G_1PIPE_IFACE.s_daddr_r_reg[0]_0 ;
   output \G_1PIPE_IFACE.s_daddr_r_reg[0]_1 ;
   output \G_1PIPE_IFACE.s_daddr_r_reg[0]_2 ;
@@ -72892,32 +72862,31 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_stream
   output \G_1PIPE_IFACE.s_daddr_r_reg[0]_12 ;
   output \G_1PIPE_IFACE.s_daddr_r_reg[0]_13 ;
   output \G_1PIPE_IFACE.s_daddr_r_reg[0]_14 ;
-  output [15:0]\xsdb_reg_reg[15] ;
-  input \slaveRegDo_mux_3_reg[12] ;
-  input \slaveRegDo_mux_3_reg[15] ;
-  input \slaveRegDo_mux_3_reg[14] ;
-  input \slaveRegDo_mux_3_reg[13] ;
-  input \slaveRegDo_mux_3_reg[11] ;
-  input \slaveRegDo_mux_3_reg[10] ;
-  input \slaveRegDo_mux_3_reg[8] ;
-  input \slaveRegDo_mux_3_reg[5] ;
-  input \slaveRegDo_mux_3_reg[4] ;
-  input \slaveRegDo_mux_3_reg[3] ;
-  input \slaveRegDo_mux_3_reg[2] ;
-  input \slaveRegDo_mux_3_reg[1] ;
-  input \slaveRegDo_mux_3_reg[0] ;
-  input \slaveRegDo_mux_3_reg[6] ;
-  input \slaveRegDo_mux_3_reg[7] ;
-  input \slaveRegDo_mux_3_reg[9] ;
-  input \slaveRegDo_mux_3_reg[12]_0 ;
   input \xsdb_reg_reg[0] ;
   input s_dwe_o;
   input [1:0]s_daddr_o;
   input \xsdb_reg_reg[0]_0 ;
+  input \slaveRegDo_mux_3_reg[15] ;
+  input \slaveRegDo_mux_3_reg[0] ;
   input [15:0]Q;
   input \slaveRegDo_mux_3_reg[15]_0 ;
   input [0:0]slaveRegDo_ffa;
   input \slaveRegDo_mux_3_reg[15]_1 ;
+  input \slaveRegDo_mux_3_reg[1] ;
+  input \slaveRegDo_mux_3_reg[2] ;
+  input \slaveRegDo_mux_3_reg[3] ;
+  input \slaveRegDo_mux_3_reg[4] ;
+  input \slaveRegDo_mux_3_reg[5] ;
+  input \slaveRegDo_mux_3_reg[6] ;
+  input \slaveRegDo_mux_3_reg[7] ;
+  input \slaveRegDo_mux_3_reg[8] ;
+  input \slaveRegDo_mux_3_reg[9] ;
+  input \slaveRegDo_mux_3_reg[10] ;
+  input \slaveRegDo_mux_3_reg[11] ;
+  input \slaveRegDo_mux_3_reg[12] ;
+  input \slaveRegDo_mux_3_reg[13] ;
+  input \slaveRegDo_mux_3_reg[14] ;
+  input \slaveRegDo_mux_3_reg[15]_2 ;
   input [15:0]s_di_o;
   input s_dclk_o;
 
@@ -72947,12 +72916,12 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_stream
   wire \slaveRegDo_mux_3_reg[10] ;
   wire \slaveRegDo_mux_3_reg[11] ;
   wire \slaveRegDo_mux_3_reg[12] ;
-  wire \slaveRegDo_mux_3_reg[12]_0 ;
   wire \slaveRegDo_mux_3_reg[13] ;
   wire \slaveRegDo_mux_3_reg[14] ;
   wire \slaveRegDo_mux_3_reg[15] ;
   wire \slaveRegDo_mux_3_reg[15]_0 ;
   wire \slaveRegDo_mux_3_reg[15]_1 ;
+  wire \slaveRegDo_mux_3_reg[15]_2 ;
   wire \slaveRegDo_mux_3_reg[1] ;
   wire \slaveRegDo_mux_3_reg[2] ;
   wire \slaveRegDo_mux_3_reg[3] ;
@@ -72993,12 +72962,12 @@ module zusys_system_ila_0_0_xsdbs_v1_0_2_reg_stream
         .\slaveRegDo_mux_3_reg[10] (\slaveRegDo_mux_3_reg[10] ),
         .\slaveRegDo_mux_3_reg[11] (\slaveRegDo_mux_3_reg[11] ),
         .\slaveRegDo_mux_3_reg[12] (\slaveRegDo_mux_3_reg[12] ),
-        .\slaveRegDo_mux_3_reg[12]_0 (\slaveRegDo_mux_3_reg[12]_0 ),
         .\slaveRegDo_mux_3_reg[13] (\slaveRegDo_mux_3_reg[13] ),
         .\slaveRegDo_mux_3_reg[14] (\slaveRegDo_mux_3_reg[14] ),
         .\slaveRegDo_mux_3_reg[15] (\slaveRegDo_mux_3_reg[15] ),
         .\slaveRegDo_mux_3_reg[15]_0 (\slaveRegDo_mux_3_reg[15]_0 ),
         .\slaveRegDo_mux_3_reg[15]_1 (\slaveRegDo_mux_3_reg[15]_1 ),
+        .\slaveRegDo_mux_3_reg[15]_2 (\slaveRegDo_mux_3_reg[15]_2 ),
         .\slaveRegDo_mux_3_reg[1] (\slaveRegDo_mux_3_reg[1] ),
         .\slaveRegDo_mux_3_reg[2] (\slaveRegDo_mux_3_reg[2] ),
         .\slaveRegDo_mux_3_reg[3] (\slaveRegDo_mux_3_reg[3] ),

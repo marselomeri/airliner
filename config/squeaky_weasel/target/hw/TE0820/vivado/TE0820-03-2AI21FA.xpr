@@ -3,8 +3,8 @@
 <!--                                                         -->
 <!-- Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.   -->
 
-<Project Version="7" Minor="44" Path="/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.xpr">
-  <DefaultLaunch Dir="/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/hw_spec"/>
+<Project Version="7" Minor="44" Path="/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.xpr">
+  <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="aef1a20bae894975a5c699c6fb224364"/>
     <Option Name="Part" Val="xczu2cg-sfvc784-1-i"/>
@@ -68,23 +68,20 @@
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
-        <CompFileExtendedInfo CompFileName="zusys.bd" FileRelPathName="ip/zusys_vio_0_0/zusys_vio_0_0.xci">
-          <Proxy FileSetName="zusys_vio_0_0"/>
-        </CompFileExtendedInfo>
         <CompFileExtendedInfo CompFileName="zusys.bd" FileRelPathName="ip/zusys_util_ds_buf_0_0/zusys_util_ds_buf_0_0.xci">
           <Proxy FileSetName="zusys_util_ds_buf_0_0"/>
         </CompFileExtendedInfo>
         <CompFileExtendedInfo CompFileName="zusys.bd" FileRelPathName="ip/zusys_labtools_fmeter_0_0/zusys_labtools_fmeter_0_0.xci">
           <Proxy FileSetName="zusys_labtools_fmeter_0_0"/>
         </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="zusys.bd" FileRelPathName="ip/zusys_clk_wiz_0_0/zusys_clk_wiz_0_0.xci">
-          <Proxy FileSetName="zusys_clk_wiz_0_0"/>
+        <CompFileExtendedInfo CompFileName="zusys.bd" FileRelPathName="ip/zusys_zynq_ultra_ps_e_0_0/zusys_zynq_ultra_ps_e_0_0.xci">
+          <Proxy FileSetName="zusys_zynq_ultra_ps_e_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="zusys.bd" FileRelPathName="ip/zusys_vio_0_0/zusys_vio_0_0.xci">
+          <Proxy FileSetName="zusys_vio_0_0"/>
         </CompFileExtendedInfo>
         <CompFileExtendedInfo CompFileName="zusys.bd" FileRelPathName="ip/zusys_system_ila_0_0/zusys_system_ila_0_0.xci">
           <Proxy FileSetName="zusys_system_ila_0_0"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="zusys.bd" FileRelPathName="ip/zusys_zynq_ultra_ps_e_0_0/zusys_zynq_ultra_ps_e_0_0.xci">
-          <Proxy FileSetName="zusys_zynq_ultra_ps_e_0_0"/>
         </CompFileExtendedInfo>
       </File>
       <File Path="$PSRCDIR/sources_1/bd/zusys/hdl/zusys_wrapper.vhd">
@@ -187,12 +184,6 @@
         <Option Name="ConstrsType" Val="XDC"/>
       </Config>
     </FileSet>
-    <FileSet Name="zusys_clk_wiz_0_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/zusys_clk_wiz_0_0">
-      <Config>
-        <Option Name="TopModule" Val="zusys_clk_wiz_0_0"/>
-        <Option Name="UseBlackboxStub" Val="1"/>
-      </Config>
-    </FileSet>
     <FileSet Name="zusys_system_ila_0_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/zusys_system_ila_0_0">
       <Config>
         <Option Name="TopModule" Val="zusys_system_ila_0_0"/>
@@ -230,69 +221,57 @@
         <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019"/>
         <Step Id="synth_design"/>
       </Strategy>
-      <GeneratedRun Dir="/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/hw_spec" File="gen_run.xml"/>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
       <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2019"/>
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
     </Run>
-    <Run Id="zusys_util_ds_buf_0_0_synth_1" Type="Ft3:Synth" SrcSet="zusys_util_ds_buf_0_0" Part="xczu2cg-sfvc784-1-i" ConstrsSet="zusys_util_ds_buf_0_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/zusys_util_ds_buf_0_0_synth_1" IncludeInArchive="true">
+    <Run Id="zusys_util_ds_buf_0_0_synth_1" Type="Ft3:Synth" SrcSet="zusys_util_ds_buf_0_0" Part="xczu2cg-sfvc784-1-i" ConstrsSet="zusys_util_ds_buf_0_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PPRDIR/../../TE0820-03-2AI21FA/hw_spec/zusys_util_ds_buf_0_0_synth_1" IncludeInArchive="true">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019"/>
         <Step Id="synth_design"/>
       </Strategy>
-      <GeneratedRun Dir="/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/hw_spec" File="gen_run.xml"/>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
       <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2019"/>
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
     </Run>
-    <Run Id="zusys_labtools_fmeter_0_0_synth_1" Type="Ft3:Synth" SrcSet="zusys_labtools_fmeter_0_0" Part="xczu2cg-sfvc784-1-i" ConstrsSet="zusys_labtools_fmeter_0_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/zusys_labtools_fmeter_0_0_synth_1" IncludeInArchive="true">
+    <Run Id="zusys_labtools_fmeter_0_0_synth_1" Type="Ft3:Synth" SrcSet="zusys_labtools_fmeter_0_0" Part="xczu2cg-sfvc784-1-i" ConstrsSet="zusys_labtools_fmeter_0_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PPRDIR/../../TE0820-03-2AI21FA/hw_spec/zusys_labtools_fmeter_0_0_synth_1" IncludeInArchive="true">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019"/>
         <Step Id="synth_design"/>
       </Strategy>
-      <GeneratedRun Dir="/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/hw_spec" File="gen_run.xml"/>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
       <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2019"/>
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
     </Run>
-    <Run Id="zusys_zynq_ultra_ps_e_0_0_synth_1" Type="Ft3:Synth" SrcSet="zusys_zynq_ultra_ps_e_0_0" Part="xczu2cg-sfvc784-1-i" ConstrsSet="zusys_zynq_ultra_ps_e_0_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/zusys_zynq_ultra_ps_e_0_0_synth_1" IncludeInArchive="true">
+    <Run Id="zusys_zynq_ultra_ps_e_0_0_synth_1" Type="Ft3:Synth" SrcSet="zusys_zynq_ultra_ps_e_0_0" Part="xczu2cg-sfvc784-1-i" ConstrsSet="zusys_zynq_ultra_ps_e_0_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PPRDIR/../../TE0820-03-2AI21FA/hw_spec/zusys_zynq_ultra_ps_e_0_0_synth_1" IncludeInArchive="true">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019"/>
         <Step Id="synth_design"/>
       </Strategy>
-      <GeneratedRun Dir="/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/hw_spec" File="gen_run.xml"/>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
       <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2019"/>
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
     </Run>
-    <Run Id="zusys_vio_0_0_synth_1" Type="Ft3:Synth" SrcSet="zusys_vio_0_0" Part="xczu2cg-sfvc784-1-i" ConstrsSet="zusys_vio_0_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/zusys_vio_0_0_synth_1" IncludeInArchive="true">
+    <Run Id="zusys_vio_0_0_synth_1" Type="Ft3:Synth" SrcSet="zusys_vio_0_0" Part="xczu2cg-sfvc784-1-i" ConstrsSet="zusys_vio_0_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PPRDIR/../../TE0820-03-2AI21FA/hw_spec/zusys_vio_0_0_synth_1" IncludeInArchive="true">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019"/>
         <Step Id="synth_design"/>
       </Strategy>
-      <GeneratedRun Dir="/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/hw_spec" File="gen_run.xml"/>
-      <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2019"/>
-      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
-      <RQSFiles/>
-    </Run>
-    <Run Id="zusys_clk_wiz_0_0_synth_1" Type="Ft3:Synth" SrcSet="zusys_clk_wiz_0_0" Part="xczu2cg-sfvc784-1-i" ConstrsSet="zusys_clk_wiz_0_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/zusys_clk_wiz_0_0_synth_1" IncludeInArchive="true">
-      <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019"/>
-        <Step Id="synth_design"/>
-      </Strategy>
-      <GeneratedRun Dir="/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/hw_spec" File="gen_run.xml"/>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
       <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2019"/>
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
     </Run>
     <Run Id="zusys_system_ila_0_0_synth_1" Type="Ft3:Synth" SrcSet="zusys_system_ila_0_0" Part="xczu2cg-sfvc784-1-i" ConstrsSet="zusys_system_ila_0_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/zusys_system_ila_0_0_synth_1" IncludeInArchive="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019">
-          <Desc>Vivado Synthesis Defaults</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019"/>
         <Step Id="synth_design"/>
       </Strategy>
-      <GeneratedRun Dir="/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/hw_spec" File="gen_run.xml"/>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
       <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2019"/>
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
@@ -310,7 +289,7 @@
         <Step Id="post_route_phys_opt_design"/>
         <Step Id="write_bitstream"/>
       </Strategy>
-      <GeneratedRun Dir="/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/hw_spec" File="gen_run.xml"/>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
       <ReportStrategy Name="Vivado Implementation Default Reports" Flow="Vivado Implementation 2019"/>
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
@@ -383,28 +362,9 @@
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
     </Run>
-    <Run Id="zusys_clk_wiz_0_0_impl_1" Type="Ft2:EntireDesign" Part="xczu2cg-sfvc784-1-i" ConstrsSet="zusys_clk_wiz_0_0" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="zusys_clk_wiz_0_0_synth_1" IncludeInArchive="false" GenFullBitstream="true">
-      <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2019"/>
-        <Step Id="init_design"/>
-        <Step Id="opt_design"/>
-        <Step Id="power_opt_design"/>
-        <Step Id="place_design"/>
-        <Step Id="post_place_power_opt_design"/>
-        <Step Id="phys_opt_design" EnableStepBool="1"/>
-        <Step Id="route_design"/>
-        <Step Id="post_route_phys_opt_design"/>
-        <Step Id="write_bitstream"/>
-      </Strategy>
-      <ReportStrategy Name="Vivado Implementation Default Reports" Flow="Vivado Implementation 2019"/>
-      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
-      <RQSFiles/>
-    </Run>
     <Run Id="zusys_system_ila_0_0_impl_1" Type="Ft2:EntireDesign" Part="xczu2cg-sfvc784-1-i" ConstrsSet="zusys_system_ila_0_0" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="zusys_system_ila_0_0_synth_1" IncludeInArchive="false" GenFullBitstream="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2019">
-          <Desc>Default settings for Implementation.</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2019"/>
         <Step Id="init_design"/>
         <Step Id="opt_design"/>
         <Step Id="power_opt_design"/>

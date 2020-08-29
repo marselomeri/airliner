@@ -1,7 +1,7 @@
 --Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
---Date        : Sat Aug 29 13:43:48 2020
+--Date        : Sat Aug 29 15:44:59 2020
 --Host        : vagrant running 64-bit Ubuntu 16.04.6 LTS
 --Command     : generate_target zusys.bd
 --Design      : zusys
@@ -50,10 +50,10 @@ entity zusys is
     x0 : in STD_LOGIC_VECTOR ( 0 to 0 );
     x1 : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
-  attribute CORE_GENERATION_INFO : string;
-  attribute CORE_GENERATION_INFO of zusys : entity is "zusys,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=zusys,x_ipVersion=1.00.a,x_ipLanguage=VHDL,numBlks=7,numReposBlks=7,numNonXlnxBlks=1,numHierBlks=0,maxHierDepth=0,numSysgenBlks=0,numHlsBlks=0,numHdlrefBlks=0,numPkgbdBlks=0,bdsource=USER,da_zynq_ultra_ps_e_cnt=1,synth_mode=OOC_per_IP}";
-  attribute HW_HANDOFF : string;
-  attribute HW_HANDOFF of zusys : entity is "zusys.hwdef";
+  attribute core_generation_info : string;
+  attribute core_generation_info of zusys : entity is "zusys,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=zusys,x_ipVersion=1.00.a,x_ipLanguage=VHDL,numBlks=6,numReposBlks=6,numNonXlnxBlks=1,numHierBlks=0,maxHierDepth=0,numSysgenBlks=0,numHlsBlks=0,numHdlrefBlks=0,numPkgbdBlks=0,bdsource=USER,da_zynq_ultra_ps_e_cnt=1,synth_mode=OOC_per_IP}";
+  attribute hw_handoff : string;
+  attribute hw_handoff of zusys : entity is "zusys.hwdef";
 end zusys;
 
 architecture STRUCTURE of zusys is
@@ -202,119 +202,112 @@ architecture STRUCTURE of zusys is
     SLOT_3_SPI_io1_t : in STD_LOGIC
   );
   end component zusys_system_ila_0_0;
-  component zusys_clk_wiz_0_0 is
-  port (
-    clk_in1 : in STD_LOGIC;
-    clk_out1 : out STD_LOGIC
-  );
-  end component zusys_clk_wiz_0_0;
   signal CLK_IN_D_1_CLK_N : STD_LOGIC_VECTOR ( 0 to 0 );
   signal CLK_IN_D_1_CLK_P : STD_LOGIC_VECTOR ( 0 to 0 );
   signal VIO_x0_firmware : STD_LOGIC_VECTOR ( 0 to 0 );
-  signal clk_wiz_0_clk_out1 : STD_LOGIC;
   signal fm_SI5338_CLK0_D : STD_LOGIC_VECTOR ( 31 downto 0 );
   signal labtools_fmeter_0_update : STD_LOGIC;
   signal util_ds_buf_0_IBUF_OUT : STD_LOGIC_VECTOR ( 0 to 0 );
   signal x1_phy_led : STD_LOGIC_VECTOR ( 0 to 0 );
   signal xlconcat_0_dout : STD_LOGIC_VECTOR ( 0 to 0 );
   signal zynq_ultra_ps_e_0_IIC_1_SCL_I : STD_LOGIC;
-  attribute CONN_BUS_INFO : string;
-  attribute CONN_BUS_INFO of zynq_ultra_ps_e_0_IIC_1_SCL_I : signal is "zynq_ultra_ps_e_0_IIC_1 xilinx.com:interface:iic:1.0 None SCL_I";
   attribute DONT_TOUCH : boolean;
   attribute DONT_TOUCH of zynq_ultra_ps_e_0_IIC_1_SCL_I : signal is std.standard.true;
+  attribute conn_bus_info : string;
+  attribute conn_bus_info of zynq_ultra_ps_e_0_IIC_1_SCL_I : signal is "zynq_ultra_ps_e_0_IIC_1 xilinx.com:interface:iic:1.0 None SCL_I";
   signal zynq_ultra_ps_e_0_IIC_1_SCL_O : STD_LOGIC;
-  attribute CONN_BUS_INFO of zynq_ultra_ps_e_0_IIC_1_SCL_O : signal is "zynq_ultra_ps_e_0_IIC_1 xilinx.com:interface:iic:1.0 None SCL_O";
   attribute DONT_TOUCH of zynq_ultra_ps_e_0_IIC_1_SCL_O : signal is std.standard.true;
+  attribute conn_bus_info of zynq_ultra_ps_e_0_IIC_1_SCL_O : signal is "zynq_ultra_ps_e_0_IIC_1 xilinx.com:interface:iic:1.0 None SCL_O";
   signal zynq_ultra_ps_e_0_IIC_1_SCL_T : STD_LOGIC;
-  attribute CONN_BUS_INFO of zynq_ultra_ps_e_0_IIC_1_SCL_T : signal is "zynq_ultra_ps_e_0_IIC_1 xilinx.com:interface:iic:1.0 None SCL_T";
   attribute DONT_TOUCH of zynq_ultra_ps_e_0_IIC_1_SCL_T : signal is std.standard.true;
+  attribute conn_bus_info of zynq_ultra_ps_e_0_IIC_1_SCL_T : signal is "zynq_ultra_ps_e_0_IIC_1 xilinx.com:interface:iic:1.0 None SCL_T";
   signal zynq_ultra_ps_e_0_IIC_1_SDA_I : STD_LOGIC;
-  attribute CONN_BUS_INFO of zynq_ultra_ps_e_0_IIC_1_SDA_I : signal is "zynq_ultra_ps_e_0_IIC_1 xilinx.com:interface:iic:1.0 None SDA_I";
   attribute DONT_TOUCH of zynq_ultra_ps_e_0_IIC_1_SDA_I : signal is std.standard.true;
+  attribute conn_bus_info of zynq_ultra_ps_e_0_IIC_1_SDA_I : signal is "zynq_ultra_ps_e_0_IIC_1 xilinx.com:interface:iic:1.0 None SDA_I";
   signal zynq_ultra_ps_e_0_IIC_1_SDA_O : STD_LOGIC;
-  attribute CONN_BUS_INFO of zynq_ultra_ps_e_0_IIC_1_SDA_O : signal is "zynq_ultra_ps_e_0_IIC_1 xilinx.com:interface:iic:1.0 None SDA_O";
   attribute DONT_TOUCH of zynq_ultra_ps_e_0_IIC_1_SDA_O : signal is std.standard.true;
+  attribute conn_bus_info of zynq_ultra_ps_e_0_IIC_1_SDA_O : signal is "zynq_ultra_ps_e_0_IIC_1 xilinx.com:interface:iic:1.0 None SDA_O";
   signal zynq_ultra_ps_e_0_IIC_1_SDA_T : STD_LOGIC;
-  attribute CONN_BUS_INFO of zynq_ultra_ps_e_0_IIC_1_SDA_T : signal is "zynq_ultra_ps_e_0_IIC_1 xilinx.com:interface:iic:1.0 None SDA_T";
   attribute DONT_TOUCH of zynq_ultra_ps_e_0_IIC_1_SDA_T : signal is std.standard.true;
+  attribute conn_bus_info of zynq_ultra_ps_e_0_IIC_1_SDA_T : signal is "zynq_ultra_ps_e_0_IIC_1 xilinx.com:interface:iic:1.0 None SDA_T";
   signal zynq_ultra_ps_e_0_SPI_0_IO0_I : STD_LOGIC;
-  attribute CONN_BUS_INFO of zynq_ultra_ps_e_0_SPI_0_IO0_I : signal is "zynq_ultra_ps_e_0_SPI_0 xilinx.com:interface:spi:1.0 None IO0_I";
   attribute DONT_TOUCH of zynq_ultra_ps_e_0_SPI_0_IO0_I : signal is std.standard.true;
+  attribute conn_bus_info of zynq_ultra_ps_e_0_SPI_0_IO0_I : signal is "zynq_ultra_ps_e_0_SPI_0 xilinx.com:interface:spi:1.0 None IO0_I";
   signal zynq_ultra_ps_e_0_SPI_0_IO0_O : STD_LOGIC;
-  attribute CONN_BUS_INFO of zynq_ultra_ps_e_0_SPI_0_IO0_O : signal is "zynq_ultra_ps_e_0_SPI_0 xilinx.com:interface:spi:1.0 None IO0_O";
   attribute DONT_TOUCH of zynq_ultra_ps_e_0_SPI_0_IO0_O : signal is std.standard.true;
+  attribute conn_bus_info of zynq_ultra_ps_e_0_SPI_0_IO0_O : signal is "zynq_ultra_ps_e_0_SPI_0 xilinx.com:interface:spi:1.0 None IO0_O";
   signal zynq_ultra_ps_e_0_SPI_0_IO0_T : STD_LOGIC;
-  attribute CONN_BUS_INFO of zynq_ultra_ps_e_0_SPI_0_IO0_T : signal is "zynq_ultra_ps_e_0_SPI_0 xilinx.com:interface:spi:1.0 None IO0_T";
   attribute DONT_TOUCH of zynq_ultra_ps_e_0_SPI_0_IO0_T : signal is std.standard.true;
+  attribute conn_bus_info of zynq_ultra_ps_e_0_SPI_0_IO0_T : signal is "zynq_ultra_ps_e_0_SPI_0 xilinx.com:interface:spi:1.0 None IO0_T";
   signal zynq_ultra_ps_e_0_SPI_0_IO1_I : STD_LOGIC;
-  attribute CONN_BUS_INFO of zynq_ultra_ps_e_0_SPI_0_IO1_I : signal is "zynq_ultra_ps_e_0_SPI_0 xilinx.com:interface:spi:1.0 None IO1_I";
   attribute DONT_TOUCH of zynq_ultra_ps_e_0_SPI_0_IO1_I : signal is std.standard.true;
+  attribute conn_bus_info of zynq_ultra_ps_e_0_SPI_0_IO1_I : signal is "zynq_ultra_ps_e_0_SPI_0 xilinx.com:interface:spi:1.0 None IO1_I";
   signal zynq_ultra_ps_e_0_SPI_0_IO1_O : STD_LOGIC;
-  attribute CONN_BUS_INFO of zynq_ultra_ps_e_0_SPI_0_IO1_O : signal is "zynq_ultra_ps_e_0_SPI_0 xilinx.com:interface:spi:1.0 None IO1_O";
   attribute DONT_TOUCH of zynq_ultra_ps_e_0_SPI_0_IO1_O : signal is std.standard.true;
+  attribute conn_bus_info of zynq_ultra_ps_e_0_SPI_0_IO1_O : signal is "zynq_ultra_ps_e_0_SPI_0 xilinx.com:interface:spi:1.0 None IO1_O";
   signal zynq_ultra_ps_e_0_SPI_0_IO1_T : STD_LOGIC;
-  attribute CONN_BUS_INFO of zynq_ultra_ps_e_0_SPI_0_IO1_T : signal is "zynq_ultra_ps_e_0_SPI_0 xilinx.com:interface:spi:1.0 None IO1_T";
   attribute DONT_TOUCH of zynq_ultra_ps_e_0_SPI_0_IO1_T : signal is std.standard.true;
+  attribute conn_bus_info of zynq_ultra_ps_e_0_SPI_0_IO1_T : signal is "zynq_ultra_ps_e_0_SPI_0 xilinx.com:interface:spi:1.0 None IO1_T";
   signal zynq_ultra_ps_e_0_SPI_0_SCK_I : STD_LOGIC;
-  attribute CONN_BUS_INFO of zynq_ultra_ps_e_0_SPI_0_SCK_I : signal is "zynq_ultra_ps_e_0_SPI_0 xilinx.com:interface:spi:1.0 None SCK_I";
   attribute DONT_TOUCH of zynq_ultra_ps_e_0_SPI_0_SCK_I : signal is std.standard.true;
+  attribute conn_bus_info of zynq_ultra_ps_e_0_SPI_0_SCK_I : signal is "zynq_ultra_ps_e_0_SPI_0 xilinx.com:interface:spi:1.0 None SCK_I";
   signal zynq_ultra_ps_e_0_SPI_0_SCK_O : STD_LOGIC;
-  attribute CONN_BUS_INFO of zynq_ultra_ps_e_0_SPI_0_SCK_O : signal is "zynq_ultra_ps_e_0_SPI_0 xilinx.com:interface:spi:1.0 None SCK_O";
   attribute DONT_TOUCH of zynq_ultra_ps_e_0_SPI_0_SCK_O : signal is std.standard.true;
+  attribute conn_bus_info of zynq_ultra_ps_e_0_SPI_0_SCK_O : signal is "zynq_ultra_ps_e_0_SPI_0 xilinx.com:interface:spi:1.0 None SCK_O";
   signal zynq_ultra_ps_e_0_SPI_0_SCK_T : STD_LOGIC;
-  attribute CONN_BUS_INFO of zynq_ultra_ps_e_0_SPI_0_SCK_T : signal is "zynq_ultra_ps_e_0_SPI_0 xilinx.com:interface:spi:1.0 None SCK_T";
   attribute DONT_TOUCH of zynq_ultra_ps_e_0_SPI_0_SCK_T : signal is std.standard.true;
+  attribute conn_bus_info of zynq_ultra_ps_e_0_SPI_0_SCK_T : signal is "zynq_ultra_ps_e_0_SPI_0 xilinx.com:interface:spi:1.0 None SCK_T";
   signal zynq_ultra_ps_e_0_SPI_0_SS_I : STD_LOGIC;
-  attribute CONN_BUS_INFO of zynq_ultra_ps_e_0_SPI_0_SS_I : signal is "zynq_ultra_ps_e_0_SPI_0 xilinx.com:interface:spi:1.0 None SS_I";
   attribute DONT_TOUCH of zynq_ultra_ps_e_0_SPI_0_SS_I : signal is std.standard.true;
+  attribute conn_bus_info of zynq_ultra_ps_e_0_SPI_0_SS_I : signal is "zynq_ultra_ps_e_0_SPI_0 xilinx.com:interface:spi:1.0 None SS_I";
   signal zynq_ultra_ps_e_0_SPI_0_SS_O : STD_LOGIC;
-  attribute CONN_BUS_INFO of zynq_ultra_ps_e_0_SPI_0_SS_O : signal is "zynq_ultra_ps_e_0_SPI_0 xilinx.com:interface:spi:1.0 None SS_O";
   attribute DONT_TOUCH of zynq_ultra_ps_e_0_SPI_0_SS_O : signal is std.standard.true;
+  attribute conn_bus_info of zynq_ultra_ps_e_0_SPI_0_SS_O : signal is "zynq_ultra_ps_e_0_SPI_0 xilinx.com:interface:spi:1.0 None SS_O";
   signal zynq_ultra_ps_e_0_SPI_0_SS_T : STD_LOGIC;
-  attribute CONN_BUS_INFO of zynq_ultra_ps_e_0_SPI_0_SS_T : signal is "zynq_ultra_ps_e_0_SPI_0 xilinx.com:interface:spi:1.0 None SS_T";
   attribute DONT_TOUCH of zynq_ultra_ps_e_0_SPI_0_SS_T : signal is std.standard.true;
+  attribute conn_bus_info of zynq_ultra_ps_e_0_SPI_0_SS_T : signal is "zynq_ultra_ps_e_0_SPI_0 xilinx.com:interface:spi:1.0 None SS_T";
   signal zynq_ultra_ps_e_0_SPI_1_IO0_I : STD_LOGIC;
-  attribute CONN_BUS_INFO of zynq_ultra_ps_e_0_SPI_1_IO0_I : signal is "zynq_ultra_ps_e_0_SPI_1 xilinx.com:interface:spi:1.0 None IO0_I";
   attribute DONT_TOUCH of zynq_ultra_ps_e_0_SPI_1_IO0_I : signal is std.standard.true;
+  attribute conn_bus_info of zynq_ultra_ps_e_0_SPI_1_IO0_I : signal is "zynq_ultra_ps_e_0_SPI_1 xilinx.com:interface:spi:1.0 None IO0_I";
   signal zynq_ultra_ps_e_0_SPI_1_IO0_O : STD_LOGIC;
-  attribute CONN_BUS_INFO of zynq_ultra_ps_e_0_SPI_1_IO0_O : signal is "zynq_ultra_ps_e_0_SPI_1 xilinx.com:interface:spi:1.0 None IO0_O";
   attribute DONT_TOUCH of zynq_ultra_ps_e_0_SPI_1_IO0_O : signal is std.standard.true;
+  attribute conn_bus_info of zynq_ultra_ps_e_0_SPI_1_IO0_O : signal is "zynq_ultra_ps_e_0_SPI_1 xilinx.com:interface:spi:1.0 None IO0_O";
   signal zynq_ultra_ps_e_0_SPI_1_IO0_T : STD_LOGIC;
-  attribute CONN_BUS_INFO of zynq_ultra_ps_e_0_SPI_1_IO0_T : signal is "zynq_ultra_ps_e_0_SPI_1 xilinx.com:interface:spi:1.0 None IO0_T";
   attribute DONT_TOUCH of zynq_ultra_ps_e_0_SPI_1_IO0_T : signal is std.standard.true;
+  attribute conn_bus_info of zynq_ultra_ps_e_0_SPI_1_IO0_T : signal is "zynq_ultra_ps_e_0_SPI_1 xilinx.com:interface:spi:1.0 None IO0_T";
   signal zynq_ultra_ps_e_0_SPI_1_IO1_I : STD_LOGIC;
-  attribute CONN_BUS_INFO of zynq_ultra_ps_e_0_SPI_1_IO1_I : signal is "zynq_ultra_ps_e_0_SPI_1 xilinx.com:interface:spi:1.0 None IO1_I";
   attribute DONT_TOUCH of zynq_ultra_ps_e_0_SPI_1_IO1_I : signal is std.standard.true;
+  attribute conn_bus_info of zynq_ultra_ps_e_0_SPI_1_IO1_I : signal is "zynq_ultra_ps_e_0_SPI_1 xilinx.com:interface:spi:1.0 None IO1_I";
   signal zynq_ultra_ps_e_0_SPI_1_IO1_O : STD_LOGIC;
-  attribute CONN_BUS_INFO of zynq_ultra_ps_e_0_SPI_1_IO1_O : signal is "zynq_ultra_ps_e_0_SPI_1 xilinx.com:interface:spi:1.0 None IO1_O";
   attribute DONT_TOUCH of zynq_ultra_ps_e_0_SPI_1_IO1_O : signal is std.standard.true;
+  attribute conn_bus_info of zynq_ultra_ps_e_0_SPI_1_IO1_O : signal is "zynq_ultra_ps_e_0_SPI_1 xilinx.com:interface:spi:1.0 None IO1_O";
   signal zynq_ultra_ps_e_0_SPI_1_IO1_T : STD_LOGIC;
-  attribute CONN_BUS_INFO of zynq_ultra_ps_e_0_SPI_1_IO1_T : signal is "zynq_ultra_ps_e_0_SPI_1 xilinx.com:interface:spi:1.0 None IO1_T";
   attribute DONT_TOUCH of zynq_ultra_ps_e_0_SPI_1_IO1_T : signal is std.standard.true;
+  attribute conn_bus_info of zynq_ultra_ps_e_0_SPI_1_IO1_T : signal is "zynq_ultra_ps_e_0_SPI_1 xilinx.com:interface:spi:1.0 None IO1_T";
   signal zynq_ultra_ps_e_0_SPI_1_SCK_I : STD_LOGIC;
-  attribute CONN_BUS_INFO of zynq_ultra_ps_e_0_SPI_1_SCK_I : signal is "zynq_ultra_ps_e_0_SPI_1 xilinx.com:interface:spi:1.0 None SCK_I";
   attribute DONT_TOUCH of zynq_ultra_ps_e_0_SPI_1_SCK_I : signal is std.standard.true;
+  attribute conn_bus_info of zynq_ultra_ps_e_0_SPI_1_SCK_I : signal is "zynq_ultra_ps_e_0_SPI_1 xilinx.com:interface:spi:1.0 None SCK_I";
   signal zynq_ultra_ps_e_0_SPI_1_SCK_O : STD_LOGIC;
-  attribute CONN_BUS_INFO of zynq_ultra_ps_e_0_SPI_1_SCK_O : signal is "zynq_ultra_ps_e_0_SPI_1 xilinx.com:interface:spi:1.0 None SCK_O";
   attribute DONT_TOUCH of zynq_ultra_ps_e_0_SPI_1_SCK_O : signal is std.standard.true;
+  attribute conn_bus_info of zynq_ultra_ps_e_0_SPI_1_SCK_O : signal is "zynq_ultra_ps_e_0_SPI_1 xilinx.com:interface:spi:1.0 None SCK_O";
   signal zynq_ultra_ps_e_0_SPI_1_SCK_T : STD_LOGIC;
-  attribute CONN_BUS_INFO of zynq_ultra_ps_e_0_SPI_1_SCK_T : signal is "zynq_ultra_ps_e_0_SPI_1 xilinx.com:interface:spi:1.0 None SCK_T";
   attribute DONT_TOUCH of zynq_ultra_ps_e_0_SPI_1_SCK_T : signal is std.standard.true;
+  attribute conn_bus_info of zynq_ultra_ps_e_0_SPI_1_SCK_T : signal is "zynq_ultra_ps_e_0_SPI_1 xilinx.com:interface:spi:1.0 None SCK_T";
   signal zynq_ultra_ps_e_0_SPI_1_SS_I : STD_LOGIC;
-  attribute CONN_BUS_INFO of zynq_ultra_ps_e_0_SPI_1_SS_I : signal is "zynq_ultra_ps_e_0_SPI_1 xilinx.com:interface:spi:1.0 None SS_I";
   attribute DONT_TOUCH of zynq_ultra_ps_e_0_SPI_1_SS_I : signal is std.standard.true;
+  attribute conn_bus_info of zynq_ultra_ps_e_0_SPI_1_SS_I : signal is "zynq_ultra_ps_e_0_SPI_1 xilinx.com:interface:spi:1.0 None SS_I";
   signal zynq_ultra_ps_e_0_SPI_1_SS_O : STD_LOGIC;
-  attribute CONN_BUS_INFO of zynq_ultra_ps_e_0_SPI_1_SS_O : signal is "zynq_ultra_ps_e_0_SPI_1 xilinx.com:interface:spi:1.0 None SS_O";
   attribute DONT_TOUCH of zynq_ultra_ps_e_0_SPI_1_SS_O : signal is std.standard.true;
+  attribute conn_bus_info of zynq_ultra_ps_e_0_SPI_1_SS_O : signal is "zynq_ultra_ps_e_0_SPI_1 xilinx.com:interface:spi:1.0 None SS_O";
   signal zynq_ultra_ps_e_0_SPI_1_SS_T : STD_LOGIC;
-  attribute CONN_BUS_INFO of zynq_ultra_ps_e_0_SPI_1_SS_T : signal is "zynq_ultra_ps_e_0_SPI_1 xilinx.com:interface:spi:1.0 None SS_T";
   attribute DONT_TOUCH of zynq_ultra_ps_e_0_SPI_1_SS_T : signal is std.standard.true;
+  attribute conn_bus_info of zynq_ultra_ps_e_0_SPI_1_SS_T : signal is "zynq_ultra_ps_e_0_SPI_1 xilinx.com:interface:spi:1.0 None SS_T";
   signal zynq_ultra_ps_e_0_UART_1_RxD : STD_LOGIC;
-  attribute CONN_BUS_INFO of zynq_ultra_ps_e_0_UART_1_RxD : signal is "zynq_ultra_ps_e_0_UART_1 xilinx.com:interface:uart:1.0 None RxD";
   attribute DONT_TOUCH of zynq_ultra_ps_e_0_UART_1_RxD : signal is std.standard.true;
+  attribute conn_bus_info of zynq_ultra_ps_e_0_UART_1_RxD : signal is "zynq_ultra_ps_e_0_UART_1 xilinx.com:interface:uart:1.0 None RxD";
   signal zynq_ultra_ps_e_0_UART_1_TxD : STD_LOGIC;
-  attribute CONN_BUS_INFO of zynq_ultra_ps_e_0_UART_1_TxD : signal is "zynq_ultra_ps_e_0_UART_1 xilinx.com:interface:uart:1.0 None TxD";
   attribute DONT_TOUCH of zynq_ultra_ps_e_0_UART_1_TxD : signal is std.standard.true;
+  attribute conn_bus_info of zynq_ultra_ps_e_0_UART_1_TxD : signal is "zynq_ultra_ps_e_0_UART_1 xilinx.com:interface:uart:1.0 None TxD";
   signal zynq_ultra_ps_e_0_pl_clk1 : STD_LOGIC;
   signal NLW_zynq_ultra_ps_e_0_maxigp2_arlock_UNCONNECTED : STD_LOGIC;
   signal NLW_zynq_ultra_ps_e_0_maxigp2_arvalid_UNCONNECTED : STD_LOGIC;
@@ -345,43 +338,43 @@ architecture STRUCTURE of zusys is
   signal NLW_zynq_ultra_ps_e_0_maxigp2_awuser_UNCONNECTED : STD_LOGIC_VECTOR ( 15 downto 0 );
   signal NLW_zynq_ultra_ps_e_0_maxigp2_wdata_UNCONNECTED : STD_LOGIC_VECTOR ( 31 downto 0 );
   signal NLW_zynq_ultra_ps_e_0_maxigp2_wstrb_UNCONNECTED : STD_LOGIC_VECTOR ( 3 downto 0 );
-  attribute X_INTERFACE_INFO : string;
-  attribute X_INTERFACE_INFO of IIC_1_0_scl_i : signal is "xilinx.com:interface:iic:1.0 IIC_1_0 SCL_I";
-  attribute X_INTERFACE_INFO of IIC_1_0_scl_o : signal is "xilinx.com:interface:iic:1.0 IIC_1_0 SCL_O";
-  attribute X_INTERFACE_INFO of IIC_1_0_scl_t : signal is "xilinx.com:interface:iic:1.0 IIC_1_0 SCL_T";
-  attribute X_INTERFACE_INFO of IIC_1_0_sda_i : signal is "xilinx.com:interface:iic:1.0 IIC_1_0 SDA_I";
-  attribute X_INTERFACE_INFO of IIC_1_0_sda_o : signal is "xilinx.com:interface:iic:1.0 IIC_1_0 SDA_O";
-  attribute X_INTERFACE_INFO of IIC_1_0_sda_t : signal is "xilinx.com:interface:iic:1.0 IIC_1_0 SDA_T";
-  attribute X_INTERFACE_INFO of SPI_0_0_io0_i : signal is "xilinx.com:interface:spi:1.0 SPI_0_0 IO0_I";
-  attribute X_INTERFACE_INFO of SPI_0_0_io0_o : signal is "xilinx.com:interface:spi:1.0 SPI_0_0 IO0_O";
-  attribute X_INTERFACE_INFO of SPI_0_0_io0_t : signal is "xilinx.com:interface:spi:1.0 SPI_0_0 IO0_T";
-  attribute X_INTERFACE_INFO of SPI_0_0_io1_i : signal is "xilinx.com:interface:spi:1.0 SPI_0_0 IO1_I";
-  attribute X_INTERFACE_INFO of SPI_0_0_io1_o : signal is "xilinx.com:interface:spi:1.0 SPI_0_0 IO1_O";
-  attribute X_INTERFACE_INFO of SPI_0_0_io1_t : signal is "xilinx.com:interface:spi:1.0 SPI_0_0 IO1_T";
-  attribute X_INTERFACE_INFO of SPI_0_0_sck_i : signal is "xilinx.com:interface:spi:1.0 SPI_0_0 SCK_I";
-  attribute X_INTERFACE_INFO of SPI_0_0_sck_o : signal is "xilinx.com:interface:spi:1.0 SPI_0_0 SCK_O";
-  attribute X_INTERFACE_INFO of SPI_0_0_sck_t : signal is "xilinx.com:interface:spi:1.0 SPI_0_0 SCK_T";
-  attribute X_INTERFACE_INFO of SPI_0_0_ss_i : signal is "xilinx.com:interface:spi:1.0 SPI_0_0 SS_I";
-  attribute X_INTERFACE_INFO of SPI_0_0_ss_o : signal is "xilinx.com:interface:spi:1.0 SPI_0_0 SS_O";
-  attribute X_INTERFACE_INFO of SPI_0_0_ss_t : signal is "xilinx.com:interface:spi:1.0 SPI_0_0 SS_T";
-  attribute X_INTERFACE_INFO of SPI_1_0_io0_i : signal is "xilinx.com:interface:spi:1.0 SPI_1_0 IO0_I";
-  attribute X_INTERFACE_INFO of SPI_1_0_io0_o : signal is "xilinx.com:interface:spi:1.0 SPI_1_0 IO0_O";
-  attribute X_INTERFACE_INFO of SPI_1_0_io0_t : signal is "xilinx.com:interface:spi:1.0 SPI_1_0 IO0_T";
-  attribute X_INTERFACE_INFO of SPI_1_0_io1_i : signal is "xilinx.com:interface:spi:1.0 SPI_1_0 IO1_I";
-  attribute X_INTERFACE_INFO of SPI_1_0_io1_o : signal is "xilinx.com:interface:spi:1.0 SPI_1_0 IO1_O";
-  attribute X_INTERFACE_INFO of SPI_1_0_io1_t : signal is "xilinx.com:interface:spi:1.0 SPI_1_0 IO1_T";
-  attribute X_INTERFACE_INFO of SPI_1_0_sck_i : signal is "xilinx.com:interface:spi:1.0 SPI_1_0 SCK_I";
-  attribute X_INTERFACE_INFO of SPI_1_0_sck_o : signal is "xilinx.com:interface:spi:1.0 SPI_1_0 SCK_O";
-  attribute X_INTERFACE_INFO of SPI_1_0_sck_t : signal is "xilinx.com:interface:spi:1.0 SPI_1_0 SCK_T";
-  attribute X_INTERFACE_INFO of SPI_1_0_ss_i : signal is "xilinx.com:interface:spi:1.0 SPI_1_0 SS_I";
-  attribute X_INTERFACE_INFO of SPI_1_0_ss_o : signal is "xilinx.com:interface:spi:1.0 SPI_1_0 SS_O";
-  attribute X_INTERFACE_INFO of SPI_1_0_ss_t : signal is "xilinx.com:interface:spi:1.0 SPI_1_0 SS_T";
-  attribute X_INTERFACE_INFO of UART_1_0_rxd : signal is "xilinx.com:interface:uart:1.0 UART_1_0 RxD";
-  attribute X_INTERFACE_INFO of UART_1_0_txd : signal is "xilinx.com:interface:uart:1.0 UART_1_0 TxD";
-  attribute X_INTERFACE_INFO of SI5338_CLK0_D_clk_n : signal is "xilinx.com:interface:diff_clock:1.0 SI5338_CLK0_D CLK_N";
-  attribute X_INTERFACE_PARAMETER : string;
-  attribute X_INTERFACE_PARAMETER of SI5338_CLK0_D_clk_n : signal is "XIL_INTERFACENAME SI5338_CLK0_D, CAN_DEBUG false, FREQ_HZ 100000000";
-  attribute X_INTERFACE_INFO of SI5338_CLK0_D_clk_p : signal is "xilinx.com:interface:diff_clock:1.0 SI5338_CLK0_D CLK_P";
+  attribute x_interface_info : string;
+  attribute x_interface_info of IIC_1_0_scl_i : signal is "xilinx.com:interface:iic:1.0 IIC_1_0 SCL_I";
+  attribute x_interface_info of IIC_1_0_scl_o : signal is "xilinx.com:interface:iic:1.0 IIC_1_0 SCL_O";
+  attribute x_interface_info of IIC_1_0_scl_t : signal is "xilinx.com:interface:iic:1.0 IIC_1_0 SCL_T";
+  attribute x_interface_info of IIC_1_0_sda_i : signal is "xilinx.com:interface:iic:1.0 IIC_1_0 SDA_I";
+  attribute x_interface_info of IIC_1_0_sda_o : signal is "xilinx.com:interface:iic:1.0 IIC_1_0 SDA_O";
+  attribute x_interface_info of IIC_1_0_sda_t : signal is "xilinx.com:interface:iic:1.0 IIC_1_0 SDA_T";
+  attribute x_interface_info of SPI_0_0_io0_i : signal is "xilinx.com:interface:spi:1.0 SPI_0_0 IO0_I";
+  attribute x_interface_info of SPI_0_0_io0_o : signal is "xilinx.com:interface:spi:1.0 SPI_0_0 IO0_O";
+  attribute x_interface_info of SPI_0_0_io0_t : signal is "xilinx.com:interface:spi:1.0 SPI_0_0 IO0_T";
+  attribute x_interface_info of SPI_0_0_io1_i : signal is "xilinx.com:interface:spi:1.0 SPI_0_0 IO1_I";
+  attribute x_interface_info of SPI_0_0_io1_o : signal is "xilinx.com:interface:spi:1.0 SPI_0_0 IO1_O";
+  attribute x_interface_info of SPI_0_0_io1_t : signal is "xilinx.com:interface:spi:1.0 SPI_0_0 IO1_T";
+  attribute x_interface_info of SPI_0_0_sck_i : signal is "xilinx.com:interface:spi:1.0 SPI_0_0 SCK_I";
+  attribute x_interface_info of SPI_0_0_sck_o : signal is "xilinx.com:interface:spi:1.0 SPI_0_0 SCK_O";
+  attribute x_interface_info of SPI_0_0_sck_t : signal is "xilinx.com:interface:spi:1.0 SPI_0_0 SCK_T";
+  attribute x_interface_info of SPI_0_0_ss_i : signal is "xilinx.com:interface:spi:1.0 SPI_0_0 SS_I";
+  attribute x_interface_info of SPI_0_0_ss_o : signal is "xilinx.com:interface:spi:1.0 SPI_0_0 SS_O";
+  attribute x_interface_info of SPI_0_0_ss_t : signal is "xilinx.com:interface:spi:1.0 SPI_0_0 SS_T";
+  attribute x_interface_info of SPI_1_0_io0_i : signal is "xilinx.com:interface:spi:1.0 SPI_1_0 IO0_I";
+  attribute x_interface_info of SPI_1_0_io0_o : signal is "xilinx.com:interface:spi:1.0 SPI_1_0 IO0_O";
+  attribute x_interface_info of SPI_1_0_io0_t : signal is "xilinx.com:interface:spi:1.0 SPI_1_0 IO0_T";
+  attribute x_interface_info of SPI_1_0_io1_i : signal is "xilinx.com:interface:spi:1.0 SPI_1_0 IO1_I";
+  attribute x_interface_info of SPI_1_0_io1_o : signal is "xilinx.com:interface:spi:1.0 SPI_1_0 IO1_O";
+  attribute x_interface_info of SPI_1_0_io1_t : signal is "xilinx.com:interface:spi:1.0 SPI_1_0 IO1_T";
+  attribute x_interface_info of SPI_1_0_sck_i : signal is "xilinx.com:interface:spi:1.0 SPI_1_0 SCK_I";
+  attribute x_interface_info of SPI_1_0_sck_o : signal is "xilinx.com:interface:spi:1.0 SPI_1_0 SCK_O";
+  attribute x_interface_info of SPI_1_0_sck_t : signal is "xilinx.com:interface:spi:1.0 SPI_1_0 SCK_T";
+  attribute x_interface_info of SPI_1_0_ss_i : signal is "xilinx.com:interface:spi:1.0 SPI_1_0 SS_I";
+  attribute x_interface_info of SPI_1_0_ss_o : signal is "xilinx.com:interface:spi:1.0 SPI_1_0 SS_O";
+  attribute x_interface_info of SPI_1_0_ss_t : signal is "xilinx.com:interface:spi:1.0 SPI_1_0 SS_T";
+  attribute x_interface_info of UART_1_0_rxd : signal is "xilinx.com:interface:uart:1.0 UART_1_0 RxD";
+  attribute x_interface_info of UART_1_0_txd : signal is "xilinx.com:interface:uart:1.0 UART_1_0 TxD";
+  attribute x_interface_info of SI5338_CLK0_D_clk_n : signal is "xilinx.com:interface:diff_clock:1.0 SI5338_CLK0_D CLK_N";
+  attribute x_interface_parameter : string;
+  attribute x_interface_parameter of SI5338_CLK0_D_clk_n : signal is "XIL_INTERFACENAME SI5338_CLK0_D, CAN_DEBUG false, FREQ_HZ 100000000";
+  attribute x_interface_info of SI5338_CLK0_D_clk_p : signal is "xilinx.com:interface:diff_clock:1.0 SI5338_CLK0_D CLK_P";
 begin
   CLK_IN_D_1_CLK_N(0) <= SI5338_CLK0_D_clk_n(0);
   CLK_IN_D_1_CLK_P(0) <= SI5338_CLK0_D_clk_p(0);
@@ -419,11 +412,6 @@ begin
   zynq_ultra_ps_e_0_SPI_1_SCK_I <= SPI_1_0_sck_i;
   zynq_ultra_ps_e_0_SPI_1_SS_I <= SPI_1_0_ss_i;
   zynq_ultra_ps_e_0_UART_1_RxD <= UART_1_0_rxd;
-clk_wiz_0: component zusys_clk_wiz_0_0
-     port map (
-      clk_in1 => zynq_ultra_ps_e_0_pl_clk1,
-      clk_out1 => clk_wiz_0_clk_out1
-    );
 labtools_fmeter_0: component zusys_labtools_fmeter_0_0
      port map (
       F0(31 downto 0) => fm_SI5338_CLK0_D(31 downto 0),
@@ -465,7 +453,7 @@ system_ila_0: component zusys_system_ila_0_0
       SLOT_3_SPI_ss_i => zynq_ultra_ps_e_0_SPI_1_SS_I,
       SLOT_3_SPI_ss_o => zynq_ultra_ps_e_0_SPI_1_SS_O,
       SLOT_3_SPI_ss_t => zynq_ultra_ps_e_0_SPI_1_SS_T,
-      clk => clk_wiz_0_clk_out1
+      clk => zynq_ultra_ps_e_0_pl_clk1
     );
 util_ds_buf_0: component zusys_util_ds_buf_0_0
      port map (

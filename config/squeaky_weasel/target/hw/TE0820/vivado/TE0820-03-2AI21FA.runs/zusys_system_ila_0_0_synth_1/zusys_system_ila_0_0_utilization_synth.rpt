@@ -1,7 +1,7 @@
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 -----------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
-| Date         : Sat Aug 29 13:43:42 2020
+| Date         : Sat Aug 29 15:50:25 2020
 | Host         : vagrant running 64-bit Ubuntu 16.04.6 LTS
 | Command      : report_utilization -file zusys_system_ila_0_0_utilization_synth.rpt -pb zusys_system_ila_0_0_utilization_synth.pb
 | Design       : zusys_system_ila_0_0
@@ -31,8 +31,8 @@ Table of Contents
 +----------------------------+------+-------+-----------+-------+
 |          Site Type         | Used | Fixed | Available | Util% |
 +----------------------------+------+-------+-----------+-------+
-| CLB LUTs*                  | 1846 |     0 |     47232 |  3.91 |
-|   LUT as Logic             | 1587 |     0 |     47232 |  3.36 |
+| CLB LUTs*                  | 1844 |     0 |     47232 |  3.90 |
+|   LUT as Logic             | 1585 |     0 |     47232 |  3.36 |
 |   LUT as Memory            |  259 |     0 |     28800 |  0.90 |
 |     LUT as Distributed RAM |    0 |     0 |           |       |
 |     LUT as Shift Register  |  259 |     0 |           |       |
@@ -40,7 +40,7 @@ Table of Contents
 |   Register as Flip Flop    | 2624 |     0 |     94464 |  2.78 |
 |   Register as Latch        |    0 |     0 |     94464 |  0.00 |
 | CARRY8                     |   41 |     0 |      8820 |  0.46 |
-| F7 Muxes                   |   94 |     0 |     35280 |  0.27 |
+| F7 Muxes                   |   93 |     0 |     35280 |  0.26 |
 | F8 Muxes                   |    0 |     0 |     17640 |  0.00 |
 | F9 Muxes                   |    0 |     0 |      8820 |  0.00 |
 +----------------------------+------+-------+-----------+-------+
@@ -151,13 +151,13 @@ Table of Contents
 | Ref Name | Used | Functional Category |
 +----------+------+---------------------+
 | FDRE     | 2611 |            Register |
-| LUT6     |  981 |                 CLB |
-| LUT4     |  349 |                 CLB |
+| LUT6     |  979 |                 CLB |
+| LUT4     |  348 |                 CLB |
 | SRLC32E  |  221 |                 CLB |
 | SRL16E   |  204 |                 CLB |
 | LUT3     |  146 |                 CLB |
 | LUT5     |  137 |                 CLB |
-| MUXF7    |   94 |                 CLB |
+| MUXF7    |   93 |                 CLB |
 | LUT2     |   78 |                 CLB |
 | LUT1     |   61 |                 CLB |
 | CARRY8   |   41 |                 CLB |

@@ -28,7 +28,4 @@ set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==zusys_zynq_ultr
 # IP: bd/zusys/ip/zusys_system_ila_0_0/zusys_system_ila_0_0.xci
 set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==zusys_system_ila_0_0 || ORIG_REF_NAME==zusys_system_ila_0_0} -quiet] -quiet
 
-# IP: bd/zusys/ip/zusys_clk_wiz_0_0/zusys_clk_wiz_0_0.xci
-set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==zusys_clk_wiz_0_0 || ORIG_REF_NAME==zusys_clk_wiz_0_0} -quiet] -quiet
-
 # XDC: bd/zusys/zusys_ooc.xdc

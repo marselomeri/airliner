@@ -1,4 +1,4 @@
-set_property SRC_FILE_INFO {cfile:/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vivado/TE0820-03-2AI21FA.srcs/te0701_fmc/vivado_target.xdc rfile:../../../TE0820-03-2AI21FA.srcs/te0701_fmc/vivado_target.xdc id:1} [current_design]
+set_property SRC_FILE_INFO {cfile:/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/te0701_fmc/vivado_target.xdc rfile:../../../TE0820-03-2AI21FA.srcs/te0701_fmc/vivado_target.xdc id:1} [current_design]
 set_property src_info {type:XDC file:1 line:1 export:INPUT save:INPUT read:READ} [current_design]
 set_property PACKAGE_PIN F2 [get_ports IIC_1_0_scl_io]
 set_property src_info {type:XDC file:1 line:2 export:INPUT save:INPUT read:READ} [current_design]

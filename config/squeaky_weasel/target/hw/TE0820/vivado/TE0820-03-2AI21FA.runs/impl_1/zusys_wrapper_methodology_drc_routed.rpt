@@ -1,7 +1,7 @@
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
-| Date         : Sat Aug 29 14:23:13 2020
+| Date         : Sat Aug 29 15:58:53 2020
 | Host         : vagrant running 64-bit Ubuntu 16.04.6 LTS
 | Command      : report_methodology -file zusys_wrapper_methodology_drc_routed.rpt -pb zusys_wrapper_methodology_drc_routed.pb -rpx zusys_wrapper_methodology_drc_routed.rpx
 | Design       : zusys_wrapper
@@ -23,27 +23,18 @@ Table of Contents
           Floorplan: design_1
       Design limits: <entire design considered>
              Max violations: <unlimited>
-             Violations found: 20
+             Violations found: 27
 +-----------+------------------+------------------------------------------------------------------+------------+
 | Rule      | Severity         | Description                                                      | Violations |
 +-----------+------------------+------------------------------------------------------------------+------------+
-| TIMING-4  | Critical Warning | Invalid primary clock redefinition on a clock tree               | 1          |
 | TIMING-17 | Critical Warning | Non-clocked sequential cell                                      | 6          |
-| TIMING-27 | Critical Warning | Invalid primary clock on hierarchical pin                        | 1          |
 | CKLD-2    | Warning          | Clock Net has IO Driver, not a Clock Buf, and/or non-Clock loads | 3          |
 | LUTAR-1   | Warning          | LUT drives async reset alert                                     | 5          |
-| TIMING-9  | Warning          | Unknown CDC Logic                                                | 1          |
-| TIMING-18 | Warning          | Missing input or output delay                                    | 2          |
-| CLKC-58   | Advisory         | PLLE4 with global clock driver has no LOC                        | 1          |
+| TIMING-18 | Warning          | Missing input or output delay                                    | 13         |
 +-----------+------------------+------------------------------------------------------------------+------------+
 
 2. REPORT DETAILS
 -----------------
-TIMING-4#1 Critical Warning
-Invalid primary clock redefinition on a clock tree  
-Invalid clock redefinition on a clock tree. The primary clock zusys_i/clk_wiz_0/inst/clk_in1 is defined downstream of clock clk_pl_0 and overrides its insertion delay and/or waveform definition
-Related violations: <none>
-
 TIMING-17#1 Critical Warning
 Non-clocked sequential cell  
 The clock pin zusys_i/labtools_fmeter_0/U0/FMETER_gen[0].COUNTER_F_inst/bl.DSP48E_2/DSP_ALU_INST/CLK is not reached by a timing clock
@@ -72,11 +63,6 @@ Related violations: <none>
 TIMING-17#6 Critical Warning
 Non-clocked sequential cell  
 The clock pin zusys_i/zynq_ultra_ps_e_0/U0/PS8_i/EMIOSPI1SCLKI is not reached by a timing clock
-Related violations: <none>
-
-TIMING-27#1 Critical Warning
-Invalid primary clock on hierarchical pin  
-A primary clock zusys_i/clk_wiz_0/inst/clk_in1 is created on an inappropriate internal pin zusys_i/clk_wiz_0/inst/clk_in1. It is not recommended to create a primary clock on a hierarchical pin when its driver pin has a fanout connected to multiple clock pins
 Related violations: <none>
 
 CKLD-2#1 Warning
@@ -119,24 +105,69 @@ LUT drives async reset alert
 LUT cell dbg_hub/inst/BSCANID.u_xsdbm_id/SWITCH_N_EXT_BSCAN.bscan_switch/m_bscan_sel[0]_INST_0, with 2 or more inputs, drives asynchronous preset/clear pin(s) dbg_hub/inst/BSCANID.u_xsdbm_id/CORE_XSDB.U_ICON/U_CMD/iTARGET_reg[10]/CLR, dbg_hub/inst/BSCANID.u_xsdbm_id/CORE_XSDB.U_ICON/U_CMD/iTARGET_reg[11]/CLR, dbg_hub/inst/BSCANID.u_xsdbm_id/CORE_XSDB.U_ICON/U_CMD/iTARGET_reg[12]/CLR, dbg_hub/inst/BSCANID.u_xsdbm_id/CORE_XSDB.U_ICON/U_CMD/iTARGET_reg[13]/CLR, dbg_hub/inst/BSCANID.u_xsdbm_id/CORE_XSDB.U_ICON/U_CMD/iTARGET_reg[14]/CLR, dbg_hub/inst/BSCANID.u_xsdbm_id/CORE_XSDB.U_ICON/U_CMD/iTARGET_reg[15]/CLR, dbg_hub/inst/BSCANID.u_xsdbm_id/CORE_XSDB.U_ICON/U_CMD/iTARGET_reg[6]/CLR, dbg_hub/inst/BSCANID.u_xsdbm_id/CORE_XSDB.U_ICON/U_CMD/iTARGET_reg[7]/CLR, dbg_hub/inst/BSCANID.u_xsdbm_id/CORE_XSDB.U_ICON/U_CMD/iTARGET_reg[8]/CLR, dbg_hub/inst/BSCANID.u_xsdbm_id/CORE_XSDB.U_ICON/U_CMD/iTARGET_reg[9]/CLR. The LUT may glitch and trigger an unexpected reset, even if it is a properly timed path.
 Related violations: <none>
 
-TIMING-9#1 Warning
-Unknown CDC Logic  
-One or more asynchronous Clock Domain Crossing has been detected between 2 clock domains through a set_false_path or a set_clock_groups or set_max_delay -datapath_only constraint but no double-registers logic synchronizer has been found on the side of the capture clock. It is recommended to run report_cdc for a complete and detailed CDC coverage. Please consider using XPM_CDC to avoid Critical severities
-Related violations: <none>
-
 TIMING-18#1 Warning
 Missing input or output delay  
-An input delay is missing on x0[0] relative to clock(s) clk_pl_0
+An input delay is missing on IIC_1_0_scl_io relative to clock(s) clk_pl_0
 Related violations: <none>
 
 TIMING-18#2 Warning
 Missing input or output delay  
-An input delay is missing on x1[0] relative to clock(s) clk_pl_0
+An input delay is missing on IIC_1_0_sda_io relative to clock(s) clk_pl_0
 Related violations: <none>
 
-CLKC-58#1 Advisory
-PLLE4 with global clock driver has no LOC  
-The PLLE4_ADV cell zusys_i/clk_wiz_0/inst/plle4_adv_inst CLKIN pin is driven by global Clock buffer zusys_i/zynq_ultra_ps_e_0/U0/buffer_pl_clk_0.PL_CLK_0_BUFG and does not have a LOC constraint. It is recommended to LOC the PLL and use the CLOCK_DEDICATED_ROUTE constraint on the net driven by the global Clock buffer.
+TIMING-18#3 Warning
+Missing input or output delay  
+An input delay is missing on SPI_0_0_io0_io relative to clock(s) clk_pl_0
+Related violations: <none>
+
+TIMING-18#4 Warning
+Missing input or output delay  
+An input delay is missing on SPI_0_0_io1_io relative to clock(s) clk_pl_0
+Related violations: <none>
+
+TIMING-18#5 Warning
+Missing input or output delay  
+An input delay is missing on SPI_0_0_sck_io relative to clock(s) clk_pl_0
+Related violations: <none>
+
+TIMING-18#6 Warning
+Missing input or output delay  
+An input delay is missing on SPI_0_0_ss_io relative to clock(s) clk_pl_0
+Related violations: <none>
+
+TIMING-18#7 Warning
+Missing input or output delay  
+An input delay is missing on SPI_1_0_io0_io relative to clock(s) clk_pl_0
+Related violations: <none>
+
+TIMING-18#8 Warning
+Missing input or output delay  
+An input delay is missing on SPI_1_0_io1_io relative to clock(s) clk_pl_0
+Related violations: <none>
+
+TIMING-18#9 Warning
+Missing input or output delay  
+An input delay is missing on SPI_1_0_sck_io relative to clock(s) clk_pl_0
+Related violations: <none>
+
+TIMING-18#10 Warning
+Missing input or output delay  
+An input delay is missing on SPI_1_0_ss_io relative to clock(s) clk_pl_0
+Related violations: <none>
+
+TIMING-18#11 Warning
+Missing input or output delay  
+An input delay is missing on UART_1_0_rxd relative to clock(s) clk_pl_0
+Related violations: <none>
+
+TIMING-18#12 Warning
+Missing input or output delay  
+An input delay is missing on x0[0] relative to clock(s) clk_pl_0
+Related violations: <none>
+
+TIMING-18#13 Warning
+Missing input or output delay  
+An input delay is missing on x1[0] relative to clock(s) clk_pl_0
 Related violations: <none>
 
 

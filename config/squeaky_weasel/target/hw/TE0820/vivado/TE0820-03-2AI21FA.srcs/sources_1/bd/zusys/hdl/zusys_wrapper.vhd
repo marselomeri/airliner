@@ -1,7 +1,7 @@
 --Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
---Date        : Sat Aug 29 13:43:48 2020
+--Date        : Sat Aug 29 15:44:59 2020
 --Host        : vagrant running 64-bit Ubuntu 16.04.6 LTS
 --Command     : generate_target zusys_wrapper.bd
 --Design      : zusys_wrapper
