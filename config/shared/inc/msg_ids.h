@@ -641,6 +641,13 @@
 #define MPU6050_CMD_MID                              (0x1cd3)
 #define MPU6050_MEASURE_MID                          (0x1cd4)
 
+/* ICM20689                                                */
+#define ICM20689_SEND_HK_MID                         (0x1cd0)
+#define ICM20689_HK_TLM_MID                          (0x0cd1)
+#define ICM20689_DIAG_TLM_MID                        (0x0cd2)
+#define ICM20689_CMD_MID                             (0x1cd3)
+#define ICM20689_MEASURE_MID                         (0x1cd4)
+
 /* SONAR                                                   */
 #define SONAR_CMD_MID                                (0x1cd6)
 #define SONAR_SEND_HK_MID                            (0x1cd7)
