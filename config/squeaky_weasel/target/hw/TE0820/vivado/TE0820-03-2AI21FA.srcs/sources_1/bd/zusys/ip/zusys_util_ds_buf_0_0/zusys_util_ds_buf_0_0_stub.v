@@ -1,10 +1,10 @@
 // Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
-// Date        : Sat Aug 29 15:08:30 2020
+// Date        : Sat Aug 29 15:08:29 2020
 // Host        : vagrant running 64-bit Ubuntu 16.04.6 LTS
-// Command     : write_verilog -force -mode synth_stub
-//               /home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_util_ds_buf_0_0/zusys_util_ds_buf_0_0_stub.v
+// Command     : write_verilog -force -mode synth_stub -rename_top zusys_util_ds_buf_0_0 -prefix
+//               zusys_util_ds_buf_0_0_ zusys_util_ds_buf_0_0_stub.v
 // Design      : zusys_util_ds_buf_0_0
 // Purpose     : Stub declaration of top-level module interface
 // Device      : xczu2cg-sfvc784-1-i

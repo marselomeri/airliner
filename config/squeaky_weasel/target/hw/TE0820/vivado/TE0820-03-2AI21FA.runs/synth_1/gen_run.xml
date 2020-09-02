@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="synth_1" LaunchPart="xczu2cg-sfvc784-1-i" LaunchTime="1598733903">
-  <File Type="VDS-TIMING-PB" Name="zusys_wrapper_timing_summary_synth.pb"/>
-  <File Type="VDS-TIMINGSUMMARY" Name="zusys_wrapper_timing_summary_synth.rpt"/>
+<GenRun Id="synth_1" LaunchPart="xczu2cg-sfvc784-1-i" LaunchTime="1598878017">
+  <File Type="PA-TCL" Name="zusys_wrapper.tcl"/>
+  <File Type="REPORTS-TCL" Name="zusys_wrapper_reports.tcl"/>
+  <File Type="RDS-RDS" Name="zusys_wrapper.vds"/>
   <File Type="RDS-DCP" Name="zusys_wrapper.dcp"/>
   <File Type="RDS-UTIL-PB" Name="zusys_wrapper_utilization_synth.pb"/>
   <File Type="RDS-UTIL" Name="zusys_wrapper_utilization_synth.rpt"/>
-  <File Type="RDS-PROPCONSTRS" Name="zusys_wrapper_drc_synth.rpt"/>
-  <File Type="RDS-RDS" Name="zusys_wrapper.vds"/>
-  <File Type="REPORTS-TCL" Name="zusys_wrapper_reports.tcl"/>
-  <File Type="PA-TCL" Name="zusys_wrapper.tcl"/>
   <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
     <Filter Type="Srcs"/>
     <File Path="$PSRCDIR/sources_1/bd/zusys/zusys.bd">
@@ -62,9 +59,9 @@
     <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019"/>
     <Step Id="synth_design"/>
   </Strategy>
+  <BlockFileSet Type="BlockSrcs" Name="zusys_util_ds_buf_0_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="zusys_labtools_fmeter_0_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="zusys_zynq_ultra_ps_e_0_0"/>
   <BlockFileSet Type="BlockSrcs" Name="zusys_system_ila_0_0"/>
   <BlockFileSet Type="BlockSrcs" Name="zusys_vio_0_0"/>
-  <BlockFileSet Type="BlockSrcs" Name="zusys_zynq_ultra_ps_e_0_0"/>
-  <BlockFileSet Type="BlockSrcs" Name="zusys_labtools_fmeter_0_0"/>
-  <BlockFileSet Type="BlockSrcs" Name="zusys_util_ds_buf_0_0"/>
 </GenRun>

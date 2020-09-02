@@ -64,7 +64,7 @@ CONFIG_system-zynqmp=y
 # CONFIG_busybox-dbg is not set
 # CONFIG_busybox-syslog is not set
 # CONFIG_busybox-hwclock is not set
-CONFIG_busybox-httpd=y
+# CONFIG_busybox-httpd is not set
 # CONFIG_busybox-dev is not set
 # CONFIG_busybox-udhcpc is not set
 # CONFIG_busybox-udhcpd is not set
@@ -163,8 +163,8 @@ CONFIG_haveged=y
 # i2c-tools 
 #
 CONFIG_i2c-tools=y
-# CONFIG_i2c-tools-dev is not set
-# CONFIG_i2c-tools-misc is not set
+CONFIG_i2c-tools-dev=y
+CONFIG_i2c-tools-misc=y
 # CONFIG_i2c-tools-dbg is not set
 
 #
@@ -567,7 +567,7 @@ CONFIG_rsync=y
 #
 # socat 
 #
-CONFIG_socat=y
+# CONFIG_socat is not set
 # CONFIG_socat-dev is not set
 # CONFIG_socat-dbg is not set
 
@@ -589,7 +589,7 @@ CONFIG_socat=y
 #
 # wget 
 #
-CONFIG_wget=y
+# CONFIG_wget is not set
 # CONFIG_wget-dev is not set
 # CONFIG_wget-dbg is not set
 
@@ -895,14 +895,14 @@ CONFIG_screen=y
 #
 # vim 
 #
-CONFIG_vim=y
+# CONFIG_vim is not set
 # CONFIG_vim-help is not set
 # CONFIG_vim-dbg is not set
 # CONFIG_vim-vimrc is not set
 # CONFIG_vim-dev is not set
 # CONFIG_vim-tutor is not set
-CONFIG_vim-tools=y
-CONFIG_vim-common=y
+# CONFIG_vim-tools is not set
+# CONFIG_vim-common is not set
 # CONFIG_vim-syntax is not set
 
 #
@@ -1645,10 +1645,10 @@ CONFIG_run-postinsts=y
 #
 # libmetal 
 #
-CONFIG_libmetal=y
-CONFIG_libmetal-dev=y
-CONFIG_libmetal-dbg=y
-CONFIG_libmetal-demos=y
+# CONFIG_libmetal is not set
+# CONFIG_libmetal-dev is not set
+# CONFIG_libmetal-dbg is not set
+# CONFIG_libmetal-demos is not set
 
 #
 # libmpc 
@@ -2134,10 +2134,10 @@ CONFIG_libmetal-demos=y
 #
 # open-amp 
 #
-CONFIG_open-amp=y
-CONFIG_open-amp-dev=y
-CONFIG_open-amp-dbg=y
-CONFIG_open-amp-demos=y
+# CONFIG_open-amp is not set
+# CONFIG_open-amp-dev is not set
+# CONFIG_open-amp-dbg is not set
+# CONFIG_open-amp-demos is not set
 
 #
 # opencv 
@@ -2769,7 +2769,7 @@ CONFIG_packagegroup-core-boot=y
 #
 # packagegroup-core-ssh-dropbear 
 #
-CONFIG_packagegroup-core-ssh-dropbear=y
+# CONFIG_packagegroup-core-ssh-dropbear is not set
 # CONFIG_packagegroup-core-ssh-dropbear-dev is not set
 # CONFIG_packagegroup-core-ssh-dropbear-dbg is not set
 
@@ -3628,14 +3628,14 @@ CONFIG_bridge-utils=y
 #
 # netcat 
 #
-CONFIG_netcat=y
+# CONFIG_netcat is not set
 # CONFIG_netcat-dbg is not set
 # CONFIG_netcat-dev is not set
 
 #
 # tcpdump 
 #
-# CONFIG_tcpdump is not set
+CONFIG_tcpdump=y
 # CONFIG_tcpdump-dev is not set
 # CONFIG_tcpdump-dbg is not set
 
@@ -4133,8 +4133,8 @@ CONFIG_hellopm=y
 #
 # packagegroup-petalinux-openamp 
 #
-# CONFIG_packagegroup-petalinux-openamp is not set
-# CONFIG_packagegroup-petalinux-openamp-dev is not set
+CONFIG_packagegroup-petalinux-openamp=y
+CONFIG_packagegroup-petalinux-openamp-dev=y
 # CONFIG_packagegroup-petalinux-openamp-dbg is not set
 
 #
@@ -4176,14 +4176,14 @@ CONFIG_hellopm=y
 #
 # packagegroup-petalinux-utils 
 #
-CONFIG_packagegroup-petalinux-utils=y
+# CONFIG_packagegroup-petalinux-utils is not set
 # CONFIG_packagegroup-petalinux-utils-dbg is not set
 # CONFIG_packagegroup-petalinux-utils-dev is not set
 
 #
 # packagegroup-petalinux-v4lutils 
 #
-CONFIG_packagegroup-petalinux-v4lutils=y
+# CONFIG_packagegroup-petalinux-v4lutils is not set
 # CONFIG_packagegroup-petalinux-v4lutils-dbg is not set
 # CONFIG_packagegroup-petalinux-v4lutils-dev is not set
 
@@ -4212,7 +4212,7 @@ CONFIG_packagegroup-petalinux-v4lutils=y
 # Image Features
 #
 # CONFIG_imagefeature-ssh-server-dropbear is not set
-# CONFIG_imagefeature-ssh-server-openssh is not set
+CONFIG_imagefeature-ssh-server-openssh=y
 CONFIG_imagefeature-hwcodecs=y
 # CONFIG_imagefeature-package-management is not set
 # CONFIG_imagefeature-debug-tweaks is not set
@@ -4220,10 +4220,8 @@ CONFIG_imagefeature-hwcodecs=y
 #
 # apps 
 #
-CONFIG_gpio-demo=y
-CONFIG_peekpoke=y
-CONFIG_startup=y
-CONFIG_webfwu=y
+# CONFIG_gpio-demo is not set
+# CONFIG_peekpoke is not set
 
 #
 # user packages 

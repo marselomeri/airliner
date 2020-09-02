@@ -1,10 +1,10 @@
 // Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
-// Date        : Sat Aug 29 15:10:51 2020
+// Date        : Sat Aug 29 15:10:50 2020
 // Host        : vagrant running 64-bit Ubuntu 16.04.6 LTS
-// Command     : write_verilog -force -mode funcsim
-//               /home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_labtools_fmeter_0_0/zusys_labtools_fmeter_0_0_sim_netlist.v
+// Command     : write_verilog -force -mode funcsim -rename_top zusys_labtools_fmeter_0_0 -prefix
+//               zusys_labtools_fmeter_0_0_ zusys_labtools_fmeter_0_0_sim_netlist.v
 // Design      : zusys_labtools_fmeter_0_0
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -12,31 +12,6 @@
 // --------------------------------------------------------------------------------
 `timescale 1 ps / 1 ps
 
-(* CHECK_LICENSE_TYPE = "zusys_labtools_fmeter_0_0,labtools_fmeter,{}" *) (* downgradeipidentifiedwarnings = "yes" *) (* x_core_info = "labtools_fmeter,Vivado 2019.2" *) 
-(* NotValidForBitStream *)
-module zusys_labtools_fmeter_0_0
-   (refclk,
-    fin,
-    F0,
-    update);
-  (* x_interface_info = "xilinx.com:signal:clock:1.0 refclk CLK" *) (* x_interface_parameter = "XIL_INTERFACENAME refclk, FREQ_HZ 99999985, PHASE 0.000, CLK_DOMAIN zusys_zynq_ultra_ps_e_0_0_pl_clk0, INSERT_VIP 0" *) input refclk;
-  input [0:0]fin;
-  output [31:0]F0;
-  output update;
-
-  wire [31:0]F0;
-  wire [0:0]fin;
-  wire refclk;
-  wire update;
-
-  zusys_labtools_fmeter_0_0_labtools_fmeter U0
-       (.F0(F0),
-        .fin(fin),
-        .refclk(refclk),
-        .update(update));
-endmodule
-
-(* ORIG_REF_NAME = "labtools_fmeter" *) 
 module zusys_labtools_fmeter_0_0_labtools_fmeter
    (F0,
     update,
@@ -266,7 +241,6 @@ module zusys_labtools_fmeter_0_0_labtools_fmeter
         .R(1'b0));
 endmodule
 
-(* ORIG_REF_NAME = "unimacro_COUNTER_TC_MACRO" *) 
 module zusys_labtools_fmeter_0_0_unimacro_COUNTER_TC_MACRO
    (update,
     F,
@@ -686,6 +660,30 @@ module zusys_labtools_fmeter_0_0_unimacro_COUNTER_TC_MACRO__parameterized0
     \bl.DSP48E_2_i_1__0 
        (.I0(toggle),
         .O(CE));
+endmodule
+
+(* CHECK_LICENSE_TYPE = "zusys_labtools_fmeter_0_0,labtools_fmeter,{}" *) (* downgradeipidentifiedwarnings = "yes" *) (* x_core_info = "labtools_fmeter,Vivado 2019.2" *) 
+(* NotValidForBitStream *)
+module zusys_labtools_fmeter_0_0
+   (refclk,
+    fin,
+    F0,
+    update);
+  (* x_interface_info = "xilinx.com:signal:clock:1.0 refclk CLK" *) (* x_interface_parameter = "XIL_INTERFACENAME refclk, FREQ_HZ 99999985, PHASE 0.000, CLK_DOMAIN zusys_zynq_ultra_ps_e_0_0_pl_clk0, INSERT_VIP 0" *) input refclk;
+  input [0:0]fin;
+  output [31:0]F0;
+  output update;
+
+  wire [31:0]F0;
+  wire [0:0]fin;
+  wire refclk;
+  wire update;
+
+  zusys_labtools_fmeter_0_0_labtools_fmeter U0
+       (.F0(F0),
+        .fin(fin),
+        .refclk(refclk),
+        .update(update));
 endmodule
 `ifndef GLBL
 `define GLBL

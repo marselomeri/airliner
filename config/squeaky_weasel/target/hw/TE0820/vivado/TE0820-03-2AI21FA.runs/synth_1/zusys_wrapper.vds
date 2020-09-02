@@ -2,8 +2,8 @@
 # Vivado v2019.2 (64-bit)
 # SW Build 2708876 on Wed Nov  6 21:39:14 MST 2019
 # IP Build 2700528 on Thu Nov  7 00:09:20 MST 2019
-# Start of session at: Sat Aug 29 15:50:31 2020
-# Process ID: 12052
+# Start of session at: Mon Aug 31 07:47:54 2020
+# Process ID: 7562
 # Current directory: /home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/synth_1
 # Command line: vivado -log zusys_wrapper.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source zusys_wrapper.tcl
 # Log file: /home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/synth_1/zusys_wrapper.vds
@@ -13,16 +13,16 @@ source zusys_wrapper.tcl -notrace
 INFO: [IP_Flow 19-234] Refreshing IP repositories
 INFO: [IP_Flow 19-1700] Loaded user IP repository '/home/vagrant/Downloads/TE0820/TE0820-03-2AI21FA/ip_lib'.
 INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/Xilinx/Vivado/2019.2/data/ip'.
-update_ip_catalog: Time (s): cpu = 00:00:03 ; elapsed = 00:00:06 . Memory (MB): peak = 1555.188 ; gain = 34.688 ; free physical = 3682 ; free virtual = 8321
+update_ip_catalog: Time (s): cpu = 00:00:03 ; elapsed = 00:00:06 . Memory (MB): peak = 1552.223 ; gain = 33.719 ; free physical = 9063 ; free virtual = 11849
 Command: synth_design -top zusys_wrapper -part xczu2cg-sfvc784-1-i
 Starting synth_design
 Attempting to get a license for feature 'Synthesis' and/or device 'xczu2cg'
 INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xczu2cg'
 INFO: [Device 21-403] Loading part xczu2cg-sfvc784-1-i
 INFO: Launching helper process for spawning children vivado processes
-INFO: Helper process launched with PID 12118 
+INFO: Helper process launched with PID 7655 
 ---------------------------------------------------------------------------------
-Starting RTL Elaboration : Time (s): cpu = 00:00:05 ; elapsed = 00:00:07 . Memory (MB): peak = 2419.191 ; gain = 0.000 ; free physical = 2746 ; free virtual = 7386
+Starting RTL Elaboration : Time (s): cpu = 00:00:05 ; elapsed = 00:00:07 . Memory (MB): peak = 2418.164 ; gain = 0.000 ; free physical = 7989 ; free virtual = 10910
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-638] synthesizing module 'zusys_wrapper' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/hdl/zusys_wrapper.vhd:35]
 INFO: [Synth 8-3491] module 'IOBUF' declared at '/opt/Xilinx/Vivado/2019.2/scripts/rt/data/unisim_comp.v:36196' bound to instance 'IIC_1_0_scl_iobuf' of component 'IOBUF' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/hdl/zusys_wrapper.vhd:115]
@@ -43,14 +43,14 @@ INFO: [Synth 8-3491] module 'IOBUF' declared at '/opt/Xilinx/Vivado/2019.2/scrip
 INFO: [Synth 8-3491] module 'IOBUF' declared at '/opt/Xilinx/Vivado/2019.2/scripts/rt/data/unisim_comp.v:36196' bound to instance 'SPI_1_0_ss_iobuf' of component 'IOBUF' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/hdl/zusys_wrapper.vhd:178]
 INFO: [Synth 8-3491] module 'zusys' declared at '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/synth/zusys.vhd:14' bound to instance 'zusys_i' of component 'zusys' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/hdl/zusys_wrapper.vhd:185]
 INFO: [Synth 8-638] synthesizing module 'zusys' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/synth/zusys.vhd:59]
-INFO: [Synth 8-3491] module 'zusys_labtools_fmeter_0_0' declared at '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/synth_1/.Xil/Vivado-12052-vagrant/realtime/zusys_labtools_fmeter_0_0_stub.vhdl:5' bound to instance 'labtools_fmeter_0' of component 'zusys_labtools_fmeter_0_0' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/synth/zusys.vhd:415]
-INFO: [Synth 8-638] synthesizing module 'zusys_labtools_fmeter_0_0' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/synth_1/.Xil/Vivado-12052-vagrant/realtime/zusys_labtools_fmeter_0_0_stub.vhdl:15]
-INFO: [Synth 8-3491] module 'zusys_system_ila_0_0' declared at '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/synth_1/.Xil/Vivado-12052-vagrant/realtime/zusys_system_ila_0_0_stub.vhdl:5' bound to instance 'system_ila_0' of component 'zusys_system_ila_0_0' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/synth/zusys.vhd:422]
-INFO: [Synth 8-638] synthesizing module 'zusys_system_ila_0_0' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/synth_1/.Xil/Vivado-12052-vagrant/realtime/zusys_system_ila_0_0_stub.vhdl:44]
-INFO: [Synth 8-3491] module 'zusys_util_ds_buf_0_0' declared at '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/synth_1/.Xil/Vivado-12052-vagrant/realtime/zusys_util_ds_buf_0_0_stub.vhdl:5' bound to instance 'util_ds_buf_0' of component 'zusys_util_ds_buf_0_0' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/synth/zusys.vhd:458]
-INFO: [Synth 8-638] synthesizing module 'zusys_util_ds_buf_0_0' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/synth_1/.Xil/Vivado-12052-vagrant/realtime/zusys_util_ds_buf_0_0_stub.vhdl:14]
-INFO: [Synth 8-3491] module 'zusys_vio_0_0' declared at '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/synth_1/.Xil/Vivado-12052-vagrant/realtime/zusys_vio_0_0_stub.vhdl:5' bound to instance 'vio_0' of component 'zusys_vio_0_0' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/synth/zusys.vhd:464]
-INFO: [Synth 8-638] synthesizing module 'zusys_vio_0_0' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/synth_1/.Xil/Vivado-12052-vagrant/realtime/zusys_vio_0_0_stub.vhdl:16]
+INFO: [Synth 8-3491] module 'zusys_labtools_fmeter_0_0' declared at '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/synth_1/.Xil/Vivado-7562-vagrant/realtime/zusys_labtools_fmeter_0_0_stub.vhdl:5' bound to instance 'labtools_fmeter_0' of component 'zusys_labtools_fmeter_0_0' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/synth/zusys.vhd:415]
+INFO: [Synth 8-638] synthesizing module 'zusys_labtools_fmeter_0_0' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/synth_1/.Xil/Vivado-7562-vagrant/realtime/zusys_labtools_fmeter_0_0_stub.vhdl:15]
+INFO: [Synth 8-3491] module 'zusys_system_ila_0_0' declared at '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/synth_1/.Xil/Vivado-7562-vagrant/realtime/zusys_system_ila_0_0_stub.vhdl:5' bound to instance 'system_ila_0' of component 'zusys_system_ila_0_0' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/synth/zusys.vhd:422]
+INFO: [Synth 8-638] synthesizing module 'zusys_system_ila_0_0' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/synth_1/.Xil/Vivado-7562-vagrant/realtime/zusys_system_ila_0_0_stub.vhdl:44]
+INFO: [Synth 8-3491] module 'zusys_util_ds_buf_0_0' declared at '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/synth_1/.Xil/Vivado-7562-vagrant/realtime/zusys_util_ds_buf_0_0_stub.vhdl:5' bound to instance 'util_ds_buf_0' of component 'zusys_util_ds_buf_0_0' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/synth/zusys.vhd:458]
+INFO: [Synth 8-638] synthesizing module 'zusys_util_ds_buf_0_0' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/synth_1/.Xil/Vivado-7562-vagrant/realtime/zusys_util_ds_buf_0_0_stub.vhdl:14]
+INFO: [Synth 8-3491] module 'zusys_vio_0_0' declared at '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/synth_1/.Xil/Vivado-7562-vagrant/realtime/zusys_vio_0_0_stub.vhdl:5' bound to instance 'vio_0' of component 'zusys_vio_0_0' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/synth/zusys.vhd:464]
+INFO: [Synth 8-638] synthesizing module 'zusys_vio_0_0' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/synth_1/.Xil/Vivado-7562-vagrant/realtime/zusys_vio_0_0_stub.vhdl:16]
 INFO: [Synth 8-3491] module 'zusys_xlconcat_0_0' declared at '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_xlconcat_0_0/synth/zusys_xlconcat_0_0.v:58' bound to instance 'xlconcat_0' of component 'zusys_xlconcat_0_0' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/synth/zusys.vhd:472]
 INFO: [Synth 8-6157] synthesizing module 'zusys_xlconcat_0_0' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_xlconcat_0_0/synth/zusys_xlconcat_0_0.v:58]
 INFO: [Synth 8-6157] synthesizing module 'xlconcat_v2_1_3_xlconcat' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ipshared/442e/hdl/xlconcat_v2_1_vl_rfs.v:14]
@@ -90,8 +90,8 @@ INFO: [Synth 8-6157] synthesizing module 'xlconcat_v2_1_3_xlconcat' [/home/vagra
 	Parameter NUM_PORTS bound to: 1 - type: integer 
 INFO: [Synth 8-6155] done synthesizing module 'xlconcat_v2_1_3_xlconcat' (2#1) [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ipshared/442e/hdl/xlconcat_v2_1_vl_rfs.v:14]
 INFO: [Synth 8-6155] done synthesizing module 'zusys_xlconcat_0_0' (3#1) [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_xlconcat_0_0/synth/zusys_xlconcat_0_0.v:58]
-INFO: [Synth 8-3491] module 'zusys_zynq_ultra_ps_e_0_0' declared at '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/synth_1/.Xil/Vivado-12052-vagrant/realtime/zusys_zynq_ultra_ps_e_0_0_stub.vhdl:5' bound to instance 'zynq_ultra_ps_e_0' of component 'zusys_zynq_ultra_ps_e_0_0' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/synth/zusys.vhd:477]
-INFO: [Synth 8-638] synthesizing module 'zusys_zynq_ultra_ps_e_0_0' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/synth_1/.Xil/Vivado-12052-vagrant/realtime/zusys_zynq_ultra_ps_e_0_0_stub.vhdl:85]
+INFO: [Synth 8-3491] module 'zusys_zynq_ultra_ps_e_0_0' declared at '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/synth_1/.Xil/Vivado-7562-vagrant/realtime/zusys_zynq_ultra_ps_e_0_0_stub.vhdl:5' bound to instance 'zynq_ultra_ps_e_0' of component 'zusys_zynq_ultra_ps_e_0_0' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/synth/zusys.vhd:477]
+INFO: [Synth 8-638] synthesizing module 'zusys_zynq_ultra_ps_e_0_0' [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/synth_1/.Xil/Vivado-7562-vagrant/realtime/zusys_zynq_ultra_ps_e_0_0_stub.vhdl:85]
 INFO: [Synth 8-256] done synthesizing module 'zusys' (4#1) [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/synth/zusys.vhd:59]
 INFO: [Synth 8-256] done synthesizing module 'zusys_wrapper' (5#1) [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/hdl/zusys_wrapper.vhd:35]
 WARNING: [Synth 8-3331] design xlconcat_v2_1_3_xlconcat has unconnected port In1[0]
@@ -126,7 +126,7 @@ WARNING: [Synth 8-3331] design xlconcat_v2_1_3_xlconcat has unconnected port In2
 WARNING: [Synth 8-3331] design xlconcat_v2_1_3_xlconcat has unconnected port In30[0]
 WARNING: [Synth 8-3331] design xlconcat_v2_1_3_xlconcat has unconnected port In31[0]
 ---------------------------------------------------------------------------------
-Finished RTL Elaboration : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 2471.000 ; gain = 51.809 ; free physical = 2776 ; free virtual = 7416
+Finished RTL Elaboration : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 2469.973 ; gain = 51.809 ; free physical = 8018 ; free virtual = 10940
 ---------------------------------------------------------------------------------
 
 Report Check Netlist: 
@@ -139,12 +139,12 @@ Report Check Netlist:
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:08 ; elapsed = 00:00:10 . Memory (MB): peak = 2474.969 ; gain = 55.777 ; free physical = 2771 ; free virtual = 7412
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:08 ; elapsed = 00:00:10 . Memory (MB): peak = 2473.941 ; gain = 55.777 ; free physical = 8013 ; free virtual = 10936
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:08 ; elapsed = 00:00:10 . Memory (MB): peak = 2474.969 ; gain = 55.777 ; free physical = 2771 ; free virtual = 7412
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:08 ; elapsed = 00:00:10 . Memory (MB): peak = 2473.941 ; gain = 55.777 ; free physical = 8013 ; free virtual = 10936
 ---------------------------------------------------------------------------------
-Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2486.875 ; gain = 0.000 ; free physical = 2767 ; free virtual = 7407
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00 . Memory (MB): peak = 2485.848 ; gain = 0.000 ; free physical = 8007 ; free virtual = 10930
 INFO: [Netlist 29-17] Analyzing 10 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-570] Preparing netlist for logic optimization
@@ -154,7 +154,7 @@ Initializing timing engine
 Parsing XDC File [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_labtools_fmeter_0_0/zusys_labtools_fmeter_0_0/zusys_labtools_fmeter_0_0_in_context.xdc] for cell 'zusys_i/labtools_fmeter_0'
 Finished Parsing XDC File [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_labtools_fmeter_0_0/zusys_labtools_fmeter_0_0/zusys_labtools_fmeter_0_0_in_context.xdc] for cell 'zusys_i/labtools_fmeter_0'
 Parsing XDC File [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_util_ds_buf_0_0/zusys_util_ds_buf_0_0/zusys_util_ds_buf_0_0_in_context.xdc] for cell 'zusys_i/util_ds_buf_0'
-create_clock: Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 2551.695 ; gain = 0.000 ; free physical = 2692 ; free virtual = 7332
+create_clock: Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 2550.668 ; gain = 0.000 ; free physical = 7923 ; free virtual = 10857
 Finished Parsing XDC File [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_util_ds_buf_0_0/zusys_util_ds_buf_0_0/zusys_util_ds_buf_0_0_in_context.xdc] for cell 'zusys_i/util_ds_buf_0'
 Parsing XDC File [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_vio_0_0/zusys_vio_0_0/zusys_vio_0_0_in_context.xdc] for cell 'zusys_i/vio_0'
 Finished Parsing XDC File [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_vio_0_0/zusys_vio_0_0/zusys_vio_0_0_in_context.xdc] for cell 'zusys_i/vio_0'
@@ -170,14 +170,14 @@ Parsing XDC File [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0
 Finished Parsing XDC File [/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/synth_1/dont_touch.xdc]
 Completed Processing XDC Constraints
 
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2551.695 ; gain = 0.000 ; free physical = 2689 ; free virtual = 7329
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2550.668 ; gain = 0.000 ; free physical = 7918 ; free virtual = 10854
 INFO: [Project 1-111] Unisim Transformation Summary:
   A total of 10 instances were transformed.
   IOBUF => IOBUF (IBUFCTRL, INBUF, OBUFT): 10 instances
 
-Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2551.695 ; gain = 0.000 ; free physical = 2689 ; free virtual = 7329
+Constraint Validation Runtime : Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2550.668 ; gain = 0.000 ; free physical = 7918 ; free virtual = 10854
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:00:27 ; elapsed = 00:00:34 . Memory (MB): peak = 2551.695 ; gain = 132.504 ; free physical = 2753 ; free virtual = 7394
+Finished Constraint Validation : Time (s): cpu = 00:00:27 ; elapsed = 00:00:34 . Memory (MB): peak = 2550.668 ; gain = 132.504 ; free physical = 7980 ; free virtual = 10916
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
@@ -185,7 +185,7 @@ Start Loading Part and Timing Information
 Loading part: xczu2cg-sfvc784-1-i
 INFO: [Synth 8-6742] Reading net delay rules and data
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:00:27 ; elapsed = 00:00:34 . Memory (MB): peak = 2551.695 ; gain = 132.504 ; free physical = 2753 ; free virtual = 7394
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:27 ; elapsed = 00:00:34 . Memory (MB): peak = 2550.668 ; gain = 132.504 ; free physical = 7980 ; free virtual = 10916
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Applying 'set_property' XDC Constraints
@@ -202,10 +202,10 @@ Applied set_property DONT_TOUCH = true for zusys_i/xlconcat_0. (constraint file 
 Applied set_property DONT_TOUCH = true for zusys_i/zynq_ultra_ps_e_0. (constraint file  auto generated constraint, line ).
 Applied set_property DONT_TOUCH = true for zusys_i/system_ila_0. (constraint file  auto generated constraint, line ).
 ---------------------------------------------------------------------------------
-Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:27 ; elapsed = 00:00:34 . Memory (MB): peak = 2551.695 ; gain = 132.504 ; free physical = 2753 ; free virtual = 7394
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:27 ; elapsed = 00:00:34 . Memory (MB): peak = 2550.668 ; gain = 132.504 ; free physical = 7980 ; free virtual = 10916
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:28 ; elapsed = 00:00:34 . Memory (MB): peak = 2551.695 ; gain = 132.504 ; free physical = 2753 ; free virtual = 7394
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:27 ; elapsed = 00:00:34 . Memory (MB): peak = 2550.668 ; gain = 132.504 ; free physical = 7980 ; free virtual = 10916
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -241,7 +241,7 @@ Start Cross Boundary and Area Optimization
 ---------------------------------------------------------------------------------
 Warning: Parallel synthesis criteria is not met 
 ---------------------------------------------------------------------------------
-Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:29 ; elapsed = 00:00:35 . Memory (MB): peak = 2551.695 ; gain = 132.504 ; free physical = 2750 ; free virtual = 7394
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:28 ; elapsed = 00:00:35 . Memory (MB): peak = 2550.668 ; gain = 132.504 ; free physical = 7980 ; free virtual = 10919
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -253,13 +253,13 @@ Report RTL Partitions:
 Start Applying XDC Timing Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:57 ; elapsed = 00:01:29 . Memory (MB): peak = 3065.086 ; gain = 645.895 ; free physical = 2100 ; free virtual = 6743
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:57 ; elapsed = 00:01:29 . Memory (MB): peak = 3064.090 ; gain = 645.926 ; free physical = 7300 ; free virtual = 10271
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Timing Optimization
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:00:57 ; elapsed = 00:01:29 . Memory (MB): peak = 3065.086 ; gain = 645.895 ; free physical = 2100 ; free virtual = 6743
+Finished Timing Optimization : Time (s): cpu = 00:00:57 ; elapsed = 00:01:29 . Memory (MB): peak = 3064.090 ; gain = 645.926 ; free physical = 7300 ; free virtual = 10271
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -271,7 +271,7 @@ Report RTL Partitions:
 Start Technology Mapping
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:00:57 ; elapsed = 00:01:29 . Memory (MB): peak = 3075.102 ; gain = 655.910 ; free physical = 2099 ; free virtual = 6743
+Finished Technology Mapping : Time (s): cpu = 00:00:57 ; elapsed = 00:01:29 . Memory (MB): peak = 3073.105 ; gain = 654.941 ; free physical = 7299 ; free virtual = 10270
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -295,13 +295,13 @@ Start Final Netlist Cleanup
 Finished Final Netlist Cleanup
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:01:04 ; elapsed = 00:01:36 . Memory (MB): peak = 3088.977 ; gain = 669.785 ; free physical = 2099 ; free virtual = 6742
+Finished IO Insertion : Time (s): cpu = 00:01:04 ; elapsed = 00:01:36 . Memory (MB): peak = 3087.980 ; gain = 669.816 ; free physical = 7299 ; free virtual = 10270
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:01:04 ; elapsed = 00:01:36 . Memory (MB): peak = 3088.977 ; gain = 669.785 ; free physical = 2099 ; free virtual = 6742
+Finished Renaming Generated Instances : Time (s): cpu = 00:01:04 ; elapsed = 00:01:36 . Memory (MB): peak = 3087.980 ; gain = 669.816 ; free physical = 7299 ; free virtual = 10270
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -320,25 +320,25 @@ Report Check Netlist:
 Start Rebuilding User Hierarchy
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Rebuilding User Hierarchy : Time (s): cpu = 00:01:04 ; elapsed = 00:01:36 . Memory (MB): peak = 3088.977 ; gain = 669.785 ; free physical = 2099 ; free virtual = 6742
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:01:04 ; elapsed = 00:01:36 . Memory (MB): peak = 3087.980 ; gain = 669.816 ; free physical = 7299 ; free virtual = 10270
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Ports
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Ports : Time (s): cpu = 00:01:04 ; elapsed = 00:01:36 . Memory (MB): peak = 3088.977 ; gain = 669.785 ; free physical = 2099 ; free virtual = 6742
+Finished Renaming Generated Ports : Time (s): cpu = 00:01:04 ; elapsed = 00:01:36 . Memory (MB): peak = 3087.980 ; gain = 669.816 ; free physical = 7299 ; free virtual = 10270
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:01:04 ; elapsed = 00:01:36 . Memory (MB): peak = 3088.977 ; gain = 669.785 ; free physical = 2099 ; free virtual = 6742
+Finished Handling Custom Attributes : Time (s): cpu = 00:01:04 ; elapsed = 00:01:36 . Memory (MB): peak = 3087.980 ; gain = 669.816 ; free physical = 7299 ; free virtual = 10270
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Nets
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Nets : Time (s): cpu = 00:01:04 ; elapsed = 00:01:36 . Memory (MB): peak = 3088.977 ; gain = 669.785 ; free physical = 2099 ; free virtual = 6742
+Finished Renaming Generated Nets : Time (s): cpu = 00:01:04 ; elapsed = 00:01:36 . Memory (MB): peak = 3087.980 ; gain = 669.816 ; free physical = 7299 ; free virtual = 10270
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Writing Synthesis Report
@@ -378,18 +378,18 @@ Report Instance Areas:
 |3     |    xlconcat_0 |zusys_xlconcat_0_0 |     0|
 +------+---------------+-------------------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:01:04 ; elapsed = 00:01:36 . Memory (MB): peak = 3088.977 ; gain = 669.785 ; free physical = 2099 ; free virtual = 6742
+Finished Writing Synthesis Report : Time (s): cpu = 00:01:04 ; elapsed = 00:01:36 . Memory (MB): peak = 3087.980 ; gain = 669.816 ; free physical = 7299 ; free virtual = 10270
 ---------------------------------------------------------------------------------
 Synthesis finished with 0 errors, 0 critical warnings and 0 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:00:51 ; elapsed = 00:01:20 . Memory (MB): peak = 3088.977 ; gain = 593.059 ; free physical = 2136 ; free virtual = 6780
-Synthesis Optimization Complete : Time (s): cpu = 00:01:04 ; elapsed = 00:01:36 . Memory (MB): peak = 3088.984 ; gain = 669.785 ; free physical = 2136 ; free virtual = 6780
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:51 ; elapsed = 00:01:20 . Memory (MB): peak = 3087.980 ; gain = 593.090 ; free physical = 7336 ; free virtual = 10308
+Synthesis Optimization Complete : Time (s): cpu = 00:01:04 ; elapsed = 00:01:36 . Memory (MB): peak = 3087.988 ; gain = 669.816 ; free physical = 7337 ; free virtual = 10308
 INFO: [Project 1-571] Translating synthesized netlist
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.01 . Memory (MB): peak = 3092.945 ; gain = 0.000 ; free physical = 2130 ; free virtual = 6774
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00 . Memory (MB): peak = 3090.949 ; gain = 0.000 ; free physical = 7332 ; free virtual = 10303
 INFO: [Netlist 29-17] Analyzing 13 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-570] Preparing netlist for logic optimization
 INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3114.727 ; gain = 0.000 ; free physical = 2149 ; free virtual = 6793
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3113.730 ; gain = 0.000 ; free physical = 7349 ; free virtual = 10321
 INFO: [Project 1-111] Unisim Transformation Summary:
   A total of 13 instances were transformed.
   IBUF => IBUF (IBUFCTRL, INBUF): 3 instances
@@ -398,10 +398,10 @@ INFO: [Project 1-111] Unisim Transformation Summary:
 INFO: [Common 17-83] Releasing license: Synthesis
 50 Infos, 31 Warnings, 0 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:01:20 ; elapsed = 00:02:02 . Memory (MB): peak = 3114.727 ; gain = 1521.000 ; free physical = 2275 ; free virtual = 6919
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3114.727 ; gain = 0.000 ; free physical = 2275 ; free virtual = 6919
+synth_design: Time (s): cpu = 00:01:20 ; elapsed = 00:02:02 . Memory (MB): peak = 3113.730 ; gain = 1520.969 ; free physical = 7476 ; free virtual = 10448
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3113.730 ; gain = 0.000 ; free physical = 7476 ; free virtual = 10448
 WARNING: [Constraints 18-5210] No constraints selected for write.
 Resolution: This message can indicate that there are no constraints for the design, or it can indicate that the used_in flags are set such that the constraints are ignored. This later case is used when running synth_design to not write synthesis constraints to the resulting checkpoint. Instead, project constraints are read when the synthesized design is opened.
 INFO: [Common 17-1381] The checkpoint '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.runs/synth_1/zusys_wrapper.dcp' has been generated.
 INFO: [runtcl-4] Executing : report_utilization -file zusys_wrapper_utilization_synth.rpt -pb zusys_wrapper_utilization_synth.pb
-INFO: [Common 17-206] Exiting Vivado at Sat Aug 29 15:52:57 2020...
+INFO: [Common 17-206] Exiting Vivado at Mon Aug 31 07:50:21 2020...

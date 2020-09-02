@@ -1,11 +1,11 @@
-18:50:06 **** Build of project zusys_wrapper ****
-buildplatform.sh 34857 zusys_wrapper  
-XSDB Server Channel: tcfchan#2
+17:11:20 **** Build of project TE0820-03-2AI21FA ****
+buildplatform.sh 41865 TE0820-03-2AI21FA  
+XSDB Server Channel: tcfchan#1
 Building the zynqmp_fsbl application.
 make -C zynqmp_fsbl_bsp
 
-make[1]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp'
+make[1]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp'
 
 Running Make include in psu_cortexa53_0/libsrc/xilffs_v4_2/src
 
@@ -13,11 +13,11 @@ make -C psu_cortexa53_0/libsrc/xilffs_v4_2/src -s include  "SHELL=/bin/sh" "COMP
 one-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto
 -objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/xilffs_v4_2/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/xilffs_v4_2/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/xilffs_v4_2/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/xilffs_v4_2/src'
 
 Running Make include in psu_cortexa53_0/libsrc/spips_v3_3/src
 
@@ -25,11 +25,11 @@ make -C psu_cortexa53_0/libsrc/spips_v3_3/src -s include  "SHELL=/bin/sh" "COMPI
 ne-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto-
 objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/spips_v3_3/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/spips_v3_3/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/spips_v3_3/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/spips_v3_3/src'
 
 Running Make include in psu_cortexa53_0/libsrc/xilsecure_v4_1/src
 
@@ -37,11 +37,11 @@ make -C psu_cortexa53_0/libsrc/xilsecure_v4_1/src -s include  "SHELL=/bin/sh" "C
 4-none-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-
 lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/xilsecure_v4_1/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/xilsecure_v4_1/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/xilsecure_v4_1/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/xilsecure_v4_1/src'
 
 Running Make include in psu_cortexa53_0/libsrc/rtcpsu_v1_8/src
 
@@ -49,11 +49,11 @@ make -C psu_cortexa53_0/libsrc/rtcpsu_v1_8/src -s include  "SHELL=/bin/sh" "COMP
 one-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto
 -objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/rtcpsu_v1_8/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/rtcpsu_v1_8/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/rtcpsu_v1_8/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/rtcpsu_v1_8/src'
 
 Running Make include in psu_cortexa53_0/libsrc/resetps_v1_2/src
 
@@ -61,11 +61,11 @@ make -C psu_cortexa53_0/libsrc/resetps_v1_2/src -s include  "SHELL=/bin/sh" "COM
 none-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lt
 o-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/resetps_v1_2/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/resetps_v1_2/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/resetps_v1_2/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/resetps_v1_2/src'
 
 Running Make include in psu_cortexa53_0/libsrc/csudma_v1_5/src
 
@@ -73,11 +73,11 @@ make -C psu_cortexa53_0/libsrc/csudma_v1_5/src -s include  "SHELL=/bin/sh" "COMP
 one-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto
 -objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/csudma_v1_5/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/csudma_v1_5/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/csudma_v1_5/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/csudma_v1_5/src'
 
 Running Make include in psu_cortexa53_0/libsrc/coresightps_dcc_v1_6/src
 
@@ -85,11 +85,11 @@ make -C psu_cortexa53_0/libsrc/coresightps_dcc_v1_6/src -s include  "SHELL=/bin/
 aarch64-none-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto 
 -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/coresightps_dcc_v1_6/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/coresightps_dcc_v1_6/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/coresightps_dcc_v1_6/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/coresightps_dcc_v1_6/src'
 
 Running Make include in psu_cortexa53_0/libsrc/axipmon_v6_7/src
 
@@ -97,11 +97,11 @@ make -C psu_cortexa53_0/libsrc/axipmon_v6_7/src -s include  "SHELL=/bin/sh" "COM
 none-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lt
 o-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/axipmon_v6_7/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/axipmon_v6_7/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/axipmon_v6_7/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/axipmon_v6_7/src'
 
 Running Make include in psu_cortexa53_0/libsrc/ipipsu_v2_5/src
 
@@ -109,11 +109,11 @@ make -C psu_cortexa53_0/libsrc/ipipsu_v2_5/src -s include  "SHELL=/bin/sh" "COMP
 one-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto
 -objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/ipipsu_v2_5/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/ipipsu_v2_5/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/ipipsu_v2_5/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/ipipsu_v2_5/src'
 
 Running Make include in psu_cortexa53_0/libsrc/zdma_v1_8/src
 
@@ -121,11 +121,11 @@ make -C psu_cortexa53_0/libsrc/zdma_v1_8/src -s include  "SHELL=/bin/sh" "COMPIL
 e-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto-o
 bjects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/zdma_v1_8/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/zdma_v1_8/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/zdma_v1_8/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/zdma_v1_8/src'
 
 Running Make include in psu_cortexa53_0/libsrc/gpiops_v3_6/src
 
@@ -133,11 +133,11 @@ make -C psu_cortexa53_0/libsrc/gpiops_v3_6/src -s include  "SHELL=/bin/sh" "COMP
 one-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto
 -objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/gpiops_v3_6/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/gpiops_v3_6/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/gpiops_v3_6/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/gpiops_v3_6/src'
 
 Running Make include in psu_cortexa53_0/libsrc/usbpsu_v1_6/src
 
@@ -145,11 +145,11 @@ make -C psu_cortexa53_0/libsrc/usbpsu_v1_6/src -s include  "SHELL=/bin/sh" "COMP
 one-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto
 -objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/usbpsu_v1_6/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/usbpsu_v1_6/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/usbpsu_v1_6/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/usbpsu_v1_6/src'
 
 Running Make include in psu_cortexa53_0/libsrc/xilpm_v3_0/src
 
@@ -157,13 +157,13 @@ make -C psu_cortexa53_0/libsrc/xilpm_v3_0/src -s include  "SHELL=/bin/sh" "COMPI
 ne-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto-
 objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/xilpm_v3_0/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/xilpm_v3_0/src'
 
 Include files for this library have already been copied.
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/xilpm_v3_0/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/xilpm_v3_0/src'
 
 Running Make include in psu_cortexa53_0/libsrc/emacps_v3_10/src
 
@@ -171,11 +171,11 @@ make -C psu_cortexa53_0/libsrc/emacps_v3_10/src -s include  "SHELL=/bin/sh" "COM
 none-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lt
 o-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/emacps_v3_10/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/emacps_v3_10/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/emacps_v3_10/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/emacps_v3_10/src'
 
 Running Make include in psu_cortexa53_0/libsrc/ttcps_v3_10/src
 
@@ -183,11 +183,11 @@ make -C psu_cortexa53_0/libsrc/ttcps_v3_10/src -s include  "SHELL=/bin/sh" "COMP
 one-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto
 -objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/ttcps_v3_10/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/ttcps_v3_10/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/ttcps_v3_10/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/ttcps_v3_10/src'
 
 Running Make include in psu_cortexa53_0/libsrc/scugic_v4_1/src
 
@@ -195,11 +195,11 @@ make -C psu_cortexa53_0/libsrc/scugic_v4_1/src -s include  "SHELL=/bin/sh" "COMP
 one-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto
 -objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/scugic_v4_1/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/scugic_v4_1/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/scugic_v4_1/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/scugic_v4_1/src'
 
 Running Make include in psu_cortexa53_0/libsrc/clockps_v1_1/src
 
@@ -207,11 +207,11 @@ make -C psu_cortexa53_0/libsrc/clockps_v1_1/src -s include  "SHELL=/bin/sh" "COM
 none-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lt
 o-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/clockps_v1_1/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/clockps_v1_1/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/clockps_v1_1/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/clockps_v1_1/src'
 
 Running Make include in psu_cortexa53_0/libsrc/sysmonpsu_v2_5/src
 
@@ -219,11 +219,11 @@ make -C psu_cortexa53_0/libsrc/sysmonpsu_v2_5/src -s include  "SHELL=/bin/sh" "C
 4-none-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-
 lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/sysmonpsu_v2_5/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/sysmonpsu_v2_5/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/sysmonpsu_v2_5/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/sysmonpsu_v2_5/src'
 
 Running Make include in psu_cortexa53_0/libsrc/wdtps_v3_2/src
 
@@ -231,11 +231,11 @@ make -C psu_cortexa53_0/libsrc/wdtps_v3_2/src -s include  "SHELL=/bin/sh" "COMPI
 ne-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto-
 objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/wdtps_v3_2/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/wdtps_v3_2/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/wdtps_v3_2/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/wdtps_v3_2/src'
 
 Running Make include in psu_cortexa53_0/libsrc/ddrcpsu_v1_1/src
 
@@ -243,11 +243,11 @@ make -C psu_cortexa53_0/libsrc/ddrcpsu_v1_1/src -s include  "SHELL=/bin/sh" "COM
 none-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lt
 o-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/ddrcpsu_v1_1/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/ddrcpsu_v1_1/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/ddrcpsu_v1_1/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/ddrcpsu_v1_1/src'
 
 Running Make include in psu_cortexa53_0/libsrc/sdps_v3_8/src
 
@@ -255,11 +255,11 @@ make -C psu_cortexa53_0/libsrc/sdps_v3_8/src -s include  "SHELL=/bin/sh" "COMPIL
 e-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto-o
 bjects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/sdps_v3_8/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/sdps_v3_8/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/sdps_v3_8/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/sdps_v3_8/src'
 
 Running Make include in psu_cortexa53_0/libsrc/iicps_v3_10/src
 
@@ -267,11 +267,11 @@ make -C psu_cortexa53_0/libsrc/iicps_v3_10/src -s include  "SHELL=/bin/sh" "COMP
 one-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto
 -objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/iicps_v3_10/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/iicps_v3_10/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/iicps_v3_10/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/iicps_v3_10/src'
 
 Running Make include in psu_cortexa53_0/libsrc/standalone_v7_1/src
 
@@ -279,11 +279,11 @@ make -C psu_cortexa53_0/libsrc/standalone_v7_1/src -s include  "SHELL=/bin/sh" "
 64-none-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat
 -lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/standalone_v7_1/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/standalone_v7_1/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/standalone_v7_1/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/standalone_v7_1/src'
 
 Running Make include in psu_cortexa53_0/libsrc/uartps_v3_8/src
 
@@ -291,11 +291,11 @@ make -C psu_cortexa53_0/libsrc/uartps_v3_8/src -s include  "SHELL=/bin/sh" "COMP
 one-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto
 -objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/uartps_v3_8/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/uartps_v3_8/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/uartps_v3_8/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/uartps_v3_8/src'
 
 Running Make include in psu_cortexa53_0/libsrc/cpu_cortexa53_v1_6/src
 
@@ -303,11 +303,11 @@ make -C psu_cortexa53_0/libsrc/cpu_cortexa53_v1_6/src -s include  "SHELL=/bin/sh
 rch64-none-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -f
 fat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/cpu_cortexa53_v1_6/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/cpu_cortexa53_v1_6/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/cpu_cortexa53_v1_6/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/cpu_cortexa53_v1_6/src'
 
 Running Make include in psu_cortexa53_0/libsrc/qspipsu_v1_10/src
 
@@ -315,11 +315,11 @@ make -C psu_cortexa53_0/libsrc/qspipsu_v1_10/src -s include  "SHELL=/bin/sh" "CO
 -none-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-l
 to-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/qspipsu_v1_10/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/qspipsu_v1_10/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/qspipsu_v1_10/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/qspipsu_v1_10/src'
 
 Running Make libs in psu_cortexa53_0/libsrc/xilffs_v4_2/src
 
@@ -327,13 +327,13 @@ make -C psu_cortexa53_0/libsrc/xilffs_v4_2/src -s libs  "SHELL=/bin/sh" "COMPILE
 -elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto-ob
 jects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/xilffs_v4_2/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/xilffs_v4_2/src'
 
 Compiling XilFFs Library
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/xilffs_v4_2/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/xilffs_v4_2/src'
 
 Running Make libs in psu_cortexa53_0/libsrc/spips_v3_3/src
 
@@ -341,14 +341,14 @@ make -C psu_cortexa53_0/libsrc/spips_v3_3/src -s libs  "SHELL=/bin/sh" "COMPILER
 elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto-obj
 ects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/spips_v3_3/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/spips_v3_3/src'
 
 Compiling spips
 
 aarch64-none-elf-ar: creating ../../../lib/libxil.a
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/spips_v3_3/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/spips_v3_3/src'
 
 Running Make libs in psu_cortexa53_0/libsrc/xilsecure_v4_1/src
 
@@ -356,13 +356,13 @@ make -C psu_cortexa53_0/libsrc/xilsecure_v4_1/src -s libs  "SHELL=/bin/sh" "COMP
 one-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto
 -objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/xilsecure_v4_1/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/xilsecure_v4_1/src'
 
 Compiling XilSecure Library
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/xilsecure_v4_1/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/xilsecure_v4_1/src'
 
 Running Make libs in psu_cortexa53_0/libsrc/rtcpsu_v1_8/src
 
@@ -370,13 +370,13 @@ make -C psu_cortexa53_0/libsrc/rtcpsu_v1_8/src -s libs  "SHELL=/bin/sh" "COMPILE
 -elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto-ob
 jects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/rtcpsu_v1_8/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/rtcpsu_v1_8/src'
 
 Compiling rtcpsu
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/rtcpsu_v1_8/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/rtcpsu_v1_8/src'
 
 Running Make libs in psu_cortexa53_0/libsrc/resetps_v1_2/src
 
@@ -384,13 +384,13 @@ make -C psu_cortexa53_0/libsrc/resetps_v1_2/src -s libs  "SHELL=/bin/sh" "COMPIL
 e-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto-o
 bjects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/resetps_v1_2/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/resetps_v1_2/src'
 
 Compiling resetps
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/resetps_v1_2/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/resetps_v1_2/src'
 
 Running Make libs in psu_cortexa53_0/libsrc/csudma_v1_5/src
 
@@ -398,13 +398,13 @@ make -C psu_cortexa53_0/libsrc/csudma_v1_5/src -s libs  "SHELL=/bin/sh" "COMPILE
 -elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto-ob
 jects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/csudma_v1_5/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/csudma_v1_5/src'
 
 Compiling csudma
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/csudma_v1_5/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/csudma_v1_5/src'
 
 Running Make libs in psu_cortexa53_0/libsrc/coresightps_dcc_v1_6/src
 
@@ -412,13 +412,13 @@ make -C psu_cortexa53_0/libsrc/coresightps_dcc_v1_6/src -s libs  "SHELL=/bin/sh"
 ch64-none-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ff
 at-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/coresightps_dcc_v1_6/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/coresightps_dcc_v1_6/src'
 
 Compiling coresightps_dcc
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/coresightps_dcc_v1_6/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/coresightps_dcc_v1_6/src'
 
 Running Make libs in psu_cortexa53_0/libsrc/axipmon_v6_7/src
 
@@ -426,13 +426,13 @@ make -C psu_cortexa53_0/libsrc/axipmon_v6_7/src -s libs  "SHELL=/bin/sh" "COMPIL
 e-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto-o
 bjects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/axipmon_v6_7/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/axipmon_v6_7/src'
 
 Compiling axipmon
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/axipmon_v6_7/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/axipmon_v6_7/src'
 
 Running Make libs in psu_cortexa53_0/libsrc/ipipsu_v2_5/src
 
@@ -440,13 +440,13 @@ make -C psu_cortexa53_0/libsrc/ipipsu_v2_5/src -s libs  "SHELL=/bin/sh" "COMPILE
 -elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto-ob
 jects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/ipipsu_v2_5/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/ipipsu_v2_5/src'
 
 Compiling ipipsu
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/ipipsu_v2_5/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/ipipsu_v2_5/src'
 
 Running Make libs in psu_cortexa53_0/libsrc/zdma_v1_8/src
 
@@ -454,13 +454,13 @@ make -C psu_cortexa53_0/libsrc/zdma_v1_8/src -s libs  "SHELL=/bin/sh" "COMPILER=
 lf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto-obje
 cts"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/zdma_v1_8/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/zdma_v1_8/src'
 
 Compiling zdma
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/zdma_v1_8/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/zdma_v1_8/src'
 
 Running Make libs in psu_cortexa53_0/libsrc/gpiops_v3_6/src
 
@@ -468,13 +468,13 @@ make -C psu_cortexa53_0/libsrc/gpiops_v3_6/src -s libs  "SHELL=/bin/sh" "COMPILE
 -elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto-ob
 jects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/gpiops_v3_6/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/gpiops_v3_6/src'
 
 Compiling gpiops
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/gpiops_v3_6/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/gpiops_v3_6/src'
 
 Running Make libs in psu_cortexa53_0/libsrc/usbpsu_v1_6/src
 
@@ -482,13 +482,13 @@ make -C psu_cortexa53_0/libsrc/usbpsu_v1_6/src -s libs  "SHELL=/bin/sh" "COMPILE
 -elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto-ob
 jects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/usbpsu_v1_6/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/usbpsu_v1_6/src'
 
 Compiling usbpsu
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/usbpsu_v1_6/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/usbpsu_v1_6/src'
 
 Running Make libs in psu_cortexa53_0/libsrc/xilpm_v3_0/src
 
@@ -496,8 +496,8 @@ make -C psu_cortexa53_0/libsrc/xilpm_v3_0/src -s libs  "SHELL=/bin/sh" "COMPILER
 elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto-obj
 ects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/xilpm_v3_0/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/xilpm_v3_0/src'
 
 Compiling xilpm library
 
@@ -515,8 +515,8 @@ pm_api_sys.c:1788:46: warning: unused parameter 'clock' [-Wunused-parameter]
 pm_api_sys.c:1788:64: warning: unused parameter 'rate' [-Wunused-parameter]
  XStatus XPm_ClockGetRate(const enum XPmClock clock, u32 *const rate)
                                                      ~~~~~~~~~~~^~~~
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/xilpm_v3_0/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/xilpm_v3_0/src'
 
 Running Make libs in psu_cortexa53_0/libsrc/emacps_v3_10/src
 
@@ -524,13 +524,13 @@ make -C psu_cortexa53_0/libsrc/emacps_v3_10/src -s libs  "SHELL=/bin/sh" "COMPIL
 e-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto-o
 bjects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/emacps_v3_10/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/emacps_v3_10/src'
 
 Compiling emacps
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/emacps_v3_10/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/emacps_v3_10/src'
 
 Running Make libs in psu_cortexa53_0/libsrc/ttcps_v3_10/src
 
@@ -538,13 +538,13 @@ make -C psu_cortexa53_0/libsrc/ttcps_v3_10/src -s libs  "SHELL=/bin/sh" "COMPILE
 -elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto-ob
 jects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/ttcps_v3_10/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/ttcps_v3_10/src'
 
 Compiling ttcps
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/ttcps_v3_10/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/ttcps_v3_10/src'
 
 Running Make libs in psu_cortexa53_0/libsrc/scugic_v4_1/src
 
@@ -552,13 +552,13 @@ make -C psu_cortexa53_0/libsrc/scugic_v4_1/src -s libs  "SHELL=/bin/sh" "COMPILE
 -elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto-ob
 jects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/scugic_v4_1/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/scugic_v4_1/src'
 
 Compiling scugic
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/scugic_v4_1/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/scugic_v4_1/src'
 
 Running Make libs in psu_cortexa53_0/libsrc/clockps_v1_1/src
 
@@ -566,13 +566,13 @@ make -C psu_cortexa53_0/libsrc/clockps_v1_1/src -s libs  "SHELL=/bin/sh" "COMPIL
 e-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto-o
 bjects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/clockps_v1_1/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/clockps_v1_1/src'
 
 Compiling clockps
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/clockps_v1_1/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/clockps_v1_1/src'
 
 Running Make libs in psu_cortexa53_0/libsrc/sysmonpsu_v2_5/src
 
@@ -580,13 +580,13 @@ make -C psu_cortexa53_0/libsrc/sysmonpsu_v2_5/src -s libs  "SHELL=/bin/sh" "COMP
 one-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto
 -objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/sysmonpsu_v2_5/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/sysmonpsu_v2_5/src'
 
 Compiling sysmonpsu
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/sysmonpsu_v2_5/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/sysmonpsu_v2_5/src'
 
 Running Make libs in psu_cortexa53_0/libsrc/wdtps_v3_2/src
 
@@ -594,13 +594,13 @@ make -C psu_cortexa53_0/libsrc/wdtps_v3_2/src -s libs  "SHELL=/bin/sh" "COMPILER
 elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto-obj
 ects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/wdtps_v3_2/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/wdtps_v3_2/src'
 
 Compiling wdtps
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/wdtps_v3_2/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/wdtps_v3_2/src'
 
 Running Make libs in psu_cortexa53_0/libsrc/ddrcpsu_v1_1/src
 
@@ -608,13 +608,13 @@ make -C psu_cortexa53_0/libsrc/ddrcpsu_v1_1/src -s libs  "SHELL=/bin/sh" "COMPIL
 e-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto-o
 bjects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/ddrcpsu_v1_1/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/ddrcpsu_v1_1/src'
 
 Compiling ddrcpsu
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/ddrcpsu_v1_1/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/ddrcpsu_v1_1/src'
 
 Running Make libs in psu_cortexa53_0/libsrc/sdps_v3_8/src
 
@@ -622,13 +622,13 @@ make -C psu_cortexa53_0/libsrc/sdps_v3_8/src -s libs  "SHELL=/bin/sh" "COMPILER=
 lf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto-obje
 cts"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/sdps_v3_8/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/sdps_v3_8/src'
 
 Compiling sdps
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/sdps_v3_8/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/sdps_v3_8/src'
 
 Running Make libs in psu_cortexa53_0/libsrc/iicps_v3_10/src
 
@@ -636,13 +636,13 @@ make -C psu_cortexa53_0/libsrc/iicps_v3_10/src -s libs  "SHELL=/bin/sh" "COMPILE
 -elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto-ob
 jects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/iicps_v3_10/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/iicps_v3_10/src'
 
 Compiling iicps
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/iicps_v3_10/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/iicps_v3_10/src'
 
 Running Make libs in psu_cortexa53_0/libsrc/standalone_v7_1/src
 
@@ -650,8 +650,8 @@ make -C psu_cortexa53_0/libsrc/standalone_v7_1/src -s libs  "SHELL=/bin/sh" "COM
 none-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lt
 o-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/standalone_v7_1/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/standalone_v7_1/src'
 
 Compiling standalone ARMv8 64 bit
 
@@ -670,8 +670,8 @@ xtime_l.h:85:9: note: #pragma message: For the sleep routines, Global timer is b
 translation_table.S:143:2: warning: #warning "There's no DDR_1 in the HW design. MMU translation table marks 32 GB DDR address space as undefined" [-Wcpp]
  #warning "There's no DDR_1 in the HW design. MMU translation table marks 32 GB DDR address space as undefined"
   ^~~~~~~
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/standalone_v7_1/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/standalone_v7_1/src'
 
 Running Make libs in psu_cortexa53_0/libsrc/uartps_v3_8/src
 
@@ -679,13 +679,13 @@ make -C psu_cortexa53_0/libsrc/uartps_v3_8/src -s libs  "SHELL=/bin/sh" "COMPILE
 -elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto-ob
 jects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/uartps_v3_8/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/uartps_v3_8/src'
 
 Compiling uartps
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/uartps_v3_8/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/uartps_v3_8/src'
 
 Running Make libs in psu_cortexa53_0/libsrc/cpu_cortexa53_v1_6/src
 
@@ -693,13 +693,13 @@ make -C psu_cortexa53_0/libsrc/cpu_cortexa53_v1_6/src -s libs  "SHELL=/bin/sh" "
 64-none-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat
 -lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/cpu_cortexa53_v1_6/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/cpu_cortexa53_v1_6/src'
 
 Compiling cpu_cortexa53
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/cpu_cortexa53_v1_6/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/cpu_cortexa53_v1_6/src'
 
 Running Make libs in psu_cortexa53_0/libsrc/qspipsu_v1_10/src
 
@@ -707,18 +707,18 @@ make -C psu_cortexa53_0/libsrc/qspipsu_v1_10/src -s libs  "SHELL=/bin/sh" "COMPI
 ne-elf-as" "ARCHIVER=aarch64-none-elf-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g -Wall -Wextra -Os -flto -ffat-lto-
 objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/qspipsu_v1_10/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_f
+sbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/qspipsu_v1_10/src'
 
 Compiling qspipsu
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/qspipsu_v1_10/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp/psu_cortexa53_0/libsrc/qspipsu_v1_10/src'
 
 Finished building libraries
 
-make[1]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_fsbl/zynqmp_fsbl_bsp'
+make[1]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_fs
+bl/zynqmp_fsbl_bsp'
 
 aarch64-none-elf-gcc -MMD -MP      -Wall -fmessage-length=0 -DARMA53_64 -Os -flto -ffat-lto-objects    -c xfsbl_authentication.
 c -o xfsbl_authentication.o -Izynqmp_fsbl_bsp/psu_cortexa53_0/include -I.
@@ -862,8 +862,8 @@ texa53_0/lib -Tlscript.ld
 Building the zynqmp_pmufw application.
 make -C zynqmp_pmufw_bsp
 
-make[1]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp'
+make[1]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp'
 
 Running Make include in psu_pmu_0/libsrc/clockps_v1_1/src
 
@@ -871,11 +871,11 @@ make -C psu_pmu_0/libsrc/clockps_v1_1/src -s include  "SHELL=/bin/sh" "COMPILER=
 PILER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g 
 -ffunction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/clockps_v1_1/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/clockps_v1_1/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/clockps_v1_1/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/clockps_v1_1/src'
 
 Running Make include in psu_pmu_0/libsrc/spips_v3_3/src
 
@@ -883,11 +883,11 @@ make -C psu_pmu_0/libsrc/spips_v3_3/src -s include  "SHELL=/bin/sh" "COMPILER=mb
 LER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -f
 function-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/spips_v3_3/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/spips_v3_3/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/spips_v3_3/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/spips_v3_3/src'
 
 Running Make include in psu_pmu_0/libsrc/xilsecure_v4_1/src
 
@@ -895,11 +895,11 @@ make -C psu_pmu_0/libsrc/xilsecure_v4_1/src -s include  "SHELL=/bin/sh" "COMPILE
 OMPILER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-
 g -ffunction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/xilsecure_v4_1/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/xilsecure_v4_1/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/xilsecure_v4_1/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/xilsecure_v4_1/src'
 
 Running Make include in psu_pmu_0/libsrc/rtcpsu_v1_8/src
 
@@ -907,11 +907,11 @@ make -C psu_pmu_0/libsrc/rtcpsu_v1_8/src -s include  "SHELL=/bin/sh" "COMPILER=m
 ILER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -
 ffunction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/rtcpsu_v1_8/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/rtcpsu_v1_8/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/rtcpsu_v1_8/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/rtcpsu_v1_8/src'
 
 Running Make include in psu_pmu_0/libsrc/resetps_v1_2/src
 
@@ -919,11 +919,11 @@ make -C psu_pmu_0/libsrc/resetps_v1_2/src -s include  "SHELL=/bin/sh" "COMPILER=
 PILER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g 
 -ffunction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/resetps_v1_2/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/resetps_v1_2/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/resetps_v1_2/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/resetps_v1_2/src'
 
 Running Make include in psu_pmu_0/libsrc/csudma_v1_5/src
 
@@ -931,11 +931,11 @@ make -C psu_pmu_0/libsrc/csudma_v1_5/src -s include  "SHELL=/bin/sh" "COMPILER=m
 ILER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -
 ffunction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/csudma_v1_5/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/csudma_v1_5/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/csudma_v1_5/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/csudma_v1_5/src'
 
 Running Make include in psu_pmu_0/libsrc/axipmon_v6_7/src
 
@@ -943,11 +943,11 @@ make -C psu_pmu_0/libsrc/axipmon_v6_7/src -s include  "SHELL=/bin/sh" "COMPILER=
 PILER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g 
 -ffunction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/axipmon_v6_7/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/axipmon_v6_7/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/axipmon_v6_7/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/axipmon_v6_7/src'
 
 Running Make include in psu_pmu_0/libsrc/ipipsu_v2_5/src
 
@@ -955,11 +955,11 @@ make -C psu_pmu_0/libsrc/ipipsu_v2_5/src -s include  "SHELL=/bin/sh" "COMPILER=m
 ILER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -
 ffunction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/ipipsu_v2_5/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/ipipsu_v2_5/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/ipipsu_v2_5/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/ipipsu_v2_5/src'
 
 Running Make include in psu_pmu_0/libsrc/zdma_v1_8/src
 
@@ -967,11 +967,11 @@ make -C psu_pmu_0/libsrc/zdma_v1_8/src -s include  "SHELL=/bin/sh" "COMPILER=mb-
 ER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -ff
 unction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/zdma_v1_8/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/zdma_v1_8/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/zdma_v1_8/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/zdma_v1_8/src'
 
 Running Make include in psu_pmu_0/libsrc/gpiops_v3_6/src
 
@@ -979,11 +979,11 @@ make -C psu_pmu_0/libsrc/gpiops_v3_6/src -s include  "SHELL=/bin/sh" "COMPILER=m
 ILER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -
 ffunction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/gpiops_v3_6/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/gpiops_v3_6/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/gpiops_v3_6/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/gpiops_v3_6/src'
 
 Running Make include in psu_pmu_0/libsrc/usbpsu_v1_6/src
 
@@ -991,11 +991,11 @@ make -C psu_pmu_0/libsrc/usbpsu_v1_6/src -s include  "SHELL=/bin/sh" "COMPILER=m
 ILER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -
 ffunction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/usbpsu_v1_6/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/usbpsu_v1_6/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/usbpsu_v1_6/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/usbpsu_v1_6/src'
 
 Running Make include in psu_pmu_0/libsrc/emacps_v3_10/src
 
@@ -1003,11 +1003,11 @@ make -C psu_pmu_0/libsrc/emacps_v3_10/src -s include  "SHELL=/bin/sh" "COMPILER=
 PILER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g 
 -ffunction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/emacps_v3_10/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/emacps_v3_10/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/emacps_v3_10/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/emacps_v3_10/src'
 
 Running Make include in psu_pmu_0/libsrc/ttcps_v3_10/src
 
@@ -1015,11 +1015,11 @@ make -C psu_pmu_0/libsrc/ttcps_v3_10/src -s include  "SHELL=/bin/sh" "COMPILER=m
 ILER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -
 ffunction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/ttcps_v3_10/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/ttcps_v3_10/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/ttcps_v3_10/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/ttcps_v3_10/src'
 
 Running Make include in psu_pmu_0/libsrc/xilfpga_v5_1/src
 
@@ -1027,11 +1027,11 @@ make -C psu_pmu_0/libsrc/xilfpga_v5_1/src -s include  "SHELL=/bin/sh" "COMPILER=
 PILER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g 
 -ffunction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/xilfpga_v5_1/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/xilfpga_v5_1/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/xilfpga_v5_1/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/xilfpga_v5_1/src'
 
 Running Make include in psu_pmu_0/libsrc/sysmonpsu_v2_5/src
 
@@ -1039,11 +1039,11 @@ make -C psu_pmu_0/libsrc/sysmonpsu_v2_5/src -s include  "SHELL=/bin/sh" "COMPILE
 OMPILER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-
 g -ffunction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/sysmonpsu_v2_5/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/sysmonpsu_v2_5/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/sysmonpsu_v2_5/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/sysmonpsu_v2_5/src'
 
 Running Make include in psu_pmu_0/libsrc/wdtps_v3_2/src
 
@@ -1051,11 +1051,11 @@ make -C psu_pmu_0/libsrc/wdtps_v3_2/src -s include  "SHELL=/bin/sh" "COMPILER=mb
 LER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -f
 function-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/wdtps_v3_2/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/wdtps_v3_2/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/wdtps_v3_2/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/wdtps_v3_2/src'
 
 Running Make include in psu_pmu_0/libsrc/ddrcpsu_v1_1/src
 
@@ -1063,11 +1063,11 @@ make -C psu_pmu_0/libsrc/ddrcpsu_v1_1/src -s include  "SHELL=/bin/sh" "COMPILER=
 PILER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g 
 -ffunction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/ddrcpsu_v1_1/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/ddrcpsu_v1_1/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/ddrcpsu_v1_1/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/ddrcpsu_v1_1/src'
 
 Running Make include in psu_pmu_0/libsrc/sdps_v3_8/src
 
@@ -1075,11 +1075,11 @@ make -C psu_pmu_0/libsrc/sdps_v3_8/src -s include  "SHELL=/bin/sh" "COMPILER=mb-
 ER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -ff
 unction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/sdps_v3_8/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/sdps_v3_8/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/sdps_v3_8/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/sdps_v3_8/src'
 
 Running Make include in psu_pmu_0/libsrc/iicps_v3_10/src
 
@@ -1087,11 +1087,11 @@ make -C psu_pmu_0/libsrc/iicps_v3_10/src -s include  "SHELL=/bin/sh" "COMPILER=m
 ILER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -
 ffunction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/iicps_v3_10/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/iicps_v3_10/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/iicps_v3_10/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/iicps_v3_10/src'
 
 Running Make include in psu_pmu_0/libsrc/xilskey_v6_8/src
 
@@ -1099,11 +1099,11 @@ make -C psu_pmu_0/libsrc/xilskey_v6_8/src -s include  "SHELL=/bin/sh" "COMPILER=
 PILER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g 
 -ffunction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/xilskey_v6_8/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/xilskey_v6_8/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/xilskey_v6_8/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/xilskey_v6_8/src'
 
 Running Make include in psu_pmu_0/libsrc/standalone_v7_1/src
 
@@ -1111,17 +1111,17 @@ make -C psu_pmu_0/libsrc/standalone_v7_1/src -s include  "SHELL=/bin/sh" "COMPIL
 COMPILER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=
 -g -ffunction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/standalone_v7_1/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/standalone_v7_1/src'
 
-make[3]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/standalone_v7_1/src/profile'
+make[3]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/standalone_v7_1/src/profile'
 
-make[3]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/standalone_v7_1/src/profile'
+make[3]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/standalone_v7_1/src/profile'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/standalone_v7_1/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/standalone_v7_1/src'
 
 Running Make include in psu_pmu_0/libsrc/uartps_v3_8/src
 
@@ -1129,11 +1129,11 @@ make -C psu_pmu_0/libsrc/uartps_v3_8/src -s include  "SHELL=/bin/sh" "COMPILER=m
 ILER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -
 ffunction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/uartps_v3_8/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/uartps_v3_8/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/uartps_v3_8/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/uartps_v3_8/src'
 
 Running Make include in psu_pmu_0/libsrc/cpu_v2_10/src
 
@@ -1141,11 +1141,11 @@ make -C psu_pmu_0/libsrc/cpu_v2_10/src -s include  "SHELL=/bin/sh" "COMPILER=mb-
 ER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -ff
 unction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/cpu_v2_10/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/cpu_v2_10/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/cpu_v2_10/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/cpu_v2_10/src'
 
 Running Make include in psu_pmu_0/libsrc/qspipsu_v1_10/src
 
@@ -1153,11 +1153,11 @@ make -C psu_pmu_0/libsrc/qspipsu_v1_10/src -s include  "SHELL=/bin/sh" "COMPILER
 MPILER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g
  -ffunction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/qspipsu_v1_10/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/qspipsu_v1_10/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/qspipsu_v1_10/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/qspipsu_v1_10/src'
 
 Running Make libs in psu_pmu_0/libsrc/clockps_v1_1/src
 
@@ -1165,14 +1165,14 @@ make -C psu_pmu_0/libsrc/clockps_v1_1/src -s libs  "SHELL=/bin/sh" "COMPILER=mb-
 ER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -ff
 unction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/clockps_v1_1/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/clockps_v1_1/src'
 
 Compiling clockps
 
 mb-ar: creating ../../../lib/libxil.a
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/clockps_v1_1/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/clockps_v1_1/src'
 
 Running Make libs in psu_pmu_0/libsrc/spips_v3_3/src
 
@@ -1180,13 +1180,13 @@ make -C psu_pmu_0/libsrc/spips_v3_3/src -s libs  "SHELL=/bin/sh" "COMPILER=mb-gc
 _FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -ffun
 ction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/spips_v3_3/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/spips_v3_3/src'
 
 Compiling spips
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/spips_v3_3/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/spips_v3_3/src'
 
 Running Make libs in psu_pmu_0/libsrc/xilsecure_v4_1/src
 
@@ -1194,13 +1194,13 @@ make -C psu_pmu_0/libsrc/xilsecure_v4_1/src -s libs  "SHELL=/bin/sh" "COMPILER=m
 ILER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -
 ffunction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/xilsecure_v4_1/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/xilsecure_v4_1/src'
 
 Compiling XilSecure Library
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/xilsecure_v4_1/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/xilsecure_v4_1/src'
 
 Running Make libs in psu_pmu_0/libsrc/rtcpsu_v1_8/src
 
@@ -1208,13 +1208,13 @@ make -C psu_pmu_0/libsrc/rtcpsu_v1_8/src -s libs  "SHELL=/bin/sh" "COMPILER=mb-g
 R_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -ffu
 nction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/rtcpsu_v1_8/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/rtcpsu_v1_8/src'
 
 Compiling rtcpsu
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/rtcpsu_v1_8/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/rtcpsu_v1_8/src'
 
 Running Make libs in psu_pmu_0/libsrc/resetps_v1_2/src
 
@@ -1222,13 +1222,13 @@ make -C psu_pmu_0/libsrc/resetps_v1_2/src -s libs  "SHELL=/bin/sh" "COMPILER=mb-
 ER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -ff
 unction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/resetps_v1_2/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/resetps_v1_2/src'
 
 Compiling resetps
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/resetps_v1_2/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/resetps_v1_2/src'
 
 Running Make libs in psu_pmu_0/libsrc/csudma_v1_5/src
 
@@ -1236,13 +1236,13 @@ make -C psu_pmu_0/libsrc/csudma_v1_5/src -s libs  "SHELL=/bin/sh" "COMPILER=mb-g
 R_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -ffu
 nction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/csudma_v1_5/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/csudma_v1_5/src'
 
 Compiling csudma
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/csudma_v1_5/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/csudma_v1_5/src'
 
 Running Make libs in psu_pmu_0/libsrc/axipmon_v6_7/src
 
@@ -1250,13 +1250,13 @@ make -C psu_pmu_0/libsrc/axipmon_v6_7/src -s libs  "SHELL=/bin/sh" "COMPILER=mb-
 ER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -ff
 unction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/axipmon_v6_7/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/axipmon_v6_7/src'
 
 Compiling axipmon
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/axipmon_v6_7/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/axipmon_v6_7/src'
 
 Running Make libs in psu_pmu_0/libsrc/ipipsu_v2_5/src
 
@@ -1264,13 +1264,13 @@ make -C psu_pmu_0/libsrc/ipipsu_v2_5/src -s libs  "SHELL=/bin/sh" "COMPILER=mb-g
 R_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -ffu
 nction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/ipipsu_v2_5/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/ipipsu_v2_5/src'
 
 Compiling ipipsu
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/ipipsu_v2_5/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/ipipsu_v2_5/src'
 
 Running Make libs in psu_pmu_0/libsrc/zdma_v1_8/src
 
@@ -1278,13 +1278,13 @@ make -C psu_pmu_0/libsrc/zdma_v1_8/src -s libs  "SHELL=/bin/sh" "COMPILER=mb-gcc
 FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -ffunc
 tion-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/zdma_v1_8/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/zdma_v1_8/src'
 
 Compiling zdma
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/zdma_v1_8/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/zdma_v1_8/src'
 
 Running Make libs in psu_pmu_0/libsrc/gpiops_v3_6/src
 
@@ -1292,13 +1292,13 @@ make -C psu_pmu_0/libsrc/gpiops_v3_6/src -s libs  "SHELL=/bin/sh" "COMPILER=mb-g
 R_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -ffu
 nction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/gpiops_v3_6/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/gpiops_v3_6/src'
 
 Compiling gpiops
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/gpiops_v3_6/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/gpiops_v3_6/src'
 
 Running Make libs in psu_pmu_0/libsrc/usbpsu_v1_6/src
 
@@ -1306,13 +1306,13 @@ make -C psu_pmu_0/libsrc/usbpsu_v1_6/src -s libs  "SHELL=/bin/sh" "COMPILER=mb-g
 R_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -ffu
 nction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/usbpsu_v1_6/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/usbpsu_v1_6/src'
 
 Compiling usbpsu
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/usbpsu_v1_6/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/usbpsu_v1_6/src'
 
 Running Make libs in psu_pmu_0/libsrc/emacps_v3_10/src
 
@@ -1320,13 +1320,13 @@ make -C psu_pmu_0/libsrc/emacps_v3_10/src -s libs  "SHELL=/bin/sh" "COMPILER=mb-
 ER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -ff
 unction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/emacps_v3_10/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/emacps_v3_10/src'
 
 Compiling emacps
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/emacps_v3_10/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/emacps_v3_10/src'
 
 Running Make libs in psu_pmu_0/libsrc/ttcps_v3_10/src
 
@@ -1334,13 +1334,13 @@ make -C psu_pmu_0/libsrc/ttcps_v3_10/src -s libs  "SHELL=/bin/sh" "COMPILER=mb-g
 R_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -ffu
 nction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/ttcps_v3_10/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/ttcps_v3_10/src'
 
 Compiling ttcps
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/ttcps_v3_10/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/ttcps_v3_10/src'
 
 Running Make libs in psu_pmu_0/libsrc/xilfpga_v5_1/src
 
@@ -1348,13 +1348,13 @@ make -C psu_pmu_0/libsrc/xilfpga_v5_1/src -s libs  "SHELL=/bin/sh" "COMPILER=mb-
 ER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -ff
 unction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/xilfpga_v5_1/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/xilfpga_v5_1/src'
 
 Compiling xilfpga Library
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/xilfpga_v5_1/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/xilfpga_v5_1/src'
 
 Running Make libs in psu_pmu_0/libsrc/sysmonpsu_v2_5/src
 
@@ -1362,13 +1362,13 @@ make -C psu_pmu_0/libsrc/sysmonpsu_v2_5/src -s libs  "SHELL=/bin/sh" "COMPILER=m
 ILER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -
 ffunction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/sysmonpsu_v2_5/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/sysmonpsu_v2_5/src'
 
 Compiling sysmonpsu
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/sysmonpsu_v2_5/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/sysmonpsu_v2_5/src'
 
 Running Make libs in psu_pmu_0/libsrc/wdtps_v3_2/src
 
@@ -1376,13 +1376,13 @@ make -C psu_pmu_0/libsrc/wdtps_v3_2/src -s libs  "SHELL=/bin/sh" "COMPILER=mb-gc
 _FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -ffun
 ction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/wdtps_v3_2/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/wdtps_v3_2/src'
 
 Compiling wdtps
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/wdtps_v3_2/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/wdtps_v3_2/src'
 
 Running Make libs in psu_pmu_0/libsrc/ddrcpsu_v1_1/src
 
@@ -1390,13 +1390,13 @@ make -C psu_pmu_0/libsrc/ddrcpsu_v1_1/src -s libs  "SHELL=/bin/sh" "COMPILER=mb-
 ER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -ff
 unction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/ddrcpsu_v1_1/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/ddrcpsu_v1_1/src'
 
 Compiling ddrcpsu
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/ddrcpsu_v1_1/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/ddrcpsu_v1_1/src'
 
 Running Make libs in psu_pmu_0/libsrc/sdps_v3_8/src
 
@@ -1404,13 +1404,13 @@ make -C psu_pmu_0/libsrc/sdps_v3_8/src -s libs  "SHELL=/bin/sh" "COMPILER=mb-gcc
 FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -ffunc
 tion-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/sdps_v3_8/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/sdps_v3_8/src'
 
 Compiling sdps
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/sdps_v3_8/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/sdps_v3_8/src'
 
 Running Make libs in psu_pmu_0/libsrc/iicps_v3_10/src
 
@@ -1418,13 +1418,13 @@ make -C psu_pmu_0/libsrc/iicps_v3_10/src -s libs  "SHELL=/bin/sh" "COMPILER=mb-g
 R_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -ffu
 nction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/iicps_v3_10/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/iicps_v3_10/src'
 
 Compiling iicps
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/iicps_v3_10/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/iicps_v3_10/src'
 
 Running Make libs in psu_pmu_0/libsrc/xilskey_v6_8/src
 
@@ -1432,13 +1432,13 @@ make -C psu_pmu_0/libsrc/xilskey_v6_8/src -s libs  "SHELL=/bin/sh" "COMPILER=mb-
 ER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -ff
 unction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/xilskey_v6_8/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/xilskey_v6_8/src'
 
 Compiling Xilskey Library
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/xilskey_v6_8/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/xilskey_v6_8/src'
 
 Running Make libs in psu_pmu_0/libsrc/standalone_v7_1/src
 
@@ -1446,16 +1446,16 @@ make -C psu_pmu_0/libsrc/standalone_v7_1/src -s libs  "SHELL=/bin/sh" "COMPILER=
 PILER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g 
 -ffunction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/standalone_v7_1/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/standalone_v7_1/src'
 
 Compiling standalone
 
 microblaze_sleep.c:75:9: note: #pragma message: For the sleep routines, assembly instructions are used
  #pragma message ("For the sleep routines, assembly instructions are used")
          ^~~~~~~
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/standalone_v7_1/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/standalone_v7_1/src'
 
 Running Make libs in psu_pmu_0/libsrc/uartps_v3_8/src
 
@@ -1463,13 +1463,13 @@ make -C psu_pmu_0/libsrc/uartps_v3_8/src -s libs  "SHELL=/bin/sh" "COMPILER=mb-g
 R_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -ffu
 nction-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/uartps_v3_8/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/uartps_v3_8/src'
 
 Compiling uartps
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/uartps_v3_8/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/uartps_v3_8/src'
 
 Running Make libs in psu_pmu_0/libsrc/cpu_v2_10/src
 
@@ -1477,19 +1477,19 @@ make -C psu_pmu_0/libsrc/cpu_v2_10/src -s libs  "SHELL=/bin/sh" "COMPILER=mb-gcc
 FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -ffunc
 tion-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/cpu_v2_10/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/cpu_v2_10/src'
 
 Compiling cpu
 
-make[3]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/cpu_v2_10/src'
+make[3]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/cpu_v2_10/src'
 
-make[3]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/cpu_v2_10/src'
+make[3]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/cpu_v2_10/src'
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/cpu_v2_10/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/cpu_v2_10/src'
 
 Running Make libs in psu_pmu_0/libsrc/qspipsu_v1_10/src
 
@@ -1497,18 +1497,18 @@ make -C psu_pmu_0/libsrc/qspipsu_v1_10/src -s libs  "SHELL=/bin/sh" "COMPILER=mb
 LER_FLAGS=  -O2 -c -mcpu=v9.2 -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul" "EXTRA_COMPILER_FLAGS=-g -f
 function-sections -fdata-sections -Wall -Wextra -Os -flto -ffat-lto-objects"
 
-make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/z
-ynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/qspipsu_v1_10/src'
+make[2]: Entering directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_p
+mufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/qspipsu_v1_10/src'
 
 Compiling qspipsu
 
-make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/qspipsu_v1_10/src'
+make[2]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/qspipsu_v1_10/src'
 
 Finished building libraries
 
-make[1]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/zy
-nqmp_pmufw/zynqmp_pmufw_bsp'
+make[1]: Leaving directory '/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/zynqmp_pm
+ufw/zynqmp_pmufw_bsp'
 
 mb-gcc -MMD -MP      -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mcpu=v9.2 -mxl-soft-mul -Os -flto -ffat-lto-object
 s    -c pm_master.c -o pm_master.o -Izynqmp_pmufw_bsp/psu_pmu_0/include -I.
@@ -2093,192 +2093,6 @@ Compiling qspipsu
 
 Finished building libraries
 
-18:51:23 **** Build of configuration Debug for project FSBL ****
-make all 
-Building file: ../src/psu_init.c
-Invoking: ARM v8 gcc compiler
-aarch64-none-elf-gcc -DARMA53_64 -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/psu_init.o" -Os -flto -ffat-lto-objects -I/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include -MMD -MP -MF"src/psu_init.d" -MT"src/psu_init.o" -o "src/psu_init.o" "../src/psu_init.c"
-../src/psu_init.c:18645:12: warning: 'mask_read' defined but not used [-Wunused-function]
- static u32 mask_read(u32 add, u32 mask)
-            ^~~~~~~~~
-Finished building: ../src/psu_init.c
- 
-Building file: ../src/xfsbl_authentication.c
-Invoking: ARM v8 gcc compiler
-aarch64-none-elf-gcc -DARMA53_64 -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/xfsbl_authentication.o" -Os -flto -ffat-lto-objects -I/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include -MMD -MP -MF"src/xfsbl_authentication.d" -MT"src/xfsbl_authentication.o" -o "src/xfsbl_authentication.o" "../src/xfsbl_authentication.c"
-In file included from ../src/xfsbl_main.h:61,
-                 from ../src/xfsbl_bs.h:59,
-                 from ../src/xfsbl_authentication.c:64:
-/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include/xtime_l.h:85:9: note: #pragma message: For the sleep routines, Global timer is being used
- #pragma message ("For the sleep routines, Global timer is being used")
-         ^~~~~~~
-Finished building: ../src/xfsbl_authentication.c
- 
-Building file: ../src/xfsbl_board.c
-Invoking: ARM v8 gcc compiler
-aarch64-none-elf-gcc -DARMA53_64 -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/xfsbl_board.o" -Os -flto -ffat-lto-objects -I/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include -MMD -MP -MF"src/xfsbl_board.d" -MT"src/xfsbl_board.o" -o "src/xfsbl_board.o" "../src/xfsbl_board.c"
-Finished building: ../src/xfsbl_board.c
- 
-Building file: ../src/xfsbl_bs.c
-Invoking: ARM v8 gcc compiler
-aarch64-none-elf-gcc -DARMA53_64 -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/xfsbl_bs.o" -Os -flto -ffat-lto-objects -I/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include -MMD -MP -MF"src/xfsbl_bs.d" -MT"src/xfsbl_bs.o" -o "src/xfsbl_bs.o" "../src/xfsbl_bs.c"
-In file included from ../src/xfsbl_main.h:61,
-                 from ../src/xfsbl_bs.h:59,
-                 from ../src/xfsbl_bs.c:53:
-/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include/xtime_l.h:85:9: note: #pragma message: For the sleep routines, Global timer is being used
- #pragma message ("For the sleep routines, Global timer is being used")
-         ^~~~~~~
-Finished building: ../src/xfsbl_bs.c
- 
-Building file: ../src/xfsbl_csu_dma.c
-Invoking: ARM v8 gcc compiler
-aarch64-none-elf-gcc -DARMA53_64 -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/xfsbl_csu_dma.o" -Os -flto -ffat-lto-objects -I/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include -MMD -MP -MF"src/xfsbl_csu_dma.d" -MT"src/xfsbl_csu_dma.o" -o "src/xfsbl_csu_dma.o" "../src/xfsbl_csu_dma.c"
-Finished building: ../src/xfsbl_csu_dma.c
- 
-Building file: ../src/xfsbl_ddr_init.c
-Invoking: ARM v8 gcc compiler
-aarch64-none-elf-gcc -DARMA53_64 -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/xfsbl_ddr_init.o" -Os -flto -ffat-lto-objects -I/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include -MMD -MP -MF"src/xfsbl_ddr_init.d" -MT"src/xfsbl_ddr_init.o" -o "src/xfsbl_ddr_init.o" "../src/xfsbl_ddr_init.c"
-Finished building: ../src/xfsbl_ddr_init.c
- 
-Building file: ../src/xfsbl_dfu_util.c
-Invoking: ARM v8 gcc compiler
-aarch64-none-elf-gcc -DARMA53_64 -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/xfsbl_dfu_util.o" -Os -flto -ffat-lto-objects -I/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include -MMD -MP -MF"src/xfsbl_dfu_util.d" -MT"src/xfsbl_dfu_util.o" -o "src/xfsbl_dfu_util.o" "../src/xfsbl_dfu_util.c"
-Finished building: ../src/xfsbl_dfu_util.c
- 
-Building file: ../src/xfsbl_exit.S
-Invoking: ARM v8 gcc compiler
-aarch64-none-elf-gcc -DARMA53_64 -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/xfsbl_exit.o" -Os -flto -ffat-lto-objects -I/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include -MMD -MP -MF"src/xfsbl_exit.d" -MT"src/xfsbl_exit.o" -o "src/xfsbl_exit.o" "../src/xfsbl_exit.S"
-Finished building: ../src/xfsbl_exit.S
- 
-Building file: ../src/xfsbl_handoff.c
-Invoking: ARM v8 gcc compiler
-aarch64-none-elf-gcc -DARMA53_64 -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/xfsbl_handoff.o" -Os -flto -ffat-lto-objects -I/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include -MMD -MP -MF"src/xfsbl_handoff.d" -MT"src/xfsbl_handoff.o" -o "src/xfsbl_handoff.o" "../src/xfsbl_handoff.c"
-In file included from ../src/xfsbl_main.h:61,
-                 from ../src/xfsbl_handoff.c:57:
-/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include/xtime_l.h:85:9: note: #pragma message: For the sleep routines, Global timer is being used
- #pragma message ("For the sleep routines, Global timer is being used")
-         ^~~~~~~
-Finished building: ../src/xfsbl_handoff.c
- 
-Building file: ../src/xfsbl_hooks.c
-Invoking: ARM v8 gcc compiler
-aarch64-none-elf-gcc -DARMA53_64 -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/xfsbl_hooks.o" -Os -flto -ffat-lto-objects -I/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include -MMD -MP -MF"src/xfsbl_hooks.d" -MT"src/xfsbl_hooks.o" -o "src/xfsbl_hooks.o" "../src/xfsbl_hooks.c"
-Finished building: ../src/xfsbl_hooks.c
- 
-Building file: ../src/xfsbl_image_header.c
-Invoking: ARM v8 gcc compiler
-aarch64-none-elf-gcc -DARMA53_64 -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/xfsbl_image_header.o" -Os -flto -ffat-lto-objects -I/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include -MMD -MP -MF"src/xfsbl_image_header.d" -MT"src/xfsbl_image_header.o" -o "src/xfsbl_image_header.o" "../src/xfsbl_image_header.c"
-Finished building: ../src/xfsbl_image_header.c
- 
-Building file: ../src/xfsbl_initialization.c
-Invoking: ARM v8 gcc compiler
-aarch64-none-elf-gcc -DARMA53_64 -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/xfsbl_initialization.o" -Os -flto -ffat-lto-objects -I/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include -MMD -MP -MF"src/xfsbl_initialization.d" -MT"src/xfsbl_initialization.o" -o "src/xfsbl_initialization.o" "../src/xfsbl_initialization.c"
-In file included from ../src/xfsbl_main.h:61,
-                 from ../src/xfsbl_initialization.c:69:
-/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include/xtime_l.h:85:9: note: #pragma message: For the sleep routines, Global timer is being used
- #pragma message ("For the sleep routines, Global timer is being used")
-         ^~~~~~~
-Finished building: ../src/xfsbl_initialization.c
- 
-Building file: ../src/xfsbl_main.c
-Invoking: ARM v8 gcc compiler
-aarch64-none-elf-gcc -DARMA53_64 -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/xfsbl_main.o" -Os -flto -ffat-lto-objects -I/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include -MMD -MP -MF"src/xfsbl_main.d" -MT"src/xfsbl_main.o" -o "src/xfsbl_main.o" "../src/xfsbl_main.c"
-In file included from ../src/xfsbl_main.h:61,
-                 from ../src/xfsbl_main.c:52:
-/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include/xtime_l.h:85:9: note: #pragma message: For the sleep routines, Global timer is being used
- #pragma message ("For the sleep routines, Global timer is being used")
-         ^~~~~~~
-Finished building: ../src/xfsbl_main.c
- 
-Building file: ../src/xfsbl_misc.c
-Invoking: ARM v8 gcc compiler
-aarch64-none-elf-gcc -DARMA53_64 -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/xfsbl_misc.o" -Os -flto -ffat-lto-objects -I/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include -MMD -MP -MF"src/xfsbl_misc.d" -MT"src/xfsbl_misc.o" -o "src/xfsbl_misc.o" "../src/xfsbl_misc.c"
-In file included from ../src/xfsbl_main.h:61,
-                 from ../src/xfsbl_misc.c:51:
-/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include/xtime_l.h:85:9: note: #pragma message: For the sleep routines, Global timer is being used
- #pragma message ("For the sleep routines, Global timer is being used")
-         ^~~~~~~
-Finished building: ../src/xfsbl_misc.c
- 
-Building file: ../src/xfsbl_misc_drivers.c
-Invoking: ARM v8 gcc compiler
-aarch64-none-elf-gcc -DARMA53_64 -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/xfsbl_misc_drivers.o" -Os -flto -ffat-lto-objects -I/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include -MMD -MP -MF"src/xfsbl_misc_drivers.d" -MT"src/xfsbl_misc_drivers.o" -o "src/xfsbl_misc_drivers.o" "../src/xfsbl_misc_drivers.c"
-Finished building: ../src/xfsbl_misc_drivers.c
- 
-Building file: ../src/xfsbl_nand.c
-Invoking: ARM v8 gcc compiler
-aarch64-none-elf-gcc -DARMA53_64 -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/xfsbl_nand.o" -Os -flto -ffat-lto-objects -I/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include -MMD -MP -MF"src/xfsbl_nand.d" -MT"src/xfsbl_nand.o" -o "src/xfsbl_nand.o" "../src/xfsbl_nand.c"
-Finished building: ../src/xfsbl_nand.c
- 
-Building file: ../src/xfsbl_partition_load.c
-Invoking: ARM v8 gcc compiler
-aarch64-none-elf-gcc -DARMA53_64 -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/xfsbl_partition_load.o" -Os -flto -ffat-lto-objects -I/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include -MMD -MP -MF"src/xfsbl_partition_load.d" -MT"src/xfsbl_partition_load.o" -o "src/xfsbl_partition_load.o" "../src/xfsbl_partition_load.c"
-In file included from ../src/xfsbl_main.h:61,
-                 from ../src/xfsbl_partition_load.c:69:
-/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include/xtime_l.h:85:9: note: #pragma message: For the sleep routines, Global timer is being used
- #pragma message ("For the sleep routines, Global timer is being used")
-         ^~~~~~~
-Finished building: ../src/xfsbl_partition_load.c
- 
-Building file: ../src/xfsbl_plpartition_valid.c
-Invoking: ARM v8 gcc compiler
-aarch64-none-elf-gcc -DARMA53_64 -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/xfsbl_plpartition_valid.o" -Os -flto -ffat-lto-objects -I/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include -MMD -MP -MF"src/xfsbl_plpartition_valid.d" -MT"src/xfsbl_plpartition_valid.o" -o "src/xfsbl_plpartition_valid.o" "../src/xfsbl_plpartition_valid.c"
-In file included from ../src/xfsbl_main.h:61,
-                 from ../src/xfsbl_authentication.h:62,
-                 from ../src/xfsbl_plpartition_valid.h:58,
-                 from ../src/xfsbl_plpartition_valid.c:75:
-/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include/xtime_l.h:85:9: note: #pragma message: For the sleep routines, Global timer is being used
- #pragma message ("For the sleep routines, Global timer is being used")
-         ^~~~~~~
-Finished building: ../src/xfsbl_plpartition_valid.c
- 
-Building file: ../src/xfsbl_qspi.c
-Invoking: ARM v8 gcc compiler
-aarch64-none-elf-gcc -DARMA53_64 -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/xfsbl_qspi.o" -Os -flto -ffat-lto-objects -I/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include -MMD -MP -MF"src/xfsbl_qspi.d" -MT"src/xfsbl_qspi.o" -o "src/xfsbl_qspi.o" "../src/xfsbl_qspi.c"
-Finished building: ../src/xfsbl_qspi.c
- 
-Building file: ../src/xfsbl_rsa_sha.c
-Invoking: ARM v8 gcc compiler
-aarch64-none-elf-gcc -DARMA53_64 -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/xfsbl_rsa_sha.o" -Os -flto -ffat-lto-objects -I/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include -MMD -MP -MF"src/xfsbl_rsa_sha.d" -MT"src/xfsbl_rsa_sha.o" -o "src/xfsbl_rsa_sha.o" "../src/xfsbl_rsa_sha.c"
-In file included from ../src/xfsbl_main.h:61,
-                 from ../src/xfsbl_authentication.h:62,
-                 from ../src/xfsbl_rsa_sha.c:52:
-/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include/xtime_l.h:85:9: note: #pragma message: For the sleep routines, Global timer is being used
- #pragma message ("For the sleep routines, Global timer is being used")
-         ^~~~~~~
-Finished building: ../src/xfsbl_rsa_sha.c
- 
-Building file: ../src/xfsbl_sd.c
-Invoking: ARM v8 gcc compiler
-aarch64-none-elf-gcc -DARMA53_64 -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/xfsbl_sd.o" -Os -flto -ffat-lto-objects -I/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include -MMD -MP -MF"src/xfsbl_sd.d" -MT"src/xfsbl_sd.o" -o "src/xfsbl_sd.o" "../src/xfsbl_sd.c"
-In file included from ../src/xfsbl_main.h:61,
-                 from ../src/xfsbl_sd.c:49:
-/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include/xtime_l.h:85:9: note: #pragma message: For the sleep routines, Global timer is being used
- #pragma message ("For the sleep routines, Global timer is being used")
-         ^~~~~~~
-Finished building: ../src/xfsbl_sd.c
- 
-Building file: ../src/xfsbl_translation_table.S
-Invoking: ARM v8 gcc compiler
-aarch64-none-elf-gcc -DARMA53_64 -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/xfsbl_translation_table.o" -Os -flto -ffat-lto-objects -I/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include -MMD -MP -MF"src/xfsbl_translation_table.d" -MT"src/xfsbl_translation_table.o" -o "src/xfsbl_translation_table.o" "../src/xfsbl_translation_table.S"
-../src/xfsbl_translation_table.S:106:2: warning: #warning "There's no DDR_1 in the HW design. MMU translation table marks 32 GB DDR address space as undefined" [-Wcpp]
- #warning "There's no DDR_1 in the HW design. MMU translation table marks 32 GB DDR address space as undefined"
-  ^~~~~~~
-Finished building: ../src/xfsbl_translation_table.S
- 
-Building file: ../src/xfsbl_usb.c
-Invoking: ARM v8 gcc compiler
-aarch64-none-elf-gcc -DARMA53_64 -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/xfsbl_usb.o" -Os -flto -ffat-lto-objects -I/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bspinclude/include -MMD -MP -MF"src/xfsbl_usb.d" -MT"src/xfsbl_usb.o" -o "src/xfsbl_usb.o" "../src/xfsbl_usb.c"
-Finished building: ../src/xfsbl_usb.c
- 
-Building target: FSBL.elf
-Invoking: ARM v8 gcc linker
-aarch64-none-elf-gcc -n -Wl,-T -Wl,../src/lscript.ld -L/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/sw/zusys_wrapper/standalone_domain/bsplib/lib -o "FSBL.elf"  ./src/psu_init.o ./src/xfsbl_authentication.o ./src/xfsbl_board.o ./src/xfsbl_bs.o ./src/xfsbl_csu_dma.o ./src/xfsbl_ddr_init.o ./src/xfsbl_dfu_util.o ./src/xfsbl_exit.o ./src/xfsbl_handoff.o ./src/xfsbl_hooks.o ./src/xfsbl_image_header.o ./src/xfsbl_initialization.o ./src/xfsbl_main.o ./src/xfsbl_misc.o ./src/xfsbl_misc_drivers.o ./src/xfsbl_nand.o ./src/xfsbl_partition_load.o ./src/xfsbl_plpartition_valid.o ./src/xfsbl_qspi.o ./src/xfsbl_rsa_sha.o ./src/xfsbl_sd.o ./src/xfsbl_translation_table.o ./src/xfsbl_usb.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilffs,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilsecure,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilpm,-lxil,-lgcc,-lc,--end-group
-Finished building target: FSBL.elf
- 
-Invoking: ARM v8 Print Size
-aarch64-none-elf-size FSBL.elf  |tee "FSBL.elf.size"
-   text	   data	    bss	    dec	    hex	filename
-  89388	   5088	  87928	 182404	  2c884	FSBL.elf
-Finished building: FSBL.elf.size
- 
+Building the BSP Library for domain  - device_tree on processor psu_cortexa53_0
+make: Nothing to be done for 'all'.
+

@@ -1,16 +1,5 @@
-timestamp=[2020-08-19 04:09:30], mode=WORKBENCH_START, duration=0:00:03.890, duration_ms=3890, data={}
-timestamp=[2020-08-19 04:09:36], mode=WORKBENCH_UI_INIT, duration=0:00:06.305, duration_ms=6305, data={editors_count=0, platform_editors_count=0, projects_count=0, platform_projects_count=0, active_platform_editor=false, projects=}
-timestamp=[2020-08-24 14:21:45], mode=WORKBENCH_START, duration=0:00:05.972, duration_ms=5972, data={}
-timestamp=[2020-08-24 14:21:47], mode=WORKBENCH_UI_INIT, duration=0:00:01.706, duration_ms=1706, data={editors_count=0, platform_editors_count=0, projects_count=1, platform_projects_count=0, active_platform_editor=false, projects=RemoteSystemsTempFiles}
-timestamp=[2020-08-24 15:17:22], mode=WORKBENCH_START, duration=0:00:05.128, duration_ms=5128, data={}
-timestamp=[2020-08-24 15:17:24], mode=WORKBENCH_UI_INIT, duration=0:00:02.037, duration_ms=2037, data={editors_count=0, platform_editors_count=0, projects_count=1, platform_projects_count=0, active_platform_editor=false, projects=RemoteSystemsTempFiles}
-timestamp=[2020-08-24 15:23:12], mode=PLATFORM_CREATION, duration=0:00:22.152, duration_ms=22152, data={platform_source=dsa, os=linux, processor=psu_cortexa53, platform=null}
-timestamp=[2020-08-24 15:24:45], mode=PLATFORM_GENERATION, duration=0:00:05.524, duration_ms=5524, data={name=SW_system}
-timestamp=[2020-08-24 15:31:27], mode=APP_CREATION, duration=0:00:28.552, duration_ms=28552, data={name=SW_A53, project_type=sdk, os=standalone, processor=psu_cortexa53, runtime=cpp, platform=zusys_wrapper, application_type=application}
-timestamp=[2020-08-24 15:32:55], mode=PLATFORM_GENERATION, duration=0:01:04.336, duration_ms=64336, data={name=zusys_wrapper}
-timestamp=[2020-08-24 15:39:33], mode=PLATFORM_GENERATION, duration=0:00:30.353, duration_ms=30353, data={name=zusys_wrapper}
-timestamp=[2020-08-24 18:38:50], mode=WORKBENCH_START, duration=0:00:14.168, duration_ms=14168, data={}
-timestamp=[2020-08-24 18:38:54], mode=WORKBENCH_UI_INIT, duration=0:00:03.958, duration_ms=3958, data={editors_count=3, platform_editors_count=1, projects_count=4, platform_projects_count=1, active_platform_editor=true, projects=RemoteSystemsTempFiles,SW_A53,SW_system,zusys_wrapper}
-timestamp=[2020-08-24 18:45:46], mode=PLATFORM_GENERATION, duration=0:00:05.822, duration_ms=5822, data={name=zusys_wrapper}
-timestamp=[2020-08-24 18:49:47], mode=APP_CREATION, duration=0:00:29.402, duration_ms=29402, data={name=FSBL, project_type=sdk, os=standalone, processor=psu_cortexa53, runtime=cpp, platform=zusys_wrapper, application_type=application}
-timestamp=[2020-08-24 18:51:12], mode=PLATFORM_GENERATION, duration=0:01:06.111, duration_ms=66111, data={name=zusys_wrapper}
+timestamp=[2020-08-31 07:38:34], mode=WORKBENCH_START, duration=0:00:02.933, duration_ms=2933, data={}
+timestamp=[2020-08-31 07:38:39], mode=WORKBENCH_UI_INIT, duration=0:00:05.341, duration_ms=5341, data={editors_count=0, platform_editors_count=0, projects_count=0, platform_projects_count=0, active_platform_editor=false, projects=}
+timestamp=[2020-08-31 07:43:20], mode=APP_CREATION, duration=0:00:33.843, duration_ms=33843, data={name=FSBL, project_type=sdk, os=standalone, processor=psu_cortexa53, runtime=cpp, platform=system, application_type=application}
+timestamp=[2020-08-31 16:59:56], mode=APP_CREATION, duration=0:00:31.753, duration_ms=31753, data={name=FSBL, project_type=sdk, os=standalone, processor=psu_cortexa53, runtime=cpp, platform=TE0820-03-2AI21FA, application_type=application}
+timestamp=[2020-08-31 17:12:27], mode=PLATFORM_GENERATION, duration=0:01:07.113, duration_ms=67113, data={name=TE0820-03-2AI21FA}

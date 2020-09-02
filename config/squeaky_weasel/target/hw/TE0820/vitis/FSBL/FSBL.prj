@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="ASCII"?>
-<sdkproject:SdkProject xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sdkproject="http://www.xilinx.com/sdkproject" name="FSBL" location="/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/FSBL" platform="/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820-03-2AI21FA/vitis/zusys_wrapper/export/zusys_wrapper/zusys_wrapper.xpfm" platformUID="xilinx:te0820_2cg_1i::0.0(custom)" systemProject="SW_system" sysConfig="zusys_wrapper" runtime="cpp" cpu="standalone_domain" cpuInstance="psu_cortexa53_0" os="standalone" mssSignature="a48424e35b3e8ff594087b01927cfedd">
-  <configuration name="Debug" id="xilinx.gnu.arm.a53.exe.debug.428291353">
+<sdkproject:SdkProject xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sdkproject="http://www.xilinx.com/sdkproject" name="FSBL" location="/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/FSBL" platform="/home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vitis/TE0820-03-2AI21FA/export/TE0820-03-2AI21FA/TE0820-03-2AI21FA.xpfm" platformUID="xilinx:te0820_2cg_1i::0.0(custom)" systemProject="TE0820-03-2AI21FA_system" sysConfig="TE0820-03-2AI21FA" runtime="cpp" cpu="standalone_domain" cpuInstance="psu_cortexa53_0" os="standalone" mssSignature="a48424e35b3e8ff594087b01927cfedd">
+  <configuration name="Debug" id="xilinx.gnu.arm.a53.exe.debug.1080656602" dirty="true">
     <configBuildOptions xsi:type="sdkproject:SdkOptions"/>
-    <lastBuildOptions xsi:type="sdkproject:SdkOptions"/>
   </configuration>
-  <configuration name="Release" id="xilinx.gnu.arm.a53.exe.release.1504552222" dirty="true">
+  <configuration name="Release" id="xilinx.gnu.arm.a53.exe.release.1763811741" dirty="true">
     <configBuildOptions xsi:type="sdkproject:SdkOptions"/>
   </configuration>
   <template appTemplateName="zynqmp_fsbl" hasBspSettings="true"/>

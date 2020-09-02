@@ -1,10 +1,10 @@
 // Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
-// Date        : Sat Aug 29 15:08:30 2020
+// Date        : Sat Aug 29 15:08:29 2020
 // Host        : vagrant running 64-bit Ubuntu 16.04.6 LTS
-// Command     : write_verilog -force -mode funcsim
-//               /home/vagrant/git/airliner/config/squeaky_weasel/target/hw/TE0820/vivado/TE0820-03-2AI21FA.srcs/sources_1/bd/zusys/ip/zusys_util_ds_buf_0_0/zusys_util_ds_buf_0_0_sim_netlist.v
+// Command     : write_verilog -force -mode funcsim -rename_top zusys_util_ds_buf_0_0 -prefix
+//               zusys_util_ds_buf_0_0_ zusys_util_ds_buf_0_0_sim_netlist.v
 // Design      : zusys_util_ds_buf_0_0
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -12,74 +12,8 @@
 // --------------------------------------------------------------------------------
 `timescale 1 ps / 1 ps
 
-(* CHECK_LICENSE_TYPE = "zusys_util_ds_buf_0_0,util_ds_buf,{}" *) (* downgradeipidentifiedwarnings = "yes" *) (* x_core_info = "util_ds_buf,Vivado 2019.2" *) 
-(* NotValidForBitStream *)
-module zusys_util_ds_buf_0_0
-   (IBUF_DS_P,
-    IBUF_DS_N,
-    IBUF_OUT);
-  (* x_interface_info = "xilinx.com:interface:diff_clock:1.0 CLK_IN_D CLK_P" *) (* x_interface_parameter = "XIL_INTERFACENAME CLK_IN_D, BOARD.ASSOCIATED_PARAM DIFF_CLK_IN_BOARD_INTERFACE, CAN_DEBUG false, FREQ_HZ 100000000" *) input [0:0]IBUF_DS_P;
-  (* x_interface_info = "xilinx.com:interface:diff_clock:1.0 CLK_IN_D CLK_N" *) input [0:0]IBUF_DS_N;
-  (* x_interface_info = "xilinx.com:signal:clock:1.0 IBUF_OUT CLK" *) (* x_interface_parameter = "XIL_INTERFACENAME IBUF_OUT, FREQ_HZ 100000000, PHASE 0.000, CLK_DOMAIN zusys_util_ds_buf_0_0_IBUF_OUT, INSERT_VIP 0" *) output [0:0]IBUF_OUT;
-
-  (* IBUF_LOW_PWR *) wire [0:0]IBUF_DS_N;
-  (* IBUF_LOW_PWR *) wire [0:0]IBUF_DS_P;
-  (* IBUF_LOW_PWR *) wire [0:0]IBUF_OUT;
-  wire [0:0]NLW_U0_BUFGCE_O_UNCONNECTED;
-  wire [0:0]NLW_U0_BUFG_GT_O_UNCONNECTED;
-  wire [0:0]NLW_U0_BUFG_O_UNCONNECTED;
-  wire [0:0]NLW_U0_BUFHCE_O_UNCONNECTED;
-  wire [0:0]NLW_U0_BUFH_O_UNCONNECTED;
-  wire [0:0]NLW_U0_IBUF_DS_ODIV2_UNCONNECTED;
-  wire [0:0]NLW_U0_IOBUF_DS_N_UNCONNECTED;
-  wire [0:0]NLW_U0_IOBUF_DS_P_UNCONNECTED;
-  wire [0:0]NLW_U0_IOBUF_IO_IO_UNCONNECTED;
-  wire [0:0]NLW_U0_IOBUF_IO_O_UNCONNECTED;
-  wire [0:0]NLW_U0_OBUF_DS_N_UNCONNECTED;
-  wire [0:0]NLW_U0_OBUF_DS_P_UNCONNECTED;
-
-  (* C_BUFGCE_DIV = "1" *) 
-  (* C_BUFG_GT_SYNC = "0" *) 
-  (* C_BUF_TYPE = "IBUFDS" *) 
-  (* C_SIM_DEVICE = "VERSAL_AI_CORE_ES1" *) 
-  (* C_SIZE = "1" *) 
-  zusys_util_ds_buf_0_0_util_ds_buf U0
-       (.BUFGCE_CE(1'b0),
-        .BUFGCE_CLR(1'b0),
-        .BUFGCE_I(1'b0),
-        .BUFGCE_O(NLW_U0_BUFGCE_O_UNCONNECTED[0]),
-        .BUFG_GT_CE(1'b0),
-        .BUFG_GT_CEMASK(1'b0),
-        .BUFG_GT_CLR(1'b0),
-        .BUFG_GT_CLRMASK(1'b0),
-        .BUFG_GT_DIV({1'b0,1'b0,1'b0}),
-        .BUFG_GT_I(1'b0),
-        .BUFG_GT_O(NLW_U0_BUFG_GT_O_UNCONNECTED[0]),
-        .BUFG_I(1'b0),
-        .BUFG_O(NLW_U0_BUFG_O_UNCONNECTED[0]),
-        .BUFHCE_CE(1'b0),
-        .BUFHCE_I(1'b0),
-        .BUFHCE_O(NLW_U0_BUFHCE_O_UNCONNECTED[0]),
-        .BUFH_I(1'b0),
-        .BUFH_O(NLW_U0_BUFH_O_UNCONNECTED[0]),
-        .IBUF_DS_CEB(1'b0),
-        .IBUF_DS_N(IBUF_DS_N),
-        .IBUF_DS_ODIV2(NLW_U0_IBUF_DS_ODIV2_UNCONNECTED[0]),
-        .IBUF_DS_P(IBUF_DS_P),
-        .IBUF_OUT(IBUF_OUT),
-        .IOBUF_DS_N(NLW_U0_IOBUF_DS_N_UNCONNECTED[0]),
-        .IOBUF_DS_P(NLW_U0_IOBUF_DS_P_UNCONNECTED[0]),
-        .IOBUF_IO_I(1'b0),
-        .IOBUF_IO_IO(NLW_U0_IOBUF_IO_IO_UNCONNECTED[0]),
-        .IOBUF_IO_O(NLW_U0_IOBUF_IO_O_UNCONNECTED[0]),
-        .IOBUF_IO_T(1'b0),
-        .OBUF_DS_N(NLW_U0_OBUF_DS_N_UNCONNECTED[0]),
-        .OBUF_DS_P(NLW_U0_OBUF_DS_P_UNCONNECTED[0]),
-        .OBUF_IN(1'b0));
-endmodule
-
 (* C_BUFGCE_DIV = "1" *) (* C_BUFG_GT_SYNC = "0" *) (* C_BUF_TYPE = "IBUFDS" *) 
-(* C_SIM_DEVICE = "VERSAL_AI_CORE_ES1" *) (* C_SIZE = "1" *) (* ORIG_REF_NAME = "util_ds_buf" *) 
+(* C_SIM_DEVICE = "VERSAL_AI_CORE_ES1" *) (* C_SIZE = "1" *) 
 module zusys_util_ds_buf_0_0_util_ds_buf
    (IBUF_DS_P,
     IBUF_DS_N,
@@ -174,6 +108,72 @@ module zusys_util_ds_buf_0_0_util_ds_buf
        (.I(IBUF_DS_P),
         .IB(IBUF_DS_N),
         .O(IBUF_OUT));
+endmodule
+
+(* CHECK_LICENSE_TYPE = "zusys_util_ds_buf_0_0,util_ds_buf,{}" *) (* downgradeipidentifiedwarnings = "yes" *) (* x_core_info = "util_ds_buf,Vivado 2019.2" *) 
+(* NotValidForBitStream *)
+module zusys_util_ds_buf_0_0
+   (IBUF_DS_P,
+    IBUF_DS_N,
+    IBUF_OUT);
+  (* x_interface_info = "xilinx.com:interface:diff_clock:1.0 CLK_IN_D CLK_P" *) (* x_interface_parameter = "XIL_INTERFACENAME CLK_IN_D, BOARD.ASSOCIATED_PARAM DIFF_CLK_IN_BOARD_INTERFACE, CAN_DEBUG false, FREQ_HZ 100000000" *) input [0:0]IBUF_DS_P;
+  (* x_interface_info = "xilinx.com:interface:diff_clock:1.0 CLK_IN_D CLK_N" *) input [0:0]IBUF_DS_N;
+  (* x_interface_info = "xilinx.com:signal:clock:1.0 IBUF_OUT CLK" *) (* x_interface_parameter = "XIL_INTERFACENAME IBUF_OUT, FREQ_HZ 100000000, PHASE 0.000, CLK_DOMAIN zusys_util_ds_buf_0_0_IBUF_OUT, INSERT_VIP 0" *) output [0:0]IBUF_OUT;
+
+  (* IBUF_LOW_PWR *) wire [0:0]IBUF_DS_N;
+  (* IBUF_LOW_PWR *) wire [0:0]IBUF_DS_P;
+  (* IBUF_LOW_PWR *) wire [0:0]IBUF_OUT;
+  wire [0:0]NLW_U0_BUFGCE_O_UNCONNECTED;
+  wire [0:0]NLW_U0_BUFG_GT_O_UNCONNECTED;
+  wire [0:0]NLW_U0_BUFG_O_UNCONNECTED;
+  wire [0:0]NLW_U0_BUFHCE_O_UNCONNECTED;
+  wire [0:0]NLW_U0_BUFH_O_UNCONNECTED;
+  wire [0:0]NLW_U0_IBUF_DS_ODIV2_UNCONNECTED;
+  wire [0:0]NLW_U0_IOBUF_DS_N_UNCONNECTED;
+  wire [0:0]NLW_U0_IOBUF_DS_P_UNCONNECTED;
+  wire [0:0]NLW_U0_IOBUF_IO_IO_UNCONNECTED;
+  wire [0:0]NLW_U0_IOBUF_IO_O_UNCONNECTED;
+  wire [0:0]NLW_U0_OBUF_DS_N_UNCONNECTED;
+  wire [0:0]NLW_U0_OBUF_DS_P_UNCONNECTED;
+
+  (* C_BUFGCE_DIV = "1" *) 
+  (* C_BUFG_GT_SYNC = "0" *) 
+  (* C_BUF_TYPE = "IBUFDS" *) 
+  (* C_SIM_DEVICE = "VERSAL_AI_CORE_ES1" *) 
+  (* C_SIZE = "1" *) 
+  zusys_util_ds_buf_0_0_util_ds_buf U0
+       (.BUFGCE_CE(1'b0),
+        .BUFGCE_CLR(1'b0),
+        .BUFGCE_I(1'b0),
+        .BUFGCE_O(NLW_U0_BUFGCE_O_UNCONNECTED[0]),
+        .BUFG_GT_CE(1'b0),
+        .BUFG_GT_CEMASK(1'b0),
+        .BUFG_GT_CLR(1'b0),
+        .BUFG_GT_CLRMASK(1'b0),
+        .BUFG_GT_DIV({1'b0,1'b0,1'b0}),
+        .BUFG_GT_I(1'b0),
+        .BUFG_GT_O(NLW_U0_BUFG_GT_O_UNCONNECTED[0]),
+        .BUFG_I(1'b0),
+        .BUFG_O(NLW_U0_BUFG_O_UNCONNECTED[0]),
+        .BUFHCE_CE(1'b0),
+        .BUFHCE_I(1'b0),
+        .BUFHCE_O(NLW_U0_BUFHCE_O_UNCONNECTED[0]),
+        .BUFH_I(1'b0),
+        .BUFH_O(NLW_U0_BUFH_O_UNCONNECTED[0]),
+        .IBUF_DS_CEB(1'b0),
+        .IBUF_DS_N(IBUF_DS_N),
+        .IBUF_DS_ODIV2(NLW_U0_IBUF_DS_ODIV2_UNCONNECTED[0]),
+        .IBUF_DS_P(IBUF_DS_P),
+        .IBUF_OUT(IBUF_OUT),
+        .IOBUF_DS_N(NLW_U0_IOBUF_DS_N_UNCONNECTED[0]),
+        .IOBUF_DS_P(NLW_U0_IOBUF_DS_P_UNCONNECTED[0]),
+        .IOBUF_IO_I(1'b0),
+        .IOBUF_IO_IO(NLW_U0_IOBUF_IO_IO_UNCONNECTED[0]),
+        .IOBUF_IO_O(NLW_U0_IOBUF_IO_O_UNCONNECTED[0]),
+        .IOBUF_IO_T(1'b0),
+        .OBUF_DS_N(NLW_U0_OBUF_DS_N_UNCONNECTED[0]),
+        .OBUF_DS_P(NLW_U0_OBUF_DS_P_UNCONNECTED[0]),
+        .OBUF_IN(1'b0));
 endmodule
 module xVIA(.a(w),.b(w));
 inout w;

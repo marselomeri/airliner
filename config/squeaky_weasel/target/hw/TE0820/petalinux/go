@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#petalinux-build -f -x mrproper
+petalinux-config --get-hw-description=../hw_spec/TE0820-03-2AI21FA/
+petalinux-config -c bootloader
+petalinux-config -c pmufw         # UltraScale+ MPSoC only
+petalinux-config -c u-boot
+petalinux-config -c device-tree
+petalinux-config -c kernel
+petalinux-config -c rootfs
+petalinux-build
+
+
+
+# components/plnx_workspace/device-tree/device-tree
