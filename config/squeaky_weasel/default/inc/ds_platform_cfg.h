@@ -444,7 +444,7 @@
 **       TRUE  = add move pathname field to Destination File Table
 **       FALSE = do not add move pathname to Destination File Table
 */
-#define DS_MOVE_FILES                   FALSE
+#define DS_MOVE_FILES                   TRUE
 
 
 /**

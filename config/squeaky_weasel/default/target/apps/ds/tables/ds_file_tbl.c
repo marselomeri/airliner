@@ -41,7 +41,7 @@ DS_DestFileTable_t DS_DestFileTable =
     /* File Index 00 -- event packets only */
     {
 #if (DS_MOVE_FILES == TRUE)
-      /* .Movename      = */ DS_EMPTY_STRING,
+      /* .Movename      = */ "/cf/rsync/",
 #endif
       /* .Pathname      = */ "/cf/log/",
       /* .Basename      = */ "events",
@@ -49,39 +49,39 @@ DS_DestFileTable_t DS_DestFileTable =
 
       /* .FileNameType  = */ DS_BY_COUNT,
       /* .EnableState   = */ DS_ENABLED,
-      /* .MaxFileSize   = */ (1024 * 1024 * 200),         /* 200 M-bytes */
-      /* .MaxFileAge    = */ (60 * 60 * 2),               /* 2 hours */
-      /* .SequenceCount = */ 1000,
+      /* .MaxFileSize   = */ (60 * 15 * 250),           /* 250 bytes a second every 15 minutes */
+      /* .MaxFileAge    = */ (60 * 15),                 /* 15 minutes */
+      /* .SequenceCount = */ 0,
     },
     /* File Index 01 -- application housekeeping packets */
     {
 #if (DS_MOVE_FILES == TRUE)
-      /* .Movename      = */ DS_EMPTY_STRING,
+      /* .Movename      = */ "/cf/rsync/",
 #endif
       /* .Pathname      = */ "/cf/log/",
-      /* .Basename      = */ "hk",
+      /* .Basename      = */ "combined",
       /* .Extension     = */ ".hk",
 
       /* .FileNameType  = */ DS_BY_COUNT,
       /* .EnableState   = */ DS_ENABLED,
-      /* .MaxFileSize   = */ (1024 * 1024 * 200),         /* 200 M-bytes */
-      /* .MaxFileAge    = */ (60 * 60 * 2),             /* 2 hours */
-      /* .SequenceCount = */ 2000,
+      /* .MaxFileSize   = */ (60 * 15 * 8000),         /* 8000 bytes a second every 15 minutes */
+      /* .MaxFileAge    = */ (60 * 15),                /* 15 minutes */
+      /* .SequenceCount = */ 0,
     },
     /* File Index 02 -- application telemetry packets */
     {
 #if (DS_MOVE_FILES == TRUE)
-      /* .Movename      = */ DS_EMPTY_STRING,
+      /* .Movename      = */ "/cf/rsync/",
 #endif
       /* .Pathname      = */ "/cf/log/",
-      /* .Basename      = */ "flight",
+      /* .Basename      = */ "baro",
       /* .Extension     = */ ".tlm",
 
       /* .FileNameType  = */ DS_BY_COUNT,
       /* .EnableState   = */ DS_ENABLED,
-      /* .MaxFileSize   = */ (1024 * 1024 * 200),       /* 200 M-bytes */
-      /* .MaxFileAge    = */ (60 * 60 * 2),             /* 2 hours */
-      /* .SequenceCount = */ 3000,
+      /* .MaxFileSize   = */ (60 * 15 * 2),             /* 2 bytes a seconds every 15 minutes */
+      /* .MaxFileAge    = */ (60 * 15),                 /* 15 minutes */
+      /* .SequenceCount = */ 0,
     },
     /* File Index 03 -- hardware telemetry packets */
     {
@@ -138,7 +138,7 @@ DS_DestFileTable_t DS_DestFileTable =
       /* .Extension     = */ ".cmd",
 
       /* .FileNameType  = */ DS_BY_COUNT,
-      /* .EnableState   = */ DS_ENABLED,
+      /* .EnableState   = */ DS_DISABLED,
       /* .MaxFileSize   = */ (1024 * 1024 * 200),       /* 200 M-bytes */
       /* .MaxFileAge    = */ (60 * 60 * 2),             /* 2 hours */
       /* .SequenceCount = */ 7000,
