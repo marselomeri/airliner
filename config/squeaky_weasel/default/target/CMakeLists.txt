@@ -56,6 +56,17 @@ add_airliner_app(
 )
 
 add_airliner_app(
+    hk
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/hk/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/hk
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/hk_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/hk_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/hk_perfids.h
+    MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/hk/hk_msg_overrides.json
+)
+
+add_airliner_app(
     ds
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/ds/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/ds

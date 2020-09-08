@@ -5,6 +5,7 @@ CFE_APP, /cf/apps/HMC5883.so,   HMC5883_AppMain,  HMC5883,   49,  327680, 0x0, 0
 CFE_APP, /cf/apps/MS5611.so,    MS5611_AppMain,   MS5611,    82,  327680, 0x0, 0, 2;
 CFE_APP, /cf/apps/CI.so,        CI_AppMain,       CI,        115, 327680, 0x0, 0, 2;
 CFE_APP, /cf/apps/TO.so,        TO_AppMain,       TO,        124, 327680, 0x0, 0, 2;
+CFE_APP, /cf/apps/HK.so,        HK_AppMain,       HK,        166, 327680, 0x0, 0, 2;
 CFE_APP, /cf/apps/DS.so,        DS_AppMain,       DS,        190, 327680, 0x0, 0, 2;
 CFE_APP, /cf/apps/SCH.so,       SCH_AppMain,      SCH,       34,  40960,  0x0, 0, 2;
 !CFE_LIB, /cf/apps/schlib.so,    SCH_LibInit,     SCH_LIB,    0,     0, 0x0, 0, 2;
