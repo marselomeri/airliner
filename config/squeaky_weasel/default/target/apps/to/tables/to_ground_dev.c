@@ -61,6 +61,8 @@ TO_ChannelTbl_t TO_ConfigTbl =
 	{
 		/* Message Flows */
 		/* Ground Queues */
+	    {HK_COMBINED_PKT1_MID,			  1,	TO_PQUEUE_HIGH_IDX},
+	    {HK_COMBINED_PKT2_MID,			  1,	TO_PQUEUE_HIGH_IDX},
 	    {AMC_HK_TLM_MID,			      1,	TO_PQUEUE_HIGH_IDX},
 	    {MAC_HK_TLM_MID,			      1,	TO_PQUEUE_HIGH_IDX},
 	    {MPC_HK_TLM_MID,			      1,	TO_PQUEUE_HIGH_IDX},
