@@ -11,32 +11,52 @@
 hk_copy_table_entry_t      HK_CopyTable[HK_COPY_TABLE_ENTRIES] =
 {
 /*         inputMid        inputOffset     outputMid    outputOffset  numBytes*/
-
-/*   0 */ {CFE_EVS_HK_TLM_MID,    12,	HK_COMBINED_PKT1_MID,      12,   4, },
-/*   1 */ { CFE_TIME_HK_TLM_MID,  12,   HK_COMBINED_PKT1_MID,      16,   4, },
-/*   2 */ { CFE_SB_HK_TLM_MID,    12,   HK_COMBINED_PKT1_MID,      20,   4, },
-/*   3 */ { CFE_ES_HK_TLM_MID,    12,   HK_COMBINED_PKT1_MID,      24,   4, },
-/*   4 */ { CFE_TBL_HK_TLM_MID,   12,   HK_COMBINED_PKT1_MID,      28,   4, },
-
-/*   5 */ { HK_UNDEFINED_ENTRY,    0,   HK_UNDEFINED_ENTRY,       0,   0, },
-/*   6 */ { HK_UNDEFINED_ENTRY,    0,   HK_UNDEFINED_ENTRY,       0,   0, },
-/*   7 */ { HK_UNDEFINED_ENTRY,    0,   HK_UNDEFINED_ENTRY,       0,   0, },
-/*   8 */ { HK_UNDEFINED_ENTRY,    0,   HK_UNDEFINED_ENTRY,       0,   0, },
-
-/*   9 */ { HK_UNDEFINED_ENTRY,    0,   HK_UNDEFINED_ENTRY,       0,   0, },
-/*  10 */ { HK_UNDEFINED_ENTRY,    0,   HK_UNDEFINED_ENTRY,       0,   0, },
-/*  11 */ { HK_UNDEFINED_ENTRY,    0,   HK_UNDEFINED_ENTRY,       0,   0, },
-/*  12 */ { HK_UNDEFINED_ENTRY,    0,   HK_UNDEFINED_ENTRY,       0,   0, },
-/*  13 */ { HK_UNDEFINED_ENTRY,    0,   HK_UNDEFINED_ENTRY,       0,   0, },
-/*  14 */ { HK_UNDEFINED_ENTRY,    0,   HK_UNDEFINED_ENTRY,       0,   0, },
-/*  15 */ { HK_UNDEFINED_ENTRY,    0,   HK_UNDEFINED_ENTRY,       0,   0, },                                                                                                        
-/*  16 */ { HK_UNDEFINED_ENTRY,    0,   HK_UNDEFINED_ENTRY,       0,   0, },
-/*  17 */ { HK_UNDEFINED_ENTRY,    0,   HK_UNDEFINED_ENTRY,       0,   0, },
-/*  18 */ { HK_UNDEFINED_ENTRY,    0,   HK_UNDEFINED_ENTRY,       0,   0, },
-/*  19 */ { HK_UNDEFINED_ENTRY,    0,   HK_UNDEFINED_ENTRY,       0,   0, },
-/*  20 */ { HK_UNDEFINED_ENTRY,    0,   HK_UNDEFINED_ENTRY,       0,   0, },
-/*  21 */ { HK_UNDEFINED_ENTRY,    0,   HK_UNDEFINED_ENTRY,       0,   0, },
-/*  22 */ { HK_UNDEFINED_ENTRY,    0,   HK_UNDEFINED_ENTRY,       0,   0, },
+          /* Timestamp */
+/*   0 */ { PX4_SENSOR_ACCEL_MID,   16, HK_COMBINED_PKT1_MID,    16,   8, },
+          /* ErrorCount */
+/*   1 */ { PX4_SENSOR_ACCEL_MID,   32, HK_COMBINED_PKT1_MID,    24,   8, },
+          /* Temperature */
+/*   2 */ { PX4_SENSOR_ACCEL_MID,   64, HK_COMBINED_PKT1_MID,    32,   4, },
+          /* XRaw */
+/*   3 */ { PX4_SENSOR_ACCEL_MID,   80, HK_COMBINED_PKT1_MID,    36,   2, },
+          /* YRaw */
+/*   4 */ { PX4_SENSOR_ACCEL_MID,   82, HK_COMBINED_PKT1_MID,    38,   2, },
+          /* ZRaw */
+/*   5 */ { PX4_SENSOR_ACCEL_MID,   84, HK_COMBINED_PKT1_MID,    40,   2, },
+          /* TemperatureRaw */
+/*   6 */ { PX4_SENSOR_ACCEL_MID,   86, HK_COMBINED_PKT1_MID,    42,   2, },
+          /* Timestamp */
+/*   7 */ { PX4_SENSOR_GYRO_MID,    16, HK_COMBINED_PKT1_MID,    44,   8, },
+          /* ErrorCount */
+/*   8 */ { PX4_SENSOR_GYRO_MID,    32, HK_COMBINED_PKT1_MID,    52,   8, },
+          /* Temperature */
+/*   9 */ { PX4_SENSOR_GYRO_MID,    64, HK_COMBINED_PKT1_MID,    60,   4, },
+          /* XRaw */
+/*  10 */ { PX4_SENSOR_GYRO_MID,    80, HK_COMBINED_PKT1_MID,    64,   2, },
+          /* YRaw */
+/*  11 */ { PX4_SENSOR_GYRO_MID,    82, HK_COMBINED_PKT1_MID,    66,   2, },
+          /* ZRaw */
+/*  12 */ { PX4_SENSOR_GYRO_MID,    84, HK_COMBINED_PKT1_MID,    68,   2, },
+          /* Timestamp */
+/*  13 */ { PX4_SENSOR_MAG_MID,     16, HK_COMBINED_PKT1_MID,    70,   8, },
+          /* ErrorCount */
+/*  14 */ { PX4_SENSOR_MAG_MID,     24, HK_COMBINED_PKT1_MID,    78,   8, },
+          /* Temperature */
+/*  15 */ { PX4_SENSOR_MAG_MID,     52, HK_COMBINED_PKT1_MID,    86,   4, },
+          /* XRaw */
+/*  16 */ { PX4_SENSOR_MAG_MID,     60, HK_COMBINED_PKT1_MID,    90,   2, },
+          /* YRaw */
+/*  17 */ { PX4_SENSOR_MAG_MID,     62, HK_COMBINED_PKT1_MID,    92,   2, },
+          /* ZRaw */
+/*  18 */ { PX4_SENSOR_MAG_MID,     64, HK_COMBINED_PKT1_MID,    94,   2, },
+          /* Timestamp */
+/*  19 */ { PX4_SENSOR_BARO_MID,    16, HK_COMBINED_PKT2_MID,    16,   8, },
+          /* ErrorCount */
+/*  20 */ { PX4_SENSOR_BARO_MID,    24, HK_COMBINED_PKT2_MID,    24,   4, },
+          /* Pressure */
+/*  21 */ { PX4_SENSOR_BARO_MID,    28, HK_COMBINED_PKT2_MID,    28,   4, },
+          /* Temperature */
+/*  22 */ { PX4_SENSOR_BARO_MID,    36, HK_COMBINED_PKT2_MID,    32,   4, },
 /*  23 */ { HK_UNDEFINED_ENTRY,    0,   HK_UNDEFINED_ENTRY,       0,   0, },
 /*  24 */ { HK_UNDEFINED_ENTRY,    0,   HK_UNDEFINED_ENTRY,       0,   0, },
 /*  25 */ { HK_UNDEFINED_ENTRY,    0,   HK_UNDEFINED_ENTRY,       0,   0, },                                                                                                        
