@@ -1,0 +1,86 @@
+Gyro.row.os-theme-dark
+  article.col-xs-12.col-sm-12
+    header
+      span.widget-icon
+        i.fa.fa-table
+      h2 ICM20689 - Diagnostic
+    div.widget-body.table-responsive
+      table.table.table-condensed
+        tbody
+          tr
+            th Accel Scale
+            td
+              div(data-cdr={tlm:[{name:'/ICM20689/ICM20689_DiagPacket_t/Calibration.AccXScale'}],indicator:'text'}) ---
+            td
+              div(data-cdr={tlm:[{name:'/ICM20689/ICM20689_DiagPacket_t/Calibration.AccYScale'}],indicator:'text'}) ---
+            td
+              div(data-cdr={tlm:[{name:'/ICM20689/ICM20689_DiagPacket_t/Calibration.AccZScale'}],indicator:'text'}) ---
+              
+          tr
+            th Accel Offset
+            td
+              div(data-cdr={tlm:[{name:'/ICM20689/ICM20689_DiagPacket_t/Calibration.AccXOffset'}],indicator:'text'}) ---
+            td
+              div(data-cdr={tlm:[{name:'/ICM20689/ICM20689_DiagPacket_t/Calibration.AccYOffset'}],indicator:'text'}) ---
+            td
+              div(data-cdr={tlm:[{name:'/ICM20689/ICM20689_DiagPacket_t/Calibration.AccZOffset'}],indicator:'text'}) ---
+              
+          tr
+            th Gyro Scale
+            td
+              div(data-cdr={tlm:[{name:'/ICM20689/ICM20689_DiagPacket_t/Calibration.GyroXScale'}],indicator:'text'}) ---
+            td
+              div(data-cdr={tlm:[{name:'/ICM20689/ICM20689_DiagPacket_t/Calibration.GyroYScale'}],indicator:'text'}) ---
+            td
+              div(data-cdr={tlm:[{name:'/ICM20689/ICM20689_DiagPacket_t/Calibration.GyroZScale'}],indicator:'text'}) ---
+              
+          tr
+            th Gyro Offset
+            td
+              div(data-cdr={tlm:[{name:'/ICM20689/ICM20689_DiagPacket_t/Calibration.GyroXOffset'}],indicator:'text'}) ---
+            td
+              div(data-cdr={tlm:[{name:'/ICM20689/ICM20689_DiagPacket_t/Calibration.GyroYOffset'}],indicator:'text'}) ---
+            td
+              div(data-cdr={tlm:[{name:'/ICM20689/ICM20689_DiagPacket_t/Calibration.GyroZOffset'}],indicator:'text'}) ---
+    div.widget-body.table-responsive
+      table.table.table-condensed
+        tbody
+          tr
+            th Rotation
+            td
+              div(data-cdr={tlm:[{name:'/ICM20689/ICM20689_DiagPacket_t/Calibration.Rotation'}],indicator:'text'}) ---
+          tr
+            th Accel Unit
+            td
+              div(data-cdr={tlm:[{name:'/ICM20689/ICM20689_DiagPacket_t/Conversion.AccUnit', format: '%.5f' }],indicator:'text'}) ---  
+          tr
+            th Gyro Unit
+            td
+              div(data-cdr={tlm:[{name:'/ICM20689/ICM20689_DiagPacket_t/Conversion.GyroUnit', format: '%.5f' }],indicator:'text'}) ---
+          tr
+            th Accel Divider
+            td
+              div(data-cdr={tlm:[{name:'/ICM20689/ICM20689_DiagPacket_t/Conversion.AccDivider'}],indicator:'text'}) ---
+          tr
+            th Gyro Divider
+            td
+              div(data-cdr={tlm:[{name:'/ICM20689/ICM20689_DiagPacket_t/Conversion.GyroDivider', format: '%.5f' }],indicator:'text'}) ---
+          tr
+            th Room Temperature Offset
+            td
+              div(data-cdr={tlm:[{name:'/ICM20689/ICM20689_DiagPacket_t/Conversion.RoomTempOffset'}],indicator:'text'}) ---
+          tr
+            th Temperature Sensitivity
+            td
+              div(data-cdr={tlm:[{name:'/ICM20689/ICM20689_DiagPacket_t/Conversion.TempSensitivity'}],indicator:'text'}) ---
+          tr
+            th Accel Scale
+            td
+              div(data-cdr={tlm:[{name:'/ICM20689/ICM20689_DiagPacket_t/Conversion.AccScale'}],indicator:'text'}) ---
+          tr
+            th Gyro Scale
+            td
+              div(data-cdr={tlm:[{name:'/ICM20689/ICM20689_DiagPacket_t/Conversion.GyroScale'}],indicator:'text'}) ---
+    footer.btn-group(role="group")      
+      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/ICM20689/SendDiag'},indicator:'cmd'}) Diag    
+      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/ICM20689/SetCalibration'},indicator:'cmd'}) Set Calibration

@@ -128,14 +128,14 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/hmc5883_perfids.h
 )
 
-#add_airliner_app(
-    #icm20689
-    #DEFINITION ${PROJECT_SOURCE_DIR}/apps/icm20689/fsw/for_build
-    #CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/icm20689
-    #CONFIG_SOURCES
-        #${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/icm20689_msgids.h
-        #${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/icm20689_perfids.h
-    #MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/icm20689/icm20689_msg_overrides.json
-#)
+add_airliner_app(
+    icm20689
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/icm20689/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/icm20689
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/icm20689_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/icm20689_perfids.h
+    MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/icm20689/icm20689_msg_overrides.json
+)
 
 
