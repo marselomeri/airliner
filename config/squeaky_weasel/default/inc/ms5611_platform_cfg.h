@@ -115,7 +115,7 @@ extern "C" {
 **       The length of each string, including the NULL terminator cannot exceed
 **       the #OS_MAX_PATH_LEN value.
 */
-#define MS5611_DEVICE_PATH                ("/dev/spidev1.1")
+#define MS5611_DEVICE_PATH                ("/dev/spidev1.0")
 
 /** \brief The ratio pressure per temperature measurements
 **

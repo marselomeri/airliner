@@ -103,7 +103,7 @@ ICM20689_ConfigTbl_t ICM20689_ConfigTbl =
         1000000,
         {
             /* SpiPathSetting */
-            "/dev/spidev1.0"
+            "/dev/spidev2.0"
         },
         /* ResetDelayUs */
         100000,
