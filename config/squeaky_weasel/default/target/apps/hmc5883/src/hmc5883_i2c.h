@@ -47,7 +47,7 @@ extern "C" {
 ** Local Defines
 *************************************************************************/
 /** \brief I2C device path. */
-#define HMC5883_I2C_DEVICE_PATH                   "/dev/i2c-4"
+#define HMC5883_I2C_DEVICE_PATH                   "/dev/i2c-1"
 
 /** \brief I2C slave address of the HMC5883 device in hex. */
 #define HMC5883_I2C_SLAVE_ADDRESS                 (0x1e)
