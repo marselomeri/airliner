@@ -16,6 +16,7 @@ initialize_airliner_build(
         /cf/download
         /cf/log
         /cf/upload
+        /cf/rsync
         /ram
     STARTUP_SCRIPT
         ${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_startup.scr
