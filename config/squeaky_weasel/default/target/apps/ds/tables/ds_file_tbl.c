@@ -79,7 +79,7 @@ DS_DestFileTable_t DS_DestFileTable =
 
       /* .FileNameType  = */ DS_BY_COUNT,
       /* .EnableState   = */ DS_ENABLED,
-      /* .MaxFileSize   = */ (60 * 15 * 2),             /* 2 bytes a seconds every 15 minutes */
+      /* .MaxFileSize   = */ (60 * 15 * 10),             /* 10 bytes a seconds every 15 minutes */
       /* .MaxFileAge    = */ (60 * 15),                 /* 15 minutes */
       /* .SequenceCount = */ 0,
     },
