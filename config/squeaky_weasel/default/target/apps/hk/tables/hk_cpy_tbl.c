@@ -11,51 +11,51 @@
 hk_copy_table_entry_t      HK_CopyTable[HK_COPY_TABLE_ENTRIES] =
 {
 /*         inputMid        inputOffset     outputMid    outputOffset  numBytes*/
-          /* Timestamp */
+          /* uint64 Timestamp PX4_SensorAccelMsg_t */
 /*   0 */ { PX4_SENSOR_ACCEL_MID,   16, HK_COMBINED_PKT1_MID,    16,   8, },
-          /* ErrorCount */
+          /* uint64 ErrorCount PX4_SensorAccelMsg_t */
 /*   1 */ { PX4_SENSOR_ACCEL_MID,   32, HK_COMBINED_PKT1_MID,    24,   8, },
-          /* Temperature */
+          /* float Temperature PX4_SensorAccelMsg_t */
 /*   2 */ { PX4_SENSOR_ACCEL_MID,   64, HK_COMBINED_PKT1_MID,    32,   4, },
-          /* XRaw */
+          /* int16 XRaw PX4_SensorAccelMsg_t */
 /*   3 */ { PX4_SENSOR_ACCEL_MID,   80, HK_COMBINED_PKT1_MID,    36,   2, },
-          /* YRaw */
+          /* int16 YRaw PX4_SensorAccelMsg_t */
 /*   4 */ { PX4_SENSOR_ACCEL_MID,   82, HK_COMBINED_PKT1_MID,    38,   2, },
-          /* ZRaw */
+          /* int16 ZRaw PX4_SensorAccelMsg_t */
 /*   5 */ { PX4_SENSOR_ACCEL_MID,   84, HK_COMBINED_PKT1_MID,    40,   2, },
-          /* TemperatureRaw */
+          /* int16 TemperatureRaw PX4_SensorAccelMsg_t */
 /*   6 */ { PX4_SENSOR_ACCEL_MID,   86, HK_COMBINED_PKT1_MID,    42,   2, },
-          /* Timestamp */
+          /* uint64 Timestamp PX4_SensorGyroMsg_t */
 /*   7 */ { PX4_SENSOR_GYRO_MID,    16, HK_COMBINED_PKT1_MID,    44,   8, },
-          /* ErrorCount */
+          /* uint64 ErrorCount PX4_SensorGyroMsg_t */
 /*   8 */ { PX4_SENSOR_GYRO_MID,    32, HK_COMBINED_PKT1_MID,    52,   8, },
-          /* Temperature */
+          /* float Temperature PX4_SensorGyroMsg_t */
 /*   9 */ { PX4_SENSOR_GYRO_MID,    64, HK_COMBINED_PKT1_MID,    60,   4, },
-          /* XRaw */
+          /* int16 XRaw PX4_SensorGyroMsg_t */
 /*  10 */ { PX4_SENSOR_GYRO_MID,    80, HK_COMBINED_PKT1_MID,    64,   2, },
-          /* YRaw */
+          /* int16 YRaw PX4_SensorGyroMsg_t */
 /*  11 */ { PX4_SENSOR_GYRO_MID,    82, HK_COMBINED_PKT1_MID,    66,   2, },
-          /* ZRaw */
+          /* int16 ZRaw PX4_SensorGyroMsg_t */
 /*  12 */ { PX4_SENSOR_GYRO_MID,    84, HK_COMBINED_PKT1_MID,    68,   2, },
-          /* Timestamp */
+          /* uint64 Timestamp PX4_SensorMagMsg_t */
 /*  13 */ { PX4_SENSOR_MAG_MID,     16, HK_COMBINED_PKT1_MID,    70,   8, },
-          /* ErrorCount */
+          /* uint64 ErrorCount PX4_SensorMagMsg_t */
 /*  14 */ { PX4_SENSOR_MAG_MID,     24, HK_COMBINED_PKT1_MID,    78,   8, },
-          /* Temperature */
+          /* float Temperature PX4_SensorMagMsg_t */
 /*  15 */ { PX4_SENSOR_MAG_MID,     52, HK_COMBINED_PKT1_MID,    86,   4, },
-          /* XRaw */
+          /* int16 XRaw PX4_SensorMagMsg_t */
 /*  16 */ { PX4_SENSOR_MAG_MID,     60, HK_COMBINED_PKT1_MID,    90,   2, },
-          /* YRaw */
+          /* int16 YRaw PX4_SensorMagMsg_t */
 /*  17 */ { PX4_SENSOR_MAG_MID,     62, HK_COMBINED_PKT1_MID,    92,   2, },
-          /* ZRaw */
+          /* int16 ZRaw PX4_SensorMagMsg_t */
 /*  18 */ { PX4_SENSOR_MAG_MID,     64, HK_COMBINED_PKT1_MID,    94,   2, },
-          /* Timestamp */
+          /* uint64 Timestamp PX4_SensorBaroMsg_t */
 /*  19 */ { PX4_SENSOR_BARO_MID,    16, HK_COMBINED_PKT2_MID,    16,   8, },
-          /* ErrorCount */
+          /* uint32 ErrorCount PX4_SensorBaroMsg_t */
 /*  20 */ { PX4_SENSOR_BARO_MID,    24, HK_COMBINED_PKT2_MID,    24,   4, },
-          /* Pressure */
+          /* Pressure PX4_SensorBaroMsg_t */
 /*  21 */ { PX4_SENSOR_BARO_MID,    28, HK_COMBINED_PKT2_MID,    28,   4, },
-          /* Temperature */
+          /* Temperature PX4_SensorBaroMsg_t */
 /*  22 */ { PX4_SENSOR_BARO_MID,    36, HK_COMBINED_PKT2_MID,    32,   4, },
 /*  23 */ { HK_UNDEFINED_ENTRY,    0,   HK_UNDEFINED_ENTRY,       0,   0, },
 /*  24 */ { HK_UNDEFINED_ENTRY,    0,   HK_UNDEFINED_ENTRY,       0,   0, },
