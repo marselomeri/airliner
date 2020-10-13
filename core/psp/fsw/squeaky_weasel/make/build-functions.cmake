@@ -31,15 +31,3 @@
 #
 #############################################################################
  
-set(TARGET_PSP ${PSP_TARGET_DIR}/squeaky_weasel)
-set(TARGET_OSAL ${OSAL_TARGET_DIR}/posix-fast)
-set(HOST_PSP ${PSP_TARGET_DIR}/squeaky_weasel)
-set(HOST_OSAL ${OSAL_TARGET_DIR}/posix-fast)
-
-
-
-
-
-
-
-
