@@ -53,9 +53,9 @@ hk_copy_table_entry_t      HK_CopyTable[HK_COPY_TABLE_ENTRIES] =
 /*  19 */ { PX4_SENSOR_BARO_MID,    16, HK_COMBINED_PKT2_MID,    16,   8, },
           /* uint32 ErrorCount PX4_SensorBaroMsg_t */
 /*  20 */ { PX4_SENSOR_BARO_MID,    24, HK_COMBINED_PKT2_MID,    24,   4, },
-          /* Pressure PX4_SensorBaroMsg_t */
+          /* float Pressure PX4_SensorBaroMsg_t */
 /*  21 */ { PX4_SENSOR_BARO_MID,    28, HK_COMBINED_PKT2_MID,    28,   4, },
-          /* Temperature PX4_SensorBaroMsg_t */
+          /* float Temperature PX4_SensorBaroMsg_t */
 /*  22 */ { PX4_SENSOR_BARO_MID,    36, HK_COMBINED_PKT2_MID,    32,   4, },
 /*  23 */ { HK_UNDEFINED_ENTRY,    0,   HK_UNDEFINED_ENTRY,       0,   0, },
 /*  24 */ { HK_UNDEFINED_ENTRY,    0,   HK_UNDEFINED_ENTRY,       0,   0, },
